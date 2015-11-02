@@ -1,0 +1,14 @@
+// game: /tg/ Station 13
+
+// game config
+::game.fps = 10
+::game.icon_size = 32
+
+// load global vars and funcs
+dofile("g_vars.sq")
+dofile("g_funcs.sq")
+
+// classes
+
+// run initialization
+dofile("g_init.sq")
