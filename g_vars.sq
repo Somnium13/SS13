@@ -288,6 +288,10 @@
 ::master_controller <- null
 ::master_mode <- "traitor"
 ::MAX_EX_DEVESTATION_RANGE <- 3
+::MAX_EX_FLAME_RANGE <- 14
+::MAX_EX_FLASH_RANGE <- 14
+::MAX_EX_HEAVY_RANGE <- 7
+::MAX_EX_LIGHT_RANGE <- 14
 ::mechas_list <- null
 ::medical_positions <- null
 ::message_delay <- 0
@@ -478,6 +482,7 @@
 ::syndicate_code_phrase <- null
 ::syndicate_code_response <- null
 ::syndicate_name <- null
+::TAB <- "&nbsp;&nbsp;&nbsp;&nbsp;"
 ::table_recipes <- null
 ::TAGGERLOCATIONS <- null
 ::tails_list_human <- null
