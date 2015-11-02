@@ -2,7 +2,7 @@
 WIP/Test output of the Somnium transdecompiler on tgstation.
 
 ## Progress
-*Note: A successful decompile does not necessarily imply that the function will work or is *correctly* decompiled!*
+*Note: A successful decompile does not necessarily imply that the function was **correctly** decompiled!*
 Nov 1: 102 / 234 global functions decompiled.
 
 ## License
