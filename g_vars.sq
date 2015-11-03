@@ -60,6 +60,7 @@
 ::access_security <- 1
 ::access_surgery <- 45
 ::access_syndicate <- 150
+::access_syndicate_leader <- 151
 ::access_tcomsat <- 61
 ::access_tech_storage <- 23
 ::access_teleporter <- 17
@@ -134,6 +135,7 @@
 ::binary <- null
 ::blackbox <- null
 ::BLEND_MULTIPLY <- 4
+::BLEND_OVERLAY <- 1
 ::blob_cores <- null
 ::blob_nodes <- null
 ::blobs <- null
@@ -155,15 +157,18 @@
 ::cardboard_recipes <- null
 ::cardinal <- null
 ::CENTCOM_FREQ <- 1337
+::changeling_amount <- 4
 ::chatchannels <- null
 ::chemical_mob_spawn_meancritters <- null
 ::chemical_mob_spawn_nicecritters <- null
 ::chemical_reactions_list <- null
 ::chemical_reagents_list <- null
 ::chicken_count <- 0
+::CHUNK_SIZE <- 16
 ::civilian_positions <- null
 ::clientmessages <- null
 ::clients <- null
+::CLOSE_DURATION <- 6
 ::clown_names <- null
 ::clown_recipes <- null
 ::CMinutes <- null
@@ -199,6 +204,7 @@
 ::diagonals <- null
 ::diamond_recipes <- null
 ::diary <- null
+::diaryofmeanpeople <- null
 ::dictionary_symptoms <- null
 ::direction_table <- null
 ::directory <- null
@@ -241,6 +247,7 @@
 ::global_hud <- null
 ::global_map <- null
 ::global_mutations <- null
+::global_uid <- 0
 ::globalBlankCanvases <- null
 ::GlobalPool <- null
 ::gold_recipes <- null
@@ -305,6 +312,7 @@
 ::meteorsC <- null
 ::meteorsSPOOKY <- null
 ::mime_names <- null
+::MOB_LAYER <- 4
 ::mob_list <- null
 ::MOB_PERSPECTIVE <- 0
 ::mods <- null
@@ -333,6 +341,7 @@
 ::OBJ_LAYER <- 3
 ::ooc_allowed <- 1
 ::OOClog <- null
+::OPEN_DURATION <- 6
 ::OPERATING <- 2
 ::PATCH <- 4
 ::PDAs <- null
@@ -361,16 +370,20 @@
 ::prisonwarp <- null
 ::prisonwarped <- null
 ::procqueue <- null
+::protected_config <- null
 ::protected_objects <- null
 ::rad_collectors <- null
 ::RADIO_AIRLOCK <- "6"
+::RADIO_ATMOSIA <- "4"
 ::RADIO_CHAT <- "3"
 ::radio_controller <- null
 ::RADIO_FROM_AIRALARM <- "2"
+::RADIO_TO_AIRALARM <- "1"
 ::radiochannels <- null
 ::radiochannelsreverse <- null
 ::rcd_list <- null
 ::recentmessages <- null
+::record_id_num <- 1001
 ::req_console_assistance <- null
 ::req_console_information <- null
 ::req_console_supplies <- null
@@ -401,6 +414,7 @@
 ::security_level <- 0
 ::security_positions <- null
 ::SEE_MOBS <- 4
+::SEE_OBJS <- 8
 ::SEE_TURFS <- 16
 ::shuttle_caller_list <- null
 ::silver_recipes <- null
@@ -475,6 +489,7 @@
 ::swapmaps_compiled_maxx <- null
 ::swapmaps_compiled_maxy <- null
 ::swapmaps_compiled_maxz <- null
+::swapmaps_iconcache <- null
 ::swapmaps_initialized <- null
 ::swapmaps_loaded <- null
 ::swapmaps_mode <- 0
@@ -522,6 +537,8 @@
 ::VVckey_edit <- null
 ::VVicon_edit_lock <- null
 ::VVlocked <- null
+::waittime_h <- 1800
+::waittime_l <- 600
 ::WALLITEMS <- null
 ::WALLITEMS_EXTERNAL <- null
 ::WALLITEMS_INVERSE <- null
