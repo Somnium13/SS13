@@ -6,8 +6,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 
 - Nov 1: 102 / 234 global functions decompiled.
 - Later: 138 / 253
+- Nov 2: 206 / 325
 
-**Current:** 56% of globals decompiled!
+**Current:** 63% of globals decompiled!
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.
