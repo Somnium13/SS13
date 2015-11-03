@@ -313,6 +313,10 @@ function angle2dir( degree ) {
 	return 9
 }
 
+function angle2text( degree ) {
+	return ::dir2text( ::angle2dir( degree ) )
+}
+
 function anim( location, target, a_icon, a_icon_state, flick_anim, sleeptime, direction ) {
 	// Decompile Failure: fail decode_fail,92,137
 }
@@ -468,6 +472,36 @@ function Ceiling( x ) {
 	return -::round( -x )
 }
 
+function center_image( I, x_dimension, y_dimension ) {
+	local x_offset, y_offset
+	if ( x_dimension == null ) {
+		x_dimension = 0
+	}
+	if ( y_dimension == null ) {
+		y_dimension = 0
+	}
+	if ( !I ) {
+		return
+	}
+	if ( !x_dimension || !y_dimension ) {
+		return
+	}
+	if ( x_dimension == ::game.icon_size && y_dimension == ::game.icon_size ) {
+		return I
+	}
+	x_offset = -( x_dimension / ::game.icon_size - 1 ) * ::game.icon_size * 0.5
+	y_offset = -( y_dimension / ::game.icon_size - 1 ) * ::game.icon_size * 0.5
+	if ( x_dimension < ::game.icon_size ) {
+		x_offset *= -1
+	}
+	if ( y_dimension < ::game.icon_size ) {
+		y_offset *= -1
+	}
+	I.pixel_x = x_offset
+	I.pixel_y = y_offset
+	return I
+}
+
 function changeling_transform( user, chosen_prof ) {
 	// Decompile Failure: mows last,update body
 }
@@ -479,6 +513,10 @@ function changemap( VM ) {
 		return
 	}
 	::log_game( "Changing map to " + ::txt.mark( VM.name ) + "(" + ::txt.mark( VM.friendlyname ) + ")" )
+}
+
+function cheap_hypotenuse( Ax, Ay, Bx, By ) {
+	// Decompile Failure: stdfunc abs
 }
 
 function check_rights( rights_required, show_msg ) {
@@ -566,6 +604,82 @@ function closeToolTip( user ) {
 	}
 }
 
+function cmd_admin_mute( whom, mute_type, automute ) {
+	local muteunmute, mute_string, C, P
+	if ( automute == null ) {
+		automute = 0
+	}
+	if ( !whom ) {
+		return
+	}
+	local _ = mute_type // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		mute_string = "IC (say and emote)"
+	} else if ( _==2 ) {
+		mute_string = "OOC"
+	} else if ( _==4 ) {
+		mute_string = "pray"
+	} else if ( _==8 ) {
+		mute_string = "adminhelp, admin PM and ASAY"
+	} else if ( _==16 ) {
+		mute_string = "deadchat and DSAY"
+	} else if ( _==31 ) {
+		mute_string = "everything"
+	} else {
+		return
+	}
+	C = null
+	if ( ::istype( whom, BAD_GOOFY_EXPANSION??? ) ) {
+		C = whom
+	} else if ( ::istext( whom ) ) {
+		C = ::directory[whom]
+	} else {
+		return
+	}
+	P = null
+	if ( C ) {
+		P = C.prefs
+	} else {
+		P = ::preferences_datums[whom]
+	}
+	if ( !P ) {
+		return
+	}
+	if ( automute ) {
+		if ( !::config.automute_on ) {
+			return
+			// goto 113
+		}
+	}
+	if ( !::check_rights() ) {
+		return
+	}
+	if ( automute ) {
+		muteunmute = "auto-muted"
+		P.muted = P.muted | mute_type
+		::log_admin( "SPAM AUTOMUTE: " + ::txt.mark( muteunmute ) + " " + ::txt.mark( ::key_name( whom ) ) + " from " + ::txt.mark( mute_string ) )
+		::message_admins( "SPAM AUTOMUTE: " + ::txt.mark( muteunmute ) + " " + ::txt.mark( ::key_name_admin( whom ) ) + " from " + ::txt.mark( mute_string ) + "." )
+		if ( C ) {
+			C.write( "You have been " + ::txt.mark( muteunmute ) + " from " + ::txt.mark( mute_string ) + " by the SPAM AUTOMUTE system. Contact an admin." )
+		}
+		::feedback_add_details( "admin_verb", "AUTOMUTE" )
+		return
+	}
+	if ( P.muted & mute_type ) {
+		muteunmute = "unmuted"
+		P.muted = P.muted & ~mute_type
+	} else {
+		muteunmute = "muted"
+		P.muted = P.muted | mute_type
+	}
+	::log_admin( "" + ::txt.mark( ::key_name( ::_USR_ ) ) + " has " + ::txt.mark( muteunmute ) + " " + ::txt.mark( ::key_name( whom ) ) + " from " + ::txt.mark( mute_string ) )
+	::message_admins( "" + ::txt.mark( ::key_name_admin( ::_USR_ ) ) + " has " + ::txt.mark( muteunmute ) + " " + ::txt.mark( ::key_name_admin( whom ) ) + " from " + ::txt.mark( mute_string ) + "." )
+	if ( C ) {
+		C.write( "You have been " + ::txt.mark( muteunmute ) + " from " + ::txt.mark( mute_string ) + "." )
+	}
+	::feedback_add_details( "admin_verb", "MUTE" )
+}
+
 function construct_block( value, values, blocksize ) {
 	local width
 	if ( blocksize == null ) {
@@ -603,6 +717,10 @@ function create_ninja_mind( key ) {
 
 function cultist_commune( user, clear, say, message ) {
 	// Decompile Failure: fail decode_fail,36,290
+}
+
+function dd_range( low, high, num ) {
+	return ::max( low, ::min( high, num ) )
 }
 
 function deconstruct_block( value, values, blocksize ) {
@@ -666,6 +784,28 @@ function dir2angle( D ) {
 	}
 }
 
+function dir2text( direction ) {
+	local _ = direction // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		return "north"
+	} else if ( _==2 ) {
+		return "south"
+	} else if ( _==4 ) {
+		return "east"
+	} else if ( _==8 ) {
+		return "west"
+	} else if ( _==5 ) {
+		return "northeast"
+	} else if ( _==6 ) {
+		return "southeast"
+	} else if ( _==9 ) {
+		return "northwest"
+	} else if ( _==10 ) {
+		return "southwest"
+	}
+	return
+}
+
 function dir2text_short( direction ) {
 	local _ = direction // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
@@ -722,7 +862,84 @@ function DrawPixel( I, colour, drawX, drawY ) {
 }
 
 function electrocute_mob( M, power_source, source, siemens_coeff ) {
-	// Decompile Failure: mows ?,35976,13,17,252,133,310,51
+	local H, G, source_area, Cable, PN, cell, apc, PN_damage, cell_damage, shock_damage, drained_hp, drained_energy, drained_power
+	if ( siemens_coeff == null ) {
+		siemens_coeff = 1
+	}
+	if ( ::istype( M.loc, ::ObjMecha ) ) {
+		return 0
+	}
+	if ( ::istype( M, ::MobLivingCarbonHuman ) ) {
+		H = M
+		if ( H.gloves ) {
+			G = H.gloves
+			if ( G.siemens_coefficient == 0 ) {
+				return 0
+			}
+		}
+	}
+	if ( ::istype( power_source, ::Area(3137) ) ) {
+		source_area = power_source
+		power_source = source_area.get apc()
+	}
+	if ( ::istype( power_source, ::ObjStructureCable ) ) {
+		Cable = power_source
+		power_source = Cable.powernet
+	}
+	if ( ::istype( power_source, ::DatumPowernet ) ) {
+		PN = power_source
+	} else if ( ::istype( power_source, ::ObjItemWeaponStock_partsCell ) ) {
+		cell = power_source
+	} else {
+		if ( ::istype( power_source, ::ObjMachineryPowerApc ) ) {
+			apc = power_source
+			cell = apc.cell
+			if ( apc.terminal ) {
+				PN = apc.terminal.powernet
+				// goto 128
+			}
+		}
+		if ( !power_source ) {
+			return 0
+		} else {
+			::log_admin( "ERROR: /proc/electrocute_mob(" + ::txt.mark( M ) + ", " + ::txt.mark( power_source ) + ", " + ::txt.mark( source ) + "): wrong power_source" )
+			return 0
+		}
+	}
+	if ( !cell && !PN ) {
+		return 0
+	}
+	PN_damage = 0
+	cell_damage = 0
+	if ( PN ) {
+		PN_damage = PN.get electrocute damage()
+	}
+	if ( cell ) {
+		cell_damage = cell.get electrocute damage()
+	}
+	shock_damage = 0
+	if ( PN_damage >= cell_damage ) {
+		power_source = PN
+		shock_damage = PN_damage
+	} else {
+		power_source = cell
+		shock_damage = cell_damage
+	}
+	drained_hp = M.electrocute act( shock_damage, source, siemens_coeff )
+	drained_energy = drained_hp * 20
+	if ( source_area ) {
+		source_area.use power( drained_energy / ::CELLRATE )
+	} else if ( ::istype( power_source, ::DatumPowernet ) ) {
+		drained_power = drained_energy / ::CELLRATE
+		PN.load += drained_power
+	} else if ( ::istype( power_source, ::ObjItemWeaponStock_partsCell ) ) {
+		cell.use( drained_energy )
+	}
+	return drained_energy
+}
+
+function emoji_parse( text ) {
+	// Decompile Failure: fail decode_fail,221,280
 }
 
 function empulse( epicenter, heavy_range, light_range, log ) {
@@ -873,6 +1090,10 @@ function findname( msg ) {
 	return 0
 }
 
+function forbidden_atoms_check( A ) {
+	// Decompile Failure: bad call this
+}
+
 function format_frequency( f ) {
 	f = ::text2num( f )
 	return "" + ::txt.mark( ::round( f / 10 ) ) + "." + ::txt.mark( f % 10 )
@@ -899,6 +1120,10 @@ function gaussian( mean, stddev ) {
 
 function Gcd( a, b ) {
 	return b ? ::Gcd( b, a % b ) : a
+}
+
+function generate_female_clothing( index, t_color, icon, type ) {
+	// Decompile Failure: fail decode_fail,215,104
 }
 
 function generate_ion_law( ionMessage ) {
@@ -1642,11 +1867,26 @@ function get_hearers_in_view( R, source ) {
 }
 
 function get_location_accessible( M, location ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: unknown jump
 }
 
 function get_location_modifier( M ) {
 	// Decompile Failure: fail decode_fail,151,82
+}
+
+function get_mob_by_ckey( key ) {
+	local mobs, M
+	if ( !key ) {
+		return
+	}
+	mobs = ::sortmobs()
+	M = null
+	foreach (_ in mobs ) {
+		M = _
+		if ( M.ckey == key ) {
+			return M
+		}
+	}
 }
 
 function get_mob_by_key( key ) {
@@ -1677,6 +1917,48 @@ function get_rand_frequency(  ) {
 
 function get_ranged_target_turf( A, direction, range ) {
 	// Decompile Failure: fail decode_fail,90,147
+}
+
+function get_region_accesses( code ) {
+	local _ = code // Was a switch-case, sorry for the mess.
+	if ( _==0 ) {
+		return ::get_all_accesses()
+	} else if ( _==1 ) {
+		return ::List([ ::access_kitchen, ::access_bar, ::access_hydroponics, ::access_janitor, ::access_chapel_office, ::access_crematorium, ::access_library, ::access_theatre, ::access_lawyer ])
+	} else if ( _==2 ) {
+		return ::List([ ::access_sec_doors, ::access_weapons, ::access_security, ::access_brig, ::access_armory, ::access_forensics_lockers, ::access_court, ::access_hos ])
+	} else if ( _==3 ) {
+		return ::List([ ::access_medical, ::access_genetics, ::access_morgue, ::access_chemistry, ::access_virology, ::access_surgery, ::access_cmo ])
+	} else if ( _==4 ) {
+		return ::List([ ::access_research, ::access_tox, ::access_tox_storage, ::access_genetics, ::access_robotics, ::access_xenobiology, ::access_minisat, ::access_rd ])
+	} else if ( _==5 ) {
+		return ::List([ ::access_construction, ::access_maint_tunnels, ::access_engine, ::access_engine_equip, ::access_external_airlocks, ::access_tech_storage, ::access_atmospherics, ::access_tcomsat, ::access_minisat, ::access_ce ])
+	} else if ( _==6 ) {
+		return ::List([ ::access_mailsorting, ::access_mining, ::access_mining_station, ::access_mineral_storeroom, ::access_cargo, ::access_qm ])
+	} else if ( _==7 ) {
+		return ::List([ ::access_heads, ::access_RC_announce, ::access_keycard_auth, ::access_change_ids, ::access_ai_upload, ::access_teleporter, ::access_eva, ::access_gateway, ::access_all_personal_lockers, ::access_heads_vault, ::access_hop, ::access_captain ])
+	}
+}
+
+function get_region_accesses_name( code ) {
+	local _ = code // Was a switch-case, sorry for the mess.
+	if ( _==0 ) {
+		return "All"
+	} else if ( _==1 ) {
+		return "General"
+	} else if ( _==2 ) {
+		return "Security"
+	} else if ( _==3 ) {
+		return "Medbay"
+	} else if ( _==4 ) {
+		return "Research"
+	} else if ( _==5 ) {
+		return "Engineering"
+	} else if ( _==6 ) {
+		return "Supply"
+	} else if ( _==7 ) {
+		return "Command"
+	}
 }
 
 function get_security_level(  ) {
@@ -1795,7 +2077,7 @@ function get_uplink_items( gamemode_override ) {
 }
 
 function get_viewable_pdas(  ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: unknown jump
 }
 
 function getBlankIcon( A, safety ) {
@@ -2064,7 +2346,25 @@ function hasvar( A, varname ) {
 }
 
 function healthscan( user, M, mode ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: unknown jump
+}
+
+function heat2colour_b( temp ) {
+	// Decompile Failure: fail decode_fail,49,77
+}
+
+function heat2colour_g( temp ) {
+	// Decompile Failure: fail decode_fail,49,77
+}
+
+function heat2colour_r( temp ) {
+	temp /= 100
+	if ( temp <= 66 ) {
+		_default = 255
+	} else {
+		_default = ::max( 0, ::min( 255, ::pow( temp - 60, -0.13320475816726685 ) * 329.69873046875 ) )
+	}
+	return _default
 }
 
 function hex2num( hex ) {
@@ -2360,7 +2660,7 @@ function is_shadow_or_thrall( M ) {
 }
 
 function is_special_character( M ) {
-	// Decompile Failure: mows ?,17168,48,1,581,179,196,51
+	// Decompile Failure: more bad switch
 }
 
 function is_thrall( M ) {
@@ -2752,6 +3052,12 @@ function log_ooc( text ) {
 	}
 }
 
+function log_pda( text ) {
+	if ( ::config.log_pda ) {
+		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]PDA: " + ::txt.mark( text ) )
+	}
+}
+
 function log_prayer( text ) {
 	if ( ::config.log_prayer ) {
 		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]PRAY: " + ::txt.mark( text ) )
@@ -2772,6 +3078,23 @@ function log_vote( text ) {
 
 function make_maint_all_access(  ) {
 	// Decompile Failure: bad iter loop 4
+}
+
+function make_ne_corner( adjacencies ) {
+	local sdir
+	sdir = "i"
+	if ( adjacencies & 1 && adjacencies & 4 ) {
+		if ( adjacencies & 16 ) {
+			sdir = "f"
+		} else {
+			sdir = "ne"
+		}
+	} else if ( adjacencies & 1 ) {
+		sdir = "n"
+	} else if ( adjacencies & 4 ) {
+		sdir = "e"
+	}
+	return "2-" + ::txt.mark( sdir )
 }
 
 function make_nw_corner( adjacencies ) {
@@ -2799,6 +3122,40 @@ function make_progress_bar( current_number, goal_number, target ) {
 		progbar.pixel_y = 32
 		return progbar
 	}
+}
+
+function make_se_corner( adjacencies ) {
+	local sdir
+	sdir = "i"
+	if ( adjacencies & 2 && adjacencies & 4 ) {
+		if ( adjacencies & 64 ) {
+			sdir = "f"
+		} else {
+			sdir = "se"
+		}
+	} else if ( adjacencies & 2 ) {
+		sdir = "s"
+	} else if ( adjacencies & 4 ) {
+		sdir = "e"
+	}
+	return "4-" + ::txt.mark( sdir )
+}
+
+function make_sw_corner( adjacencies ) {
+	local sdir
+	sdir = "i"
+	if ( adjacencies & 2 && adjacencies & 8 ) {
+		if ( adjacencies & 128 ) {
+			sdir = "f"
+		} else {
+			sdir = "sw"
+		}
+	} else if ( adjacencies & 2 ) {
+		sdir = "s"
+	} else if ( adjacencies & 8 ) {
+		sdir = "w"
+	}
+	return "3-" + ::txt.mark( sdir )
 }
 
 function makeBody( G_found ) {
@@ -2849,6 +3206,50 @@ function maprotate(  ) {
 
 function merge_powernets( net1, net2 ) {
 	// Decompile Failure: unknown jump
+}
+
+function merge_text( into, from, null_char ) {
+	local null_ascii, previous, start, end, i, ascii, _default
+	if ( null_char == null ) {
+		null_char = "_"
+	}
+	_default = ""
+	if ( !::istext( into ) ) {
+		into = ""
+	}
+	if ( !::istext( from ) ) {
+		from = ""
+	}
+	null_ascii = ::istext( null_char ) ? ::text2ascii( null_char, 1 ) : null_char
+	previous = 0
+	start = 1
+	end = ::length( into ) + 1
+	i = null
+	i = 1
+	while (i < end) do
+		ascii = ::text2ascii( from, i )
+		if ( ascii == null_ascii ) {
+			if ( previous != 1 ) {
+				_default += ::copytext( from, start, i )
+				start = i
+				previous = 1
+				i++
+				continue
+			}
+		}
+		if ( previous != 0 ) {
+			_default += ::copytext( into, start, i )
+			start = i
+			previous = 0
+		}
+		i++
+	end
+	if ( previous == 0 ) {
+		_default += ::copytext( from, start, end )
+	} else {
+		_default += ::copytext( into, start, end )
+	}
+	return _default
 }
 
 function message_admins( msg ) {
@@ -2908,6 +3309,10 @@ function moveElement( L, fromIndex, toIndex ) {
 	L.Insert( toIndex, null )
 	L.Swap( fromIndex, toIndex )
 	L.Cut( fromIndex, fromIndex + 1 )
+}
+
+function near_camera( M ) {
+	// Decompile Failure: fail decode_fail,23,109
 }
 
 function new_station_name(  ) {
@@ -3240,6 +3645,10 @@ function num2hex( num, len ) {
 	// Decompile Failure: stdfunc abs
 }
 
+function onclose( user, windowid, ref ) {
+	// Decompile Failure: fail decode_fail,268,76
+}
+
 function parse_zone( zone ) {
 	if ( zone == "r_hand" ) {
 		return "right hand"
@@ -3260,6 +3669,42 @@ function parse_zone( zone ) {
 	} else {
 		return zone
 	}
+}
+
+function parsepencode( t, user, signfont ) {
+	if ( user == null ) {
+		user = null
+	}
+	if ( signfont == null ) {
+		signfont = "Times New Roman"
+	}
+	if ( ::length( t ) < 1 ) {
+		return
+	}
+	t = ::replacetext( t, "[center]", "<center>" )
+	t = ::replacetext( t, "[/center]", "</center>" )
+	t = ::replacetext( t, "[br]", "<BR>" )
+	t = ::replacetext( t, "[b]", "<B>" )
+	t = ::replacetext( t, "[/b]", "</B>" )
+	t = ::replacetext( t, "[i]", "<I>" )
+	t = ::replacetext( t, "[/i]", "</I>" )
+	t = ::replacetext( t, "[u]", "<U>" )
+	t = ::replacetext( t, "[/u]", "</U>" )
+	t = ::replacetext( t, "[large]", "<font size=\"4\">" )
+	t = ::replacetext( t, "[/large]", "</font>" )
+	if ( user ) {
+		t = ::replacetext( t, "[sign]", "<font face=\"" + ::txt.mark( signfont ) + "\"><i>" + ::txt.mark( user.real_name ) + "</i></font>" )
+	} else {
+		t = ::replacetext( t, "[sign]", "" )
+	}
+	t = ::replacetext( t, "[field]", "<span class=\"paper_field\"></span>" )
+	t = ::replacetext( t, "[*]", "<li>" )
+	t = ::replacetext( t, "[hr]", "<HR>" )
+	t = ::replacetext( t, "[small]", "<font size = \"1\">" )
+	t = ::replacetext( t, "[/small]", "</font>" )
+	t = ::replacetext( t, "[list]", "<ul>" )
+	t = ::replacetext( t, "[/list]", "</ul>" )
+	return t
 }
 
 function pick_n_take( L ) {
@@ -3334,7 +3779,41 @@ function pop( L ) {
 }
 
 function power_list( T, source, d, unmarked, cable_only ) {
-	// Decompile Failure: bad iter loop 4
+	local AM, P, C, _default
+	if ( unmarked == null ) {
+		unmarked = 0
+	}
+	if ( cable_only == null ) {
+		cable_only = 0
+	}
+	_default = ::List()
+	AM = null
+	foreach (_ in T ) {
+		AM = _
+		if ( AM == source ) {
+			continue
+		}
+		if ( !cable_only && ::istype( AM, ::ObjMachineryPower ) ) {
+			P = AM
+			if ( P.powernet == 0 ) {
+				continue
+			}
+			if ( !unmarked || !P.powernet ) {
+				if ( d == 0 ) {
+					_default += P
+				} else if ( ::istype( AM, ::ObjStructureCable ) ) {
+					C = AM
+					if ( !unmarked || !C.powernet ) {
+						if ( C.d1 == d || C.d2 == d ) {
+							_default += C
+						}
+					}
+				}
+			}
+		}
+	}
+	return _default
+	return _default
 }
 
 function pretty_string_from_reagent_list( reagent_list ) {
@@ -3342,11 +3821,15 @@ function pretty_string_from_reagent_list( reagent_list ) {
 }
 
 function print_command_report( text, title ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: unknown jump
 }
 
 function priority_announce( text, title, sound, type ) {
 	// Decompile Failure: fail decode_fail,190,337
+}
+
+function projectile_trajectory( src_x, src_y, rotation, angle, power ) {
+	// Decompile Failure: fail decode_fail,195,121
 }
 
 function propagate_network( O, PN ) {
@@ -3478,6 +3961,139 @@ function random_blood_type(  ) {
 	return _
 }
 
+function random_eye_color(  ) {
+	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	if ( _ < 14246 ) { _ = "brown" }
+	else if ( _ < 28492 ) { _ = "hazel" }
+	else if ( _ < 42738 ) { _ = "grey" }
+	else if ( _ < 53423 ) { _ = "blue" }
+	else if ( _ < 64108 ) { _ = "green" }
+	else if ( _ < 64820 ) { _ = "amber" }
+	else  { _ = "albino" }
+
+	local _ = _ // Was a switch-case, sorry for the mess.
+	if ( _=="brown" ) {
+		return "630"
+	} else if ( _=="hazel" ) {
+		return "542"
+	} else if ( _=="grey" ) {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 9362 ) { _ = "666" }
+		else if ( _ < 18724 ) { _ = "777" }
+		else if ( _ < 28086 ) { _ = "888" }
+		else if ( _ < 37448 ) { _ = "999" }
+		else if ( _ < 46810 ) { _ = "aaa" }
+		else if ( _ < 56172 ) { _ = "bbb" }
+		else  { _ = "ccc" }
+
+		return _
+	} else if ( _=="blue" ) {
+		return "36c"
+	} else if ( _=="green" ) {
+		return "060"
+	} else if ( _=="amber" ) {
+		return "fc0"
+	} else if ( _=="albino" ) {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 16383 ) { _ = "c" }
+		else if ( _ < 32766 ) { _ = "d" }
+		else if ( _ < 49149 ) { _ = "e" }
+		else  { _ = "f" }
+
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 6553 ) { _ = "0" }
+		else if ( _ < 13106 ) { _ = "1" }
+		else if ( _ < 19659 ) { _ = "2" }
+		else if ( _ < 26212 ) { _ = "3" }
+		else if ( _ < 32765 ) { _ = "4" }
+		else if ( _ < 39318 ) { _ = "5" }
+		else if ( _ < 45871 ) { _ = "6" }
+		else if ( _ < 52424 ) { _ = "7" }
+		else if ( _ < 58977 ) { _ = "8" }
+		else  { _ = "9" }
+
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 6553 ) { _ = "0" }
+		else if ( _ < 13106 ) { _ = "1" }
+		else if ( _ < 19659 ) { _ = "2" }
+		else if ( _ < 26212 ) { _ = "3" }
+		else if ( _ < 32765 ) { _ = "4" }
+		else if ( _ < 39318 ) { _ = "5" }
+		else if ( _ < 45871 ) { _ = "6" }
+		else if ( _ < 52424 ) { _ = "7" }
+		else if ( _ < 58977 ) { _ = "8" }
+		else  { _ = "9" }
+
+		return _ + _ + _
+	} else {
+		return "000"
+	}
+}
+
+function random_facial_hair_style( gender ) {
+	local _ = gender // Was a switch-case, sorry for the mess.
+	if ( _=="male" ) {
+		return ::pick_list( ::facial_hair_styles_male_list )
+	} else if ( _=="female" ) {
+		return ::pick_list( ::facial_hair_styles_female_list )
+	} else {
+		return ::pick_list( ::facial_hair_styles_list )
+	}
+}
+
+function random_features(  ) {
+	if ( !::tails_list_human.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryTailsHuman, ::tails_list_human )
+	}
+	if ( !::tails_list_lizard.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryTailsLizard, ::tails_list_lizard )
+	}
+	if ( !::snouts_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessorySnouts, ::snouts_list )
+	}
+	if ( !::horns_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryHorns, ::horns_list )
+	}
+	if ( !::ears_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryEars, ::horns_list )
+	}
+	if ( !::frills_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryFrills, ::frills_list )
+	}
+	if ( !::spines_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessorySpines, ::spines_list )
+	}
+	if ( !::body_markings_list.len ) {
+		::init_sprite_accessory_subtypes( ::DatumSprite_accessoryBody_markings, ::body_markings_list )
+	}
+	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	if ( _ < 8191 ) { _ = "FFFFFF" }
+	else if ( _ < 16382 ) { _ = "7F7F7F" }
+	else if ( _ < 24573 ) { _ = "7FFF7F" }
+	else if ( _ < 32764 ) { _ = "7F7FFF" }
+	else if ( _ < 40955 ) { _ = "FF7F7F" }
+	else if ( _ < 49146 ) { _ = "7FFFFF" }
+	else if ( _ < 57337 ) { _ = "FF7FFF" }
+	else  { _ = "FFFF7F" }
+
+	return ::List({ ["body_markings"]= ::pick_list( ::body_markings_list ), ["spines"]= ::pick_list( ::spines_list ), ["frills"]= ::pick_list( ::frills_list ), ["ears"]= "None", ["horns"]= ::pick_list( ::horns_list ), ["snout"]= ::pick_list( ::snouts_list ), ["tail_human"]= "None", ["tail_lizard"]= ::pick_list( ::tails_list_lizard ), ["mcolor"]= _ })
+}
+
+function random_hair_style( gender ) {
+	local _ = gender // Was a switch-case, sorry for the mess.
+	if ( _=="male" ) {
+		return ::pick_list( ::hair_styles_male_list )
+	} else if ( _=="female" ) {
+		return ::pick_list( ::hair_styles_female_list )
+	} else {
+		return ::pick_list( ::hair_styles_list )
+	}
+}
+
+function random_short_color(  ) {
+	return ::random_string( 3, ::hex_characters )
+}
+
 function random_skin_tone(  ) {
 	return ::pick_list( ::skin_tones )
 }
@@ -3579,7 +4195,23 @@ function random_unique_name( gender, attempts_to_find_unique_name ) {
 }
 
 function randomize_human( H ) {
-	// Decompile Failure: mows ?,12063,133,17,51,67,48,1
+	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	if ( _ < 32767 ) { _ = ::MALE }
+	else  { _ = ::FEMALE }
+
+	H.gender = _
+	H.real_name = ::random_unique_name( H.gender )
+	H.name = H.real_name
+	H.underwear = ::random_underwear( H.gender )
+	H.skin_tone = ::random_skin_tone()
+	H.hair_style = ::random_hair_style( H.gender )
+	H.facial_hair_style = ::random_facial_hair_style( H.gender )
+	H.hair_color = ::random_short_color()
+	H.facial_hair_color = H.hair_color
+	H.eye_color = ::random_eye_color()
+	H.dna.blood_type = ::random_blood_type()
+	H.update body()
+	H.update hair()
 }
 
 function ReadRGB( rgb ) {
@@ -3647,6 +4279,14 @@ function remove_radio_all( radio ) {
 		freq = _
 		::all_radios["" + ::txt.mark( freq )] -= radio
 	}
+}
+
+function removeNullsFromList( L ) {
+	if ( L.Remove( null ) ) {
+		// goto 2
+		// goto 2
+	}
+	return L
 }
 
 function repeat_string( times, string ) {
@@ -3783,6 +4423,26 @@ function rights2text( rights, seperator, adds, subs ) {
 
 function robogibs( location, viruses ) {
 	::ObjEffectGibspawnerRobot( location, viruses )
+}
+
+function RoundDiagBar( value ) {
+	local _ = value * 100 // Was a switch-case, sorry for the mess.
+	if ( 95<=_&&_<=9.999999848243207e+30 ) {
+		return "max"
+	} else if ( 80<=_&&_<=100 ) {
+		return "good"
+	} else if ( 60<=_&&_<=80 ) {
+		return "high"
+	} else if ( 40<=_&&_<=60 ) {
+		return "med"
+	} else if ( 20<=_&&_<=40 ) {
+		return "low"
+	} else if ( 1<=_&&_<=20 ) {
+		return "crit"
+	} else {
+		return "dead"
+	}
+	return "dead"
 }
 
 function RoundHealth( health ) {
@@ -3971,6 +4631,10 @@ function select_active_ai( user ) {
 	// Decompile Failure: fail decode_fail,193,69
 }
 
+function select_active_ai_with_fewest_borgs(  ) {
+	// Decompile Failure: unknown jump
+}
+
 function send_byjax( receiver, control_id, target_element, new_content, callback, callback_args ) {
 	// Decompile Failure: fail decode_fail,183,142
 }
@@ -4071,6 +4735,33 @@ function smooth_icon_neighbors( A ) {
 	// Decompile Failure: fail decode_fail,173,58
 }
 
+function sortInsert( L, cmp, associative, fromIndex, toIndex ) {
+	if ( cmp == null ) {
+		cmp = ::GoofyFunc
+	}
+	if ( fromIndex == null ) {
+		fromIndex = 1
+	}
+	if ( toIndex == null ) {
+		toIndex = 0
+	}
+	if ( L && L.len >= 2 ) {
+		fromIndex = fromIndex % L.len
+		toIndex = toIndex % ( L.len + 1 )
+		if ( fromIndex <= 0 ) {
+			fromIndex += L.len
+		}
+		if ( toIndex <= 0 ) {
+			toIndex += L.len + 1
+		}
+		::sortInstance.L = L
+		::sortInstance.cmp = cmp
+		::sortInstance.associative = associative
+		::sortInstance.binarySort( fromIndex, toIndex, fromIndex )
+	}
+	return L
+}
+
 function sortKey( L, order ) {
 	if ( order == null ) {
 		order = 1
@@ -4120,7 +4811,7 @@ function spaceDebrisStartLoc( startSide, Z ) {
 }
 
 function spawn_meteor( meteortypes ) {
-	// Decompile Failure: mows ?,44717,133,42,80,0,37,139
+	// Decompile Failure: unknown jump
 }
 
 function spawn_meteors( number, meteortypes ) {
@@ -4177,6 +4868,80 @@ function sql_poll_players(  ) {
 		if ( !query.Execute() ) {
 			err = query.ErrorMsg()
 			::log_game( "SQL ERROR during player polling. Error : [" + ::txt.mark( err ) + "]\n" )
+		}
+	}
+}
+
+function sql_report_cyborg_death( H ) {
+	local T, placeofdeath, podname, sqlname, sqlkey, sqlpod, sqlspecial, sqljob, laname, lakey, sqltime, coord, query, err
+	if ( !::config.sql_enabled ) {
+		return
+	}
+	if ( !H ) {
+		return
+	}
+	if ( !H.key || !H.mind ) {
+		return
+	}
+	T = H.loc
+	placeofdeath = ::get_area( T.loc )
+	podname = placeofdeath.name
+	sqlname = ::sanitizeSQL( H.real_name )
+	sqlkey = ::sanitizeSQL( H.key )
+	sqlpod = ::sanitizeSQL( podname )
+	sqlspecial = ::sanitizeSQL( H.mind.special_role )
+	sqljob = ::sanitizeSQL( H.mind.assigned_role )
+	if ( H.lastattacker ) {
+		laname = ::sanitizeSQL( H.lastattacker.real_name )
+		lakey = ::sanitizeSQL( H.lastattacker.key )
+	}
+	sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
+	coord = "" + ::txt.mark( H.x ) + ", " + ::txt.mark( H.y ) + ", " + ::txt.mark( H.z )
+	::establish_db_connection()
+	if ( !::dbcon.IsConnected() ) {
+		::log_game( "SQL ERROR during death reporting. Failed to connect." )
+	} else {
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::txt.mark( ::format_table_name( "death" ) ) + " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" + ::txt.mark( sqlname ) + "', '" + ::txt.mark( sqlkey ) + "', '" + ::txt.mark( sqljob ) + "', '" + ::txt.mark( sqlspecial ) + "', '" + ::txt.mark( sqlpod ) + "', '" + ::txt.mark( sqltime ) + "', '" + ::txt.mark( laname ) + "', '" + ::txt.mark( lakey ) + "', '" + ::txt.mark( H.gender ) + "', " + ::txt.mark( H.getBruteLoss() ) + ", " + ::txt.mark( H.getFireLoss() ) + ", " + ::txt.mark( H.brainloss ) + ", " + ::txt.mark( H.getOxyLoss() ) + ", '" + ::txt.mark( coord ) + "')" )
+		if ( !query.Execute() ) {
+			err = query.ErrorMsg()
+			::log_game( "SQL ERROR during death reporting. Error : [" + ::txt.mark( err ) + "]\n" )
+		}
+	}
+}
+
+function sql_report_death( H ) {
+	local T, placeofdeath, podname, sqlname, sqlkey, sqlpod, sqlspecial, sqljob, laname, lakey, sqltime, coord, query, err
+	if ( !::config.sql_enabled ) {
+		return
+	}
+	if ( !H ) {
+		return
+	}
+	if ( !H.key || !H.mind ) {
+		return
+	}
+	T = H.loc
+	placeofdeath = ::get_area( T.loc )
+	podname = placeofdeath.name
+	sqlname = ::sanitizeSQL( H.real_name )
+	sqlkey = ::sanitizeSQL( H.key )
+	sqlpod = ::sanitizeSQL( podname )
+	sqlspecial = ::sanitizeSQL( H.mind.special_role )
+	sqljob = ::sanitizeSQL( H.mind.assigned_role )
+	if ( H.lastattacker ) {
+		laname = ::sanitizeSQL( H.lastattacker.real_name )
+		lakey = ::sanitizeSQL( H.lastattacker.key )
+	}
+	sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
+	coord = "" + ::txt.mark( H.x ) + ", " + ::txt.mark( H.y ) + ", " + ::txt.mark( H.z )
+	::establish_db_connection()
+	if ( !::dbcon.IsConnected() ) {
+		::log_game( "SQL ERROR during death reporting. Failed to connect." )
+	} else {
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::txt.mark( ::format_table_name( "death" ) ) + " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" + ::txt.mark( sqlname ) + "', '" + ::txt.mark( sqlkey ) + "', '" + ::txt.mark( sqljob ) + "', '" + ::txt.mark( sqlspecial ) + "', '" + ::txt.mark( sqlpod ) + "', '" + ::txt.mark( sqltime ) + "', '" + ::txt.mark( laname ) + "', '" + ::txt.mark( lakey ) + "', '" + ::txt.mark( H.gender ) + "', " + ::txt.mark( H.getBruteLoss() ) + ", " + ::txt.mark( H.getFireLoss() ) + ", " + ::txt.mark( H.brainloss ) + ", " + ::txt.mark( H.getOxyLoss() ) + ", '" + ::txt.mark( coord ) + "')" )
+		if ( !query.Execute() ) {
+			err = query.ErrorMsg()
+			::log_game( "SQL ERROR during death reporting. Error : [" + ::txt.mark( err ) + "]\n" )
 		}
 	}
 }
@@ -4256,6 +5021,10 @@ function time_stamp( format ) {
 		format = "hh:mm:ss"
 	}
 	return ::time2text( format, ::game.timeofday )
+}
+
+function tkMaxRangeCheck( user, target, focus ) {
+	// Decompile Failure: fail decode_fail,149,71
 }
 
 function toggle_ooc( toggle ) {
@@ -4385,6 +5154,10 @@ function unix2date( timestamp, seperator ) {
 	return "" + ::txt.mark( year ) + ::txt.mark( seperator ) + ::txt.mark( month < 10 ? "0" + ::txt.mark( month ) : month ) + ::txt.mark( seperator ) + ::txt.mark( day < 10 ? "0" + ::txt.mark( day ) : day )
 }
 
+function updateallghostimages(  ) {
+	// Decompile Failure: unknown jump
+}
+
 function UpdateTime(  ) {
 	::CMinutes = ::game.realtime / 10 / 60
 	return 1
@@ -4395,11 +5168,31 @@ function view_or_range( distance, center, type ) {
 }
 
 function vol_by_throwforce_and_or_w_class( I ) {
-	// Decompile Failure: bad logic1
+	if ( !I ) {
+		return 0
+	}
+	if ( I.throwforce && I.w_class ) {
+		return ::Clamp( ( I.throwforce + I.w_class ) * 5, 30, 100 )
+	} else if ( I.w_class ) {
+		return ::Clamp( I.w_class * 8, 20, 100 )
+	} else {
+		return 0
+	}
 }
 
 function warning( msg ) {
 	::game.log.write( "## WARNING: " + ::txt.mark( msg ) )
+}
+
+function wear_female_version( t_color, icon, layer, type ) {
+	local index, female_clothing_icon, standing
+	index = t_color
+	female_clothing_icon = ::female_clothing_icons[index]
+	if ( !female_clothing_icon ) {
+		::generate_female_clothing( index, t_color, icon, type )
+	}
+	standing = ::image_listcall( ::List({ ["layer"]= -layer, ["icon"]= ::female_clothing_icons["" + ::txt.mark( t_color )] }) )
+	return standing
 }
 
 function worldtime2text(  ) {
