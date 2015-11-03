@@ -580,8 +580,12 @@ function chemscan( user, M ) {
 	// Decompile Failure: unknown jump
 }
 
+function circlerange( center, radius ) {
+	// Decompile Failure: stdfunc ????
+}
+
 function circlerangeturfs( center, radius ) {
-	// Decompile Failure: fail decode_fail,89,172
+	// Decompile Failure: stdfunc ????
 }
 
 function Clamp( val, min, max ) {
@@ -943,7 +947,7 @@ function emoji_parse( text ) {
 }
 
 function empulse( epicenter, heavy_range, light_range, log ) {
-	// Decompile Failure: fail decode_fail,89,322
+	// Decompile Failure: stdfunc ????
 }
 
 function english_list( input, nothing_text, and_text, comma_text, final_comma_text ) {
@@ -1072,7 +1076,7 @@ function find_record( field, value, L ) {
 }
 
 function find_type_in_direction( source, direction, range ) {
-	// Decompile Failure: fail decode_fail,90,397
+	// Decompile Failure: bad iter loop 4
 }
 
 function findname( msg ) {
@@ -1838,7 +1842,24 @@ function get_domination_time( G ) {
 }
 
 function get_edge_target_turf( A, direction ) {
-	// Decompile Failure: fail decode_fail,90,155
+	local target
+	target = ::locate( A.x, A.y, A.z )
+	if ( !A || !target ) {
+		return 0
+	}
+	if ( direction & 1 ) {
+		target = ::locate( target.x, ::game.maxy, target.z )
+	}
+	if ( direction & 2 ) {
+		target = ::locate( target.x, 1, target.z )
+	}
+	if ( direction & 4 ) {
+		target = ::locate( ::game.maxx, target.y, target.z )
+	}
+	if ( direction & 8 ) {
+		target = ::locate( 1, target.y, target.z )
+	}
+	return target
 }
 
 function get_ert_access( _class ) {
@@ -1916,7 +1937,22 @@ function get_rand_frequency(  ) {
 }
 
 function get_ranged_target_turf( A, direction, range ) {
-	// Decompile Failure: fail decode_fail,90,147
+	local x, y
+	x = A.x
+	y = A.y
+	if ( direction & 1 ) {
+		y = ::min( ::game.maxy, y + range )
+	}
+	if ( direction & 2 ) {
+		y = ::max( 1, y - range )
+	}
+	if ( direction & 4 ) {
+		x = ::min( ::game.maxx, x + range )
+	}
+	if ( direction & 8 ) {
+		x = ::max( 1, x - range )
+	}
+	return ::locate( x, y, A.z )
 }
 
 function get_region_accesses( code ) {
@@ -2215,7 +2251,7 @@ function getLetterImage( A, letter, uppercase ) {
 }
 
 function getline( M, N ) {
-	// Decompile Failure: fail decode_fail,90,315
+	// Decompile Failure: stdfunc abs
 }
 
 function getmobs(  ) {
@@ -2504,7 +2540,59 @@ function InitializeSwapMaps(  ) {
 }
 
 function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
-	// Decompile Failure: fail decode_fail,90,462
+	local T, s, m, b, signX, signY
+	if ( Z == null ) {
+		Z = 1
+	}
+	if ( PX1 == null ) {
+		PX1 = 16.5
+	}
+	if ( PY1 == null ) {
+		PY1 = 16.5
+	}
+	if ( PX2 == null ) {
+		PX2 = 16.5
+	}
+	if ( PY2 == null ) {
+		PY2 = 16.5
+	}
+	if ( X1 == X2 ) {
+		if ( Y1 == Y2 ) {
+			return 1
+		} else {
+			s = Y2 - Y1 < 0 ? -1 : 1
+			Y1 += s
+			if ( Y1 != Y2 ) {
+				T = ::locate( X1, Y1, Z )
+				if ( T.opacity ) {
+					return 0
+				}
+				Y1 += s
+				// goto 71
+			} else {
+				m = ( ( Y2 - Y1 ) * 32 + ( PY2 - PY1 ) ) / ( ( X2 - X1 ) * 32 + ( PX2 - PX1 ) )
+				b = Y1 + PY1 / 32 - 0.015625 - m * ( X1 + PX1 / 32 - 0.015625 )
+				signX = X2 - X1 < 0 ? -1 : 1
+				signY = Y2 - Y1 < 0 ? -1 : 1
+				if ( X1 < X2 ) {
+					b += m
+				}
+				if ( X1 != X2 || Y1 != Y2 ) {
+					if ( ::round( m * X1 + b - Y1 ) ) {
+						Y1 += signY
+					} else {
+						X1 += signX
+					}
+					T = ::locate( X1, Y1, Z )
+					if ( T.opacity ) {
+						return 0
+					}
+					// goto 168
+				}
+			}
+		}
+	}
+	return 1
 }
 
 function intent_numeric( argument ) {
@@ -3270,7 +3358,7 @@ function message_spans_start( spans ) {
 }
 
 function mineral_scan_pulse( mobs, T, range ) {
-	// Decompile Failure: fail decode_fail,89,244
+	// Decompile Failure: stdfunc ????
 }
 
 function minor_announce( message, title, alert ) {
@@ -3886,7 +3974,7 @@ function qdeleted( A ) {
 }
 
 function radiation_pulse( epicenter, heavy_range, light_range, severity, log ) {
-	// Decompile Failure: fail decode_fail,89,329
+	// Decompile Failure: stdfunc ????
 }
 
 function ran_zone( zone, probability ) {
@@ -4715,6 +4803,10 @@ function shuffle( L ) {
 	return L
 }
 
+function sign( x ) {
+	// Decompile Failure: stdfunc abs
+}
+
 function SimplifyDegrees( degrees ) {
 	degrees = degrees % 360
 	if ( degrees < 0 ) {
@@ -4803,11 +4895,43 @@ function sortTim( L, cmp, associative, fromIndex, toIndex ) {
 }
 
 function spaceDebrisFinishLoc( startSide, Z ) {
-	// Decompile Failure: fail decode_fail,90,154
+	local endy, endx, T
+	local _ = startSide // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		endy = 7
+		endx = ::rand( 7, ::game.maxx - 7 )
+	} else if ( _==2 ) {
+		endy = ::rand( 7, ::game.maxy - 7 )
+		endx = 7
+	} else if ( _==3 ) {
+		endy = ::game.maxy - 7
+		endx = ::rand( 7, ::game.maxx - 7 )
+	} else if ( _==4 ) {
+		endy = ::rand( 7, ::game.maxy - 7 )
+		endx = ::game.maxx - 7
+	}
+	T = ::locate( endx, endy, Z )
+	return T
 }
 
 function spaceDebrisStartLoc( startSide, Z ) {
-	// Decompile Failure: fail decode_fail,90,154
+	local starty, startx, T
+	local _ = startSide // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		starty = ::game.maxy - 8
+		startx = ::rand( 8, ::game.maxx - 8 )
+	} else if ( _==2 ) {
+		starty = ::rand( 8, ::game.maxy - 8 )
+		startx = ::game.maxx - 8
+	} else if ( _==3 ) {
+		starty = 8
+		startx = ::rand( 8, ::game.maxx - 8 )
+	} else if ( _==4 ) {
+		starty = ::rand( 8, ::game.maxy - 8 )
+		startx = 8
+	}
+	T = ::locate( startx, starty, Z )
+	return T
 }
 
 function spawn_meteor( meteortypes ) {
@@ -4825,6 +4949,41 @@ function spawn_meteors( number, meteortypes ) {
 		::spawn_meteor( meteortypes )
 		i++
 	end
+}
+
+function spawn_room( start_loc, x_size, y_size, walltypes, floor, name ) {
+	local room_turfs, x, y, T, cur_loc, A, wall
+	room_turfs = ::List({ ["floors"]= ::List(), ["walls"]= ::List() })
+	x = null
+	x = 0
+	while (x < x_size) do
+		y = null
+		y = 0
+		while (y < y_size) do
+			T = null
+			cur_loc = ::locate( start_loc.x + x, start_loc.y + y, start_loc.z )
+			A = ::Area(2768)()
+			if ( name ) {
+				A.name = name
+			} else {
+				A.name = "Artifact Room #" + ::txt.mark( A.x ) + "-" + ::txt.mark( A.y ) + "-" + ::txt.mark( A.z )
+			}
+			if ( x == 0 || ( x == x_size - 1 || ( y == 0 || y == y_size - 1 ) ) ) {
+				wall = ::pickweight( walltypes )
+				T = cur_loc
+				T.ChangeTurf( wall )
+				room_turfs.walls += T
+			} else {
+				T = cur_loc
+				T.ChangeTurf( floor )
+				room_turfs.floors += T
+			}
+			A.contents += T
+			y++
+		end
+		x++
+	end
+	return room_turfs
 }
 
 function sql_poll_admins(  ) {
@@ -5048,7 +5207,7 @@ function togglebuildmode( M ) {
 }
 
 function trange( Dist, Center ) {
-	// Decompile Failure: fail decode_fail,90,194
+	// Decompile Failure: fail decode_fail,31,194
 }
 
 function transform_dir( direction ) {
