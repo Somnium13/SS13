@@ -421,7 +421,7 @@ function appearance_isbanned( M ) {
 }
 
 function arctan( x ) {
-	// Decompile Failure: fail decode_fail,105,30
+	// Decompile Failure: stdfunc arcsin
 }
 
 function assign_progress_bar( user, progbar ) {
@@ -439,7 +439,20 @@ function attach_spans( input, spans ) {
 }
 
 function attempt_initiate_surgery( I, M, user ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: fail decode_fail,193,778
+}
+
+function blendMode2iconMode( blend_mode ) {
+	local _ = blend_mode // Was a switch-case, sorry for the mess.
+	if ( _==4 ) {
+		return 2
+	} else if ( _==2 ) {
+		return 0
+	} else if ( _==3 ) {
+		return 1
+	} else {
+		return 3
+	}
 }
 
 function BlendRGB( rgb1, rgb2, amount ) {
@@ -448,6 +461,10 @@ function BlendRGB( rgb1, rgb2, amount ) {
 
 function blood_incompatible( donor, receiver, donor_species, receiver_species ) {
 	// Decompile Failure: more bad switch
+}
+
+function blood_splatter( target, source, large ) {
+	// Decompile Failure: fail decode_fail,151,403
 }
 
 function build_click( user, buildmode, params, object ) {
@@ -492,7 +509,7 @@ function calculate_adjacencies( A ) {
 }
 
 function camera_sort( L ) {
-	// Decompile Failure: bad pop for_to
+	// Decompile Failure: bad for-to
 }
 
 function can_embed( W ) {
@@ -507,6 +524,10 @@ function can_embed( W ) {
 	if ( ::is_type_in_list( W, embed_items ) ) {
 		return 1
 	}
+}
+
+function can_see( source, target, length ) {
+	// Decompile Failure: fail decode_fail,147,160
 }
 
 function CanHug( M ) {
@@ -905,6 +926,17 @@ function create_ninja_mind( key ) {
 	return Mind
 }
 
+function create_space_ninja( spawn_loc ) {
+	local new_ninja, A
+	new_ninja = ::MobLivingCarbonHuman( spawn_loc )
+	A = ::DatumPreferences()
+	A.real_name = "" + ::txt.mark( ::pick_list( ::ninja_titles ) ) + " " + ::txt.mark( ::pick_list( ::ninja_names ) )
+	A.copy to( new_ninja )
+	new_ninja.dna.update dna identity()
+	new_ninja.equip space ninja()
+	return new_ninja
+}
+
 function cultist_commune( user, clear, say, message ) {
 	// Decompile Failure: fail decode_fail,36,290
 }
@@ -1019,15 +1051,92 @@ function dir2text_short( direction ) {
 }
 
 function display_roundstart_logout_report(  ) {
-	// Decompile Failure: bad iter loop 4
+	local msg, L, found, C, D, M
+	msg = "<span class='boldnotice'>Roundstart logout report\n\n</span>"
+	L = null
+	foreach (_ in ::mob_list ) {
+		L = _
+		if ( !::istype( L, ::MobLiving ) ) {
+			continue
+		}
+		if ( L.ckey ) {
+			found = 0
+			C = null
+			foreach (_ in ::clients ) {
+				C = _
+				if ( !::istype( C, BAD_GOOFY_EXPANSION??? ) ) {
+					continue
+				}
+				if ( C.ckey == L.ckey ) {
+					found = 1
+					break
+				}
+			}
+			if ( !found ) {
+				msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( L.ckey ) + "), the " + ::txt.mark( L.job ) + " (<font color='#ffcc00'><b>Disconnected</b></font>)\n"
+			}
+		}
+		if ( L.ckey && L.client ) {
+			if ( L.client.inactivity >= 3000 ) {
+				msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( L.ckey ) + "), the " + ::txt.mark( L.job ) + " (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n"
+				continue
+			}
+			if ( L.stat ) {
+				if ( L.suiciding ) {
+					msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( L.ckey ) + "), the " + ::txt.mark( L.job ) + " (<span class='boldannounce'>Suicide</span>)\n"
+					continue
+				}
+				if ( L.stat == 1 ) {
+					msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( L.ckey ) + "), the " + ::txt.mark( L.job ) + " (Dying)\n"
+					continue
+				}
+				if ( L.stat == 2 ) {
+					msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( L.ckey ) + "), the " + ::txt.mark( L.job ) + " (Dead)\n"
+					continue
+				}
+			}
+			continue
+		}
+		D = null
+		foreach (_ in ::mob_list ) {
+			D = _
+			if ( !::istype( D, ::MobDeadObserver ) ) {
+				continue
+			}
+			if ( D.mind && D.mind.current == L ) {
+				if ( L.stat == 2 ) {
+					if ( L.suiciding ) {
+						msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( ::ckey( D.mind.key ) ) + "), the " + ::txt.mark( L.job ) + " (<span class='boldannounce'>Suicide</span>)\n"
+						continue
+					} else {
+						msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( ::ckey( D.mind.key ) ) + "), the " + ::txt.mark( L.job ) + " (Dead)\n"
+						continue
+					}
+				} else if ( D.can_reenter_corpse ) {
+					msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( ::ckey( D.mind.key ) ) + "), the " + ::txt.mark( L.job ) + " (<span class='boldannounce'>This shouldn't appear.</span>)\n"
+					continue
+				} else {
+					msg += "<b>" + ::txt.mark( L.name ) + "</b> (" + ::txt.mark( ::ckey( D.mind.key ) ) + "), the " + ::txt.mark( L.job ) + " (<span class='boldannounce'>Ghosted</span>)\n"
+					continue
+				}
+			}
+		}
+	}
+	M = null
+	foreach (_ in ::mob_list ) {
+		M = _
+		if ( M.client && M.client.holder ) {
+			M.write( msg )
+		}
+	}
 }
 
 function do_after( user, delay, numticks, needhand, target, progress ) {
-	// Decompile Failure: bad pop for_to
+	// Decompile Failure: bad for-to
 }
 
 function do_mob( user, target, time, numticks, uninterruptible, progress ) {
-	// Decompile Failure: bad pop for_to
+	// Decompile Failure: bad for-to
 }
 
 function do_teleport( ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout ) {
@@ -1049,6 +1158,37 @@ function DrawPixel( I, colour, drawX, drawY ) {
 	}
 	I.DrawBox( colour, drawX, drawY )
 	return I
+}
+
+function DuplicateObject( original, perfectcopy, sameloc ) {
+	local O, V
+	if ( perfectcopy == null ) {
+		perfectcopy = 0
+	}
+	if ( sameloc == null ) {
+		sameloc = 0
+	}
+	if ( !original ) {
+		return
+	}
+	O = null
+	if ( sameloc ) {
+		O = original.type( original.loc )
+	} else {
+		O = original.type( ::locate( 0, 0, 0 ) )
+	}
+	if ( perfectcopy ) {
+		if ( O && original ) {
+			V = null
+			foreach (_ in original.vars ) {
+				V = _
+				if ( !( V in ::List([ "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key" ]) ) ) {
+					O.vars[V] = original.vars[V]
+				}
+			}
+		}
+	}
+	return O
 }
 
 function electrocute_mob( M, power_source, source, siemens_coeff ) {
@@ -1184,7 +1324,7 @@ function establish_db_connection(  ) {
 }
 
 function explosion( epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent ) {
-	// Decompile Failure: ~SPAWNER
+	// Decompile Failure: bad iter loop 4
 }
 
 function feedback_add_details( variable, details ) {
@@ -1315,7 +1455,22 @@ function gameTimestamp( format ) {
 }
 
 function gaussian( mean, stddev ) {
-	// Decompile Failure: fail decode_fail,49,159
+	local R1, R2, working
+	if ( ::gaussian_next != null ) {
+		R1 = ::gaussian_next
+		::gaussian_next = null
+	} else {
+		while (1) { // Was a do-while, sorry for the mess.
+			R1 = ::rand( -10000, 10000 ) / 10000
+			R2 = ::rand( -10000, 10000 ) / 10000
+			working = R1 * R1 + R2 * R2
+			if (!( working >= 1 || working == 0 )) break;
+		}
+		working = ::sqrt( ::log( working ) * -2 / working )
+		R1 *= working
+		::gaussian_next = R2 * working
+	}
+	return mean + stddev * R1
 }
 
 function Gcd( a, b ) {
@@ -1983,7 +2138,34 @@ function get_area( O ) {
 }
 
 function get_area_all_atoms( areatype ) {
-	// Decompile Failure: bad iter loop 4
+	local areatemp, atoms, N, A
+	if ( !areatype ) {
+		return
+	}
+	if ( ::istext( areatype ) ) {
+		areatype = ::text2path( areatype )
+	}
+	if ( ::isarea( areatype ) ) {
+		areatemp = areatype
+		areatype = areatemp.type
+	}
+	return
+	atoms = ::List()
+	N = null
+	foreach (_ in ::game ) {
+		N = _
+		if ( ::istype( N, areatype ) ) {
+			A = null
+			foreach (_ in N ) {
+				A = _
+				if ( !::istype( A, ::Atom ) ) {
+					continue
+				}
+				atoms += A
+			}
+		}
+	}
+	return atoms
 }
 
 function get_area_master( O ) {
@@ -2008,7 +2190,31 @@ function get_area_name( N ) {
 }
 
 function get_area_turfs( areatype ) {
-	// Decompile Failure: bad iter loop 4
+	local areatemp, turfs, N, T
+	if ( !areatype ) {
+		return
+	}
+	if ( ::istext( areatype ) ) {
+		areatype = ::text2path( areatype )
+	}
+	if ( ::isarea( areatype ) ) {
+		areatemp = areatype
+		areatype = areatemp.type
+	}
+	return
+	turfs = ::List()
+	N = null
+	foreach (_ in ::game ) {
+		N = _
+		if ( ::istype( N, areatype ) ) {
+			T = null
+			foreach (_ in N ) {
+				T = _
+				turfs += T
+			}
+		}
+	}
+	return turfs
 }
 
 function get_both_hands( M ) {
@@ -2142,11 +2348,36 @@ function get_ert_access( _class ) {
 }
 
 function get_fancy_list_of_types(  ) {
-	// Decompile Failure: bad iter loop 4
+	local temp, type, typename, tn
+	if ( ::isnull( ::g_fancy_list_of_types ) ) {
+		temp = ::sortList( ::typesof( ::Atom ) - ::typesof( ::Area(3137) ) - ::Atom - ::AtomMovable )
+		return
+		::g_fancy_list_of_types = ::List( temp.len )
+		type = null
+		foreach (_ in temp ) {
+			type = _
+			typename = "" + ::txt.mark( type )
+			tn = null
+			foreach (_ in ::TYPES_SHORTCUTS ) {
+				tn = _
+				if ( ::copytext( typename, 1, ::length( "" + ::txt.mark( tn ) + "/" ) + 1 ) == "" + ::txt.mark( tn ) + "/" ) {
+					typename = ::TYPES_SHORTCUTS[tn] + ::copytext( typename, ::length( "" + ::txt.mark( tn ) + "/" ), null )
+					break
+				}
+			}
+			::g_fancy_list_of_types[typename] = type
+		}
+	}
+	return ::g_fancy_list_of_types
 }
 
 function get_hear( range, source ) {
-	// Decompile Failure: fail decode_fail,27,44
+	local lum, heard
+	lum = source.luminosity
+	source.luminosity = 6
+	heard = ::view( range, source )
+	source.luminosity = lum
+	return heard
 }
 
 function get_hearers_in_view( R, source ) {
@@ -2386,11 +2617,84 @@ function get_teleport_loc( location, target, distance, density, errorx, errory, 
 }
 
 function get_turf( A ) {
-	// Decompile Failure: bad logic1
+	if ( !::istype( A, ::Atom ) ) {
+		return
+	}
+	if ( A && !::isturf( A ) ) {
+		A = A.loc
+		// goto 11
+	}
+	return A
 }
 
 function get_uplink_items( gamemode_override ) {
-	// Decompile Failure: bad iter loop 4
+	local last, item, I, I, filtered_uplink_items, category, I
+	if ( gamemode_override == null ) {
+		gamemode_override = null
+	}
+	if ( !::uplink_items.len ) {
+		last = ::List()
+		item = null
+		foreach (_ in ::typesof( ::DatumUplink_item ) ) {
+			item = _
+			I = item()
+			if ( !I.item ) {
+				continue
+			}
+			if ( I.last ) {
+				last += I
+				continue
+			}
+			if ( !::uplink_items[I.category] ) {
+				::uplink_items[I.category] = ::List()
+			}
+			::uplink_items[I.category] += I
+		}
+		I = null
+		foreach (_ in last ) {
+			I = _
+			if ( !::istype( I, ::DatumUplink_item ) ) {
+				continue
+			}
+			if ( !::uplink_items[I.category] ) {
+				::uplink_items[I.category] = ::List()
+			}
+			::uplink_items[I.category] += I
+		}
+	}
+	filtered_uplink_items = ::List()
+	category = null
+	foreach (_ in ::uplink_items ) {
+		category = _
+		I = null
+		foreach (_ in ::uplink_items[category] ) {
+			I = _
+			if ( !::istype( I, ::DatumUplink_item ) ) {
+				continue
+			}
+			if ( I.gamemodes.len ) {
+				if ( !gamemode_override && ( ::ticker && !( ::ticker.mode.type in I.gamemodes ) ) ) {
+					continue
+				}
+				if ( gamemode_override && !( gamemode_override in I.gamemodes ) ) {
+					continue
+				}
+			}
+			if ( I.excludefrom.len ) {
+				if ( !gamemode_override && ( ::ticker && ( ::ticker.mode.type in I.excludefrom ) ) ) {
+					continue
+				}
+				if ( gamemode_override && ( gamemode_override in I.excludefrom ) ) {
+					continue
+				}
+			}
+			if ( !filtered_uplink_items[I.category] ) {
+				filtered_uplink_items[I.category] = ::List()
+			}
+			filtered_uplink_items[category] += I
+		}
+	}
+	return filtered_uplink_items
 }
 
 function get_viewable_pdas(  ) {
@@ -2795,11 +3099,25 @@ function healthscan( user, M, mode ) {
 }
 
 function heat2colour_b( temp ) {
-	// Decompile Failure: fail decode_fail,49,77
+	temp /= 100
+	if ( temp >= 66 ) {
+		_default = 255
+	} else if ( temp <= 16 ) {
+		_default = 0
+	} else {
+		_default = ::max( 0, ::min( 255, ::log( temp - 10 ) * 138.51773071289062 - 305.0447998046875 ) )
+	}
+	return _default
 }
 
 function heat2colour_g( temp ) {
-	// Decompile Failure: fail decode_fail,49,77
+	temp /= 100
+	if ( temp <= 66 ) {
+		_default = ::max( 0, ::min( 255, ::log( temp ) * 99.4708023071289 - 161.11956787109375 ) )
+	} else {
+		_default = ::max( 0, ::min( 255, ::pow( temp - 60, -0.07514849305152893 ) * 288.1221618652344 ) )
+	}
+	return _default
 }
 
 function heat2colour_r( temp ) {
@@ -3366,7 +3684,82 @@ function key_name_admin( whom, include_name ) {
 }
 
 function keywords_lookup( msg ) {
-	// Decompile Failure: bad iter loop 4
+	local adminhelp_ignored_words, msglist, surnames, forenames, ckeys, M, indexing, string, L, surname_found, i, word, i, word, ai_found, mobs_found, original_word, word, found
+	adminhelp_ignored_words = ::List([ "unknown", "the", "a", "an", "of", "monkey", "alien", "as", "i" ])
+	msglist = ::text2list( msg, " " )
+	surnames = ::List()
+	forenames = ::List()
+	ckeys = ::List()
+	M = null
+	foreach (_ in ::mob_list ) {
+		M = _
+		indexing = ::List([ M.real_name, M.name ])
+		if ( M.mind ) {
+			indexing += M.mind.name
+		}
+		string = null
+		foreach (_ in indexing ) {
+			string = _
+			L = ::text2list( string, " " )
+			surname_found = 0
+			i = null
+			i = L.len
+			while (i >= 1) do
+				word = ::ckey( L[i] )
+				if ( word ) {
+					surnames[word] = M
+					surname_found = i
+					break
+				}
+				i--
+			end
+			i = null
+			i = 1
+			while (i < surname_found) do
+				word = ::ckey( L[i] )
+				if ( word ) {
+					forenames[word] = M
+				}
+				i++
+			end
+			ckeys[M.ckey] = M
+		}
+	}
+	ai_found = 0
+	msg = ""
+	mobs_found = ::List()
+	original_word = null
+	foreach (_ in msglist ) {
+		original_word = _
+		word = ::ckey( original_word )
+		if ( word ) {
+			if ( !( word in adminhelp_ignored_words ) ) {
+				if ( word == "ai" ) {
+					ai_found = 1
+				} else {
+					found = ckeys[word]
+					if ( !found ) {
+						found = surnames[word]
+						if ( !found ) {
+							found = forenames[word]
+						}
+					}
+					if ( found ) {
+						if ( !( found in mobs_found ) ) {
+							mobs_found += found
+							if ( !ai_found && ::istype( found, ::MobLivingSiliconAi ) ) {
+								ai_found = 1
+							}
+							msg += "" + ::txt.mark( original_word ) + "<font size='1' color='black'>(<A HREF='?_src_=holder;adminmoreinfo=" + ::txt.ref( found ) + "'>?</A>|<A HREF='?_src_=holder;adminplayerobservefollow=" + ::txt.ref( found ) + "'>F</A>)</font> "
+							continue
+						}
+					}
+				}
+			}
+		}
+		msg += "" + ::txt.mark( original_word ) + " "
+	}
+	return msg
 }
 
 function list2json( L ) {
@@ -3554,6 +3947,12 @@ function log_game( text ) {
 	}
 }
 
+function log_law( text ) {
+	if ( ::config.log_law ) {
+		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]LAW: " + ::txt.mark( text ) )
+	}
+}
+
 function log_ooc( text ) {
 	if ( ::config.log_ooc ) {
 		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]OOC: " + ::txt.mark( text ) )
@@ -3585,7 +3984,25 @@ function log_vote( text ) {
 }
 
 function make_maint_all_access(  ) {
-	// Decompile Failure: bad iter loop 4
+	local A, D
+	A = null
+	foreach (_ in ::game ) {
+		A = _
+		if ( !::istype( A, ::Area(2826) ) ) {
+			continue
+		}
+		D = null
+		foreach (_ in A ) {
+			D = _
+			if ( !::istype( D, ::ObjMachineryDoorAirlock ) ) {
+				continue
+			}
+			D.emergency = 1
+			D.update icon( 0 )
+		}
+	}
+	::minor_announce( "Access restrictions on maintenance and external airlocks have been lifted.", "Attention! Station-wide emergency declared!", 1 )
+	::emergency_access = 1
 }
 
 function make_ne_corner( adjacencies ) {
@@ -3866,7 +4283,46 @@ function message_spans_start( spans ) {
 }
 
 function mineral_scan_pulse( mobs, T, range ) {
-	// Decompile Failure: bad iter loop 4
+	local minerals, M, user, C, M, F, I
+	if ( range == null ) {
+		range = ::game.view
+	}
+	minerals = ::List()
+	M = null
+	foreach (_ in ::range( range, T ) ) {
+		M = _
+		if ( !::istype( M, ::TurfSimulatedMineral ) ) {
+			continue
+		}
+		if ( M.scan_state ) {
+			minerals += M
+		}
+	}
+	if ( minerals.len ) {
+		user = null
+		foreach (_ in mobs ) {
+			user = _
+			if ( user.client ) {
+				C = user.client
+				M = null
+				foreach (_ in minerals ) {
+					M = _
+					if ( !::istype( M, ::TurfSimulatedMineral ) ) {
+						continue
+					}
+					F = ::get_turf( M )
+					I = ::image_listcall( ::List({ ["layer"]= 18, ["icon_state"]= M.scan_state, ["loc"]= F, [1]= ::Rsc(61) }) )
+					C.images += I
+					::spawn( 30, function() {
+						if ( C ) {
+							C.images -= I
+						}
+						return
+					})
+				}
+			}
+		}
+	}
 }
 
 function minor_announce( message, title, alert ) {
@@ -3930,7 +4386,21 @@ function moveElement( L, fromIndex, toIndex ) {
 }
 
 function near_camera( M ) {
-	// Decompile Failure: fail decode_fail,23,109
+	local R
+	if ( !::isturf( M.loc ) ) {
+		return 0
+	}
+	if ( ::istype( M, ::MobLivingSiliconRobot ) ) {
+		R = M
+		if ( !( R.camera && R.camera.can use() ) && !::cameranet.checkCameraVis( M ) ) {
+			return 0
+			// goto 44
+		}
+	}
+	if ( !::cameranet.checkCameraVis( M ) ) {
+		return 0
+	}
+	return 1
 }
 
 function new_station_name(  ) {
@@ -4392,7 +4862,7 @@ function playsound( source, soundin, vol, vary, extrarange, falloff, surround ) 
 }
 
 function pollCandidates( Question, jobbanType, gametypeCheck, be_special_flag, poll_time ) {
-	// Decompile Failure: ~SPAWNER
+	// Decompile Failure: stdfunc alert
 }
 
 function PoolOrNew( get_type, second_arg ) {
@@ -5124,7 +5594,7 @@ function rgb2hsl( red, green, blue ) {
 }
 
 function rightandwrong( summon_type, user, survivor_probability ) {
-	// Decompile Failure: bad iter loop 4
+	// Decompile Failure: more bad switch
 }
 
 function rights2text( rights, seperator, adds, subs ) {
@@ -5693,7 +6163,7 @@ function SetViruses( R, data ) {
 }
 
 function shake_camera( M, duration, strength ) {
-	// Decompile Failure: ~SPAWNER
+	// Decompile Failure: fail decode_fail,36,223
 }
 
 function show_note( target_ckey, index, linkless ) {
@@ -5732,7 +6202,25 @@ function slur( n ) {
 }
 
 function smooth_icon( A ) {
-	// Decompile Failure: ~SPAWNER
+	local adjacencies
+	if ( ::qdeleted( A ) ) {
+		return
+	}
+	::spawn( 0, function() {
+		if ( A && A.smooth ) {
+			adjacencies = ::calculate_adjacencies( A )
+			A.clear smooth overlays()
+			A.top_left_corner = ::make_nw_corner( adjacencies )
+			A.top_right_corner = ::make_ne_corner( adjacencies )
+			A.bottom_left_corner = ::make_sw_corner( adjacencies )
+			A.bottom_right_corner = ::make_se_corner( adjacencies )
+			A.overlays += A.top_left_corner
+			A.overlays += A.top_right_corner
+			A.overlays += A.bottom_right_corner
+			A.overlays += A.bottom_left_corner
+		}
+		return
+	})
 }
 
 function smooth_icon_neighbors( A ) {
@@ -5969,7 +6457,7 @@ function spaceDebrisStartLoc( startSide, Z ) {
 }
 
 function spawn_meteor( meteortypes ) {
-	// Decompile Failure: ~SPAWNER
+	// Decompile Failure: fail decode_fail,142,143
 }
 
 function spawn_meteors( number, meteortypes ) {
@@ -6320,7 +6808,15 @@ function trim( text, max_length ) {
 }
 
 function trim_left( text ) {
-	// Decompile Failure: bad pop for_to
+	local i
+	i = null
+	foreach (_ in ::gen_range( 1, ::length( text ) ) ) {
+		i = _
+		if ( ::text2ascii( text, i ) > 32 ) {
+			return ::copytext( text, i, null )
+		}
+	}
+	return ""
 }
 
 function trim_right( text ) {
@@ -6352,7 +6848,78 @@ function ui_style2icon( ui_style ) {
 }
 
 function ultra_range( dist, center, orange ) {
-	// Decompile Failure: bad pop for_to
+	local t_center, L, T, y, x, c_dist
+	if ( dist == null ) {
+		dist = 0
+	}
+	if ( center == null ) {
+		center = ::_USR_
+	}
+	if ( orange == null ) {
+		orange = 0
+	}
+	if ( !dist ) {
+		if ( !orange ) {
+			return ::List([ center ])
+		} else {
+			return ::List()
+		}
+	}
+	t_center = ::get_turf( center )
+	if ( !t_center ) {
+		return ::List()
+	}
+	L = ::List()
+	c_dist = 1
+	if ( !orange ) {
+		L += t_center
+		L += t_center.contents
+	}
+	if ( c_dist <= dist ) {
+		y = t_center.y + c_dist
+		x = t_center.x - c_dist + 1
+		foreach (_ in ::gen_range( x, t_center.x + c_dist ) ) {
+			x = _
+			T = ::locate( x, y, t_center.z )
+			if ( T ) {
+				L += T
+				L += T.contents
+			}
+		}
+		y = t_center.y + c_dist - 1
+		x = t_center.x + c_dist
+		foreach (_ in ::gen_range( t_center.y - c_dist, y ) ) {
+			y = _
+			T = ::locate( x, y, t_center.z )
+			if ( T ) {
+				L += T
+				L += T.contents
+			}
+		}
+		y = t_center.y - c_dist
+		x = t_center.x + c_dist - 1
+		foreach (_ in ::gen_range( t_center.x - c_dist, x ) ) {
+			x = _
+			T = ::locate( x, y, t_center.z )
+			if ( T ) {
+				L += T
+				L += T.contents
+			}
+		}
+		y = t_center.y - c_dist + 1
+		x = t_center.x - c_dist
+		foreach (_ in ::gen_range( y, t_center.y + c_dist ) ) {
+			y = _
+			T = ::locate( x, y, t_center.z )
+			if ( T ) {
+				L += T
+				L += T.contents
+			}
+		}
+		c_dist++
+		// goto 75
+	}
+	return L
 }
 
 function unix2date( timestamp, seperator ) {
@@ -6418,7 +6985,20 @@ function UpdateTime(  ) {
 }
 
 function view_or_range( distance, center, type ) {
-	// Decompile Failure: fail decode_fail,27,83
+	if ( distance == null ) {
+		distance = ::game.view
+	}
+	if ( center == null ) {
+		center = ::_USR_
+	}
+	local _ = type // Was a switch-case, sorry for the mess.
+	if ( _=="view" ) {
+		_default = ::view( distance, center )
+	} else if ( _=="range" ) {
+		_default = ::range( distance, center )
+	}
+	return
+	return _default
 }
 
 function vol_by_throwforce_and_or_w_class( I ) {

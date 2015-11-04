@@ -184,6 +184,7 @@
 ::clientmessages <- null
 ::clients <- null
 ::CLOSE_DURATION <- 6
+::CLOSED <- 2
 ::clown_names <- null
 ::clown_recipes <- null
 ::CMinutes <- null
@@ -233,6 +234,7 @@
 ::ears_list <- null
 ::EAST <- 4
 ::EFFECTS_LAYER <- 5000
+::emergency_access <- 0
 ::emergencyresponseteamspawn <- null
 ::emojis <- null
 ::engineering_positions <- null
@@ -374,6 +376,7 @@
 ::pipe_types <- null
 ::pipeID2State <- null
 ::pipeimages <- null
+::pipenetwarnings <- 10
 ::PIZZA_WIRE_DISARM <- 1
 ::plasma_recipes <- null
 ::plasmaman_on_fire <- null
@@ -577,8 +580,13 @@
 ::WALLITEMS_INVERSE <- null
 ::weedImageCache <- null
 ::WEST <- 8
+::WIRE_ACTIVATE <- 16
+::WIRE_BOOM <- 1
+::WIRE_DELAY <- 4
+::WIRE_PROCEED <- 8
 ::WIRE_RECEIVE <- 2
 ::WIRE_TRANSMIT <- 4
+::WIRE_UNBOLT <- 2
 ::wireColours <- null
 ::wizard_first <- null
 ::wizard_second <- null
