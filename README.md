@@ -7,7 +7,6 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 *Note: Due to the discovery algorithem, more global functions will be found as more code is decompiled!*
 
 - Nov 1: 102 / 234 global functions decompiled.
-- Later: 138 / 253
 - Nov 2: 242 / 366
 - Nov 3: 301 / 373
 
