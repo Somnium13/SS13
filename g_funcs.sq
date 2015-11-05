@@ -289,6 +289,13 @@ function admin_keyword_to_path( word ) {
 	return ::text2path( ::copytext( word, 2, ::findtext( word, " ", 2, 0 ) ) )
 }
 
+function adminscrub( t, limit ) {
+	if ( limit == null ) {
+		limit = 1024
+	}
+	return ::copytext( ::html_encode( ::strip_html_simple( t ) ), 1, limit )
+}
+
 function Advance_Mix( D_list ) {
 	local diseases, A, i, D1, D2, to_return
 	diseases = ::List()
@@ -392,7 +399,24 @@ function angle2text( degree ) {
 }
 
 function anim( location, target, a_icon, a_icon_state, flick_anim, sleeptime, direction ) {
-	// Decompile Failure: fail decode_fail,92,137
+	local animation
+	if ( sleeptime == null ) {
+		sleeptime = 0
+	}
+	animation = ::AtomMovableOverlay( location )
+	if ( direction ) {
+		animation.dir = direction
+	}
+	animation.icon = a_icon
+	animation.layer = target.layer + 1
+	if ( a_icon_state ) {
+		animation.icon_state = a_icon_state
+	} else {
+		animation.icon_state = "blank"
+		animation.master = target
+	}
+	::sleep( ::max( sleeptime, 15 ) )
+	::qdel( animation )
 }
 
 function anyprob( value ) {
@@ -421,7 +445,9 @@ function appearance_isbanned( M ) {
 }
 
 function arctan( x ) {
-	// Decompile Failure: stdfunc arcsin
+	local y
+	y = ::arcsin( x / ::sqrt( x * x + 1 ) )
+	return y
 }
 
 function assign_progress_bar( user, progbar ) {
@@ -431,7 +457,100 @@ function assign_progress_bar( user, progbar ) {
 }
 
 function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, adjacent, id, exclude, simulated_only ) {
-	// Decompile Failure: fail decode_fail,181,782
+	local open, closed, path, cur, closeenough, L, T, newg, PN, T, i
+	if ( maxnodedepth == null ) {
+		maxnodedepth = 30
+	}
+	if ( adjacent == null ) {
+		adjacent = ::GoofyFunc
+	}
+	if ( id == null ) {
+		id = null
+	}
+	if ( exclude == null ) {
+		exclude = null
+	}
+	if ( simulated_only == null ) {
+		simulated_only = 1
+	}
+	if ( maxnodes ) {
+		if ( ::getf2( start, dist )( end ) > maxnodes ) {
+			return 0
+		}
+		maxnodedepth = maxnodes
+	}
+	open = ::Heap( ::GoofyFunc )
+	return
+	closed = ::List()
+	path = null
+	start = ::get_turf( start )
+	if ( !start ) {
+		return 0
+	}
+	open.Insert( ::PathNode( start, null, 0, ::getf2( start, dist )( end ), 0 ) )
+	if ( !open.IsEmpty() && !path ) {
+		cur = open.Pop()
+		closed.Add( cur.source )
+		closeenough = null
+		if ( mintargetdist ) {
+			closeenough = ::getf2( cur.source, dist )( end ) <= mintargetdist
+		}
+		if ( maxnodedepth && cur.nt > maxnodedepth ) {
+			// goto 97
+		}
+		if ( cur.source == end || closeenough ) {
+			return
+			path = ::List()
+			path.Add( cur.source )
+			if ( cur.prevNode ) {
+				cur = cur.prevNode
+				path.Add( cur.source )
+				// goto 156
+			}
+		} else {
+			L = ::getf2( cur.source, adjacent )( atom, id, simulated_only )
+			T = null
+			foreach (_ in L ) {
+				T = _
+				if ( ( T == exclude || T ) in closed ) {
+					continue
+				}
+				newg = cur.g + ::getf2( cur.source, dist )( T )
+				if ( !T.PNode ) {
+					open.Insert( ::PathNode( T, cur, newg, ::getf2( T, dist )( end ), cur.nt + 1 ) )
+				} else if ( newg < T.PNode.g ) {
+					T.prevNode = cur
+					T.PNode.g = newg
+					T.PNode.calc f()
+					T.PNode.nt = cur.nt + 1
+					open.ReSort( T.PNode )
+				}
+			}
+			// goto 97
+		}
+	}
+	PN = null
+	foreach (_ in open.L ) {
+		PN = _
+		if ( !::istype( PN, ::PathNode ) ) {
+			continue
+		}
+		PN.source.PNode = null
+	}
+	T = null
+	foreach (_ in closed ) {
+		T = _
+		T.PNode = null
+	}
+	if ( path ) {
+		i = null
+		i = 1
+		while (i <= path.len / 2) {
+			path.Swap( i, path.len - i + 1 )
+			i++
+		}
+	}
+	return path
 }
 
 function attach_spans( input, spans ) {
@@ -439,7 +558,7 @@ function attach_spans( input, spans ) {
 }
 
 function attempt_initiate_surgery( I, M, user ) {
-	// Decompile Failure: fail decode_fail,193,778
+	// Decompile Failure: bad call list
 }
 
 function blendMode2iconMode( blend_mode ) {
@@ -456,7 +575,20 @@ function blendMode2iconMode( blend_mode ) {
 }
 
 function BlendRGB( rgb1, rgb2, amount ) {
-	// Decompile Failure: fail decode_fail,187,252
+	local RGB1, RGB2, usealpha, r, g, b, alpha
+	RGB1 = ::ReadRGB( rgb1 )
+	RGB2 = ::ReadRGB( rgb2 )
+	if ( RGB1.len < RGB2.len ) {
+		RGB1 += 255
+	} else if ( RGB2.len < RGB1.len ) {
+		RGB2 += 255
+	}
+	usealpha = RGB1.len > 3
+	r = ::round2( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 )
+	g = ::round2( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 )
+	b = ::round2( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 )
+	alpha = usealpha ? ::round2( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null
+	return ::isnull( alpha ) ? ::rgb( r, g, b ) : ::rgba( r, g, b, alpha )
 }
 
 function blood_incompatible( donor, receiver, donor_species, receiver_species ) {
@@ -464,11 +596,400 @@ function blood_incompatible( donor, receiver, donor_species, receiver_species ) 
 }
 
 function blood_splatter( target, source, large ) {
-	// Decompile Failure: fail decode_fail,151,403
+	local B, decal_type, T, M, donor, drips, drop, drop
+	decal_type = ::ObjEffectDecalCleanableBloodSplatter
+	T = ::get_turf( target )
+	if ( ::istype( source, ::MobLivingCarbonHuman ) ) {
+		M = source
+		source = M.get blood( M.vessel )
+	} else if ( ::istype( source, ::MobLivingCarbonMonkey ) ) {
+		donor = source
+		source = ::DatumReagentBlood()
+		source.data.blood_DNA = donor.dna.unique_enzymes
+		source.data.blood_type = donor.dna.blood_type
+	}
+	drips = ::List()
+	drop = null
+	foreach (_ in T ) {
+		drop = _
+		if ( !::istype( drop, ::ObjEffectDecalCleanableBloodDrip ) ) {
+			continue
+		}
+		drips = drips | drop.drips
+		::qdel( drop )
+	}
+	if ( !large && drips.len < 3 ) {
+		decal_type = ::ObjEffectDecalCleanableBloodDrip
+	}
+	B = ::locate_in( decal_type, T )
+	if ( !B ) {
+		B = decal_type( T )
+	}
+	drop = B
+	if ( ::istype( drop, ::ObjEffectDecalCleanableBloodDrip ) && ( drips && ( drips.len && !large ) ) ) {
+		drop.overlays = drop.overlays | drips
+		drop.drips = drop.drips | drips
+	}
+	if ( !source ) {
+		return B
+	}
+	if ( source.data.blood_DNA ) {
+		B.blood_DNA = ::List()
+		if ( source.data.blood_type ) {
+			B.blood_DNA[source.data.blood_DNA] = source.data.blood_type
+		} else {
+			B.blood_DNA[source.data.blood_DNA] = "O+"
+		}
+	}
+	return B
+}
+
+function Broadcast_Message( AM, vmask, radio, message, name, job, realname, data, compression, level, freq, spans, verb_say, verb_ask, verb_exclaim, verb_yell ) {
+	local radios, virt, R, R, R, R, freqtext, R, receive, R, M, rendered, hearer, blackbox_msg
+	message = ::copytext( message, 1, 512 )
+	if ( !message ) {
+		return
+	}
+	radios = ::List()
+	virt = ::PoolOrNew( ::AtomMovableVirtualspeaker, null )
+	virt.name = name
+	virt.job = job
+	virt.languages = AM.languages
+	virt.source = AM
+	virt.radio = radio
+	virt.verb_say = verb_say
+	virt.verb_ask = verb_ask
+	virt.verb_exclaim = verb_exclaim
+	virt.verb_yell = verb_yell
+	if ( compression > 0 ) {
+		message = ::Gibberish( message, compression + 40 )
+	}
+	if ( data == 1 ) {
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( freq )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadioIntercom ) ) {
+				continue
+			}
+			if ( R.receive range( freq, level ) > -1 ) {
+				radios += R
+			}
+		}
+	} else if ( data == 2 ) {
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( freq )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( R.subspace_transmission ) {
+				continue
+			}
+			if ( R.receive range( freq, level ) > -1 ) {
+				radios += R
+			}
+		}
+	} else if ( data == 5 ) {
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( freq )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( !R.centcom ) {
+				continue
+			}
+			if ( R.receive range( freq, level ) > -1 ) {
+				radios += R
+			}
+		}
+	} else {
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( freq )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( R.receive range( freq, level ) > -1 ) {
+				radios += R
+			}
+		}
+		freqtext = ::num2text( freq )
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( ::SYND_FREQ )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( R.receive range( ::SYND_FREQ, ::List([ R.z ]) ) > -1 && freqtext in ::radiochannelsreverse ) {
+				radios = radios | R
+			}
+		}
+	}
+	receive = ::get_mobs_in_radio_ranges( radios )
+	R = null
+	foreach (_ in receive ) {
+		R = _
+		if ( R.client && ( R.client.holder && !( R.client.prefs.chat_toggles & 32 ) ) ) {
+			receive -= R
+		}
+	}
+	M = null
+	foreach (_ in ::player_list ) {
+		M = _
+		if ( ::istype( M, ::MobDeadObserver ) && ( M.client && M.client.prefs.chat_toggles & 512 ) ) {
+			receive = receive | M
+		}
+	}
+	rendered = virt.compose message( virt, virt.languages, message, freq, spans )
+	hearer = null
+	foreach (_ in receive ) {
+		hearer = _
+		if ( !::istype( hearer, ::AtomMovable ) ) {
+			continue
+		}
+		hearer.Hear( rendered, virt, AM.languages, message, freq, spans )
+	}
+	if ( ::length( receive ) ) {
+		blackbox_msg = "" + ::txt.mark( AM ) + " " + ::txt.mark( AM.say quote( message, spans ) )
+		if ( ::istype( ::blackbox, ::ObjMachineryBlackbox_recorder ) ) {
+			local _ = freq // Was a switch-case, sorry for the mess.
+			if ( _==1459 ) {
+				::blackbox.msg_common += blackbox_msg
+			} else if ( _==1351 ) {
+				::blackbox.msg_science += blackbox_msg
+			} else if ( _==1353 ) {
+				::blackbox.msg_command += blackbox_msg
+			} else if ( _==1355 ) {
+				::blackbox.msg_medical += blackbox_msg
+			} else if ( _==1357 ) {
+				::blackbox.msg_engineering += blackbox_msg
+			} else if ( _==1359 ) {
+				::blackbox.msg_security += blackbox_msg
+			} else if ( _==1441 ) {
+				::blackbox.msg_deathsquad += blackbox_msg
+			} else if ( _==1213 ) {
+				::blackbox.msg_syndicate += blackbox_msg
+			} else if ( _==1349 ) {
+				::blackbox.msg_service += blackbox_msg
+			} else if ( _==1347 ) {
+				::blackbox.msg_cargo += blackbox_msg
+			} else {
+				::blackbox.messages += blackbox_msg
+			}
+		}
+	}
+	::spawn( 50, function() {
+		::qdel( virt )
+		return
+	})
+}
+
+function Broadcast_SimpleMessage( source, frequency, text, data, M, compression, level ) {
+	local H, connection, display_freq, receive, R, position, R, position, syndicateconnection, R, position, R, R, position, heard_normal, heard_garbled, heard_gibberish, R, part_a, freq_text, part_b_extra, radio, part_b, part_c, part_blackbox_b, blackbox_msg, rendered, R, quotedmsg, rendered, R, quotedmsg, rendered, R
+	if ( !M ) {
+		H = ::MobLivingCarbonHuman()
+		M = H
+	}
+	connection = ::radio_controller.return frequency( frequency )
+	display_freq = connection.frequency
+	receive = ::List()
+	if ( data == 1 ) {
+		R = null
+		foreach (_ in connection.devices["" + ::txt.mark( ::RADIO_CHAT )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadioIntercom ) ) {
+				continue
+			}
+			position = ::get_turf( R )
+			if ( position && position.z == level ) {
+				receive = receive | R.send hear( display_freq, level )
+			}
+		}
+	} else if ( data == 2 ) {
+		R = null
+		foreach (_ in connection.devices["" + ::txt.mark( ::RADIO_CHAT )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( R.subspace_transmission ) {
+				continue
+			}
+			position = ::get_turf( R )
+			if ( position && position.z == level ) {
+				receive = receive | R.send hear( display_freq )
+			}
+		}
+	} else if ( data == 3 ) {
+		syndicateconnection = ::radio_controller.return frequency( ::SYND_FREQ )
+		R = null
+		foreach (_ in syndicateconnection.devices["" + ::txt.mark( ::RADIO_CHAT )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			position = ::get_turf( R )
+			if ( position && position.z == level ) {
+				receive = receive | R.send hear( ::SYND_FREQ )
+			}
+		}
+	} else if ( data == 5 ) {
+		R = null
+		foreach (_ in ::all_radios["" + ::txt.mark( ::RADIO_CHAT )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			if ( R.centcom ) {
+				receive = receive | R.send hear( ::CENTCOM_FREQ )
+			}
+		}
+	} else {
+		R = null
+		foreach (_ in connection.devices["" + ::txt.mark( ::RADIO_CHAT )] ) {
+			R = _
+			if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+				continue
+			}
+			position = ::get_turf( R )
+			if ( position && position.z == level ) {
+				receive = receive | R.send hear( display_freq )
+			}
+		}
+	}
+	heard_normal = ::List()
+	heard_garbled = ::List()
+	heard_gibberish = ::List()
+	R = null
+	foreach (_ in receive ) {
+		R = _
+		if ( R.client && !( R.client.prefs.chat_toggles & 32 ) ) {
+			continue
+		}
+		if ( compression > 0 ) {
+			heard_gibberish += R
+			continue
+		}
+		if ( R.languages & M.languages ) {
+			heard_normal += R
+		} else {
+			heard_garbled += R
+		}
+	}
+	if ( ::length( heard_normal ) || ( ::length( heard_garbled ) || ::length( heard_gibberish ) ) ) {
+		part_a = "<span class='radio'><span class='name'>"
+		freq_text = null
+		local _ = display_freq // Was a switch-case, sorry for the mess.
+		if ( _==1213 ) {
+			freq_text = "#unkn"
+		} else if ( _==1353 ) {
+			freq_text = "Command"
+		} else if ( _==1351 ) {
+			freq_text = "Science"
+		} else if ( _==1355 ) {
+			freq_text = "Medical"
+		} else if ( _==1357 ) {
+			freq_text = "Engineering"
+		} else if ( _==1359 ) {
+			freq_text = "Security"
+		} else if ( _==1349 ) {
+			freq_text = "Service"
+		} else if ( _==1347 ) {
+			freq_text = "Supply"
+		} else if ( _==1447 ) {
+			freq_text = "AI Private"
+		}
+		if ( !freq_text ) {
+			freq_text = ::format_frequency( display_freq )
+		}
+		part_b_extra = ""
+		if ( data == 3 ) {
+			part_b_extra = " <i>(Intercepted)</i>"
+		}
+		radio = ::ObjItemDeviceRadioHeadset()
+		part_b = "</span><b> " + ::txt.icon( radio ) + "[" + ::txt.mark( freq_text ) + "]" + ::txt.mark( part_b_extra ) + "</b> <span class='message'>"
+		part_c = "</span></span>"
+		if ( display_freq == ::SYND_FREQ ) {
+			part_a = "<span class='syndradio'><span class='name'>"
+		} else if ( display_freq == ::COMM_FREQ ) {
+			part_a = "<span class='comradio'><span class='name'>"
+		} else if ( display_freq == ::SCI_FREQ ) {
+			part_a = "<span class='sciradio'><span class='name'>"
+		} else if ( display_freq == ::MED_FREQ ) {
+			part_a = "<span class='medradio'><span class='name'>"
+		} else if ( display_freq == ::ENG_FREQ ) {
+			part_a = "<span class='engradio'><span class='name'>"
+		} else if ( display_freq == ::SEC_FREQ ) {
+			part_a = "<span class='secradio'><span class='name'>"
+		} else if ( display_freq == ::SERV_FREQ ) {
+			part_a = "<span class='servradio'><span class='name'>"
+		} else if ( display_freq == ::SUPP_FREQ ) {
+			part_a = "<span class='suppradio'><span class='name'>"
+		} else if ( display_freq == ::CENTCOM_FREQ ) {
+			part_a = "<span class='centcomradio'><span class='name'>"
+		} else if ( display_freq == ::AIPRIV_FREQ ) {
+			part_a = "<span class='aiprivradio'><span class='name'>"
+		}
+		part_blackbox_b = "</span><b> [" + ::txt.mark( freq_text ) + "]</b> <span class='message'>"
+		blackbox_msg = "" + ::txt.mark( part_a ) + ::txt.mark( source ) + ::txt.mark( part_blackbox_b ) + "\"" + ::txt.mark( text ) + "\"" + ::txt.mark( part_c )
+		if ( ::istype( ::blackbox, ::ObjMachineryBlackbox_recorder ) ) {
+			local _ = display_freq // Was a switch-case, sorry for the mess.
+			if ( _==1459 ) {
+				::blackbox.msg_common += blackbox_msg
+			} else if ( _==1351 ) {
+				::blackbox.msg_science += blackbox_msg
+			} else if ( _==1353 ) {
+				::blackbox.msg_command += blackbox_msg
+			} else if ( _==1355 ) {
+				::blackbox.msg_medical += blackbox_msg
+			} else if ( _==1357 ) {
+				::blackbox.msg_engineering += blackbox_msg
+			} else if ( _==1359 ) {
+				::blackbox.msg_security += blackbox_msg
+			} else if ( _==1441 ) {
+				::blackbox.msg_deathsquad += blackbox_msg
+			} else if ( _==1213 ) {
+				::blackbox.msg_syndicate += blackbox_msg
+			} else if ( _==1349 ) {
+				::blackbox.msg_service += blackbox_msg
+			} else if ( _==1347 ) {
+				::blackbox.msg_cargo += blackbox_msg
+			} else {
+				::blackbox.messages += blackbox_msg
+			}
+		}
+		if ( ::length( heard_normal ) ) {
+			rendered = "" + ::txt.mark( part_a ) + ::txt.mark( source ) + ::txt.mark( part_b ) + "\"" + ::txt.mark( text ) + "\"" + ::txt.mark( part_c )
+			R = null
+			foreach (_ in heard_normal ) {
+				R = _
+				R.show message( rendered, 2 )
+			}
+		}
+		if ( ::length( heard_garbled ) ) {
+			quotedmsg = "\"" + ::txt.mark( ::stars( text ) ) + "\""
+			rendered = "" + ::txt.mark( part_a ) + ::txt.mark( source ) + ::txt.mark( part_b ) + ::txt.mark( quotedmsg ) + ::txt.mark( part_c )
+			R = null
+			foreach (_ in heard_garbled ) {
+				R = _
+				R.show message( rendered, 2 )
+			}
+		}
+		if ( ::length( heard_gibberish ) ) {
+			quotedmsg = "\"" + ::txt.mark( ::Gibberish( text, compression + 50 ) ) + "\""
+			rendered = "" + ::txt.mark( part_a ) + ::txt.mark( ::Gibberish( source, compression + 50 ) ) + ::txt.mark( part_b ) + ::txt.mark( quotedmsg ) + ::txt.mark( part_c )
+			R = null
+			foreach (_ in heard_gibberish ) {
+				R = _
+				R.show message( rendered, 2 )
+			}
+		}
+	}
 }
 
 function build_click( user, buildmode, params, object ) {
-	// Decompile Failure: fail decode_fail,184,1492
+	// Decompile Failure: more bad switch
 }
 
 function calculate_adjacencies( A ) {
@@ -527,7 +1048,41 @@ function can_embed( W ) {
 }
 
 function can_see( source, target, length ) {
-	// Decompile Failure: fail decode_fail,147,160
+	local current, target_turf, steps, A
+	if ( length == null ) {
+		length = 5
+	}
+	current = ::get_turf( source )
+	target_turf = ::get_turf( target )
+	steps = 0
+	if ( current != target_turf ) {
+		if ( steps > length ) {
+			return 0
+		}
+		if ( current.opacity ) {
+			return 0
+		}
+		A = null
+		foreach (_ in current ) {
+			A = _
+			if ( !::istype( A, ::Atom ) ) {
+				continue
+			}
+			if ( A.opacity ) {
+				return 0
+			}
+		}
+		current = ::get_step_towards( current, target_turf )
+		steps++
+		// goto 22
+	}
+	return 1
+}
+
+function cancel_progress_bar( user, progbar ) {
+	if ( user && ( user.client && progbar ) ) {
+		user.client.images -= progbar
+	}
 }
 
 function CanHug( M ) {
@@ -649,7 +1204,7 @@ function changemap( VM ) {
 }
 
 function cheap_hypotenuse( Ax, Ay, Bx, By ) {
-	// Decompile Failure: stdfunc abs
+	return ::sqrt( ::pow( ::abs( Ax - Bx ), 2 ) + ::pow( ::abs( Ay - By ), 2 ) )
 }
 
 function check_rights( rights_required, show_msg ) {
@@ -891,6 +1446,52 @@ function cmd_admin_mute( whom, mute_type, automute ) {
 	::feedback_add_details( "admin_verb", "MUTE" )
 }
 
+function color2hex( color ) {
+	if ( !color ) {
+		return "#000000"
+	}
+	local _ = color // Was a switch-case, sorry for the mess.
+	if ( _=="white" ) {
+		return "#FFFFFF"
+	} else if ( _=="black" ) {
+		return "#000000"
+	} else if ( _=="gray" ) {
+		return "#808080"
+	} else if ( _=="brown" ) {
+		return "#A52A2A"
+	} else if ( _=="red" ) {
+		return "#FF0000"
+	} else if ( _=="darkred" ) {
+		return "#8B0000"
+	} else if ( _=="crimson" ) {
+		return "#DC143C"
+	} else if ( _=="orange" ) {
+		return "#FFA500"
+	} else if ( _=="yellow" ) {
+		return "#FFFF00"
+	} else if ( _=="green" ) {
+		return "#008000"
+	} else if ( _=="lime" ) {
+		return "#00FF00"
+	} else if ( _=="darkgreen" ) {
+		return "#006400"
+	} else if ( _=="cyan" ) {
+		return "#00FFFF"
+	} else if ( _=="blue" ) {
+		return "#0000FF"
+	} else if ( _=="navy" ) {
+		return "#000080"
+	} else if ( _=="teal" ) {
+		return "#008080"
+	} else if ( _=="purple" ) {
+		return "#800080"
+	} else if ( _=="indigo" ) {
+		return "#4B0082"
+	} else {
+		return "#FFFFFF"
+	}
+}
+
 function construct_block( value, values, blocksize ) {
 	local width
 	if ( blocksize == null ) {
@@ -937,8 +1538,165 @@ function create_space_ninja( spawn_loc ) {
 	return new_ninja
 }
 
+function create_xeno( ckey ) {
+	local candidates, M, alien_caste, spawn_here, new_xeno
+	if ( !ckey ) {
+		candidates = ::List()
+		M = null
+		foreach (_ in ::player_list ) {
+			M = _
+			if ( M.stat != 2 ) {
+				continue
+			}
+			if ( !M.client.prefs.be_special & 64 ) {
+				continue
+			}
+			if ( M.client.is afk() ) {
+				continue
+			}
+			if ( M.mind && ( M.mind.current && M.mind.current.stat != 2 ) ) {
+				continue
+			}
+			candidates += M.ckey
+		}
+		if ( candidates.len ) {
+			ckey = ::input( "Pick the player you want to respawn as a xeno.", "Suitable Candidates", null, null, candidates, 4224 )
+		} else {
+			::_USR_.write( "<font color='red'>Error: create_xeno(): no suitable candidates.</font>" )
+		}
+	}
+	if ( !::istext( ckey ) ) {
+		return 0
+	}
+	alien_caste = ::input( ::_USR_, "Please choose which caste to spawn.", "Pick a caste", null, ::List([ "Queen", "Praetorian", "Hunter", "Sentinel", "Drone", "Larva" ]), 4224 )
+	spawn_here = ::xeno_spawn.len ? ::pick_list( ::xeno_spawn ) : ::pick_list( ::latejoin )
+	new_xeno = null
+	local _ = alien_caste // Was a switch-case, sorry for the mess.
+	if ( _=="Queen" ) {
+		new_xeno = ::MobLivingCarbonAlienHumanoidRoyalQueen( spawn_here )
+	} else if ( _=="Praetorian" ) {
+		new_xeno = ::MobLivingCarbonAlienHumanoidRoyalPraetorian( spawn_here )
+	} else if ( _=="Hunter" ) {
+		new_xeno = ::MobLivingCarbonAlienHumanoidHunter( spawn_here )
+	} else if ( _=="Sentinel" ) {
+		new_xeno = ::MobLivingCarbonAlienHumanoidSentinel( spawn_here )
+	} else if ( _=="Drone" ) {
+		new_xeno = ::MobLivingCarbonAlienHumanoidDrone( spawn_here )
+	} else if ( _=="Larva" ) {
+		new_xeno = ::MobLivingCarbonAlienLarva( spawn_here )
+	} else {
+		return 0
+	}
+	new_xeno.ckey = ckey
+	::message_admins( "<span class='notice'>" + ::txt.mark( ::key_name_admin( ::_USR_ ) ) + " has spawned " + ::txt.mark( ckey ) + " as a filthy xeno " + ::txt.mark( alien_caste ) + ".</span>" )
+	return 1
+}
+
+function createRandomZlevel(  ) {
+	local potentialRandomZlevels, Lines, t, pos, name, map, file, L
+	if ( ::awaydestinations.len ) {
+		return
+	}
+	potentialRandomZlevels = ::List()
+	::game.write( "<span class='boldannounce'>Searching for away missions...</span>" )
+	Lines = ::file2list( "_maps/RandomZLevels/fileList.txt" )
+	if ( !Lines.len ) {
+		return
+	}
+	t = null
+	foreach (_ in Lines ) {
+		t = _
+		if ( !t ) {
+			continue
+		}
+		t = ::trim( t )
+		if ( ::length( t ) == 0 ) {
+			continue
+		} else if ( ::copytext( t, 1, 2 ) == "#" ) {
+			continue
+		}
+		pos = ::findtext( t, " ", 1, null )
+		name = null
+		if ( pos ) {
+			name = ::lowertext( ::copytext( t, 1, pos ) )
+		} else {
+			name = ::lowertext( t )
+		}
+		if ( !name ) {
+			continue
+		}
+		potentialRandomZlevels.Add( t )
+	}
+	if ( potentialRandomZlevels.len ) {
+		
+	}
+	::game.write( "<span class='boldannounce'>Loading away mission...</span>" )
+	map = ::pick_list( potentialRandomZlevels )
+}
+
 function cultist_commune( user, clear, say, message ) {
-	// Decompile Failure: fail decode_fail,36,290
+	local M
+	if ( clear == null ) {
+		clear = 0
+	}
+	if ( say == null ) {
+		say = 0
+	}
+	if ( !message ) {
+		return
+	}
+	if ( say ) {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 32767 ) { _ = "'" }
+		else  { _ = "`" }
+
+		user.say( "O bidai nabora se" + ::txt.mark( _ ) + "sma!" )
+	} else {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 32767 ) { _ = "'" }
+		else  { _ = "`" }
+
+		user.VERB[Whisper]( "O bidai nabora se" + ::txt.mark( _ ) + "sma!" )
+	}
+	::sleep( 10 )
+	if ( !user ) {
+		return
+	}
+	if ( say ) {
+		user.say( message )
+	} else {
+		user.VERB[Whisper]( message )
+	}
+	M = null
+	foreach (_ in ::mob_list ) {
+		M = _
+		if ( ::iscultist( M ) || M in ::dead_mob_list ) {
+			if ( clear || !::istype( user, ::MobLivingCarbonHuman ) ) {
+				M.write( "<span class='boldannounce'><i>" + ::txt.mark( ::istype( user, ::MobLivingCarbonHuman ) ? "Acolyte" : "Construct" ) + " " + ::txt.mark( user ) + ":</i> " + ::txt.mark( message ) + "</span>" )
+			} else {
+				M.write( "<span class='ghostalert'><i>Acolyte ???:</i> " + ::txt.mark( message ) + "</span>" )
+			}
+		}
+	}
+	::log_say( "" + ::txt.mark( user.real_name ) + "/" + ::txt.mark( user.key ) + " : " + ::txt.mark( message ) )
+}
+
+function dd_hassuffix( text, suffix ) {
+	local start
+	start = ::length( text ) - ::length( suffix )
+	if ( start ) {
+		return ::findtext( text, suffix, start, null )
+	}
+	return
+}
+
+function dd_limittext( message, length ) {
+	local size
+	size = ::length( message )
+	if ( size <= length ) {
+		return message
+	}
+	return ::copytext( message, 1, length + 1 )
 }
 
 function dd_range( low, high, num ) {
@@ -1132,11 +1890,116 @@ function display_roundstart_logout_report(  ) {
 }
 
 function do_after( user, delay, numticks, needhand, target, progress ) {
-	// Decompile Failure: bad for-to
+	local Tloc, delayfraction, Uloc, holding, holdingnull, progbar, continue_looping, i
+	if ( numticks == null ) {
+		numticks = 5
+	}
+	if ( needhand == null ) {
+		needhand = 1
+	}
+	if ( target == null ) {
+		target = null
+	}
+	if ( progress == null ) {
+		progress = 1
+	}
+	if ( !user ) {
+		return 0
+	}
+	if ( numticks == 0 ) {
+		return 0
+	}
+	Tloc = null
+	if ( target ) {
+		Tloc = target.loc
+	}
+	delayfraction = ::round( delay / numticks )
+	Uloc = user.loc
+	holding = user.get active hand()
+	holdingnull = 1
+	if ( holding ) {
+		holdingnull = 0
+	}
+	continue_looping = 1
+	i = null
+	foreach (_ in ::gen_range( 1, numticks ) ) {
+		i = _
+		if ( user.client && progress ) {
+			progbar = ::make_progress_bar( i, numticks, target )
+			::assign_progress_bar( user, progbar )
+		}
+		::sleep( delayfraction )
+		if ( !user || ( user.stat || ( user.weakened || ( user.stunned || !( user.loc == Uloc ) ) ) ) ) {
+			continue_looping = 0
+		}
+		if ( continue_looping && ( Tloc && ( !target || Tloc != target.loc ) ) ) {
+			continue_looping = 0
+		}
+		if ( continue_looping && needhand ) {
+			if ( !holdingnull ) {
+				if ( !holding ) {
+					continue_looping = 0
+				}
+			}
+			if ( continue_looping && user.get active hand() != holding ) {
+				continue_looping = 0
+			}
+		}
+		::cancel_progress_bar( user, progbar )
+		if ( !continue_looping ) {
+			return 0
+		}
+	}
+	::cancel_progress_bar( user, progbar )
+	return 1
 }
 
 function do_mob( user, target, time, numticks, uninterruptible, progress ) {
-	// Decompile Failure: bad for-to
+	local user_loc, target_loc, holding, timefraction, progbar, continue_looping, i
+	if ( time == null ) {
+		time = 30
+	}
+	if ( numticks == null ) {
+		numticks = 5
+	}
+	if ( uninterruptible == null ) {
+		uninterruptible = 0
+	}
+	if ( progress == null ) {
+		progress = 1
+	}
+	if ( !user || !target ) {
+		return 0
+	}
+	if ( numticks == 0 ) {
+		return 0
+	}
+	user_loc = user.loc
+	target_loc = target.loc
+	holding = user.get active hand()
+	timefraction = ::round( time / numticks )
+	continue_looping = 1
+	i = null
+	foreach (_ in ::gen_range( 1, numticks ) ) {
+		i = _
+		if ( user.client && progress ) {
+			progbar = ::make_progress_bar( i, numticks, target )
+			::assign_progress_bar( user, progbar )
+		}
+		::sleep( timefraction )
+		if ( !user || !target ) {
+			continue_looping = 0
+		}
+		if ( continue_looping && ( !uninterruptible && ( user.loc != user_loc || ( target.loc != target_loc || ( user.get active hand() != holding || ( user.incapacitated() || user.lying ) ) ) ) ) ) {
+			continue_looping = 0
+		}
+		::cancel_progress_bar( user, progbar )
+		if ( !continue_looping ) {
+			return 0
+		}
+	}
+	::cancel_progress_bar( user, progbar )
+	return 1
 }
 
 function do_teleport( ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout ) {
@@ -1175,7 +2038,7 @@ function DuplicateObject( original, perfectcopy, sameloc ) {
 	if ( sameloc ) {
 		O = original.type( original.loc )
 	} else {
-		O = original.type( ::locate( 0, 0, 0 ) )
+		O = original.type( ::locate3( 0, 0, 0 ) )
 	}
 	if ( perfectcopy ) {
 		if ( O && original ) {
@@ -1268,12 +2131,83 @@ function electrocute_mob( M, power_source, source, siemens_coeff ) {
 	return drained_energy
 }
 
+function Ellipsis( original_msg, chance, keep_words ) {
+	local words, new_words, new_msg, w
+	if ( chance == null ) {
+		chance = 50
+	}
+	if ( chance <= 0 ) {
+		return "..."
+	}
+	if ( chance >= 100 ) {
+		return original_msg
+	}
+	words = ::text2list( original_msg, " " )
+	new_words = ::List()
+	new_msg = ""
+	w = null
+	foreach (_ in words ) {
+		w = _
+		if ( ::prob( chance ) ) {
+			new_words += "..."
+			if ( !keep_words ) {
+				continue
+			}
+		}
+		new_words += w
+	}
+	new_msg = ::list2text( new_words, " " )
+	return new_msg
+}
+
 function emoji_parse( text ) {
 	// Decompile Failure: fail decode_fail,221,280
 }
 
 function empulse( epicenter, heavy_range, light_range, log ) {
-	// Decompile Failure: bad iter loop 4
+	local T, distance
+	if ( log == null ) {
+		log = 0
+	}
+	if ( !epicenter ) {
+		return
+	}
+	if ( !::istype( epicenter, ::Turf ) ) {
+		epicenter = ::get_turf( epicenter.loc )
+	}
+	if ( log ) {
+		::message_admins( "EMP with size (" + ::txt.mark( heavy_range ) + ", " + ::txt.mark( light_range ) + ") in area " + ::txt.mark( epicenter.loc.name ) + " " )
+		::log_game( "EMP with size (" + ::txt.mark( heavy_range ) + ", " + ::txt.mark( light_range ) + ") in area " + ::txt.mark( epicenter.loc.name ) + " " )
+	}
+	if ( heavy_range > 1 ) {
+		::ObjEffectOverlayTempEmpPulse( epicenter )
+	}
+	if ( heavy_range > light_range ) {
+		light_range = heavy_range
+	}
+	T = null
+	foreach (_ in ::range( light_range, epicenter ) ) {
+		T = _
+		if ( !::istype( T, ::Atom ) ) {
+			continue
+		}
+		distance = ::get_dist( epicenter, T )
+		if ( distance < 0 ) {
+			distance = 0
+		}
+		if ( distance < heavy_range ) {
+			T.emp act( 1 )
+		} else if ( distance == heavy_range ) {
+			if ( ::prob( 50 ) ) {
+				T.emp act( 1 )
+			} else {
+				T.emp act( 2 )
+			}
+		} else if ( distance <= light_range ) {
+			T.emp act( 2 )
+		}
+	}
+	return 1
 }
 
 function english_list( input, nothing_text, and_text, comma_text, final_comma_text ) {
@@ -1412,7 +2346,57 @@ function find_record( field, value, L ) {
 }
 
 function find_type_in_direction( source, direction, range ) {
-	// Decompile Failure: bad iter loop 4
+	local x_offset, y_offset, target_turf, A, a_type, a_type, A
+	if ( range == null ) {
+		range = 1
+	}
+	x_offset = 0
+	y_offset = 0
+	if ( direction & 1 ) {
+		y_offset = range
+	} else if ( direction & 2 ) {
+		y_offset -= range
+	}
+	if ( direction & 4 ) {
+		x_offset = range
+	} else if ( direction & 8 ) {
+		x_offset -= range
+	}
+	target_turf = ::locate3( source.x + x_offset, source.y + y_offset, source.z )
+	if ( source.canSmoothWith ) {
+		if ( source.smooth == 2 ) {
+			a_type = null
+			foreach (_ in source.canSmoothWith ) {
+				a_type = _
+				if ( ::istype( target_turf, a_type ) ) {
+					return target_turf
+				}
+				A = ::locate_in( a_type, target_turf )
+				if ( A ) {
+					return A
+				}
+			}
+			return
+		}
+		a_type = null
+		foreach (_ in source.canSmoothWith ) {
+			a_type = _
+			if ( a_type == target_turf.type ) {
+				return target_turf
+			}
+			A = ::locate_in( a_type, target_turf )
+			if ( A && A.type == a_type ) {
+				return A
+			}
+		}
+		return
+	} else {
+		if ( ::isturf( source ) ) {
+			return A.type == target_turf.type ? target_turf : null
+		}
+		A = ::locate_in( source.type, target_turf )
+		return A && A.type == source.type ? A : null
+	}
 }
 
 function findname( msg ) {
@@ -2074,7 +3058,13 @@ function get_access_desc( A ) {
 }
 
 function get_airlock_overlay( icon_state, icon_file ) {
-	// Decompile Failure: fail decode_fail,97,65
+	local iconkey
+	iconkey = "" + ::txt.mark( icon_state ) + ::txt.mark( icon_file )
+	if ( ::airlock_overlays[iconkey] ) {
+		return ::airlock_overlays[iconkey]
+	}
+	::airlock_overlays[iconkey] = ::image( icon_file, icon_state )
+	return ::airlock_overlays[iconkey]
 }
 
 function get_all_accesses(  ) {
@@ -2124,7 +3114,7 @@ function get_area( O ) {
 	local location, i
 	location = O
 	i = 1
-	while (i <= 20) do
+	while (i <= 20) {
 		if ( ::isarea( location ) ) {
 			return location
 		} else if ( ::istype( location, ::Atom ) ) {
@@ -2133,7 +3123,7 @@ function get_area( O ) {
 			return
 		}
 		i++
-	end
+	}
 	return 0
 }
 
@@ -2315,21 +3305,21 @@ function get_domination_time( G ) {
 
 function get_edge_target_turf( A, direction ) {
 	local target
-	target = ::locate( A.x, A.y, A.z )
+	target = ::locate3( A.x, A.y, A.z )
 	if ( !A || !target ) {
 		return 0
 	}
 	if ( direction & 1 ) {
-		target = ::locate( target.x, ::game.maxy, target.z )
+		target = ::locate3( target.x, ::game.maxy, target.z )
 	}
 	if ( direction & 2 ) {
-		target = ::locate( target.x, 1, target.z )
+		target = ::locate3( target.x, 1, target.z )
 	}
 	if ( direction & 4 ) {
-		target = ::locate( ::game.maxx, target.y, target.z )
+		target = ::locate3( ::game.maxx, target.y, target.z )
 	}
 	if ( direction & 8 ) {
-		target = ::locate( 1, target.y, target.z )
+		target = ::locate3( 1, target.y, target.z )
 	}
 	return target
 }
@@ -2404,7 +3394,17 @@ function get_location_accessible( M, location ) {
 }
 
 function get_location_modifier( M ) {
-	// Decompile Failure: fail decode_fail,151,82
+	local T
+	T = ::get_turf( M )
+	if ( ::locate_in( ::ObjStructureOptable, T ) ) {
+		return 1
+	} else if ( ::locate_in( ::ObjStructureTable, T ) ) {
+		return 0.800000011920929
+	} else if ( ::locate_in( ::ObjStructureBed, T ) ) {
+		return 0.699999988079071
+	} else {
+		return 0.5
+	}
 }
 
 function get_mob_by_ckey( key ) {
@@ -2423,7 +3423,31 @@ function get_mob_by_ckey( key ) {
 }
 
 function get_mob_by_key( key ) {
-	// Decompile Failure: bad iter loop 4
+	local M
+	M = null
+	foreach (_ in ::mob_list ) {
+		M = _
+		if ( M.ckey == ::lowertext( key ) ) {
+			return M
+		}
+	}
+	return
+}
+
+function get_mobs_in_radio_ranges( radios ) {
+	local R, _default
+	_default = ::List()
+	R = null
+	foreach (_ in radios ) {
+		R = _
+		if ( !::istype( R, ::ObjItemDeviceRadio ) ) {
+			continue
+		}
+		if ( R ) {
+			_default = _default | ::get_hearers_in_view( R.canhear_range, R )
+		}
+	}
+	return _default
 }
 
 function get_radio_name( freq ) {
@@ -2464,7 +3488,7 @@ function get_ranged_target_turf( A, direction, range ) {
 	if ( direction & 8 ) {
 		x = ::max( 1, x - range )
 	}
-	return ::locate( x, y, A.z )
+	return ::locate3( x, y, A.z )
 }
 
 function get_region_accesses( code ) {
@@ -2612,8 +3636,127 @@ function get_sfx( soundin ) {
 	return soundin
 }
 
+function get_stickyban_from_ckey( ckey ) {
+	local key, _default
+	if ( !ckey ) {
+		return
+	}
+	ckey = ::ckey( ckey )
+	_default = null
+	key = null
+	foreach (_ in ::game.GetConfig( "ban" ) ) {
+		key = _
+		if ( ::ckey( key ) == ckey ) {
+			_default = ::stickyban2list( ::game.GetConfig( "ban", key ) )
+			break
+		}
+	}
+	return _default
+}
+
 function get_teleport_loc( location, target, distance, density, errorx, errory, eoffsetx, eoffsety ) {
-	// Decompile Failure: stdfunc abs
+	local dirx, diry, xoffset, yoffset, b1xerror, b1yerror, b2xerror, b2yerror, destination, destination_list, center, T
+	if ( distance == null ) {
+		distance = 1
+	}
+	if ( density == null ) {
+		density = 0
+	}
+	if ( errorx == null ) {
+		errorx = 0
+	}
+	if ( errory == null ) {
+		errory = 0
+	}
+	if ( eoffsetx == null ) {
+		eoffsetx = 0
+	}
+	if ( eoffsety == null ) {
+		eoffsety = 0
+	}
+	dirx = 0
+	diry = 0
+	xoffset = 0
+	yoffset = 0
+	b1xerror = 0
+	b1yerror = 0
+	b2xerror = 0
+	b2yerror = 0
+	errorx = ::abs( errorx )
+	errory = ::abs( errory )
+	local _ = target.dir // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		diry += distance
+		yoffset += eoffsety
+		xoffset += eoffsetx
+		b1xerror -= errorx
+		b1yerror -= errory
+		b2xerror += errorx
+		b2yerror += errory
+	} else if ( _==2 ) {
+		diry -= distance
+		yoffset -= eoffsety
+		xoffset += eoffsetx
+		b1xerror -= errorx
+		b1yerror -= errory
+		b2xerror += errorx
+		b2yerror += errory
+	} else if ( _==4 ) {
+		dirx += distance
+		yoffset += eoffsetx
+		xoffset += eoffsety
+		b1xerror -= errory
+		b1yerror -= errorx
+		b2xerror += errory
+		b2yerror += errorx
+	} else if ( _==8 ) {
+		dirx -= distance
+		yoffset -= eoffsetx
+		xoffset += eoffsety
+		b1xerror -= errory
+		b1yerror -= errorx
+		b2xerror += errory
+		b2yerror += errorx
+	}
+	destination = ::locate3( location.x + dirx, location.y + diry, location.z )
+	if ( destination ) {
+		if ( errorx || errory ) {
+			destination_list = ::List()
+			center = ::locate3( destination.x + xoffset, destination.y + yoffset, location.z )
+			T = null
+			foreach (_ in ::locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) {
+				T = _
+				if ( density && T.density ) {
+					continue
+				}
+				if ( T.x > ::game.maxx || T.x < 1 ) {
+					continue
+				}
+				if ( T.y > ::game.maxy || T.y < 1 ) {
+					continue
+				}
+				destination_list += T
+			}
+			if ( destination_list.len ) {
+				destination = ::pick_list( destination_list )
+			} else {
+				return
+			}
+		} else {
+			if ( density && destination.density ) {
+				return
+			}
+			if ( destination.x > ::game.maxx || destination.x < 1 ) {
+				return
+			}
+			if ( destination.y > ::game.maxy || destination.y < 1 ) {
+				return
+			} else {
+				return
+			}
+		}
+	}
+	return destination
 }
 
 function get_turf( A ) {
@@ -2625,6 +3768,37 @@ function get_turf( A ) {
 		// goto 11
 	}
 	return A
+}
+
+function get_turf_pixel( AM ) {
+	local rough_x, rough_y, final_x, final_y, i_width, i_height, AMicon, n_width, n_height
+	if ( ::istype( AM, ::AtomMovable ) ) {
+		rough_x = 0
+		rough_y = 0
+		final_x = 0
+		final_y = 0
+		i_width = ::game.icon_size
+		i_height = ::game.icon_size
+		if ( AM.bound_height != ::game.icon_size || AM.bound_width != ::game.icon_size ) {
+			AMicon = "/icon"( AM.icon, AM.icon_state )
+			i_width = AMicon.Width()
+			i_height = AMicon.Height()
+			::qdel( AMicon )
+		}
+		n_width = ::game.icon_size - i_width / 2
+		n_height = ::game.icon_size - i_height / 2
+		if ( n_width ) {
+			rough_x = ::round( AM.pixel_x / n_width )
+		}
+		if ( n_height ) {
+			rough_y = ::round( AM.pixel_y / n_height )
+		}
+		final_x = AM.x + rough_x
+		final_y = AM.y + rough_y
+		if ( final_x || final_y ) {
+			return ::locate3( final_x, final_y, AM.z )
+		}
+	}
 }
 
 function get_uplink_items( gamemode_override ) {
@@ -2713,6 +3887,10 @@ function get_viewable_pdas(  ) {
 	}
 	return _default
 	return _default
+}
+
+function getb( col ) {
+	return ::hex2num( ::copytext( col, 6, null ) )
 }
 
 function getBlankIcon( A, safety ) {
@@ -2824,6 +4002,23 @@ function GetFromPool( get_type, second_arg ) {
 	}
 }
 
+function getg( col ) {
+	return ::hex2num( ::copytext( col, 4, 6 ) )
+}
+
+function getHologramIcon( A, safety ) {
+	local flat_icon, alpha_mask
+	if ( safety == null ) {
+		safety = 1
+	}
+	flat_icon = safety ? A : ::Icon( A )
+	flat_icon.ColorTone( "#7db4e1" )
+	flat_icon.ChangeOpacity( 0.5 )
+	alpha_mask = ::Icon( ::Rsc(11), "scanline" )
+	flat_icon.AddAlphaMask( alpha_mask )
+	return flat_icon
+}
+
 function getIconMask( A ) {
 	local alpha_mask, I, image_overlay
 	alpha_mask = ::Icon( A.icon, A.icon_state )
@@ -2846,11 +4041,67 @@ function getleftblocks( input, blocknumber, blocksize ) {
 }
 
 function getLetterImage( A, letter, uppercase ) {
-	// Decompile Failure: fail decode_fail,117,202
+	local atom_icon, text_image
+	if ( letter == null ) {
+		letter = ""
+	}
+	if ( uppercase == null ) {
+		uppercase = 0
+	}
+	if ( !A ) {
+		return
+	}
+	atom_icon = ::Icon( A.icon, A.icon_state )
+	if ( !letter ) {
+		letter = ::copytext( A.name, 1, 2 )
+		if ( uppercase == 1 ) {
+			letter = ::uppertext( letter )
+		} else if ( uppercase == -1 ) {
+			letter = ::lowertext( letter )
+		}
+	}
 }
 
 function getline( M, N ) {
-	// Decompile Failure: stdfunc abs
+	local px, py, line, dx, dy, dxabs, dyabs, sdx, sdy, x, y, j
+	px = M.x
+	py = M.y
+	line = ::List([ ::locate3( px, py, M.z ) ])
+	dx = N.x - px
+	dy = N.y - py
+	dxabs = ::abs( dx )
+	dyabs = ::abs( dy )
+	sdx = ::sign( dx )
+	sdy = ::sign( dy )
+	x = dxabs >> 1
+	y = dyabs >> 1
+	if ( dxabs >= dyabs ) {
+		j = 0
+		if ( j < dxabs ) {
+			y += dyabs
+			if ( y >= dxabs ) {
+				y -= dxabs
+				py += sdy
+			}
+			px += sdx
+			line += ::locate3( px, py, M.z )
+			j++
+			// goto 60
+			// goto 128
+		}
+	}
+	j = 0
+	while (j < dyabs) {
+		x += dxabs
+		if ( x >= dyabs ) {
+			x -= dyabs
+			px += sdx
+		}
+		py += sdy
+		line += ::locate3( px, py, M.z )
+		j++
+	}
+	return line
 }
 
 function getmobs(  ) {
@@ -2885,6 +4136,10 @@ function getmobs(  ) {
 	return creatures
 }
 
+function getr( col ) {
+	return ::hex2num( ::copytext( col, 2, 4 ) )
+}
+
 function getrightblocks( input, blocknumber, blocksize ) {
 	if ( blocknumber < ::length( input ) / blocksize ) {
 		return ::copytext( input, blocksize * blocknumber + 1, ::length( input ) + 1 )
@@ -2909,7 +4164,7 @@ function Gibberish( t, p ) {
 	returntext = ""
 	i = null
 	i = 1
-	while (i <= ::length( t )) do
+	while (i <= ::length( t )) {
 		letter = ::copytext( t, i, i + 1 )
 		if ( ::prob( 50 ) ) {
 			if ( p >= 70 ) {
@@ -2917,7 +4172,7 @@ function Gibberish( t, p ) {
 			}
 			j = null
 			j = 1
-			while (j <= ::rand( 0, 2 )) do
+			while (j <= ::rand( 0, 2 )) {
 				local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
 				if ( _ < 3855 ) { _ = "#" }
 				else if ( _ < 7710 ) { _ = "@" }
@@ -2939,11 +4194,11 @@ function Gibberish( t, p ) {
 
 				letter += _
 				j++
-			end
+			}
 		}
 		returntext += letter
 		i++
-	end
+	}
 	return returntext
 }
 
@@ -2977,7 +4232,11 @@ function has_gravity( AT, T ) {
 }
 
 function hasvar( A, varname ) {
-	// Decompile Failure: fail decode_fail,117,31
+	if ( A.vars.Find( ::lowertext( varname ) ) ) {
+		return 1
+	} else {
+		return 0
+	}
 }
 
 function healthscan( user, M, mode ) {
@@ -3138,7 +4397,7 @@ function hex2num( hex ) {
 		len = ::length( hex )
 		i = null
 		i = 1
-		while (i <= len) do
+		while (i <= len) {
 			num = ::text2ascii( hex, i )
 			local _ = num // Was a switch-case, sorry for the mess.
 			if ( 48<=_&&_<=57 ) {
@@ -3160,7 +4419,7 @@ function hex2num( hex ) {
 			_default *= 16
 			_default += num
 			i++
-		end
+		}
 		if ( negative ) {
 			_default *= -1
 		}
@@ -3290,7 +4549,7 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 			s = Y2 - Y1 < 0 ? -1 : 1
 			Y1 += s
 			if ( Y1 != Y2 ) {
-				T = ::locate( X1, Y1, Z )
+				T = ::locate3( X1, Y1, Z )
 				if ( T.opacity ) {
 					return 0
 				}
@@ -3310,7 +4569,7 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 					} else {
 						X1 += signX
 					}
-					T = ::locate( X1, Y1, Z )
+					T = ::locate3( X1, Y1, Z )
 					if ( T.opacity ) {
 						return 0
 					}
@@ -3516,13 +4775,13 @@ function IsGuestKey( key ) {
 	}
 	len = ::length( key )
 	i = 7
-	while (i <= len) do
+	while (i <= len) {
 		ch = ::text2ascii( key, i )
 		if ( ch < 48 || ch > 57 ) {
 			return 0
 		}
 		i++
-	end
+	}
 	return 1
 }
 
@@ -3704,7 +4963,7 @@ function keywords_lookup( msg ) {
 			surname_found = 0
 			i = null
 			i = L.len
-			while (i >= 1) do
+			while (i >= 1) {
 				word = ::ckey( L[i] )
 				if ( word ) {
 					surnames[word] = M
@@ -3712,16 +4971,16 @@ function keywords_lookup( msg ) {
 					break
 				}
 				i--
-			end
+			}
 			i = null
 			i = 1
-			while (i < surname_found) do
+			while (i < surname_found) {
 				word = ::ckey( L[i] )
 				if ( word ) {
 					forenames[word] = M
 				}
 				i++
-			end
+			}
 			ckeys[M.ckey] = M
 		}
 	}
@@ -3764,6 +5023,27 @@ function keywords_lookup( msg ) {
 
 function list2json( L ) {
 	return ::_jsonw.WriteObject( L )
+}
+
+function list2stickyban( ban ) {
+	if ( !ban || !::istype( ban, ::List ) ) {
+		return
+	}
+	_default = ban.Copy()
+	if ( _default.keys ) {
+		_default.keys = ::list2text( _default.keys, "," )
+	}
+	if ( _default.type ) {
+		_default.type = ::list2text( _default.type, "," )
+	}
+	if ( _default.IP ) {
+		_default.IP = ::list2text( _default.IP, "," )
+	}
+	if ( _default.computer_id ) {
+		_default.computer_id = ::list2text( _default.computer_id, "," )
+	}
+	_default = ::list2params( _default )
+	return _default
 }
 
 function list2text( ls, sep ) {
@@ -3935,6 +5215,12 @@ function log_attack( text ) {
 	}
 }
 
+function log_chat( text ) {
+	if ( ::config.log_pda ) {
+		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]CHAT: " + ::txt.mark( text ) )
+	}
+}
+
 function log_emote( text ) {
 	if ( ::config.log_emote ) {
 		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]EMOTE: " + ::txt.mark( text ) )
@@ -3983,6 +5269,12 @@ function log_vote( text ) {
 	}
 }
 
+function log_whisper( text ) {
+	if ( ::config.log_whisper ) {
+		::diary.write( "[" + ::txt.mark( ::time_stamp() ) + "]WHISPER: " + ::txt.mark( text ) )
+	}
+}
+
 function make_maint_all_access(  ) {
 	local A, D
 	A = null
@@ -4003,6 +5295,149 @@ function make_maint_all_access(  ) {
 	}
 	::minor_announce( "Access restrictions on maintenance and external airlocks have been lifted.", "Attention! Station-wide emergency declared!", 1 )
 	::emergency_access = 1
+}
+
+function make_mining_asteroid_secret(  ) {
+	local valid, T, sanity, room, turfs, x_size, y_size, areapoints, theme, walltypes, floortypes, treasureitems, fluffitems, floor, surroundings, emptyturfs, A, surprise, garbage
+	valid = 0
+	T = null
+	sanity = 0
+	room = null
+	turfs = null
+	x_size = 5
+	y_size = 5
+	areapoints = 0
+	theme = "organharvest"
+	walltypes = ::List({ [::TurfSimulatedMineralRandom]= 1, [::TurfSimulatedWall]= 3 })
+	floortypes = ::List([ ::TurfSimulatedFloorPlasteel ])
+	treasureitems = ::List()
+	fluffitems = ::List()
+	x_size = ::rand( 3, 7 )
+	y_size = ::rand( 3, 7 )
+	areapoints = x_size * y_size
+	local _ = ::pick_list( ::possiblethemes ) // Was a switch-case, sorry for the mess.
+	if ( _=="organharvest" ) {
+		walltypes = ::List({ [::TurfSimulatedMineralRandomHigh_chance]= 1, [::TurfSimulatedWall]= 2, [::TurfSimulatedWallR_wall]= 2 })
+		floortypes = ::List([ ::TurfSimulatedFloorPlasteel, ::TurfSimulatedFloorEngine ])
+		treasureitems = ::List({ [::ObjStructureClosetCritterCat]= 2, [::ObjItemWeaponCircular_saw]= 1, [::ObjMachineryBotMedbotMysterious]= 1 })
+		fluffitems = ::List({ [::ObjItemClothingGlassesHudHealth]= 1, [::ObjItemDeviceMass_spectrometerAdv]= 1, [::ObjItemWeaponSurgical_drapes]= 2, [::ObjItemWeaponTankInternalsAnesthetic]= 1, [::ObjItemWeaponStorageFirstaidRegular]= 3, [::ObjItemWeaponScalpel]= 1, [::ObjStructureOptable]= 1, [::ObjStructureClosetCrateFreezer]= 2, [::ObjItemOrganInternalAppendix]= 2, [::ObjEffectDecalCleanableBlood]= 5 })
+	} else if ( _=="cult" ) {
+		theme = "cult"
+		walltypes = ::List({ [::TurfSimulatedMineralRandomHigh_chance]= 1, [::TurfSimulatedWallCult]= 3 })
+		floortypes = ::List([ ::TurfSimulatedFloorPlasteelCult ])
+		treasureitems = ::List({ [::MobLivingSimple_animalHostileCreature]= 3, [::ObjItemClothingSuitCultrobes]= 2, [::ObjItemWeaponBedsheetCult]= 2, [::ObjItemClothingSuitSpaceCult]= 1, [::ObjItemDeviceSoulstoneAnybody]= 1 })
+		fluffitems = ::List({ [::ObjItemClothingShoesCult]= 1, [::ObjItemClothingHeadHelmetSpaceCult]= 1, [::ObjItemWeaponEctoplasm]= 3, [::ObjStructureTableWood]= 2, [::ObjEffectDecalCleanableBlood]= 4, [::ObjItemOrganInternalHeart]= 2, [::ObjItemToyCrayonRed]= 2, [::ObjStructureCultTalisman]= 1, [::ObjEffectGibspawner]= 1, [::ObjEffectGateway]= 1 })
+	} else if ( _=="wizden" ) {
+		theme = "wizden"
+		walltypes = ::List({ [::TurfSimulatedMineralRandomHigh_chance]= 1, [::TurfSimulatedWallMineralPlasma]= 3 })
+		floortypes = ::List([ ::TurfSimulatedFloorWood ])
+		treasureitems = ::List({ [::ObjItemVoodoo]= 3, [::ObjItemToyKatana]= 3, [::ObjStructureConstructshell]= 1, [::ObjItemWeaponSpellbookOneuseSmoke]= 1, [::ObjItemWeaponSpellbookOneuseForcewall]= 1, [::ObjItemClothingHeadWizardRed]= 2, [::ObjItemWeaponSpellbookOneuseBlind]= 1, [::ObjItemWeaponVeilrenderVealrender]= 2 })
+		fluffitems = ::List({ [::ObjItemWeaponCoinMythril]= 3, [::ObjEffectDecalCleanableDirt]= 3, [::ObjItemWeaponStaff]= 2, [::ObjItemWeaponDice]= 3, [::ObjItemTrashCandle]= 3, [::ObjItemWeaponStorageBeltSoulstone]= 1, [::ObjStructureDresser]= 1, [::ObjStructureSafeFloor]= 1 })
+	} else if ( _=="cavein" ) {
+		theme = "cavein"
+		walltypes = ::List({ [::TurfSimulatedMineralRandomHigh_chance]= 1 })
+		floortypes = ::List([ ::TurfSimulatedFloorPlatingAsteroidAirless, ::TurfSimulatedFloorPlatingBeachSand ])
+		treasureitems = ::List({ [::ObjItemWeaponPickaxeDrillJackhammer]= 5, [::ObjItemWeaponResonator]= 1, [::ObjItemWeaponGunEnergyKinetic_accelerator]= 1, [::ObjItemWeaponPickaxeDrillDiamonddrill]= 2, [::ObjMechaWorkingRipleyMining]= 1 })
+		fluffitems = ::List({ [::ObjItemWeaponTankInternalsOxygenRed]= 2, [::ObjItemWeaponReagent_containersFoodSnacksGrownChili]= 1, [::ObjItemClothingUnderOveralls]= 1, [::ObjEffectDecalRemainsHuman]= 1, [::ObjEffectDecalCleanableBlood]= 3 })
+	} else if ( _=="xenoden" ) {
+		theme = "xenoden"
+		walltypes = ::List({ [::TurfSimulatedMineralRandomHigh_chance]= 1 })
+		floortypes = ::List([ ::TurfSimulatedFloorPlatingAsteroidAirless, ::TurfSimulatedFloorPlatingBeachSand ])
+		treasureitems = ::List({ [::ObjItemClothingMaskFacehugger]= 1 })
+		fluffitems = ::List({ [::ObjEffectDecalCleanableXenobloodXsplatter]= 5, [::ObjEffectDecalRemainsHuman]= 1 })
+	} else if ( _=="hitech" ) {
+		theme = "hitech"
+		walltypes = ::List({ [::TurfSimulatedMineralRandom]= 1, [::TurfSimulatedWallR_wall]= 5 })
+		floortypes = ::List([ ::TurfSimulatedFloorGreengrid, ::TurfSimulatedFloorBluegrid ])
+		treasureitems = ::List({ [::ObjMachineryBiogenerator]= 1, [::ObjMachineryR_n_dProtolathe]= 1, [::ObjMachineryComputerTelescience]= 1, [::ObjMachineryChem_dispenserConstructable]= 1, [::ObjItemWeaponStock_partsCellHyper]= 1 })
+		fluffitems = ::List({ [::ObjStructureMecha_wreckagePhazon]= 1, [::ObjItemDevicePdaClear]= 1, [::ObjItemWeaponStock_partsCapacitorSuper]= 3, [::ObjItemWeaponStock_partsManipulatorPico]= 3, [::ObjItemWeaponStock_partsMatter_binSuper]= 3, [::ObjItemWeaponStock_partsScanning_modulePhasic]= 3, [::ObjStructureTableReinforced]= 2 })
+	} else if ( _=="speakeasy" ) {
+		theme = "speakeasy"
+		floortypes = ::List([ ::TurfSimulatedFloorPlasteel, ::TurfSimulatedFloorWood ])
+		treasureitems = ::List({ [::ObjMachineryVendingCoffee]= 3, [::ObjMachineryComputerSecurityWooden_tv]= 4, [::ObjMachineryReagentgrinder]= 2, [::ObjItemWeaponStorageBackpackSatchel_flat]= 1, [::ObjItemWeaponGunProjectileRevolverDoublebarrel]= 1, [::ObjItemWeaponMeleeEnergySwordPirate]= 1 })
+		fluffitems = ::List({ [::ObjItemClothingShoesLaceup]= 2, [::ObjItemWeaponReagent_containersFoodDrinksBottleWhiskey]= 3, [::ObjItemWeaponReagent_containersFoodDrinksBottleWine]= 3, [::ObjItemWeaponReagent_containersFoodDrinksShaker]= 1, [::ObjItemStackSpacecashC500]= 4, [::ObjStructureReagent_dispensersBeerkeg]= 1, [::ObjStructureTableWood]= 2 })
+	} else if ( _=="plantlab" ) {
+		theme = "plantlab"
+		treasureitems = ::List({ [::ObjItemSeedsCashseed]= 2, [::ObjItemSeedsCoffee_robusta_seed]= 2, [::ObjItemSeedsBluetomatoseed]= 2, [::ObjItemSeedsBluespacetomatoseed]= 2, [::ObjItemSeedsNovaflowerseed]= 2, [::ObjItemWeaponGunEnergyFloragun]= 1 })
+		fluffitems = ::List({ [::ObjItemWeaponReagent_containersGlassBottleAmmonia]= 3, [::ObjItemWeaponReagent_containersGlassBottleDiethylamine]= 3, [::ObjItemWeaponReagent_containersSyringeCharcoal]= 2, [::ObjEffectGlowshroomSingle]= 2, [::ObjMachineryHydroponics]= 1, [::ObjStructureTableReinforced]= 2, [::ObjStructureFloraKirbyplants]= 1 })
+	}
+	::possiblethemes -= theme
+	floor = ::pick_list( floortypes )
+	turfs = ::get_area_turfs( ::Area(3120) )
+	if ( !turfs.len ) {
+		return 0
+	}
+	if ( !valid ) {
+		valid = 1
+		sanity++
+		if ( sanity > 100 ) {
+			return 0
+		}
+		T = ::pick_list( turfs )
+		if ( !T ) {
+			return 0
+		}
+		surroundings = ::List()
+		surroundings += ::range( 7, ::locate3( T.x, T.y, T.z ) )
+		surroundings += ::range( 7, ::locate3( T.x + x_size, T.y, T.z ) )
+		surroundings += ::range( 7, ::locate3( T.x, T.y + y_size, T.z ) )
+		surroundings += ::range( 7, ::locate3( T.x + x_size, T.y + y_size, T.z ) )
+		if ( ::locate_in( ::Area(3119), surroundings ) ) {
+			valid = 0
+			// goto 424
+		}
+		if ( ::locate_in( ::TurfSpace, surroundings ) ) {
+			valid = 0
+			// goto 424
+		}
+		if ( ::locate_in( ::Area(2768), surroundings ) ) {
+			valid = 0
+			// goto 424
+		}
+		if ( ::locate_in( ::TurfSimulatedFloorPlatingAsteroidAirless, ::range( 5, T ) ) ) {
+			valid = 0
+			// goto 424
+		}
+		// goto 424
+	}
+	if ( !T ) {
+		return 0
+	}
+	room = ::spawn_room( T, x_size, y_size, walltypes, floor )
+	if ( room ) {
+		emptyturfs = room.floors
+		A = null
+		foreach (_ in emptyturfs ) {
+			A = _
+			if ( !::istype( A, ::TurfSimulatedFloor ) ) {
+				continue
+			}
+			if ( ::istype( A, ::TurfSimulatedFloor ) ) {
+				::spawn( 2, function() {
+					A.fullUpdateMineralOverlays()
+					return
+				})
+			}
+		}
+		T = ::pick_list( emptyturfs )
+		if ( T ) {
+			::ObjEffectGlowshroomSingle( T )
+			surprise = null
+			surprise = ::pickweight( treasureitems )
+			surprise( T )
+			emptyturfs -= T
+			if ( areapoints >= 10 ) {
+				T = ::pick_list( emptyturfs )
+				garbage = null
+				garbage = ::pickweight( fluffitems )
+				garbage( T )
+				areapoints -= 5
+				emptyturfs -= T
+				// goto 630
+			}
+		}
+	}
+	return 1
 }
 
 function make_ne_corner( adjacencies ) {
@@ -4239,7 +5674,7 @@ function merge_text( into, from, null_char ) {
 	end = ::length( into ) + 1
 	i = null
 	i = 1
-	while (i < end) do
+	while (i < end) {
 		ascii = ::text2ascii( from, i )
 		if ( ascii == null_ascii ) {
 			if ( previous != 1 ) {
@@ -4256,7 +5691,7 @@ function merge_text( into, from, null_char ) {
 			previous = 0
 		}
 		i++
-	end
+	}
 	if ( previous == 0 ) {
 		_default += ::copytext( from, start, end )
 	} else {
@@ -4714,7 +6149,33 @@ function new_station_name(  ) {
 }
 
 function ninjaspeak( n ) {
-	// Decompile Failure: fail decode_fail,191,228
+	local te, t, p, n_letter, n_mod
+	te = ::html_decode( n )
+	t = ""
+	n = ::length( n )
+	p = 1
+	if ( p <= n ) {
+		n_letter = null
+		n_mod = ::rand( 1, 4 )
+		if ( p + n_mod > n + 1 ) {
+			n_letter = ::copytext( te, p, n + 1 )
+		} else {
+			n_letter = ::copytext( te, p, p + n_mod )
+		}
+		if ( ::prob( 50 ) ) {
+			if ( ::prob( 30 ) ) {
+				n_letter = "" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter )
+			} else {
+				n_letter = "" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter )
+			}
+		} else {
+			n_letter = "" + ::txt.mark( n_letter )
+		}
+		t = "" + ::txt.mark( t ) + ::txt.mark( n_letter )
+		p = p + n_mod
+		// goto 16
+	}
+	return ::copytext( ::sanitize( t ), 1, 1024 )
 }
 
 function notice( msg ) {
@@ -4722,7 +6183,25 @@ function notice( msg ) {
 }
 
 function nukelastname( M ) {
-	// Decompile Failure: fail decode_fail,193,194
+	local randomname, newname
+	randomname = ::pick_list( ::last_names )
+	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	if ( _ < 9362 ) { _ = "Czar" }
+	else if ( _ < 18724 ) { _ = "Boss" }
+	else if ( _ < 28086 ) { _ = "Commander" }
+	else if ( _ < 37448 ) { _ = "Chief" }
+	else if ( _ < 46810 ) { _ = "Kingpin" }
+	else if ( _ < 56172 ) { _ = "Director" }
+	else  { _ = "Overlord" }
+
+	newname = ::copytext( ::sanitize( ::input( M, "You are the nuke operative " + ::txt.mark( _ ) + ". Please choose a last name for your family.", "Name change", randomname, null, 0 ) ), 1, 26 )
+	if ( !newname ) {
+		newname = randomname
+	} else if ( newname == "Unknown" || ( newname == "floor" || ( newname == "wall" || ( newname == "rwall" || newname == "_" ) ) ) ) {
+		M.write( "That name is reserved." )
+		return ::nukelastname( M )
+	}
+	return ::capitalize( newname )
 }
 
 function NukeNameAssign( lastname, syndicates ) {
@@ -4741,7 +6220,44 @@ function NukeNameAssign( lastname, syndicates ) {
 }
 
 function num2hex( num, len ) {
-	// Decompile Failure: stdfunc abs
+	local i, remainder, _default
+	if ( len == null ) {
+		len = 2
+	}
+	if ( !::isnum( num ) ) {
+		num = 0
+	}
+	num = ::round( ::abs( num ) )
+	_default = ""
+	i = 0
+	if ( 1 ) {
+		if ( len <= 0 ) {
+			if ( !num ) {
+				
+			} else {
+				// goto 54
+				if ( i >= len ) {
+					
+				} else {
+					remainder = num / 16
+					num = ::round( remainder )
+					remainder = ( remainder - num ) * 16
+					local _ = remainder // Was a switch-case, sorry for the mess.
+					if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
+						_default = "" + ::txt.mark( remainder ) + _default
+					} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
+						_default = ::ascii2text( remainder + 87 ) + _default
+					} else {
+						_default = "0" + _default
+					}
+					i++
+					// goto 31
+				}
+			}
+		}
+	}
+	return _default
+	return _default
 }
 
 function onclose( user, windowid, ref ) {
@@ -4857,12 +6373,129 @@ function PlaceInPool( diver, destroy ) {
 	diver.ResetVars()
 }
 
+function play_vox_word( word, z_level, only_listener ) {
+	local sound_file, voice, M, T
+	word = ::lowertext( word )
+	if ( ::vox_sounds[word] ) {
+		sound_file = ::vox_sounds[word]
+		voice = "/sound"( "LIST_CALL", ::List({ ["channel"]= ::VOX_CHANNEL, ["wait"]= 1, [1]= sound_file }) )
+		voice.status = ::SOUND_STREAM
+		if ( !only_listener ) {
+			M = null
+			foreach (_ in ::player_list ) {
+				M = _
+				if ( M.client && !M.ear_deaf ) {
+					T = ::get_turf( M )
+					if ( T.z == z_level ) {
+						M.write( voice )
+					}
+				}
+			}
+		} else {
+			only_listener.write( voice )
+		}
+		return 1
+	}
+	return 0
+}
+
 function playsound( source, soundin, vol, vary, extrarange, falloff, surround ) {
-	// Decompile Failure: bad iter loop 4
+	local frequency, turf_source, P, M, T
+	if ( surround == null ) {
+		surround = 1
+	}
+	soundin = ::get_sfx( soundin )
+	if ( ::isarea( source ) ) {
+		throw ::Exception( "playsound(): source is an area", "code/game/sound.dm", 6 )
+		return
+	}
+	frequency = ::get_rand_frequency()
+	turf_source = ::get_turf( source )
+	P = null
+	foreach (_ in ::player_list ) {
+		P = _
+		M = P
+		if ( !M || !M.client ) {
+			continue
+		}
+		if ( ::get_dist( M, turf_source ) <= ::game.view + extrarange ) {
+			T = ::get_turf( M )
+			if ( T && T.z == turf_source.z ) {
+				M.playsound local( turf_source, soundin, vol, vary, frequency, falloff, surround )
+			}
+		}
+	}
 }
 
 function pollCandidates( Question, jobbanType, gametypeCheck, be_special_flag, poll_time ) {
-	// Decompile Failure: stdfunc alert
+	local candidates, time_passed, G, G
+	if ( be_special_flag == null ) {
+		be_special_flag = 0
+	}
+	if ( poll_time == null ) {
+		poll_time = 300
+	}
+	candidates = ::List()
+	time_passed = ::game.time
+	if ( !Question ) {
+		Question = "Would you like to be a special role?"
+	}
+	G = null
+	foreach (_ in ::player_list ) {
+		G = _
+		if ( !::istype( G, ::MobDeadObserver ) ) {
+			continue
+		}
+		if ( !G.key || !G.client ) {
+			continue
+		}
+		if ( be_special_flag ) {
+			if ( !( G.client.prefs.be_special & be_special_flag ) ) {
+				continue
+			}
+		}
+		if ( gametypeCheck ) {
+			if ( !gametypeCheck.age check( G.client ) ) {
+				continue
+			}
+		}
+		if ( jobbanType ) {
+			if ( ::jobban_isbanned( G, jobbanType ) || ::jobban_isbanned( G, "Syndicate" ) ) {
+				continue
+			}
+		}
+		::spawn( 0, function() {
+			G.write( ::Rsc(9) )
+			local _ = ::alert( G, Question, "Please answer in " + ::txt.mark( poll_time / 10 ) + " seconds!", "Yes", "No", null ) // Was a switch-case, sorry for the mess.
+			if ( _=="Yes" ) {
+				G.write( "<span class='notice'>Choice registered: Yes.</span>" )
+				if ( ::game.time - time_passed > poll_time ) {
+					G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" )
+					G.write( ::Rsc(10) )
+					return
+				}
+				candidates += G
+			} else if ( _=="No" ) {
+				G.write( "<span class='danger'>Choice registered: No.</span>" )
+				return
+			} else {
+				return
+			}
+			return
+		})
+	}
+	::sleep( poll_time )
+	G = null
+	foreach (_ in candidates ) {
+		G = _
+		if ( !::istype( G, ::MobDeadObserver ) ) {
+			continue
+		}
+		if ( !G.key || !G.client ) {
+			candidates.Remove( G )
+		}
+	}
+	return candidates
 }
 
 function PoolOrNew( get_type, second_arg ) {
@@ -4954,11 +6587,58 @@ function print_command_report( text, title ) {
 }
 
 function priority_announce( text, title, sound, type ) {
-	// Decompile Failure: fail decode_fail,190,337
+	local announcement, M
+	if ( title == null ) {
+		title = ""
+	}
+	if ( sound == null ) {
+		sound = ::Rsc(62)
+	}
+	if ( !text ) {
+		return
+	}
+	if ( type == "Priority" ) {
+		announcement += "<h1 class='alert'>Priority Announcement</h1>"
+		if ( title && ::length( title ) > 0 ) {
+			announcement += "<br><h2 class='alert'>" + ::txt.mark( ::html_encode( title ) ) + "</h2>"
+			// goto 109
+		}
+	}
+	if ( type == "Captain" ) {
+		announcement += "<h1 class='alert'>Captain Announces</h1>"
+		::news_network.SubmitArticle( text, "Captain's Announcement", "Station Announcements", null )
+	} else {
+		announcement += "<h1 class='alert'>" + ::txt.mark( ::_command_name() ) + " Update</h1>"
+		if ( title && ::length( title ) > 0 ) {
+			announcement += "<br><h2 class='alert'>" + ::txt.mark( ::html_encode( title ) ) + "</h2>"
+		}
+		if ( title == "" ) {
+			::news_network.SubmitArticle( text, "Central Command Update", "Station Announcements", null )
+		} else {
+			::news_network.SubmitArticle( title + "<br><br>" + text, "Central Command", "Station Announcements", null )
+		}
+	}
+	announcement += "<br><span class='alert'>" + ::txt.mark( ::html_encode( text ) ) + "</span><br>"
+	announcement += "<br>"
+	M = null
+	foreach (_ in ::player_list ) {
+		M = _
+		if ( !::istype( M, ::MobNew_player ) && !M.ear_deaf ) {
+			M.write( announcement )
+			M.write( "/sound"( sound ) )
+		}
+	}
 }
 
 function projectile_trajectory( src_x, src_y, rotation, angle, power ) {
-	// Decompile Failure: fail decode_fail,195,121
+	local power_x, power_y, time, distance, dest_x, dest_y
+	power_x = power * ::cos( angle )
+	power_y = power * ::sin( angle )
+	time = power_y * 2 / 10
+	distance = time * power_x
+	dest_x = src_x + distance * ::sin( rotation )
+	dest_y = src_y + distance * ::cos( rotation )
+	return ::DatumProjectile_data( src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y )
 }
 
 function propagate_network( O, PN ) {
@@ -5047,7 +6727,47 @@ function qdeleted( A ) {
 }
 
 function radiation_pulse( epicenter, heavy_range, light_range, severity, log ) {
-	// Decompile Failure: bad iter loop 4
+	local light_severity, T, distance
+	if ( log == null ) {
+		log = 0
+	}
+	if ( !epicenter || !severity ) {
+		return
+	}
+	if ( !::istype( epicenter, ::Turf ) ) {
+		epicenter = ::get_turf( epicenter.loc )
+	}
+	if ( log ) {
+		::message_admins( "Radiation pulse with size (" + ::txt.mark( heavy_range ) + ", " + ::txt.mark( light_range ) + ") and severity " + ::txt.mark( severity ) + " in area " + ::txt.mark( epicenter.loc.name ) + " " )
+		::log_game( "Radiation pulse with size (" + ::txt.mark( heavy_range ) + ", " + ::txt.mark( light_range ) + ") and severity " + ::txt.mark( severity ) + " in area " + ::txt.mark( epicenter.loc.name ) + " " )
+	}
+	if ( heavy_range > light_range ) {
+		light_range = heavy_range
+	}
+	light_severity = severity * 0.5
+	T = null
+	foreach (_ in ::range( light_range, epicenter ) ) {
+		T = _
+		if ( !::istype( T, ::Atom ) ) {
+			continue
+		}
+		distance = ::get_dist( epicenter, T )
+		if ( distance < 0 ) {
+			distance = 0
+		}
+		if ( distance < heavy_range ) {
+			T.rad act( severity )
+		} else if ( distance == heavy_range ) {
+			if ( ::prob( 50 ) ) {
+				T.rad act( severity )
+			} else {
+				T.rad act( light_severity )
+			}
+		} else if ( distance <= light_range ) {
+			T.rad act( light_severity )
+		}
+	}
+	return 1
 }
 
 function ran_zone( zone, probability ) {
@@ -5274,7 +6994,16 @@ function random_socks( gender ) {
 }
 
 function random_step( AM, steps, chance ) {
-	// Decompile Failure: fail decode_fail,134,68
+	local initial_chance
+	initial_chance = chance
+	if ( steps > 0 ) {
+		if ( ::prob( chance ) ) {
+			::step( AM, ::pick_list( ::alldirs ) )
+		}
+		chance = ::max( chance - initial_chance / steps, 0 )
+		steps--
+		// goto 5
+	}
 }
 
 function random_string( length, characters ) {
@@ -5282,10 +7011,10 @@ function random_string( length, characters ) {
 	_default = ""
 	i = null
 	i = 1
-	while (i <= length) do
+	while (i <= length) {
 		_default += ::pick_list( characters )
 		i++
-	end
+	}
 	return _default
 }
 
@@ -5324,13 +7053,13 @@ function random_unique_lizard_name( gender, attempts_to_find_unique_name ) {
 	}
 	i = null
 	i = 1
-	while (i <= attempts_to_find_unique_name) do
+	while (i <= attempts_to_find_unique_name) {
 		_default = ::capitalize( ::lizard_name( gender ) )
 		if ( i != attempts_to_find_unique_name && !::findname( _default ) ) {
 			break
 		}
 		i++
-	end
+	}
 	return _default
 }
 
@@ -5341,7 +7070,7 @@ function random_unique_name( gender, attempts_to_find_unique_name ) {
 	}
 	i = null
 	i = 1
-	while (i <= attempts_to_find_unique_name) do
+	while (i <= attempts_to_find_unique_name) {
 		if ( gender == ::FEMALE ) {
 			_default = ::capitalize( ::pick_list( ::first_names_female ) ) + " " + ::capitalize( ::pick_list( ::last_names ) )
 		} else {
@@ -5351,8 +7080,59 @@ function random_unique_name( gender, attempts_to_find_unique_name ) {
 			break
 		}
 		i++
-	end
+	}
 	return _default
+}
+
+function randomColor( mode ) {
+	if ( mode == null ) {
+		mode = 0
+	}
+	local _ = mode // Was a switch-case, sorry for the mess.
+	if ( _==0 ) {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 3640 ) { _ = "white" }
+		else if ( _ < 7280 ) { _ = "black" }
+		else if ( _ < 10920 ) { _ = "gray" }
+		else if ( _ < 14560 ) { _ = "red" }
+		else if ( _ < 18200 ) { _ = "green" }
+		else if ( _ < 21840 ) { _ = "blue" }
+		else if ( _ < 25480 ) { _ = "brown" }
+		else if ( _ < 29120 ) { _ = "yellow" }
+		else if ( _ < 32760 ) { _ = "orange" }
+		else if ( _ < 36400 ) { _ = "darkred" }
+		else if ( _ < 40040 ) { _ = "crimson" }
+		else if ( _ < 43680 ) { _ = "lime" }
+		else if ( _ < 47320 ) { _ = "darkgreen" }
+		else if ( _ < 50960 ) { _ = "cyan" }
+		else if ( _ < 54600 ) { _ = "navy" }
+		else if ( _ < 58240 ) { _ = "teal" }
+		else if ( _ < 61880 ) { _ = "purple" }
+		else  { _ = "indigo" }
+
+		return _
+	} else if ( _==1 ) {
+		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+		if ( _ < 4369 ) { _ = "red" }
+		else if ( _ < 8738 ) { _ = "green" }
+		else if ( _ < 13107 ) { _ = "blue" }
+		else if ( _ < 17476 ) { _ = "brown" }
+		else if ( _ < 21845 ) { _ = "yellow" }
+		else if ( _ < 26214 ) { _ = "orange" }
+		else if ( _ < 30583 ) { _ = "darkred" }
+		else if ( _ < 34952 ) { _ = "crimson" }
+		else if ( _ < 39321 ) { _ = "lime" }
+		else if ( _ < 43690 ) { _ = "darkgreen" }
+		else if ( _ < 48059 ) { _ = "cyan" }
+		else if ( _ < 52428 ) { _ = "navy" }
+		else if ( _ < 56797 ) { _ = "teal" }
+		else if ( _ < 61166 ) { _ = "purple" }
+		else  { _ = "indigo" }
+
+		return _
+	} else {
+		return "white"
+	}
 }
 
 function randomize_human( H ) {
@@ -5464,6 +7244,10 @@ function regex_find( str, exp ) {
 	// Decompile Failure: fail decode_fail,278,31
 }
 
+function reject_bad_name( t_in, allow_numbers, max_length ) {
+	// Decompile Failure: bad iter loop 4
+}
+
 function reject_bad_text( text, max_length ) {
 	local non_whitespace, i
 	if ( max_length == null ) {
@@ -5475,7 +7259,7 @@ function reject_bad_text( text, max_length ) {
 	non_whitespace = 0
 	i = null
 	i = 1
-	while (i <= ::length( text )) do
+	while (i <= ::length( text )) {
 		local _ = ::text2ascii( text, i ) // Was a switch-case, sorry for the mess.
 		if ( 127<=_&&_<=255 ) {
 			return
@@ -5490,7 +7274,7 @@ function reject_bad_text( text, max_length ) {
 			non_whitespace = 1
 		}
 		i++
-	end
+	}
 	if ( non_whitespace ) {
 		return text
 	}
@@ -5531,10 +7315,10 @@ function repeat_string( times, string ) {
 	_default = ""
 	i = null
 	i = 1
-	while (i <= times) do
+	while (i <= times) {
 		_default += string
 		i++
-	end
+	}
 	return _default
 }
 
@@ -5711,7 +7495,10 @@ function safepick( L ) {
 }
 
 function sanitize( t, repl_chars ) {
-	// Decompile Failure: fail decode_fail,190,35
+	if ( repl_chars == null ) {
+		repl_chars = null
+	}
+	return ::html_encode( ::sanitize_simple( t, repl_chars ) )
 }
 
 function sanitize_frequency( f ) {
@@ -5742,7 +7529,7 @@ function sanitize_hexcolor( color, desired_format, include_crunch, __default ) {
 	_default = ""
 	i = null
 	i = start
-	while (i <= len) do
+	while (i <= len) {
 		ascii = ::text2ascii( color, i )
 		local _ = ascii // Was a switch-case, sorry for the mess.
 		if ( 48<=_&&_<=57 ) {
@@ -5755,7 +7542,7 @@ function sanitize_hexcolor( color, desired_format, include_crunch, __default ) {
 			break
 		}
 		i += step_size
-	end
+	}
 	if ( ::length( _default ) != desired_format ) {
 		if ( __default ) {
 			return __default
@@ -5792,6 +7579,19 @@ function sanitizeSQL( t ) {
 	local sqltext
 	sqltext = ::dbcon.Quote( t )
 	return ::copytext( sqltext, 2, ::length( sqltext ) )
+}
+
+function screen_loc2turf( scr_loc, origin ) {
+	local tX, tY, tZ
+	tX = ::text2list( scr_loc, "," )
+	tY = ::text2list( tX[2], ":" )
+	tZ = origin.z
+	tY = tY[1]
+	tX = ::text2list( tX[1], ":" )
+	tX = tX[1]
+	tX = ::max( 1, ::min( ::game.maxx, origin.x + ( ::text2num( tX ) - ( ::game.view + 1 ) ) ) )
+	tY = ::max( 1, ::min( ::game.maxy, origin.y + ( ::text2num( tY ) - ( ::game.view + 1 ) ) ) )
+	return ::locate3( tX, tY, tZ )
 }
 
 function SDQL_from_objs( tree ) {
@@ -5850,10 +7650,10 @@ function SDQL_testout( query_tree, indent ) {
 	spaces = ""
 	s = null
 	s = 0
-	while (s < indent) do
+	while (s < indent) {
 		spaces += "    "
 		s++
-	end
+	}
 	item = null
 	foreach (_ in query_tree ) {
 		item = _
@@ -5883,7 +7683,16 @@ function SDQL2_tokenize( query_text ) {
 }
 
 function seclevel2num( seclevel ) {
-	// Decompile Failure: fail decode_fail,117,52
+	local _ = ::lowertext( seclevel ) // Was a switch-case, sorry for the mess.
+	if ( _=="green" ) {
+		return 0
+	} else if ( _=="blue" ) {
+		return 1
+	} else if ( _=="red" ) {
+		return 2
+	} else if ( _=="delta" ) {
+		return 3
+	}
 }
 
 function seedify( O, t_max, extractor ) {
@@ -5936,7 +7745,17 @@ function seedify( O, t_max, extractor ) {
 }
 
 function select_active_ai( user ) {
-	// Decompile Failure: fail decode_fail,193,69
+	local ais, _default
+	ais = ::active_ais()
+	if ( ais.len ) {
+		if ( user ) {
+			_default = ::input( user, "AI signals detected:", "AI Selection", ais[1], ais, 0 )
+		} else {
+			_default = ::pick_list( ais )
+		}
+	}
+	return _default
+	return _default
 }
 
 function select_active_ai_with_fewest_borgs(  ) {
@@ -5956,11 +7775,14 @@ function select_active_ai_with_fewest_borgs(  ) {
 }
 
 function send_byjax( receiver, control_id, target_element, new_content, callback, callback_args ) {
-	// Decompile Failure: fail decode_fail,183,142
+	// Decompile Failure: fail decode_fail,267,142
 }
 
 function send2irc( msg, msg2 ) {
-	// Decompile Failure: fail decode_fail,152,29
+	if ( ::config.useircbot ) {
+		::shell( "python nudge.py " + ::txt.mark( msg ) + " " + ::txt.mark( msg2 ) )
+	}
+	return
 }
 
 function send2irc_adminless_only( source, msg, requiredflags ) {
@@ -6140,6 +7962,171 @@ function setup_database_connection(  ) {
 	return _default
 }
 
+function setup_map_transitions(  ) {
+	local SLS, D, conf_set_len, k, A, point_grid, grid, P, i, j, pnt, possible_points, used_points, A, S, A
+	SLS = ::List()
+	conf_set_len = ::map_transition_config.len
+	k = 1
+	A = null
+	foreach (_ in ::map_transition_config ) {
+		A = _
+		D = ::DatumSpace_level( ::map_transition_config[A] )
+		D.name = A
+		D.z_value = k
+		if ( D.linked < 2 ) {
+			::z_levels_list["" + ::txt.mark( D.z_value )] = D
+		} else {
+			SLS.Add( D )
+		}
+		k++
+	}
+	point_grid = null
+	return
+	point_grid = ::List( conf_set_len * 2 + 1, conf_set_len * 2 + 1 )
+	grid = ::List()
+	P = null
+	i = null
+	i = 1
+	while (i <= conf_set_len * 2 + 1) {
+		j = null
+		j = 1
+		while (j <= conf_set_len * 2 + 1) {
+			P = ::DatumPoint( i, j, point_grid )
+			point_grid[i][j] = P
+			grid.Add( P )
+			j++
+		}
+		i++
+	}
+	pnt = null
+	foreach (_ in grid ) {
+		pnt = _
+		if ( !::istype( pnt, ::DatumPoint ) ) {
+			continue
+		}
+		pnt.set neigbours( point_grid )
+	}
+	P = point_grid[conf_set_len + 1][conf_set_len + 1]
+	possible_points = ::List()
+	used_points = ::List()
+	grid.Cut()
+	if ( SLS.len ) {
+		D = ::pick_list( SLS )
+		SLS.Remove( D )
+		D.xi = P.x
+		D.yi = P.y
+		P.spl = D
+		possible_points = possible_points | P.neigbours
+		used_points = used_points | P
+		possible_points.Remove( used_points )
+		D.set neigbours( used_points )
+		P = ::pick_list( possible_points )
+		grid["" + ::txt.mark( D.z_value )] = D
+		// goto 166
+	}
+	A = null
+	foreach (_ in ::z_levels_list ) {
+		A = _
+		grid[A] = ::z_levels_list[A]
+	}
+	S = null
+	foreach (_ in ::game ) {
+		S = _
+		if ( !::istype( S, ::TurfSpace ) ) {
+			continue
+		}
+		if ( S.x <= 7 ) {
+			D = grid["" + ::txt.mark( S.z )]
+			if ( !D ) {
+				::crash( "" + ::txt.mark( S.z ) + " position has no space level datum" )
+			}
+			if ( !D.neigbours.len ) {
+				continue
+			}
+			if ( D.neigbours.8 && D.neigbours.8 != D ) {
+				D = D.neigbours.8
+				S.destination_z = D.z_value
+			} else {
+				if ( D.neigbours.4 && D.neigbours.4 != D ) {
+					D = D.neigbours.4
+					// goto 290
+				}
+				S.destination_z = D.z_value
+			}
+			S.destination_x = ::game.maxx - 7 - 2
+			S.destination_y = S.y
+		}
+		if ( S.x >= ::game.maxx - 7 - 1 ) {
+			D = grid["" + ::txt.mark( S.z )]
+			if ( !D ) {
+				::crash( "" + ::txt.mark( S.z ) + " position has no space level datum" )
+			}
+			if ( !D.neigbours.len ) {
+				continue
+			}
+			if ( D.neigbours.4 && D.neigbours.4 != D ) {
+				D = D.neigbours.4
+				S.destination_z = D.z_value
+			} else {
+				if ( D.neigbours.8 && D.neigbours.8 != D ) {
+					D = D.neigbours.8
+					// goto 374
+				}
+				S.destination_z = D.z_value
+			}
+			S.destination_x = 9
+			S.destination_y = S.y
+		}
+		if ( S.y <= 7 ) {
+			D = grid["" + ::txt.mark( S.z )]
+			if ( !D ) {
+				::crash( "" + ::txt.mark( S.z ) + " position has no space level datum" )
+			}
+			if ( !D.neigbours.len ) {
+				continue
+			}
+			if ( D.neigbours.2 && D.neigbours.2 != D ) {
+				D = D.neigbours.2
+				S.destination_z = D.z_value
+			} else {
+				if ( D.neigbours.1 && D.neigbours.1 != D ) {
+					D = D.neigbours.1
+					// goto 450
+				}
+				S.destination_z = D.z_value
+			}
+			S.destination_x = S.x
+			S.destination_y = ::game.maxy - 7 - 2
+		}
+		if ( S.y >= ::game.maxy - 7 - 1 ) {
+			D = grid["" + ::txt.mark( S.z )]
+			if ( !D ) {
+				::crash( "" + ::txt.mark( S.z ) + " position has no space level datum" )
+			}
+			if ( !D.neigbours.len ) {
+				continue
+			}
+			if ( D.neigbours.1 && D.neigbours.1 != D ) {
+				D = D.neigbours.1
+				S.destination_z = D.z_value
+			} else {
+				if ( D.neigbours.2 && D.neigbours.2 != D ) {
+					D = D.neigbours.2
+					// goto 534
+				}
+				S.destination_z = D.z_value
+			}
+			S.destination_x = S.x
+			S.destination_y = 9
+		}
+	}
+	A = null
+	foreach (_ in grid ) {
+		A = _
+		::z_levels_list[A] = grid[A]
+	}
+}
+
 function SetViruses( R, data ) {
 	local preserve, A
 	if ( data ) {
@@ -6163,11 +8150,114 @@ function SetViruses( R, data ) {
 }
 
 function shake_camera( M, duration, strength ) {
-	// Decompile Failure: fail decode_fail,36,223
+	local oldeye, x
+	if ( strength == null ) {
+		strength = 1
+	}
+	::spawn( 0, function() {
+		if ( !M || ( !M.client || M.shakecamera ) ) {
+			return
+		}
+		oldeye = M.client.eye
+		M.shakecamera = 1
+		x = 0
+		while (x < duration) {
+			if ( M && M.client ) {
+				M.client.eye = ::locate3( ::dd_range( 1, M.loc.x + ::rand( -strength, strength ), ::game.maxx ), ::dd_range( 1, M.loc.y + ::rand( -strength, strength ), ::game.maxy ), M.loc.z )
+				::sleep( 1 )
+			}
+			x++
+		}
+		if ( M ) {
+			M.shakecamera = 0
+			if ( M.client ) {
+				M.client.eye = oldeye
+			}
+		}
+		return
+	})
 }
 
 function show_note( target_ckey, index, linkless ) {
-	// Decompile Failure: fail decode_fail,171,614
+	local output, navbar, ruler, letter, target_sql_ckey, query_get_notes, err, id, timestamp, notetext, adminckey, last_editor, server, index_ckey, search, query_list_notes, err
+	if ( linkless == null ) {
+		linkless = 0
+	}
+	ruler = "<hr style='background:#000000; border:0; height:3px'>"
+	navbar = "<a href='?_src_=holder;nonalpha=1'>[All]</a>|<a href='?_src_=holder;nonalpha=2'>[#]</a>"
+	letter = null
+	foreach (_ in ::alphabet ) {
+		letter = _
+		navbar += "|<a href='?_src_=holder;shownote=" + ::txt.mark( letter ) + "'>[" + ::txt.mark( letter ) + "]</a>"
+	}
+	navbar += "<br><form method='GET' name='search' action='?'><input type='hidden' name='_src_' value='holder'><input type='text' name='notessearch' value='" + ::txt.mark( index ) + "'><input type='submit' value='Search'></form>"
+	if ( !linkless ) {
+		output = navbar
+	}
+	if ( target_ckey ) {
+		target_sql_ckey = ::sanitizeSQL( target_ckey )
+		query_get_notes = ::dbcon.NewQuery( "SELECT id, timestamp, notetext, adminckey, last_editor, server FROM " + ::txt.mark( ::format_table_name( "notes" ) ) + " WHERE ckey = '" + ::txt.mark( target_sql_ckey ) + "' ORDER BY timestamp" )
+		if ( !query_get_notes.Execute() ) {
+			err = query_get_notes.ErrorMsg()
+			::log_game( "SQL ERROR obtaining ckey, notetext, adminckey, last_editor, server from notes table. Error : [" + ::txt.mark( err ) + "]\n" )
+			return
+		}
+		output += "<h2><center>Notes of " + ::txt.mark( target_ckey ) + "</center></h2>"
+		if ( !linkless ) {
+			output += "<center><a href='?_src_=holder;addnote=" + ::txt.mark( target_ckey ) + "'>[Add Note]</a></center>"
+		}
+		output += ruler
+		if ( query_get_notes.NextRow() ) {
+			id = query_get_notes.item[1]
+			timestamp = query_get_notes.item[2]
+			notetext = query_get_notes.item[3]
+			adminckey = query_get_notes.item[4]
+			last_editor = query_get_notes.item[5]
+			server = query_get_notes.item[6]
+			output += "<b>" + ::txt.mark( timestamp ) + " | " + ::txt.mark( server ) + " | " + ::txt.mark( adminckey ) + "</b>"
+			if ( !linkless ) {
+				output += " <a href='?_src_=holder;removenote=" + ::txt.mark( id ) + "'>[Remove Note]</a> <a href='?_src_=holder;editnote=" + ::txt.mark( id ) + "'>[Edit Note]</a>"
+				if ( last_editor ) {
+					output += " <font size='2'>Last edit by " + ::txt.mark( last_editor ) + " <a href='?_src_=holder;noteedits=" + ::txt.mark( id ) + "'>(Click here to see edit log)</a></font>"
+				}
+			}
+			output += "<br>" + ::txt.mark( notetext ) + "<hr style='background:#000000; border:0; height:1px'>"
+			// goto 93
+			// goto 242
+		}
+	}
+	if ( index ) {
+		index_ckey = null
+		search = null
+		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
+		output += ruler
+		if ( !::isnum( index ) ) {
+			index = ::sanitizeSQL( index )
+		}
+		local _ = index // Was a switch-case, sorry for the mess.
+		if ( _==1 ) {
+			search = "^."
+		} else if ( _==2 ) {
+			search = "^[^[:alpha:]]"
+		} else {
+			search = "^" + ::txt.mark( index )
+		}
+		query_list_notes = ::dbcon.NewQuery( "SELECT DISTINCT ckey FROM " + ::txt.mark( ::format_table_name( "notes" ) ) + " WHERE ckey REGEXP '" + ::txt.mark( search ) + "' ORDER BY ckey" )
+		if ( !query_list_notes.Execute() ) {
+			err = query_list_notes.ErrorMsg()
+			::log_game( "SQL ERROR obtaining ckey from notes table. Error : [" + ::txt.mark( err ) + "]\n" )
+			return
+		}
+		if ( query_list_notes.NextRow() ) {
+			index_ckey = query_list_notes.item[1]
+			output += "<a href='?_src_=holder;shownoteckey=" + ::txt.mark( index_ckey ) + "'>" + ::txt.mark( index_ckey ) + "</a><br>"
+			// goto 221
+			// goto 242
+		}
+	}
+	output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
+	output += ruler
+	::browse( ::_USR_, output, "window=show_notes;size=900x500" )
 }
 
 function shuffle( L ) {
@@ -6178,15 +8268,15 @@ function shuffle( L ) {
 	L = L.Copy()
 	i = null
 	i = 1
-	while (i < L.len) do
+	while (i < L.len) {
 		L.Swap( i, ::rand( i, L.len ) )
 		i++
-	end
+	}
 	return L
 }
 
 function sign( x ) {
-	// Decompile Failure: stdfunc abs
+	return x != 0 ? x / ::abs( x ) : 0
 }
 
 function SimplifyDegrees( degrees ) {
@@ -6198,7 +8288,52 @@ function SimplifyDegrees( degrees ) {
 }
 
 function slur( n ) {
-	// Decompile Failure: fail decode_fail,191,328
+	local phrase, leng, counter, newphrase, newletter
+	phrase = ::html_decode( n )
+	leng = ::length( phrase )
+	counter = ::length( phrase )
+	newphrase = ""
+	newletter = ""
+	if ( counter >= 1 ) {
+		newletter = ::copytext( phrase, leng - counter + 1, leng - counter + 2 )
+		if ( ::rand( 1, 3 ) == 3 ) {
+			if ( ::lowertext( newletter ) == "o" ) {
+				newletter = "u"
+			}
+			if ( ::lowertext( newletter ) == "s" ) {
+				newletter = "ch"
+			}
+			if ( ::lowertext( newletter ) == "a" ) {
+				newletter = "ah"
+			}
+			if ( ::lowertext( newletter ) == "u" ) {
+				newletter = "oo"
+			}
+			if ( ::lowertext( newletter ) == "c" ) {
+				newletter = "k"
+			}
+		}
+		if ( ::rand( 1, 20 ) == 20 ) {
+			if ( newletter == " " ) {
+				newletter = "...huuuhhh..."
+			}
+			if ( newletter == "." ) {
+				newletter = " *BURP*."
+			}
+		}
+		local _ = ::rand( 1, 20 ) // Was a switch-case, sorry for the mess.
+		if ( _==1 ) {
+			newletter += "'"
+		} else if ( _==10 ) {
+			newletter += "" + ::txt.mark( newletter )
+		} else if ( _==20 ) {
+			newletter += "" + ::txt.mark( newletter ) + ::txt.mark( newletter )
+		}
+		newphrase += "" + ::txt.mark( newletter )
+		counter -= 1
+		// goto 20
+	}
+	return newphrase
 }
 
 function smooth_icon( A ) {
@@ -6224,7 +8359,17 @@ function smooth_icon( A ) {
 }
 
 function smooth_icon_neighbors( A ) {
-	// Decompile Failure: fail decode_fail,173,58
+	local T
+	T = null
+	foreach (_ in ::orange( 1, A ) ) {
+		T = _
+		if ( !::istype( T, ::Atom ) ) {
+			continue
+		}
+		if ( T.smooth ) {
+			::smooth_icon( T )
+		}
+	}
 }
 
 function sortInsert( L, cmp, associative, fromIndex, toIndex ) {
@@ -6432,7 +8577,7 @@ function spaceDebrisFinishLoc( startSide, Z ) {
 		endy = ::rand( 7, ::game.maxy - 7 )
 		endx = ::game.maxx - 7
 	}
-	T = ::locate( endx, endy, Z )
+	T = ::locate3( endx, endy, Z )
 	return T
 }
 
@@ -6452,12 +8597,32 @@ function spaceDebrisStartLoc( startSide, Z ) {
 		starty = ::rand( 8, ::game.maxy - 8 )
 		startx = 8
 	}
-	T = ::locate( startx, starty, Z )
+	T = ::locate3( startx, starty, Z )
 	return T
 }
 
 function spawn_meteor( meteortypes ) {
-	// Decompile Failure: fail decode_fail,142,143
+	local pickedstart, pickedgoal, max_i, startSide, Me, M
+	max_i = 10
+	if ( !::istype( pickedstart, ::TurfSpace ) ) {
+		startSide = ::pick_list( ::cardinal )
+		pickedstart = ::spaceDebrisStartLoc( startSide, 1 )
+		pickedgoal = ::spaceDebrisFinishLoc( startSide, 1 )
+		max_i--
+		if ( max_i <= 0 ) {
+			return
+		}
+		// goto 7
+	}
+	Me = ::pickweight( meteortypes )
+	M = Me( pickedstart )
+	M.dest = pickedgoal
+	M.z_original = 1
+	::spawn( 0, function() {
+		::walk_towards( M, M.dest, 1 )
+		return
+	})
+	return
 }
 
 function spawn_meteors( number, meteortypes ) {
@@ -6467,10 +8632,10 @@ function spawn_meteors( number, meteortypes ) {
 	}
 	i = null
 	i = 0
-	while (i < number) do
+	while (i < number) {
 		::spawn_meteor( meteortypes )
 		i++
-	end
+	}
 }
 
 function spawn_room( start_loc, x_size, y_size, walltypes, floor, name ) {
@@ -6478,12 +8643,12 @@ function spawn_room( start_loc, x_size, y_size, walltypes, floor, name ) {
 	room_turfs = ::List({ ["floors"]= ::List(), ["walls"]= ::List() })
 	x = null
 	x = 0
-	while (x < x_size) do
+	while (x < x_size) {
 		y = null
 		y = 0
-		while (y < y_size) do
+		while (y < y_size) {
 			T = null
-			cur_loc = ::locate( start_loc.x + x, start_loc.y + y, start_loc.z )
+			cur_loc = ::locate3( start_loc.x + x, start_loc.y + y, start_loc.z )
 			A = ::Area(2768)()
 			if ( name ) {
 				A.name = name
@@ -6502,9 +8667,9 @@ function spawn_room( start_loc, x_size, y_size, walltypes, floor, name ) {
 			}
 			A.contents += T
 			y++
-		end
+		}
 		x++
-	end
+	}
 	return room_turfs
 }
 
@@ -6627,24 +8792,178 @@ function sql_report_death( H ) {
 	}
 }
 
+function SQLtime(  ) {
+	return ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
+}
+
 function stars( n, pr ) {
-	// Decompile Failure: fail decode_fail,190,199
+	local te, t, p
+	n = ::html_encode( n )
+	if ( pr == null ) {
+		pr = 25
+	}
+	if ( pr <= 0 ) {
+		return
+	} else if ( pr >= 100 ) {
+		return n
+	}
+	te = n
+	t = ""
+	n = ::length( n )
+	p = null
+	p = 1
+	if ( p <= n ) {
+		if ( ::copytext( te, p, p + 1 ) == " " || ::prob( pr ) ) {
+			t = "" + ::txt.mark( t ) + ::txt.mark( ::copytext( te, p, p + 1 ) )
+		} else {
+			t = "" + ::txt.mark( t ) + "*"
+		}
+		p++
+		// goto 50
+	}
+	return ::sanitize( t )
 }
 
 function stickyban2list( ban ) {
-	// Decompile Failure: fail decode_fail,184,105
+	if ( !ban ) {
+		return
+	}
+	_default = ::params2list( ban )
+	_default.keys = ::text2list( _default.keys, "," )
+	_default.type = ::text2list( _default.type, "," )
+	_default.IP = ::text2list( _default.IP, "," )
+	_default.computer_id = ::text2list( _default.computer_id, "," )
+	return _default
+}
+
+function string2listofvars( t_string, var_source ) {
+	local var_found, list_value, intermediate_stage, value, A, _default
+	if ( !t_string || !var_source ) {
+		return ::List()
+	}
+	_default = ::List()
+	var_found = ::findtext( t_string, "[", 1, null )
+	if ( var_found ) {
+		t_string = ::replacetext( t_string, "[", "[ " )
+		list_value = ::text2list( t_string, "[" )
+		intermediate_stage = ::list2text( list_value )
+		list_value = ::text2list( intermediate_stage, " " )
+		value = null
+		foreach (_ in list_value ) {
+			value = _
+			if ( ::findtext( value, "]", 1, null ) ) {
+				value = ::text2list( value, "]" )
+				A = null
+				foreach (_ in value ) {
+					A = _
+					if ( var_source.vars.Find( A ) ) {
+						_default += A
+					}
+				}
+			}
+		}
+	}
+	return _default
 }
 
 function strings( filename, key ) {
-	// Decompile Failure: stdfunc crash
+	local fileList, stringsList, s
+	if ( !::string_cache ) {
+		return
+		::string_cache = ::List()
+	}
+	if ( !( filename in ::string_cache ) ) {
+		if ( ::file.exists( "strings/" + ::txt.mark( filename ) ) ) {
+			::string_cache[filename] = ::List()
+			stringsList = ::List()
+			fileList = ::file2list( "strings/" + ::txt.mark( filename ) )
+			s = null
+			foreach (_ in fileList ) {
+				s = _
+				stringsList = ::text2list( s, "@=" )
+				if ( stringsList.len != 2 ) {
+					::crash( "Invalid string list in strings/" + ::txt.mark( filename ) )
+				}
+				if ( ::findtext( stringsList[2], "@,", 1, null ) ) {
+					::string_cache[filename][stringsList[1]] = ::text2list( stringsList[2], "@," )
+				} else {
+					::string_cache[filename][stringsList[1]] = stringsList[2]
+				}
+			}
+		} else {
+			::crash( "file not found: strings/" + ::txt.mark( filename ) )
+		}
+	}
+	if ( filename in ::string_cache && ( key in ::string_cache[filename] ) ) {
+		return ::string_cache[filename][key]
+	} else {
+		::crash( "strings list not found: strings/" + ::txt.mark( filename ) + ", index=" + ::txt.mark( key ) )
+	}
+}
+
+function strip_html_simple( t, limit ) {
+	local strip_chars, char, index
+	if ( limit == null ) {
+		limit = 1024
+	}
+	strip_chars = ::List([ "<", ">" ])
+	t = ::copytext( t, 1, limit )
+	char = null
+	foreach (_ in strip_chars ) {
+		char = _
+		index = ::findtext( t, char, 1, null )
+		if ( index ) {
+			t = ::copytext( t, 1, index ) + ::copytext( t, index + 1, null )
+			index = ::findtext( t, char, 1, null )
+			// goto 37
+		}
+	}
+	return t
 }
 
 function stripped_input( user, message, title, __default, max_length ) {
-	// Decompile Failure: fail decode_fail,193,105
+	local name
+	if ( message == null ) {
+		message = ""
+	}
+	if ( title == null ) {
+		title = ""
+	}
+	if ( __default == null ) {
+		__default = ""
+	}
+	if ( max_length == null ) {
+		max_length = 1024
+	}
+	name = ::input( user, message, title, __default, null, 132 )
+	return ::trim( ::html_encode( name ), max_length )
 }
 
 function stutter( n ) {
-	// Decompile Failure: fail decode_fail,191,278
+	local te, t, p, n_letter
+	te = ::html_decode( n )
+	t = ""
+	n = ::length( n )
+	p = null
+	p = 1
+	if ( p <= n ) {
+		n_letter = ::copytext( te, p, p + 1 )
+		if ( ::prob( 80 ) && ( ::ckey( n_letter ) in ::List([ "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]) ) ) {
+			if ( ::prob( 10 ) ) {
+				n_letter = "" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter )
+			} else if ( ::prob( 20 ) ) {
+				n_letter = "" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter )
+			} else if ( ::prob( 5 ) ) {
+				n_letter = null
+			} else {
+				n_letter = "" + ::txt.mark( n_letter ) + "-" + ::txt.mark( n_letter )
+			}
+		}
+		t = "" + ::txt.mark( t ) + ::txt.mark( n_letter )
+		p++
+		// goto 19
+	}
+	return ::copytext( ::sanitize( t ), 1, 1024 )
 }
 
 function summonevents(  ) {
@@ -6718,7 +9037,16 @@ function time_stamp( format ) {
 }
 
 function tkMaxRangeCheck( user, target, focus ) {
-	// Decompile Failure: fail decode_fail,149,71
+	local d
+	d = ::get_dist( user, target )
+	if ( focus ) {
+		d = ::max( d, ::get_dist( user, focus ) )
+	}
+	if ( d > ::tk_maxrange ) {
+		user.write( "<span class ='warning'>Your mind won't reach that far.</span>" )
+		return 0
+	}
+	return 1
 }
 
 function toggle_ooc( toggle ) {
@@ -6782,7 +9110,19 @@ function togglebuildmode( M ) {
 }
 
 function trange( Dist, Center ) {
-	// Decompile Failure: fail decode_fail,31,194
+	local x1y1, x2y2
+	if ( Dist == null ) {
+		Dist = 0
+	}
+	if ( Center == null ) {
+		Center = null
+	}
+	if ( Center == null ) {
+		return
+	}
+	x1y1 = ::locate3( Center.x - Dist < 1 ? 1 : Center.x - Dist, Center.y - Dist < 1 ? 1 : Center.y - Dist, Center.z )
+	x2y2 = ::locate3( Center.x + Dist > ::game.maxx ? ::game.maxx : Center.x + Dist, Center.y + Dist > ::game.maxy ? ::game.maxy : Center.y + Dist, Center.z )
+	return ::block( x1y1, x2y2 )
 }
 
 function transform_dir( direction ) {
@@ -6823,12 +9163,12 @@ function trim_right( text ) {
 	local i
 	i = null
 	i = ::length( text )
-	while (i > 0) do
+	while (i > 0) {
 		if ( ::text2ascii( text, i ) > 32 ) {
 			return ::copytext( text, 1, i + 1 )
 		}
 		i--
-	end
+	}
 	return ""
 }
 
@@ -6880,7 +9220,7 @@ function ultra_range( dist, center, orange ) {
 		x = t_center.x - c_dist + 1
 		foreach (_ in ::gen_range( x, t_center.x + c_dist ) ) {
 			x = _
-			T = ::locate( x, y, t_center.z )
+			T = ::locate3( x, y, t_center.z )
 			if ( T ) {
 				L += T
 				L += T.contents
@@ -6890,7 +9230,7 @@ function ultra_range( dist, center, orange ) {
 		x = t_center.x + c_dist
 		foreach (_ in ::gen_range( t_center.y - c_dist, y ) ) {
 			y = _
-			T = ::locate( x, y, t_center.z )
+			T = ::locate3( x, y, t_center.z )
 			if ( T ) {
 				L += T
 				L += T.contents
@@ -6900,7 +9240,7 @@ function ultra_range( dist, center, orange ) {
 		x = t_center.x + c_dist - 1
 		foreach (_ in ::gen_range( t_center.x - c_dist, x ) ) {
 			x = _
-			T = ::locate( x, y, t_center.z )
+			T = ::locate3( x, y, t_center.z )
 			if ( T ) {
 				L += T
 				L += T.contents
@@ -6910,7 +9250,7 @@ function ultra_range( dist, center, orange ) {
 		x = t_center.x - c_dist
 		foreach (_ in ::gen_range( y, t_center.y + c_dist ) ) {
 			y = _
-			T = ::locate( x, y, t_center.z )
+			T = ::locate3( x, y, t_center.z )
 			if ( T ) {
 				L += T
 				L += T.contents

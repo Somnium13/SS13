@@ -153,6 +153,7 @@
 ::blobs <- null
 ::blobstart <- null
 ::blood_splatter_icons <- null
+::BLOOD_VOLUME_SAFE <- 501
 ::bloody_footprints_cache <- null
 ::body_markings_list <- null
 ::bomb_set <- null
@@ -171,6 +172,7 @@
 ::CELLRATE <- 0.0020000000949949026
 ::CENTCOM_FREQ <- 1337
 ::changeling_amount <- 4
+::changelog_hash <- ""
 ::CHARGELEVEL <- 0.0010000000474974513
 ::chatchannels <- null
 ::chemical_mob_spawn_meancritters <- null
@@ -181,6 +183,7 @@
 ::CHUNK_SIZE <- 16
 ::CIVILIAN <- 4
 ::civilian_positions <- null
+::CLAMPED_OFF <- 1
 ::clientmessages <- null
 ::clients <- null
 ::CLOSE_DURATION <- 6
@@ -190,10 +193,13 @@
 ::CMinutes <- null
 ::cmp_field <- "name"
 ::combatlog <- null
+::COMM_FREQ <- 1353
 ::command_name <- null
 ::command_positions <- null
 ::commando_names <- null
 ::common_tools <- null
+::comms_allowed <- 0
+::comms_key <- "default_pwd"
 ::config <- null
 ::contrabandposters <- null
 ::corgi_recipes <- null
@@ -237,6 +243,7 @@
 ::emergency_access <- 0
 ::emergencyresponseteamspawn <- null
 ::emojis <- null
+::ENG_FREQ <- 1357
 ::engineering_positions <- null
 ::ENGSEC <- 1
 ::enter_allowed <- 1
@@ -256,6 +263,7 @@
 ::FLOAT_LAYER <- -1
 ::FLY_LAYER <- 5
 ::forbidden_varedit_object_types <- null
+::FREQ_LISTENING <- 1
 ::freqtospan <- null
 ::frills_list <- null
 ::g_fancy_list_of_types <- null
@@ -287,6 +295,7 @@
 ::horns_list <- null
 ::href_logfile <- null
 ::hrefs <- null
+::hsboxspawn <- 1
 ::html_interfaces <- null
 ::huds <- null
 ::IClog <- null
@@ -323,8 +332,10 @@
 ::MAX_EX_LIGHT_RANGE <- 14
 ::max_health <- 100
 ::MAX_IMPREGNATION_TIME <- 150
+::max_secret_rooms <- 6
 ::max_signs <- 4
 ::mechas_list <- null
+::MED_FREQ <- 1355
 ::medical_positions <- null
 ::MEDSCI <- 2
 ::message_delay <- 0
@@ -438,6 +449,7 @@
 ::sc_safecode4 <- null
 ::sc_safecode5 <- null
 ::scarySounds <- null
+::SCI_FREQ <- 1351
 ::science_positions <- null
 ::sec_departments <- null
 ::SEC_FREQ <- 1359
@@ -449,6 +461,7 @@
 ::SEE_OBJS <- 8
 ::SEE_SELF <- 32
 ::SEE_TURFS <- 16
+::SERV_FREQ <- 1349
 ::shuttle_caller_list <- null
 ::silver_recipes <- null
 ::skin_tones <- null
@@ -464,6 +477,7 @@
 ::sortedAreas <- null
 ::sortInstance <- null
 ::SOUND_PAUSED <- 2
+::SOUND_STREAM <- 4
 ::SOUTH <- 2
 ::SOUTHEAST <- 6
 ::SOUTHWEST <- 10
@@ -551,6 +565,7 @@
 ::time_last_changed_position <- 0
 ::timezoneOffset <- 0
 ::tinted_weldhelh <- 1
+::tk_maxrange <- 15
 ::TOUCH <- 1
 ::tracked_implants <- null
 ::TRUE <- 1
@@ -569,6 +584,7 @@
 ::ventcrawl_machinery <- null
 ::verbs <- null
 ::void <- null
+::VOX_CHANNEL <- 200
 ::vox_sounds <- null
 ::VVckey_edit <- null
 ::VVicon_edit_lock <- null
