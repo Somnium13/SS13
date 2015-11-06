@@ -11,6 +11,7 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 3: 301 / 373
 - Nov 4: 374 / 402
 - Nov 5: 412 / 412 **(100%)**
+
 - Nov 6: No more gotos in global functions.
 
 **Current:** Fixing issues.
