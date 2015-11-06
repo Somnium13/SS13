@@ -202,9 +202,8 @@ function add_radio( radio, freq ) {
 }
 
 function add_zero( t, u ) {
-	if ( ::length( t ) < u ) {
+	while (::length( t ) < u) {
 		t = "0" + ::txt.mark( t )
-		// goto 2
 	}
 	return t
 }
@@ -314,13 +313,12 @@ function Advance_Mix( D_list ) {
 		return ::pick_list( diseases )
 	}
 	i = 0
-	if ( i < 20 && diseases.len > 1 ) {
+	while (i < 20 && diseases.len > 1) {
 		i++
 		D1 = ::pick_list( diseases )
 		diseases -= D1
 		D2 = ::pick_list( diseases )
 		D2.Mix( D1 )
-		// goto 43
 	}
 	to_return = ::pick_list( diseases )
 	to_return.Refresh( 1 )
@@ -487,7 +485,7 @@ function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, a
 		return 0
 	}
 	open.Insert( ::PathNode( start, null, 0, ::getf2( start, dist )( end ), 0 ) )
-	if ( !open.IsEmpty() && !path ) {
+	while (!open.IsEmpty() && !path) {
 		cur = open.Pop()
 		closed.Add( cur.source )
 		closeenough = null
@@ -495,36 +493,34 @@ function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, a
 			closeenough = ::getf2( cur.source, dist )( end ) <= mintargetdist
 		}
 		if ( maxnodedepth && cur.nt > maxnodedepth ) {
-			// goto 96
+			continue
 		}
 		if ( cur.source == end || closeenough ) {
 			path = ::List()
 			path.Add( cur.source )
-			if ( cur.prevNode ) {
+			while (cur.prevNode) {
 				cur = cur.prevNode
 				path.Add( cur.source )
-				// goto 154
 			}
-		} else {
-			L = ::getf2( cur.source, adjacent )( atom, id, simulated_only )
-			T = null
-			foreach (_ in L ) {
-				T = _
-				if ( ( T == exclude || T ) in closed ) {
-					continue
-				}
-				newg = cur.g + ::getf2( cur.source, dist )( T )
-				if ( !T.PNode ) {
-					open.Insert( ::PathNode( T, cur, newg, ::getf2( T, dist )( end ), cur.nt + 1 ) )
-				} else if ( newg < T.PNode.g ) {
-					T.prevNode = cur
-					T.PNode.g = newg
-					T.PNode.calc f()
-					T.PNode.nt = cur.nt + 1
-					open.ReSort( T.PNode )
-				}
+			break
+		}
+		L = ::getf2( cur.source, adjacent )( atom, id, simulated_only )
+		T = null
+		foreach (_ in L ) {
+			T = _
+			if ( ( T == exclude || T ) in closed ) {
+				continue
 			}
-			// goto 96
+			newg = cur.g + ::getf2( cur.source, dist )( T )
+			if ( !T.PNode ) {
+				open.Insert( ::PathNode( T, cur, newg, ::getf2( T, dist )( end ), cur.nt + 1 ) )
+			} else if ( newg < T.PNode.g ) {
+				T.prevNode = cur
+				T.PNode.g = newg
+				T.PNode.calc f()
+				T.PNode.nt = cur.nt + 1
+				open.ReSort( T.PNode )
+			}
 		}
 	}
 	PN = null
@@ -1345,7 +1341,7 @@ function can_see( source, target, length ) {
 	current = ::get_turf( source )
 	target_turf = ::get_turf( target )
 	steps = 0
-	if ( current != target_turf ) {
+	while (current != target_turf) {
 		if ( steps > length ) {
 			return 0
 		}
@@ -1364,7 +1360,6 @@ function can_see( source, target, length ) {
 		}
 		current = ::get_step_towards( current, target_turf )
 		steps++
-		// goto 22
 	}
 	return 1
 }
@@ -2525,7 +2520,7 @@ function emoji_parse( text ) {
 	pos = 1
 	search = 0
 	emoji = ""
-	if ( 1 ) {
+	while (1) {
 		search = ::findtext( text, ":", pos, null )
 		parsed += ::copytext( text, pos, search )
 		if ( search ) {
@@ -2541,13 +2536,12 @@ function emoji_parse( text ) {
 					pos = search
 				}
 				emoji = ""
-				// goto 33
+				continue
 			} else {
 				parsed += ::copytext( text, pos, search )
 			}
 		}
-		// goto 119
-		// goto 33
+		break
 	}
 	return parsed
 }
@@ -2622,13 +2616,12 @@ function english_list( input, nothing_text, and_text, comma_text, final_comma_te
 	} else {
 		output = ""
 		index = 1
-		if ( index < total ) {
+		while (index < total) {
 			if ( index == total - 1 ) {
 				comma_text = final_comma_text
 			}
 			output += "" + ::txt.mark( input[index] ) + ::txt.mark( comma_text )
 			index++
-			// goto 81
 		}
 		return "" + ::txt.mark( output ) + ::txt.mark( and_text ) + ::txt.mark( input[index] )
 	}
@@ -2761,10 +2754,9 @@ function explosion( epicenter, devastation_range, heavy_impact_range, light_impa
 			dist = ::cheap_hypotenuse( T.x, T.y, x0, y0 )
 			if ( ::config.reactionary_explosions ) {
 				Trajectory = T
-				if ( Trajectory != epicenter ) {
+				while (Trajectory != epicenter) {
 					Trajectory = ::get_step_towards( Trajectory, epicenter )
 					dist += cached_exp_block[Trajectory]
-					// goto 430
 				}
 			}
 			flame_dist = 0
@@ -3516,12 +3508,11 @@ function generate_ion_law( ionMessage ) {
 }
 
 function get( loc, type ) {
-	if ( loc ) {
+	while (loc) {
 		if ( ::istype( loc, type ) ) {
 			return loc
 		}
 		loc = loc.loc
-		// goto 2
 	}
 	return
 }
@@ -3822,7 +3813,7 @@ function get_candidates( be_special_flag, afk_bracket, jobbanType ) {
 		afk_bracket = 3000
 	}
 	candidates = ::List()
-	if ( !candidates.len && afk_bracket < 6000 ) {
+	while (!candidates.len && afk_bracket < 6000) {
 		G = null
 		foreach (_ in ::player_list ) {
 			G = _
@@ -3844,7 +3835,6 @@ function get_candidates( be_special_flag, afk_bracket, jobbanType ) {
 			}
 		}
 		afk_bracket += 600
-		// goto 21
 	}
 	return candidates
 }
@@ -4415,7 +4405,7 @@ function get_teleport_loc( location, target, distance, density, errorx, errory, 
 			destination_list = ::List()
 			center = ::locate3( destination.x + xoffset, destination.y + yoffset, location.z )
 			T = null
-			foreach (_ in ::locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) {
+			foreach (_ in null( ::locate3( center.x + b1xerror, center.y + b1yerror, location.z ), ::locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
 				T = _
 				if ( density && T.density ) {
 					continue
@@ -4454,9 +4444,8 @@ function get_turf( A ) {
 	if ( !::istype( A, ::Atom ) ) {
 		return
 	}
-	if ( A && !::isturf( A ) ) {
+	while (A && !::isturf( A )) {
 		A = A.loc
-		// goto 11
 	}
 	return A
 }
@@ -4720,12 +4709,12 @@ function getFlatIcon( A, defdir, deficon, defstate, defblend ) {
 	process = A.underlays
 	pSet = 0
 	curIndex = 1
-	if ( ::TRUE ) {
+	while (::TRUE) {
 		if ( curIndex <= process.len ) {
 			current = process[curIndex]
 			if ( !current ) {
 				curIndex++
-				// goto 193
+				continue
 			}
 			currentLayer = current.layer
 			if ( currentLayer < 0 ) {
@@ -4759,10 +4748,9 @@ function getFlatIcon( A, defdir, deficon, defstate, defblend ) {
 				pSet = 1
 				process = A.overlays
 			} else {
-				// goto 330
+				break
 			}
 		}
-		// goto 193
 	}
 	add = null
 	flatX1 = 1
@@ -4902,7 +4890,7 @@ function getLetterImage( A, letter, uppercase ) {
 	text_image.pixel_x = 7
 	text_image.pixel_y = 5
 	atom_icon = null
-	::^delete^()
+	::_DEL_( atom_icon )
 	return text_image
 }
 
@@ -5435,13 +5423,12 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 		} else {
 			s = Y2 - Y1 < 0 ? -1 : 1
 			Y1 += s
-			if ( Y1 != Y2 ) {
+			while (Y1 != Y2) {
 				T = ::locate3( X1, Y1, Z )
 				if ( T.opacity ) {
 					return 0
 				}
 				Y1 += s
-				// goto 71
 			}
 		}
 	} else {
@@ -5452,7 +5439,7 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 		if ( X1 < X2 ) {
 			b += m
 		}
-		if ( X1 != X2 || Y1 != Y2 ) {
+		while (X1 != X2 || Y1 != Y2) {
 			if ( ::round( m * X1 + b - Y1 ) ) {
 				Y1 += signY
 			} else {
@@ -5462,7 +5449,6 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 			if ( T.opacity ) {
 				return 0
 			}
-			// goto 168
 		}
 	}
 	return 1
@@ -6027,9 +6013,8 @@ function list2text( ls, sep ) {
 		if ( l - i & 64 ) {
 			_default = "" + ::txt.mark( _default ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] )
 		}
-		if ( l > i ) {
+		while (l > i) {
 			_default = "" + ::txt.mark( _default ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] )
-			// goto 630
 		}
 	} else {
 		_default = "" + ::txt.mark( ls[++i] )
@@ -6054,9 +6039,8 @@ function list2text( ls, sep ) {
 		if ( l - i & 64 ) {
 			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
 		}
-		if ( l > i ) {
+		while (l > i) {
 			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-			// goto 1626
 		}
 	}
 	return _default
@@ -6133,11 +6117,10 @@ function load_admin_ranks(  ) {
 			}
 			::admin_ranks += R
 			prev = ::findchar( line, "+-", next, 0 )
-			if ( prev ) {
+			while (prev) {
 				next = ::findchar( line, "+-", prev + 1, 0 )
 				R.process keyword( ::copytext( line, prev, next ), previous_rights )
 				prev = next
-				// goto 68
 			}
 			previous_rights = R.rights
 		}
@@ -6152,7 +6135,7 @@ function load_admin_ranks(  ) {
 		}
 		query = ::dbcon.NewQuery( "SELECT rank, flags FROM " + ::txt.mark( ::format_table_name( "admin_ranks" ) ) )
 		query.Execute()
-		if ( query.NextRow() ) {
+		while (query.NextRow()) {
 			rank_name = ::ckeyEx( query.item[1] )
 			flags = query.item[2]
 			if ( ::istext( flags ) ) {
@@ -6160,10 +6143,9 @@ function load_admin_ranks(  ) {
 			}
 			R = ::DatumAdmin_rank( rank_name, flags )
 			if ( !R ) {
-				// goto 131
+				continue
 			}
 			::admin_ranks += R
-			// goto 131
 		}
 	}
 }
@@ -6231,19 +6213,18 @@ function load_admins(  ) {
 		}
 		query = ::dbcon.NewQuery( "SELECT ckey, rank FROM " + ::txt.mark( ::format_table_name( "admin" ) ) )
 		query.Execute()
-		if ( query.NextRow() ) {
+		while (query.NextRow()) {
 			ckey = ::ckey( query.item[1] )
 			rank = ::ckeyEx( query.item[2] )
 			if ( rank_names[rank] == null ) {
 				::warning( "" + ::txt.mark( "Admin rank (" + ::txt.mark( rank ) + ") does not exist." ) + " in " + ::txt.mark( "code/modules/admin/admin_ranks.dm" ) + " at line " + ::txt.mark( 183 ) + " src: " + ::txt.mark( this ) + " usr: " + ::txt.mark( ::_USR_ ) + "." )
-				// goto 178
+				continue
 			}
 			D = ::DatumAdmins( rank_names[rank], ckey )
 			if ( !D ) {
-				// goto 178
+				continue
 			}
 			D.associate( ::directory[ckey] )
-			// goto 178
 		}
 	}
 }
@@ -6260,14 +6241,13 @@ function load_library_db_to_cache(  ) {
 	::cachedbooks = ::List()
 	query = ::dbcon.NewQuery( "SELECT id, author, title, category FROM " + ::txt.mark( ::format_table_name( "library" ) ) + " WHERE isnull(deleted)" )
 	query.Execute()
-	if ( query.NextRow() ) {
+	while (query.NextRow()) {
 		newbook = ::DatumCachedbook()
 		newbook.id = query.item[1]
 		newbook.author = query.item[2]
 		newbook.title = query.item[3]
 		newbook.category = query.item[4]
 		::cachedbooks += newbook
-		// goto 30
 	}
 }
 
@@ -6442,7 +6422,7 @@ function make_mining_asteroid_secret(  ) {
 	if ( !turfs.len ) {
 		return 0
 	}
-	if ( !valid ) {
+	while (!valid) {
 		valid = 1
 		sanity++
 		if ( sanity > 100 ) {
@@ -6459,21 +6439,20 @@ function make_mining_asteroid_secret(  ) {
 		surroundings += ::range( 7, ::locate3( T.x + x_size, T.y + y_size, T.z ) )
 		if ( ::locate_in( ::Area(3119), surroundings ) ) {
 			valid = 0
-			// goto 424
+			continue
 		}
 		if ( ::locate_in( ::TurfSpace, surroundings ) ) {
 			valid = 0
-			// goto 424
+			continue
 		}
 		if ( ::locate_in( ::Area(2768), surroundings ) ) {
 			valid = 0
-			// goto 424
+			continue
 		}
 		if ( ::locate_in( ::TurfSimulatedFloorPlatingAsteroidAirless, ::range( 5, T ) ) ) {
 			valid = 0
-			// goto 424
+			continue
 		}
-		// goto 424
 	}
 	if ( !T ) {
 		return 0
@@ -6501,14 +6480,13 @@ function make_mining_asteroid_secret(  ) {
 			surprise = ::pickweight( treasureitems )
 			surprise( T )
 			emptyturfs -= T
-			if ( areapoints >= 10 ) {
+			while (areapoints >= 10) {
 				T = ::pick_list( emptyturfs )
 				garbage = null
 				garbage = ::pickweight( fluffitems )
 				garbage( T )
 				areapoints -= 5
 				emptyturfs -= T
-				// goto 630
 			}
 		}
 	}
@@ -7223,7 +7201,7 @@ function ninjaspeak( n ) {
 	t = ""
 	n = ::length( n )
 	p = 1
-	if ( p <= n ) {
+	while (p <= n) {
 		n_letter = null
 		n_mod = ::rand( 1, 4 )
 		if ( p + n_mod > n + 1 ) {
@@ -7242,7 +7220,6 @@ function ninjaspeak( n ) {
 		}
 		t = "" + ::txt.mark( t ) + ::txt.mark( n_letter )
 		p = p + n_mod
-		// goto 16
 	}
 	return ::copytext( ::sanitize( t ), 1, 1024 )
 }
@@ -7299,31 +7276,26 @@ function num2hex( num, len ) {
 	num = ::round( ::abs( num ) )
 	_default = ""
 	i = 0
-	if ( 1 ) {
+	while (1) {
 		if ( len <= 0 ) {
 			if ( !num ) {
-				
-			} else {
-				// goto 54
-				if ( i >= len ) {
-					
-				} else {
-					remainder = num / 16
-					num = ::round( remainder )
-					remainder = ( remainder - num ) * 16
-					local _ = remainder // Was a switch-case, sorry for the mess.
-					if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
-						_default = "" + ::txt.mark( remainder ) + _default
-					} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
-						_default = ::ascii2text( remainder + 87 ) + _default
-					} else {
-						_default = "0" + _default
-					}
-					i++
-					// goto 31
-				}
+				break
 			}
+		} else if ( i >= len ) {
+			break
 		}
+		remainder = num / 16
+		num = ::round( remainder )
+		remainder = ( remainder - num ) * 16
+		local _ = remainder // Was a switch-case, sorry for the mess.
+		if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
+			_default = "" + ::txt.mark( remainder ) + _default
+		} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
+			_default = ::ascii2text( remainder + 87 ) + _default
+		} else {
+			_default = "0" + _default
+		}
+		i++
 	}
 	return _default
 	return _default
@@ -7739,7 +7711,7 @@ function propagate_network( O, PN ) {
 	index = 1
 	P = null
 	worklist += O
-	if ( index <= worklist.len ) {
+	while (index <= worklist.len) {
 		P = worklist[index]
 		index++
 		if ( ::istype( P, ::ObjStructureCable ) ) {
@@ -7752,9 +7724,8 @@ function propagate_network( O, PN ) {
 			M = P
 			found_machines = found_machines | M
 		} else {
-			// goto 17
+			continue
 		}
-		// goto 17
 	}
 	PM = null
 	foreach (_ in found_machines ) {
@@ -7775,7 +7746,7 @@ function qdel( A ) {
 	}
 	if ( !::istype( A, ::Datum ) ) {
 		A = null
-		::^delete^()
+		::_DEL_( A )
 	} else if ( ::isnull( A.gc_destroyed ) ) {
 		hint = A.Destroy()
 		if ( !A ) {
@@ -7792,7 +7763,7 @@ function qdel( A ) {
 			::SSgarbage.HardQueue( A )
 		} else if ( _==4 ) {
 			A = null
-			::^delete^()
+			::_DEL_( A )
 		} else if ( _==5 ) {
 			::PlaceInPool( A, 0 )
 		} else if ( _==6 ) {
@@ -8087,13 +8058,12 @@ function random_socks( gender ) {
 function random_step( AM, steps, chance ) {
 	local initial_chance
 	initial_chance = chance
-	if ( steps > 0 ) {
+	while (steps > 0) {
 		if ( ::prob( chance ) ) {
 			::step( AM, ::pick_list( ::alldirs ) )
 		}
 		chance = ::max( chance - initial_chance / steps, 0 )
 		steps--
-		// goto 5
 	}
 }
 
@@ -8339,7 +8309,7 @@ function recursive_hear_check( O ) {
 	processing_list = ::List([ O ])
 	processed_list = ::List()
 	found_atoms = ::List()
-	if ( processing_list.len ) {
+	while (processing_list.len) {
 		A = processing_list[1]
 		if ( A.flags & 16 ) {
 			found_atoms = found_atoms | A
@@ -8356,7 +8326,6 @@ function recursive_hear_check( O ) {
 		}
 		processing_list.Cut( 1, 2 )
 		processed_list[A] = A
-		// goto 12
 	}
 	return found_atoms
 }
@@ -8375,7 +8344,7 @@ function recursive_mob_check( O, client_check, sight_check, include_radio ) {
 	processing_list = ::List([ O ])
 	processed_list = ::List()
 	found_mobs = ::List()
-	if ( processing_list.len ) {
+	while (processing_list.len) {
 		A = processing_list[1]
 		passed = 0
 		if ( ::ismob( A ) ) {
@@ -8408,7 +8377,6 @@ function recursive_mob_check( O, client_check, sight_check, include_radio ) {
 		}
 		processing_list.Cut( 1, 2 )
 		processed_list[A] = A
-		// goto 35
 	}
 	return found_mobs
 }
@@ -8558,9 +8526,8 @@ function remove_radio_all( radio ) {
 }
 
 function removeNullsFromList( L ) {
-	if ( L.Remove( null ) ) {
-		// goto 2
-		// goto 2
+	while (L.Remove( null )) {
+		continue
 	}
 	return L
 }
@@ -8615,9 +8582,8 @@ function reverseRange( L, start, end ) {
 			end += L.len + 1
 		}
 		end--
-		if ( start < end ) {
+		while (start < end) {
 			L.Swap( start++, end-- )
-			// goto 56
 		}
 	}
 	return L
@@ -9031,10 +8997,9 @@ function sanitize_simple( t, repl_chars ) {
 	foreach (_ in repl_chars ) {
 		char = _
 		index = ::findtext( t, char, 1, null )
-		if ( index ) {
+		while (index) {
 			t = ::copytext( t, 1, index ) + repl_chars[char] + ::copytext( t, index + 1, null )
 			index = ::findtext( t, char, index + 1, null )
-			// goto 30
 		}
 	}
 	return t
@@ -9466,7 +9431,7 @@ function seedify( O, t_max, extractor ) {
 	}
 	if ( ::istype( O, ::ObjItemWeaponReagent_containersFoodSnacksGrown ) ) {
 		F = O
-		if ( t_amount < t_max ) {
+		while (t_amount < t_max) {
 			t_prod = F.seed( O.loc, O )
 			t_prod.lifespan = F.lifespan
 			t_prod.endurance = F.endurance
@@ -9475,14 +9440,13 @@ function seedify( O, t_max, extractor ) {
 			t_prod.yield = F.yield
 			t_prod.potency = F.potency
 			t_amount++
-			// goto 37
 		}
 		::qdel( O )
 		return 1
 	} else if ( ::istype( O, ::ObjItemWeaponGrown ) ) {
 		F = O
 		if ( F.seed ) {
-			if ( t_amount < t_max ) {
+			while (t_amount < t_max) {
 				t_prod = F.seed( O.loc, O )
 				t_prod.lifespan = F.lifespan
 				t_prod.endurance = F.endurance
@@ -9491,7 +9455,6 @@ function seedify( O, t_max, extractor ) {
 				t_prod.yield = F.yield
 				t_prod.potency = F.potency
 				t_amount++
-				// goto 91
 			}
 			::qdel( O )
 			return 1
@@ -9789,7 +9752,7 @@ function setup_map_transitions(  ) {
 	possible_points = ::List()
 	used_points = ::List()
 	grid.Cut()
-	if ( SLS.len ) {
+	while (SLS.len) {
 		D = ::pick_list( SLS )
 		SLS.Remove( D )
 		D.xi = P.x
@@ -9801,7 +9764,6 @@ function setup_map_transitions(  ) {
 		D.set neigbours( used_points )
 		P = ::pick_list( possible_points )
 		grid["" + ::txt.mark( D.z_value )] = D
-		// goto 165
 	}
 	A = null
 	foreach (_ in ::z_levels_list ) {
@@ -9826,9 +9788,8 @@ function setup_map_transitions(  ) {
 				D = D.neigbours.8
 				S.destination_z = D.z_value
 			} else {
-				if ( D.neigbours.4 && D.neigbours.4 != D ) {
+				while (D.neigbours.4 && D.neigbours.4 != D) {
 					D = D.neigbours.4
-					// goto 289
 				}
 				S.destination_z = D.z_value
 			}
@@ -9847,9 +9808,8 @@ function setup_map_transitions(  ) {
 				D = D.neigbours.4
 				S.destination_z = D.z_value
 			} else {
-				if ( D.neigbours.8 && D.neigbours.8 != D ) {
+				while (D.neigbours.8 && D.neigbours.8 != D) {
 					D = D.neigbours.8
-					// goto 373
 				}
 				S.destination_z = D.z_value
 			}
@@ -9868,9 +9828,8 @@ function setup_map_transitions(  ) {
 				D = D.neigbours.2
 				S.destination_z = D.z_value
 			} else {
-				if ( D.neigbours.1 && D.neigbours.1 != D ) {
+				while (D.neigbours.1 && D.neigbours.1 != D) {
 					D = D.neigbours.1
-					// goto 449
 				}
 				S.destination_z = D.z_value
 			}
@@ -9889,9 +9848,8 @@ function setup_map_transitions(  ) {
 				D = D.neigbours.1
 				S.destination_z = D.z_value
 			} else {
-				if ( D.neigbours.2 && D.neigbours.2 != D ) {
+				while (D.neigbours.2 && D.neigbours.2 != D) {
 					D = D.neigbours.2
-					// goto 533
 				}
 				S.destination_z = D.z_value
 			}
@@ -9985,7 +9943,7 @@ function show_note( target_ckey, index, linkless ) {
 			output += "<center><a href='?_src_=holder;addnote=" + ::txt.mark( target_ckey ) + "'>[Add Note]</a></center>"
 		}
 		output += ruler
-		if ( query_get_notes.NextRow() ) {
+		while (query_get_notes.NextRow()) {
 			id = query_get_notes.item[1]
 			timestamp = query_get_notes.item[2]
 			notetext = query_get_notes.item[3]
@@ -10000,7 +9958,6 @@ function show_note( target_ckey, index, linkless ) {
 				}
 			}
 			output += "<br>" + ::txt.mark( notetext ) + "<hr style='background:#000000; border:0; height:1px'>"
-			// goto 93
 		}
 	} else if ( index ) {
 		index_ckey = null
@@ -10024,10 +9981,9 @@ function show_note( target_ckey, index, linkless ) {
 			::log_game( "SQL ERROR obtaining ckey from notes table. Error : [" + ::txt.mark( err ) + "]\n" )
 			return
 		}
-		if ( query_list_notes.NextRow() ) {
+		while (query_list_notes.NextRow()) {
 			index_ckey = query_list_notes.item[1]
 			output += "<a href='?_src_=holder;shownoteckey=" + ::txt.mark( index_ckey ) + "'>" + ::txt.mark( index_ckey ) + "</a><br>"
-			// goto 221
 		}
 	} else {
 		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
@@ -10070,7 +10026,7 @@ function slur( n ) {
 	counter = ::length( phrase )
 	newphrase = ""
 	newletter = ""
-	if ( counter >= 1 ) {
+	while (counter >= 1) {
 		newletter = ::copytext( phrase, leng - counter + 1, leng - counter + 2 )
 		if ( ::rand( 1, 3 ) == 3 ) {
 			if ( ::lowertext( newletter ) == "o" ) {
@@ -10107,7 +10063,6 @@ function slur( n ) {
 		}
 		newphrase += "" + ::txt.mark( newletter )
 		counter -= 1
-		// goto 20
 	}
 	return newphrase
 }
@@ -10380,7 +10335,7 @@ function spaceDebrisStartLoc( startSide, Z ) {
 function spawn_meteor( meteortypes ) {
 	local pickedstart, pickedgoal, max_i, startSide, Me, M
 	max_i = 10
-	if ( !::istype( pickedstart, ::TurfSpace ) ) {
+	while (!::istype( pickedstart, ::TurfSpace )) {
 		startSide = ::pick_list( ::cardinal )
 		pickedstart = ::spaceDebrisStartLoc( startSide, 1 )
 		pickedgoal = ::spaceDebrisFinishLoc( startSide, 1 )
@@ -10388,7 +10343,6 @@ function spawn_meteor( meteortypes ) {
 		if ( max_i <= 0 ) {
 			return
 		}
-		// goto 7
 	}
 	Me = ::pickweight( meteortypes )
 	M = Me( pickedstart )
@@ -10588,14 +10542,13 @@ function stars( n, pr ) {
 	n = ::length( n )
 	p = null
 	p = 1
-	if ( p <= n ) {
+	while (p <= n) {
 		if ( ::copytext( te, p, p + 1 ) == " " || ::prob( pr ) ) {
 			t = "" + ::txt.mark( t ) + ::txt.mark( ::copytext( te, p, p + 1 ) )
 		} else {
 			t = "" + ::txt.mark( t ) + "*"
 		}
 		p++
-		// goto 50
 	}
 	return ::sanitize( t )
 }
@@ -10687,10 +10640,9 @@ function strip_html_simple( t, limit ) {
 	foreach (_ in strip_chars ) {
 		char = _
 		index = ::findtext( t, char, 1, null )
-		if ( index ) {
+		while (index) {
 			t = ::copytext( t, 1, index ) + ::copytext( t, index + 1, null )
 			index = ::findtext( t, char, 1, null )
-			// goto 37
 		}
 	}
 	return t
@@ -10721,7 +10673,7 @@ function stutter( n ) {
 	n = ::length( n )
 	p = null
 	p = 1
-	if ( p <= n ) {
+	while (p <= n) {
 		n_letter = ::copytext( te, p, p + 1 )
 		if ( ::prob( 80 ) && ( ::ckey( n_letter ) in ::List([ "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]) ) ) {
 			if ( ::prob( 10 ) ) {
@@ -10736,7 +10688,6 @@ function stutter( n ) {
 		}
 		t = "" + ::txt.mark( t ) + ::txt.mark( n_letter )
 		p++
-		// goto 19
 	}
 	return ::copytext( ::sanitize( t ), 1, 1024 )
 }
@@ -10998,7 +10949,7 @@ function ultra_range( dist, center, orange ) {
 		L += t_center
 		L += t_center.contents
 	}
-	if ( c_dist <= dist ) {
+	while (c_dist <= dist) {
 		y = t_center.y + c_dist
 		x = t_center.x - c_dist + 1
 		foreach (_ in ::gen_range( x, t_center.x + c_dist ) ) {
@@ -11040,7 +10991,6 @@ function ultra_range( dist, center, orange ) {
 			}
 		}
 		c_dist++
-		// goto 75
 	}
 	return L
 }
@@ -11061,14 +11011,13 @@ function unix2date( timestamp, seperator ) {
 	tmpDays = days + 1
 	monthsInDays = ::List()
 	month = 1
-	if ( tmpDays > daysInYear ) {
+	while (tmpDays > daysInYear) {
 		year++
 		if ( ::isLeap( year ) ) {
 			tmpDays -= daysInLYear
 		} else {
 			tmpDays -= daysInYear
 		}
-		// goto 52
 	}
 	if ( ::isLeap( year ) ) {
 		monthsInDays = ::List([ -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ])
