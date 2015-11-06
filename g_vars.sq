@@ -137,6 +137,7 @@
 ::awaydestinations <- null
 ::backbaglist <- null
 ::bad_mutations <- null
+::bad_se_blocks <- null
 ::Banlist <- null
 ::Banlistjob <- null
 ::be_special_flags <- null
@@ -146,6 +147,7 @@
 ::binary <- null
 ::blackbox <- null
 ::BLEND_ADD <- 2
+::BLEND_DEFAULT <- 0
 ::BLEND_MULTIPLY <- 4
 ::BLEND_OVERLAY <- 1
 ::blob_cores <- null
@@ -160,6 +162,7 @@
 ::bombers <- null
 ::BORDER_2NDTILE <- 3
 ::BORDER_BETWEEN <- 2
+::BORDER_NONE <- 1
 ::BORDER_SPACE <- 4
 ::BUMP_TELEPORTERS <- null
 ::cable_coil_recipes <- null
@@ -325,6 +328,7 @@
 ::maploader <- null
 ::master_controller <- null
 ::master_mode <- "traitor"
+::MAX_ACTIVE_TIME <- 400
 ::MAX_EX_DEVESTATION_RANGE <- 3
 ::MAX_EX_FLAME_RANGE <- 14
 ::MAX_EX_FLASH_RANGE <- 14
@@ -349,6 +353,7 @@
 ::meteorsC <- null
 ::meteorsSPOOKY <- null
 ::mime_names <- null
+::MIN_ACTIVE_TIME <- 200
 ::MIN_IMPREGNATION_TIME <- 100
 ::MOB_LAYER <- 4
 ::mob_list <- null
@@ -433,6 +438,7 @@
 ::revdata <- null
 ::rockTurfEdgeCache <- null
 ::rod_recipes <- null
+::ROOM_ERR_SPACE <- -1
 ::ROOM_ERR_TOOLARGE <- -2
 ::round_start_time <- 0
 ::roundstart_species <- null

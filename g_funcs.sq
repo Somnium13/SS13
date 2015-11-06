@@ -480,7 +480,6 @@ function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, a
 		maxnodedepth = maxnodes
 	}
 	open = ::Heap( ::GoofyFunc )
-	return
 	closed = ::List()
 	path = null
 	start = ::get_turf( start )
@@ -496,16 +495,15 @@ function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, a
 			closeenough = ::getf2( cur.source, dist )( end ) <= mintargetdist
 		}
 		if ( maxnodedepth && cur.nt > maxnodedepth ) {
-			// goto 97
+			// goto 96
 		}
 		if ( cur.source == end || closeenough ) {
-			return
 			path = ::List()
 			path.Add( cur.source )
 			if ( cur.prevNode ) {
 				cur = cur.prevNode
 				path.Add( cur.source )
-				// goto 156
+				// goto 154
 			}
 		} else {
 			L = ::getf2( cur.source, adjacent )( atom, id, simulated_only )
@@ -526,7 +524,7 @@ function AStar( start, end, atom, dist, maxnodes, maxnodedepth, mintargetdist, a
 					open.ReSort( T.PNode )
 				}
 			}
-			// goto 97
+			// goto 96
 		}
 	}
 	PN = null
@@ -558,7 +556,111 @@ function attach_spans( input, spans ) {
 }
 
 function attempt_initiate_surgery( I, M, user ) {
-	// Decompile Failure: bad call list
+	local H, affecting, selected_zone, current_surgery, S, all_surgeries, available_surgeries, S, path, P, S, procedure
+	if ( ::istype( M, ::MobLiving ) ) {
+		selected_zone = user.zone_sel.selecting
+		if ( ::istype( M, ::MobLivingCarbonHuman ) ) {
+			H = M
+			affecting = H.get organ( ::check_zone( selected_zone ) )
+		}
+		if ( M.lying || ::istype( M, ::MobLivingSimple_animalSlime ) ) {
+			S = null
+			foreach (_ in M.surgeries ) {
+				S = _
+				if ( !::istype( S, ::DatumSurgery ) ) {
+					continue
+				}
+				if ( S.location == selected_zone ) {
+					current_surgery = S
+				}
+			}
+			if ( !current_surgery ) {
+				all_surgeries = ::surgeries_list.Copy()
+				available_surgeries = ::List()
+				S = null
+				foreach (_ in all_surgeries ) {
+					S = _
+					if ( !::istype( S, ::DatumSurgery ) ) {
+						continue
+					}
+					if ( !S.possible_locs.Find( selected_zone ) ) {
+						continue
+					}
+					if ( affecting && ( S.requires_organic_bodypart && affecting.status == 2 ) ) {
+						continue
+					}
+					if ( !S.can start( user, M ) ) {
+						continue
+					}
+					path = null
+					foreach (_ in S.species ) {
+						path = _
+						if ( ::istype( M, path ) ) {
+							available_surgeries[S.name] = S
+							break
+						}
+					}
+				}
+				P = ::input( "Begin which procedure?", "Surgery", null, null, available_surgeries, 4224 )
+				if ( P && ( user && ( user.Adjacent( M ) && ( I in user ) ) ) ) {
+					S = available_surgeries[P]
+					procedure = S.type()
+					if ( procedure ) {
+						procedure.location = selected_zone
+						if ( procedure.ignore_clothes || ::get_location_accessible( M, selected_zone ) ) {
+							M.surgeries += procedure
+							procedure.organ = affecting
+							user.visible message( "" + ::txt.mark( user ) + " drapes " + ::txt.mark( I ) + " over " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + " to prepare for " + ::txt.a( procedure.name ) + ::txt.mark() + ".", "<span class='notice'>You drape " + ::txt.mark( I ) + " over " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + " to prepare for " + ::txt.a( procedure.name ) + ::txt.mark() + ".</span>" )
+							::smooth_icon_neighbors( "LIST_CALL", ::List({ ["addition"]= "Operation type: " + ::txt.mark( procedure.name ) + ", location: " + ::txt.mark( selected_zone ), [3]= "operated", [2]= M, [1]= user }) )
+						} else {
+							user.write( "<span class='warning'>You need to expose " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + " first!</span>" )
+						}
+					}
+				}
+			} else if ( !current_surgery.step_in_progress ) {
+				if ( current_surgery.status == 1 ) {
+					M.surgeries -= current_surgery
+					user.visible message( "" + ::txt.mark( user ) + " removes the drapes from " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + ".", "<span class='notice'>You remove the drapes from " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + ".</span>" )
+					::qdel( current_surgery )
+				} else if ( ::istype( user.get inactive hand(), ::ObjItemWeaponCautery ) && current_surgery.can_cancel ) {
+					M.surgeries -= current_surgery
+					user.visible message( "" + ::txt.mark( user ) + " mends the incision and removes the drapes from " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + ".", "<span class='notice'>You mend the incision and remove the drapes from " + ::txt.mark( M ) + "'s " + ::txt.mark( ::parse_zone( selected_zone ) ) + ".</span>" )
+					::qdel( current_surgery )
+				} else if ( current_surgery.can_cancel ) {
+					user.write( "<span class='warning'>You need to hold a cautery in inactive hand to stop " + ::txt.mark( M ) + "'s surgery!</span>" )
+				}
+			}
+			return 1
+		}
+	}
+	return 0
+}
+
+function AverageColour( I ) {
+	local colours, x_pixel, y_pixel, this_colour, final_average, colour
+	colours = ::List()
+	x_pixel = null
+	foreach (_ in ::gen_range( 1, I.Width() ) ) {
+		x_pixel = _
+		y_pixel = null
+		foreach (_ in ::gen_range( 1, I.Height() ) ) {
+			y_pixel = _
+			this_colour = I.GetPixel( x_pixel, y_pixel )
+			if ( this_colour ) {
+				colours.Add( this_colour )
+			}
+		}
+	}
+	if ( !colours.len ) {
+		return
+	}
+	final_average = colours[1]
+	colour = null
+	foreach (_ in colours - colours[1] ) {
+		colour = _
+		final_average = ::BlendRGB( final_average, colour, 1 )
+	}
+	return final_average
 }
 
 function blendMode2iconMode( blend_mode ) {
@@ -592,7 +694,37 @@ function BlendRGB( rgb1, rgb2, amount ) {
 }
 
 function blood_incompatible( donor, receiver, donor_species, receiver_species ) {
-	// Decompile Failure: more bad switch
+	local donor_antigen, receiver_antigen, donor_rh, receiver_rh
+	if ( !donor || !receiver ) {
+		return 0
+	}
+	if ( donor_species && receiver_species ) {
+		if ( donor_species != receiver_species ) {
+			return 1
+		}
+	}
+	donor_antigen = ::copytext( donor, 1, ::length( donor ) )
+	receiver_antigen = ::copytext( receiver, 1, ::length( receiver ) )
+	donor_rh = ::findtext( donor, "+", 1, null ) > 0
+	receiver_rh = ::findtext( receiver, "+", 1, null ) > 0
+	if ( donor_rh && !receiver_rh ) {
+		return 1
+	}
+	local _ = receiver_antigen // Was a switch-case, sorry for the mess.
+	if ( _=="A" ) {
+		if ( donor_antigen != "A" && donor_antigen != "O" ) {
+			return 1
+		}
+	} else if ( _=="B" ) {
+		if ( donor_antigen != "B" && donor_antigen != "O" ) {
+			return 1
+		}
+	} else if ( _=="O" ) {
+		if ( donor_antigen != "O" ) {
+			return 1
+		}
+	}
+	return 0
 }
 
 function blood_splatter( target, source, large ) {
@@ -989,7 +1121,148 @@ function Broadcast_SimpleMessage( source, frequency, text, data, M, compression,
 }
 
 function build_click( user, buildmode, params, object ) {
-	// Decompile Failure: more bad switch
+	local holder, H, pa, T, T, T, T, WIN, WIN, WIN, WIN, WIN, T, A, G
+	holder = null
+	H = null
+	foreach (_ in ::game ) {
+		H = _
+		if ( !::istype( H, ::ObjEffectBmodeBuildholder ) ) {
+			continue
+		}
+		if ( H.cl == user.client ) {
+			holder = H
+			break
+		}
+	}
+	if ( !holder ) {
+		return
+	}
+	pa = ::params2list( params )
+	if ( ::istype( object, ::ObjEffectBmode ) ) {
+		return
+	}
+	local _ = buildmode // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		if ( ::istype( object, ::Turf ) && ( pa.Find( "left" ) && ( !pa.Find( "alt" ) && !pa.Find( "ctrl" ) ) ) ) {
+			T = object
+			if ( ::istype( object, ::TurfSpace ) ) {
+				T.ChangeTurf( ::TurfSimulatedFloorPlasteel )
+			} else if ( ::istype( object, ::TurfSimulatedFloor ) ) {
+				T.ChangeTurf( ::TurfSimulatedWall )
+			} else if ( ::istype( object, ::TurfSimulatedWall ) ) {
+				T.ChangeTurf( ::TurfSimulatedWallR_wall )
+			}
+			::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " built " + ::txt.mark( T ) + " at (" + ::txt.mark( T.x ) + "," + ::txt.mark( T.y ) + "," + ::txt.mark( T.z ) + ")" )
+			return
+		} else if ( pa.Find( "right" ) ) {
+			::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " deleted " + ::txt.mark( object ) + " at (" + ::txt.mark( object.x ) + "," + ::txt.mark( object.y ) + "," + ::txt.mark( object.z ) + ")" )
+			if ( ::istype( object, ::TurfSimulatedWall ) ) {
+				T = object
+				T.ChangeTurf( ::TurfSimulatedFloorPlasteel )
+			} else if ( ::istype( object, ::TurfSimulatedFloor ) ) {
+				T = object
+				T.ChangeTurf( ::TurfSpace )
+			} else if ( ::istype( object, ::TurfSimulatedWallR_wall ) ) {
+				T = object
+				T.ChangeTurf( ::TurfSimulatedWall )
+			} else if ( ::istype( object, ::Obj ) ) {
+				::qdel( object )
+			}
+			return
+		} else if ( ::istype( object, ::Turf ) && ( T.Find( "alt" ) && T.Find( "left" ) ) ) {
+			::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " built an airlock at (" + ::txt.mark( object.x ) + "," + ::txt.mark( object.y ) + "," + ::txt.mark( object.z ) + ")" )
+			::ObjMachineryDoorAirlock( ::get_turf( object ) )
+		} else if ( ::istype( object, ::Turf ) && ( pa.Find( "ctrl" ) && pa.Find( "left" ) ) ) {
+			local _ = holder.builddir.dir // Was a switch-case, sorry for the mess.
+			if ( _==1 ) {
+				WIN = ::ObjStructureWindowReinforced( ::get_turf( object ) )
+				WIN.dir = ::NORTH
+			} else if ( _==2 ) {
+				WIN = ::ObjStructureWindowReinforced( ::get_turf( object ) )
+				WIN.dir = ::SOUTH
+			} else if ( _==4 ) {
+				WIN = ::ObjStructureWindowReinforced( ::get_turf( object ) )
+				WIN.dir = ::EAST
+			} else if ( _==8 ) {
+				WIN = ::ObjStructureWindowReinforced( ::get_turf( object ) )
+				WIN.dir = ::WEST
+			} else if ( _==9 ) {
+				WIN = ::ObjStructureWindowReinforced( ::get_turf( object ) )
+				WIN.dir = ::NORTHWEST
+			}
+			::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " built a window at (" + ::txt.mark( object.x ) + "," + ::txt.mark( object.y ) + "," + ::txt.mark( object.z ) + ")" )
+		}
+	} else if ( _==2 ) {
+		if ( pa.Find( "left" ) ) {
+			if ( ::ispath2( holder.buildmode.objholder, ::Turf ) ) {
+				T = ::get_turf( object )
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " modified " + ::txt.mark( T ) + " (" + ::txt.mark( T.x ) + "," + ::txt.mark( T.y ) + "," + ::txt.mark( T.z ) + ") to " + ::txt.mark( holder.buildmode.objholder ) )
+				T.ChangeTurf( holder.buildmode.objholder )
+			} else {
+				A = T.objholder( ::get_turf( object ) )
+				A.dir = holder.builddir.dir
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " modified " + ::txt.mark( A ) + "'s (" + ::txt.mark( A.x ) + "," + ::txt.mark( A.y ) + "," + ::txt.mark( A.z ) + ") dir to " + ::txt.mark( holder.builddir.dir ) )
+			}
+		} else if ( holder.Find( "right" ) ) {
+			if ( ::isobj( object ) ) {
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " deleted " + ::txt.mark( object ) + " at (" + ::txt.mark( object.x ) + "," + ::txt.mark( object.y ) + "," + ::txt.mark( object.z ) + ")" )
+				::qdel( object )
+			}
+		}
+	} else if ( _==3 ) {
+		if ( pa.Find( "left" ) ) {
+			if ( object.vars.Find( holder.buildmode.varholder ) ) {
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " modified " + ::txt.mark( object.name ) + "'s " + ::txt.mark( holder.buildmode.varholder ) + " to " + ::txt.mark( holder.valueholder ) )
+				object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder
+			} else {
+				::_USR_.write( "<span class='warning'>" + ::txt.mark( ::initial( object.name ) ) + " does not have a var called '" + ::txt.mark( holder.buildmode.varholder ) + "'</span>" )
+			}
+		}
+		if ( pa.Find( "right" ) ) {
+			if ( object.vars.Find( holder.buildmode.varholder ) ) {
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " modified " + ::txt.mark( object.name ) + "'s " + ::txt.mark( holder.buildmode.varholder ) + " to " + ::txt.mark( holder.valueholder ) )
+				object.vars[holder.buildmode.varholder] = ::initial( object.vars[holder.buildmode.varholder] )
+			} else {
+				::_USR_.write( "<span class='warning'>" + ::txt.mark( ::initial( object.name ) ) + " does not have a var called '" + ::txt.mark( holder.buildmode.varholder ) + "'</span>" )
+			}
+		}
+	} else if ( _==4 ) {
+		if ( pa.Find( "left" ) ) {
+			if ( ::isturf( object ) ) {
+				return
+			}
+			holder.throw_atom = object
+		}
+		if ( pa.Find( "right" ) ) {
+			if ( holder.throw_atom ) {
+				holder.throw_atom.throw at( object, 10, 1, user )
+				::log_admin( "Build Mode: " + ::txt.mark( ::key_name( ::_USR_ ) ) + " threw " + ::txt.mark( holder.throw_atom ) + " at " + ::txt.mark( object ) + " (" + ::txt.mark( object.x ) + "," + ::txt.mark( object.y ) + "," + ::txt.mark( object.z ) + ")" )
+			}
+		}
+	} else if ( _==5 ) {
+		if ( !holder.cornerA ) {
+			holder.cornerA = ::get_turf( object )
+			return
+		}
+		if ( holder.cornerA && !holder.cornerB ) {
+			holder.cornerB = ::get_turf( object )
+		}
+		if ( pa.Find( "left" ) ) {
+			if ( holder.cornerA && holder.cornerB ) {
+				if ( !holder.generator_path ) {
+					::_USR_.write( "<span class='warning'>Select generator type first.</span>" )
+				}
+				G = holder.generator_path()
+				G.defineRegion( holder.cornerA, holder.cornerB, 1 )
+				G.generate()
+				holder.cornerA = null
+				holder.cornerB = null
+				return
+			}
+		}
+		holder.cornerA = null
+		holder.cornerB = null
+	}
 }
 
 function calculate_adjacencies( A ) {
@@ -1010,10 +1283,8 @@ function calculate_adjacencies( A ) {
 			if ( ::istype( AM, ::AtomMovable ) ) {
 				if ( AM.anchored ) {
 					adjacencies = adjacencies | ::transform_dir( direction )
-					// goto 63
 				}
-			}
-			if ( AM ) {
+			} else if ( AM ) {
 				adjacencies = adjacencies | ::transform_dir( direction )
 			}
 		}
@@ -1030,7 +1301,26 @@ function calculate_adjacencies( A ) {
 }
 
 function camera_sort( L ) {
-	// Decompile Failure: bad for-to
+	local a, b, i, j
+	i = null
+	i = L.len
+	while (i > 0) {
+		j = null
+		foreach (_ in ::gen_range( 1, i - 1 ) ) {
+			j = _
+			a = L[j]
+			b = L[j + 1]
+			if ( a.c_tag_order != b.c_tag_order ) {
+				if ( a.c_tag_order > b.c_tag_order ) {
+					L.Swap( j, j + 1 )
+				}
+			} else if ( ::sorttext( a.c_tag, b.c_tag ) < 0 ) {
+				L.Swap( j, j + 1 )
+			}
+		}
+		i--
+	}
+	return L
 }
 
 function can_embed( W ) {
@@ -1115,7 +1405,18 @@ function capitalize( t ) {
 }
 
 function cardinalrange( center ) {
-	// Decompile Failure: bad iter loop 4
+	local things, direction, T
+	things = ::List()
+	direction = null
+	foreach (_ in ::cardinal ) {
+		direction = _
+		T = ::get_step( center, direction )
+		if ( !T ) {
+			continue
+		}
+		things += T.contents
+	}
+	return things
 }
 
 function Ceiling( x ) {
@@ -1308,7 +1609,6 @@ function circlerange( center, radius ) {
 		radius = 3
 	}
 	centerturf = ::get_turf( center )
-	return
 	turfs = ::List()
 	rsq = radius * ( radius + 0.5 )
 	T = null
@@ -1335,7 +1635,6 @@ function circlerangeturfs( center, radius ) {
 		radius = 3
 	}
 	centerturf = ::get_turf( center )
-	return
 	turfs = ::List()
 	rsq = radius * ( radius + 0.5 )
 	T = null
@@ -1355,7 +1654,6 @@ function Clamp( val, min, max ) {
 }
 
 function clearlist( list ) {
-	return
 	if ( ::istype( list, ::List ) ) {
 		list.len = 0
 	}
@@ -1414,10 +1712,8 @@ function cmd_admin_mute( whom, mute_type, automute ) {
 	if ( automute ) {
 		if ( !::config.automute_on ) {
 			return
-			// goto 113
 		}
-	}
-	if ( !::check_rights() ) {
+	} else if ( !::check_rights() ) {
 		return
 	}
 	if ( automute ) {
@@ -1681,6 +1977,13 @@ function cultist_commune( user, clear, say, message ) {
 	::log_say( "" + ::txt.mark( user.real_name ) + "/" + ::txt.mark( user.key ) + " : " + ::txt.mark( message ) )
 }
 
+function dd_hasprefix_case( text, prefix ) {
+	local start, end
+	start = 1
+	end = ::length( prefix ) + 1
+	return ::findtextEx( text, prefix, start, end )
+}
+
 function dd_hassuffix( text, suffix ) {
 	local start
 	start = ::length( text ) - ::length( suffix )
@@ -1806,6 +2109,37 @@ function dir2text_short( direction ) {
 		return "SW"
 	}
 	return
+}
+
+function DirBlockedWithAccess( T, dir, ID ) {
+	local D, D
+	D = null
+	foreach (_ in T ) {
+		D = _
+		if ( !::istype( D, ::ObjStructureWindow ) ) {
+			continue
+		}
+		if ( !D.density ) {
+			continue
+		}
+		if ( D.dir == ::SOUTHWEST ) {
+			return 1
+		}
+		if ( D.dir == dir ) {
+			return 1
+		}
+	}
+	D = null
+	foreach (_ in T ) {
+		D = _
+		if ( !::istype( D, ::ObjMachineryDoor ) ) {
+			continue
+		}
+		if ( !D.CanAStarPass( ID, dir ) ) {
+			return 1
+		}
+	}
+	return 0
 }
 
 function display_roundstart_logout_report(  ) {
@@ -2003,7 +2337,30 @@ function do_mob( user, target, time, numticks, uninterruptible, progress ) {
 }
 
 function do_teleport( ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout ) {
-	// Decompile Failure: mows args
+	local D
+	if ( aprecision == null ) {
+		aprecision = 0
+	}
+	if ( afteleport == null ) {
+		afteleport = 1
+	}
+	if ( aeffectin == null ) {
+		aeffectin = null
+	}
+	if ( aeffectout == null ) {
+		aeffectout = null
+	}
+	if ( asoundin == null ) {
+		asoundin = null
+	}
+	if ( asoundout == null ) {
+		asoundout = null
+	}
+	D = ::DatumTeleportInstantScience()
+	if ( D.start( "LIST_CALL", ::_ARGS_ ) ) {
+		return 1
+	}
+	return 0
 }
 
 function DrawPixel( I, colour, drawX, drawY ) {
@@ -2083,21 +2440,17 @@ function electrocute_mob( M, power_source, source, siemens_coeff ) {
 		PN = power_source
 	} else if ( ::istype( power_source, ::ObjItemWeaponStock_partsCell ) ) {
 		cell = power_source
+	} else if ( ::istype( power_source, ::ObjMachineryPowerApc ) ) {
+		apc = power_source
+		cell = apc.cell
+		if ( apc.terminal ) {
+			PN = apc.terminal.powernet
+		}
+	} else if ( !power_source ) {
+		return 0
 	} else {
-		if ( ::istype( power_source, ::ObjMachineryPowerApc ) ) {
-			apc = power_source
-			cell = apc.cell
-			if ( apc.terminal ) {
-				PN = apc.terminal.powernet
-				// goto 128
-			}
-		}
-		if ( !power_source ) {
-			return 0
-		} else {
-			::log_admin( "ERROR: /proc/electrocute_mob(" + ::txt.mark( M ) + ", " + ::txt.mark( power_source ) + ", " + ::txt.mark( source ) + "): wrong power_source" )
-			return 0
-		}
+		::log_admin( "ERROR: /proc/electrocute_mob(" + ::txt.mark( M ) + ", " + ::txt.mark( power_source ) + ", " + ::txt.mark( source ) + "): wrong power_source" )
+		return 0
 	}
 	if ( !cell && !PN ) {
 		return 0
@@ -2161,7 +2514,42 @@ function Ellipsis( original_msg, chance, keep_words ) {
 }
 
 function emoji_parse( text ) {
-	// Decompile Failure: fail decode_fail,221,280
+	local parsed, pos, search, emoji
+	if ( !::config.emojis ) {
+		return text
+	}
+	if ( !::emojis ) {
+		::emojis = ::icon_states( null, "/icon"( ::Rsc(60) ) )
+	}
+	parsed = ""
+	pos = 1
+	search = 0
+	emoji = ""
+	if ( 1 ) {
+		search = ::findtext( text, ":", pos, null )
+		parsed += ::copytext( text, pos, search )
+		if ( search ) {
+			pos = search
+			search = ::findtext( text, ":", pos + 1, null )
+			if ( search ) {
+				emoji = ::lowertext( ::copytext( text, pos + 1, search ) )
+				if ( emoji in ::emojis ) {
+					parsed += "<img class=icon src=" + ::txt.ref( ::Rsc(60) ) + " iconstate='" + ::txt.mark( emoji ) + "'>"
+					pos = search + 1
+				} else {
+					parsed += ::copytext( text, pos, search )
+					pos = search
+				}
+				emoji = ""
+				// goto 33
+			} else {
+				parsed += ::copytext( text, pos, search )
+			}
+		}
+		// goto 119
+		// goto 33
+	}
+	return parsed
 }
 
 function empulse( epicenter, heavy_range, light_range, log ) {
@@ -2258,7 +2646,182 @@ function establish_db_connection(  ) {
 }
 
 function explosion( epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent ) {
-	// Decompile Failure: bad iter loop 4
+	local orig_dev_range, orig_heavy_range, orig_light_range, start, max_range, cached_exp_block, far_dist, frequency, M, M_turf, dist, far_volume, postponeCycles, E, x0, y0, z0, affected_turfs, T, D, W, B, T, dist, Trajectory, flame_dist, throw_dist, throw_dir, I, throw_range, throw_at, took, i, Array
+	if ( adminlog == null ) {
+		adminlog = 1
+	}
+	if ( ignorecap == null ) {
+		ignorecap = 0
+	}
+	if ( flame_range == null ) {
+		flame_range = 0
+	}
+	if ( silent == null ) {
+		silent = 0
+	}
+	this = null
+	epicenter = ::get_turf( epicenter )
+	orig_dev_range = devastation_range
+	orig_heavy_range = heavy_impact_range
+	orig_light_range = light_impact_range
+	if ( !ignorecap ) {
+		devastation_range = ::min( ::MAX_EX_DEVESTATION_RANGE, devastation_range )
+		heavy_impact_range = ::min( ::MAX_EX_HEAVY_RANGE, heavy_impact_range )
+		light_impact_range = ::min( ::MAX_EX_LIGHT_RANGE, light_impact_range )
+		flash_range = ::min( ::MAX_EX_FLASH_RANGE, flash_range )
+		flame_range = ::min( ::MAX_EX_FLAME_RANGE, flame_range )
+	}
+	::spawn( 0, function() {
+		start = ::game.timeofday
+		if ( !epicenter ) {
+			return
+		}
+		max_range = ::max( devastation_range, heavy_impact_range, light_impact_range, flame_range )
+		cached_exp_block = ::List()
+		if ( adminlog ) {
+			::message_admins( "Explosion with size (" + ::txt.mark( devastation_range ) + ", " + ::txt.mark( heavy_impact_range ) + ", " + ::txt.mark( light_impact_range ) + ", " + ::txt.mark( flame_range ) + ") in area " + ::txt.mark( epicenter.loc.name ) + " (" + ::txt.mark( epicenter.x ) + "," + ::txt.mark( epicenter.y ) + "," + ::txt.mark( epicenter.z ) + ")" )
+			::log_game( "Explosion with size (" + ::txt.mark( devastation_range ) + ", " + ::txt.mark( heavy_impact_range ) + ", " + ::txt.mark( light_impact_range ) + ", " + ::txt.mark( flame_range ) + ") in area " + ::txt.mark( epicenter.loc.name ) + " (" + ::txt.mark( epicenter.x ) + "," + ::txt.mark( epicenter.y ) + "," + ::txt.mark( epicenter.z ) + ")" )
+		}
+		far_dist = 0
+		far_dist += heavy_impact_range * 5
+		far_dist += devastation_range * 20
+		if ( !silent ) {
+			frequency = ::get_rand_frequency()
+			M = null
+			foreach (_ in ::player_list ) {
+				M = _
+				if ( M && M.client ) {
+					M_turf = ::get_turf( M )
+					if ( M_turf && M_turf.z == epicenter.z ) {
+						dist = ::get_dist( M_turf, epicenter )
+						if ( dist <= ::round2( max_range + ::game.view - 2, 1 ) ) {
+							M.playsound local( "LIST_CALL", ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= 100, [2]= ::get_sfx( "explosion" ), [1]= epicenter }) )
+						} else if ( dist <= far_dist ) {
+							far_volume = ::Clamp( far_dist, 30, 50 )
+							far_volume += dist <= far_dist * 0.5 ? 50 : 0
+							M.playsound local( "LIST_CALL", ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= far_volume, [2]= ::Rsc(58), [1]= epicenter }) )
+						}
+					}
+				}
+			}
+		}
+		postponeCycles = ::max( ::round( devastation_range / 8 ), 1 )
+		::SSlighting.postpone( postponeCycles )
+		::SSmachine.postpone( postponeCycles )
+		if ( heavy_impact_range > 1 ) {
+			E = ::DatumEffect_systemExplosion()
+			E.set up( epicenter )
+			E.start()
+		}
+		x0 = epicenter.x
+		y0 = epicenter.y
+		z0 = epicenter.z
+		affected_turfs = ::trange( max_range, epicenter )
+		if ( ::config.reactionary_explosions ) {
+			T = null
+			foreach (_ in affected_turfs ) {
+				T = _
+				cached_exp_block[T] = 0
+				if ( T.density && T.explosion_block ) {
+					cached_exp_block[T] += T.explosion_block
+				}
+				D = null
+				foreach (_ in T ) {
+					D = _
+					if ( !::istype( D, ::ObjMachineryDoor ) ) {
+						continue
+					}
+					if ( D.density && D.explosion_block ) {
+						cached_exp_block[T] += D.explosion_block
+					}
+				}
+				W = null
+				foreach (_ in T ) {
+					W = _
+					if ( !::istype( W, ::ObjStructureWindow ) ) {
+						continue
+					}
+					if ( W.reinf && W.fulltile ) {
+						cached_exp_block[T] += W.explosion_block
+					}
+				}
+				B = null
+				foreach (_ in T ) {
+					B = _
+					if ( !::istype( B, ::ObjEffectBlob ) ) {
+						continue
+					}
+					cached_exp_block[T] += B.explosion_block
+				}
+			}
+		}
+		T = null
+		foreach (_ in affected_turfs ) {
+			T = _
+			dist = ::cheap_hypotenuse( T.x, T.y, x0, y0 )
+			if ( ::config.reactionary_explosions ) {
+				Trajectory = T
+				if ( Trajectory != epicenter ) {
+					Trajectory = ::get_step_towards( Trajectory, epicenter )
+					dist += cached_exp_block[Trajectory]
+					// goto 430
+				}
+			}
+			flame_dist = 0
+			throw_dist = dist
+			if ( dist < flame_range ) {
+				flame_dist = 1
+			}
+			if ( dist < devastation_range ) {
+				dist = 1
+			} else if ( dist < heavy_impact_range ) {
+				dist = 2
+			} else if ( dist < light_impact_range ) {
+				dist = 3
+			} else {
+				dist = 0
+			}
+			if ( T ) {
+				if ( flame_dist && ( ::prob( 40 ) && ( !::istype( T, ::TurfSpace ) && !T.density ) ) ) {
+					::PoolOrNew( ::ObjEffectHotspot, T )
+				}
+				if ( dist > 0 ) {
+					T.ex act( dist )
+				}
+			}
+			throw_dir = ::get_dist2( epicenter, T )
+			I = null
+			foreach (_ in T ) {
+				I = _
+				if ( !::istype( I, ::ObjItem ) ) {
+					continue
+				}
+				::spawn( 0, function() {
+					if ( I && !I.anchored ) {
+						throw_range = ::rand( throw_dist, max_range )
+						throw_at = ::get_ranged_target_turf( I, throw_dir, throw_range )
+						I.throw_speed = 4
+						I.throw at( throw_at, throw_range, 2 )
+					}
+					return
+				})
+			}
+		}
+		took = ( ::game.timeofday - start ) / 10
+		if ( ::Debug2 ) {
+			::game.log.write( "## DEBUG: Explosion(" + ::txt.mark( x0 ) + "," + ::txt.mark( y0 ) + "," + ::txt.mark( z0 ) + ")(d" + ::txt.mark( devastation_range ) + ",h" + ::txt.mark( heavy_impact_range ) + ",l" + ::txt.mark( light_impact_range ) + "): Took " + ::txt.mark( took ) + " seconds." )
+		}
+		i = null
+		while (i <= ::doppler_arrays.len) {
+			Array = ::doppler_arrays[i]
+			if ( Array ) {
+				Array.sense explosion( x0, y0, z0, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range )
+			}
+			i++
+		}
+		return
+	})
+	return 1
 }
 
 function feedback_add_details( variable, details ) {
@@ -2318,7 +2881,6 @@ function file2list( filename, seperator ) {
 
 function filter_fancy_list( L, filter ) {
 	local matches, key, value
-	return
 	matches = ::List()
 	key = null
 	foreach (_ in L ) {
@@ -2399,6 +2961,27 @@ function find_type_in_direction( source, direction, range ) {
 	}
 }
 
+function findchar( haystack, needles, start, end ) {
+	local temp, len, i
+	if ( start == null ) {
+		start = 1
+	}
+	if ( end == null ) {
+		end = 0
+	}
+	len = ::length( needles )
+	i = null
+	i = 1
+	while (i <= len) {
+		temp = ::findtextEx( haystack, ::ascii2text( ::text2ascii( needles, i ) ), start, end )
+		if ( temp ) {
+			end = temp
+		}
+		i++
+	}
+	return end
+}
+
 function findname( msg ) {
 	local M
 	if ( !::istext( msg ) ) {
@@ -2415,7 +2998,21 @@ function findname( msg ) {
 }
 
 function forbidden_atoms_check( A ) {
-	// Decompile Failure: bad call this
+	local blacklist, thing
+	blacklist = ::List([ ::MobLiving, ::ObjEffectBlob, ::ObjEffectSpiderSpiderling, ::ObjItemWeaponDiskNuclear, ::ObjMachineryNuclearbomb, ::ObjItemDeviceRadioBeacon, ::ObjMachineryThe_singularitygen, ::ObjSingularity, ::ObjMachineryTeleportStation, ::ObjMachineryTeleportHub, ::ObjMachineryTelepad ])
+	if ( A ) {
+		if ( ::is_type_in_list( A, blacklist ) ) {
+			return 1
+		}
+		thing = null
+		foreach (_ in A ) {
+			thing = _
+			if ( ::_THISCALL_() ) {
+				return 1
+			}
+		}
+	}
+	return 0
 }
 
 function format_frequency( f ) {
@@ -2462,7 +3059,12 @@ function Gcd( a, b ) {
 }
 
 function generate_female_clothing( index, t_color, icon, type ) {
-	// Decompile Failure: fail decode_fail,215,104
+	local female_clothing_icon, female_s
+	female_clothing_icon = "/icon"( "LIST_CALL", ::List({ ["icon_state"]= t_color, ["icon"]= icon }) )
+	female_s = "/icon"( "LIST_CALL", ::List({ ["icon_state"]= "" + ::txt.mark( type == 1 ? "female_full" : "female_top" ), ["icon"]= ::Rsc(59) }) )
+	female_clothing_icon.Blend( female_s, 2 )
+	female_clothing_icon = ::fcopy_rsc( female_clothing_icon )
+	::female_clothing_icons[index] = female_clothing_icon
 }
 
 function generate_ion_law( ionMessage ) {
@@ -3139,7 +3741,6 @@ function get_area_all_atoms( areatype ) {
 		areatemp = areatype
 		areatype = areatemp.type
 	}
-	return
 	atoms = ::List()
 	N = null
 	foreach (_ in ::game ) {
@@ -3191,7 +3792,6 @@ function get_area_turfs( areatype ) {
 		areatemp = areatype
 		areatype = areatemp.type
 	}
-	return
 	turfs = ::List()
 	N = null
 	foreach (_ in ::game ) {
@@ -3235,10 +3835,10 @@ function get_candidates( be_special_flag, afk_bracket, jobbanType ) {
 						if ( jobbanType ) {
 							if ( !( ::jobban_isbanned( G, jobbanType ) || ::jobban_isbanned( G, "Syndicate" ) ) ) {
 								candidates += G.client
-								// goto 91
 							}
+						} else {
+							candidates += G.client
 						}
-						candidates += G.client
 					}
 				}
 			}
@@ -3299,6 +3899,14 @@ function get_department_heads( job_title ) {
 	}
 }
 
+function get_dist_euclidian( Loc1, Loc2 ) {
+	local dx, dy, dist
+	dx = Loc1.x - Loc2.x
+	dy = Loc1.y - Loc2.y
+	dist = ::sqrt( ::pow( dx, 2 ) + ::pow( dy, 2 ) )
+	return dist
+}
+
 function get_domination_time( G ) {
 	return ::max( 180, 900 - ::round2( G.territory.len / ::start_state.num_territories * 100, 1 ) * 12 )
 }
@@ -3341,7 +3949,6 @@ function get_fancy_list_of_types(  ) {
 	local temp, type, typename, tn
 	if ( ::isnull( ::g_fancy_list_of_types ) ) {
 		temp = ::sortList( ::typesof( ::Atom ) - ::typesof( ::Area(3137) ) - ::Atom - ::AtomMovable )
-		return
 		::g_fancy_list_of_types = ::List( temp.len )
 		type = null
 		foreach (_ in temp ) {
@@ -3390,7 +3997,91 @@ function get_hearers_in_view( R, source ) {
 }
 
 function get_location_accessible( M, location ) {
-	// Decompile Failure: more bad switch
+	local covered_locations, face_covered, eyesmouth_covered, C, I, H, I
+	covered_locations = 0
+	face_covered = 0
+	eyesmouth_covered = 0
+	if ( ::istype( M, ::MobLivingCarbon ) ) {
+		C = M
+		I = null
+		foreach (_ in ::List([ C.back, C.wear_mask, C.head ]) ) {
+			I = _
+			if ( !::istype( I, ::ObjItemClothing ) ) {
+				continue
+			}
+			covered_locations = covered_locations | I.body_parts_covered
+			face_covered = face_covered | I.flags_inv
+			eyesmouth_covered = eyesmouth_covered | I.flags_cover
+		}
+		if ( ::istype( C, ::MobLivingCarbonHuman ) ) {
+			H = C
+			I = null
+			foreach (_ in ::List([ H.wear_suit, H.w_uniform, H.shoes, H.belt, H.gloves, H.glasses, H.ears ]) ) {
+				I = _
+				if ( !::istype( I, ::ObjItem ) ) {
+					continue
+				}
+				covered_locations = covered_locations | I.body_parts_covered
+				face_covered = face_covered | I.flags_inv
+				eyesmouth_covered = eyesmouth_covered | I.flags_cover
+			}
+		}
+	}
+	local _ = location // Was a switch-case, sorry for the mess.
+	if ( _=="head" ) {
+		if ( covered_locations & 1 ) {
+			return 0
+		}
+	} else if ( _=="eyes" ) {
+		if ( covered_locations & 1 || ( face_covered & 4 || eyesmouth_covered & 1 ) ) {
+			return 0
+		}
+	} else if ( _=="mouth" ) {
+		if ( covered_locations & 1 || ( face_covered & 8 || ( eyesmouth_covered & 8 || eyesmouth_covered & 16 ) ) ) {
+			return 0
+		}
+	} else if ( _=="chest" ) {
+		if ( covered_locations & 2 ) {
+			return 0
+		}
+	} else if ( _=="groin" ) {
+		if ( covered_locations & 4 ) {
+			return 0
+		}
+	} else if ( _=="l_arm" ) {
+		if ( covered_locations & 128 ) {
+			return 0
+		}
+	} else if ( _=="r_arm" ) {
+		if ( covered_locations & 256 ) {
+			return 0
+		}
+	} else if ( _=="l_leg" ) {
+		if ( covered_locations & 8 ) {
+			return 0
+		}
+	} else if ( _=="r_leg" ) {
+		if ( covered_locations & 16 ) {
+			return 0
+		}
+	} else if ( _=="l_hand" ) {
+		if ( covered_locations & 512 ) {
+			return 0
+		}
+	} else if ( _=="r_hand" ) {
+		if ( covered_locations & 1024 ) {
+			return 0
+		}
+	} else if ( _=="l_foot" ) {
+		if ( covered_locations & 32 ) {
+			return 0
+		}
+	} else if ( _=="r_foot" ) {
+		if ( covered_locations & 64 ) {
+			return 0
+		}
+	}
+	return 1
 }
 
 function get_location_modifier( M ) {
@@ -3751,10 +4442,10 @@ function get_teleport_loc( location, target, distance, density, errorx, errory, 
 			}
 			if ( destination.y > ::game.maxy || destination.y < 1 ) {
 				return
-			} else {
-				return
 			}
 		}
+	} else {
+		return
 	}
 	return destination
 }
@@ -3967,7 +4658,153 @@ function GetExpjob( minutes ) {
 }
 
 function getFlatIcon( A, defdir, deficon, defstate, defblend ) {
-	// Decompile Failure: bad logic1
+	local flat, noIcon, curicon, curstate, curdir, curblend, layers, copy, process, pSet, curIndex, current, currentLayer, compare, cmpIndex, add, flatX1, flatX2, flatY1, flatY2, addX1, addX2, addY1, addY2, I
+	if ( defdir == null ) {
+		defdir = A.dir
+	}
+	if ( deficon == null ) {
+		deficon = A.icon
+	}
+	if ( defstate == null ) {
+		defstate = A.icon_state
+	}
+	if ( defblend == null ) {
+		defblend = A.blend_mode
+	}
+	flat = "/icon"( ::Rsc(11), "nothing" )
+	if ( !A ) {
+		return flat
+	}
+	if ( A.alpha <= 0 ) {
+		return flat
+	}
+	noIcon = ::FALSE
+	if ( A.icon ) {
+		curicon = A.icon
+	} else {
+		curicon = deficon
+	}
+	if ( !curicon ) {
+		noIcon = ::TRUE
+	}
+	if ( A.icon_state ) {
+		curstate = A.icon_state
+	} else {
+		curstate = defstate
+	}
+	if ( !noIcon && !( curstate in ::icon_states( null, curicon ) ) ) {
+		if ( "" in ::icon_states( null, curicon ) ) {
+			curstate = ""
+		} else {
+			noIcon = ::TRUE
+		}
+	}
+	if ( A.dir != 2 ) {
+		curdir = A.dir
+	} else {
+		curdir = defdir
+	}
+	if ( A.blend_mode == ::BLEND_DEFAULT ) {
+		curblend = defblend
+	} else {
+		curblend = A.blend_mode
+	}
+	layers = ::List()
+	if ( !noIcon ) {
+		copy = ::image_listcall( ::List({ ["dir"]= curdir, ["layer"]= A.layer, ["icon_state"]= curstate, ["icon"]= curicon }) )
+		copy.color = A.color
+		copy.alpha = A.alpha
+		copy.blend_mode = curblend
+		layers[copy] = A.layer
+	}
+	process = A.underlays
+	pSet = 0
+	curIndex = 1
+	if ( ::TRUE ) {
+		if ( curIndex <= process.len ) {
+			current = process[curIndex]
+			if ( !current ) {
+				curIndex++
+				// goto 193
+			}
+			currentLayer = current.layer
+			if ( currentLayer < 0 ) {
+				if ( currentLayer <= -1000 ) {
+					return flat
+				}
+				if ( pSet == 0 ) {
+					currentLayer = A.layer + currentLayer / 1000
+				} else {
+					currentLayer = A.layer + ( currentLayer + 1000 ) / 1000
+				}
+			}
+			cmpIndex = 1
+			while (cmpIndex <= layers.len) {
+				compare = layers[cmpIndex]
+				if ( currentLayer < layers[compare] ) {
+					layers.Insert( cmpIndex, current )
+					layers[current] = currentLayer
+					break
+				}
+				cmpIndex++
+			}
+			if ( cmpIndex > layers.len ) {
+				layers[current] = currentLayer
+			}
+			curIndex++
+		}
+		if ( curIndex > process.len ) {
+			if ( pSet == 0 ) {
+				curIndex = 1
+				pSet = 1
+				process = A.overlays
+			} else {
+				// goto 330
+			}
+		}
+		// goto 193
+	}
+	add = null
+	flatX1 = 1
+	flatX2 = flat.Width()
+	flatY1 = 1
+	flatY2 = flat.Height()
+	addX1 = null
+	addX2 = null
+	addY1 = null
+	addY2 = null
+	I = null
+	foreach (_ in layers ) {
+		I = _
+		if ( I.alpha == 0 ) {
+			continue
+		}
+		if ( I == copy ) {
+			curblend = ::BLEND_OVERLAY
+			add = "/icon"( I.icon, I.icon_state, I.dir )
+		} else {
+			add = ::getFlatIcon( ::Image( I ), curdir, curicon, curstate, curblend )
+		}
+		addX1 = ::min( flatX1, I.pixel_x + 1 )
+		addX2 = ::max( flatX2, I.pixel_x + add.Width() )
+		addY1 = ::min( flatY1, I.pixel_y + 1 )
+		addY2 = ::max( flatY2, I.pixel_y + add.Height() )
+		if ( addX1 != flatX1 || ( addX2 != flatX2 || ( addY1 != flatY1 || addY2 != flatY2 ) ) ) {
+			flat.Crop( addX1 - flatX1 + 1, addY1 - flatY1 + 1, addX2 - flatX1 + 1, addY2 - flatY1 + 1 )
+			flatX1 = addX1
+			flatX2 = addX2
+			flatY1 = addY1
+			flatY2 = addY2
+		}
+		flat.Blend( add, ::blendMode2iconMode( curblend ), I.pixel_x + 2 - flatX1, I.pixel_y + 2 - flatY1 )
+	}
+	if ( A.color ) {
+		flat.Blend( A.color, 2 )
+	}
+	if ( A.alpha < 255 ) {
+		flat.Blend( ::rgba( 255, 255, 255, A.alpha ), 2 )
+	}
+	return "/icon"( flat, "", ::SOUTH )
 }
 
 function GetFromPool( get_type, second_arg ) {
@@ -3986,7 +4823,6 @@ function GetFromPool( get_type, second_arg ) {
 		if ( ::istype( pooled, ::AtomMovable ) ) {
 			AM = pooled
 		}
-		return
 		if ( ::istype( second_arg, ::List ) ) {
 			if ( AM ) {
 				AM.loc = second_arg[1]
@@ -4060,6 +4896,14 @@ function getLetterImage( A, letter, uppercase ) {
 			letter = ::lowertext( letter )
 		}
 	}
+	text_image = ::Image( "LIST_CALL", ::List({ ["loc"]= A }) )
+	text_image.maptext = "<font size = 4>" + ::txt.mark( letter ) + "</font>"
+	text_image.color = ::AverageColour( atom_icon )
+	text_image.pixel_x = 7
+	text_image.pixel_y = 5
+	atom_icon = null
+	::^delete^()
+	return text_image
 }
 
 function getline( M, N ) {
@@ -4077,7 +4921,7 @@ function getline( M, N ) {
 	y = dyabs >> 1
 	if ( dxabs >= dyabs ) {
 		j = 0
-		if ( j < dxabs ) {
+		while (j < dxabs) {
 			y += dyabs
 			if ( y >= dxabs ) {
 				y -= dxabs
@@ -4086,20 +4930,19 @@ function getline( M, N ) {
 			px += sdx
 			line += ::locate3( px, py, M.z )
 			j++
-			// goto 60
-			// goto 128
 		}
-	}
-	j = 0
-	while (j < dyabs) {
-		x += dxabs
-		if ( x >= dyabs ) {
-			x -= dyabs
-			px += sdx
+	} else {
+		j = 0
+		while (j < dyabs) {
+			x += dxabs
+			if ( x >= dyabs ) {
+				x -= dyabs
+				px += sdx
+			}
+			py += sdy
+			line += ::locate3( px, py, M.z )
+			j++
 		}
-		py += sdy
-		line += ::locate3( px, py, M.z )
-		j++
 	}
 	return line
 }
@@ -4213,6 +5056,55 @@ function give_codewords( traitor_mob ) {
 	traitor_mob.mind.store memory( "<b>Code Phrase</b>: " + ::txt.mark( ::syndicate_code_phrase ) )
 	traitor_mob.store memory( "<b>Code Response</b>: " + ::txt.mark( ::syndicate_code_response ) )
 	traitor_mob.write( "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe." )
+}
+
+function gotwallitem( loc, dir, check_external ) {
+	local locdir, O, O
+	if ( check_external == null ) {
+		check_external = 0
+	}
+	locdir = ::get_step( loc, dir )
+	O = null
+	foreach (_ in loc ) {
+		O = _
+		if ( !::istype( O, ::Obj ) ) {
+			continue
+		}
+		if ( ::is_type_in_list( O, ::WALLITEMS ) && check_external != 2 ) {
+			if ( ::is_type_in_list( O, ::WALLITEMS_INVERSE ) ) {
+				if ( O.dir == ::turn( dir, 180 ) ) {
+					return 1
+				}
+			} else if ( O.dir == dir ) {
+				return 1
+			}
+			if ( ::get_turf_pixel( O ) == locdir ) {
+				return 1
+			}
+		}
+		if ( ::is_type_in_list( O, ::WALLITEMS_EXTERNAL ) && check_external ) {
+			if ( ::is_type_in_list( O, ::WALLITEMS_INVERSE ) ) {
+				if ( O.dir == ::turn( dir, 180 ) ) {
+					return 1
+				}
+			} else if ( O.dir == dir ) {
+				return 1
+			}
+		}
+	}
+	O = null
+	foreach (_ in locdir ) {
+		O = _
+		if ( !::istype( O, ::Obj ) ) {
+			continue
+		}
+		if ( ::is_type_in_list( O, ::WALLITEMS ) && check_external != 2 ) {
+			if ( O.pixel_x == 0 && O.pixel_y == 0 ) {
+				return 1
+			}
+		}
+	}
+	return 0
 }
 
 function has_gravity( AT, T ) {
@@ -4434,7 +5326,6 @@ function hgibs( location, viruses, MobDNA ) {
 
 function init_paths( prototype, L ) {
 	local path
-	return
 	if ( !::istype( L, ::List ) ) {
 		L = ::List()
 		path = null
@@ -4451,15 +5342,12 @@ function init_paths( prototype, L ) {
 
 function init_sprite_accessory_subtypes( prototype, L, male, female ) {
 	local path, D
-	return
 	if ( !::istype( L, ::List ) ) {
 		L = ::List()
 	}
-	return
 	if ( !::istype( male, ::List ) ) {
 		male = ::List()
 	}
-	return
 	if ( !::istype( female, ::List ) ) {
 		female = ::List()
 	}
@@ -4490,7 +5378,6 @@ function init_sprite_accessory_subtypes( prototype, L, male, female ) {
 
 function init_subtypes( prototype, L ) {
 	local path
-	return
 	if ( !::istype( L, ::List ) ) {
 		L = ::List()
 	}
@@ -4555,27 +5442,27 @@ function inLineOfSight( X1, Y1, X2, Y2, Z, PX1, PY1, PX2, PY2 ) {
 				}
 				Y1 += s
 				// goto 71
-			} else {
-				m = ( ( Y2 - Y1 ) * 32 + ( PY2 - PY1 ) ) / ( ( X2 - X1 ) * 32 + ( PX2 - PX1 ) )
-				b = Y1 + PY1 / 32 - 0.015625 - m * ( X1 + PX1 / 32 - 0.015625 )
-				signX = X2 - X1 < 0 ? -1 : 1
-				signY = Y2 - Y1 < 0 ? -1 : 1
-				if ( X1 < X2 ) {
-					b += m
-				}
-				if ( X1 != X2 || Y1 != Y2 ) {
-					if ( ::round( m * X1 + b - Y1 ) ) {
-						Y1 += signY
-					} else {
-						X1 += signX
-					}
-					T = ::locate3( X1, Y1, Z )
-					if ( T.opacity ) {
-						return 0
-					}
-					// goto 168
-				}
 			}
+		}
+	} else {
+		m = ( ( Y2 - Y1 ) * 32 + ( PY2 - PY1 ) ) / ( ( X2 - X1 ) * 32 + ( PX2 - PX1 ) )
+		b = Y1 + PY1 / 32 - 0.015625 - m * ( X1 + PX1 / 32 - 0.015625 )
+		signX = X2 - X1 < 0 ? -1 : 1
+		signY = Y2 - Y1 < 0 ? -1 : 1
+		if ( X1 < X2 ) {
+			b += m
+		}
+		if ( X1 != X2 || Y1 != Y2 ) {
+			if ( ::round( m * X1 + b - Y1 ) ) {
+				Y1 += signY
+			} else {
+				X1 += signX
+			}
+			T = ::locate3( X1, Y1, Z )
+			if ( T.opacity ) {
+				return 0
+			}
+			// goto 168
 		}
 	}
 	return 1
@@ -4734,7 +5621,73 @@ function is_shadow_or_thrall( M ) {
 }
 
 function is_special_character( M ) {
-	// Decompile Failure: more bad switch
+	local R, A
+	if ( !::ticker || !::ticker.mode ) {
+		return 0
+	}
+	if ( !::istype( M, ::Mob ) ) {
+		return 0
+	}
+	if ( ::istype( M, ::MobLivingSilicon ) ) {
+		if ( ::istype( M, ::MobLivingSiliconRobot ) ) {
+			R = M
+			if ( R.emagged || R.syndicate ) {
+				return 1
+			}
+			if ( R.mind && ( R.mind.special_role && ( R.laws && R.laws.zeroth ) ) ) {
+				if ( R.connected_ai ) {
+					if ( ::is_special_character( R.connected_ai ) && ( R.connected_ai.laws && ( R.connected_ai.laws.zeroth_borg == R.laws.zeroth || R.connected_ai.laws.zeroth == R.laws.zeroth ) ) ) {
+						return 0
+					}
+					return 1
+				}
+				return 1
+			}
+		} else if ( ::istype( M, ::MobLivingSiliconAi ) ) {
+			A = M
+			if ( A.laws && ( A.laws.zeroth && ( A.mind && A.mind.special_role ) ) ) {
+				if ( ::ticker.config_tag == "malfunction" && M.mind in ::ticker.mode.malf_ai ) {
+					return 2
+				}
+				return 1
+			}
+		}
+		return 0
+	}
+	if ( M.mind && M.mind.special_role ) {
+		local _ = ::ticker.mode.config_tag // Was a switch-case, sorry for the mess.
+		if ( _=="revolution" ) {
+			if ( M.mind in ::ticker.head_revolutionaries || M.mind in ::ticker.mode.revolutionaries ) {
+				return 2
+			}
+		} else if ( _=="cult" ) {
+			if ( M.mind in M.cult ) {
+				return 2
+			}
+		} else if ( _=="nuclear" ) {
+			if ( M.mind in M.syndicates ) {
+				return 2
+			}
+		} else if ( _=="changeling" ) {
+			if ( M.mind in M.changelings ) {
+				return 2
+			}
+		} else if ( _=="wizard" ) {
+			if ( M.mind in M.wizards ) {
+				return 2
+			}
+		} else if ( _=="monkey" ) {
+			if ( M.viruses && ::locate_in( ::DatumDiseaseTransformationJungle_fever, M.viruses ) ) {
+				return 2
+			}
+		} else if ( _=="abductor" ) {
+			if ( M.mind in M.abductors ) {
+				return 2
+			}
+		}
+		return 1
+	}
+	return 0
 }
 
 function is_thrall( M ) {
@@ -4887,16 +5840,14 @@ function key_name( whom, include_link, include_name ) {
 		C = M.client
 		key = M.key
 		ckey = M.ckey
-	} else {
-		if ( ::istext( whom ) ) {
-			key = whom
-			ckey = ::ckey( whom )
-			C = ::directory[ckey]
-			if ( C ) {
-				M = C.mob
-				// goto 92
-			}
+	} else if ( ::istext( whom ) ) {
+		key = whom
+		ckey = ::ckey( whom )
+		C = ::directory[ckey]
+		if ( C ) {
+			M = C.mob
 		}
+	} else {
 		return "*invalid*"
 	}
 	_default = ""
@@ -4920,10 +5871,10 @@ function key_name( whom, include_link, include_name ) {
 		}
 		if ( include_link ) {
 			_default += "</a>"
-			// goto 160
 		}
+	} else {
+		_default += "*no key*"
 	}
-	_default += "*no key*"
 	if ( include_name && M ) {
 		if ( M.real_name ) {
 			_default += "/(" + ::txt.mark( M.real_name ) + ")"
@@ -5079,41 +6030,40 @@ function list2text( ls, sep ) {
 		if ( l > i ) {
 			_default = "" + ::txt.mark( _default ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] ) + ::txt.mark( sep ) + ::txt.mark( ls[++i] )
 			// goto 630
-			// goto 2021
 		}
-	}
-	_default = "" + ::txt.mark( ls[++i] )
-	if ( l - 1 & 1 ) {
-		_default += "" + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 2 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 4 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 8 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 16 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 32 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l - i & 64 ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-	}
-	if ( l > i ) {
-		_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
-		// goto 1626
+	} else {
+		_default = "" + ::txt.mark( ls[++i] )
+		if ( l - 1 & 1 ) {
+			_default += "" + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 2 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 4 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 8 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 16 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 32 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l - i & 64 ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+		}
+		if ( l > i ) {
+			_default = "" + ::txt.mark( _default ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] ) + ::txt.mark( ls[++i] )
+			// goto 1626
+		}
 	}
 	return _default
 }
 
 function listclearnulls( L ) {
 	local i, thing
-	return
 	if ( ::istype( L, ::List ) ) {
 		i = 1
 		thing = null
@@ -5129,15 +6079,12 @@ function listclearnulls( L ) {
 }
 
 function listgetindex( L, index ) {
-	return
 	if ( ::istype( L, ::List ) ) {
 		if ( ::isnum( index ) ) {
 			if ( ::IsInRange( index, 1, L.len ) ) {
 				return L[index]
-				// goto 37
 			}
-		}
-		if ( index in L ) {
+		} else if ( index in L ) {
 			return L[index]
 		}
 	}
@@ -5166,11 +6113,139 @@ function lizard_name( gender ) {
 }
 
 function load_admin_ranks(  ) {
-	// Decompile Failure: bad iter loop 4
+	local previous_rights, line, next, R, prev, query, rank_name, flags, R
+	::admin_ranks.Cut()
+	if ( ::config.admin_legacy_system ) {
+		previous_rights = 0
+		line = null
+		foreach (_ in ::file2list( "config/admin_ranks.txt" ) ) {
+			line = _
+			if ( !line ) {
+				continue
+			}
+			if ( ::findtextEx( line, "#", 1, 2 ) ) {
+				continue
+			}
+			next = ::findtext( line, "=", 1, null )
+			R = ::DatumAdmin_rank( ::ckeyEx( ::copytext( line, 1, next ) ) )
+			if ( !R ) {
+				continue
+			}
+			::admin_ranks += R
+			prev = ::findchar( line, "+-", next, 0 )
+			if ( prev ) {
+				next = ::findchar( line, "+-", prev + 1, 0 )
+				R.process keyword( ::copytext( line, prev, next ), previous_rights )
+				prev = next
+				// goto 68
+			}
+			previous_rights = R.rights
+		}
+	} else {
+		::establish_db_connection()
+		if ( !::dbcon.IsConnected() ) {
+			::game.log.write( "Failed to connect to database in load_admin_ranks(). Reverting to legacy system." )
+			::diary.write( "Failed to connect to database in load_admin_ranks(). Reverting to legacy system." )
+			::config.admin_legacy_system = 1
+			::load_admin_ranks()
+			return
+		}
+		query = ::dbcon.NewQuery( "SELECT rank, flags FROM " + ::txt.mark( ::format_table_name( "admin_ranks" ) ) )
+		query.Execute()
+		if ( query.NextRow() ) {
+			rank_name = ::ckeyEx( query.item[1] )
+			flags = query.item[2]
+			if ( ::istext( flags ) ) {
+				flags = ::text2num( flags )
+			}
+			R = ::DatumAdmin_rank( rank_name, flags )
+			if ( !R ) {
+				// goto 131
+			}
+			::admin_ranks += R
+			// goto 131
+		}
+	}
 }
 
 function load_admins(  ) {
-	// Decompile Failure: bad iter loop 4
+	local C, rank_names, R, Lines, line, List, ckey, rank, D, query, ckey, rank, D
+	::admin_datums.Cut()
+	C = null
+	foreach (_ in ::admins ) {
+		C = _
+		if ( !::istype( C, BAD_GOOFY_EXPANSION??? ) ) {
+			continue
+		}
+		C.remove admin verbs()
+		C.holder = null
+	}
+	::admins.Cut()
+	::load_admin_ranks()
+	rank_names = ::List()
+	R = null
+	foreach (_ in ::admin_ranks ) {
+		R = _
+		if ( !::istype( R, ::DatumAdmin_rank ) ) {
+			continue
+		}
+		rank_names[R.name] = R
+	}
+	if ( ::config.admin_legacy_system ) {
+		Lines = ::file2list( "config/admins.txt" )
+		line = null
+		foreach (_ in Lines ) {
+			line = _
+			if ( !::length( line ) ) {
+				continue
+			}
+			if ( ::findtextEx( line, "#", 1, 2 ) ) {
+				continue
+			}
+			List = ::text2list( line, "=" )
+			if ( !List.len ) {
+				continue
+			}
+			ckey = ::ckey( List[1] )
+			if ( !ckey ) {
+				continue
+			}
+			rank = ""
+			if ( List.len >= 2 ) {
+				rank = ::ckeyEx( List[2] )
+			}
+			D = ::DatumAdmins( rank_names[rank], ckey )
+			if ( !D ) {
+				continue
+			}
+			D.associate( ::directory[ckey] )
+		}
+	} else {
+		::establish_db_connection()
+		if ( !::dbcon.IsConnected() ) {
+			::game.log.write( "Failed to connect to database in load_admins(). Reverting to legacy system." )
+			::diary.write( "Failed to connect to database in load_admins(). Reverting to legacy system." )
+			::config.admin_legacy_system = 1
+			::load_admins()
+			return
+		}
+		query = ::dbcon.NewQuery( "SELECT ckey, rank FROM " + ::txt.mark( ::format_table_name( "admin" ) ) )
+		query.Execute()
+		if ( query.NextRow() ) {
+			ckey = ::ckey( query.item[1] )
+			rank = ::ckeyEx( query.item[2] )
+			if ( rank_names[rank] == null ) {
+				::warning( "" + ::txt.mark( "Admin rank (" + ::txt.mark( rank ) + ") does not exist." ) + " in " + ::txt.mark( "code/modules/admin/admin_ranks.dm" ) + " at line " + ::txt.mark( 183 ) + " src: " + ::txt.mark( this ) + " usr: " + ::txt.mark( ::_USR_ ) + "." )
+				// goto 178
+			}
+			D = ::DatumAdmins( rank_names[rank], ckey )
+			if ( !D ) {
+				// goto 178
+			}
+			D.associate( ::directory[ckey] )
+			// goto 178
+		}
+	}
 }
 
 function load_library_db_to_cache(  ) {
@@ -5681,11 +6756,8 @@ function merge_text( into, from, null_char ) {
 				_default += ::copytext( from, start, i )
 				start = i
 				previous = 1
-				i++
-				continue
 			}
-		}
-		if ( previous != 0 ) {
+		} else if ( previous != 0 ) {
 			_default += ::copytext( into, start, i )
 			start = i
 			previous = 0
@@ -5784,7 +6856,6 @@ function minor_announce( message, title, alert ) {
 
 function mix_color_from_reagents( reagent_list ) {
 	local color, vol_counter, vol_temp, R
-	return
 	if ( !::istype( reagent_list, ::List ) ) {
 		return
 	}
@@ -5829,10 +6900,8 @@ function near_camera( M ) {
 		R = M
 		if ( !( R.camera && R.camera.can use() ) && !::cameranet.checkCameraVis( M ) ) {
 			return 0
-			// goto 44
 		}
-	}
-	if ( !::cameranet.checkCameraVis( M ) ) {
+	} else if ( !::cameranet.checkCameraVis( M ) ) {
 		return 0
 	}
 	return 1
@@ -6261,7 +7330,18 @@ function num2hex( num, len ) {
 }
 
 function onclose( user, windowid, ref ) {
-	// Decompile Failure: fail decode_fail,268,76
+	local param
+	if ( ref == null ) {
+		ref = null
+	}
+	if ( !user.client ) {
+		return
+	}
+	param = "null"
+	if ( ref ) {
+		param = "" + ::txt.ref( ref )
+	}
+	::winset( user, windowid, "on-close=\".windowclose " + ::txt.mark( param ) + "\"" )
 }
 
 function parse_zone( zone ) {
@@ -6499,7 +7579,20 @@ function pollCandidates( Question, jobbanType, gametypeCheck, be_special_flag, p
 }
 
 function PoolOrNew( get_type, second_arg ) {
-	// Decompile Failure: fail decode_fail,245,82
+	if ( !get_type ) {
+		return
+	}
+	_default = ::GetFromPool( get_type, second_arg )
+	if ( !_default ) {
+		if ( ::ispath( get_type ) ) {
+			if ( ::istype( second_arg, ::List ) ) {
+				_default = get_type( "LIST_CALL", second_arg )
+			} else {
+				_default = get_type( second_arg )
+			}
+		}
+	}
+	return _default
 }
 
 function pop( L ) {
@@ -6533,13 +7626,13 @@ function power_list( T, source, d, unmarked, cable_only ) {
 			if ( !unmarked || !P.powernet ) {
 				if ( d == 0 ) {
 					_default += P
-				} else if ( ::istype( AM, ::ObjStructureCable ) ) {
-					C = AM
-					if ( !unmarked || !C.powernet ) {
-						if ( C.d1 == d || C.d2 == d ) {
-							_default += C
-						}
-					}
+				}
+			}
+		} else if ( ::istype( AM, ::ObjStructureCable ) ) {
+			C = AM
+			if ( !unmarked || !C.powernet ) {
+				if ( C.d1 == d || C.d2 == d ) {
+					_default += C
 				}
 			}
 		}
@@ -6601,10 +7694,8 @@ function priority_announce( text, title, sound, type ) {
 		announcement += "<h1 class='alert'>Priority Announcement</h1>"
 		if ( title && ::length( title ) > 0 ) {
 			announcement += "<br><h2 class='alert'>" + ::txt.mark( ::html_encode( title ) ) + "</h2>"
-			// goto 109
 		}
-	}
-	if ( type == "Captain" ) {
+	} else if ( type == "Captain" ) {
 		announcement += "<h1 class='alert'>Captain Announces</h1>"
 		::news_network.SubmitArticle( text, "Captain's Announcement", "Station Announcements", null )
 	} else {
@@ -7156,7 +8247,91 @@ function randomize_human( H ) {
 }
 
 function ReadRGB( rgb ) {
-	// Decompile Failure: bad switch
+	local i, start, ch, which, r, g, b, alpha, usealpha, digits, single, _default
+	if ( !rgb ) {
+		return
+	}
+	i = 1
+	start = 1
+	if ( ::text2ascii( rgb, null ) == 35 ) {
+		start++
+	}
+	which = 0
+	r = 0
+	g = 0
+	b = 0
+	alpha = 0
+	digits = 0
+	i = start
+	while (i <= ::length( rgb )) {
+		ch = ::text2ascii( rgb, i )
+		if ( ch < 48 || ( ch > 57 && ch < 65 || ( ch > 70 && ch < 97 || ch > 102 ) ) ) {
+			break
+		}
+		digits++
+		if ( digits == 8 ) {
+			break
+		}
+		i++
+	}
+	single = digits < 6
+	if ( digits != 3 && ( digits != 4 && ( digits != 6 && digits != 8 ) ) ) {
+		return
+	}
+	if ( digits == 4 || digits == 8 ) {
+		usealpha = 1
+	}
+	i = start
+	while (digits > 0) {
+		ch = ::text2ascii( rgb, i )
+		if ( ch >= 48 && ch <= 57 ) {
+			ch -= 48
+		} else if ( ch >= 65 && ch <= 70 ) {
+			ch -= 55
+		} else if ( ch >= 97 && ch <= 102 ) {
+			ch -= 87
+		} else {
+			break
+		}
+		digits--
+		local _ = which // Was a switch-case, sorry for the mess.
+		if ( _==0 ) {
+			r = r << 4 | ch
+			if ( single ) {
+				r = r | r << 4
+				which++
+			} else if ( !( digits & 1 ) ) {
+				which++
+			}
+		} else if ( _==1 ) {
+			g = g << 4 | ch
+			if ( single ) {
+				g = g | g << 4
+				which++
+			} else if ( !( digits & 1 ) ) {
+				which++
+			}
+		} else if ( _==2 ) {
+			b = b << 4 | ch
+			if ( single ) {
+				b = b | b << 4
+				which++
+			} else if ( !( digits & 1 ) ) {
+				which++
+			}
+		} else if ( _==3 ) {
+			alpha = alpha << 4 | ch
+			if ( single ) {
+				alpha = alpha | alpha << 4
+			}
+		}
+		i++
+	}
+	_default = ::List([ r, g, b ])
+	if ( usealpha ) {
+		_default += alpha
+	}
+	return _default
 }
 
 function recursive_hear_check( O ) {
@@ -7211,10 +8386,8 @@ function recursive_mob_check( O, client_check, sight_check, include_radio ) {
 			}
 			if ( sight_check && !::isInSight( A_tmp, O ) ) {
 				passed = 0
-				// goto 102
 			}
-		}
-		if ( include_radio && ::istype( A, ::ObjItemDeviceRadio ) ) {
+		} else if ( include_radio && ::istype( A, ::ObjItemDeviceRadio ) ) {
 			passed = 1
 			if ( sight_check && !::isInSight( A, O ) ) {
 				passed = 0
@@ -7241,11 +8414,96 @@ function recursive_mob_check( O, client_check, sight_check, include_radio ) {
 }
 
 function regex_find( str, exp ) {
-	// Decompile Failure: fail decode_fail,278,31
+	return ::DatumRegex( str, exp, ::getf_dll( "bin/bygex", "regex_find" )( str, exp ) )
 }
 
 function reject_bad_name( t_in, allow_numbers, max_length ) {
-	// Decompile Failure: bad iter loop 4
+	local number_of_alphanumeric, last_char_group, t_out, i, ascii_char, bad_name
+	if ( allow_numbers == null ) {
+		allow_numbers = 0
+	}
+	if ( max_length == null ) {
+		max_length = 26
+	}
+	if ( !t_in || ::length( t_in ) > max_length ) {
+		return
+	}
+	number_of_alphanumeric = 0
+	last_char_group = 0
+	t_out = ""
+	i = null
+	i = 1
+	while (i <= ::length( t_in )) {
+		ascii_char = ::text2ascii( t_in, i )
+		local _ = ascii_char // Was a switch-case, sorry for the mess.
+		if ( 65<=_&&_<=90 ) {
+			t_out += ::ascii2text( ascii_char )
+			number_of_alphanumeric++
+			last_char_group = 4
+		} else if ( 97<=_&&_<=122 ) {
+			if ( last_char_group < 2 ) {
+				t_out += ::ascii2text( ascii_char - 32 )
+			} else {
+				t_out += ::ascii2text( ascii_char )
+			}
+			number_of_alphanumeric++
+			last_char_group = 4
+		} else if ( 48<=_&&_<=57 ) {
+			if ( !last_char_group ) {
+				i++
+				continue
+			}
+			if ( !allow_numbers ) {
+				i++
+				continue
+			}
+			t_out += ::ascii2text( ascii_char )
+			number_of_alphanumeric++
+			last_char_group = 3
+		} else if ( _==39 || _==45 || _==46 ) {
+			if ( !last_char_group ) {
+				i++
+				continue
+			}
+			t_out += ::ascii2text( ascii_char )
+			last_char_group = 2
+		} else if ( _==126 || _==124 || _==64 || _==58 || _==35 || _==36 || _==37 || _==38 || _==42 || _==43 ) {
+			if ( !last_char_group ) {
+				i++
+				continue
+			}
+			if ( !allow_numbers ) {
+				i++
+				continue
+			}
+			t_out += ::ascii2text( ascii_char )
+			last_char_group = 2
+		} else if ( _==32 ) {
+			if ( last_char_group <= 1 ) {
+				i++
+				continue
+			}
+			t_out += ::ascii2text( ascii_char )
+			last_char_group = 1
+		} else {
+			return
+		}
+		i++
+	}
+	if ( number_of_alphanumeric < 2 ) {
+		return
+	}
+	if ( last_char_group == 1 ) {
+		t_out = ::copytext( t_out, 1, ::length( t_out ) )
+	}
+	bad_name = null
+	foreach (_ in ::List([ "space", "floor", "wall", "r-wall", "monkey", "unknown", "inactive ai" ]) ) {
+		bad_name = _
+		if ( ::cmptext( bad_name, t_out ) ) {
+			return
+		}
+	}
+	return t_out
 }
 
 function reject_bad_text( text, max_length ) {
@@ -7323,7 +8581,7 @@ function repeat_string( times, string ) {
 }
 
 function replacetext( str, exp, fmt ) {
-	// Decompile Failure: fail decode_fail,278,23
+	return ::getf_dll( "bin/bygex", "regex_replaceallliteral" )( str, exp, fmt )
 }
 
 function return_file_text( filename ) {
@@ -7338,6 +8596,31 @@ function return_file_text( filename ) {
 		return
 	}
 	return text
+}
+
+function reverseRange( L, start, end ) {
+	if ( start == null ) {
+		start = 1
+	}
+	if ( end == null ) {
+		end = 0
+	}
+	if ( L.len ) {
+		start = start % L.len
+		end = end % ( L.len + 1 )
+		if ( start <= 0 ) {
+			start += L.len
+		}
+		if ( end <= 0 ) {
+			end += L.len + 1
+		}
+		end--
+		if ( start < end ) {
+			L.Swap( start++, end-- )
+			// goto 56
+		}
+	}
+	return L
 }
 
 function rgb2hsl( red, green, blue ) {
@@ -7378,7 +8661,186 @@ function rgb2hsl( red, green, blue ) {
 }
 
 function rightandwrong( summon_type, user, survivor_probability ) {
-	// Decompile Failure: more bad switch
+	local gunslist, magiclist, magicspeciallist, H, guns, survive, obj_count, OBJ, randomizeguns, randomizemagic, randomizemagicspecial, gat, gat, gat, gat, gat, gat, gat, gat
+	gunslist = ::List([ "taser", "egun", "laser", "revolver", "detective", "c20r", "nuclear", "deagle", "gyrojet", "pulse", "suppressed", "cannon", "doublebarrel", "shotgun", "combatshotgun", "bulldog", "mateba", "sabr", "crossbow", "saw", "car", "boltaction", "speargun", "arg", "uzi" ])
+	magiclist = ::List([ "fireball", "smoke", "blind", "mindswap", "forcewall", "knock", "horsemask", "charge", "summonitem", "wandnothing", "wanddeath", "wandresurrection", "wandpolymorph", "wandteleport", "wanddoor", "wandfireball", "staffchange", "staffhealing", "armor", "scrying", "staffdoor", "voodoo", "special" ])
+	magicspeciallist = ::List([ "staffchange", "staffanimation", "wandbelt", "contract", "staffchaos", "necromantic" ])
+	if ( user ) {
+		user.write( "<B>You summoned " + ::txt.mark( summon_type ? "magic" : "guns" ) + "!</B>" )
+		::message_admins( "" + ::txt.mark( ::key_name_admin( user, 1 ) ) + " summoned " + ::txt.mark( summon_type ? "magic" : "guns" ) + "!" )
+		::log_game( "" + ::txt.mark( ::key_name( user ) ) + " summoned " + ::txt.mark( summon_type ? "magic" : "guns" ) + "!" )
+	}
+	H = null
+	foreach (_ in ::player_list ) {
+		H = _
+		if ( !::istype( H, ::MobLivingCarbonHuman ) ) {
+			continue
+		}
+		if ( H.stat == 2 || !H.client ) {
+			continue
+		}
+		if ( H.mind ) {
+			if ( H.mind.special_role == "Wizard" || ( H.special_role == "apprentice" || H.special_role == "survivalist" ) ) {
+				continue
+			}
+		}
+		if ( ::prob( survivor_probability ) && !( H.mind in ::ticker.mode.traitors ) ) {
+			::ticker.mode.traitors += H.mind
+			guns = ::DatumObjectiveSummon_guns()
+			guns.owner = H.mind
+			H.mind.objectives += guns
+			H.mind.special_role = "survivalist"
+			survive = ::DatumObjectiveSurvive()
+			survive.owner = H.mind
+			H.mind.objectives += survive
+			H.attack_log += "[" + ::txt.mark( ::time_stamp() ) + "] <font color='red'>Was made into a survivalist, and trusts no one!</font>"
+			H.write( "<B>You are the survivalist! Your own safety matters above all else, and the only way to ensure your safety is to stockpile weapons! Grab as many guns as possible, by any means necessary. Kill anyone who gets in your way.</B>" )
+			obj_count = 1
+			OBJ = null
+			foreach (_ in H.mind.objectives ) {
+				OBJ = _
+				if ( !::istype( OBJ, ::DatumObjective ) ) {
+					continue
+				}
+				H.write( "<B>Objective #" + ::txt.mark( obj_count ) + "</B>: " + ::txt.mark( OBJ.explanation_text ) )
+				obj_count++
+			}
+		}
+		randomizeguns = ::pick_list( gunslist )
+		randomizemagic = ::pick_list( magiclist )
+		randomizemagicspecial = ::pick_list( magicspeciallist )
+		if ( !summon_type ) {
+			local _ = randomizeguns // Was a switch-case, sorry for the mess.
+			if ( _=="taser" ) {
+				::ObjItemWeaponGunEnergyGunAdvtaser( ::get_turf( H ) )
+			} else if ( _=="egun" ) {
+				::ObjItemWeaponGunEnergyGun( ::get_turf( H ) )
+			} else if ( _=="laser" ) {
+				::ObjItemWeaponGunEnergyLaser( ::get_turf( H ) )
+			} else if ( _=="revolver" ) {
+				::ObjItemWeaponGunProjectileRevolver( ::get_turf( H ) )
+			} else if ( _=="detective" ) {
+				::ObjItemWeaponGunProjectileRevolverDetective( ::get_turf( H ) )
+			} else if ( _=="deagle" ) {
+				::ObjItemWeaponGunProjectileAutomaticPistolDeagleCamo( ::get_turf( H ) )
+			} else if ( _=="gyrojet" ) {
+				::ObjItemWeaponGunProjectileAutomaticGyropistol( ::get_turf( H ) )
+			} else if ( _=="pulse" ) {
+				::ObjItemWeaponGunEnergyPulse( ::get_turf( H ) )
+			} else if ( _=="suppressed" ) {
+				::ObjItemWeaponGunProjectileAutomaticPistol( ::get_turf( H ) )
+				::ObjItemWeaponSuppressor( ::get_turf( H ) )
+			} else if ( _=="doublebarrel" ) {
+				::ObjItemWeaponGunProjectileRevolverDoublebarrel( ::get_turf( H ) )
+			} else if ( _=="shotgun" ) {
+				::ObjItemWeaponGunProjectileShotgun( ::get_turf( H ) )
+			} else if ( _=="combatshotgun" ) {
+				::ObjItemWeaponGunProjectileShotgunAutomaticCombat( ::get_turf( H ) )
+			} else if ( _=="arg" ) {
+				::ObjItemWeaponGunProjectileAutomaticAr( ::get_turf( H ) )
+			} else if ( _=="mateba" ) {
+				::ObjItemWeaponGunProjectileRevolverMateba( ::get_turf( H ) )
+			} else if ( _=="boltaction" ) {
+				::ObjItemWeaponGunProjectileShotgunBoltaction( ::get_turf( H ) )
+			} else if ( _=="speargun" ) {
+				::ObjItemWeaponGunProjectileAutomaticSpeargun( ::get_turf( H ) )
+			} else if ( _=="uzi" ) {
+				::ObjItemWeaponGunProjectileAutomaticMini_uzi( ::get_turf( H ) )
+			} else if ( _=="cannon" ) {
+				gat = ::ObjItemWeaponGunEnergyLasercannon( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="crossbow" ) {
+				gat = ::ObjItemWeaponGunEnergyKinetic_acceleratorCrossbowLarge( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="nuclear" ) {
+				gat = ::ObjItemWeaponGunEnergyGunNuclear( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="sabr" ) {
+				gat = ::ObjItemWeaponGunProjectileAutomaticProto( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="bulldog" ) {
+				gat = ::ObjItemWeaponGunProjectileAutomaticShotgunBulldog( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="c20r" ) {
+				gat = ::ObjItemWeaponGunProjectileAutomaticC20r( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="saw" ) {
+				gat = ::ObjItemWeaponGunProjectileAutomaticL6_saw( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			} else if ( _=="car" ) {
+				gat = ::ObjItemWeaponGunProjectileAutomaticM90( ::get_turf( H ) )
+				gat.pin = ::ObjItemDeviceFiring_pin()
+			}
+			::playsound( ::get_turf( H ), ::Rsc(56), 50, 1 )
+		} else {
+			local _ = randomizemagic // Was a switch-case, sorry for the mess.
+			if ( _=="fireball" ) {
+				::ObjItemWeaponSpellbookOneuseFireball( ::get_turf( H ) )
+			} else if ( _=="smoke" ) {
+				::ObjItemWeaponSpellbookOneuseSmoke( ::get_turf( H ) )
+			} else if ( _=="blind" ) {
+				::ObjItemWeaponSpellbookOneuseBlind( ::get_turf( H ) )
+			} else if ( _=="mindswap" ) {
+				::ObjItemWeaponSpellbookOneuseMindswap( ::get_turf( H ) )
+			} else if ( _=="forcewall" ) {
+				::ObjItemWeaponSpellbookOneuseForcewall( ::get_turf( H ) )
+			} else if ( _=="knock" ) {
+				::ObjItemWeaponSpellbookOneuseKnock( ::get_turf( H ) )
+			} else if ( _=="horsemask" ) {
+				::ObjItemWeaponSpellbookOneuseBarnyard( ::get_turf( H ) )
+			} else if ( _=="charge" ) {
+				::ObjItemWeaponSpellbookOneuseCharge( ::get_turf( H ) )
+			} else if ( _=="summonitem" ) {
+				::ObjItemWeaponSpellbookOneuseSummonitem( ::get_turf( H ) )
+			} else if ( _=="wandnothing" ) {
+				::ObjItemWeaponGunMagicWand( ::get_turf( H ) )
+			} else if ( _=="wanddeath" ) {
+				::ObjItemWeaponGunMagicWandDeath( ::get_turf( H ) )
+			} else if ( _=="wandresurrection" ) {
+				::ObjItemWeaponGunMagicWandResurrection( ::get_turf( H ) )
+			} else if ( _=="wandpolymorph" ) {
+				::ObjItemWeaponGunMagicWandPolymorph( ::get_turf( H ) )
+			} else if ( _=="wandteleport" ) {
+				::ObjItemWeaponGunMagicWandTeleport( ::get_turf( H ) )
+			} else if ( _=="wanddoor" ) {
+				::ObjItemWeaponGunMagicWandDoor( ::get_turf( H ) )
+			} else if ( _=="wandfireball" ) {
+				::ObjItemWeaponGunMagicWandFireball( ::get_turf( H ) )
+			} else if ( _=="staffhealing" ) {
+				::ObjItemWeaponGunMagicStaffHealing( ::get_turf( H ) )
+			} else if ( _=="staffdoor" ) {
+				::ObjItemWeaponGunMagicStaffDoor( ::get_turf( H ) )
+			} else if ( _=="armor" ) {
+				::ObjItemClothingSuitSpaceHardsuitWizard( ::get_turf( H ) )
+			} else if ( _=="scrying" ) {
+				::ObjItemWeaponScrying( ::get_turf( H ) )
+				if ( !H.dna.check mutation( "X Ray Vision" ) ) {
+					H.add mutation( "X Ray Vision" )
+					H.write( "<span class='notice'>The walls suddenly disappear.</span>" )
+				}
+			} else if ( _=="voodoo" ) {
+				::ObjItemVoodoo( ::get_turf( H ) )
+			} else if ( _=="special" ) {
+				magiclist -= "special"
+				local _ = randomizemagicspecial // Was a switch-case, sorry for the mess.
+				if ( _=="staffchange" ) {
+					::ObjItemWeaponGunMagicStaffChange( ::get_turf( H ) )
+				} else if ( _=="staffanimation" ) {
+					::ObjItemWeaponGunMagicStaffAnimate( ::get_turf( H ) )
+				} else if ( _=="wandbelt" ) {
+					::ObjItemWeaponStorageBeltWandsFull( ::get_turf( H ) )
+				} else if ( _=="contract" ) {
+					::ObjItemWeaponAntag_spawnerContract( ::get_turf( H ) )
+				} else if ( _=="staffchaos" ) {
+					::ObjItemWeaponGunMagicStaffChaos( ::get_turf( H ) )
+				} else if ( _=="necromantic" ) {
+					::ObjItemDeviceNecromantic_stone( ::get_turf( H ) )
+				}
+				H.write( "<span class='notice'>You suddenly feel lucky.</span>" )
+			}
+			::playsound( ::get_turf( H ), ::Rsc(57), 50, 1 )
+		}
+	}
 }
 
 function rights2text( rights, seperator, adds, subs ) {
@@ -7488,7 +8950,6 @@ function RoundHealth( health ) {
 }
 
 function safepick( L ) {
-	return
 	if ( ::istype( L, ::List ) && L.len ) {
 		return ::pick_list( L )
 	}
@@ -7554,7 +9015,11 @@ function sanitize_hexcolor( color, desired_format, include_crunch, __default ) {
 }
 
 function sanitize_ooccolor( color ) {
-	// Decompile Failure: bad call list
+	local HSL, RGB
+	HSL = ::rgb2hsl( ::hex2num( ::copytext( color, 2, 4 ) ), ::hex2num( ::copytext( color, 4, 6 ) ), ::hex2num( ::copytext( color, 6, 8 ) ) )
+	HSL[3] = ::min( HSL[3], 0.4000000059604645 )
+	RGB = ::get_dist_euclidian( "LIST_CALL", HSL )
+	return "#" + ::txt.mark( ::num2hex( RGB[1], 2 ) ) + ::txt.mark( ::num2hex( RGB[2], 2 ) ) + ::txt.mark( ::num2hex( RGB[3], 2 ) )
 }
 
 function sanitize_simple( t, repl_chars ) {
@@ -7594,12 +9059,160 @@ function screen_loc2turf( scr_loc, origin ) {
 	return ::locate3( tX, tY, tZ )
 }
 
+function SDQL_expression( object, expression, start ) {
+	local result, val, i, op, ret
+	if ( start == null ) {
+		start = 1
+	}
+	result = 0
+	i = null
+	i = start
+	while (i <= expression.len) {
+		op = ""
+		if ( i > start ) {
+			op = expression[i]
+			i++
+		}
+		ret = ::SDQL_value( object, expression, i )
+		val = ret.val
+		i = ret.i
+		if ( op != "" ) {
+			local _ = op // Was a switch-case, sorry for the mess.
+			if ( _=="+" ) {
+				result += val
+			} else if ( _=="-" ) {
+				result -= val
+			} else if ( _=="*" ) {
+				result *= val
+			} else if ( _=="/" ) {
+				result /= val
+			} else if ( _=="&" ) {
+				result = result & val
+			} else if ( _=="|" ) {
+				result = result | val
+			} else if ( _=="^" ) {
+				result = result ^ val
+			} else if ( _=="=" || _=="==" ) {
+				result = result == val
+			} else if ( _=="!=" || _=="<>" ) {
+				result = result != val
+			} else if ( _=="<" ) {
+				result = result < val
+			} else if ( _=="<=" ) {
+				result = result <= val
+			} else if ( _==">" ) {
+				result = result > val
+			} else if ( _==">=" ) {
+				result = result >= val
+			} else if ( _=="and" || _=="&&" ) {
+				result = result && val
+			} else if ( _=="or" || _=="||" ) {
+				result = result || val
+			} else {
+				::_USR_.write( "<span class='danger'>SDQL2: Unknown op " + ::txt.mark( op ) + "</span>" )
+				result = null
+			}
+		} else {
+			result = val
+		}
+		i++
+	}
+	return result
+}
+
 function SDQL_from_objs( tree ) {
-	// Decompile Failure: bad iter loop 4
+	local out, type, char
+	if ( "world" in tree ) {
+		return ::List([ ::game ])
+	}
+	out = ::List()
+	type = null
+	foreach (_ in tree ) {
+		type = _
+		char = ::copytext( type, 1, 2 )
+		if ( char == "/" ) {
+			out += ::SDQL_get_all( type, ::game )
+		} else if ( char == "'" || char == "\"" ) {
+			out += ::locate1( ::copytext( type, 2, ::length( type ) ) )
+		}
+	}
+	return out
 }
 
 function SDQL_get_all( type, location ) {
-	// Decompile Failure: fail decode_fail,246,435
+	local out, d, d, d, d, d, d, d
+	out = ::List()
+	if ( type == "*" ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( !::istype( d, ::Datum ) ) {
+				continue
+			}
+			out += d
+		}
+		return out
+	}
+	type = ::text2path( type )
+	if ( ::ispath2( type, ::Mob ) ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	} else if ( ::ispath2( type, ::Turf ) ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	} else if ( ::ispath2( type, ::Obj ) ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( !::istype( d, ::Obj ) ) {
+				continue
+			}
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	} else if ( ::ispath2( type, ::Area(3137) ) ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	} else if ( ::ispath2( type, ::Atom ) ) {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( !::istype( d, ::Atom ) ) {
+				continue
+			}
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	} else {
+		d = null
+		foreach (_ in location ) {
+			d = _
+			if ( !::istype( d, ::Datum ) ) {
+				continue
+			}
+			if ( ::istype( d, type ) ) {
+				out += d
+			}
+		}
+	}
+	return out
 }
 
 function SDQL_parse( query_list ) {
@@ -7657,7 +9270,6 @@ function SDQL_testout( query_tree, indent ) {
 	item = null
 	foreach (_ in query_tree ) {
 		item = _
-		return
 		if ( ::istype( item, ::List ) ) {
 			::_USR_.write( "" + ::txt.mark( spaces ) + "(" )
 			::SDQL_testout( item, indent + 1 )
@@ -7666,7 +9278,6 @@ function SDQL_testout( query_tree, indent ) {
 			::_USR_.write( "" + ::txt.mark( spaces ) + ::txt.mark( item ) )
 		}
 		if ( !::isnum( item ) && query_tree[item] ) {
-			return
 			if ( ::istype( query_tree[item], ::List ) ) {
 				::_USR_.write( "" + ::txt.mark( spaces ) + "    (" )
 				::SDQL_testout( query_tree[item], indent + 2 )
@@ -7678,8 +9289,156 @@ function SDQL_testout( query_tree, indent ) {
 	}
 }
 
+function SDQL_value( object, expression, start ) {
+	local i, val, ret, ret, ret
+	if ( start == null ) {
+		start = 1
+	}
+	i = start
+	val = null
+	if ( i > expression.len ) {
+		return ::List({ ["i"]= i, ["val"]= null })
+	}
+	if ( ::istype( expression[i], ::List ) ) {
+		val = ::SDQL_expression( object, expression[i] )
+	} else if ( expression[i] == "!" ) {
+		ret = ::SDQL_value( object, expression, i + 1 )
+		val = !ret.val
+		i = ret.i
+	} else if ( expression[i] == "~" ) {
+		ret = ::SDQL_value( object, expression, i + 1 )
+		val = ~ret.val
+		i = ret.i
+	} else if ( expression[i] == "-" ) {
+		ret = ::SDQL_value( object, expression, i + 1 )
+		val = -ret.val
+		i = ret.i
+	} else if ( expression[i] == "null" ) {
+		val = null
+	} else if ( ::isnum( expression[i] ) ) {
+		val = expression[i]
+	} else if ( ::copytext( expression[i], 1, 2 ) in ::List([ "'", "\"" ]) ) {
+		val = ::copytext( expression[i], 2, ::length( expression[i] ) )
+	} else {
+		val = ::SDQL_var( object, expression, i )
+		i = expression.len
+	}
+	return ::List({ ["i"]= i, ["val"]= val })
+}
+
+function SDQL_var( object, expression, start ) {
+	if ( start == null ) {
+		start = 1
+	}
+	if ( expression[start] in object.vars ) {
+		if ( start < expression.len && expression[start + 1] == "." ) {
+			return ::SDQL_var( object.vars[expression[start]], expression[start + 2] )
+		} else {
+			return object.vars[expression[start]]
+		}
+	} else {
+		return
+	}
+}
+
 function SDQL2_tokenize( query_text ) {
-	// Decompile Failure: sub problem 31
+	local whitespace, single, multi, word, query_list, len, i, char, char2
+	whitespace = ::List([ " ", "\n", "	" ])
+	single = ::List([ "(", ")", ",", "+", "-", ".", ";" ])
+	multi = ::List({ ["!"]= ::List([ "", "=" ]), [">"]= ::List([ "", "=" ]), ["<"]= ::List([ "", "=", ">" ]), ["="]= ::List([ "", "=" ]) })
+	word = ""
+	query_list = ::List()
+	len = ::length( query_text )
+	i = null
+	i = 1
+	while (i <= len) {
+		char = ::copytext( query_text, i, i + 1 )
+		if ( char in whitespace ) {
+			if ( word != "" ) {
+				query_list += word
+				word = ""
+			}
+		} else if ( char in single ) {
+			if ( word != "" ) {
+				query_list += word
+				word = ""
+			}
+			query_list += char
+		} else if ( char in multi ) {
+			if ( word != "" ) {
+				query_list += word
+				word = ""
+			}
+			char2 = ::copytext( query_text, i + 1, i + 2 )
+			if ( char2 in multi[char] ) {
+				query_list += "" + ::txt.mark( char ) + ::txt.mark( char2 )
+				i++
+			} else {
+				query_list += char
+			}
+		} else if ( char == "'" ) {
+			if ( word != "" ) {
+				::_USR_.write( "" + "[red]" + "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" + ::txt.mark( query_text ) + "</font>\" following \"<font color=gray>" + ::txt.mark( word ) + "</font>\". Please check your syntax, and try again." )
+				return
+			}
+			word = "'"
+			i++
+			while (i <= len) {
+				char = ::copytext( query_text, i, i + 1 )
+				if ( char == "'" ) {
+					if ( ::copytext( query_text, i + 1, i + 2 ) == "'" ) {
+						word += "'"
+						i++
+					} else {
+						break
+					}
+				} else {
+					word += char
+				}
+				i++
+			}
+			if ( i > len ) {
+				::_USR_.write( "" + "[red]" + "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" + ::txt.mark( query_text ) + "</font>\". Please check your syntax, and try again." )
+				return
+			}
+			query_list += "" + ::txt.mark( word ) + "'"
+			word = ""
+		} else if ( char == "\"" ) {
+			if ( word != "" ) {
+				::_USR_.write( "" + "[red]" + "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" + ::txt.mark( query_text ) + "</font>\" following \"<font color=gray>" + ::txt.mark( word ) + "</font>\". Please check your syntax, and try again." )
+				return
+			}
+			word = "\""
+			i++
+			while (i <= len) {
+				char = ::copytext( query_text, i, i + 1 )
+				if ( char == "\"" ) {
+					if ( ::copytext( query_text, i + 1, i + 2 ) == "'" ) {
+						word += "\""
+						i++
+					} else {
+						break
+					}
+				} else {
+					word += char
+				}
+				i++
+			}
+			if ( i > len ) {
+				::_USR_.write( "" + "[red]" + "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" + ::txt.mark( query_text ) + "</font>\". Please check your syntax, and try again." )
+				return
+			}
+			query_list += "" + ::txt.mark( word ) + "\""
+			word = ""
+		} else {
+			word += char
+		}
+		i++
+	}
+	if ( word != "" ) {
+		query_list += word
+	}
+	return query_list
 }
 
 function seclevel2num( seclevel ) {
@@ -7775,7 +9534,28 @@ function select_active_ai_with_fewest_borgs(  ) {
 }
 
 function send_byjax( receiver, control_id, target_element, new_content, callback, callback_args ) {
-	// Decompile Failure: fail decode_fail,267,142
+	local argums
+	if ( new_content == null ) {
+		new_content = null
+	}
+	if ( callback == null ) {
+		callback = null
+	}
+	if ( callback_args == null ) {
+		callback_args = null
+	}
+	if ( receiver && ( target_element && control_id ) ) {
+		argums = ::List([ target_element, new_content ])
+		if ( callback ) {
+			argums += callback
+			if ( callback_args ) {
+				argums += callback_args
+			}
+		}
+		argums = ::list2params( argums )
+		::output( receiver, argums, "" + ::txt.mark( control_id ) + ":replaceContent" )
+	}
+	return
 }
 
 function send2irc( msg, msg2 ) {
@@ -7981,7 +9761,6 @@ function setup_map_transitions(  ) {
 		k++
 	}
 	point_grid = null
-	return
 	point_grid = ::List( conf_set_len * 2 + 1, conf_set_len * 2 + 1 )
 	grid = ::List()
 	P = null
@@ -8022,7 +9801,7 @@ function setup_map_transitions(  ) {
 		D.set neigbours( used_points )
 		P = ::pick_list( possible_points )
 		grid["" + ::txt.mark( D.z_value )] = D
-		// goto 166
+		// goto 165
 	}
 	A = null
 	foreach (_ in ::z_levels_list ) {
@@ -8049,7 +9828,7 @@ function setup_map_transitions(  ) {
 			} else {
 				if ( D.neigbours.4 && D.neigbours.4 != D ) {
 					D = D.neigbours.4
-					// goto 290
+					// goto 289
 				}
 				S.destination_z = D.z_value
 			}
@@ -8070,7 +9849,7 @@ function setup_map_transitions(  ) {
 			} else {
 				if ( D.neigbours.8 && D.neigbours.8 != D ) {
 					D = D.neigbours.8
-					// goto 374
+					// goto 373
 				}
 				S.destination_z = D.z_value
 			}
@@ -8091,7 +9870,7 @@ function setup_map_transitions(  ) {
 			} else {
 				if ( D.neigbours.1 && D.neigbours.1 != D ) {
 					D = D.neigbours.1
-					// goto 450
+					// goto 449
 				}
 				S.destination_z = D.z_value
 			}
@@ -8112,7 +9891,7 @@ function setup_map_transitions(  ) {
 			} else {
 				if ( D.neigbours.2 && D.neigbours.2 != D ) {
 					D = D.neigbours.2
-					// goto 534
+					// goto 533
 				}
 				S.destination_z = D.z_value
 			}
@@ -8131,7 +9910,6 @@ function SetViruses( R, data ) {
 	local preserve, A
 	if ( data ) {
 		preserve = ::List()
-		return
 		if ( ::istype( data, ::List ) && data.viruses ) {
 			A = null
 			foreach (_ in data.viruses ) {
@@ -8223,10 +10001,8 @@ function show_note( target_ckey, index, linkless ) {
 			}
 			output += "<br>" + ::txt.mark( notetext ) + "<hr style='background:#000000; border:0; height:1px'>"
 			// goto 93
-			// goto 242
 		}
-	}
-	if ( index ) {
+	} else if ( index ) {
 		index_ckey = null
 		search = null
 		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
@@ -8252,11 +10028,11 @@ function show_note( target_ckey, index, linkless ) {
 			index_ckey = query_list_notes.item[1]
 			output += "<a href='?_src_=holder;shownoteckey=" + ::txt.mark( index_ckey ) + "'>" + ::txt.mark( index_ckey ) + "</a><br>"
 			// goto 221
-			// goto 242
 		}
+	} else {
+		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
+		output += ruler
 	}
-	output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
-	output += ruler
 	::browse( ::_USR_, output, "window=show_notes;size=900x500" )
 }
 
@@ -8869,7 +10645,6 @@ function string2listofvars( t_string, var_source ) {
 function strings( filename, key ) {
 	local fileList, stringsList, s
 	if ( !::string_cache ) {
-		return
 		::string_cache = ::List()
 	}
 	if ( !( filename in ::string_cache ) ) {
@@ -9173,7 +10948,15 @@ function trim_right( text ) {
 }
 
 function try_move_adjacent( AM ) {
-	// Decompile Failure: bad iter loop 4
+	local T, direction
+	T = ::get_turf( AM )
+	direction = null
+	foreach (_ in ::cardinal ) {
+		direction = _
+		if ( AM.Move( ::get_step( T, direction ) ) ) {
+			break
+		}
+	}
 }
 
 function ui_style2icon( ui_style ) {
