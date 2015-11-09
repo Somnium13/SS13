@@ -31,97 +31,25 @@ function _syndicate_name(  ) {
 		return ::syndicate_name
 	}
 	name = ""
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 4681 ) { _ = "Clandestine" }
-	else if ( _ < 9362 ) { _ = "Prima" }
-	else if ( _ < 14043 ) { _ = "Blue" }
-	else if ( _ < 18724 ) { _ = "Zero-G" }
-	else if ( _ < 23405 ) { _ = "Max" }
-	else if ( _ < 28086 ) { _ = "Blasto" }
-	else if ( _ < 32767 ) { _ = "Waffle" }
-	else if ( _ < 37448 ) { _ = "North" }
-	else if ( _ < 42129 ) { _ = "Omni" }
-	else if ( _ < 46810 ) { _ = "Newton" }
-	else if ( _ < 51491 ) { _ = "Cyber" }
-	else if ( _ < 56172 ) { _ = "Bonk" }
-	else if ( _ < 60853 ) { _ = "Gene" }
-	else  { _ = "Gib" }
-
+	local _ = ::random.pick([ "Clandestine", "Prima", "Blue", "Zero-G", "Max", "Blasto", "Waffle", "North", "Omni", "Newton", "Cyber", "Bonk", "Gene", "Gib" ])
 	name += _
-	if ( ::prob( 80 ) ) {
+	if ( ::random.chance( 80 ) ) {
 		name += " "
-		if ( ::prob( 60 ) ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 3276 ) { _ = "Syndicate" }
-			else if ( _ < 6552 ) { _ = "Consortium" }
-			else if ( _ < 9828 ) { _ = "Collective" }
-			else if ( _ < 13104 ) { _ = "Corporation" }
-			else if ( _ < 16380 ) { _ = "Group" }
-			else if ( _ < 19656 ) { _ = "Holdings" }
-			else if ( _ < 22932 ) { _ = "Biotech" }
-			else if ( _ < 26208 ) { _ = "Industries" }
-			else if ( _ < 29484 ) { _ = "Systems" }
-			else if ( _ < 32760 ) { _ = "Products" }
-			else if ( _ < 36036 ) { _ = "Chemicals" }
-			else if ( _ < 39312 ) { _ = "Enterprises" }
-			else if ( _ < 42588 ) { _ = "Family" }
-			else if ( _ < 45864 ) { _ = "Creations" }
-			else if ( _ < 49140 ) { _ = "International" }
-			else if ( _ < 52416 ) { _ = "Intergalactic" }
-			else if ( _ < 55692 ) { _ = "Interplanetary" }
-			else if ( _ < 58968 ) { _ = "Foundation" }
-			else if ( _ < 62244 ) { _ = "Positronics" }
-			else  { _ = "Hive" }
-
+		if ( ::random.chance( 60 ) ) {
+			local _ = ::random.pick([ "Syndicate", "Consortium", "Collective", "Corporation", "Group", "Holdings", "Biotech", "Industries", "Systems", "Products", "Chemicals", "Enterprises", "Family", "Creations", "International", "Intergalactic", "Interplanetary", "Foundation", "Positronics", "Hive" ])
 			name += _
 		} else {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 8191 ) { _ = "Syndi" }
-			else if ( _ < 16382 ) { _ = "Corp" }
-			else if ( _ < 24573 ) { _ = "Bio" }
-			else if ( _ < 32764 ) { _ = "System" }
-			else if ( _ < 40955 ) { _ = "Prod" }
-			else if ( _ < 49146 ) { _ = "Chem" }
-			else if ( _ < 57337 ) { _ = "Inter" }
-			else  { _ = "Hive" }
-
+			local _ = ::random.pick([ "Syndi", "Corp", "Bio", "System", "Prod", "Chem", "Inter", "Hive" ])
 			name += _
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 32767 ) { _ = "" }
-			else  { _ = "-" }
-
+			local _ = ::random.pick([ "", "-" ])
 			name += _
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 9362 ) { _ = "Tech" }
-			else if ( _ < 18724 ) { _ = "Sun" }
-			else if ( _ < 28086 ) { _ = "Co" }
-			else if ( _ < 37448 ) { _ = "Tek" }
-			else if ( _ < 46810 ) { _ = "X" }
-			else if ( _ < 56172 ) { _ = "Inc" }
-			else  { _ = "Code" }
-
+			local _ = ::random.pick([ "Tech", "Sun", "Co", "Tek", "X", "Inc", "Code" ])
 			name += _
 		}
 	} else {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 21845 ) { _ = "-" }
-		else if ( _ < 43690 ) { _ = "*" }
-		else  { _ = "" }
-
+		local _ = ::random.pick([ "-", "*", "" ])
 		name += _
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 5957 ) { _ = "Tech" }
-		else if ( _ < 11914 ) { _ = "Sun" }
-		else if ( _ < 17871 ) { _ = "Co" }
-		else if ( _ < 23828 ) { _ = "Tek" }
-		else if ( _ < 29785 ) { _ = "X" }
-		else if ( _ < 35742 ) { _ = "Inc" }
-		else if ( _ < 41699 ) { _ = "Gen" }
-		else if ( _ < 47656 ) { _ = "Star" }
-		else if ( _ < 53613 ) { _ = "Dyne" }
-		else if ( _ < 59570 ) { _ = "Code" }
-		else  { _ = "Hive" }
-
+		local _ = ::random.pick([ "Tech", "Sun", "Co", "Tek", "X", "Inc", "Gen", "Star", "Dyne", "Code", "Hive" ])
 		name += _
 	}
 	::syndicate_name = name
@@ -147,7 +75,7 @@ function active_ais( check_mind =null ) {
 	A = null
 	foreach (_ in ::living_mob_list ) {
 		A = _
-		if ( !::istype( A, ::Mob_Living_Silicon_Ai ) ) {
+		if ( !( A instanceof ::Mob_Living_Silicon_Ai ) ) {
 			continue
 		}
 		if ( A.stat == 2 ) {
@@ -176,7 +104,7 @@ function add_logs( user =null, target =null, what_done =null, object =null, addi
 		addition = null
 	}
 	newhealthtxt = ""
-	if ( target && ::istype( target, ::Mob_Living ) ) {
+	if ( target && target instanceof ::Mob_Living ) {
 		L = target
 		newhealthtxt = ::Txt( " (NEWHP: " ).item( L.health ).str( ")" )
 	}
@@ -237,7 +165,7 @@ function admin_forcemove( mover =null, newloc =null ) {
 		mover.buckled.unbuckle_mob()
 	}
 	if ( mover.buckled_mob ) {
-		mover.unbuckle_mob( "LIST_CALL", ::List({ ["force"]= 1 }) )
+		mover.unbuckle_mob.lcall( ::List({ ["force"]= 1 }) )
 	}
 	mover.loc = newloc
 	mover.$on forcemove( newloc )
@@ -301,7 +229,7 @@ function Advance_Mix( D_list =null ) {
 	A = null
 	foreach (_ in D_list ) {
 		A = _
-		if ( !::istype( A, ::Disease_Advance ) ) {
+		if ( !( A instanceof ::Disease_Advance ) ) {
 			continue
 		}
 		diseases += A.Copy()
@@ -310,17 +238,17 @@ function Advance_Mix( D_list =null ) {
 		return
 	}
 	if ( diseases.len <= 1 ) {
-		return ::pick_list( diseases )
+		return ::random.pick( diseases )
 	}
 	i = 0
 	while (i < 20 && diseases.len > 1) {
 		i++
-		D1 = ::pick_list( diseases )
+		D1 = ::random.pick( diseases )
 		diseases -= D1
-		D2 = ::pick_list( diseases )
+		D2 = ::random.pick( diseases )
 		D2.Mix( D1 )
 	}
-	to_return = ::pick_list( diseases )
+	to_return = ::random.pick( diseases )
 	to_return.Refresh( 1 )
 	return to_return
 }
@@ -330,10 +258,10 @@ function alien_type_present( alienpath =null ) {
 	A = null
 	foreach (_ in ::living_mob_list ) {
 		A = _
-		if ( !::istype( A, ::Mob_Living_Carbon_Alien_Humanoid ) ) {
+		if ( !( A instanceof ::Mob_Living_Carbon_Alien_Humanoid ) ) {
 			continue
 		}
-		if ( !::istype( A, alienpath ) ) {
+		if ( !( A instanceof alienpath ) ) {
 			continue
 		}
 		if ( !A.key || A.stat == 2 ) {
@@ -353,7 +281,7 @@ function alone_in_area( the_area =null, must_be_alone =null, check_type =null ) 
 	C = null
 	foreach (_ in ::living_mob_list ) {
 		C = _
-		if ( !::istype( C, check_type ) ) {
+		if ( !( C instanceof check_type ) ) {
 			continue
 		}
 		if ( C == must_be_alone ) {
@@ -413,12 +341,12 @@ function anim( location =null, target =null, a_icon =null, a_icon_state =null, f
 		animation.icon_state = "blank"
 		animation.master = target
 	}
-	::sleep( ::max( sleeptime, 15 ) )
+	::thread.sleep( ::math.max( sleeptime, 15 ) )
 	::qdel( animation )
 }
 
 function anyprob( value =null ) {
-	return ::rand( 1, value ) == value
+	return ::random.int( 1, value ) == value
 }
 
 function appearance_isbanned( M =null ) {
@@ -444,7 +372,7 @@ function appearance_isbanned( M =null ) {
 
 function arctan( x =null ) {
 	local y
-	y = ::arcsin( x / ::sqrt( x * x + 1 ) )
+	y = ::math.arcsin( x / ::math.sqrt( x * x + 1 ) )
 	return y
 }
 
@@ -526,7 +454,7 @@ function AStar( start =null, end =null, atom =null, dist =null, maxnodes =null, 
 	PN = null
 	foreach (_ in open.L ) {
 		PN = _
-		if ( !::istype( PN, ::PathNode ) ) {
+		if ( !( PN instanceof ::PathNode ) ) {
 			continue
 		}
 		PN.source.PNode = null
@@ -553,17 +481,17 @@ function attach_spans( input =null, spans =null ) {
 
 function attempt_initiate_surgery( I =null, M =null, user =null ) {
 	local H, affecting, selected_zone, current_surgery, S, all_surgeries, available_surgeries, path, P, procedure
-	if ( ::istype( M, ::Mob_Living ) ) {
+	if ( M instanceof ::Mob_Living ) {
 		selected_zone = user.zone_sel.selecting
-		if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+		if ( M instanceof ::Mob_Living_Carbon_Human ) {
 			H = M
 			affecting = H.$get organ( ::check_zone( selected_zone ) )
 		}
-		if ( M.lying || ::istype( M, ::Mob_Living_SimpleAnimal_Slime ) ) {
+		if ( M.lying || M instanceof ::Mob_Living_SimpleAnimal_Slime ) {
 			S = null
 			foreach (_ in M.surgeries ) {
 				S = _
-				if ( !::istype( S, ::Surgery ) ) {
+				if ( !( S instanceof ::Surgery ) ) {
 					continue
 				}
 				if ( S.location == selected_zone ) {
@@ -576,7 +504,7 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 				S = null
 				foreach (_ in all_surgeries ) {
 					S = _
-					if ( !::istype( S, ::Surgery ) ) {
+					if ( !( S instanceof ::Surgery ) ) {
 						continue
 					}
 					if ( !S.possible_locs.$Find( selected_zone ) ) {
@@ -591,7 +519,7 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 					path = null
 					foreach (_ in S.species ) {
 						path = _
-						if ( ::istype( M, path ) ) {
+						if ( M instanceof path ) {
 							available_surgeries[S.name] = S
 							break
 						}
@@ -607,7 +535,7 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 							M.surgeries += procedure
 							procedure.organ = affecting
 							user.$visible message( ::Txt().item( user ).str( " drapes " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( "." ), ::Txt( "<span class='notice'>You drape " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( ".</span>" ) )
-							::smooth_icon_neighbors( "LIST_CALL", ::List({ ["addition"]= ::Txt( "Operation type: " ).item( procedure.name ).str( ", location: " ).item( selected_zone ), [3]= "operated", [2]= M, [1]= user }) )
+							::smooth_icon_neighbors.lcall( ::List({ ["addition"]= ::Txt( "Operation type: " ).item( procedure.name ).str( ", location: " ).item( selected_zone ), [3]= "operated", [2]= M, [1]= user }) )
 						} else {
 							user.write( ::Txt( "<span class='warning'>You need to expose " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " first!</span>" ) )
 						}
@@ -618,7 +546,7 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 					M.surgeries -= current_surgery
 					user.$visible message( ::Txt().item( user ).str( " removes the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( "." ), ::Txt( "<span class='notice'>You remove the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( ".</span>" ) )
 					::qdel( current_surgery )
-				} else if ( ::istype( user.get_inactive_hand(), ::Ent_Item_Weapon_Cautery ) && current_surgery.can_cancel ) {
+				} else if ( user.get_inactive_hand() instanceof ::Ent_Item_Weapon_Cautery && current_surgery.can_cancel ) {
 					M.surgeries -= current_surgery
 					user.$visible message( ::Txt().item( user ).str( " mends the incision and removes the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( "." ), ::Txt( "<span class='notice'>You mend the incision and remove the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( ".</span>" ) )
 					::qdel( current_surgery )
@@ -682,10 +610,10 @@ function BlendRGB( rgb1 =null, rgb2 =null, amount =null ) {
 		RGB2 += 255
 	}
 	usealpha = RGB1.len > 3
-	r = ::round2( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 )
-	g = ::round2( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 )
-	b = ::round2( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 )
-	alpha = usealpha ? ::round2( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null
+	r = ::math.round( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 )
+	g = ::math.round( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 )
+	b = ::math.round( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 )
+	alpha = usealpha ? ::math.round( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null
 	return ::isnull( alpha ) ? ::rgb( r, g, b ) : ::rgba( r, g, b, alpha )
 }
 
@@ -727,10 +655,10 @@ function blood_splatter( target =null, source =null, large =null ) {
 	local B, decal_type, T, M, donor, drips, drop
 	decal_type = ::Ent_Effect_Decal_Cleanable_Blood_Splatter
 	T = ::get_turf( target )
-	if ( ::istype( source, ::Mob_Living_Carbon_Human ) ) {
+	if ( source instanceof ::Mob_Living_Carbon_Human ) {
 		M = source
 		source = M.get_blood( M.vessel )
-	} else if ( ::istype( source, ::Mob_Living_Carbon_Monkey ) ) {
+	} else if ( source instanceof ::Mob_Living_Carbon_Monkey ) {
 		donor = source
 		source = ::Reagent_Blood()
 		source.data.blood_DNA = donor.dna.unique_enzymes
@@ -740,7 +668,7 @@ function blood_splatter( target =null, source =null, large =null ) {
 	drop = null
 	foreach (_ in T ) {
 		drop = _
-		if ( !::istype( drop, ::Ent_Effect_Decal_Cleanable_Blood_Drip ) ) {
+		if ( !( drop instanceof ::Ent_Effect_Decal_Cleanable_Blood_Drip ) ) {
 			continue
 		}
 		drips = drips | drop.drips
@@ -754,7 +682,7 @@ function blood_splatter( target =null, source =null, large =null ) {
 		B = decal_type( T )
 	}
 	drop = B
-	if ( ::istype( drop, ::Ent_Effect_Decal_Cleanable_Blood_Drip ) && drips && drips.len && !large ) {
+	if ( drop instanceof ::Ent_Effect_Decal_Cleanable_Blood_Drip && drips && drips.len && !large ) {
 		drop.overlays = drop.overlays | drips
 		drop.drips = drop.drips | drips
 	}
@@ -796,7 +724,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio_Intercom ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio_Intercom ) ) {
 				continue
 			}
 			if ( R.receive_range( freq, level ) > -1 ) {
@@ -807,7 +735,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( R.subspace_transmission ) {
@@ -821,7 +749,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( !R.centcom ) {
@@ -835,7 +763,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( R.receive_range( freq, level ) > -1 ) {
@@ -846,7 +774,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( ::SYND_FREQ )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( R.receive_range( ::SYND_FREQ, ::List([ R.z ]) ) > -1 && freqtext in ::radiochannelsreverse ) {
@@ -865,7 +793,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 	M = null
 	foreach (_ in ::player_list ) {
 		M = _
-		if ( ::istype( M, ::Mob_Dead_Observer ) && M.client && M.client.prefs.chat_toggles & 512 ) {
+		if ( M instanceof ::Mob_Dead_Observer && M.client && M.client.prefs.chat_toggles & 512 ) {
 			receive = receive | M
 		}
 	}
@@ -873,14 +801,14 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 	hearer = null
 	foreach (_ in receive ) {
 		hearer = _
-		if ( !::istype( hearer, ::BaseDynamic ) ) {
+		if ( !( hearer instanceof ::BaseDynamic ) ) {
 			continue
 		}
 		hearer.$Hear( rendered, virt, AM.languages, message, freq, spans )
 	}
 	if ( ::length( receive ) ) {
 		blackbox_msg = ::Txt().item( AM ).str( " " ).item( AM.say_quote( message, spans ) )
-		if ( ::istype( ::blackbox, ::Ent_Machinery_BlackboxRecorder ) ) {
+		if ( ::blackbox instanceof ::Ent_Machinery_BlackboxRecorder ) {
 			local _ = freq // Was a switch-case, sorry for the mess.
 			if ( _==1459 ) {
 				::blackbox.msg_common += blackbox_msg
@@ -907,7 +835,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 			}
 		}
 	}
-	::spawn( 50, function() {
+	::thread.schedule( 50, function() {
 		::qdel( virt )
 		return
 	})
@@ -926,7 +854,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		R = null
 		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio_Intercom ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio_Intercom ) ) {
 				continue
 			}
 			position = ::get_turf( R )
@@ -938,7 +866,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		R = null
 		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( R.subspace_transmission ) {
@@ -954,7 +882,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		R = null
 		foreach (_ in syndicateconnection.devices[::Txt().item( ::RADIO_CHAT )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			position = ::get_turf( R )
@@ -966,7 +894,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		R = null
 		foreach (_ in ::all_radios[::Txt().item( ::RADIO_CHAT )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			if ( R.centcom ) {
@@ -977,7 +905,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		R = null
 		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
 			R = _
-			if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
 			}
 			position = ::get_turf( R )
@@ -1061,7 +989,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		}
 		part_blackbox_b = ::Txt( "</span><b> [" ).item( freq_text ).str( "]</b> <span class='message'>" )
 		blackbox_msg = ::Txt().item( part_a ).item( source ).item( part_blackbox_b ).str( "\"" ).item( text ).str( "\"" ).item( part_c )
-		if ( ::istype( ::blackbox, ::Ent_Machinery_BlackboxRecorder ) ) {
+		if ( ::blackbox instanceof ::Ent_Machinery_BlackboxRecorder ) {
 			local _ = display_freq // Was a switch-case, sorry for the mess.
 			if ( _==1459 ) {
 				::blackbox.msg_common += blackbox_msg
@@ -1122,7 +1050,7 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 	H = null
 	foreach (_ in ::game ) {
 		H = _
-		if ( !::istype( H, ::Ent_Effect_Bmode_Buildholder ) ) {
+		if ( !( H instanceof ::Ent_Effect_Bmode_Buildholder ) ) {
 			continue
 		}
 		if ( H.cl == user.client ) {
@@ -1134,41 +1062,41 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 		return
 	}
 	pa = ::params2list( params )
-	if ( ::istype( object, ::Ent_Effect_Bmode ) ) {
+	if ( object instanceof ::Ent_Effect_Bmode ) {
 		return
 	}
 	local _ = buildmode // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
-		if ( ::istype( object, ::Tile ) && pa.$Find( "left" ) && !pa.$Find( "alt" ) && !pa.$Find( "ctrl" ) ) {
+		if ( object instanceof ::Tile && pa.$Find( "left" ) && !pa.$Find( "alt" ) && !pa.$Find( "ctrl" ) ) {
 			T = object
-			if ( ::istype( object, ::Tile_Space ) ) {
+			if ( object instanceof ::Tile_Space ) {
 				T.$ChangeTurf( ::Tile_Simulated_Floor_Plasteel )
-			} else if ( ::istype( object, ::Tile_Simulated_Floor ) ) {
+			} else if ( object instanceof ::Tile_Simulated_Floor ) {
 				T.$ChangeTurf( ::Tile_Simulated_Wall )
-			} else if ( ::istype( object, ::Tile_Simulated_Wall ) ) {
+			} else if ( object instanceof ::Tile_Simulated_Wall ) {
 				T.$ChangeTurf( ::Tile_Simulated_Wall_RWall )
 			}
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " built " ).item( T ).str( " at (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ")" ) )
+			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built " ).item( T ).str( " at (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ")" ) )
 			return
 		} else if ( pa.$Find( "right" ) ) {
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
-			if ( ::istype( object, ::Tile_Simulated_Wall ) ) {
+			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+			if ( object instanceof ::Tile_Simulated_Wall ) {
 				T = object
 				T.$ChangeTurf( ::Tile_Simulated_Floor_Plasteel )
-			} else if ( ::istype( object, ::Tile_Simulated_Floor ) ) {
+			} else if ( object instanceof ::Tile_Simulated_Floor ) {
 				T = object
 				T.$ChangeTurf( ::Tile_Space )
-			} else if ( ::istype( object, ::Tile_Simulated_Wall_RWall ) ) {
+			} else if ( object instanceof ::Tile_Simulated_Wall_RWall ) {
 				T = object
 				T.$ChangeTurf( ::Tile_Simulated_Wall )
-			} else if ( ::istype( object, ::Entity ) ) {
+			} else if ( object instanceof ::Entity ) {
 				::qdel( object )
 			}
 			return
-		} else if ( ::istype( object, ::Tile ) && T.$Find( "alt" ) && T.$Find( "left" ) ) {
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " built an airlock at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+		} else if ( object instanceof ::Tile && T.$Find( "alt" ) && T.$Find( "left" ) ) {
+			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built an airlock at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
 			::Ent_Machinery_Door_Airlock( ::get_turf( object ) )
-		} else if ( ::istype( object, ::Tile ) && pa.$Find( "ctrl" ) && pa.$Find( "left" ) ) {
+		} else if ( object instanceof ::Tile && pa.$Find( "ctrl" ) && pa.$Find( "left" ) ) {
 			local _ = holder.builddir.dir // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				WIN = ::Ent_Structure_Window_Reinforced( ::get_turf( object ) )
@@ -1186,40 +1114,40 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 				WIN = ::Ent_Structure_Window_Reinforced( ::get_turf( object ) )
 				WIN.dir = ::NORTHWEST
 			}
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " built a window at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built a window at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
 		}
 	} else if ( _==2 ) {
 		if ( pa.$Find( "left" ) ) {
 			if ( ::ispath2( holder.buildmode.objholder, ::Tile ) ) {
 				T = ::get_turf( object )
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " modified " ).item( T ).str( " (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ") to " ).item( holder.buildmode.objholder ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( T ).str( " (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ") to " ).item( holder.buildmode.objholder ) )
 				T.$ChangeTurf( holder.buildmode.objholder )
 			} else {
 				A = T.objholder( ::get_turf( object ) )
 				A.dir = holder.builddir.dir
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " modified " ).item( A ).str( "'s (" ).item( A.x ).str( "," ).item( A.y ).str( "," ).item( A.z ).str( ") dir to " ).item( holder.builddir.dir ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( A ).str( "'s (" ).item( A.x ).str( "," ).item( A.y ).str( "," ).item( A.z ).str( ") dir to " ).item( holder.builddir.dir ) )
 			}
 		} else if ( holder.$Find( "right" ) ) {
 			if ( ::isobj( object ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
 				::qdel( object )
 			}
 		}
 	} else if ( _==3 ) {
 		if ( pa.$Find( "left" ) ) {
 			if ( object.vars.$Find( holder.buildmode.varholder ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
 				object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder
 			} else {
-				::_USR_.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
+				::thread.user.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
 			}
 		}
 		if ( pa.$Find( "right" ) ) {
 			if ( object.vars.$Find( holder.buildmode.varholder ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
 				object.vars[holder.buildmode.varholder] = ::initial( object.vars[holder.buildmode.varholder] )
 			} else {
-				::_USR_.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
+				::thread.user.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
 			}
 		}
 	} else if ( _==4 ) {
@@ -1232,7 +1160,7 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 		if ( pa.$Find( "right" ) ) {
 			if ( holder.throw_atom ) {
 				holder.throw_atom.$throw at( object, 10, 1, user )
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::_USR_ ) ).str( " threw " ).item( holder.throw_atom ).str( " at " ).item( object ).str( " (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " threw " ).item( holder.throw_atom ).str( " at " ).item( object ).str( " (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
 			}
 		}
 	} else if ( _==5 ) {
@@ -1246,7 +1174,7 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 		if ( pa.$Find( "left" ) ) {
 			if ( holder.cornerA && holder.cornerB ) {
 				if ( !holder.generator_path ) {
-					::_USR_.write( "<span class='warning'>Select generator type first.</span>" )
+					::thread.user.write( "<span class='warning'>Select generator type first.</span>" )
 				}
 				G = holder.generator_path()
 				G.$defineRegion( holder.cornerA, holder.cornerB, 1 )
@@ -1276,7 +1204,7 @@ function calculate_adjacencies( A =null ) {
 		foreach (_ in ::alldirs ) {
 			direction = _
 			AM = ::find_type_in_direction( A, direction )
-			if ( ::istype( AM, ::BaseDynamic ) ) {
+			if ( AM instanceof ::BaseDynamic ) {
 				if ( AM.anchored ) {
 					adjacencies = adjacencies | ::transform_dir( direction )
 				}
@@ -1351,7 +1279,7 @@ function can_see( source =null, target =null, length =null ) {
 		A = null
 		foreach (_ in current ) {
 			A = _
-			if ( !::istype( A, ::BaseStatic ) ) {
+			if ( !( A instanceof ::BaseStatic ) ) {
 				continue
 			}
 			if ( A.opacity ) {
@@ -1372,7 +1300,7 @@ function cancel_progress_bar( user =null, progbar =null ) {
 
 function CanHug( M =null ) {
 	local C, H
-	if ( !::istype( M, ::Mob_Living ) ) {
+	if ( !( M instanceof ::Mob_Living ) ) {
 		return 0
 	}
 	if ( M.stat == 2 ) {
@@ -1381,13 +1309,13 @@ function CanHug( M =null ) {
 	if ( M.$getorgan( ::Ent_Item_Organ_Internal_Alien_Hivenode ) ) {
 		return 0
 	}
-	if ( ::istype( M, ::Mob_Living_SimpleAnimal_Pet_Dog_Corgi ) || ::istype( M, ::Mob_Living_Carbon_Monkey ) ) {
+	if ( M instanceof ::Mob_Living_SimpleAnimal_Pet_Dog_Corgi || M instanceof ::Mob_Living_Carbon_Monkey ) {
 		return 1
 	}
 	C = M
-	if ( ::istype( C, ::Mob_Living_Carbon_Human ) ) {
+	if ( C instanceof ::Mob_Living_Carbon_Human ) {
 		H = C
-		if ( H.is_mouth_covered( "LIST_CALL", ::List({ ["head_only"]= 1 }) ) ) {
+		if ( H.is_mouth_covered.lcall( ::List({ ["head_only"]= 1 }) ) ) {
 			return 0
 		}
 		return 1
@@ -1415,7 +1343,7 @@ function cardinalrange( center =null ) {
 }
 
 function Ceiling( x =null ) {
-	return -::round( -x )
+	return -::math.round( -x )
 }
 
 function center_image( I =null, x_dimension =null, y_dimension =null ) {
@@ -1456,17 +1384,17 @@ function changeling_transform( user =null, chosen_prof =null ) {
 	user.undershirt = chosen_prof.undershirt
 	user.socks = chosen_prof.socks
 	chosen_dna.transfer_identity( user, 1 )
-	user.updateappearance( "LIST_CALL", ::List({ ["mutcolor_update"]= 1 }) )
+	user.updateappearance.lcall( ::List({ ["mutcolor_update"]= 1 }) )
 	user.update_body()
 	user.$domutcheck()
 	slot = null
 	foreach (_ in ::slots ) {
 		slot = _
-		if ( ::istype( user.vars[slot], ::slot2type[slot] ) && !chosen_prof.exists_list[slot] ) {
+		if ( user.vars[slot] instanceof ::slot2type[slot] && !chosen_prof.exists_list[slot] ) {
 			::qdel( user.vars[slot] )
 			continue
 		}
-		if ( user.vars[slot] && !::istype( user.vars[slot], ::slot2type[slot] ) || !chosen_prof.exists_list[slot] ) {
+		if ( user.vars[slot] && !( user.vars[slot] instanceof ::slot2type[slot] ) || !chosen_prof.exists_list[slot] ) {
 			continue
 		}
 		C = null
@@ -1475,7 +1403,7 @@ function changeling_transform( user =null, chosen_prof =null ) {
 			thetype = ::slot2type[slot]
 			equip = 1
 			C = thetype( user )
-		} else if ( ::istype( user.vars[slot], ::slot2type[slot] ) ) {
+		} else if ( user.vars[slot] instanceof ::slot2type[slot] ) {
 			C = user.vars[slot]
 		}
 		C.appearance = chosen_prof.appearance_list[slot]
@@ -1493,25 +1421,25 @@ function changeling_transform( user =null, chosen_prof =null ) {
 function changemap( VM =null ) {
 	local file
 	return
-	if ( !::istype( VM, ::Votablemap ) ) {
+	if ( !( VM instanceof ::Votablemap ) ) {
 		return
 	}
 	::log_game( ::Txt( "Changing map to " ).item( VM.name ).str( "(" ).item( VM.friendlyname ).str( ")" ) )
 }
 
 function cheap_hypotenuse( Ax =null, Ay =null, Bx =null, By =null ) {
-	return ::sqrt( ::pow( ::abs( Ax - Bx ), 2 ) + ::pow( ::abs( Ay - By ), 2 ) )
+	return ::math.sqrt( ::pow( ::math.abs( Ax - Bx ), 2 ) + ::pow( ::math.abs( Ay - By ), 2 ) )
 }
 
 function check_rights( rights_required =null, show_msg =null ) {
 	if ( show_msg == null ) {
 		show_msg = 1
 	}
-	if ( ::_USR_ && ::_USR_.client ) {
-		if ( ::check_rights_for( ::_USR_.client, rights_required ) ) {
+	if ( ::thread.user && ::thread.user.client ) {
+		if ( ::check_rights_for( ::thread.user.client, rights_required ) ) {
 			return 1
 		} else if ( show_msg ) {
-			::_USR_.write( ::Txt( "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:" ).item( ::rights2text( rights_required, " " ) ).str( ".</font>" ) )
+			::thread.user.write( ::Txt( "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:" ).item( ::rights2text( rights_required, " " ) ).str( ".</font>" ) )
 		}
 	}
 	return 0
@@ -1528,7 +1456,7 @@ function check_rights_for( subject =null, rights_required =null ) {
 }
 
 function check_tank_exists( parent_tank =null, M =null, O =null ) {
-	if ( !parent_tank || !::istype( parent_tank, ::Ent_Item_Weapon_Watertank ) ) {
+	if ( !parent_tank || !( parent_tank instanceof ::Ent_Item_Weapon_Watertank ) ) {
 		M.unEquip( O )
 		::qdel( 0 )
 		return 0
@@ -1562,7 +1490,7 @@ function check_zone( zone =null ) {
 
 function chemscan( user =null, M =null ) {
 	local H, R
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
 		if ( H.reagents ) {
 			if ( H.reagents.reagent_list.len ) {
@@ -1570,7 +1498,7 @@ function chemscan( user =null, M =null ) {
 				R = null
 				foreach (_ in H.reagents.reagent_list ) {
 					R = _
-					if ( !::istype( R, ::Reagent ) ) {
+					if ( !( R instanceof ::Reagent ) ) {
 						continue
 					}
 					user.write( ::Txt( "<span class='notice'>" ).item( R.volume ).str( " units of " ).item( R.name ).item( R.overdosed == 1 ? "</span> - <span class='boldannounce'>OVERDOSING</span>" : ".</span>" ) )
@@ -1583,7 +1511,7 @@ function chemscan( user =null, M =null ) {
 				R = null
 				foreach (_ in H.reagents.addiction_list ) {
 					R = _
-					if ( !::istype( R, ::Reagent ) ) {
+					if ( !( R instanceof ::Reagent ) ) {
 						continue
 					}
 					user.write( ::Txt( "<span class='danger'>" ).item( R.name ).str( "</span>" ) )
@@ -1598,7 +1526,7 @@ function chemscan( user =null, M =null ) {
 function circlerange( center =null, radius =null ) {
 	local centerturf, turfs, rsq, T, dx, dy
 	if ( center == null ) {
-		center = ::_USR_
+		center = ::thread.user
 	}
 	if ( radius == null ) {
 		radius = 3
@@ -1609,7 +1537,7 @@ function circlerange( center =null, radius =null ) {
 	T = null
 	foreach (_ in ::range( radius, centerturf ) ) {
 		T = _
-		if ( !::istype( T, ::BaseStatic ) ) {
+		if ( !( T instanceof ::BaseStatic ) ) {
 			continue
 		}
 		dx = T.x - centerturf.x
@@ -1624,7 +1552,7 @@ function circlerange( center =null, radius =null ) {
 function circlerangeturfs( center =null, radius =null ) {
 	local centerturf, turfs, rsq, T, dx, dy
 	if ( center == null ) {
-		center = ::_USR_
+		center = ::thread.user
 	}
 	if ( radius == null ) {
 		radius = 3
@@ -1645,20 +1573,20 @@ function circlerangeturfs( center =null, radius =null ) {
 }
 
 function Clamp( val =null, min =null, max =null ) {
-	return ::max( min, ::min( val, max ) )
+	return ::math.max( min, ::math.min( val, max ) )
 }
 
 function clearlist( list =null ) {
-	if ( ::istype( list, ::List ) ) {
+	if ( list instanceof ::List ) {
 		list.len = 0
 	}
 	return
 }
 
 function closeToolTip( user =null ) {
-	if ( ::istype( user, ::Mob ) ) {
+	if ( user instanceof ::Mob ) {
 		if ( user.client && user.client.tooltips ) {
-			user.client.tooltips.hide()
+			user.client.tooltips.f_hide()
 		}
 	}
 }
@@ -1688,7 +1616,7 @@ function cmd_admin_mute( whom =null, mute_type =null, automute =null ) {
 		return
 	}
 	C = null
-	if ( ::istype( whom, BAD_GOOFY_EXPANSION??? ) ) {
+	if ( whom instanceof BAD_GOOFY_EXPANSION??? ) {
 		C = whom
 	} else if ( ::istext( whom ) ) {
 		C = ::directory[whom]
@@ -1729,8 +1657,8 @@ function cmd_admin_mute( whom =null, mute_type =null, automute =null ) {
 		muteunmute = "muted"
 		P.muted = P.muted | mute_type
 	}
-	::log_admin( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name( whom ) ).str( " from " ).item( mute_string ) )
-	::message_admins( ::Txt().item( ::key_name_admin( ::_USR_ ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name_admin( whom ) ).str( " from " ).item( mute_string ).str( "." ) )
+	::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name( whom ) ).str( " from " ).item( mute_string ) )
+	::message_admins( ::Txt().item( ::key_name_admin( ::thread.user ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name_admin( whom ) ).str( " from " ).item( mute_string ).str( "." ) )
 	if ( C ) {
 		C.write( ::Txt( "You have been " ).item( muteunmute ).str( " from " ).item( mute_string ).str( "." ) )
 	}
@@ -1832,11 +1760,11 @@ function construct_block( value =null, values =null, blocksize =null ) {
 	if ( blocksize == null ) {
 		blocksize = 3
 	}
-	width = ::round( ::pow( 16, blocksize ) / values )
+	width = ::math.round( ::pow( 16, blocksize ) / values )
 	if ( value < 1 ) {
 		value = 1
 	}
-	value = value * width - ::rand( 1, width )
+	value = value * width - ::random.int( 1, width )
 	return ::num2hex( value, blocksize )
 }
 
@@ -1846,7 +1774,7 @@ function count_by_type( L =null, type =null ) {
 	T = null
 	foreach (_ in L ) {
 		T = _
-		if ( ::istype( T, type ) ) {
+		if ( T instanceof type ) {
 			i++
 		}
 	}
@@ -1866,7 +1794,7 @@ function create_space_ninja( spawn_loc =null ) {
 	local new_ninja, A
 	new_ninja = ::Mob_Living_Carbon_Human( spawn_loc )
 	A = ::Preferences()
-	A.real_name = ::Txt().item( ::pick_list( ::ninja_titles ) ).str( " " ).item( ::pick_list( ::ninja_names ) )
+	A.real_name = ::Txt().item( ::random.pick( ::ninja_titles ) ).str( " " ).item( ::random.pick( ::ninja_names ) )
 	A.copy_to( new_ninja )
 	new_ninja.dna.$update dna identity()
 	new_ninja.equip_space_ninja()
@@ -1897,14 +1825,14 @@ function create_xeno( ckey =null ) {
 		if ( candidates.len ) {
 			ckey = ::input( "Pick the player you want to respawn as a xeno.", "Suitable Candidates", null, null, candidates, 4224 )
 		} else {
-			::_USR_.write( "<font color='red'>Error: create_xeno(): no suitable candidates.</font>" )
+			::thread.user.write( "<font color='red'>Error: create_xeno(): no suitable candidates.</font>" )
 		}
 	}
 	if ( !::istext( ckey ) ) {
 		return 0
 	}
-	alien_caste = ::input( ::_USR_, "Please choose which caste to spawn.", "Pick a caste", null, ::List([ "Queen", "Praetorian", "Hunter", "Sentinel", "Drone", "Larva" ]), 4224 )
-	spawn_here = ::xeno_spawn.len ? ::pick_list( ::xeno_spawn ) : ::pick_list( ::latejoin )
+	alien_caste = ::input( ::thread.user, "Please choose which caste to spawn.", "Pick a caste", null, ::List([ "Queen", "Praetorian", "Hunter", "Sentinel", "Drone", "Larva" ]), 4224 )
+	spawn_here = ::xeno_spawn.len ? ::random.pick( ::xeno_spawn ) : ::random.pick( ::latejoin )
 	new_xeno = null
 	local _ = alien_caste // Was a switch-case, sorry for the mess.
 	if ( _=="Queen" ) {
@@ -1923,7 +1851,7 @@ function create_xeno( ckey =null ) {
 		return 0
 	}
 	new_xeno.ckey = ckey
-	::message_admins( ::Txt( "<span class='notice'>" ).item( ::key_name_admin( ::_USR_ ) ).str( " has spawned " ).item( ckey ).str( " as a filthy xeno " ).item( alien_caste ).str( ".</span>" ) )
+	::message_admins( ::Txt( "<span class='notice'>" ).item( ::key_name_admin( ::thread.user ) ).str( " has spawned " ).item( ckey ).str( " as a filthy xeno " ).item( alien_caste ).str( ".</span>" ) )
 	return 1
 }
 
@@ -1966,7 +1894,7 @@ function createRandomZlevel(  ) {
 		
 	}
 	::game.write( "<span class='boldannounce'>Loading away mission...</span>" )
-	map = ::pick_list( potentialRandomZlevels )
+	map = ::random.pick( potentialRandomZlevels )
 }
 
 function cultist_commune( user =null, clear =null, say =null, message =null ) {
@@ -1981,33 +1909,27 @@ function cultist_commune( user =null, clear =null, say =null, message =null ) {
 		return
 	}
 	if ( say ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 32767 ) { _ = "'" }
-		else  { _ = "`" }
-
+		local _ = ::random.pick([ "'", "`" ])
 		user.say( ::Txt( "O bidai nabora se" ).item( _ ).str( "sma!" ) )
 	} else {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 32767 ) { _ = "'" }
-		else  { _ = "`" }
-
-		user.VERB[Whisper]( ::Txt( "O bidai nabora se" ).item( _ ).str( "sma!" ) )
+		local _ = ::random.pick([ "'", "`" ])
+		::get_verb( user, "Whisper" )( ::Txt( "O bidai nabora se" ).item( _ ).str( "sma!" ) )
 	}
-	::sleep( 10 )
+	::thread.sleep( 10 )
 	if ( !user ) {
 		return
 	}
 	if ( say ) {
 		user.say( message )
 	} else {
-		user.VERB[Whisper]( message )
+		::get_verb( user, "Whisper" )( message )
 	}
 	M = null
 	foreach (_ in ::mob_list ) {
 		M = _
 		if ( ::iscultist( M ) || M in ::dead_mob_list ) {
-			if ( clear || !::istype( user, ::Mob_Living_Carbon_Human ) ) {
-				M.write( ::Txt( "<span class='boldannounce'><i>" ).item( ::istype( user, ::Mob_Living_Carbon_Human ) ? "Acolyte" : "Construct" ).str( " " ).item( user ).str( ":</i> " ).item( message ).str( "</span>" ) )
+			if ( clear || !( user instanceof ::Mob_Living_Carbon_Human ) ) {
+				M.write( ::Txt( "<span class='boldannounce'><i>" ).item( user instanceof ::Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ).str( " " ).item( user ).str( ":</i> " ).item( message ).str( "</span>" ) )
 			} else {
 				M.write( ::Txt( "<span class='ghostalert'><i>Acolyte ???:</i> " ).item( message ).str( "</span>" ) )
 			}
@@ -2042,7 +1964,7 @@ function dd_limittext( message =null, length =null ) {
 }
 
 function dd_range( low =null, high =null, num =null ) {
-	return ::max( low, ::min( high, num ) )
+	return ::math.max( low, ::math.min( high, num ) )
 }
 
 function deconstruct_block( value =null, values =null, blocksize =null ) {
@@ -2050,8 +1972,8 @@ function deconstruct_block( value =null, values =null, blocksize =null ) {
 	if ( blocksize == null ) {
 		blocksize = 3
 	}
-	width = ::round( ::pow( 16, blocksize ) / values )
-	value = ::round( ::hex2num( value ) / width ) + 1
+	width = ::math.round( ::pow( 16, blocksize ) / values )
+	value = ::math.round( ::hex2num( value ) / width ) + 1
 	if ( value > values ) {
 		value = values
 	}
@@ -2068,16 +1990,12 @@ function derpspeech( message =null, stuttering =null ) {
 	message = ::replacetext( message, "space", "spess" )
 	message = ::replacetext( message, "carp", "crap" )
 	message = ::replacetext( message, "reason", "raisin" )
-	if ( ::prob( 50 ) ) {
+	if ( ::random.chance( 50 ) ) {
 		message = ::uppertext( message )
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 21845 ) { _ = "!" }
-		else if ( _ < 43690 ) { _ = "!!" }
-		else  { _ = "!!!" }
-
+		local _ = ::random.pick([ "!", "!!", "!!!" ])
 		message += ::Txt().item( ::stutter( _ ) )
 	}
-	if ( !stuttering && ::prob( 15 ) ) {
+	if ( !stuttering && ::random.chance( 15 ) ) {
 		message = ::stutter( message )
 	}
 	return message
@@ -2155,7 +2073,7 @@ function DirBlockedWithAccess( T =null, dir =null, ID =null ) {
 	D = null
 	foreach (_ in T ) {
 		D = _
-		if ( !::istype( D, ::Ent_Structure_Window ) ) {
+		if ( !( D instanceof ::Ent_Structure_Window ) ) {
 			continue
 		}
 		if ( !D.density ) {
@@ -2171,7 +2089,7 @@ function DirBlockedWithAccess( T =null, dir =null, ID =null ) {
 	D = null
 	foreach (_ in T ) {
 		D = _
-		if ( !::istype( D, ::Ent_Machinery_Door ) ) {
+		if ( !( D instanceof ::Ent_Machinery_Door ) ) {
 			continue
 		}
 		if ( !D.$CanAStarPass( ID, dir ) ) {
@@ -2187,7 +2105,7 @@ function display_roundstart_logout_report(  ) {
 	L = null
 	foreach (_ in ::mob_list ) {
 		L = _
-		if ( !::istype( L, ::Mob_Living ) ) {
+		if ( !( L instanceof ::Mob_Living ) ) {
 			continue
 		}
 		if ( L.ckey ) {
@@ -2195,7 +2113,7 @@ function display_roundstart_logout_report(  ) {
 			C = null
 			foreach (_ in ::clients ) {
 				C = _
-				if ( !::istype( C, BAD_GOOFY_EXPANSION??? ) ) {
+				if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) ) {
 					continue
 				}
 				if ( C.ckey == L.ckey ) {
@@ -2231,7 +2149,7 @@ function display_roundstart_logout_report(  ) {
 		D = null
 		foreach (_ in ::mob_list ) {
 			D = _
-			if ( !::istype( D, ::Mob_Dead_Observer ) ) {
+			if ( !( D instanceof ::Mob_Dead_Observer ) ) {
 				continue
 			}
 			if ( D.mind && D.mind.current == L ) {
@@ -2286,7 +2204,7 @@ function do_after( user =null, delay =null, numticks =null, needhand =null, targ
 	if ( target ) {
 		Tloc = target.loc
 	}
-	delayfraction = ::round( delay / numticks )
+	delayfraction = ::math.round( delay / numticks )
 	Uloc = user.loc
 	holding = user.get_active_hand()
 	holdingnull = 1
@@ -2301,7 +2219,7 @@ function do_after( user =null, delay =null, numticks =null, needhand =null, targ
 			progbar = ::make_progress_bar( i, numticks, target )
 			::assign_progress_bar( user, progbar )
 		}
-		::sleep( delayfraction )
+		::thread.sleep( delayfraction )
 		if ( !user || user.stat || user.weakened || user.stunned || !( user.loc == Uloc ) ) {
 			continue_looping = 0
 		}
@@ -2350,7 +2268,7 @@ function do_mob( user =null, target =null, time =null, numticks =null, uninterru
 	user_loc = user.loc
 	target_loc = target.loc
 	holding = user.get_active_hand()
-	timefraction = ::round( time / numticks )
+	timefraction = ::math.round( time / numticks )
 	continue_looping = 1
 	i = null
 	foreach (_ in ::gen_range( 1, numticks ) ) {
@@ -2359,7 +2277,7 @@ function do_mob( user =null, target =null, time =null, numticks =null, uninterru
 			progbar = ::make_progress_bar( i, numticks, target )
 			::assign_progress_bar( user, progbar )
 		}
-		::sleep( timefraction )
+		::thread.sleep( timefraction )
 		if ( !user || !target ) {
 			continue_looping = 0
 		}
@@ -2396,7 +2314,7 @@ function do_teleport( ... ) {
 		argv[7] = null
 	}
 	D = ::Teleport_Instant_Science()
-	if ( D.start( "LIST_CALL", argv ) ) {
+	if ( D.f_start.lcall( argv ) ) {
 		return 1
 	}
 	return 0
@@ -2455,10 +2373,10 @@ function electrocute_mob( M =null, power_source =null, source =null, siemens_coe
 	if ( siemens_coeff == null ) {
 		siemens_coeff = 1
 	}
-	if ( ::istype( M.loc, ::Ent_Mecha ) ) {
+	if ( M.loc instanceof ::Ent_Mecha ) {
 		return 0
 	}
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
 		if ( H.gloves ) {
 			G = H.gloves
@@ -2467,19 +2385,19 @@ function electrocute_mob( M =null, power_source =null, source =null, siemens_coe
 			}
 		}
 	}
-	if ( ::istype( power_source, ::Area(3137) ) ) {
+	if ( power_source instanceof ::Area(3137) ) {
 		source_area = power_source
 		power_source = source_area.$get apc()
 	}
-	if ( ::istype( power_source, ::Ent_Structure_Cable ) ) {
+	if ( power_source instanceof ::Ent_Structure_Cable ) {
 		Cable = power_source
 		power_source = Cable.powernet
 	}
-	if ( ::istype( power_source, ::Powernet ) ) {
+	if ( power_source instanceof ::Powernet ) {
 		PN = power_source
-	} else if ( ::istype( power_source, ::Ent_Item_Weapon_StockParts_Cell ) ) {
+	} else if ( power_source instanceof ::Ent_Item_Weapon_StockParts_Cell ) {
 		cell = power_source
-	} else if ( ::istype( power_source, ::Ent_Machinery_Power_Apc ) ) {
+	} else if ( power_source instanceof ::Ent_Machinery_Power_Apc ) {
 		apc = power_source
 		cell = apc.cell
 		if ( apc.terminal ) {
@@ -2514,10 +2432,10 @@ function electrocute_mob( M =null, power_source =null, source =null, siemens_coe
 	drained_energy = drained_hp * 20
 	if ( source_area ) {
 		source_area.$use power( drained_energy / ::CELLRATE )
-	} else if ( ::istype( power_source, ::Powernet ) ) {
+	} else if ( power_source instanceof ::Powernet ) {
 		drained_power = drained_energy / ::CELLRATE
 		PN.load += drained_power
-	} else if ( ::istype( power_source, ::Ent_Item_Weapon_StockParts_Cell ) ) {
+	} else if ( power_source instanceof ::Ent_Item_Weapon_StockParts_Cell ) {
 		cell.$use( drained_energy )
 	}
 	return drained_energy
@@ -2540,7 +2458,7 @@ function Ellipsis( original_msg =null, chance =null, keep_words =null ) {
 	w = null
 	foreach (_ in words ) {
 		w = _
-		if ( ::prob( chance ) ) {
+		if ( ::random.chance( chance ) ) {
 			new_words += "..."
 			if ( !keep_words ) {
 				continue
@@ -2598,7 +2516,7 @@ function empulse( epicenter =null, heavy_range =null, light_range =null, log =nu
 	if ( !epicenter ) {
 		return
 	}
-	if ( !::istype( epicenter, ::Tile ) ) {
+	if ( !( epicenter instanceof ::Tile ) ) {
 		epicenter = ::get_turf( epicenter.loc )
 	}
 	if ( log ) {
@@ -2614,7 +2532,7 @@ function empulse( epicenter =null, heavy_range =null, light_range =null, log =nu
 	T = null
 	foreach (_ in ::range( light_range, epicenter ) ) {
 		T = _
-		if ( !::istype( T, ::BaseStatic ) ) {
+		if ( !( T instanceof ::BaseStatic ) ) {
 			continue
 		}
 		distance = ::get_dist( epicenter, T )
@@ -2624,7 +2542,7 @@ function empulse( epicenter =null, heavy_range =null, light_range =null, log =nu
 		if ( distance < heavy_range ) {
 			T.$emp act( 1 )
 		} else if ( distance == heavy_range ) {
-			if ( ::prob( 50 ) ) {
+			if ( ::random.chance( 50 ) ) {
 				T.$emp act( 1 )
 			} else {
 				T.$emp act( 2 )
@@ -2702,18 +2620,18 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 	orig_heavy_range = heavy_impact_range
 	orig_light_range = light_impact_range
 	if ( !ignorecap ) {
-		devastation_range = ::min( ::MAX_EX_DEVESTATION_RANGE, devastation_range )
-		heavy_impact_range = ::min( ::MAX_EX_HEAVY_RANGE, heavy_impact_range )
-		light_impact_range = ::min( ::MAX_EX_LIGHT_RANGE, light_impact_range )
-		flash_range = ::min( ::MAX_EX_FLASH_RANGE, flash_range )
-		flame_range = ::min( ::MAX_EX_FLAME_RANGE, flame_range )
+		devastation_range = ::math.min( ::MAX_EX_DEVESTATION_RANGE, devastation_range )
+		heavy_impact_range = ::math.min( ::MAX_EX_HEAVY_RANGE, heavy_impact_range )
+		light_impact_range = ::math.min( ::MAX_EX_LIGHT_RANGE, light_impact_range )
+		flash_range = ::math.min( ::MAX_EX_FLASH_RANGE, flash_range )
+		flame_range = ::math.min( ::MAX_EX_FLAME_RANGE, flame_range )
 	}
-	::spawn( 0, function() {
+	::thread.schedule( 0, function() {
 		start = ::game.timeofday
 		if ( !epicenter ) {
 			return
 		}
-		max_range = ::max( devastation_range, heavy_impact_range, light_impact_range, flame_range )
+		max_range = ::math.max( devastation_range, heavy_impact_range, light_impact_range, flame_range )
 		cached_exp_block = ::List()
 		if ( adminlog ) {
 			::message_admins( ::Txt( "Explosion with size (" ).item( devastation_range ).str( ", " ).item( heavy_impact_range ).str( ", " ).item( light_impact_range ).str( ", " ).item( flame_range ).str( ") in area " ).item( epicenter.loc.name ).str( " (" ).item( epicenter.x ).str( "," ).item( epicenter.y ).str( "," ).item( epicenter.z ).str( ")" ) )
@@ -2731,24 +2649,24 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 					M_turf = ::get_turf( M )
 					if ( M_turf && M_turf.z == epicenter.z ) {
 						dist = ::get_dist( M_turf, epicenter )
-						if ( dist <= ::round2( max_range + ::game.view - 2, 1 ) ) {
-							M.playsound_local( "LIST_CALL", ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= 100, [2]= ::get_sfx( "explosion" ), [1]= epicenter }) )
+						if ( dist <= ::math.round( max_range + ::game.view - 2, 1 ) ) {
+							M.playsound_local.lcall( ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= 100, [2]= ::get_sfx( "explosion" ), [1]= epicenter }) )
 						} else if ( dist <= far_dist ) {
 							far_volume = ::Clamp( far_dist, 30, 50 )
 							far_volume += dist <= far_dist * 0.5 ? 50 : 0
-							M.playsound_local( "LIST_CALL", ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= far_volume, [2]= ::Rsc(58), [1]= epicenter }) )
+							M.playsound_local.lcall( ::List({ ["falloff"]= 5, [5]= frequency, [4]= 1, [3]= far_volume, [2]= ::Rsc(58), [1]= epicenter }) )
 						}
 					}
 				}
 			}
 		}
-		postponeCycles = ::max( ::round( devastation_range / 8 ), 1 )
+		postponeCycles = ::math.max( ::math.round( devastation_range / 8 ), 1 )
 		::SSlighting.$postpone( postponeCycles )
 		::SSmachine.$postpone( postponeCycles )
 		if ( heavy_impact_range > 1 ) {
 			E = ::EffectSystem_Explosion()
 			E.set_up( epicenter )
-			E.start()
+			E.f_start()
 		}
 		x0 = epicenter.x
 		y0 = epicenter.y
@@ -2765,7 +2683,7 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 				D = null
 				foreach (_ in T ) {
 					D = _
-					if ( !::istype( D, ::Ent_Machinery_Door ) ) {
+					if ( !( D instanceof ::Ent_Machinery_Door ) ) {
 						continue
 					}
 					if ( D.density && D.explosion_block ) {
@@ -2775,7 +2693,7 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 				W = null
 				foreach (_ in T ) {
 					W = _
-					if ( !::istype( W, ::Ent_Structure_Window ) ) {
+					if ( !( W instanceof ::Ent_Structure_Window ) ) {
 						continue
 					}
 					if ( W.reinf && W.fulltile ) {
@@ -2785,7 +2703,7 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 				B = null
 				foreach (_ in T ) {
 					B = _
-					if ( !::istype( B, ::Ent_Effect_Blob ) ) {
+					if ( !( B instanceof ::Ent_Effect_Blob ) ) {
 						continue
 					}
 					cached_exp_block[T] += B.explosion_block
@@ -2818,7 +2736,7 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 				dist = 0
 			}
 			if ( T ) {
-				if ( flame_dist && ::prob( 40 ) && !::istype( T, ::Tile_Space ) && !T.density ) {
+				if ( flame_dist && ::random.chance( 40 ) && !( T instanceof ::Tile_Space ) && !T.density ) {
 					::PoolOrNew( ::Ent_Effect_Hotspot, T )
 				}
 				if ( dist > 0 ) {
@@ -2829,12 +2747,12 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 			I = null
 			foreach (_ in T ) {
 				I = _
-				if ( !::istype( I, ::Ent_Item ) ) {
+				if ( !( I instanceof ::Ent_Item ) ) {
 					continue
 				}
-				::spawn( 0, function() {
+				::thread.schedule( 0, function() {
 					if ( I && !I.anchored ) {
-						throw_range = ::rand( throw_dist, max_range )
+						throw_range = ::random.int( throw_dist, max_range )
 						throw_at = ::get_ranged_target_turf( I, throw_dir, throw_range )
 						I.throw_speed = 4
 						I.throw_at( throw_at, throw_range, 2 )
@@ -2934,7 +2852,7 @@ function find_record( field =null, value =null, L =null ) {
 	R = null
 	foreach (_ in L ) {
 		R = _
-		if ( !::istype( R, ::Data_Record ) ) {
+		if ( !( R instanceof ::Data_Record ) ) {
 			continue
 		}
 		if ( R.fields[field] == value ) {
@@ -2966,7 +2884,7 @@ function find_type_in_direction( source =null, direction =null, range =null ) {
 			a_type = null
 			foreach (_ in source.canSmoothWith ) {
 				a_type = _
-				if ( ::istype( target_turf, a_type ) ) {
+				if ( target_turf instanceof a_type ) {
 					return target_turf
 				}
 				A = ::locate_in( a_type, target_turf )
@@ -3043,7 +2961,7 @@ function forbidden_atoms_check( A =null ) {
 		thing = null
 		foreach (_ in A ) {
 			thing = _
-			if ( ::_THISCALL_() ) {
+			if ( ::_THISCALL_( thing ) ) {
 				return 1
 			}
 		}
@@ -3053,7 +2971,7 @@ function forbidden_atoms_check( A =null ) {
 
 function format_frequency( f =null ) {
 	f = ::text2num( f )
-	return ::Txt().item( ::round( f / 10 ) ).str( "." ).item( f % 10 )
+	return ::Txt().item( ::math.round( f / 10 ) ).str( "." ).item( f % 10 )
 }
 
 function format_table_name( table =null ) {
@@ -3078,12 +2996,12 @@ function gaussian( mean =null, stddev =null ) {
 		::gaussian_next = null
 	} else {
 		while (1) { // Was a do-while, sorry for the mess.
-			R1 = ::rand( -10000, 10000 ) / 10000
-			R2 = ::rand( -10000, 10000 ) / 10000
+			R1 = ::random.int( -10000, 10000 ) / 10000
+			R2 = ::random.int( -10000, 10000 ) / 10000
 			working = R1 * R1 + R2 * R2
 			if (!( working >= 1 || working == 0 )) break;
 		}
-		working = ::sqrt( ::log( working ) * -2 / working )
+		working = ::math.sqrt( ::math.log( working ) * -2 / working )
 		R1 *= working
 		::gaussian_next = R2 * working
 	}
@@ -3096,8 +3014,8 @@ function Gcd( a =null, b =null ) {
 
 function generate_female_clothing( index =null, t_color =null, icon =null, type =null ) {
 	local female_clothing_icon, female_s
-	female_clothing_icon = "/icon"( "LIST_CALL", ::List({ ["icon_state"]= t_color, ["icon"]= icon }) )
-	female_s = "/icon"( "LIST_CALL", ::List({ ["icon_state"]= ::Txt().item( type == 1 ? "female_full" : "female_top" ), ["icon"]= ::Rsc(59) }) )
+	female_clothing_icon = ::Icon.lcall( ::List({ ["icon_state"]= t_color, ["icon"]= icon }) )
+	female_s = ::Icon.lcall( ::List({ ["icon_state"]= ::Txt().item( type == 1 ? "female_full" : "female_top" ), ["icon"]= ::Rsc(59) }) )
 	female_clothing_icon.Blend( female_s, 2 )
 	female_clothing_icon = ::fcopy_rsc( female_clothing_icon )
 	::female_clothing_icons[index] = female_clothing_icon
@@ -3108,37 +3026,33 @@ function generate_ion_law( ionMessage =null ) {
 	if ( ionMessage ) {
 		return ionMessage
 	}
-	ionthreats = ::pick_list( ::strings( "ion_laws.txt", "ionthreats" ) )
-	ionobjects = ::pick_list( ::strings( "ion_laws.txt", "ionobjects" ) )
-	ioncrew1 = ::pick_list( ::strings( "ion_laws.txt", "ioncrew" ) )
-	ioncrew2 = ::pick_list( ::strings( "ion_laws.txt", "ioncrew" ) )
-	ionadjectives = ::pick_list( ::strings( "ion_laws.txt", "ionadjectives" ) )
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	ionthreats = ::random.pick( ::strings( "ion_laws.txt", "ionthreats" ) )
+	ionobjects = ::random.pick( ::strings( "ion_laws.txt", "ionobjects" ) )
+	ioncrew1 = ::random.pick( ::strings( "ion_laws.txt", "ioncrew" ) )
+	ioncrew2 = ::random.pick( ::strings( "ion_laws.txt", "ioncrew" ) )
+	ionadjectives = ::random.pick( ::strings( "ion_laws.txt", "ionadjectives" ) )
+	local _ = ::random.int(0,65535) // Was a weighted pick, sorry for the mess.
 	if ( _ < 13107 ) { _ = "" }
-	else  { _ = ::pick_list( ::strings( "ion_laws.txt", "ionadjectives" ) ) + " " }
-
+	else  { _ = ::random.pick( ::strings( "ion_laws.txt", "ionadjectives" ) ) + " " }
 	ionadjectiveshalf = _
-	ionverb = ::pick_list( ::strings( "ion_laws.txt", "ionverb" ) )
-	ionnumberbase = ::pick_list( ::strings( "ion_laws.txt", "ionnumberbase" ) )
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 58981 ) { _ = "" }
-	else  { _ = ::pick_list( ::strings( "ion_laws.txt", "ionnumbermod" ) ) + " " }
-
+	ionverb = ::random.pick( ::strings( "ion_laws.txt", "ionverb" ) )
+	ionnumberbase = ::random.pick( ::strings( "ion_laws.txt", "ionnumberbase" ) )
+	local _ = ::random.pick([ "", ::random.pick( ::strings( "ion_laws.txt", "ionnumbermod" ) ) + " " ])
 	ionnumbermodhalf = _
-	ionarea = ::pick_list( ::strings( "ion_laws.txt", "ionarea" ) )
-	ionthinksof = ::pick_list( ::strings( "ion_laws.txt", "ionthinksof" ) )
-	ionmust = ::pick_list( ::strings( "ion_laws.txt", "ionmust" ) )
-	ionrequire = ::pick_list( ::strings( "ion_laws.txt", "ionrequire" ) )
-	ionthings = ::pick_list( ::strings( "ion_laws.txt", "ionthings" ) )
-	ionallergy = ::pick_list( ::strings( "ion_laws.txt", "ionallergy" ) )
-	ionallergysev = ::pick_list( ::strings( "ion_laws.txt", "ionallergysev" ) )
-	ionspecies = ::pick_list( ::strings( "ion_laws.txt", "ionspecies" ) )
-	ionabstract = ::pick_list( ::strings( "ion_laws.txt", "ionabstract" ) )
-	ionfood = ::pick_list( ::strings( "ion_laws.txt", "ionfood" ) )
+	ionarea = ::random.pick( ::strings( "ion_laws.txt", "ionarea" ) )
+	ionthinksof = ::random.pick( ::strings( "ion_laws.txt", "ionthinksof" ) )
+	ionmust = ::random.pick( ::strings( "ion_laws.txt", "ionmust" ) )
+	ionrequire = ::random.pick( ::strings( "ion_laws.txt", "ionrequire" ) )
+	ionthings = ::random.pick( ::strings( "ion_laws.txt", "ionthings" ) )
+	ionallergy = ::random.pick( ::strings( "ion_laws.txt", "ionallergy" ) )
+	ionallergysev = ::random.pick( ::strings( "ion_laws.txt", "ionallergysev" ) )
+	ionspecies = ::random.pick( ::strings( "ion_laws.txt", "ionspecies" ) )
+	ionabstract = ::random.pick( ::strings( "ion_laws.txt", "ionabstract" ) )
+	ionfood = ::random.pick( ::strings( "ion_laws.txt", "ionfood" ) )
 	message = ""
-	local _ = ::rand( 1, 39 ) // Was a switch-case, sorry for the mess.
+	local _ = ::random.int( 1, 39 ) // Was a switch-case, sorry for the mess.
 	if ( 1<=_&&_<=3 ) {
-		local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			message = ::Txt( "THERE ARE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats ).str( " ON THE STATION..." )
 		} else if ( _==2 ) {
@@ -3147,7 +3061,7 @@ function generate_ion_law( ionMessage =null ) {
 			message = ::Txt( "THERE ARE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects ).str( " ON THE STATION" )
 		}
 	} else if ( 4<=_&&_<=6 ) {
-		local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			message = ::Txt( "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats ).str( " ON THE STATION" )
 		} else if ( _==2 ) {
@@ -3156,16 +3070,16 @@ function generate_ion_law( ionMessage =null ) {
 			message = ::Txt( "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects ).str( " ON THE STATION" )
 		}
 	} else if ( 7<=_&&_<=8 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE CREW ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3173,16 +3087,16 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 10<=_&&_<=11 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "HAVING " ).item( ionadjectiveshalf ).item( ionobjects ).str( " IS HARMFUL" )
 			} else if ( _==2 ) {
 				message = ::Txt( "HAVING " ).item( ionabstract ).str( " IS HARMFUL" )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "NOT HAVING " ).item( ionadjectiveshalf ).item( ionobjects ).str( " IS HARMFUL" )
 			} else if ( _==2 ) {
@@ -3190,9 +3104,9 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 12<=_&&_<=14 ) {
-		local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "YOU REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3205,7 +3119,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "YOU REQUIRE " ).item( ionrequire )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt().item( ionarea ).str( " REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3218,7 +3132,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "YOU REQUIRE " ).item( ionrequire )
 			}
 		} else if ( _==3 ) {
-			local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE STATION REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3231,7 +3145,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE STATION REQUIRES " ).item( ionrequire )
 			}
 		} else if ( _==4 ) {
-			local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE CREW REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3244,7 +3158,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE CREW REQUIRES " ).item( ionrequire )
 			}
 		} else if ( _==5 ) {
-			local _ = ::rand( 1, 5 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
 			} else if ( _==2 ) {
@@ -3258,9 +3172,9 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 15<=_&&_<=17 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3271,7 +3185,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionallergy )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3283,9 +3197,9 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 18<=_&&_<=20 ) {
-		local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3296,7 +3210,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionabstract )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3307,7 +3221,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionabstract )
 			}
 		} else if ( _==3 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3318,7 +3232,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionabstract )
 			}
 		} else if ( _==4 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 			} else if ( _==2 ) {
@@ -3330,7 +3244,7 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 21<=_&&_<=23 ) {
-		local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			message = ::Txt( "YOU ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
 		} else if ( _==2 ) {
@@ -3343,7 +3257,7 @@ function generate_ion_law( ionMessage =null ) {
 	} else if ( 24<=_&&_<=26 ) {
 		message = ::Txt( "YOU MUST ALWAYS " ).item( ionmust )
 	} else if ( 27<=_&&_<=28 ) {
-		local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ionfood ).str( " TO SURVIVE" )
 		} else if ( _==2 ) {
@@ -3354,11 +3268,11 @@ function generate_ion_law( ionMessage =null ) {
 			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " TO SURVIVE" )
 		}
 	} else if ( 29<=_&&_<=31 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
 					message = ::Txt( "ALL CREWMEMBERS ARE NOW " ).item( ionadjectiveshalf ).item( ioncrew1 )
 				} else if ( _==2 ) {
@@ -3367,7 +3281,7 @@ function generate_ion_law( ionMessage =null ) {
 					message = ::Txt( "ALL CREWMEMBERS ARE NOW " ).item( ionadjectiveshalf ).str( "HEADS OF STAFF" )
 				}
 			} else if ( _==2 ) {
-				local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
 					message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionadjectiveshalf ).item( ioncrew2 )
 				} else if ( _==2 ) {
@@ -3377,7 +3291,7 @@ function generate_ion_law( ionMessage =null ) {
 				}
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW THE HIGHEST RANKING CREWMEMBERS" )
 			} else if ( _==2 ) {
@@ -3385,16 +3299,16 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 32<=_&&_<=33 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE CREW MUST GO TO " ).item( ionarea )
 			} else if ( _==2 ) {
 				message = ::Txt( "THE CREW MUST " ).item( ionmust )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " MUST GO TO " ).item( ionarea )
 			} else if ( _==2 ) {
@@ -3402,9 +3316,9 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 35<=_&&_<=36 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 7 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "YOU MUST HARM " ).item( ionabstract ).str( " AND NOT ALLOW " ).item( ionabstract ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
 			} else if ( _==2 ) {
@@ -3421,7 +3335,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "YOU MUST HARM " ).item( ioncrew1 ).str( " AND " ).item( ioncrew2 ).str( " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO ESCAPE HARM" )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 7 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "YOU MUST NOT HARM " ).item( ionabstract ).str( " AND NOT ALLOW " ).item( ionabstract ).str( ", THROUGH INACTION, TO COME TO HARM" )
 			} else if ( _==2 ) {
@@ -3439,9 +3353,9 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( 37<=_&&_<=39 ) {
-		local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 4 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
 			} else if ( _==2 ) {
@@ -3452,7 +3366,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionobjects )
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ionthreats ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
 			} else if ( _==2 ) {
@@ -3461,7 +3375,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE " ).item( ionthreats ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionobjects )
 			}
 		} else if ( _==3 ) {
-			local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "THE " ).item( ionobjects ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
 			} else if ( _==2 ) {
@@ -3470,7 +3384,7 @@ function generate_ion_law( ionMessage =null ) {
 				message = ::Txt( "THE " ).item( ionobjects ).str( " ARE " ).item( ionverb ).str( " " ).item( ionabstract )
 			}
 		} else if ( _==4 ) {
-			local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt().item( ionabstract ).str( " IS " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
 			} else if ( _==2 ) {
@@ -3480,7 +3394,7 @@ function generate_ion_law( ionMessage =null ) {
 			}
 		}
 	} else if ( _==9 ) {
-		local _ = ::rand( 1, 7 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			message = ::Txt().item( ionadjectiveshalf ).item( ionthreats ).str( " ARE HARMFUL TO HUMANS" )
 		} else if ( _==2 ) {
@@ -3497,9 +3411,9 @@ function generate_ion_law( ionMessage =null ) {
 			message = ::Txt().item( ionthings ).str( " IS HARMFUL TO HUMANS" )
 		}
 	} else if ( _==34 ) {
-		local _ = ::rand( 1, 2 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			local _ = ::rand( 1, 7 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt( "ONLY THE " ).item( ioncrew1 ).str( " ARE HUMAN" )
 			} else if ( _==2 ) {
@@ -3513,7 +3427,7 @@ function generate_ion_law( ionMessage =null ) {
 			} else if ( _==6 ) {
 				message = ::Txt( "ONLY " ).item( ionadjectives ).str( " PEOPLE ARE HUMAN" )
 			} else if ( _==7 ) {
-				local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
 					message = ::Txt( "ONLY THOSE WHO " ).item( ionmust ).str( " ARE HUMAN" )
 				} else if ( _==2 ) {
@@ -3523,7 +3437,7 @@ function generate_ion_law( ionMessage =null ) {
 				}
 			}
 		} else if ( _==2 ) {
-			local _ = ::rand( 1, 7 ) // Was a switch-case, sorry for the mess.
+			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				message = ::Txt().item( ioncrew1 ).str( " ARE NON-HUMAN" )
 			} else if ( _==2 ) {
@@ -3537,7 +3451,7 @@ function generate_ion_law( ionMessage =null ) {
 			} else if ( _==6 ) {
 				message = ::Txt().item( ionadjectives ).str( " PEOPLE ARE NON-HUMAN" )
 			} else if ( _==7 ) {
-				local _ = ::rand( 1, 3 ) // Was a switch-case, sorry for the mess.
+				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
 					message = ::Txt( "THOSE WHO " ).item( ionmust ).str( " ARE NON-HUMAN" )
 				} else if ( _==2 ) {
@@ -3553,7 +3467,7 @@ function generate_ion_law( ionMessage =null ) {
 
 function get( loc =null, type =null ) {
 	while (loc) {
-		if ( ::istype( loc, type ) ) {
+		if ( loc instanceof type ) {
 			return loc
 		}
 		loc = loc.loc
@@ -3700,7 +3614,7 @@ function get_airlock_overlay( icon_state =null, icon_file =null ) {
 	if ( ::airlock_overlays[iconkey] ) {
 		return ::airlock_overlays[iconkey]
 	}
-	::airlock_overlays[iconkey] = ::image( icon_file, icon_state )
+	::airlock_overlays[iconkey] = ::Image( icon_file, icon_state )
 	return ::airlock_overlays[iconkey]
 }
 
@@ -3754,7 +3668,7 @@ function get_area( O =null ) {
 	while (i <= 20) {
 		if ( ::isarea( location ) ) {
 			return location
-		} else if ( ::istype( location, ::BaseStatic ) ) {
+		} else if ( location instanceof ::BaseStatic ) {
 			location = location.loc
 		} else {
 			return
@@ -3780,11 +3694,11 @@ function get_area_all_atoms( areatype =null ) {
 	N = null
 	foreach (_ in ::game ) {
 		N = _
-		if ( ::istype( N, areatype ) ) {
+		if ( N instanceof areatype ) {
 			A = null
 			foreach (_ in N ) {
 				A = _
-				if ( !::istype( A, ::BaseStatic ) ) {
+				if ( !( A instanceof ::BaseStatic ) ) {
 					continue
 				}
 				atoms += A
@@ -3831,7 +3745,7 @@ function get_area_turfs( areatype =null ) {
 	N = null
 	foreach (_ in ::game ) {
 		N = _
-		if ( ::istype( N, areatype ) ) {
+		if ( N instanceof areatype ) {
 			T = null
 			foreach (_ in N ) {
 				T = _
@@ -3861,7 +3775,7 @@ function get_candidates( be_special_flag =null, afk_bracket =null, jobbanType =n
 		G = null
 		foreach (_ in ::player_list ) {
 			G = _
-			if ( !::istype( G, ::Mob_Dead_Observer ) ) {
+			if ( !( G instanceof ::Mob_Dead_Observer ) ) {
 				continue
 			}
 			if ( G.client != null ) {
@@ -3924,7 +3838,7 @@ function get_department_heads( job_title =null ) {
 	J = null
 	foreach (_ in ::SSjob.occupations ) {
 		J = _
-		if ( !::istype( J, ::Job ) ) {
+		if ( !( J instanceof ::Job ) ) {
 			continue
 		}
 		if ( J.title == job_title ) {
@@ -3937,12 +3851,12 @@ function get_dist_euclidian( Loc1 =null, Loc2 =null ) {
 	local dx, dy, dist
 	dx = Loc1.x - Loc2.x
 	dy = Loc1.y - Loc2.y
-	dist = ::sqrt( ::pow( dx, 2 ) + ::pow( dy, 2 ) )
+	dist = ::math.sqrt( ::pow( dx, 2 ) + ::pow( dy, 2 ) )
 	return dist
 }
 
 function get_domination_time( G =null ) {
-	return ::max( 180, 900 - ::round2( G.territory.len / ::start_state.num_territories * 100, 1 ) * 12 )
+	return ::math.max( 180, 900 - ::math.round( G.territory.len / ::start_state.num_territories * 100, 1 ) * 12 )
 }
 
 function get_edge_target_turf( A =null, direction =null ) {
@@ -4022,7 +3936,7 @@ function get_hearers_in_view( R =null, source =null ) {
 	A = null
 	foreach (_ in range ) {
 		A = _
-		if ( !::istype( A, ::BaseDynamic ) ) {
+		if ( !( A instanceof ::BaseDynamic ) ) {
 			continue
 		}
 		hear = hear | ::recursive_hear_check( A )
@@ -4035,24 +3949,24 @@ function get_location_accessible( M =null, location =null ) {
 	covered_locations = 0
 	face_covered = 0
 	eyesmouth_covered = 0
-	if ( ::istype( M, ::Mob_Living_Carbon ) ) {
+	if ( M instanceof ::Mob_Living_Carbon ) {
 		C = M
 		I = null
 		foreach (_ in ::List([ C.back, C.wear_mask, C.head ]) ) {
 			I = _
-			if ( !::istype( I, ::Ent_Item_Clothing ) ) {
+			if ( !( I instanceof ::Ent_Item_Clothing ) ) {
 				continue
 			}
 			covered_locations = covered_locations | I.body_parts_covered
 			face_covered = face_covered | I.flags_inv
 			eyesmouth_covered = eyesmouth_covered | I.flags_cover
 		}
-		if ( ::istype( C, ::Mob_Living_Carbon_Human ) ) {
+		if ( C instanceof ::Mob_Living_Carbon_Human ) {
 			H = C
 			I = null
 			foreach (_ in ::List([ H.wear_suit, H.w_uniform, H.shoes, H.belt, H.gloves, H.glasses, H.ears ]) ) {
 				I = _
-				if ( !::istype( I, ::Ent_Item ) ) {
+				if ( !( I instanceof ::Ent_Item ) ) {
 					continue
 				}
 				covered_locations = covered_locations | I.body_parts_covered
@@ -4165,7 +4079,7 @@ function get_mobs_in_radio_ranges( radios =null ) {
 	R = null
 	foreach (_ in radios ) {
 		R = _
-		if ( !::istype( R, ::Ent_Item_Device_Radio ) ) {
+		if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 			continue
 		}
 		if ( R ) {
@@ -4194,7 +4108,7 @@ function get_radio_span( freq =null ) {
 }
 
 function get_rand_frequency(  ) {
-	return ::rand( 32000, 55000 )
+	return ::random.int( 32000, 55000 )
 }
 
 function get_ranged_target_turf( A =null, direction =null, range =null ) {
@@ -4202,16 +4116,16 @@ function get_ranged_target_turf( A =null, direction =null, range =null ) {
 	x = A.x
 	y = A.y
 	if ( direction & 1 ) {
-		y = ::min( ::game.maxy, y + range )
+		y = ::math.min( ::game.maxy, y + range )
 	}
 	if ( direction & 2 ) {
-		y = ::max( 1, y - range )
+		y = ::math.max( 1, y - range )
 	}
 	if ( direction & 4 ) {
-		x = ::min( ::game.maxx, x + range )
+		x = ::math.min( ::game.maxx, x + range )
 	}
 	if ( direction & 8 ) {
-		x = ::max( 1, x - range )
+		x = ::math.max( 1, x - range )
 	}
 	return ::locate3( x, y, A.z )
 }
@@ -4275,86 +4189,37 @@ function get_sfx( soundin =null ) {
 	if ( ::istext( soundin ) ) {
 		local _ = soundin // Was a switch-case, sorry for the mess.
 		if ( _=="shatter" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 21845 ) { _ = ::Rsc(16) }
-			else if ( _ < 43690 ) { _ = ::Rsc(17) }
-			else  { _ = ::Rsc(18) }
-
+			local _ = ::random.pick([ ::Rsc(16), ::Rsc(17), ::Rsc(18) ])
 			soundin = _
 		} else if ( _=="explosion" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 32767 ) { _ = ::Rsc(19) }
-			else  { _ = ::Rsc(20) }
-
+			local _ = ::random.pick([ ::Rsc(19), ::Rsc(20) ])
 			soundin = _
 		} else if ( _=="sparks" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 16383 ) { _ = ::Rsc(21) }
-			else if ( _ < 32766 ) { _ = ::Rsc(22) }
-			else if ( _ < 49149 ) { _ = ::Rsc(23) }
-			else  { _ = ::Rsc(24) }
-
+			local _ = ::random.pick([ ::Rsc(21), ::Rsc(22), ::Rsc(23), ::Rsc(24) ])
 			soundin = _
 		} else if ( _=="rustle" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 13107 ) { _ = ::Rsc(25) }
-			else if ( _ < 26214 ) { _ = ::Rsc(26) }
-			else if ( _ < 39321 ) { _ = ::Rsc(27) }
-			else if ( _ < 52428 ) { _ = ::Rsc(28) }
-			else  { _ = ::Rsc(29) }
-
+			local _ = ::random.pick([ ::Rsc(25), ::Rsc(26), ::Rsc(27), ::Rsc(28), ::Rsc(29) ])
 			soundin = _
 		} else if ( _=="bodyfall" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 16383 ) { _ = ::Rsc(30) }
-			else if ( _ < 32766 ) { _ = ::Rsc(31) }
-			else if ( _ < 49149 ) { _ = ::Rsc(32) }
-			else  { _ = ::Rsc(33) }
-
+			local _ = ::random.pick([ ::Rsc(30), ::Rsc(31), ::Rsc(32), ::Rsc(33) ])
 			soundin = _
 		} else if ( _=="punch" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 16383 ) { _ = ::Rsc(34) }
-			else if ( _ < 32766 ) { _ = ::Rsc(35) }
-			else if ( _ < 49149 ) { _ = ::Rsc(36) }
-			else  { _ = ::Rsc(37) }
-
+			local _ = ::random.pick([ ::Rsc(34), ::Rsc(35), ::Rsc(36), ::Rsc(37) ])
 			soundin = _
 		} else if ( _=="clownstep" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 32767 ) { _ = ::Rsc(38) }
-			else  { _ = ::Rsc(39) }
-
+			local _ = ::random.pick([ ::Rsc(38), ::Rsc(39) ])
 			soundin = _
 		} else if ( _=="swing_hit" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 21845 ) { _ = ::Rsc(40) }
-			else if ( _ < 43690 ) { _ = ::Rsc(41) }
-			else  { _ = ::Rsc(42) }
-
+			local _ = ::random.pick([ ::Rsc(40), ::Rsc(41), ::Rsc(42) ])
 			soundin = _
 		} else if ( _=="hiss" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 16383 ) { _ = ::Rsc(43) }
-			else if ( _ < 32766 ) { _ = ::Rsc(44) }
-			else if ( _ < 49149 ) { _ = ::Rsc(45) }
-			else  { _ = ::Rsc(46) }
-
+			local _ = ::random.pick([ ::Rsc(43), ::Rsc(44), ::Rsc(45), ::Rsc(46) ])
 			soundin = _
 		} else if ( _=="pageturn" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 21845 ) { _ = ::Rsc(47) }
-			else if ( _ < 43690 ) { _ = ::Rsc(48) }
-			else  { _ = ::Rsc(49) }
-
+			local _ = ::random.pick([ ::Rsc(47), ::Rsc(48), ::Rsc(49) ])
 			soundin = _
 		} else if ( _=="gunshot" ) {
-			local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-			if ( _ < 16383 ) { _ = ::Rsc(50) }
-			else if ( _ < 32766 ) { _ = ::Rsc(51) }
-			else if ( _ < 49149 ) { _ = ::Rsc(52) }
-			else  { _ = ::Rsc(53) }
-
+			local _ = ::random.pick([ ::Rsc(50), ::Rsc(51), ::Rsc(52), ::Rsc(53) ])
 			soundin = _
 		}
 	}
@@ -4407,8 +4272,8 @@ function get_teleport_loc( location =null, target =null, distance =null, density
 	b1yerror = 0
 	b2xerror = 0
 	b2yerror = 0
-	errorx = ::abs( errorx )
-	errory = ::abs( errory )
+	errorx = ::math.abs( errorx )
+	errory = ::math.abs( errory )
 	local _ = target.dir // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
 		diry += distance
@@ -4463,7 +4328,7 @@ function get_teleport_loc( location =null, target =null, distance =null, density
 				destination_list += T
 			}
 			if ( destination_list.len ) {
-				destination = ::pick_list( destination_list )
+				destination = ::random.pick( destination_list )
 			} else {
 				return
 			}
@@ -4485,7 +4350,7 @@ function get_teleport_loc( location =null, target =null, distance =null, density
 }
 
 function get_turf( A =null ) {
-	if ( !::istype( A, ::BaseStatic ) ) {
+	if ( !( A instanceof ::BaseStatic ) ) {
 		return
 	}
 	while (A && !::isturf( A )) {
@@ -4496,7 +4361,7 @@ function get_turf( A =null ) {
 
 function get_turf_pixel( AM =null ) {
 	local rough_x, rough_y, final_x, final_y, i_width, i_height, AMicon, n_width, n_height
-	if ( ::istype( AM, ::BaseDynamic ) ) {
+	if ( AM instanceof ::BaseDynamic ) {
 		rough_x = 0
 		rough_y = 0
 		final_x = 0
@@ -4512,10 +4377,10 @@ function get_turf_pixel( AM =null ) {
 		n_width = ::game.icon_size - i_width / 2
 		n_height = ::game.icon_size - i_height / 2
 		if ( n_width ) {
-			rough_x = ::round( AM.pixel_x / n_width )
+			rough_x = ::math.round( AM.pixel_x / n_width )
 		}
 		if ( n_height ) {
-			rough_y = ::round( AM.pixel_y / n_height )
+			rough_y = ::math.round( AM.pixel_y / n_height )
 		}
 		final_x = AM.x + rough_x
 		final_y = AM.y + rough_y
@@ -4551,7 +4416,7 @@ function get_uplink_items( gamemode_override =null ) {
 		I = null
 		foreach (_ in last ) {
 			I = _
-			if ( !::istype( I, ::UplinkItem ) ) {
+			if ( !( I instanceof ::UplinkItem ) ) {
 				continue
 			}
 			if ( !::uplink_items[I.category] ) {
@@ -4567,7 +4432,7 @@ function get_uplink_items( gamemode_override =null ) {
 		I = null
 		foreach (_ in ::uplink_items[category] ) {
 			I = _
-			if ( !::istype( I, ::UplinkItem ) ) {
+			if ( !( I instanceof ::UplinkItem ) ) {
 				continue
 			}
 			if ( I.gamemodes.len ) {
@@ -4601,7 +4466,7 @@ function get_viewable_pdas(  ) {
 	P = null
 	foreach (_ in ::PDAs ) {
 		P = _
-		if ( !::istype( P, ::Ent_Item_Device_Pda ) ) {
+		if ( !( P instanceof ::Ent_Item_Device_Pda ) ) {
 			continue
 		}
 		if ( !P.owner || P.toff || P.hidden ) {
@@ -4662,9 +4527,9 @@ function GetExp( minutes =null ) {
 		return 0
 	} else {
 		if ( exp >= 1440 ) {
-			timeleftstring = ::Txt().item( ::round2( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
+			timeleftstring = ::Txt().item( ::math.round( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
 		} else if ( exp >= 60 ) {
-			timeleftstring = ::Txt().item( ::round2( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
+			timeleftstring = ::Txt().item( ::math.round( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
 		} else {
 			timeleftstring = ::Txt().item( exp ).str( " Minutes" )
 		}
@@ -4680,9 +4545,9 @@ function GetExpjob( minutes =null ) {
 		return 0
 	} else {
 		if ( exp >= 1440 ) {
-			timeleftstring = ::Txt().item( ::round2( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
+			timeleftstring = ::Txt().item( ::math.round( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
 		} else if ( exp >= 60 ) {
-			timeleftstring = ::Txt().item( ::round2( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
+			timeleftstring = ::Txt().item( ::math.round( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
 		} else {
 			timeleftstring = ::Txt().item( exp ).str( " Minutes" )
 		}
@@ -4744,7 +4609,7 @@ function getFlatIcon( A =null, defdir =null, deficon =null, defstate =null, defb
 	}
 	layers = ::List()
 	if ( !noIcon ) {
-		copy = ::image_listcall( ::List({ ["dir"]= curdir, ["layer"]= A.layer, ["icon_state"]= curstate, ["icon"]= curicon }) )
+		copy = ::Image.lcall( ::List({ ["dir"]= curdir, ["layer"]= A.layer, ["icon_state"]= curstate, ["icon"]= curicon }) )
 		copy.color = A.color
 		copy.alpha = A.alpha
 		copy.blend_mode = curblend
@@ -4817,10 +4682,10 @@ function getFlatIcon( A =null, defdir =null, deficon =null, defstate =null, defb
 		} else {
 			add = ::getFlatIcon( ::Image( I ), curdir, curicon, curstate, curblend )
 		}
-		addX1 = ::min( flatX1, I.pixel_x + 1 )
-		addX2 = ::max( flatX2, I.pixel_x + add.$Width() )
-		addY1 = ::min( flatY1, I.pixel_y + 1 )
-		addY2 = ::max( flatY2, I.pixel_y + add.$Height() )
+		addX1 = ::math.min( flatX1, I.pixel_x + 1 )
+		addX2 = ::math.max( flatX2, I.pixel_x + add.$Width() )
+		addY1 = ::math.min( flatY1, I.pixel_y + 1 )
+		addY2 = ::math.max( flatY2, I.pixel_y + add.$Height() )
 		if ( addX1 != flatX1 || addX2 != flatX2 || addY1 != flatY1 || addY2 != flatY2 ) {
 			flat.$Crop( addX1 - flatX1 + 1, addY1 - flatY1 + 1, addX2 - flatX1 + 1, addY2 - flatY1 + 1 )
 			flatX1 = addX1
@@ -4852,14 +4717,14 @@ function GetFromPool( get_type =null, second_arg =null ) {
 	}
 	pooled = ::pop( ::GlobalPool[get_type] )
 	if ( pooled ) {
-		if ( ::istype( pooled, ::BaseDynamic ) ) {
+		if ( pooled instanceof ::BaseDynamic ) {
 			AM = pooled
 		}
-		if ( ::istype( second_arg, ::List ) ) {
+		if ( second_arg instanceof ::List ) {
 			if ( AM ) {
 				AM.loc = second_arg[1]
 			}
-			pooled.$New( "LIST_CALL", second_arg )
+			pooled.$New.lcall( second_arg )
 		} else {
 			if ( AM ) {
 				AM.loc = second_arg
@@ -4928,7 +4793,7 @@ function getLetterImage( A =null, letter =null, uppercase =null ) {
 			letter = ::lowertext( letter )
 		}
 	}
-	text_image = ::Image( "LIST_CALL", ::List({ ["loc"]= A }) )
+	text_image = ::Image.lcall( ::List({ ["loc"]= A }) )
 	text_image.maptext = ::Txt( "<font size = 4>" ).item( letter ).str( "</font>" )
 	text_image.color = ::AverageColour( atom_icon )
 	text_image.pixel_x = 7
@@ -4945,8 +4810,8 @@ function getline( M =null, N =null ) {
 	line = ::List([ ::locate3( px, py, M.z ) ])
 	dx = N.x - px
 	dy = N.y - py
-	dxabs = ::abs( dx )
-	dyabs = ::abs( dy )
+	dxabs = ::math.abs( dx )
+	dyabs = ::math.abs( dy )
 	sdx = ::sign( dx )
 	sdy = ::sign( dy )
 	x = dxabs >> 1
@@ -5000,7 +4865,7 @@ function getmobs(  ) {
 			name += ::Txt( " [" ).item( M.real_name ).str( "]" )
 		}
 		if ( M.stat == 2 ) {
-			if ( ::istype( M, ::Mob_Dead_Observer ) ) {
+			if ( M instanceof ::Mob_Dead_Observer ) {
 				name += " [ghost]"
 			} else {
 				name += " [dead]"
@@ -5041,32 +4906,14 @@ function Gibberish( t =null, p =null ) {
 	i = 1
 	while (i <= ::length( t )) {
 		letter = ::copytext( t, i, i + 1 )
-		if ( ::prob( 50 ) ) {
+		if ( ::random.chance( 50 ) ) {
 			if ( p >= 70 ) {
 				letter = ""
 			}
 			j = null
 			j = 1
-			while (j <= ::rand( 0, 2 )) {
-				local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-				if ( _ < 3855 ) { _ = "#" }
-				else if ( _ < 7710 ) { _ = "@" }
-				else if ( _ < 11565 ) { _ = "*" }
-				else if ( _ < 15420 ) { _ = "&" }
-				else if ( _ < 19275 ) { _ = "%" }
-				else if ( _ < 23130 ) { _ = "$" }
-				else if ( _ < 26985 ) { _ = "/" }
-				else if ( _ < 30840 ) { _ = "<" }
-				else if ( _ < 34695 ) { _ = ">" }
-				else if ( _ < 38550 ) { _ = ";" }
-				else if ( _ < 42405 ) { _ = "*" }
-				else if ( _ < 46260 ) { _ = "*" }
-				else if ( _ < 50115 ) { _ = "*" }
-				else if ( _ < 53970 ) { _ = "*" }
-				else if ( _ < 57825 ) { _ = "*" }
-				else if ( _ < 61680 ) { _ = "*" }
-				else  { _ = "*" }
-
+			while (j <= ::random.int( 0, 2 )) {
+				local _ = ::random.pick([ "#", "@", "*", "&", "%", "$", "/", "<", ">", ";", "*", "*", "*", "*", "*", "*", "*" ])
 				letter += _
 				j++
 			}
@@ -5099,7 +4946,7 @@ function gotwallitem( loc =null, dir =null, check_external =null ) {
 	O = null
 	foreach (_ in loc ) {
 		O = _
-		if ( !::istype( O, ::Entity ) ) {
+		if ( !( O instanceof ::Entity ) ) {
 			continue
 		}
 		if ( ::is_type_in_list( O, ::WALLITEMS ) && check_external != 2 ) {
@@ -5127,7 +4974,7 @@ function gotwallitem( loc =null, dir =null, check_external =null ) {
 	O = null
 	foreach (_ in locdir ) {
 		O = _
-		if ( !::istype( O, ::Entity ) ) {
+		if ( !( O instanceof ::Entity ) ) {
 			continue
 		}
 		if ( ::is_type_in_list( O, ::WALLITEMS ) && check_external != 2 ) {
@@ -5145,7 +4992,7 @@ function has_gravity( AT =null, T =null ) {
 		T = ::get_turf( AT )
 	}
 	A = ::get_area( T )
-	if ( ::istype( T, ::Tile_Space ) ) {
+	if ( T instanceof ::Tile_Space ) {
 		return 0
 	} else if ( A && A.has_gravity ) {
 		return 1
@@ -5175,9 +5022,9 @@ function healthscan( user =null, M =null, mode =null ) {
 	mob_status = M.stat > 1 ? "<span class='alert'><b>Deceased</b></span>" : ::Txt( "<b>" ).item( M.health ).str( " % healthy</b>" )
 	if ( M.status_flags & 8192 ) {
 		mob_status = "<span class='alert'>Deceased</span>"
-		oxy_loss = ::max( ::rand( 1, 40 ), oxy_loss, 300 - ( tox_loss + fire_loss + brute_loss ) )
+		oxy_loss = ::math.max( ::random.int( 1, 40 ), oxy_loss, 300 - ( tox_loss + fire_loss + brute_loss ) )
 	}
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
 		if ( H.heart_attack ) {
 			user.write( "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>" )
@@ -5212,7 +5059,7 @@ function healthscan( user =null, M =null, mode =null ) {
 	} else if ( M.$getBrainLoss() >= 10 ) {
 		user.write( "	<span class='alert'>Brain damage detected. Subject may have had a concussion.</span>" )
 	}
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) && mode == 1 ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human && mode == 1 ) {
 		H = M
 		damaged = H.$get damaged organs( 1, 1 )
 		if ( ::length( damaged ) > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 ) {
@@ -5220,39 +5067,39 @@ function healthscan( user =null, M =null, mode =null ) {
 			org = null
 			foreach (_ in damaged ) {
 				org = _
-				if ( !::istype( org, ::Ent_Item_Organ_Limb ) ) {
+				if ( !( org instanceof ::Ent_Item_Organ_Limb ) ) {
 					continue
 				}
 				user.write( ::Txt( "		<span class='info'>" ).item( ::capitalize( org.$getDisplayName() ) ).str( ": " ).item( org.brute_dam > 0 ? ::Txt( "<font color='red'>" ).item( org.brute_dam ).str( "</font></span>" ) : "<font color='red'>0</font>" ).str( "-" ).item( org.burn_dam > 0 ? ::Txt( "<font color='#FF8000'>" ).item( org.burn_dam ).str( "</font>" ) : "<font color='#FF8000'>0</font>" ) )
 			}
 		}
 	}
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
 		user.write( ::Txt( "<span class='info'>Species: " ).item( H.dna.species.name ).str( "</span>" ) )
 	}
-	user.write( ::Txt( "<span class='info'>Body temperature: " ).item( ::round2( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) ).str( " &deg;C (" ).item( ::round2( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) ).str( " &deg;F)</span>" ) )
+	user.write( ::Txt( "<span class='info'>Body temperature: " ).item( ::math.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) ).str( " &deg;C (" ).item( ::math.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) ).str( " &deg;F)</span>" ) )
 	if ( M.tod && ( M.stat == 2 || M.status_flags & 8192 ) ) {
 		user.write( ::Txt( "<span class='info'>Time of Death:</span> " ).item( M.tod ) )
 	}
 	D = null
 	foreach (_ in M.viruses ) {
 		D = _
-		if ( !::istype( D, ::Disease ) ) {
+		if ( !( D instanceof ::Disease ) ) {
 			continue
 		}
 		if ( !( D.visibility_flags & 1 ) ) {
 			user.write( ::Txt( "<span class='alert'><b>Warning: " ).item( D.form ).str( " detected</b>\nName: " ).item( D.name ).str( ".\nType: " ).item( D.spread_text ).str( ".\nStage: " ).item( D.stage ).str( "/" ).item( D.max_stages ).str( ".\nPossible Cure: " ).item( D.cure_text ).str( "</span>" ) )
 		}
 	}
-	if ( ::istype( M, ::Mob_Living_Carbon_Human ) ) {
+	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
 		if ( H.vessel ) {
 			if ( H.blood_max ) {
 				user.write( "<span class='danger'>Subject is bleeding!</span>" )
 			}
-			blood_volume = ::round( H.vessel.$get reagent amount( "blood" ) )
-			blood_percent = ::round2( blood_volume / 560, 0.009999999776482582 )
+			blood_volume = ::math.round( H.vessel.$get reagent amount( "blood" ) )
+			blood_percent = ::math.round( blood_volume / 560, 0.009999999776482582 )
 			blood_type = H.dna.blood_type
 			blood_percent *= 100
 			if ( blood_volume <= 500 && blood_volume > 336 ) {
@@ -5267,7 +5114,7 @@ function healthscan( user =null, M =null, mode =null ) {
 		CI = null
 		foreach (_ in H.internal_organs ) {
 			CI = _
-			if ( !::istype( CI, ::Ent_Item_Organ_Internal_Cyberimp ) ) {
+			if ( !( CI instanceof ::Ent_Item_Organ_Internal_Cyberimp ) ) {
 				continue
 			}
 			if ( CI.status == 2 ) {
@@ -5292,7 +5139,7 @@ function heat2colour_b( temp =null ) {
 	} else if ( temp <= 16 ) {
 		_default = 0
 	} else {
-		_default = ::max( 0, ::min( 255, ::log( temp - 10 ) * 138.51773071289062 - 305.0447998046875 ) )
+		_default = ::math.max( 0, ::math.min( 255, ::math.log( temp - 10 ) * 138.51773071289062 - 305.0447998046875 ) )
 	}
 	return _default
 }
@@ -5300,9 +5147,9 @@ function heat2colour_b( temp =null ) {
 function heat2colour_g( temp =null ) {
 	temp /= 100
 	if ( temp <= 66 ) {
-		_default = ::max( 0, ::min( 255, ::log( temp ) * 99.4708023071289 - 161.11956787109375 ) )
+		_default = ::math.max( 0, ::math.min( 255, ::math.log( temp ) * 99.4708023071289 - 161.11956787109375 ) )
 	} else {
-		_default = ::max( 0, ::min( 255, ::pow( temp - 60, -0.07514849305152893 ) * 288.1221618652344 ) )
+		_default = ::math.max( 0, ::math.min( 255, ::pow( temp - 60, -0.07514849305152893 ) * 288.1221618652344 ) )
 	}
 	return _default
 }
@@ -5312,7 +5159,7 @@ function heat2colour_r( temp =null ) {
 	if ( temp <= 66 ) {
 		_default = 255
 	} else {
-		_default = ::max( 0, ::min( 255, ::pow( temp - 60, -0.13320475816726685 ) * 329.69873046875 ) )
+		_default = ::math.max( 0, ::math.min( 255, ::pow( temp - 60, -0.13320475816726685 ) * 329.69873046875 ) )
 	}
 	return _default
 }
@@ -5362,7 +5209,7 @@ function hgibs( location =null, viruses =null, MobDNA =null ) {
 
 function init_paths( prototype =null, L =null ) {
 	local path
-	if ( !::istype( L, ::List ) ) {
+	if ( !( L instanceof ::List ) ) {
 		L = ::List()
 		path = null
 		foreach (_ in ::typesof( prototype ) ) {
@@ -5378,13 +5225,13 @@ function init_paths( prototype =null, L =null ) {
 
 function init_sprite_accessory_subtypes( prototype =null, L =null, male =null, female =null ) {
 	local path, D
-	if ( !::istype( L, ::List ) ) {
+	if ( !( L instanceof ::List ) ) {
 		L = ::List()
 	}
-	if ( !::istype( male, ::List ) ) {
+	if ( !( male instanceof ::List ) ) {
 		male = ::List()
 	}
-	if ( !::istype( female, ::List ) ) {
+	if ( !( female instanceof ::List ) ) {
 		female = ::List()
 	}
 	path = null
@@ -5414,7 +5261,7 @@ function init_sprite_accessory_subtypes( prototype =null, L =null, male =null, f
 
 function init_subtypes( prototype =null, L =null ) {
 	local path
-	if ( !::istype( L, ::List ) ) {
+	if ( !( L instanceof ::List ) ) {
 		L = ::List()
 	}
 	path = null
@@ -5488,7 +5335,7 @@ function inLineOfSight( X1 =null, Y1 =null, X2 =null, Y2 =null, Z =null, PX1 =nu
 			b += m
 		}
 		while (X1 != X2 || Y1 != Y2) {
-			if ( ::round( m * X1 + b - Y1 ) ) {
+			if ( ::math.round( m * X1 + b - Y1 ) ) {
 				Y1 += signY
 			} else {
 				X1 += signX
@@ -5533,45 +5380,10 @@ function investigate_subject2file( subject =null ) {
 }
 
 function ionnum(  ) {
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 9362 ) { _ = "!" }
-	else if ( _ < 18724 ) { _ = "@" }
-	else if ( _ < 28086 ) { _ = "#" }
-	else if ( _ < 37448 ) { _ = "$" }
-	else if ( _ < 46810 ) { _ = "%" }
-	else if ( _ < 56172 ) { _ = "^" }
-	else  { _ = "&" }
-
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 8191 ) { _ = "!" }
-	else if ( _ < 16382 ) { _ = "@" }
-	else if ( _ < 24573 ) { _ = "#" }
-	else if ( _ < 32764 ) { _ = "$" }
-	else if ( _ < 40955 ) { _ = "%" }
-	else if ( _ < 49146 ) { _ = "^" }
-	else if ( _ < 57337 ) { _ = "&" }
-	else  { _ = "*" }
-
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 8191 ) { _ = "!" }
-	else if ( _ < 16382 ) { _ = "@" }
-	else if ( _ < 24573 ) { _ = "#" }
-	else if ( _ < 32764 ) { _ = "$" }
-	else if ( _ < 40955 ) { _ = "%" }
-	else if ( _ < 49146 ) { _ = "^" }
-	else if ( _ < 57337 ) { _ = "&" }
-	else  { _ = "*" }
-
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 8191 ) { _ = "!" }
-	else if ( _ < 16382 ) { _ = "@" }
-	else if ( _ < 24573 ) { _ = "#" }
-	else if ( _ < 32764 ) { _ = "$" }
-	else if ( _ < 40955 ) { _ = "%" }
-	else if ( _ < 49146 ) { _ = "^" }
-	else if ( _ < 57337 ) { _ = "&" }
-	else  { _ = "*" }
-
+	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&" ])
+	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
+	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
+	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
 	return ::Txt().item( _ ).item( _ ).item( _ ).item( _ )
 }
 
@@ -5585,10 +5397,10 @@ function is_blind( A =null ) {
 }
 
 function is_convertable_to_cult( mind =null ) {
-	if ( !::istype( mind, ::Mind ) ) {
+	if ( !( mind instanceof ::Mind ) ) {
 		return 0
 	}
-	if ( ::istype( mind.current, ::Mob_Living_Carbon_Human ) && mind.assigned_role in ::List([ "Captain", "Chaplain" ]) ) {
+	if ( mind.current instanceof ::Mob_Living_Carbon_Human && mind.assigned_role in ::List([ "Captain", "Chaplain" ]) ) {
 		return 0
 	}
 	if ( ::isloyal( mind.current ) ) {
@@ -5603,7 +5415,7 @@ function is_convertable_to_cult( mind =null ) {
 }
 
 function is_gangster( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && M.mind.gang_datum
+	return M instanceof ::Mob_Living && M.mind && M.mind.gang_datum
 }
 
 function is_in_gang( M =null, gang_type =null ) {
@@ -5619,16 +5431,16 @@ function is_in_gang( M =null, gang_type =null ) {
 }
 
 function is_pointed( W =null ) {
-	if ( ::istype( W, ::Ent_Item_Weapon_Pen ) ) {
+	if ( W instanceof ::Ent_Item_Weapon_Pen ) {
 		return 1
 	}
-	if ( ::istype( W, ::Ent_Item_Weapon_Screwdriver ) ) {
+	if ( W instanceof ::Ent_Item_Weapon_Screwdriver ) {
 		return 1
 	}
-	if ( ::istype( W, ::Ent_Item_Weapon_ReagentContainers_Syringe ) ) {
+	if ( W instanceof ::Ent_Item_Weapon_ReagentContainers_Syringe ) {
 		return 1
 	}
-	if ( ::istype( W, ::Ent_Item_Weapon_Kitchen_Fork ) ) {
+	if ( W instanceof ::Ent_Item_Weapon_Kitchen_Fork ) {
 		return 1
 	} else {
 		return 0
@@ -5647,11 +5459,11 @@ function is_sacrifice_target( mind =null ) {
 }
 
 function is_shadow( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.shadows
+	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.shadows
 }
 
 function is_shadow_or_thrall( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && ::ticker && ::ticker.mode && ( M.mind in ::ticker.mode.thralls || M.mind in ::ticker.mode.shadows )
+	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && ( M.mind in ::ticker.mode.thralls || M.mind in ::ticker.mode.shadows )
 }
 
 function is_special_character( M =null ) {
@@ -5659,11 +5471,11 @@ function is_special_character( M =null ) {
 	if ( !::ticker || !::ticker.mode ) {
 		return 0
 	}
-	if ( !::istype( M, ::Mob ) ) {
+	if ( !( M instanceof ::Mob ) ) {
 		return 0
 	}
-	if ( ::istype( M, ::Mob_Living_Silicon ) ) {
-		if ( ::istype( M, ::Mob_Living_Silicon_Robot ) ) {
+	if ( M instanceof ::Mob_Living_Silicon ) {
+		if ( M instanceof ::Mob_Living_Silicon_Robot ) {
 			R = M
 			if ( R.emagged || R.syndicate ) {
 				return 1
@@ -5677,7 +5489,7 @@ function is_special_character( M =null ) {
 				}
 				return 1
 			}
-		} else if ( ::istype( M, ::Mob_Living_Silicon_Ai ) ) {
+		} else if ( M instanceof ::Mob_Living_Silicon_Ai ) {
 			A = M
 			if ( A.laws && A.laws.zeroth && A.mind && A.mind.special_role ) {
 				if ( ::ticker.config_tag == "malfunction" && M.mind in ::ticker.mode.malf_ai ) {
@@ -5725,7 +5537,7 @@ function is_special_character( M =null ) {
 }
 
 function is_thrall( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.thralls
+	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.thralls
 }
 
 function is_type_in_list( A =null, L =null ) {
@@ -5733,7 +5545,7 @@ function is_type_in_list( A =null, L =null ) {
 	type = null
 	foreach (_ in L ) {
 		type = _
-		if ( ::istype( A, type ) ) {
+		if ( A instanceof type ) {
 			return 1
 		}
 	}
@@ -5741,7 +5553,7 @@ function is_type_in_list( A =null, L =null ) {
 }
 
 function iscultist( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.cult
+	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.cult
 }
 
 function isemptylist( L =null ) {
@@ -5799,7 +5611,7 @@ function isloyal( A =null ) {
 	L = null
 	foreach (_ in A ) {
 		L = _
-		if ( !::istype( L, ::Ent_Item_Weapon_Implant_Loyalty ) ) {
+		if ( !( L instanceof ::Ent_Item_Weapon_Implant_Loyalty ) ) {
 			continue
 		}
 		if ( L && L.implanted ) {
@@ -5818,7 +5630,7 @@ function IsOdd( x =null ) {
 }
 
 function isorgan( A =null ) {
-	return ::istype( A, ::Ent_Item_Organ_Internal )
+	return A instanceof ::Ent_Item_Organ_Internal
 }
 
 function istool( O =null ) {
@@ -5829,7 +5641,7 @@ function istool( O =null ) {
 }
 
 function iswizard( M =null ) {
-	return ::istype( M, ::Mob_Living ) && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.wizards
+	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.wizards
 }
 
 function jobban_isbanned( M =null, rank =null ) {
@@ -5864,7 +5676,7 @@ function key_name( whom =null, include_link =null, include_name =null ) {
 	if ( !whom ) {
 		return "*null*"
 	}
-	if ( ::istype( whom, BAD_GOOFY_EXPANSION??? ) ) {
+	if ( whom instanceof BAD_GOOFY_EXPANSION??? ) {
 		C = whom
 		M = C.mob
 		key = C.key
@@ -5991,7 +5803,7 @@ function keywords_lookup( msg =null ) {
 					if ( found ) {
 						if ( !( found in mobs_found ) ) {
 							mobs_found += found
-							if ( !ai_found && ::istype( found, ::Mob_Living_Silicon_Ai ) ) {
+							if ( !ai_found && found instanceof ::Mob_Living_Silicon_Ai ) {
 								ai_found = 1
 							}
 							msg += ::Txt().item( original_word ).str( "<font size='1' color='black'>(<A HREF='?_src_=holder;adminmoreinfo=" ).ref( found ).str( "'>?</A>|<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( found ).str( "'>F</A>)</font> " )
@@ -6011,7 +5823,7 @@ function list2json( L =null ) {
 }
 
 function list2stickyban( ban =null ) {
-	if ( !ban || !::istype( ban, ::List ) ) {
+	if ( !ban || !( ban instanceof ::List ) ) {
 		return
 	}
 	_default = ban.$Copy()
@@ -6096,7 +5908,7 @@ function list2text( ls =null, sep =null ) {
 
 function listclearnulls( L =null ) {
 	local i, thing
-	if ( ::istype( L, ::List ) ) {
+	if ( L instanceof ::List ) {
 		i = 1
 		thing = null
 		foreach (_ in L ) {
@@ -6111,7 +5923,7 @@ function listclearnulls( L =null ) {
 }
 
 function listgetindex( L =null, index =null ) {
-	if ( ::istype( L, ::List ) ) {
+	if ( L instanceof ::List ) {
 		if ( ::isnum( index ) ) {
 			if ( ::IsInRange( index, 1, L.len ) ) {
 				return L[index]
@@ -6138,9 +5950,9 @@ function living_player_count(  ) {
 
 function lizard_name( gender =null ) {
 	if ( gender == ::MALE ) {
-		return ::Txt().item( ::pick_list( ::lizard_names_male ) ).str( "-" ).item( ::pick_list( ::lizard_names_male ) )
+		return ::Txt().item( ::random.pick( ::lizard_names_male ) ).str( "-" ).item( ::random.pick( ::lizard_names_male ) )
 	} else {
-		return ::Txt().item( ::pick_list( ::lizard_names_female ) ).str( "-" ).item( ::pick_list( ::lizard_names_female ) )
+		return ::Txt().item( ::random.pick( ::lizard_names_female ) ).str( "-" ).item( ::random.pick( ::lizard_names_female ) )
 	}
 }
 
@@ -6204,7 +6016,7 @@ function load_admins(  ) {
 	C = null
 	foreach (_ in ::admins ) {
 		C = _
-		if ( !::istype( C, BAD_GOOFY_EXPANSION??? ) ) {
+		if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) ) {
 			continue
 		}
 		C.$remove admin verbs()
@@ -6216,7 +6028,7 @@ function load_admins(  ) {
 	R = null
 	foreach (_ in ::admin_ranks ) {
 		R = _
-		if ( !::istype( R, ::AdminRank ) ) {
+		if ( !( R instanceof ::AdminRank ) ) {
 			continue
 		}
 		rank_names[R.name] = R
@@ -6265,7 +6077,7 @@ function load_admins(  ) {
 			ckey = ::ckey( query.item[1] )
 			rank = ::ckeyEx( query.item[2] )
 			if ( rank_names[rank] == null ) {
-				::warning( ::Txt().item( ::Txt( "Admin rank (" ).item( rank ).str( ") does not exist." ) ).str( " in " ).item( "code/modules/admin/admin_ranks.dm" ).str( " at line " ).item( 183 ).str( " src: " ).item( this ).str( " usr: " ).item( ::_USR_ ).str( "." ) )
+				::warning( ::Txt().item( ::Txt( "Admin rank (" ).item( rank ).str( ") does not exist." ) ).str( " in " ).item( "code/modules/admin/admin_ranks.dm" ).str( " at line " ).item( 183 ).str( " src: " ).item( this ).str( " usr: " ).item( ::thread.user ).str( "." ) )
 				continue
 			}
 			D = ::Admins( rank_names[rank], ckey )
@@ -6385,7 +6197,7 @@ function machine_upgrade( M =null ) {
 		P = null
 		foreach (_ in M.component_parts ) {
 			P = _
-			if ( !::istype( P, ::Ent_Item_Weapon_StockParts ) ) {
+			if ( !( P instanceof ::Ent_Item_Weapon_StockParts ) ) {
 				continue
 			}
 			P.rating = new_rating
@@ -6400,13 +6212,13 @@ function make_maint_all_access(  ) {
 	A = null
 	foreach (_ in ::game ) {
 		A = _
-		if ( !::istype( A, ::Area(2826) ) ) {
+		if ( !( A instanceof ::Area(2826) ) ) {
 			continue
 		}
 		D = null
 		foreach (_ in A ) {
 			D = _
-			if ( !::istype( D, ::Ent_Machinery_Door_Airlock ) ) {
+			if ( !( D instanceof ::Ent_Machinery_Door_Airlock ) ) {
 				continue
 			}
 			D.emergency = 1
@@ -6432,10 +6244,10 @@ function make_mining_asteroid_secret(  ) {
 	floortypes = ::List([ ::Tile_Simulated_Floor_Plasteel ])
 	treasureitems = ::List()
 	fluffitems = ::List()
-	x_size = ::rand( 3, 7 )
-	y_size = ::rand( 3, 7 )
+	x_size = ::random.int( 3, 7 )
+	y_size = ::random.int( 3, 7 )
 	areapoints = x_size * y_size
-	local _ = ::pick_list( ::possiblethemes ) // Was a switch-case, sorry for the mess.
+	local _ = ::random.pick( ::possiblethemes ) // Was a switch-case, sorry for the mess.
 	if ( _=="organharvest" ) {
 		walltypes = ::List({ [::Tile_Simulated_Mineral_Random_HighChance]= 1, [::Tile_Simulated_Wall]= 2, [::Tile_Simulated_Wall_RWall]= 2 })
 		floortypes = ::List([ ::Tile_Simulated_Floor_Plasteel, ::Tile_Simulated_Floor_Engine ])
@@ -6482,7 +6294,7 @@ function make_mining_asteroid_secret(  ) {
 		fluffitems = ::List({ [::Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Ammonia]= 3, [::Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Diethylamine]= 3, [::Ent_Item_Weapon_ReagentContainers_Syringe_Charcoal]= 2, [::Ent_Effect_Glowshroom_Single]= 2, [::Ent_Machinery_Hydroponics]= 1, [::Ent_Structure_Table_Reinforced]= 2, [::Ent_Structure_Flora_Kirbyplants]= 1 })
 	}
 	::possiblethemes -= theme
-	floor = ::pick_list( floortypes )
+	floor = ::random.pick( floortypes )
 	turfs = ::get_area_turfs( ::Area(3120) )
 	if ( !turfs.len ) {
 		return 0
@@ -6493,7 +6305,7 @@ function make_mining_asteroid_secret(  ) {
 		if ( sanity > 100 ) {
 			return 0
 		}
-		T = ::pick_list( turfs )
+		T = ::random.pick( turfs )
 		if ( !T ) {
 			return 0
 		}
@@ -6528,17 +6340,17 @@ function make_mining_asteroid_secret(  ) {
 		A = null
 		foreach (_ in emptyturfs ) {
 			A = _
-			if ( !::istype( A, ::Tile_Simulated_Floor ) ) {
+			if ( !( A instanceof ::Tile_Simulated_Floor ) ) {
 				continue
 			}
-			if ( ::istype( A, ::Tile_Simulated_Floor ) ) {
-				::spawn( 2, function() {
+			if ( A instanceof ::Tile_Simulated_Floor ) {
+				::thread.schedule( 2, function() {
 					A.fullUpdateMineralOverlays()
 					return
 				})
 			}
 		}
-		T = ::pick_list( emptyturfs )
+		T = ::random.pick( emptyturfs )
 		if ( T ) {
 			::Ent_Effect_Glowshroom_Single( T )
 			surprise = null
@@ -6546,7 +6358,7 @@ function make_mining_asteroid_secret(  ) {
 			surprise( T )
 			emptyturfs -= T
 			while (areapoints >= 10) {
-				T = ::pick_list( emptyturfs )
+				T = ::random.pick( emptyturfs )
 				garbage = null
 				garbage = ::pickweight( fluffitems )
 				garbage( T )
@@ -6595,8 +6407,8 @@ function make_nw_corner( adjacencies =null ) {
 function make_progress_bar( current_number =null, goal_number =null, target =null ) {
 	local progbar
 	if ( current_number && goal_number && target ) {
-		progbar = ::image_listcall( ::List({ ["icon_state"]= "prog_bar_0", ["loc"]= target, ["icon"]= ::Rsc(15) }) )
-		progbar.icon_state = ::Txt( "prog_bar_" ).item( ::round2( current_number / goal_number * 100, 10 ) )
+		progbar = ::Image.lcall( ::List({ ["icon_state"]= "prog_bar_0", ["loc"]= target, ["icon"]= ::Rsc(15) }) )
+		progbar.icon_state = ::Txt( "prog_bar_" ).item( ::math.round( current_number / goal_number * 100, 10 ) )
 		progbar.pixel_y = 32
 		return progbar
 	}
@@ -6641,7 +6453,7 @@ function makeBody( G_found =null ) {
 	if ( !G_found || !G_found.key ) {
 		return
 	}
-	new_character = ::Mob_Living_Carbon_Human( ::pick_list( ::latejoin ) )
+	new_character = ::Mob_Living_Carbon_Human( ::random.pick( ::latejoin ) )
 	G_found.client.prefs.copy_to( new_character )
 	new_character.dna.$update dna identity()
 	new_character.key = G_found.key
@@ -6675,7 +6487,7 @@ function makeNewConstruct( ctype =null, target =null, stoner =null, cultoverride
 	} else {
 		newstruct.write( "<B>You are still bound to serve your creator, follow their orders and help them complete their goals at all costs.</B>" )
 	}
-	newstruct.VERB[Cancel Camera View]()
+	::get_verb( newstruct, "Cancel Camera View" )()
 }
 
 function maprotate(  ) {
@@ -6686,7 +6498,7 @@ function maprotate(  ) {
 	c = null
 	foreach (_ in ::clients ) {
 		c = _
-		if ( !::istype( c, BAD_GOOFY_EXPANSION??? ) ) {
+		if ( !( c instanceof BAD_GOOFY_EXPANSION??? ) ) {
 			continue
 		}
 		vote = c.prefs.preferred_map
@@ -6756,7 +6568,7 @@ function merge_powernets( net1 =null, net2 =null ) {
 	Cable = null
 	foreach (_ in net2.cables ) {
 		Cable = _
-		if ( !::istype( Cable, ::Ent_Structure_Cable ) ) {
+		if ( !( Cable instanceof ::Ent_Structure_Cable ) ) {
 			continue
 		}
 		net1.add_cable( Cable )
@@ -6764,7 +6576,7 @@ function merge_powernets( net1 =null, net2 =null ) {
 	Node = null
 	foreach (_ in net2.nodes ) {
 		Node = _
-		if ( !::istype( Node, ::Ent_Machinery_Power ) ) {
+		if ( !( Node instanceof ::Ent_Machinery_Power ) ) {
 			continue
 		}
 		if ( !Node.connect_to_network() ) {
@@ -6841,7 +6653,7 @@ function mineral_scan_pulse( mobs =null, T =null, range =null ) {
 	M = null
 	foreach (_ in ::range( range, T ) ) {
 		M = _
-		if ( !::istype( M, ::Tile_Simulated_Mineral ) ) {
+		if ( !( M instanceof ::Tile_Simulated_Mineral ) ) {
 			continue
 		}
 		if ( M.scan_state ) {
@@ -6857,13 +6669,13 @@ function mineral_scan_pulse( mobs =null, T =null, range =null ) {
 				M = null
 				foreach (_ in minerals ) {
 					M = _
-					if ( !::istype( M, ::Tile_Simulated_Mineral ) ) {
+					if ( !( M instanceof ::Tile_Simulated_Mineral ) ) {
 						continue
 					}
 					F = ::get_turf( M )
-					I = ::image_listcall( ::List({ ["layer"]= 18, ["icon_state"]= M.scan_state, ["loc"]= F, [1]= ::Rsc(61) }) )
+					I = ::Image.lcall( ::List({ ["layer"]= 18, ["icon_state"]= M.scan_state, ["loc"]= F, [1]= ::Rsc(61) }) )
 					C.images += I
-					::spawn( 30, function() {
+					::thread.schedule( 30, function() {
 						if ( C ) {
 							C.images -= I
 						}
@@ -6886,7 +6698,7 @@ function minor_announce( message =null, title =null, alert =null ) {
 	M = null
 	foreach (_ in ::player_list ) {
 		M = _
-		if ( !::istype( M, ::Mob_NewPlayer ) && !M.ear_deaf ) {
+		if ( !( M instanceof ::Mob_NewPlayer ) && !M.ear_deaf ) {
 			M.write( ::Txt( "<b><font size = 3><font color = red>" ).item( title ).str( "</font color><BR>" ).item( message ).str( "</font size></b><BR>" ) )
 			if ( alert ) {
 				M.write( ::Sound( ::Rsc(63) ) )
@@ -6899,14 +6711,14 @@ function minor_announce( message =null, title =null, alert =null ) {
 
 function mix_color_from_reagents( reagent_list =null ) {
 	local color, vol_counter, vol_temp, R
-	if ( !::istype( reagent_list, ::List ) ) {
+	if ( !( reagent_list instanceof ::List ) ) {
 		return
 	}
 	vol_counter = 0
 	R = null
 	foreach (_ in reagent_list ) {
 		R = _
-		if ( !::istype( R, ::Reagent ) ) {
+		if ( !( R instanceof ::Reagent ) ) {
 			continue
 		}
 		vol_temp = R.volume
@@ -6939,7 +6751,7 @@ function near_camera( M =null ) {
 	if ( !::isturf( M.loc ) ) {
 		return 0
 	}
-	if ( ::istype( M, ::Mob_Living_Silicon_Robot ) ) {
+	if ( M instanceof ::Mob_Living_Silicon_Robot ) {
 		R = M
 		if ( !( R.camera && R.camera.$can use() ) && !::cameranet.$checkCameraVis( M ) ) {
 			return 0
@@ -6952,42 +6764,11 @@ function near_camera( M =null ) {
 
 function new_station_name(  ) {
 	local random, name, new_station_name, holiday_name, holiday
-	random = ::rand( 1, 5 )
+	random = ::random.int( 1, 5 )
 	name = ""
 	new_station_name = ""
-	if ( ::prob( 10 ) ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 2184 ) { _ = "Imperium" }
-		else if ( _ < 4368 ) { _ = "Heretical" }
-		else if ( _ < 6552 ) { _ = "Cuban" }
-		else if ( _ < 8736 ) { _ = "Psychic" }
-		else if ( _ < 10920 ) { _ = "Elegant" }
-		else if ( _ < 13104 ) { _ = "Common" }
-		else if ( _ < 15288 ) { _ = "Uncommon" }
-		else if ( _ < 17472 ) { _ = "Rare" }
-		else if ( _ < 19656 ) { _ = "Unique" }
-		else if ( _ < 21840 ) { _ = "Houseruled" }
-		else if ( _ < 24024 ) { _ = "Religious" }
-		else if ( _ < 26208 ) { _ = "Atheist" }
-		else if ( _ < 28392 ) { _ = "Traditional" }
-		else if ( _ < 30576 ) { _ = "Houseruled" }
-		else if ( _ < 32760 ) { _ = "Mad" }
-		else if ( _ < 34944 ) { _ = "Super" }
-		else if ( _ < 37128 ) { _ = "Ultra" }
-		else if ( _ < 39312 ) { _ = "Secret" }
-		else if ( _ < 41496 ) { _ = "Top Secret" }
-		else if ( _ < 43680 ) { _ = "Deep" }
-		else if ( _ < 45864 ) { _ = "Death" }
-		else if ( _ < 48048 ) { _ = "Zybourne" }
-		else if ( _ < 50232 ) { _ = "Central" }
-		else if ( _ < 52416 ) { _ = "Main" }
-		else if ( _ < 54600 ) { _ = "Government" }
-		else if ( _ < 56784 ) { _ = "Uoi" }
-		else if ( _ < 58968 ) { _ = "Fat" }
-		else if ( _ < 61152 ) { _ = "Automated" }
-		else if ( _ < 63336 ) { _ = "Experimental" }
-		else  { _ = "Augmented" }
-
+	if ( ::random.chance( 10 ) ) {
+		local _ = ::random.pick([ "Imperium", "Heretical", "Cuban", "Psychic", "Elegant", "Common", "Uncommon", "Rare", "Unique", "Houseruled", "Religious", "Atheist", "Traditional", "Houseruled", "Mad", "Super", "Ultra", "Secret", "Top Secret", "Deep", "Death", "Zybourne", "Central", "Main", "Government", "Uoi", "Fat", "Automated", "Experimental", "Augmented" ])
 		name = _
 		new_station_name = name + " "
 		name = ""
@@ -7002,259 +6783,32 @@ function new_station_name(  ) {
 		name = holiday.$getStationPrefix()
 	}
 	if ( !name ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 862 ) { _ = "" }
-		else if ( _ < 1724 ) { _ = "Stanford" }
-		else if ( _ < 2586 ) { _ = "Dorf" }
-		else if ( _ < 3448 ) { _ = "Alium" }
-		else if ( _ < 4310 ) { _ = "Prefix" }
-		else if ( _ < 5172 ) { _ = "Clowning" }
-		else if ( _ < 6034 ) { _ = "Aegis" }
-		else if ( _ < 6896 ) { _ = "Ishimura" }
-		else if ( _ < 7758 ) { _ = "Scaredy" }
-		else if ( _ < 8620 ) { _ = "Death-World" }
-		else if ( _ < 9482 ) { _ = "Mime" }
-		else if ( _ < 10344 ) { _ = "Honk" }
-		else if ( _ < 11206 ) { _ = "Rogue" }
-		else if ( _ < 12068 ) { _ = "MacRagge" }
-		else if ( _ < 12930 ) { _ = "Ultrameens" }
-		else if ( _ < 13792 ) { _ = "Safety" }
-		else if ( _ < 14654 ) { _ = "Paranoia" }
-		else if ( _ < 15516 ) { _ = "Explosive" }
-		else if ( _ < 16378 ) { _ = "Neckbear" }
-		else if ( _ < 17240 ) { _ = "Donk" }
-		else if ( _ < 18102 ) { _ = "Muppet" }
-		else if ( _ < 18964 ) { _ = "North" }
-		else if ( _ < 19826 ) { _ = "West" }
-		else if ( _ < 20688 ) { _ = "East" }
-		else if ( _ < 21550 ) { _ = "South" }
-		else if ( _ < 22412 ) { _ = "Slant-ways" }
-		else if ( _ < 23274 ) { _ = "Widdershins" }
-		else if ( _ < 24136 ) { _ = "Rimward" }
-		else if ( _ < 24998 ) { _ = "Expensive" }
-		else if ( _ < 25860 ) { _ = "Procreatory" }
-		else if ( _ < 26722 ) { _ = "Imperial" }
-		else if ( _ < 27584 ) { _ = "Unidentified" }
-		else if ( _ < 28446 ) { _ = "Immoral" }
-		else if ( _ < 29308 ) { _ = "Carp" }
-		else if ( _ < 30170 ) { _ = "Ork" }
-		else if ( _ < 31032 ) { _ = "Pete" }
-		else if ( _ < 31894 ) { _ = "Control" }
-		else if ( _ < 32756 ) { _ = "Nettle" }
-		else if ( _ < 33618 ) { _ = "Aspie" }
-		else if ( _ < 34480 ) { _ = "Class" }
-		else if ( _ < 35342 ) { _ = "Crab" }
-		else if ( _ < 36204 ) { _ = "Fist" }
-		else if ( _ < 37066 ) { _ = "Corrogated" }
-		else if ( _ < 37928 ) { _ = "Skeleton" }
-		else if ( _ < 38790 ) { _ = "Race" }
-		else if ( _ < 39652 ) { _ = "Fatguy" }
-		else if ( _ < 40514 ) { _ = "Gentleman" }
-		else if ( _ < 41376 ) { _ = "Capitalist" }
-		else if ( _ < 42238 ) { _ = "Communist" }
-		else if ( _ < 43100 ) { _ = "Bear" }
-		else if ( _ < 43962 ) { _ = "Beard" }
-		else if ( _ < 44824 ) { _ = "Derp" }
-		else if ( _ < 45686 ) { _ = "Space" }
-		else if ( _ < 46548 ) { _ = "Spess" }
-		else if ( _ < 47410 ) { _ = "Star" }
-		else if ( _ < 48272 ) { _ = "Moon" }
-		else if ( _ < 49134 ) { _ = "System" }
-		else if ( _ < 49996 ) { _ = "Mining" }
-		else if ( _ < 50858 ) { _ = "Neckbeard" }
-		else if ( _ < 51720 ) { _ = "Research" }
-		else if ( _ < 52582 ) { _ = "Supply" }
-		else if ( _ < 53444 ) { _ = "Military" }
-		else if ( _ < 54306 ) { _ = "Orbital" }
-		else if ( _ < 55168 ) { _ = "Battle" }
-		else if ( _ < 56030 ) { _ = "Science" }
-		else if ( _ < 56892 ) { _ = "Asteroid" }
-		else if ( _ < 57754 ) { _ = "Home" }
-		else if ( _ < 58616 ) { _ = "Production" }
-		else if ( _ < 59478 ) { _ = "Transport" }
-		else if ( _ < 60340 ) { _ = "Delivery" }
-		else if ( _ < 61202 ) { _ = "Extraplanetary" }
-		else if ( _ < 62064 ) { _ = "Orbital" }
-		else if ( _ < 62926 ) { _ = "Correctional" }
-		else if ( _ < 63788 ) { _ = "Robot" }
-		else if ( _ < 64650 ) { _ = "Hats" }
-		else  { _ = "Pizza" }
-
+		local _ = ::random.pick([ "", "Stanford", "Dorf", "Alium", "Prefix", "Clowning", "Aegis", "Ishimura", "Scaredy", "Death-World", "Mime", "Honk", "Rogue", "MacRagge", "Ultrameens", "Safety", "Paranoia", "Explosive", "Neckbear", "Donk", "Muppet", "North", "West", "East", "South", "Slant-ways", "Widdershins", "Rimward", "Expensive", "Procreatory", "Imperial", "Unidentified", "Immoral", "Carp", "Ork", "Pete", "Control", "Nettle", "Aspie", "Class", "Crab", "Fist", "Corrogated", "Skeleton", "Race", "Fatguy", "Gentleman", "Capitalist", "Communist", "Bear", "Beard", "Derp", "Space", "Spess", "Star", "Moon", "System", "Mining", "Neckbeard", "Research", "Supply", "Military", "Orbital", "Battle", "Science", "Asteroid", "Home", "Production", "Transport", "Delivery", "Extraplanetary", "Orbital", "Correctional", "Robot", "Hats", "Pizza" ])
 		name = _
 	}
 	if ( name ) {
 		new_station_name += name + " "
 	}
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 1236 ) { _ = "Station" }
-	else if ( _ < 2472 ) { _ = "Fortress" }
-	else if ( _ < 3708 ) { _ = "Frontier" }
-	else if ( _ < 4944 ) { _ = "Suffix" }
-	else if ( _ < 6180 ) { _ = "Death-trap" }
-	else if ( _ < 7416 ) { _ = "Space-hulk" }
-	else if ( _ < 8652 ) { _ = "Lab" }
-	else if ( _ < 9888 ) { _ = "Hazard" }
-	else if ( _ < 11124 ) { _ = "Spess Junk" }
-	else if ( _ < 12360 ) { _ = "Fishery" }
-	else if ( _ < 13596 ) { _ = "No-Moon" }
-	else if ( _ < 14832 ) { _ = "Tomb" }
-	else if ( _ < 16068 ) { _ = "Crypt" }
-	else if ( _ < 17304 ) { _ = "Hut" }
-	else if ( _ < 18540 ) { _ = "Monkey" }
-	else if ( _ < 19776 ) { _ = "Bomb" }
-	else if ( _ < 21012 ) { _ = "Trade Post" }
-	else if ( _ < 22248 ) { _ = "Fortress" }
-	else if ( _ < 23484 ) { _ = "Village" }
-	else if ( _ < 24720 ) { _ = "Town" }
-	else if ( _ < 25956 ) { _ = "City" }
-	else if ( _ < 27192 ) { _ = "Edition" }
-	else if ( _ < 28428 ) { _ = "Hive" }
-	else if ( _ < 29664 ) { _ = "Complex" }
-	else if ( _ < 30900 ) { _ = "Base" }
-	else if ( _ < 32136 ) { _ = "Facility" }
-	else if ( _ < 33372 ) { _ = "Depot" }
-	else if ( _ < 34608 ) { _ = "Outpost" }
-	else if ( _ < 35844 ) { _ = "Installation" }
-	else if ( _ < 37080 ) { _ = "Drydock" }
-	else if ( _ < 38316 ) { _ = "Observatory" }
-	else if ( _ < 39552 ) { _ = "Array" }
-	else if ( _ < 40788 ) { _ = "Relay" }
-	else if ( _ < 42024 ) { _ = "Monitor" }
-	else if ( _ < 43260 ) { _ = "Platform" }
-	else if ( _ < 44496 ) { _ = "Construct" }
-	else if ( _ < 45732 ) { _ = "Hangar" }
-	else if ( _ < 46968 ) { _ = "Prison" }
-	else if ( _ < 48204 ) { _ = "Center" }
-	else if ( _ < 49440 ) { _ = "Port" }
-	else if ( _ < 50676 ) { _ = "Waystation" }
-	else if ( _ < 51912 ) { _ = "Factory" }
-	else if ( _ < 53148 ) { _ = "Waypoint" }
-	else if ( _ < 54384 ) { _ = "Stopover" }
-	else if ( _ < 55620 ) { _ = "Hub" }
-	else if ( _ < 56856 ) { _ = "HQ" }
-	else if ( _ < 58092 ) { _ = "Office" }
-	else if ( _ < 59328 ) { _ = "Object" }
-	else if ( _ < 60564 ) { _ = "Fortification" }
-	else if ( _ < 61800 ) { _ = "Colony" }
-	else if ( _ < 63036 ) { _ = "Planet-Cracker" }
-	else if ( _ < 64272 ) { _ = "Roost" }
-	else  { _ = "Fat Camp" }
-
+	local _ = ::random.pick([ "Station", "Fortress", "Frontier", "Suffix", "Death-trap", "Space-hulk", "Lab", "Hazard", "Spess Junk", "Fishery", "No-Moon", "Tomb", "Crypt", "Hut", "Monkey", "Bomb", "Trade Post", "Fortress", "Village", "Town", "City", "Edition", "Hive", "Complex", "Base", "Facility", "Depot", "Outpost", "Installation", "Drydock", "Observatory", "Array", "Relay", "Monitor", "Platform", "Construct", "Hangar", "Prison", "Center", "Port", "Waystation", "Factory", "Waypoint", "Stopover", "Hub", "HQ", "Office", "Object", "Fortification", "Colony", "Planet-Cracker", "Roost", "Fat Camp" ])
 	name = _
 	new_station_name += name + " "
 	local _ = random // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
-		new_station_name += ::Txt().item( ::rand( 1, 99 ) )
+		new_station_name += ::Txt().item( ::random.int( 1, 99 ) )
 	} else if ( _==2 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 2730 ) { _ = "Alpha" }
-		else if ( _ < 5460 ) { _ = "Beta" }
-		else if ( _ < 8190 ) { _ = "Gamma" }
-		else if ( _ < 10920 ) { _ = "Delta" }
-		else if ( _ < 13650 ) { _ = "Epsilon" }
-		else if ( _ < 16380 ) { _ = "Zeta" }
-		else if ( _ < 19110 ) { _ = "Eta" }
-		else if ( _ < 21840 ) { _ = "Theta" }
-		else if ( _ < 24570 ) { _ = "Iota" }
-		else if ( _ < 27300 ) { _ = "Kappa" }
-		else if ( _ < 30030 ) { _ = "Lambda" }
-		else if ( _ < 32760 ) { _ = "Mu" }
-		else if ( _ < 35490 ) { _ = "Nu" }
-		else if ( _ < 38220 ) { _ = "Xi" }
-		else if ( _ < 40950 ) { _ = "Omicron" }
-		else if ( _ < 43680 ) { _ = "Pi" }
-		else if ( _ < 46410 ) { _ = "Rho" }
-		else if ( _ < 49140 ) { _ = "Sigma" }
-		else if ( _ < 51870 ) { _ = "Tau" }
-		else if ( _ < 54600 ) { _ = "Upsilon" }
-		else if ( _ < 57330 ) { _ = "Phi" }
-		else if ( _ < 60060 ) { _ = "Chi" }
-		else if ( _ < 62790 ) { _ = "Psi" }
-		else  { _ = "Omega" }
-
+		local _ = ::random.pick([ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ])
 		new_station_name += _
 	} else if ( _==3 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 3449 ) { _ = "II" }
-		else if ( _ < 6898 ) { _ = "III" }
-		else if ( _ < 10347 ) { _ = "IV" }
-		else if ( _ < 13796 ) { _ = "V" }
-		else if ( _ < 17245 ) { _ = "VI" }
-		else if ( _ < 20694 ) { _ = "VII" }
-		else if ( _ < 24143 ) { _ = "VIII" }
-		else if ( _ < 27592 ) { _ = "IX" }
-		else if ( _ < 31041 ) { _ = "X" }
-		else if ( _ < 34490 ) { _ = "XI" }
-		else if ( _ < 37939 ) { _ = "XII" }
-		else if ( _ < 41388 ) { _ = "XIII" }
-		else if ( _ < 44837 ) { _ = "XIV" }
-		else if ( _ < 48286 ) { _ = "XV" }
-		else if ( _ < 51735 ) { _ = "XVI" }
-		else if ( _ < 55184 ) { _ = "XVII" }
-		else if ( _ < 58633 ) { _ = "XVIII" }
-		else if ( _ < 62082 ) { _ = "XIX" }
-		else  { _ = "XX" }
-
+		local _ = ::random.pick([ "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" ])
 		new_station_name += _
 	} else if ( _==4 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 2520 ) { _ = "Alpha" }
-		else if ( _ < 5040 ) { _ = "Bravo" }
-		else if ( _ < 7560 ) { _ = "Charlie" }
-		else if ( _ < 10080 ) { _ = "Delta" }
-		else if ( _ < 12600 ) { _ = "Echo" }
-		else if ( _ < 15120 ) { _ = "Foxtrot" }
-		else if ( _ < 17640 ) { _ = "Golf" }
-		else if ( _ < 20160 ) { _ = "Hotel" }
-		else if ( _ < 22680 ) { _ = "India" }
-		else if ( _ < 25200 ) { _ = "Juliet" }
-		else if ( _ < 27720 ) { _ = "Kilo" }
-		else if ( _ < 30240 ) { _ = "Lima" }
-		else if ( _ < 32760 ) { _ = "Mike" }
-		else if ( _ < 35280 ) { _ = "November" }
-		else if ( _ < 37800 ) { _ = "Oscar" }
-		else if ( _ < 40320 ) { _ = "Papa" }
-		else if ( _ < 42840 ) { _ = "Quebec" }
-		else if ( _ < 45360 ) { _ = "Romeo" }
-		else if ( _ < 47880 ) { _ = "Sierra" }
-		else if ( _ < 50400 ) { _ = "Tango" }
-		else if ( _ < 52920 ) { _ = "Uniform" }
-		else if ( _ < 55440 ) { _ = "Victor" }
-		else if ( _ < 57960 ) { _ = "Whiskey" }
-		else if ( _ < 60480 ) { _ = "X-ray" }
-		else if ( _ < 63000 ) { _ = "Yankee" }
-		else  { _ = "Zulu" }
-
+		local _ = ::random.pick([ "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-ray", "Yankee", "Zulu" ])
 		new_station_name += _
 	} else if ( _==5 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 3449 ) { _ = "One" }
-		else if ( _ < 6898 ) { _ = "Two" }
-		else if ( _ < 10347 ) { _ = "Three" }
-		else if ( _ < 13796 ) { _ = "Four" }
-		else if ( _ < 17245 ) { _ = "Five" }
-		else if ( _ < 20694 ) { _ = "Six" }
-		else if ( _ < 24143 ) { _ = "Seven" }
-		else if ( _ < 27592 ) { _ = "Eight" }
-		else if ( _ < 31041 ) { _ = "Nine" }
-		else if ( _ < 34490 ) { _ = "Ten" }
-		else if ( _ < 37939 ) { _ = "Eleven" }
-		else if ( _ < 41388 ) { _ = "Twelve" }
-		else if ( _ < 44837 ) { _ = "Thirteen" }
-		else if ( _ < 48286 ) { _ = "Fourteen" }
-		else if ( _ < 51735 ) { _ = "Fifteen" }
-		else if ( _ < 55184 ) { _ = "Sixteen" }
-		else if ( _ < 58633 ) { _ = "Seventeen" }
-		else if ( _ < 62082 ) { _ = "Eighteen" }
-		else  { _ = "Nineteen" }
-
+		local _ = ::random.pick([ "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" ])
 		new_station_name += _
 	} else if ( _==13 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 21845 ) { _ = "13" }
-		else if ( _ < 43690 ) { _ = "XIII" }
-		else  { _ = "Thirteen" }
-
+		local _ = ::random.pick([ "13", "XIII", "Thirteen" ])
 		new_station_name += _
 	}
 	return new_station_name
@@ -7268,14 +6822,14 @@ function ninjaspeak( n =null ) {
 	p = 1
 	while (p <= n) {
 		n_letter = null
-		n_mod = ::rand( 1, 4 )
+		n_mod = ::random.int( 1, 4 )
 		if ( p + n_mod > n + 1 ) {
 			n_letter = ::copytext( te, p, n + 1 )
 		} else {
 			n_letter = ::copytext( te, p, p + n_mod )
 		}
-		if ( ::prob( 50 ) ) {
-			if ( ::prob( 30 ) ) {
+		if ( ::random.chance( 50 ) ) {
+			if ( ::random.chance( 30 ) ) {
 				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
 			} else {
 				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter )
@@ -7295,16 +6849,8 @@ function notice( msg =null ) {
 
 function nukelastname( M =null ) {
 	local randomname, newname
-	randomname = ::pick_list( ::last_names )
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 9362 ) { _ = "Czar" }
-	else if ( _ < 18724 ) { _ = "Boss" }
-	else if ( _ < 28086 ) { _ = "Commander" }
-	else if ( _ < 37448 ) { _ = "Chief" }
-	else if ( _ < 46810 ) { _ = "Kingpin" }
-	else if ( _ < 56172 ) { _ = "Director" }
-	else  { _ = "Overlord" }
-
+	randomname = ::random.pick( ::last_names )
+	local _ = ::random.pick([ "Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord" ])
 	newname = ::copytext( ::sanitize( ::input( M, ::Txt( "You are the nuke operative " ).item( _ ).str( ". Please choose a last name for your family." ), "Name change", randomname, null, 0 ) ), 1, 26 )
 	if ( !newname ) {
 		newname = randomname
@@ -7320,7 +6866,7 @@ function NukeNameAssign( lastname =null, syndicates =null ) {
 	synd_mind = null
 	foreach (_ in syndicates ) {
 		synd_mind = _
-		if ( !::istype( synd_mind, ::Mind ) ) {
+		if ( !( synd_mind instanceof ::Mind ) ) {
 			continue
 		}
 		H = synd_mind.current
@@ -7338,7 +6884,7 @@ function num2hex( num =null, len =null ) {
 	if ( !::isnum( num ) ) {
 		num = 0
 	}
-	num = ::round( ::abs( num ) )
+	num = ::math.round( ::math.abs( num ) )
 	_default = ""
 	i = 0
 	while (1) {
@@ -7350,7 +6896,7 @@ function num2hex( num =null, len =null ) {
 			break
 		}
 		remainder = num / 16
-		num = ::round( remainder )
+		num = ::math.round( remainder )
 		remainder = ( remainder - num ) * 16
 		local _ = remainder // Was a switch-case, sorry for the mess.
 		if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
@@ -7442,7 +6988,7 @@ function parsepencode( t =null, user =null, signfont =null ) {
 function pick_n_take( L =null ) {
 	local picked, _default
 	if ( L.len ) {
-		picked = ::rand( 1, L.len )
+		picked = ::random.int( 1, L.len )
 		_default = L[picked]
 		L.$Cut( picked, picked + 1 )
 	}
@@ -7459,7 +7005,7 @@ function pickweight( L =null ) {
 		}
 		total += L[item]
 	}
-	total = ::rand( 1, total )
+	total = ::random.int( 1, total )
 	foreach (_ in L ) {
 		item = _
 		total -= L[item]
@@ -7474,7 +7020,7 @@ function PlaceInPool( diver =null, destroy =null ) {
 	if ( destroy == null ) {
 		destroy = 1
 	}
-	if ( !::istype( diver, ::Datum ) ) {
+	if ( !( diver instanceof ::Datum ) ) {
 		return
 	}
 	if ( diver in ::GlobalPool[diver.type] ) {
@@ -7495,7 +7041,7 @@ function play_vox_word( word =null, z_level =null, only_listener =null ) {
 	word = ::lowertext( word )
 	if ( ::vox_sounds[word] ) {
 		sound_file = ::vox_sounds[word]
-		voice = "/sound"( "LIST_CALL", ::List({ ["channel"]= ::VOX_CHANNEL, ["wait"]= 1, [1]= sound_file }) )
+		voice = ::Sound.lcall( ::List({ ["channel"]= ::VOX_CHANNEL, ["wait"]= 1, [1]= sound_file }) )
 		voice.status = ::SOUND_STREAM
 		if ( !only_listener ) {
 			M = null
@@ -7560,7 +7106,7 @@ function pollCandidates( Question =null, jobbanType =null, gametypeCheck =null, 
 	G = null
 	foreach (_ in ::player_list ) {
 		G = _
-		if ( !::istype( G, ::Mob_Dead_Observer ) ) {
+		if ( !( G instanceof ::Mob_Dead_Observer ) ) {
 			continue
 		}
 		if ( !G.key || !G.client ) {
@@ -7581,7 +7127,7 @@ function pollCandidates( Question =null, jobbanType =null, gametypeCheck =null, 
 				continue
 			}
 		}
-		::spawn( 0, function() {
+		::thread.schedule( 0, function() {
 			G.write( ::Rsc(9) )
 			local _ = ::alert( G, Question, ::Txt( "Please answer in " ).item( poll_time / 10 ).str( " seconds!" ), "Yes", "No", null ) // Was a switch-case, sorry for the mess.
 			if ( _=="Yes" ) {
@@ -7601,11 +7147,11 @@ function pollCandidates( Question =null, jobbanType =null, gametypeCheck =null, 
 			return
 		})
 	}
-	::sleep( poll_time )
+	::thread.sleep( poll_time )
 	G = null
 	foreach (_ in candidates ) {
 		G = _
-		if ( !::istype( G, ::Mob_Dead_Observer ) ) {
+		if ( !( G instanceof ::Mob_Dead_Observer ) ) {
 			continue
 		}
 		if ( !G.key || !G.client ) {
@@ -7622,8 +7168,8 @@ function PoolOrNew( get_type =null, second_arg =null ) {
 	_default = ::GetFromPool( get_type, second_arg )
 	if ( !_default ) {
 		if ( ::ispath( get_type ) ) {
-			if ( ::istype( second_arg, ::List ) ) {
-				_default = get_type( "LIST_CALL", second_arg )
+			if ( second_arg instanceof ::List ) {
+				_default = get_type.lcall( second_arg )
 			} else {
 				_default = get_type( second_arg )
 			}
@@ -7642,28 +7188,28 @@ function pop( L =null ) {
 
 function possess( O =null ) {
 	local T
-	if ( ::istype( O, ::Ent_Singularity ) ) {
+	if ( O instanceof ::Ent_Singularity ) {
 		if ( ::config.forbid_singulo_possession ) {
-			::_USR_.write( "It is forbidden to possess singularities." )
+			::thread.user.write( "It is forbidden to possess singularities." )
 			return
 		}
 	}
 	T = ::get_turf( O )
 	if ( T ) {
-		::log_admin( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
-		::message_admins( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
+		::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
+		::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
 	} else {
-		::log_admin( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
-		::message_admins( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
+		::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
+		::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
 	}
-	if ( !::_USR_.control_object ) {
-		::_USR_.name_archive = ::_USR_.real_name
+	if ( !::thread.user.control_object ) {
+		::thread.user.name_archive = ::thread.user.real_name
 	}
-	::_USR_.loc = O
-	::_USR_.real_name = O.name
-	::_USR_.name = O.name
-	::_USR_.client.eye = O
-	::_USR_.control_object = O
+	::thread.user.loc = O
+	::thread.user.real_name = O.name
+	::thread.user.name = O.name
+	::thread.user.client.eye = O
+	::thread.user.control_object = O
 	::feedback_add_details( "admin_verb", "PO" )
 }
 
@@ -7682,7 +7228,7 @@ function power_list( T =null, source =null, d =null, unmarked =null, cable_only 
 		if ( AM == source ) {
 			continue
 		}
-		if ( !cable_only && ::istype( AM, ::Ent_Machinery_Power ) ) {
+		if ( !cable_only && AM instanceof ::Ent_Machinery_Power ) {
 			P = AM
 			if ( P.powernet == 0 ) {
 				continue
@@ -7692,7 +7238,7 @@ function power_list( T =null, source =null, d =null, unmarked =null, cable_only 
 					_default += P
 				}
 			}
-		} else if ( ::istype( AM, ::Ent_Structure_Cable ) ) {
+		} else if ( AM instanceof ::Ent_Structure_Cable ) {
 			C = AM
 			if ( !unmarked || !C.powernet ) {
 				if ( C.d1 == d || C.d2 == d ) {
@@ -7711,7 +7257,7 @@ function pretty_string_from_reagent_list( reagent_list =null ) {
 	R = null
 	foreach (_ in reagent_list ) {
 		R = _
-		if ( !::istype( R, ::Reagent ) ) {
+		if ( !( R instanceof ::Reagent ) ) {
 			continue
 		}
 		result += ::Txt().item( R.name ).str( ", " ).item( R.volume ).str( " | " )
@@ -7730,7 +7276,7 @@ function print_command_report( text =null, title =null ) {
 	C = null
 	foreach (_ in ::machines ) {
 		C = _
-		if ( !::istype( C, ::Ent_Machinery_Computer_Communications ) ) {
+		if ( !( C instanceof ::Ent_Machinery_Computer_Communications ) ) {
 			continue
 		}
 		if ( !( C.stat & 3 ) && C.z == 1 ) {
@@ -7778,7 +7324,7 @@ function priority_announce( text =null, title =null, sound =null, type =null ) {
 	M = null
 	foreach (_ in ::player_list ) {
 		M = _
-		if ( !::istype( M, ::Mob_NewPlayer ) && !M.ear_deaf ) {
+		if ( !( M instanceof ::Mob_NewPlayer ) && !M.ear_deaf ) {
 			M.write( announcement )
 			M.write( ::Sound( sound ) )
 		}
@@ -7787,12 +7333,12 @@ function priority_announce( text =null, title =null, sound =null, type =null ) {
 
 function projectile_trajectory( src_x =null, src_y =null, rotation =null, angle =null, power =null ) {
 	local power_x, power_y, time, distance, dest_x, dest_y
-	power_x = power * ::cos( angle )
-	power_y = power * ::sin( angle )
+	power_x = power * ::math.cos( angle )
+	power_y = power * ::math.sin( angle )
 	time = power_y * 2 / 10
 	distance = time * power_x
-	dest_x = src_x + distance * ::sin( rotation )
-	dest_y = src_y + distance * ::cos( rotation )
+	dest_x = src_x + distance * ::math.sin( rotation )
+	dest_y = src_y + distance * ::math.cos( rotation )
 	return ::ProjectileData( src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y )
 }
 
@@ -7806,13 +7352,13 @@ function propagate_network( O =null, PN =null ) {
 	while (index <= worklist.len) {
 		P = worklist[index]
 		index++
-		if ( ::istype( P, ::Ent_Structure_Cable ) ) {
+		if ( P instanceof ::Ent_Structure_Cable ) {
 			C = P
 			if ( C.powernet != PN ) {
 				PN.add_cable( C )
 			}
 			worklist = worklist | C.get_connections()
-		} else if ( P.anchored && ::istype( P, ::Ent_Machinery_Power ) ) {
+		} else if ( P.anchored && P instanceof ::Ent_Machinery_Power ) {
 			M = P
 			found_machines = found_machines | M
 		} else {
@@ -7822,7 +7368,7 @@ function propagate_network( O =null, PN =null ) {
 	PM = null
 	foreach (_ in found_machines ) {
 		PM = _
-		if ( !::istype( PM, ::Ent_Machinery_Power ) ) {
+		if ( !( PM instanceof ::Ent_Machinery_Power ) ) {
 			continue
 		}
 		if ( !PM.connect_to_network() ) {
@@ -7836,7 +7382,7 @@ function qdel( A =null ) {
 	if ( !A ) {
 		return
 	}
-	if ( !::istype( A, ::Datum ) ) {
+	if ( !( A instanceof ::Datum ) ) {
 		::del( A )
 		A = null
 	} else if ( ::isnull( A.gc_destroyed ) ) {
@@ -7871,7 +7417,7 @@ function qdel( A =null ) {
 }
 
 function qdeleted( A =null ) {
-	if ( !::istype( A, ::Datum ) ) {
+	if ( !( A instanceof ::Datum ) ) {
 		return 0
 	}
 	if ( A.gc_destroyed ) {
@@ -7888,7 +7434,7 @@ function radiation_pulse( epicenter =null, heavy_range =null, light_range =null,
 	if ( !epicenter || !severity ) {
 		return
 	}
-	if ( !::istype( epicenter, ::Tile ) ) {
+	if ( !( epicenter instanceof ::Tile ) ) {
 		epicenter = ::get_turf( epicenter.loc )
 	}
 	if ( log ) {
@@ -7902,7 +7448,7 @@ function radiation_pulse( epicenter =null, heavy_range =null, light_range =null,
 	T = null
 	foreach (_ in ::range( light_range, epicenter ) ) {
 		T = _
-		if ( !::istype( T, ::BaseStatic ) ) {
+		if ( !( T instanceof ::BaseStatic ) ) {
 			continue
 		}
 		distance = ::get_dist( epicenter, T )
@@ -7912,7 +7458,7 @@ function radiation_pulse( epicenter =null, heavy_range =null, light_range =null,
 		if ( distance < heavy_range ) {
 			T.$rad act( severity )
 		} else if ( distance == heavy_range ) {
-			if ( ::prob( 50 ) ) {
+			if ( ::random.chance( 50 ) ) {
 				T.$rad act( severity )
 			} else {
 				T.$rad act( light_severity )
@@ -7930,10 +7476,10 @@ function ran_zone( zone =null, probability =null ) {
 		probability = 80
 	}
 	zone = ::check_zone( zone )
-	if ( ::prob( probability ) ) {
+	if ( ::random.chance( probability ) ) {
 		return zone
 	}
-	t = ::rand( 1, 18 )
+	t = ::random.int( 1, 18 )
 	local _ = t // Was a switch-case, sorry for the mess.
 	if ( 3<=_&&_<=6 ) {
 		return "l_arm"
@@ -7956,7 +7502,7 @@ function randmutb( M =null ) {
 	if ( !M.$has dna() ) {
 		return
 	}
-	HM = ::pick_list( ( ::bad_mutations | ::not_good_mutations ) - ::mutations_list.Monkified )
+	HM = ::random.pick( ( ::bad_mutations | ::not_good_mutations ) - ::mutations_list.Monkified )
 	_default = HM.force_give( M )
 	return _default
 }
@@ -7966,7 +7512,7 @@ function randmutg( M =null ) {
 	if ( !M.$has dna() ) {
 		return
 	}
-	HM = ::pick_list( ::good_mutations )
+	HM = ::random.pick( ::good_mutations )
 	_default = HM.force_give( M )
 	return _default
 }
@@ -7976,14 +7522,14 @@ function randmuti( M =null ) {
 	if ( !M.$has dna() ) {
 		return
 	}
-	num = ::rand( 1, 7 )
+	num = ::random.int( 1, 7 )
 	newdna = ::setblock( M.dna.uni_identity, num, ::random_string( 3, ::hex_characters ) )
 	M.dna.uni_identity = newdna
 	return
 }
 
 function random_blood_type(  ) {
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	local _ = ::random.int(0,65535) // Was a weighted pick, sorry for the mess.
 	if ( _ < 2674 ) { _ = "O-" }
 	else if ( _ < 26748 ) { _ = "O+" }
 	else if ( _ < 28754 ) { _ = "A-" }
@@ -7992,12 +7538,11 @@ function random_blood_type(  ) {
 	else if ( _ < 61520 ) { _ = "B+" }
 	else if ( _ < 62188 ) { _ = "AB-" }
 	else  { _ = "AB+" }
-
 	return _
 }
 
 function random_eye_color(  ) {
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
+	local _ = ::random.int(0,65535) // Was a weighted pick, sorry for the mess.
 	if ( _ < 14246 ) { _ = "brown" }
 	else if ( _ < 28492 ) { _ = "hazel" }
 	else if ( _ < 42738 ) { _ = "grey" }
@@ -8005,22 +7550,13 @@ function random_eye_color(  ) {
 	else if ( _ < 64108 ) { _ = "green" }
 	else if ( _ < 64820 ) { _ = "amber" }
 	else  { _ = "albino" }
-
 	local _ = _ // Was a switch-case, sorry for the mess.
 	if ( _=="brown" ) {
 		return "630"
 	} else if ( _=="hazel" ) {
 		return "542"
 	} else if ( _=="grey" ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 9362 ) { _ = "666" }
-		else if ( _ < 18724 ) { _ = "777" }
-		else if ( _ < 28086 ) { _ = "888" }
-		else if ( _ < 37448 ) { _ = "999" }
-		else if ( _ < 46810 ) { _ = "aaa" }
-		else if ( _ < 56172 ) { _ = "bbb" }
-		else  { _ = "ccc" }
-
+		local _ = ::random.pick([ "666", "777", "888", "999", "aaa", "bbb", "ccc" ])
 		return _
 	} else if ( _=="blue" ) {
 		return "36c"
@@ -8029,36 +7565,9 @@ function random_eye_color(  ) {
 	} else if ( _=="amber" ) {
 		return "fc0"
 	} else if ( _=="albino" ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 16383 ) { _ = "c" }
-		else if ( _ < 32766 ) { _ = "d" }
-		else if ( _ < 49149 ) { _ = "e" }
-		else  { _ = "f" }
-
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 6553 ) { _ = "0" }
-		else if ( _ < 13106 ) { _ = "1" }
-		else if ( _ < 19659 ) { _ = "2" }
-		else if ( _ < 26212 ) { _ = "3" }
-		else if ( _ < 32765 ) { _ = "4" }
-		else if ( _ < 39318 ) { _ = "5" }
-		else if ( _ < 45871 ) { _ = "6" }
-		else if ( _ < 52424 ) { _ = "7" }
-		else if ( _ < 58977 ) { _ = "8" }
-		else  { _ = "9" }
-
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 6553 ) { _ = "0" }
-		else if ( _ < 13106 ) { _ = "1" }
-		else if ( _ < 19659 ) { _ = "2" }
-		else if ( _ < 26212 ) { _ = "3" }
-		else if ( _ < 32765 ) { _ = "4" }
-		else if ( _ < 39318 ) { _ = "5" }
-		else if ( _ < 45871 ) { _ = "6" }
-		else if ( _ < 52424 ) { _ = "7" }
-		else if ( _ < 58977 ) { _ = "8" }
-		else  { _ = "9" }
-
+		local _ = ::random.pick([ "c", "d", "e", "f" ])
+		local _ = ::random.pick([ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ])
+		local _ = ::random.pick([ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ])
 		return _ + _ + _
 	} else {
 		return "000"
@@ -8068,11 +7577,11 @@ function random_eye_color(  ) {
 function random_facial_hair_style( gender =null ) {
 	local _ = gender // Was a switch-case, sorry for the mess.
 	if ( _=="male" ) {
-		return ::pick_list( ::facial_hair_styles_male_list )
+		return ::random.pick( ::facial_hair_styles_male_list )
 	} else if ( _=="female" ) {
-		return ::pick_list( ::facial_hair_styles_female_list )
+		return ::random.pick( ::facial_hair_styles_female_list )
 	} else {
-		return ::pick_list( ::facial_hair_styles_list )
+		return ::random.pick( ::facial_hair_styles_list )
 	}
 }
 
@@ -8101,27 +7610,18 @@ function random_features(  ) {
 	if ( !::body_markings_list.len ) {
 		::init_sprite_accessory_subtypes( ::SpriteAccessory_BodyMarkings, ::body_markings_list )
 	}
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 8191 ) { _ = "FFFFFF" }
-	else if ( _ < 16382 ) { _ = "7F7F7F" }
-	else if ( _ < 24573 ) { _ = "7FFF7F" }
-	else if ( _ < 32764 ) { _ = "7F7FFF" }
-	else if ( _ < 40955 ) { _ = "FF7F7F" }
-	else if ( _ < 49146 ) { _ = "7FFFFF" }
-	else if ( _ < 57337 ) { _ = "FF7FFF" }
-	else  { _ = "FFFF7F" }
-
-	return ::List({ ["body_markings"]= ::pick_list( ::body_markings_list ), ["spines"]= ::pick_list( ::spines_list ), ["frills"]= ::pick_list( ::frills_list ), ["ears"]= "None", ["horns"]= ::pick_list( ::horns_list ), ["snout"]= ::pick_list( ::snouts_list ), ["tail_human"]= "None", ["tail_lizard"]= ::pick_list( ::tails_list_lizard ), ["mcolor"]= _ })
+	local _ = ::random.pick([ "FFFFFF", "7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F" ])
+	return ::List({ ["body_markings"]= ::random.pick( ::body_markings_list ), ["spines"]= ::random.pick( ::spines_list ), ["frills"]= ::random.pick( ::frills_list ), ["ears"]= "None", ["horns"]= ::random.pick( ::horns_list ), ["snout"]= ::random.pick( ::snouts_list ), ["tail_human"]= "None", ["tail_lizard"]= ::random.pick( ::tails_list_lizard ), ["mcolor"]= _ })
 }
 
 function random_hair_style( gender =null ) {
 	local _ = gender // Was a switch-case, sorry for the mess.
 	if ( _=="male" ) {
-		return ::pick_list( ::hair_styles_male_list )
+		return ::random.pick( ::hair_styles_male_list )
 	} else if ( _=="female" ) {
-		return ::pick_list( ::hair_styles_female_list )
+		return ::random.pick( ::hair_styles_female_list )
 	} else {
-		return ::pick_list( ::hair_styles_list )
+		return ::random.pick( ::hair_styles_list )
 	}
 }
 
@@ -8130,7 +7630,7 @@ function random_short_color(  ) {
 }
 
 function random_skin_tone(  ) {
-	return ::pick_list( ::skin_tones )
+	return ::random.pick( ::skin_tones )
 }
 
 function random_socks( gender =null ) {
@@ -8139,11 +7639,11 @@ function random_socks( gender =null ) {
 	}
 	local _ = gender // Was a switch-case, sorry for the mess.
 	if ( _=="male" ) {
-		return ::pick_list( ::socks_m )
+		return ::random.pick( ::socks_m )
 	} else if ( _=="female" ) {
-		return ::pick_list( ::socks_f )
+		return ::random.pick( ::socks_f )
 	} else {
-		return ::pick_list( ::socks_list )
+		return ::random.pick( ::socks_list )
 	}
 }
 
@@ -8151,10 +7651,10 @@ function random_step( AM =null, steps =null, chance =null ) {
 	local initial_chance
 	initial_chance = chance
 	while (steps > 0) {
-		if ( ::prob( chance ) ) {
-			::step( AM, ::pick_list( ::alldirs ) )
+		if ( ::random.chance( chance ) ) {
+			::step( AM, ::random.pick( ::alldirs ) )
 		}
-		chance = ::max( chance - initial_chance / steps, 0 )
+		chance = ::math.max( chance - initial_chance / steps, 0 )
 		steps--
 	}
 }
@@ -8165,7 +7665,7 @@ function random_string( length =null, characters =null ) {
 	i = null
 	i = 1
 	while (i <= length) {
-		_default += ::pick_list( characters )
+		_default += ::random.pick( characters )
 		i++
 	}
 	return _default
@@ -8177,11 +7677,11 @@ function random_undershirt( gender =null ) {
 	}
 	local _ = gender // Was a switch-case, sorry for the mess.
 	if ( _=="male" ) {
-		return ::pick_list( ::undershirt_m )
+		return ::random.pick( ::undershirt_m )
 	} else if ( _=="female" ) {
-		return ::pick_list( ::undershirt_f )
+		return ::random.pick( ::undershirt_f )
 	} else {
-		return ::pick_list( ::undershirt_list )
+		return ::random.pick( ::undershirt_list )
 	}
 }
 
@@ -8191,11 +7691,11 @@ function random_underwear( gender =null ) {
 	}
 	local _ = gender // Was a switch-case, sorry for the mess.
 	if ( _=="male" ) {
-		return ::pick_list( ::underwear_m )
+		return ::random.pick( ::underwear_m )
 	} else if ( _=="female" ) {
-		return ::pick_list( ::underwear_f )
+		return ::random.pick( ::underwear_f )
 	} else {
-		return ::pick_list( ::underwear_list )
+		return ::random.pick( ::underwear_list )
 	}
 }
 
@@ -8225,9 +7725,9 @@ function random_unique_name( gender =null, attempts_to_find_unique_name =null ) 
 	i = 1
 	while (i <= attempts_to_find_unique_name) {
 		if ( gender == ::FEMALE ) {
-			_default = ::capitalize( ::pick_list( ::first_names_female ) ) + " " + ::capitalize( ::pick_list( ::last_names ) )
+			_default = ::capitalize( ::random.pick( ::first_names_female ) ) + " " + ::capitalize( ::random.pick( ::last_names ) )
 		} else {
-			_default = ::capitalize( ::pick_list( ::first_names_male ) ) + " " + ::capitalize( ::pick_list( ::last_names ) )
+			_default = ::capitalize( ::random.pick( ::first_names_male ) ) + " " + ::capitalize( ::random.pick( ::last_names ) )
 		}
 		if ( i != attempts_to_find_unique_name && !::findname( _default ) ) {
 			break
@@ -8243,45 +7743,10 @@ function randomColor( mode =null ) {
 	}
 	local _ = mode // Was a switch-case, sorry for the mess.
 	if ( _==0 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 3640 ) { _ = "white" }
-		else if ( _ < 7280 ) { _ = "black" }
-		else if ( _ < 10920 ) { _ = "gray" }
-		else if ( _ < 14560 ) { _ = "red" }
-		else if ( _ < 18200 ) { _ = "green" }
-		else if ( _ < 21840 ) { _ = "blue" }
-		else if ( _ < 25480 ) { _ = "brown" }
-		else if ( _ < 29120 ) { _ = "yellow" }
-		else if ( _ < 32760 ) { _ = "orange" }
-		else if ( _ < 36400 ) { _ = "darkred" }
-		else if ( _ < 40040 ) { _ = "crimson" }
-		else if ( _ < 43680 ) { _ = "lime" }
-		else if ( _ < 47320 ) { _ = "darkgreen" }
-		else if ( _ < 50960 ) { _ = "cyan" }
-		else if ( _ < 54600 ) { _ = "navy" }
-		else if ( _ < 58240 ) { _ = "teal" }
-		else if ( _ < 61880 ) { _ = "purple" }
-		else  { _ = "indigo" }
-
+		local _ = ::random.pick([ "white", "black", "gray", "red", "green", "blue", "brown", "yellow", "orange", "darkred", "crimson", "lime", "darkgreen", "cyan", "navy", "teal", "purple", "indigo" ])
 		return _
 	} else if ( _==1 ) {
-		local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-		if ( _ < 4369 ) { _ = "red" }
-		else if ( _ < 8738 ) { _ = "green" }
-		else if ( _ < 13107 ) { _ = "blue" }
-		else if ( _ < 17476 ) { _ = "brown" }
-		else if ( _ < 21845 ) { _ = "yellow" }
-		else if ( _ < 26214 ) { _ = "orange" }
-		else if ( _ < 30583 ) { _ = "darkred" }
-		else if ( _ < 34952 ) { _ = "crimson" }
-		else if ( _ < 39321 ) { _ = "lime" }
-		else if ( _ < 43690 ) { _ = "darkgreen" }
-		else if ( _ < 48059 ) { _ = "cyan" }
-		else if ( _ < 52428 ) { _ = "navy" }
-		else if ( _ < 56797 ) { _ = "teal" }
-		else if ( _ < 61166 ) { _ = "purple" }
-		else  { _ = "indigo" }
-
+		local _ = ::random.pick([ "red", "green", "blue", "brown", "yellow", "orange", "darkred", "crimson", "lime", "darkgreen", "cyan", "navy", "teal", "purple", "indigo" ])
 		return _
 	} else {
 		return "white"
@@ -8289,10 +7754,7 @@ function randomColor( mode =null ) {
 }
 
 function randomize_human( H =null ) {
-	local _ = {PICK_RANDOM 0 - 65535} // Was a pick, sorry for the mess.
-	if ( _ < 32767 ) { _ = ::MALE }
-	else  { _ = ::FEMALE }
-
+	local _ = ::random.pick([ ::MALE, ::FEMALE ])
 	H.gender = _
 	H.real_name = ::random_unique_name( H.gender )
 	H.name = H.real_name
@@ -8409,7 +7871,7 @@ function recursive_hear_check( O =null ) {
 		B = null
 		foreach (_ in A ) {
 			B = _
-			if ( !::istype( B, ::BaseStatic ) ) {
+			if ( !( B instanceof ::BaseStatic ) ) {
 				continue
 			}
 			if ( !processed_list[B] ) {
@@ -8448,7 +7910,7 @@ function recursive_mob_check( O =null, client_check =null, sight_check =null, in
 			if ( sight_check && !::isInSight( A_tmp, O ) ) {
 				passed = 0
 			}
-		} else if ( include_radio && ::istype( A, ::Ent_Item_Device_Radio ) ) {
+		} else if ( include_radio && A instanceof ::Ent_Item_Device_Radio ) {
 			passed = 1
 			if ( sight_check && !::isInSight( A, O ) ) {
 				passed = 0
@@ -8460,7 +7922,7 @@ function recursive_mob_check( O =null, client_check =null, sight_check =null, in
 		B = null
 		foreach (_ in A ) {
 			B = _
-			if ( !::istype( B, ::BaseStatic ) ) {
+			if ( !( B instanceof ::BaseStatic ) ) {
 				continue
 			}
 			if ( !processed_list[B] ) {
@@ -8600,17 +8062,17 @@ function reject_bad_text( text =null, max_length =null ) {
 
 function release( O =null ) {
 	local H
-	if ( ::_USR_.control_object && ::_USR_.name_archive ) {
-		::_USR_.real_name = ::_USR_.name_archive
-		::_USR_.name = ::_USR_.real_name
-		if ( ::istype( ::_USR_, ::Mob_Living_Carbon_Human ) ) {
-			H = ::_USR_
+	if ( ::thread.user.control_object && ::thread.user.name_archive ) {
+		::thread.user.real_name = ::thread.user.name_archive
+		::thread.user.name = ::thread.user.real_name
+		if ( ::thread.user instanceof ::Mob_Living_Carbon_Human ) {
+			H = ::thread.user
 			H.name = H.$get visible name()
 		}
 	}
-	::_USR_.loc = O.loc
-	::_USR_.client.eye = ::_USR_
-	::_USR_.control_object = null
+	::thread.user.loc = O.loc
+	::thread.user.client.eye = ::thread.user
+	::thread.user.control_object = null
 	::feedback_add_details( "admin_verb", "RO" )
 }
 
@@ -8702,8 +8164,8 @@ function rgb2hsl( red =null, green =null, blue =null ) {
 	red /= 255
 	green /= 255
 	blue /= 255
-	max = ::max( red, green, blue )
-	min = ::min( red, green, blue )
+	max = ::math.max( red, green, blue )
+	min = ::math.min( red, green, blue )
 	range = max - min
 	hue = 0
 	saturation = 0
@@ -8747,7 +8209,7 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 	H = null
 	foreach (_ in ::player_list ) {
 		H = _
-		if ( !::istype( H, ::Mob_Living_Carbon_Human ) ) {
+		if ( !( H instanceof ::Mob_Living_Carbon_Human ) ) {
 			continue
 		}
 		if ( H.stat == 2 || !H.client ) {
@@ -8758,7 +8220,7 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 				continue
 			}
 		}
-		if ( ::prob( survivor_probability ) && !( H.mind in ::ticker.mode.traitors ) ) {
+		if ( ::random.chance( survivor_probability ) && !( H.mind in ::ticker.mode.traitors ) ) {
 			::ticker.mode.traitors += H.mind
 			guns = ::Objective_SummonGuns()
 			guns.owner = H.mind
@@ -8773,16 +8235,16 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 			OBJ = null
 			foreach (_ in H.mind.objectives ) {
 				OBJ = _
-				if ( !::istype( OBJ, ::Objective ) ) {
+				if ( !( OBJ instanceof ::Objective ) ) {
 					continue
 				}
 				H.write( ::Txt( "<B>Objective #" ).item( obj_count ).str( "</B>: " ).item( OBJ.explanation_text ) )
 				obj_count++
 			}
 		}
-		randomizeguns = ::pick_list( gunslist )
-		randomizemagic = ::pick_list( magiclist )
-		randomizemagicspecial = ::pick_list( magicspeciallist )
+		randomizeguns = ::random.pick( gunslist )
+		randomizemagic = ::random.pick( magiclist )
+		randomizemagicspecial = ::random.pick( magicspeciallist )
 		if ( !summon_type ) {
 			local _ = randomizeguns // Was a switch-case, sorry for the mess.
 			if ( _=="taser" ) {
@@ -9024,8 +8486,8 @@ function RoundHealth( health =null ) {
 }
 
 function safepick( L =null ) {
-	if ( ::istype( L, ::List ) && L.len ) {
-		return ::pick_list( L )
+	if ( L instanceof ::List && L.len ) {
+		return ::random.pick( L )
 	}
 }
 
@@ -9037,9 +8499,9 @@ function sanitize( t =null, repl_chars =null ) {
 }
 
 function sanitize_frequency( f =null ) {
-	f = ::round( f )
-	f = ::max( 1441, f )
-	f = ::min( 1489, f )
+	f = ::math.round( f )
+	f = ::math.max( 1441, f )
+	f = ::math.min( 1489, f )
 	if ( f % 2 == 0 ) {
 		f += 1
 	}
@@ -9091,8 +8553,8 @@ function sanitize_hexcolor( color =null, desired_format =null, include_crunch =n
 function sanitize_ooccolor( color =null ) {
 	local HSL, RGB
 	HSL = ::rgb2hsl( ::hex2num( ::copytext( color, 2, 4 ) ), ::hex2num( ::copytext( color, 4, 6 ) ), ::hex2num( ::copytext( color, 6, 8 ) ) )
-	HSL[3] = ::min( HSL[3], 0.4000000059604645 )
-	RGB = ::get_dist_euclidian( "LIST_CALL", HSL )
+	HSL[3] = ::math.min( HSL[3], 0.4000000059604645 )
+	RGB = ::get_dist_euclidian.lcall( HSL )
 	return ::Txt( "#" ).item( ::num2hex( RGB[1], 2 ) ).item( ::num2hex( RGB[2], 2 ) ).item( ::num2hex( RGB[3], 2 ) )
 }
 
@@ -9127,8 +8589,8 @@ function screen_loc2turf( scr_loc =null, origin =null ) {
 	tY = tY[1]
 	tX = ::text2list( tX[1], ":" )
 	tX = tX[1]
-	tX = ::max( 1, ::min( ::game.maxx, origin.x + ( ::text2num( tX ) - ( ::game.view + 1 ) ) ) )
-	tY = ::max( 1, ::min( ::game.maxy, origin.y + ( ::text2num( tY ) - ( ::game.view + 1 ) ) ) )
+	tX = ::math.max( 1, ::math.min( ::game.maxx, origin.x + ( ::text2num( tX ) - ( ::game.view + 1 ) ) ) )
+	tY = ::math.max( 1, ::math.min( ::game.maxy, origin.y + ( ::text2num( tY ) - ( ::game.view + 1 ) ) ) )
 	return ::locate3( tX, tY, tZ )
 }
 
@@ -9182,7 +8644,7 @@ function SDQL_expression( object =null, expression =null, start =null ) {
 			} else if ( _=="or" || _=="||" ) {
 				result = result || val
 			} else {
-				::_USR_.write( ::Txt( "<span class='danger'>SDQL2: Unknown op " ).item( op ).str( "</span>" ) )
+				::thread.user.write( ::Txt( "<span class='danger'>SDQL2: Unknown op " ).item( op ).str( "</span>" ) )
 				result = null
 			}
 		} else {
@@ -9219,7 +8681,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !::istype( d, ::Datum ) ) {
+			if ( !( d instanceof ::Datum ) ) {
 				continue
 			}
 			out += d
@@ -9231,7 +8693,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9239,7 +8701,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9247,10 +8709,10 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !::istype( d, ::Entity ) ) {
+			if ( !( d instanceof ::Entity ) ) {
 				continue
 			}
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9258,7 +8720,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9266,10 +8728,10 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !::istype( d, ::BaseStatic ) ) {
+			if ( !( d instanceof ::BaseStatic ) ) {
 				continue
 			}
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9277,10 +8739,10 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !::istype( d, ::Datum ) ) {
+			if ( !( d instanceof ::Datum ) ) {
 				continue
 			}
-			if ( ::istype( d, type ) ) {
+			if ( d instanceof type ) {
 				out += d
 			}
 		}
@@ -9314,7 +8776,7 @@ function SDQL_parse( query_list =null ) {
 				querys[querys_pos] = parsed_tree
 				querys_pos++
 			} else {
-				::_USR_.write( ::Txt( "<span class='danger'>Parsing error on " ).st_nd_rd( querys_pos ).str( " query. Nothing was executed.</span>" ) )
+				::thread.user.write( ::Txt( "<span class='danger'>Parsing error on " ).st_nd_rd( querys_pos ).str( " query. Nothing was executed.</span>" ) )
 				return ::List()
 			}
 			query_tree = ::List()
@@ -9343,20 +8805,20 @@ function SDQL_testout( query_tree =null, indent =null ) {
 	item = null
 	foreach (_ in query_tree ) {
 		item = _
-		if ( ::istype( item, ::List ) ) {
-			::_USR_.write( ::Txt().item( spaces ).str( "(" ) )
+		if ( item instanceof ::List ) {
+			::thread.user.write( ::Txt().item( spaces ).str( "(" ) )
 			::SDQL_testout( item, indent + 1 )
-			::_USR_.write( ::Txt().item( spaces ).str( ")" ) )
+			::thread.user.write( ::Txt().item( spaces ).str( ")" ) )
 		} else {
-			::_USR_.write( ::Txt().item( spaces ).item( item ) )
+			::thread.user.write( ::Txt().item( spaces ).item( item ) )
 		}
 		if ( !::isnum( item ) && query_tree[item] ) {
-			if ( ::istype( query_tree[item], ::List ) ) {
-				::_USR_.write( ::Txt().item( spaces ).str( "    (" ) )
+			if ( query_tree[item] instanceof ::List ) {
+				::thread.user.write( ::Txt().item( spaces ).str( "    (" ) )
 				::SDQL_testout( query_tree[item], indent + 2 )
-				::_USR_.write( ::Txt().item( spaces ).str( "    )" ) )
+				::thread.user.write( ::Txt().item( spaces ).str( "    )" ) )
 			} else {
-				::_USR_.write( ::Txt().item( spaces ).str( "    " ).item( query_tree[item] ) )
+				::thread.user.write( ::Txt().item( spaces ).str( "    " ).item( query_tree[item] ) )
 			}
 		}
 	}
@@ -9372,7 +8834,7 @@ function SDQL_value( object =null, expression =null, start =null ) {
 	if ( i > expression.len ) {
 		return ::List({ ["i"]= i, ["val"]= null })
 	}
-	if ( ::istype( expression[i], ::List ) ) {
+	if ( expression[i] instanceof ::List ) {
 		val = ::SDQL_expression( object, expression[i] )
 	} else if ( expression[i] == "!" ) {
 		ret = ::SDQL_value( object, expression, i + 1 )
@@ -9456,7 +8918,7 @@ function SDQL2_tokenize( query_text =null ) {
 			}
 		} else if ( char == "'" ) {
 			if ( word != "" ) {
-				::_USR_.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) )
+				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
 			word = "'"
@@ -9476,14 +8938,14 @@ function SDQL2_tokenize( query_text =null ) {
 				i++
 			}
 			if ( i > len ) {
-				::_USR_.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
+				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
 			query_list += ::Txt().item( word ).str( "'" )
 			word = ""
 		} else if ( char == "\"" ) {
 			if ( word != "" ) {
-				::_USR_.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) )
+				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
 			word = "\""
@@ -9503,7 +8965,7 @@ function SDQL2_tokenize( query_text =null ) {
 				i++
 			}
 			if ( i > len ) {
-				::_USR_.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
+				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
 			query_list += ::Txt().item( word ).str( "\"" )
@@ -9537,12 +8999,12 @@ function seedify( O =null, t_max =null, extractor =null ) {
 	t_amount = 0
 	if ( t_max == -1 ) {
 		if ( extractor ) {
-			t_max = ::rand( 1, 4 ) * extractor.seed_multiplier
+			t_max = ::random.int( 1, 4 ) * extractor.seed_multiplier
 		} else {
-			t_max = ::rand( 1, 4 )
+			t_max = ::random.int( 1, 4 )
 		}
 	}
-	if ( ::istype( O, ::Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown ) ) {
+	if ( O instanceof ::Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown ) {
 		F = O
 		while (t_amount < t_max) {
 			t_prod = F.seed( O.loc, O )
@@ -9550,13 +9012,13 @@ function seedify( O =null, t_max =null, extractor =null ) {
 			t_prod.endurance = F.endurance
 			t_prod.maturation = F.maturation
 			t_prod.production = F.production
-			t_prod.yield = F.yield
+			t_prod._yield = F._yield
 			t_prod.potency = F.potency
 			t_amount++
 		}
 		::qdel( O )
 		return 1
-	} else if ( ::istype( O, ::Ent_Item_Weapon_Grown ) ) {
+	} else if ( O instanceof ::Ent_Item_Weapon_Grown ) {
 		F = O
 		if ( F.seed ) {
 			while (t_amount < t_max) {
@@ -9565,7 +9027,7 @@ function seedify( O =null, t_max =null, extractor =null ) {
 				t_prod.endurance = F.endurance
 				t_prod.maturation = F.maturation
 				t_prod.production = F.production
-				t_prod.yield = F.yield
+				t_prod._yield = F._yield
 				t_prod.potency = F.potency
 				t_amount++
 			}
@@ -9586,7 +9048,7 @@ function select_active_ai( user =null ) {
 		if ( user ) {
 			_default = ::input( user, "AI signals detected:", "AI Selection", ais[1], ais, 0 )
 		} else {
-			_default = ::pick_list( ais )
+			_default = ::random.pick( ais )
 		}
 	}
 	return _default
@@ -9599,7 +9061,7 @@ function select_active_ai_with_fewest_borgs(  ) {
 	A = null
 	foreach (_ in active ) {
 		A = _
-		if ( !::istype( A, ::Mob_Living_Silicon_Ai ) ) {
+		if ( !( A instanceof ::Mob_Living_Silicon_Ai ) ) {
 			continue
 		}
 		if ( !selected || selected.connected_robots.len > A.connected_robots.len ) {
@@ -9653,7 +9115,7 @@ function send2irc_adminless_only( source =null, msg =null, requiredflags =null )
 	X = null
 	foreach (_ in ::admins ) {
 		X = _
-		if ( !::istype( X, BAD_GOOFY_EXPANSION??? ) ) {
+		if ( !( X instanceof BAD_GOOFY_EXPANSION??? ) ) {
 			continue
 		}
 		admin_number_total++
@@ -9705,7 +9167,7 @@ function set_security_level( level =null ) {
 			FA = null
 			foreach (_ in ::machines ) {
 				FA = _
-				if ( !::istype( FA, ::Ent_Machinery_Firealarm ) ) {
+				if ( !( FA instanceof ::Ent_Machinery_Firealarm ) ) {
 					continue
 				}
 				if ( FA.z == 1 ) {
@@ -9722,7 +9184,7 @@ function set_security_level( level =null ) {
 			FA = null
 			foreach (_ in ::machines ) {
 				FA = _
-				if ( !::istype( FA, ::Ent_Machinery_Firealarm ) ) {
+				if ( !( FA instanceof ::Ent_Machinery_Firealarm ) ) {
 					continue
 				}
 				if ( FA.z == 1 ) {
@@ -9739,7 +9201,7 @@ function set_security_level( level =null ) {
 			FA = null
 			foreach (_ in ::machines ) {
 				FA = _
-				if ( !::istype( FA, ::Ent_Machinery_Firealarm ) ) {
+				if ( !( FA instanceof ::Ent_Machinery_Firealarm ) ) {
 					continue
 				}
 				if ( FA.z == 1 ) {
@@ -9749,7 +9211,7 @@ function set_security_level( level =null ) {
 			pod = null
 			foreach (_ in ::machines ) {
 				pod = _
-				if ( !::istype( pod, ::Ent_Machinery_Computer_Shuttle_Pod ) ) {
+				if ( !( pod instanceof ::Ent_Machinery_Computer_Shuttle_Pod ) ) {
 					continue
 				}
 				pod.admin_controlled = 0
@@ -9760,7 +9222,7 @@ function set_security_level( level =null ) {
 			FA = null
 			foreach (_ in ::machines ) {
 				FA = _
-				if ( !::istype( FA, ::Ent_Machinery_Firealarm ) ) {
+				if ( !( FA instanceof ::Ent_Machinery_Firealarm ) ) {
 					continue
 				}
 				if ( FA.z == 1 ) {
@@ -9770,7 +9232,7 @@ function set_security_level( level =null ) {
 			pod = null
 			foreach (_ in ::machines ) {
 				pod = _
-				if ( !::istype( pod, ::Ent_Machinery_Computer_Shuttle_Pod ) ) {
+				if ( !( pod instanceof ::Ent_Machinery_Computer_Shuttle_Pod ) ) {
 					continue
 				}
 				pod.admin_controlled = 0
@@ -9856,7 +9318,7 @@ function setup_map_transitions(  ) {
 	pnt = null
 	foreach (_ in grid ) {
 		pnt = _
-		if ( !::istype( pnt, ::Point ) ) {
+		if ( !( pnt instanceof ::Point ) ) {
 			continue
 		}
 		pnt.$set neigbours( point_grid )
@@ -9866,7 +9328,7 @@ function setup_map_transitions(  ) {
 	used_points = ::List()
 	grid.$Cut()
 	while (SLS.len) {
-		D = ::pick_list( SLS )
+		D = ::random.pick( SLS )
 		SLS.$Remove( D )
 		D.xi = P.x
 		D.yi = P.y
@@ -9875,7 +9337,7 @@ function setup_map_transitions(  ) {
 		used_points = used_points | P
 		possible_points.$Remove( used_points )
 		D.set_neigbours( used_points )
-		P = ::pick_list( possible_points )
+		P = ::random.pick( possible_points )
 		grid[::Txt().item( D.z_value )] = D
 	}
 	A = null
@@ -9886,7 +9348,7 @@ function setup_map_transitions(  ) {
 	S = null
 	foreach (_ in ::game ) {
 		S = _
-		if ( !::istype( S, ::Tile_Space ) ) {
+		if ( !( S instanceof ::Tile_Space ) ) {
 			continue
 		}
 		if ( S.x <= 7 ) {
@@ -9981,11 +9443,11 @@ function SetViruses( R =null, data =null ) {
 	local preserve, A
 	if ( data ) {
 		preserve = ::List()
-		if ( ::istype( data, ::List ) && data.viruses ) {
+		if ( data instanceof ::List && data.viruses ) {
 			A = null
 			foreach (_ in data.viruses ) {
 				A = _
-				if ( !::istype( A, ::Disease ) ) {
+				if ( !( A instanceof ::Disease ) ) {
 					continue
 				}
 				preserve += A.Copy()
@@ -10003,7 +9465,7 @@ function shake_camera( M =null, duration =null, strength =null ) {
 	if ( strength == null ) {
 		strength = 1
 	}
-	::spawn( 0, function() {
+	::thread.schedule( 0, function() {
 		if ( !M || !M.client || M.shakecamera ) {
 			return
 		}
@@ -10012,8 +9474,8 @@ function shake_camera( M =null, duration =null, strength =null ) {
 		x = 0
 		while (x < duration) {
 			if ( M && M.client ) {
-				M.client.eye = ::locate3( ::dd_range( 1, M.loc.x + ::rand( -strength, strength ), ::game.maxx ), ::dd_range( 1, M.loc.y + ::rand( -strength, strength ), ::game.maxy ), M.loc.z )
-				::sleep( 1 )
+				M.client.eye = ::locate3( ::dd_range( 1, M.loc.x + ::random.int( -strength, strength ), ::game.maxx ), ::dd_range( 1, M.loc.y + ::random.int( -strength, strength ), ::game.maxy ), M.loc.z )
+				::thread.sleep( 1 )
 			}
 			x++
 		}
@@ -10102,7 +9564,7 @@ function show_note( target_ckey =null, index =null, linkless =null ) {
 		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
 		output += ruler
 	}
-	::browse( ::_USR_, output, "window=show_notes;size=900x500" )
+	::browse( ::thread.user, output, "window=show_notes;size=900x500" )
 }
 
 function shuffle( L =null ) {
@@ -10114,14 +9576,14 @@ function shuffle( L =null ) {
 	i = null
 	i = 1
 	while (i < L.len) {
-		L.$Swap( i, ::rand( i, L.len ) )
+		L.$Swap( i, ::random.int( i, L.len ) )
 		i++
 	}
 	return L
 }
 
 function sign( x =null ) {
-	return x != 0 ? x / ::abs( x ) : 0
+	return x != 0 ? x / ::math.abs( x ) : 0
 }
 
 function SimplifyDegrees( degrees =null ) {
@@ -10141,7 +9603,7 @@ function slur( n =null ) {
 	newletter = ""
 	while (counter >= 1) {
 		newletter = ::copytext( phrase, leng - counter + 1, leng - counter + 2 )
-		if ( ::rand( 1, 3 ) == 3 ) {
+		if ( ::random.int( 1, 3 ) == 3 ) {
 			if ( ::lowertext( newletter ) == "o" ) {
 				newletter = "u"
 			}
@@ -10158,7 +9620,7 @@ function slur( n =null ) {
 				newletter = "k"
 			}
 		}
-		if ( ::rand( 1, 20 ) == 20 ) {
+		if ( ::random.int( 1, 20 ) == 20 ) {
 			if ( newletter == " " ) {
 				newletter = "...huuuhhh..."
 			}
@@ -10166,7 +9628,7 @@ function slur( n =null ) {
 				newletter = " *BURP*."
 			}
 		}
-		local _ = ::rand( 1, 20 ) // Was a switch-case, sorry for the mess.
+		local _ = ::random.int( 1, 20 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			newletter += "'"
 		} else if ( _==10 ) {
@@ -10185,7 +9647,7 @@ function smooth_icon( A =null ) {
 	if ( ::qdeleted( A ) ) {
 		return
 	}
-	::spawn( 0, function() {
+	::thread.schedule( 0, function() {
 		if ( A && A.smooth ) {
 			adjacencies = ::calculate_adjacencies( A )
 			A.$clear smooth overlays()
@@ -10207,7 +9669,7 @@ function smooth_icon_neighbors( A =null ) {
 	T = null
 	foreach (_ in ::orange( 1, A ) ) {
 		T = _
-		if ( !::istype( T, ::BaseStatic ) ) {
+		if ( !( T instanceof ::BaseStatic ) ) {
 			continue
 		}
 		if ( T.smooth ) {
@@ -10264,7 +9726,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Silicon_Ai ) ) {
+		if ( !( M instanceof ::Mob_Living_Silicon_Ai ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10272,7 +9734,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Camera ) ) {
+		if ( !( M instanceof ::Mob_Camera ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10280,7 +9742,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Silicon_Pai ) ) {
+		if ( !( M instanceof ::Mob_Living_Silicon_Pai ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10288,7 +9750,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Silicon_Robot ) ) {
+		if ( !( M instanceof ::Mob_Living_Silicon_Robot ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10296,7 +9758,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Carbon_Human ) ) {
+		if ( !( M instanceof ::Mob_Living_Carbon_Human ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10304,7 +9766,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Carbon_Brain ) ) {
+		if ( !( M instanceof ::Mob_Living_Carbon_Brain ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10312,7 +9774,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Carbon_Alien ) ) {
+		if ( !( M instanceof ::Mob_Living_Carbon_Alien ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10320,7 +9782,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Dead_Observer ) ) {
+		if ( !( M instanceof ::Mob_Dead_Observer ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10328,7 +9790,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_NewPlayer ) ) {
+		if ( !( M instanceof ::Mob_NewPlayer ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10336,7 +9798,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_Carbon_Monkey ) ) {
+		if ( !( M instanceof ::Mob_Living_Carbon_Monkey ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10344,7 +9806,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_SimpleAnimal_Slime ) ) {
+		if ( !( M instanceof ::Mob_Living_SimpleAnimal_Slime ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10352,7 +9814,7 @@ function sortmobs(  ) {
 	M = null
 	foreach (_ in sortmob ) {
 		M = _
-		if ( !::istype( M, ::Mob_Living_SimpleAnimal ) ) {
+		if ( !( M instanceof ::Mob_Living_SimpleAnimal ) ) {
 			continue
 		}
 		moblist.$Add( M )
@@ -10410,15 +9872,15 @@ function spaceDebrisFinishLoc( startSide =null, Z =null ) {
 	local _ = startSide // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
 		endy = 7
-		endx = ::rand( 7, ::game.maxx - 7 )
+		endx = ::random.int( 7, ::game.maxx - 7 )
 	} else if ( _==2 ) {
-		endy = ::rand( 7, ::game.maxy - 7 )
+		endy = ::random.int( 7, ::game.maxy - 7 )
 		endx = 7
 	} else if ( _==3 ) {
 		endy = ::game.maxy - 7
-		endx = ::rand( 7, ::game.maxx - 7 )
+		endx = ::random.int( 7, ::game.maxx - 7 )
 	} else if ( _==4 ) {
-		endy = ::rand( 7, ::game.maxy - 7 )
+		endy = ::random.int( 7, ::game.maxy - 7 )
 		endx = ::game.maxx - 7
 	}
 	T = ::locate3( endx, endy, Z )
@@ -10430,15 +9892,15 @@ function spaceDebrisStartLoc( startSide =null, Z =null ) {
 	local _ = startSide // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
 		starty = ::game.maxy - 8
-		startx = ::rand( 8, ::game.maxx - 8 )
+		startx = ::random.int( 8, ::game.maxx - 8 )
 	} else if ( _==2 ) {
-		starty = ::rand( 8, ::game.maxy - 8 )
+		starty = ::random.int( 8, ::game.maxy - 8 )
 		startx = ::game.maxx - 8
 	} else if ( _==3 ) {
 		starty = 8
-		startx = ::rand( 8, ::game.maxx - 8 )
+		startx = ::random.int( 8, ::game.maxx - 8 )
 	} else if ( _==4 ) {
-		starty = ::rand( 8, ::game.maxy - 8 )
+		starty = ::random.int( 8, ::game.maxy - 8 )
 		startx = 8
 	}
 	T = ::locate3( startx, starty, Z )
@@ -10448,8 +9910,8 @@ function spaceDebrisStartLoc( startSide =null, Z =null ) {
 function spawn_meteor( meteortypes =null ) {
 	local pickedstart, pickedgoal, max_i, startSide, Me, M
 	max_i = 10
-	while (!::istype( pickedstart, ::Tile_Space )) {
-		startSide = ::pick_list( ::cardinal )
+	while (!( pickedstart instanceof ::Tile_Space )) {
+		startSide = ::random.pick( ::cardinal )
 		pickedstart = ::spaceDebrisStartLoc( startSide, 1 )
 		pickedgoal = ::spaceDebrisFinishLoc( startSide, 1 )
 		max_i--
@@ -10461,7 +9923,7 @@ function spawn_meteor( meteortypes =null ) {
 	M = Me( pickedstart )
 	M.dest = pickedgoal
 	M.z_original = 1
-	::spawn( 0, function() {
+	::thread.schedule( 0, function() {
 		::walk_towards( M, M.dest, 1 )
 		return
 	})
@@ -10659,7 +10121,7 @@ function stars( n =null, pr =null ) {
 	p = null
 	p = 1
 	while (p <= n) {
-		if ( ::copytext( te, p, p + 1 ) == " " || ::prob( pr ) ) {
+		if ( ::copytext( te, p, p + 1 ) == " " || ::random.chance( pr ) ) {
 			t = ::Txt().item( t ).item( ::copytext( te, p, p + 1 ) )
 		} else {
 			t = ::Txt().item( t ).str( "*" )
@@ -10791,12 +10253,12 @@ function stutter( n =null ) {
 	p = 1
 	while (p <= n) {
 		n_letter = ::copytext( te, p, p + 1 )
-		if ( ::prob( 80 ) && ::ckey( n_letter ) in ::List([ "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]) ) {
-			if ( ::prob( 10 ) ) {
+		if ( ::random.chance( 80 ) && ::ckey( n_letter ) in ::List([ "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]) ) {
+			if ( ::random.chance( 10 ) ) {
 				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
-			} else if ( ::prob( 20 ) ) {
+			} else if ( ::random.chance( 20 ) ) {
 				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
-			} else if ( ::prob( 5 ) ) {
+			} else if ( ::random.chance( 5 ) ) {
 				n_letter = null
 			} else {
 				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter )
@@ -10882,7 +10344,7 @@ function tkMaxRangeCheck( user =null, target =null, focus =null ) {
 	local d
 	d = ::get_dist( user, target )
 	if ( focus ) {
-		d = ::max( d, ::get_dist( user, focus ) )
+		d = ::math.max( d, ::get_dist( user, focus ) )
 	}
 	if ( d > ::tk_maxrange ) {
 		user.write( "<span class ='warning'>Your mind won't reach that far.</span>" )
@@ -10911,13 +10373,13 @@ function togglebuildmode( M =null ) {
 	local H, A, B, C, D
 	if ( M.client ) {
 		if ( M.client.buildmode ) {
-			::log_admin( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has left build mode." ) )
+			::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has left build mode." ) )
 			M.client.buildmode = 0
 			M.client.show_popup_menus = 1
 			H = null
 			foreach (_ in ::game ) {
 				H = _
-				if ( !::istype( H, ::Ent_Effect_Bmode_Buildholder ) ) {
+				if ( !( H instanceof ::Ent_Effect_Bmode_Buildholder ) ) {
 					continue
 				}
 				if ( H.cl == M.client ) {
@@ -10925,8 +10387,8 @@ function togglebuildmode( M =null ) {
 				}
 			}
 		} else {
-			::message_admins( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has entered build mode." ) )
-			::log_admin( ::Txt().item( ::key_name( ::_USR_ ) ).str( " has entered build mode." ) )
+			::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has entered build mode." ) )
+			::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has entered build mode." ) )
 			M.client.buildmode = 1
 			M.client.show_popup_menus = 0
 			H = ::Ent_Effect_Bmode_Buildholder()
@@ -11043,7 +10505,7 @@ function ultra_range( dist =null, center =null, orange =null ) {
 		dist = 0
 	}
 	if ( center == null ) {
-		center = ::_USR_
+		center = ::thread.user
 	}
 	if ( orange == null ) {
 		orange = 0
@@ -11123,7 +10585,7 @@ function unix2date( timestamp =null, seperator =null ) {
 	dayInSeconds = 86400
 	daysInYear = 365
 	daysInLYear = daysInYear + 1
-	days = ::round( timestamp / dayInSeconds )
+	days = ::math.round( timestamp / dayInSeconds )
 	tmpDays = days + 1
 	monthsInDays = ::List()
 	month = 1
@@ -11160,7 +10622,7 @@ function updateallghostimages(  ) {
 	O = null
 	foreach (_ in ::player_list ) {
 		O = _
-		if ( !::istype( O, ::Mob_Dead_Observer ) ) {
+		if ( !( O instanceof ::Mob_Dead_Observer ) ) {
 			continue
 		}
 		O.updateghostimages()
@@ -11177,7 +10639,7 @@ function view_or_range( distance =null, center =null, type =null ) {
 		distance = ::game.view
 	}
 	if ( center == null ) {
-		center = ::_USR_
+		center = ::thread.user
 	}
 	local _ = type // Was a switch-case, sorry for the mess.
 	if ( _=="view" ) {
@@ -11213,7 +10675,7 @@ function wear_female_version( t_color =null, icon =null, layer =null, type =null
 	if ( !female_clothing_icon ) {
 		::generate_female_clothing( index, t_color, icon, type )
 	}
-	standing = ::image_listcall( ::List({ ["layer"]= -layer, ["icon"]= ::female_clothing_icons[::Txt().item( t_color )] }) )
+	standing = ::Image.lcall( ::List({ ["layer"]= -layer, ["icon"]= ::female_clothing_icons[::Txt().item( t_color )] }) )
 	return standing
 }
 
@@ -11224,7 +10686,7 @@ function worldtime2text(  ) {
 function Wrap( val =null, min =null, max =null ) {
 	local d, t
 	d = max - min
-	t = ::round( ( val - min ) / d )
+	t = ::math.round( ( val - min ) / d )
 	return val - t * d
 }
 
