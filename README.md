@@ -14,6 +14,7 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 6: No more gotos in global functions.
 - Nov 7: Various Improvements
 - Nov 8: Various Improvements
+- Nov 9: Fixed oddball indexing.
 
 **Current:** Fixing issues.
 
