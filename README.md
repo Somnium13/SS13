@@ -15,8 +15,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 7: Various Improvements
 - Nov 8: Various Improvements
 - Nov 9: Fixed oddball indexing.
+- Nov 10: 8701 / 13382 total functions decompiled.
 
-**Current:** Fixing issues.
+**Current:** 65% coverage of all functions.
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.

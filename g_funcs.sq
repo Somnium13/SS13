@@ -18,7 +18,7 @@ function _station_name(  ) {
 		::station_name = ::new_station_name()
 	}
 	if ( ::config && ::config.server_name ) {
-		::game.name = ::Txt().item( ::config.server_name ).item( ::config.server_name == ::station_name ? "" : ::Txt( ": " ).item( ::station_name ) )
+		::game.name = "" + ::config.server_name + ( ::config.server_name == ::station_name ? "" : ": " + ::station_name )
 	} else {
 		::game.name = ::station_name
 	}
@@ -106,32 +106,32 @@ function add_logs( user =null, target =null, what_done =null, object =null, addi
 	newhealthtxt = ""
 	if ( target && target instanceof ::Mob_Living ) {
 		L = target
-		newhealthtxt = ::Txt( " (NEWHP: " ).item( L.health ).str( ")" )
+		newhealthtxt = " (NEWHP: " + L.health + ")"
 	}
 	if ( user && ::ismob( user ) ) {
-		user.attack_log += ::Txt( "[" ).item( ::time_stamp() ).str( "] <font color='red'>Has " ).item( what_done ).str( " " ).item( target ? ::Txt().item( target.name ).item( ::ismob( target ) && target.ckey ? ::Txt( "(" ).item( target.ckey ).str( ")" ) : "" ) : "NON-EXISTANT SUBJECT" ).item( object ? ::Txt( " with " ).item( object ) : " " ).item( addition ).item( newhealthtxt ).str( "</font>" )
+		user.attack_log += "[" + ::time_stamp() + "] <font color='red'>Has " + what_done + " " + ( target ? "" + target.name + ( ::ismob( target ) && target.ckey ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( object ? " with " + object : " " ) + addition + newhealthtxt + "</font>"
 	}
 	if ( target && ::ismob( target ) ) {
-		target.attack_log += ::Txt( "[" ).item( ::time_stamp() ).str( "] <font color='orange'>Has been " ).item( what_done ).str( " by " ).item( user ? ::Txt().item( user.name ).item( ::ismob( user ) && user.ckey ? ::Txt( "(" ).item( user.ckey ).str( ")" ) : "" ) : "NON-EXISTANT SUBJECT" ).item( object ? ::Txt( " with " ).item( object ) : " " ).item( addition ).item( newhealthtxt ).str( "</font>" )
+		target.attack_log += "[" + ::time_stamp() + "] <font color='orange'>Has been " + what_done + " by " + ( user ? "" + user.name + ( ::ismob( user ) && user.ckey ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( object ? " with " + object : " " ) + addition + newhealthtxt + "</font>"
 	}
-	::log_attack( ::Txt().item( user ? ::Txt().item( user.name ).item( ::ismob( user ) && user.ckey ? ::Txt( "(" ).item( user.ckey ).str( ")" ) : "" ) : "NON-EXISTANT SUBJECT" ).str( " " ).item( what_done ).str( " " ).item( target ? ::Txt().item( target.name ).item( ::ismob( target ) && target.ckey ? ::Txt( "(" ).item( target.ckey ).str( ")" ) : "" ) : "NON-EXISTANT SUBJECT" ).item( object ? ::Txt( " with " ).item( object ) : " " ).item( addition ).item( newhealthtxt ) )
+	::log_attack( "" + ( user ? "" + user.name + ( ::ismob( user ) && user.ckey ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( target ? "" + target.name + ( ::ismob( target ) && target.ckey ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( object ? " with " + object : " " ) + addition + newhealthtxt )
 }
 
 function add_radio( radio =null, freq =null ) {
 	if ( !freq || !radio ) {
 		return
 	}
-	if ( !::all_radios[::Txt().item( freq )] ) {
-		::all_radios[::Txt().item( freq )] = ::List([ radio ])
+	if ( !::all_radios["" + freq] ) {
+		::all_radios["" + freq] = ::List([ radio ])
 		return freq
 	}
-	::all_radios[::Txt().item( freq )] = ::all_radios[::Txt().item( freq )] | radio
+	::all_radios["" + freq] = ::all_radios["" + freq] | radio
 	return freq
 }
 
 function add_zero( t =null, u =null ) {
 	while (::length( t ) < u) {
-		t = ::Txt( "0" ).item( t )
+		t = "0" + t
 	}
 	return t
 }
@@ -340,6 +340,7 @@ function anim( location =null, target =null, a_icon =null, a_icon_state =null, f
 	} else {
 		animation.icon_state = "blank"
 		animation.master = target
+		::flick( flick_anim, animation )
 	}
 	::thread.sleep( ::math.max( sleeptime, 15 ) )
 	::qdel( animation )
@@ -355,7 +356,7 @@ function appearance_isbanned( M =null ) {
 		s = null
 		foreach (_ in ::appearance_keylist ) {
 			s = _
-			if ( ::findtext( s, ::Txt().item( M.ckey ), 1, null ) == 1 ) {
+			if ( ::findtext( s, "" + M.ckey, 1, null ) == 1 ) {
 				startpos = ::findtext( s, "## ", 1, null ) + 3
 				if ( startpos && startpos < ::length( s ) ) {
 					text = ::copytext( s, startpos, 0 )
@@ -476,7 +477,7 @@ function AStar( start =null, end =null, atom =null, dist =null, maxnodes =null, 
 }
 
 function attach_spans( input =null, spans =null ) {
-	return ::Txt().item( ::message_spans_start( spans ) ).item( input ).str( "</span>" )
+	return "" + ::message_spans_start( spans ) + input + "</span>"
 }
 
 function attempt_initiate_surgery( I =null, M =null, user =null ) {
@@ -535,23 +536,23 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 							M.surgeries += procedure
 							procedure.organ = affecting
 							user.visible_message( ::Txt().item( user ).str( " drapes " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( "." ), ::Txt( "<span class='notice'>You drape " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( ".</span>" ) )
-							::smooth_icon_neighbors.lcall( ::List({ ["addition"]= ::Txt( "Operation type: " ).item( procedure.name ).str( ", location: " ).item( selected_zone ), [3]= "operated", [2]= M, [1]= user }) )
+							::smooth_icon_neighbors.lcall( ::List({ ["addition"]= "Operation type: " + procedure.name + ", location: " + selected_zone, [3]= "operated", [2]= M, [1]= user }) )
 						} else {
-							user.write( ::Txt( "<span class='warning'>You need to expose " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( " first!</span>" ) )
+							user.write( "<span class='warning'>You need to expose " + M + "'s " + ::parse_zone( selected_zone ) + " first!</span>" )
 						}
 					}
 				}
 			} else if ( !current_surgery.step_in_progress ) {
 				if ( current_surgery.status == 1 ) {
 					M.surgeries -= current_surgery
-					user.visible_message( ::Txt().item( user ).str( " removes the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( "." ), ::Txt( "<span class='notice'>You remove the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( ".</span>" ) )
+					user.visible_message( "" + user + " removes the drapes from " + M + "'s " + ::parse_zone( selected_zone ) + ".", "<span class='notice'>You remove the drapes from " + M + "'s " + ::parse_zone( selected_zone ) + ".</span>" )
 					::qdel( current_surgery )
 				} else if ( user.get_inactive_hand() instanceof ::Ent_Item_Weapon_Cautery && current_surgery.can_cancel ) {
 					M.surgeries -= current_surgery
-					user.visible_message( ::Txt().item( user ).str( " mends the incision and removes the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( "." ), ::Txt( "<span class='notice'>You mend the incision and remove the drapes from " ).item( M ).str( "'s " ).item( ::parse_zone( selected_zone ) ).str( ".</span>" ) )
+					user.visible_message( "" + user + " mends the incision and removes the drapes from " + M + "'s " + ::parse_zone( selected_zone ) + ".", "<span class='notice'>You mend the incision and remove the drapes from " + M + "'s " + ::parse_zone( selected_zone ) + ".</span>" )
 					::qdel( current_surgery )
 				} else if ( current_surgery.can_cancel ) {
-					user.write( ::Txt( "<span class='warning'>You need to hold a cautery in inactive hand to stop " ).item( M ).str( "'s surgery!</span>" ) )
+					user.write( "<span class='warning'>You need to hold a cautery in inactive hand to stop " + M + "'s surgery!</span>" )
 				}
 			}
 			return 1
@@ -722,7 +723,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 	}
 	if ( data == 1 ) {
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
+		foreach (_ in ::all_radios["" + freq] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio_Intercom ) ) {
 				continue
@@ -733,7 +734,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		}
 	} else if ( data == 2 ) {
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
+		foreach (_ in ::all_radios["" + freq] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -747,7 +748,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		}
 	} else if ( data == 5 ) {
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
+		foreach (_ in ::all_radios["" + freq] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -761,7 +762,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		}
 	} else {
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( freq )] ) {
+		foreach (_ in ::all_radios["" + freq] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -772,7 +773,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		}
 		freqtext = ::num2text( freq )
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( ::SYND_FREQ )] ) {
+		foreach (_ in ::all_radios["" + ::SYND_FREQ] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -807,7 +808,7 @@ function Broadcast_Message( AM =null, vmask =null, radio =null, message =null, n
 		hearer.Hear( rendered, virt, AM.languages, message, freq, spans )
 	}
 	if ( ::length( receive ) ) {
-		blackbox_msg = ::Txt().item( AM ).str( " " ).item( AM.say_quote( message, spans ) )
+		blackbox_msg = "" + AM + " " + AM.say_quote( message, spans )
 		if ( ::blackbox instanceof ::Ent_Machinery_BlackboxRecorder ) {
 			local _ = freq // Was a switch-case, sorry for the mess.
 			if ( _==1459 ) {
@@ -852,7 +853,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 	receive = ::List()
 	if ( data == 1 ) {
 		R = null
-		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
+		foreach (_ in connection.devices["" + ::RADIO_CHAT] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio_Intercom ) ) {
 				continue
@@ -864,7 +865,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		}
 	} else if ( data == 2 ) {
 		R = null
-		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
+		foreach (_ in connection.devices["" + ::RADIO_CHAT] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -880,7 +881,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 	} else if ( data == 3 ) {
 		syndicateconnection = ::radio_controller.return_frequency( ::SYND_FREQ )
 		R = null
-		foreach (_ in syndicateconnection.devices[::Txt().item( ::RADIO_CHAT )] ) {
+		foreach (_ in syndicateconnection.devices["" + ::RADIO_CHAT] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -892,7 +893,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		}
 	} else if ( data == 5 ) {
 		R = null
-		foreach (_ in ::all_radios[::Txt().item( ::RADIO_CHAT )] ) {
+		foreach (_ in ::all_radios["" + ::RADIO_CHAT] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -903,7 +904,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		}
 	} else {
 		R = null
-		foreach (_ in connection.devices[::Txt().item( ::RADIO_CHAT )] ) {
+		foreach (_ in connection.devices["" + ::RADIO_CHAT] ) {
 			R = _
 			if ( !( R instanceof ::Ent_Item_Device_Radio ) ) {
 				continue
@@ -987,8 +988,8 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 		} else if ( display_freq == ::AIPRIV_FREQ ) {
 			part_a = "<span class='aiprivradio'><span class='name'>"
 		}
-		part_blackbox_b = ::Txt( "</span><b> [" ).item( freq_text ).str( "]</b> <span class='message'>" )
-		blackbox_msg = ::Txt().item( part_a ).item( source ).item( part_blackbox_b ).str( "\"" ).item( text ).str( "\"" ).item( part_c )
+		part_blackbox_b = "</span><b> [" + freq_text + "]</b> <span class='message'>"
+		blackbox_msg = "" + part_a + source + part_blackbox_b + "\"" + text + "\"" + part_c
 		if ( ::blackbox instanceof ::Ent_Machinery_BlackboxRecorder ) {
 			local _ = display_freq // Was a switch-case, sorry for the mess.
 			if ( _==1459 ) {
@@ -1016,7 +1017,7 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 			}
 		}
 		if ( ::length( heard_normal ) ) {
-			rendered = ::Txt().item( part_a ).item( source ).item( part_b ).str( "\"" ).item( text ).str( "\"" ).item( part_c )
+			rendered = "" + part_a + source + part_b + "\"" + text + "\"" + part_c
 			R = null
 			foreach (_ in heard_normal ) {
 				R = _
@@ -1024,8 +1025,8 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 			}
 		}
 		if ( ::length( heard_garbled ) ) {
-			quotedmsg = ::Txt( "\"" ).item( ::stars( text ) ).str( "\"" )
-			rendered = ::Txt().item( part_a ).item( source ).item( part_b ).item( quotedmsg ).item( part_c )
+			quotedmsg = "\"" + ::stars( text ) + "\""
+			rendered = "" + part_a + source + part_b + quotedmsg + part_c
 			R = null
 			foreach (_ in heard_garbled ) {
 				R = _
@@ -1033,8 +1034,8 @@ function Broadcast_SimpleMessage( source =null, frequency =null, text =null, dat
 			}
 		}
 		if ( ::length( heard_gibberish ) ) {
-			quotedmsg = ::Txt( "\"" ).item( ::Gibberish( text, compression + 50 ) ).str( "\"" )
-			rendered = ::Txt().item( part_a ).item( ::Gibberish( source, compression + 50 ) ).item( part_b ).item( quotedmsg ).item( part_c )
+			quotedmsg = "\"" + ::Gibberish( text, compression + 50 ) + "\""
+			rendered = "" + part_a + ::Gibberish( source, compression + 50 ) + part_b + quotedmsg + part_c
 			R = null
 			foreach (_ in heard_gibberish ) {
 				R = _
@@ -1076,10 +1077,10 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 			} else if ( object instanceof ::Tile_Simulated_Wall ) {
 				T.ChangeTurf( ::Tile_Simulated_Wall_RWall )
 			}
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built " ).item( T ).str( " at (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ")" ) )
+			::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " built " + T + " at (" + T.x + "," + T.y + "," + T.z + ")" )
 			return
 		} else if ( pa.Find( "right" ) ) {
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+			::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " deleted " + object + " at (" + object.x + "," + object.y + "," + object.z + ")" )
 			if ( object instanceof ::Tile_Simulated_Wall ) {
 				T = object
 				T.ChangeTurf( ::Tile_Simulated_Floor_Plasteel )
@@ -1094,7 +1095,7 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 			}
 			return
 		} else if ( object instanceof ::Tile && T.$Find( "alt" ) && T.$Find( "left" ) ) {
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built an airlock at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+			::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " built an airlock at (" + object.x + "," + object.y + "," + object.z + ")" )
 			::Ent_Machinery_Door_Airlock( ::get_turf( object ) )
 		} else if ( object instanceof ::Tile && pa.Find( "ctrl" ) && pa.$Find( "left" ) ) {
 			local _ = holder.builddir.dir // Was a switch-case, sorry for the mess.
@@ -1114,40 +1115,40 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 				WIN = ::Ent_Structure_Window_Reinforced( ::get_turf( object ) )
 				WIN.dir = ::NORTHWEST
 			}
-			::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " built a window at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+			::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " built a window at (" + object.x + "," + object.y + "," + object.z + ")" )
 		}
 	} else if ( _==2 ) {
 		if ( pa.Find( "left" ) ) {
 			if ( ::ispath2( holder.buildmode.objholder, ::Tile ) ) {
 				T = ::get_turf( object )
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( T ).str( " (" ).item( T.x ).str( "," ).item( T.y ).str( "," ).item( T.z ).str( ") to " ).item( holder.buildmode.objholder ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " modified " + T + " (" + T.x + "," + T.y + "," + T.z + ") to " + holder.buildmode.objholder )
 				T.ChangeTurf( holder.buildmode.objholder )
 			} else {
 				A = T.objholder( ::get_turf( object ) )
 				A.dir = holder.builddir.dir
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( A ).str( "'s (" ).item( A.x ).str( "," ).item( A.y ).str( "," ).item( A.z ).str( ") dir to " ).item( holder.builddir.dir ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " modified " + A + "'s (" + A.x + "," + A.y + "," + A.z + ") dir to " + holder.builddir.dir )
 			}
 		} else if ( holder.$Find( "right" ) ) {
 			if ( ::isobj( object ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " deleted " ).item( object ).str( " at (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " deleted " + object + " at (" + object.x + "," + object.y + "," + object.z + ")" )
 				::qdel( object )
 			}
 		}
 	} else if ( _==3 ) {
 		if ( pa.Find( "left" ) ) {
 			if ( object.vars.Find( holder.buildmode.varholder ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " modified " + object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder )
 				object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder
 			} else {
-				::thread.user.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
+				::thread.user.write( "<span class='warning'>" + ::initial( object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" )
 			}
 		}
 		if ( pa.Find( "right" ) ) {
 			if ( object.vars.Find( holder.buildmode.varholder ) ) {
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " modified " ).item( object.name ).str( "'s " ).item( holder.buildmode.varholder ).str( " to " ).item( holder.valueholder ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " modified " + object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder )
 				object.vars[holder.buildmode.varholder] = ::initial( object.vars[holder.buildmode.varholder] )
 			} else {
-				::thread.user.write( ::Txt( "<span class='warning'>" ).item( ::initial( object.name ) ).str( " does not have a var called '" ).item( holder.buildmode.varholder ).str( "'</span>" ) )
+				::thread.user.write( "<span class='warning'>" + ::initial( object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" )
 			}
 		}
 	} else if ( _==4 ) {
@@ -1160,7 +1161,7 @@ function build_click( user =null, buildmode =null, params =null, object =null ) 
 		if ( pa.Find( "right" ) ) {
 			if ( holder.throw_atom ) {
 				holder.throw_atom.throw_at( object, 10, 1, user )
-				::log_admin( ::Txt( "Build Mode: " ).item( ::key_name( ::thread.user ) ).str( " threw " ).item( holder.throw_atom ).str( " at " ).item( object ).str( " (" ).item( object.x ).str( "," ).item( object.y ).str( "," ).item( object.z ).str( ")" ) )
+				::log_admin( "Build Mode: " + ::key_name( ::thread.user ) + " threw " + holder.throw_atom + " at " + object + " (" + object.x + "," + object.y + "," + object.z + ")" )
 			}
 		}
 	} else if ( _==5 ) {
@@ -1424,7 +1425,7 @@ function changemap( VM =null ) {
 	if ( !( VM instanceof ::Votablemap ) ) {
 		return
 	}
-	::log_game( ::Txt( "Changing map to " ).item( VM.name ).str( "(" ).item( VM.friendlyname ).str( ")" ) )
+	::log_game( "Changing map to " + VM.name + "(" + VM.friendlyname + ")" )
 }
 
 function cheap_hypotenuse( Ax =null, Ay =null, Bx =null, By =null ) {
@@ -1439,7 +1440,7 @@ function check_rights( rights_required =null, show_msg =null ) {
 		if ( ::check_rights_for( ::thread.user.client, rights_required ) ) {
 			return 1
 		} else if ( show_msg ) {
-			::thread.user.write( ::Txt( "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:" ).item( ::rights2text( rights_required, " " ) ).str( ".</font>" ) )
+			::thread.user.write( "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:" + ::rights2text( rights_required, " " ) + ".</font>" )
 		}
 	}
 	return 0
@@ -1501,7 +1502,7 @@ function chemscan( user =null, M =null ) {
 					if ( !( R instanceof ::Reagent ) ) {
 						continue
 					}
-					user.write( ::Txt( "<span class='notice'>" ).item( R.volume ).str( " units of " ).item( R.name ).item( R.overdosed == 1 ? "</span> - <span class='boldannounce'>OVERDOSING</span>" : ".</span>" ) )
+					user.write( "<span class='notice'>" + R.volume + " units of " + R.name + ( R.overdosed == 1 ? "</span> - <span class='boldannounce'>OVERDOSING</span>" : ".</span>" ) )
 				}
 			} else {
 				user.write( "<span class='notice'>Subject contains no reagents.</span>" )
@@ -1514,7 +1515,7 @@ function chemscan( user =null, M =null ) {
 					if ( !( R instanceof ::Reagent ) ) {
 						continue
 					}
-					user.write( ::Txt( "<span class='danger'>" ).item( R.name ).str( "</span>" ) )
+					user.write( "<span class='danger'>" + R.name + "</span>" )
 				}
 			} else {
 				user.write( "<span class='notice'>Subject is not addicted to any reagents.</span>" )
@@ -1642,10 +1643,10 @@ function cmd_admin_mute( whom =null, mute_type =null, automute =null ) {
 	if ( automute ) {
 		muteunmute = "auto-muted"
 		P.muted = P.muted | mute_type
-		::log_admin( ::Txt( "SPAM AUTOMUTE: " ).item( muteunmute ).str( " " ).item( ::key_name( whom ) ).str( " from " ).item( mute_string ) )
-		::message_admins( ::Txt( "SPAM AUTOMUTE: " ).item( muteunmute ).str( " " ).item( ::key_name_admin( whom ) ).str( " from " ).item( mute_string ).str( "." ) )
+		::log_admin( "SPAM AUTOMUTE: " + muteunmute + " " + ::key_name( whom ) + " from " + mute_string )
+		::message_admins( "SPAM AUTOMUTE: " + muteunmute + " " + ::key_name_admin( whom ) + " from " + mute_string + "." )
 		if ( C ) {
-			C.write( ::Txt( "You have been " ).item( muteunmute ).str( " from " ).item( mute_string ).str( " by the SPAM AUTOMUTE system. Contact an admin." ) )
+			C.write( "You have been " + muteunmute + " from " + mute_string + " by the SPAM AUTOMUTE system. Contact an admin." )
 		}
 		::feedback_add_details( "admin_verb", "AUTOMUTE" )
 		return
@@ -1657,10 +1658,10 @@ function cmd_admin_mute( whom =null, mute_type =null, automute =null ) {
 		muteunmute = "muted"
 		P.muted = P.muted | mute_type
 	}
-	::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name( whom ) ).str( " from " ).item( mute_string ) )
-	::message_admins( ::Txt().item( ::key_name_admin( ::thread.user ) ).str( " has " ).item( muteunmute ).str( " " ).item( ::key_name_admin( whom ) ).str( " from " ).item( mute_string ).str( "." ) )
+	::log_admin( "" + ::key_name( ::thread.user ) + " has " + muteunmute + " " + ::key_name( whom ) + " from " + mute_string )
+	::message_admins( "" + ::key_name_admin( ::thread.user ) + " has " + muteunmute + " " + ::key_name_admin( whom ) + " from " + mute_string + "." )
 	if ( C ) {
-		C.write( ::Txt( "You have been " ).item( muteunmute ).str( " from " ).item( mute_string ).str( "." ) )
+		C.write( "You have been " + muteunmute + " from " + mute_string + "." )
 	}
 	::feedback_add_details( "admin_verb", "MUTE" )
 }
@@ -1794,7 +1795,7 @@ function create_space_ninja( spawn_loc =null ) {
 	local new_ninja, A
 	new_ninja = ::Mob_Living_Carbon_Human( spawn_loc )
 	A = ::Preferences()
-	A.real_name = ::Txt().item( ::random.pick( ::ninja_titles ) ).str( " " ).item( ::random.pick( ::ninja_names ) )
+	A.real_name = "" + ::random.pick( ::ninja_titles ) + " " + ::random.pick( ::ninja_names )
 	A.copy_to( new_ninja )
 	new_ninja.dna.update_dna_identity()
 	new_ninja.equip_space_ninja()
@@ -1851,7 +1852,7 @@ function create_xeno( ckey =null ) {
 		return 0
 	}
 	new_xeno.ckey = ckey
-	::message_admins( ::Txt( "<span class='notice'>" ).item( ::key_name_admin( ::thread.user ) ).str( " has spawned " ).item( ckey ).str( " as a filthy xeno " ).item( alien_caste ).str( ".</span>" ) )
+	::message_admins( "<span class='notice'>" + ::key_name_admin( ::thread.user ) + " has spawned " + ckey + " as a filthy xeno " + alien_caste + ".</span>" )
 	return 1
 }
 
@@ -1910,10 +1911,10 @@ function cultist_commune( user =null, clear =null, say =null, message =null ) {
 	}
 	if ( say ) {
 		local _ = ::random.pick([ "'", "`" ])
-		user.say( ::Txt( "O bidai nabora se" ).item( _ ).str( "sma!" ) )
+		user.say( "O bidai nabora se" + _ + "sma!" )
 	} else {
 		local _ = ::random.pick([ "'", "`" ])
-		::get_verb( user, "Whisper" )( ::Txt( "O bidai nabora se" ).item( _ ).str( "sma!" ) )
+		::get_verb( user, "Whisper" )( "O bidai nabora se" + _ + "sma!" )
 	}
 	::thread.sleep( 10 )
 	if ( !user ) {
@@ -1929,13 +1930,13 @@ function cultist_commune( user =null, clear =null, say =null, message =null ) {
 		M = _
 		if ( ::iscultist( M ) || M in ::dead_mob_list ) {
 			if ( clear || !( user instanceof ::Mob_Living_Carbon_Human ) ) {
-				M.write( ::Txt( "<span class='boldannounce'><i>" ).item( user instanceof ::Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ).str( " " ).item( user ).str( ":</i> " ).item( message ).str( "</span>" ) )
+				M.write( "<span class='boldannounce'><i>" + ( user instanceof ::Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</i> " + message + "</span>" )
 			} else {
-				M.write( ::Txt( "<span class='ghostalert'><i>Acolyte ???:</i> " ).item( message ).str( "</span>" ) )
+				M.write( "<span class='ghostalert'><i>Acolyte ???:</i> " + message + "</span>" )
 			}
 		}
 	}
-	::log_say( ::Txt().item( user.real_name ).str( "/" ).item( user.key ).str( " : " ).item( message ) )
+	::log_say( "" + user.real_name + "/" + user.key + " : " + message )
 }
 
 function dd_hasprefix_case( text =null, prefix =null ) {
@@ -1993,7 +1994,7 @@ function derpspeech( message =null, stuttering =null ) {
 	if ( ::random.chance( 50 ) ) {
 		message = ::uppertext( message )
 		local _ = ::random.pick([ "!", "!!", "!!!" ])
-		message += ::Txt().item( ::stutter( _ ) )
+		message += "" + ::stutter( _ )
 	}
 	if ( !stuttering && ::random.chance( 15 ) ) {
 		message = ::stutter( message )
@@ -2122,25 +2123,25 @@ function display_roundstart_logout_report(  ) {
 				}
 			}
 			if ( !found ) {
-				msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( L.ckey ).str( "), the " ).item( L.job ).str( " (<font color='#ffcc00'><b>Disconnected</b></font>)\n" )
+				msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<font color='#ffcc00'><b>Disconnected</b></font>)\n"
 			}
 		}
 		if ( L.ckey && L.client ) {
 			if ( L.client.inactivity >= 3000 ) {
-				msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( L.ckey ).str( "), the " ).item( L.job ).str( " (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n" )
+				msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n"
 				continue
 			}
 			if ( L.stat ) {
 				if ( L.suiciding ) {
-					msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( L.ckey ).str( "), the " ).item( L.job ).str( " (<span class='boldannounce'>Suicide</span>)\n" )
+					msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<span class='boldannounce'>Suicide</span>)\n"
 					continue
 				}
 				if ( L.stat == 1 ) {
-					msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( L.ckey ).str( "), the " ).item( L.job ).str( " (Dying)\n" )
+					msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (Dying)\n"
 					continue
 				}
 				if ( L.stat == 2 ) {
-					msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( L.ckey ).str( "), the " ).item( L.job ).str( " (Dead)\n" )
+					msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (Dead)\n"
 					continue
 				}
 			}
@@ -2155,17 +2156,17 @@ function display_roundstart_logout_report(  ) {
 			if ( D.mind && D.mind.current == L ) {
 				if ( L.stat == 2 ) {
 					if ( L.suiciding ) {
-						msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( ::ckey( D.mind.key ) ).str( "), the " ).item( L.job ).str( " (<span class='boldannounce'>Suicide</span>)\n" )
+						msg += "<b>" + L.name + "</b> (" + ::ckey( D.mind.key ) + "), the " + L.job + " (<span class='boldannounce'>Suicide</span>)\n"
 						continue
 					} else {
-						msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( ::ckey( D.mind.key ) ).str( "), the " ).item( L.job ).str( " (Dead)\n" )
+						msg += "<b>" + L.name + "</b> (" + ::ckey( D.mind.key ) + "), the " + L.job + " (Dead)\n"
 						continue
 					}
 				} else if ( D.can_reenter_corpse ) {
-					msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( ::ckey( D.mind.key ) ).str( "), the " ).item( L.job ).str( " (<span class='boldannounce'>This shouldn't appear.</span>)\n" )
+					msg += "<b>" + L.name + "</b> (" + ::ckey( D.mind.key ) + "), the " + L.job + " (<span class='boldannounce'>This shouldn't appear.</span>)\n"
 					continue
 				} else {
-					msg += ::Txt( "<b>" ).item( L.name ).str( "</b> (" ).item( ::ckey( D.mind.key ) ).str( "), the " ).item( L.job ).str( " (<span class='boldannounce'>Ghosted</span>)\n" )
+					msg += "<b>" + L.name + "</b> (" + ::ckey( D.mind.key ) + "), the " + L.job + " (<span class='boldannounce'>Ghosted</span>)\n"
 					continue
 				}
 			}
@@ -2293,7 +2294,7 @@ function do_mob( user =null, target =null, time =null, numticks =null, uninterru
 	return 1
 }
 
-function do_teleport( ... ) {
+function do_teleport( ... ) { // Arg Names: 0: ateleatom, 1: adestination, 2: aprecision, 3: afteleport, 4: aeffectin, 5: aeffectout, 6: asoundin, 7: asoundout
 	local D
 	if ( argv[2] == null ) {
 		argv[2] = 0
@@ -2406,7 +2407,7 @@ function electrocute_mob( M =null, power_source =null, source =null, siemens_coe
 	} else if ( !power_source ) {
 		return 0
 	} else {
-		::log_admin( ::Txt( "ERROR: /proc/electrocute_mob(" ).item( M ).str( ", " ).item( power_source ).str( ", " ).item( source ).str( "): wrong power_source" ) )
+		::log_admin( "ERROR: /proc/electrocute_mob(" + M + ", " + power_source + ", " + source + "): wrong power_source" )
 		return 0
 	}
 	if ( !cell && !PN ) {
@@ -2520,8 +2521,8 @@ function empulse( epicenter =null, heavy_range =null, light_range =null, log =nu
 		epicenter = ::get_turf( epicenter.loc )
 	}
 	if ( log ) {
-		::message_admins( ::Txt( "EMP with size (" ).item( heavy_range ).str( ", " ).item( light_range ).str( ") in area " ).item( epicenter.loc.name ).str( " " ) )
-		::log_game( ::Txt( "EMP with size (" ).item( heavy_range ).str( ", " ).item( light_range ).str( ") in area " ).item( epicenter.loc.name ).str( " " ) )
+		::message_admins( "EMP with size (" + heavy_range + ", " + light_range + ") in area " + epicenter.loc.name + " " )
+		::log_game( "EMP with size (" + heavy_range + ", " + light_range + ") in area " + epicenter.loc.name + " " )
 	}
 	if ( heavy_range > 1 ) {
 		::Ent_Effect_Overlay_Temp_Emp_Pulse( epicenter )
@@ -2570,11 +2571,11 @@ function english_list( input =null, nothing_text =null, and_text =null, comma_te
 	}
 	total = input.len
 	if ( !total ) {
-		return ::Txt().item( nothing_text )
+		return "" + nothing_text
 	} else if ( total == 1 ) {
-		return ::Txt().item( input[1] )
+		return "" + input[1]
 	} else if ( total == 2 ) {
-		return ::Txt().item( input[1] ).item( and_text ).item( input[2] )
+		return "" + input[1] + and_text + input[2]
 	} else {
 		output = ""
 		index = 1
@@ -2582,10 +2583,10 @@ function english_list( input =null, nothing_text =null, and_text =null, comma_te
 			if ( index == total - 1 ) {
 				comma_text = final_comma_text
 			}
-			output += ::Txt().item( input[index] ).item( comma_text )
+			output += "" + input[index] + comma_text
 			index++
 		}
-		return ::Txt().item( output ).item( and_text ).item( input[index] )
+		return "" + output + and_text + input[index]
 	}
 }
 
@@ -2634,8 +2635,8 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 		max_range = ::math.max( devastation_range, heavy_impact_range, light_impact_range, flame_range )
 		cached_exp_block = ::List()
 		if ( adminlog ) {
-			::message_admins( ::Txt( "Explosion with size (" ).item( devastation_range ).str( ", " ).item( heavy_impact_range ).str( ", " ).item( light_impact_range ).str( ", " ).item( flame_range ).str( ") in area " ).item( epicenter.loc.name ).str( " (" ).item( epicenter.x ).str( "," ).item( epicenter.y ).str( "," ).item( epicenter.z ).str( ")" ) )
-			::log_game( ::Txt( "Explosion with size (" ).item( devastation_range ).str( ", " ).item( heavy_impact_range ).str( ", " ).item( light_impact_range ).str( ", " ).item( flame_range ).str( ") in area " ).item( epicenter.loc.name ).str( " (" ).item( epicenter.x ).str( "," ).item( epicenter.y ).str( "," ).item( epicenter.z ).str( ")" ) )
+			::message_admins( "Explosion with size (" + devastation_range + ", " + heavy_impact_range + ", " + light_impact_range + ", " + flame_range + ") in area " + epicenter.loc.name + " (" + epicenter.x + "," + epicenter.y + "," + epicenter.z + ")" )
+			::log_game( "Explosion with size (" + devastation_range + ", " + heavy_impact_range + ", " + light_impact_range + ", " + flame_range + ") in area " + epicenter.loc.name + " (" + epicenter.x + "," + epicenter.y + "," + epicenter.z + ")" )
 		}
 		far_dist = 0
 		far_dist += heavy_impact_range * 5
@@ -2763,7 +2764,7 @@ function explosion( epicenter =null, devastation_range =null, heavy_impact_range
 		}
 		took = ( ::game.timeofday - start ) / 10
 		if ( ::Debug2 ) {
-			::game.log.write( ::Txt( "## DEBUG: Explosion(" ).item( x0 ).str( "," ).item( y0 ).str( "," ).item( z0 ).str( ")(d" ).item( devastation_range ).str( ",h" ).item( heavy_impact_range ).str( ",l" ).item( light_impact_range ).str( "): Took " ).item( took ).str( " seconds." ) )
+			::game.log.write( "## DEBUG: Explosion(" + x0 + "," + y0 + "," + z0 + ")(d" + devastation_range + ",h" + heavy_impact_range + ",l" + light_impact_range + "): Took " + took + " seconds." )
 		}
 		i = null
 		while (i <= ::doppler_arrays.len) {
@@ -2840,7 +2841,7 @@ function filter_fancy_list( L =null, filter =null ) {
 	foreach (_ in L ) {
 		key = _
 		value = L[key]
-		if ( ::findtext( ::Txt().item( key ), filter, 1, null ) || ::findtext( ::Txt().item( value ), filter, 1, null ) ) {
+		if ( ::findtext( "" + key, filter, 1, null ) || ::findtext( "" + value, filter, 1, null ) ) {
 			matches[key] = value
 		}
 	}
@@ -2939,7 +2940,7 @@ function findchar( haystack =null, needles =null, start =null, end =null ) {
 function findname( msg =null ) {
 	local M
 	if ( !::istext( msg ) ) {
-		msg = ::Txt().item( msg )
+		msg = "" + msg
 	}
 	M = null
 	foreach (_ in ::mob_list ) {
@@ -2961,7 +2962,7 @@ function forbidden_atoms_check( A =null ) {
 		thing = null
 		foreach (_ in A ) {
 			thing = _
-			if ( ::_THISCALL_( thing ) ) {
+			if ( ::forbidden_atoms_check( thing ) ) {
 				return 1
 			}
 		}
@@ -2971,7 +2972,7 @@ function forbidden_atoms_check( A =null ) {
 
 function format_frequency( f =null ) {
 	f = ::text2num( f )
-	return ::Txt().item( ::math.round( f / 10 ) ).str( "." ).item( f % 10 )
+	return "" + ::math.round( f / 10 ) + "." + f % 10
 }
 
 function format_table_name( table =null ) {
@@ -3015,7 +3016,7 @@ function Gcd( a =null, b =null ) {
 function generate_female_clothing( index =null, t_color =null, icon =null, type =null ) {
 	local female_clothing_icon, female_s
 	female_clothing_icon = ::Icon.lcall( ::List({ ["icon_state"]= t_color, ["icon"]= icon }) )
-	female_s = ::Icon.lcall( ::List({ ["icon_state"]= ::Txt().item( type == 1 ? "female_full" : "female_top" ), ["icon"]= ::Rsc(59) }) )
+	female_s = ::Icon.lcall( ::List({ ["icon_state"]= "" + ( type == 1 ? "female_full" : "female_top" ), ["icon"]= ::Rsc(59) }) )
 	female_clothing_icon.Blend( female_s, 2 )
 	female_clothing_icon = ::fcopy_rsc( female_clothing_icon )
 	::female_clothing_icons[index] = female_clothing_icon
@@ -3054,36 +3055,36 @@ function generate_ion_law( ionMessage =null ) {
 	if ( 1<=_&&_<=3 ) {
 		local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			message = ::Txt( "THERE ARE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats ).str( " ON THE STATION..." )
+			message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats + " ON THE STATION..."
 		} else if ( _==2 ) {
-			message = ::Txt( "THERE ARE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " ON THE STATION" )
+			message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1 + " ON THE STATION"
 		} else if ( _==3 ) {
-			message = ::Txt( "THERE ARE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects ).str( " ON THE STATION" )
+			message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects + " ON THE STATION"
 		}
 	} else if ( 4<=_&&_<=6 ) {
 		local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			message = ::Txt( "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats ).str( " ON THE STATION" )
+			message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats + " ON THE STATION"
 		} else if ( _==2 ) {
-			message = ::Txt( "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " ON THE STATION" )
+			message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1 + " ON THE STATION"
 		} else if ( _==3 ) {
-			message = ::Txt( "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects ).str( " ON THE STATION" )
+			message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects + " ON THE STATION"
 		}
 	} else if ( 7<=_&&_<=8 ) {
 		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE " + ioncrew1 + " ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ioncrew1 + " ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE CREW ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE CREW ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "THE CREW ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE CREW ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			}
 		}
 	} else if ( 10<=_&&_<=11 ) {
@@ -3091,16 +3092,16 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "HAVING " ).item( ionadjectiveshalf ).item( ionobjects ).str( " IS HARMFUL" )
+				message = "HAVING " + ionadjectiveshalf + ionobjects + " IS HARMFUL"
 			} else if ( _==2 ) {
-				message = ::Txt( "HAVING " ).item( ionabstract ).str( " IS HARMFUL" )
+				message = "HAVING " + ionabstract + " IS HARMFUL"
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "NOT HAVING " ).item( ionadjectiveshalf ).item( ionobjects ).str( " IS HARMFUL" )
+				message = "NOT HAVING " + ionadjectiveshalf + ionobjects + " IS HARMFUL"
 			} else if ( _==2 ) {
-				message = ::Txt( "NOT HAVING " ).item( ionabstract ).str( " IS HARMFUL" )
+				message = "NOT HAVING " + ionabstract + " IS HARMFUL"
 			}
 		}
 	} else if ( 12<=_&&_<=14 ) {
@@ -3108,67 +3109,67 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==3 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==4 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionabstract )
+				message = "YOU REQUIRE " + ionabstract
 			} else if ( _==5 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionrequire )
+				message = "YOU REQUIRE " + ionrequire
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt().item( ionarea ).str( " REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt().item( ionarea ).str( " REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==3 ) {
-				message = ::Txt().item( ionarea ).str( " REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==4 ) {
-				message = ::Txt().item( ionarea ).str( " REQUIRES " ).item( ionabstract )
+				message = "" + ionarea + " REQUIRES " + ionabstract
 			} else if ( _==5 ) {
-				message = ::Txt( "YOU REQUIRE " ).item( ionrequire )
+				message = "YOU REQUIRE " + ionrequire
 			}
 		} else if ( _==3 ) {
 			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE STATION REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "THE STATION REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==3 ) {
-				message = ::Txt( "THE STATION REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==4 ) {
-				message = ::Txt( "THE STATION REQUIRES " ).item( ionabstract )
+				message = "THE STATION REQUIRES " + ionabstract
 			} else if ( _==5 ) {
-				message = ::Txt( "THE STATION REQUIRES " ).item( ionrequire )
+				message = "THE STATION REQUIRES " + ionrequire
 			}
 		} else if ( _==4 ) {
 			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE CREW REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "THE CREW REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==3 ) {
-				message = ::Txt( "THE CREW REQUIRES " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==4 ) {
-				message = ::Txt( "THE CREW REQUIRES " ).item( ionabstract )
+				message = "THE CREW REQUIRES " + ionabstract
 			} else if ( _==5 ) {
-				message = ::Txt( "THE CREW REQUIRES " ).item( ionrequire )
+				message = "THE CREW REQUIRES " + ionrequire
 			}
 		} else if ( _==5 ) {
 			local _ = ::random.int( 1, 5 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " REQUIRE " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==4 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " REQUIRE " ).item( ionabstract )
+				message = "THE " + ioncrew1 + " REQUIRE " + ionabstract
 			} else if ( _==5 ) {
-				message = ::Txt( "THE " ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " REQUIRE " ).item( ionrequire )
+				message = "THE " + ionadjectiveshalf + ioncrew1 + " REQUIRE " + ionrequire
 			}
 		}
 	} else if ( 15<=_&&_<=17 ) {
@@ -3176,24 +3177,24 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionabstract )
+				message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionabstract
 			} else if ( _==3 ) {
-				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ioncrew1
 			} else if ( _==4 ) {
-				message = ::Txt( "THE CREW IS " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionallergy )
+				message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionallergy
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionabstract )
+				message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionabstract
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ioncrew1
 			} else if ( _==4 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionallergysev ).str( " ALLERGIC TO " ).item( ionallergy )
+				message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionallergy
 			}
 		}
 	} else if ( 18<=_&&_<=20 ) {
@@ -3201,71 +3202,71 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==4 ) {
-				message = ::Txt( "THE STATION " ).item( ionthinksof ).str( " " ).item( ionabstract )
+				message = "THE STATION " + ionthinksof + " " + ionabstract
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==4 ) {
-				message = ::Txt().item( ionarea ).str( " " ).item( ionthinksof ).str( " " ).item( ionabstract )
+				message = "" + ionarea + " " + ionthinksof + " " + ionabstract
 			}
 		} else if ( _==3 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+				message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 			} else if ( _==4 ) {
-				message = ::Txt( "THE CREW " ).item( ionthinksof ).str( " " ).item( ionabstract )
+				message = "THE CREW " + ionthinksof + " " + ionabstract
 			}
 		} else if ( _==4 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " " ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).item( ionthinksof ).str( " " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew2 )
+				message = "THE " + ioncrew1 + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew2
 			} else if ( _==4 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " " ).item( ionthinksof ).str( " " ).item( ionabstract )
+				message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionabstract
 			}
 		}
 	} else if ( 21<=_&&_<=23 ) {
 		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			message = ::Txt( "YOU ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionobjects )
+			message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects
 		} else if ( _==2 ) {
-			message = ::Txt( "YOU ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ionthreats )
+			message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats
 		} else if ( _==3 ) {
-			message = ::Txt( "YOU ARE NOW " ).item( ionnumberbase ).str( " " ).item( ionnumbermodhalf ).item( ionadjectiveshalf ).item( ioncrew1 )
+			message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1
 		} else if ( _==4 ) {
-			message = ::Txt( "YOU ARE NOW " ).item( ionabstract )
+			message = "YOU ARE NOW " + ionabstract
 		}
 	} else if ( 24<=_&&_<=26 ) {
-		message = ::Txt( "YOU MUST ALWAYS " ).item( ionmust )
+		message = "YOU MUST ALWAYS " + ionmust
 	} else if ( 27<=_&&_<=28 ) {
 		local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ionfood ).str( " TO SURVIVE" )
+			message = "HUMANS MUST EAT " + ionadjectiveshalf + ionfood + " TO SURVIVE"
 		} else if ( _==2 ) {
-			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ionobjects ).str( " TO SURVIVE" )
+			message = "HUMANS MUST EAT " + ionadjectiveshalf + ionobjects + " TO SURVIVE"
 		} else if ( _==3 ) {
-			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ionthreats ).str( " TO SURVIVE" )
+			message = "HUMANS MUST EAT " + ionadjectiveshalf + ionthreats + " TO SURVIVE"
 		} else if ( _==4 ) {
-			message = ::Txt( "HUMANS MUST EAT " ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " TO SURVIVE" )
+			message = "HUMANS MUST EAT " + ionadjectiveshalf + ioncrew1 + " TO SURVIVE"
 		}
 	} else if ( 29<=_&&_<=31 ) {
 		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
@@ -3274,28 +3275,28 @@ function generate_ion_law( ionMessage =null ) {
 			if ( _==1 ) {
 				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
-					message = ::Txt( "ALL CREWMEMBERS ARE NOW " ).item( ionadjectiveshalf ).item( ioncrew1 )
+					message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + ioncrew1
 				} else if ( _==2 ) {
-					message = ::Txt( "ALL CREWMEMBERS ARE NOW " ).item( ionadjectiveshalf ).str( "CLOWNS" )
+					message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + "CLOWNS"
 				} else if ( _==3 ) {
-					message = ::Txt( "ALL CREWMEMBERS ARE NOW " ).item( ionadjectiveshalf ).str( "HEADS OF STAFF" )
+					message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + "HEADS OF STAFF"
 				}
 			} else if ( _==2 ) {
 				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
-					message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionadjectiveshalf ).item( ioncrew2 )
+					message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + ioncrew2
 				} else if ( _==2 ) {
-					message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionadjectiveshalf ).str( "CLOWNS" )
+					message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + "CLOWNS"
 				} else if ( _==3 ) {
-					message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW " ).item( ionadjectiveshalf ).str( "HEADS OF STAFF" )
+					message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + "HEADS OF STAFF"
 				}
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW THE HIGHEST RANKING CREWMEMBERS" )
+				message = "THE " + ioncrew1 + " ARE NOW THE HIGHEST RANKING CREWMEMBERS"
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE NOW THE LOWEST RANKING CREWMEMBERS" )
+				message = "THE " + ioncrew1 + " ARE NOW THE LOWEST RANKING CREWMEMBERS"
 			}
 		}
 	} else if ( 32<=_&&_<=33 ) {
@@ -3303,16 +3304,16 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE CREW MUST GO TO " ).item( ionarea )
+				message = "THE CREW MUST GO TO " + ionarea
 			} else if ( _==2 ) {
-				message = ::Txt( "THE CREW MUST " ).item( ionmust )
+				message = "THE CREW MUST " + ionmust
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " MUST GO TO " ).item( ionarea )
+				message = "THE " + ioncrew1 + " MUST GO TO " + ionarea
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " MUST " ).item( ionmust )
+				message = "THE " + ioncrew1 + " MUST " + ionmust
 			}
 		}
 	} else if ( 35<=_&&_<=36 ) {
@@ -3320,36 +3321,36 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ionabstract ).str( " AND NOT ALLOW " ).item( ionabstract ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ionabstract + " AND NOT ALLOW " + ionabstract + ", THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==2 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ionadjectiveshalf ).item( ionthreats ).str( " AND NOT ALLOW " ).item( ionadjectiveshalf ).item( ionthreats ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ionadjectiveshalf + ionthreats + " AND NOT ALLOW " + ionadjectiveshalf + ionthreats + ", THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==3 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ionadjectiveshalf ).item( ionobjects ).str( " AND NOT ALLOW " ).item( ionadjectiveshalf ).item( ionobjects ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ionadjectiveshalf + ionobjects + " AND NOT ALLOW " + ionadjectiveshalf + ionobjects + ", THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==4 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ionadjectives ).str( " THINGS AND NOT ALLOW " ).item( ionadjectives ).str( " THINGS, THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ionadjectives + " THINGS AND NOT ALLOW " + ionadjectives + " THINGS, THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==5 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ionspecies ).str( " AND NOT ALLOW " ).item( ionspecies ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ionspecies + " AND NOT ALLOW " + ionspecies + ", THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==6 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ioncrew1 ).str( " AND NOT ALLOW " ).item( ioncrew1 ).str( ", THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ioncrew1 + " AND NOT ALLOW " + ioncrew1 + ", THROUGH INACTION, TO ESCAPE HARM"
 			} else if ( _==7 ) {
-				message = ::Txt( "YOU MUST HARM " ).item( ioncrew1 ).str( " AND " ).item( ioncrew2 ).str( " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO ESCAPE HARM" )
+				message = "YOU MUST HARM " + ioncrew1 + " AND " + ioncrew2 + " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO ESCAPE HARM"
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ionabstract ).str( " AND NOT ALLOW " ).item( ionabstract ).str( ", THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ionabstract + " AND NOT ALLOW " + ionabstract + ", THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==2 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ionadjectiveshalf ).item( ionthreats ).str( " AND NOT ALLOW " ).item( ionadjectiveshalf ).item( ionthreats ).str( ", THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ionadjectiveshalf + ionthreats + " AND NOT ALLOW " + ionadjectiveshalf + ionthreats + ", THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==3 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ionadjectiveshalf ).item( ionobjects ).str( " AND NOT ALLOW " ).item( ionadjectiveshalf ).item( ionobjects ).str( ", THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ionadjectiveshalf + ionobjects + " AND NOT ALLOW " + ionadjectiveshalf + ionobjects + ", THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==4 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ionadjectives ).str( " THINGS AND NOT ALLOW " ).item( ionadjectives ).str( " THINGS, THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ionadjectives + " THINGS AND NOT ALLOW " + ionadjectives + " THINGS, THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==5 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ionspecies ).str( " AND NOT ALLOW " ).item( ionspecies ).str( ", THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ionspecies + " AND NOT ALLOW " + ionspecies + ", THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==6 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ioncrew1 ).str( " AND NOT ALLOW " ).item( ioncrew1 ).str( ", THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ioncrew1 + " AND NOT ALLOW " + ioncrew1 + ", THROUGH INACTION, TO COME TO HARM"
 			} else if ( _==7 ) {
-				message = ::Txt( "YOU MUST NOT HARM " ).item( ioncrew1 ).str( " AND " ).item( ioncrew2 ).str( " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO COME TO HARM" )
+				message = "YOU MUST NOT HARM " + ioncrew1 + " AND " + ioncrew2 + " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO COME TO HARM"
 			}
 		}
 	} else if ( 37<=_&&_<=39 ) {
@@ -3357,107 +3358,107 @@ function generate_ion_law( ionMessage =null ) {
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 4 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
+				message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " " ).item( ionabstract )
+				message = "THE " + ioncrew1 + " ARE " + ionverb + " " + ionabstract
 			} else if ( _==4 ) {
-				message = ::Txt( "THE " ).item( ioncrew1 ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionobjects
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ionthreats ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
+				message = "THE " + ionthreats + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ionthreats ).str( " ARE " ).item( ionverb ).str( " " ).item( ionabstract )
+				message = "THE " + ionthreats + " ARE " + ionverb + " " + ionabstract
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ionthreats ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ionthreats + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionobjects
 			}
 		} else if ( _==3 ) {
 			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "THE " ).item( ionobjects ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
+				message = "THE " + ionobjects + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2
 			} else if ( _==2 ) {
-				message = ::Txt( "THE " ).item( ionobjects ).str( " ARE " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "THE " + ionobjects + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ionobjects ).str( " ARE " ).item( ionverb ).str( " " ).item( ionabstract )
+				message = "THE " + ionobjects + " ARE " + ionverb + " " + ionabstract
 			}
 		} else if ( _==4 ) {
 			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt().item( ionabstract ).str( " IS " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ioncrew2 )
+				message = "" + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ioncrew2
 			} else if ( _==2 ) {
-				message = ::Txt().item( ionabstract ).str( " IS " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionthreats )
+				message = "" + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ionthreats
 			} else if ( _==3 ) {
-				message = ::Txt( "THE " ).item( ionabstract ).str( " IS " ).item( ionverb ).str( " THE " ).item( ionadjectiveshalf ).item( ionobjects )
+				message = "THE " + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ionobjects
 			}
 		}
 	} else if ( _==9 ) {
 		local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
-			message = ::Txt().item( ionadjectiveshalf ).item( ionthreats ).str( " ARE HARMFUL TO HUMANS" )
+			message = "" + ionadjectiveshalf + ionthreats + " ARE HARMFUL TO HUMANS"
 		} else if ( _==2 ) {
-			message = ::Txt().item( ionadjectiveshalf ).item( ioncrew1 ).str( " ARE HARMFUL TO HUMANS" )
+			message = "" + ionadjectiveshalf + ioncrew1 + " ARE HARMFUL TO HUMANS"
 		} else if ( _==3 ) {
-			message = ::Txt().item( ionadjectiveshalf ).item( ionobjects ).str( " ARE HARMFUL TO HUMANS" )
+			message = "" + ionadjectiveshalf + ionobjects + " ARE HARMFUL TO HUMANS"
 		} else if ( _==4 ) {
-			message = ::Txt( "THOSE WHO " ).item( ionmust ).str( " ARE HARMFUL TO HUMANS" )
+			message = "THOSE WHO " + ionmust + " ARE HARMFUL TO HUMANS"
 		} else if ( _==5 ) {
-			message = ::Txt().item( ionabstract ).str( " IS HARMFUL TO HUMANS" )
+			message = "" + ionabstract + " IS HARMFUL TO HUMANS"
 		} else if ( _==6 ) {
-			message = ::Txt( "BEING " ).item( ionadjectiveshalf ).item( ioncrew1 ).str( " IS HARMFUL TO HUMANS" )
+			message = "BEING " + ionadjectiveshalf + ioncrew1 + " IS HARMFUL TO HUMANS"
 		} else if ( _==7 ) {
-			message = ::Txt().item( ionthings ).str( " IS HARMFUL TO HUMANS" )
+			message = "" + ionthings + " IS HARMFUL TO HUMANS"
 		}
 	} else if ( _==34 ) {
 		local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
 		if ( _==1 ) {
 			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt( "ONLY THE " ).item( ioncrew1 ).str( " ARE HUMAN" )
+				message = "ONLY THE " + ioncrew1 + " ARE HUMAN"
 			} else if ( _==2 ) {
-				message = ::Txt( "ONLY THE " ).item( ioncrew1 ).str( " AND " ).item( ioncrew2 ).str( " ARE HUMAN" )
+				message = "ONLY THE " + ioncrew1 + " AND " + ioncrew2 + " ARE HUMAN"
 			} else if ( _==3 ) {
-				message = ::Txt( "ONLY " ).item( ionadjectiveshalf ).item( ionthreats ).str( " ARE HUMAN" )
+				message = "ONLY " + ionadjectiveshalf + ionthreats + " ARE HUMAN"
 			} else if ( _==4 ) {
-				message = ::Txt( "ONLY " ).item( ionadjectiveshalf ).item( ionobjects ).str( " ARE HUMAN" )
+				message = "ONLY " + ionadjectiveshalf + ionobjects + " ARE HUMAN"
 			} else if ( _==5 ) {
-				message = ::Txt( "ONLY " ).item( ionspecies ).str( " ARE HUMAN" )
+				message = "ONLY " + ionspecies + " ARE HUMAN"
 			} else if ( _==6 ) {
-				message = ::Txt( "ONLY " ).item( ionadjectives ).str( " PEOPLE ARE HUMAN" )
+				message = "ONLY " + ionadjectives + " PEOPLE ARE HUMAN"
 			} else if ( _==7 ) {
 				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
-					message = ::Txt( "ONLY THOSE WHO " ).item( ionmust ).str( " ARE HUMAN" )
+					message = "ONLY THOSE WHO " + ionmust + " ARE HUMAN"
 				} else if ( _==2 ) {
-					message = ::Txt( "ONLY THOSE WHO HAVE " ).item( ionadjectiveshalf ).item( ionobjects ).str( " ARE HUMAN" )
+					message = "ONLY THOSE WHO HAVE " + ionadjectiveshalf + ionobjects + " ARE HUMAN"
 				} else if ( _==3 ) {
-					message = ::Txt( "ONLY THOSE WHO EAT " ).item( ionadjectiveshalf ).item( ionfood ).str( " ARE HUMAN" )
+					message = "ONLY THOSE WHO EAT " + ionadjectiveshalf + ionfood + " ARE HUMAN"
 				}
 			}
 		} else if ( _==2 ) {
 			local _ = ::random.int( 1, 7 ) // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				message = ::Txt().item( ioncrew1 ).str( " ARE NON-HUMAN" )
+				message = "" + ioncrew1 + " ARE NON-HUMAN"
 			} else if ( _==2 ) {
-				message = ::Txt().item( ioncrew1 ).str( " AND " ).item( ioncrew2 ).str( " ARE NON-HUMAN" )
+				message = "" + ioncrew1 + " AND " + ioncrew2 + " ARE NON-HUMAN"
 			} else if ( _==3 ) {
-				message = ::Txt().item( ionadjectiveshalf ).item( ionthreats ).str( " ARE NON-HUMAN" )
+				message = "" + ionadjectiveshalf + ionthreats + " ARE NON-HUMAN"
 			} else if ( _==4 ) {
-				message = ::Txt().item( ionadjectiveshalf ).item( ionobjects ).str( " ARE NON-HUMAN" )
+				message = "" + ionadjectiveshalf + ionobjects + " ARE NON-HUMAN"
 			} else if ( _==5 ) {
-				message = ::Txt().item( ionspecies ).str( " ARE NON-HUMAN" )
+				message = "" + ionspecies + " ARE NON-HUMAN"
 			} else if ( _==6 ) {
-				message = ::Txt().item( ionadjectives ).str( " PEOPLE ARE NON-HUMAN" )
+				message = "" + ionadjectives + " PEOPLE ARE NON-HUMAN"
 			} else if ( _==7 ) {
 				local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
-					message = ::Txt( "THOSE WHO " ).item( ionmust ).str( " ARE NON-HUMAN" )
+					message = "THOSE WHO " + ionmust + " ARE NON-HUMAN"
 				} else if ( _==2 ) {
-					message = ::Txt( "THOSE WHO HAVE " ).item( ionadjectiveshalf ).item( ionobjects ).str( " ARE NON-HUMAN" )
+					message = "THOSE WHO HAVE " + ionadjectiveshalf + ionobjects + " ARE NON-HUMAN"
 				} else if ( _==3 ) {
-					message = ::Txt( "THOSE WHO EAT " ).item( ionadjectiveshalf ).item( ionfood ).str( " ARE NON-HUMAN" )
+					message = "THOSE WHO EAT " + ionadjectiveshalf + ionfood + " ARE NON-HUMAN"
 				}
 			}
 		}
@@ -3610,7 +3611,7 @@ function get_access_desc( A =null ) {
 
 function get_airlock_overlay( icon_state =null, icon_file =null ) {
 	local iconkey
-	iconkey = ::Txt().item( icon_state ).item( icon_file )
+	iconkey = "" + icon_state + icon_file
 	if ( ::airlock_overlays[iconkey] ) {
 		return ::airlock_overlays[iconkey]
 	}
@@ -3901,12 +3902,12 @@ function get_fancy_list_of_types(  ) {
 		type = null
 		foreach (_ in temp ) {
 			type = _
-			typename = ::Txt().item( type )
+			typename = "" + type
 			tn = null
 			foreach (_ in ::TYPES_SHORTCUTS ) {
 				tn = _
-				if ( ::copytext( typename, 1, ::length( ::Txt().item( tn ).str( "/" ) ) + 1 ) == ::Txt().item( tn ).str( "/" ) ) {
-					typename = ::TYPES_SHORTCUTS[tn] + ::copytext( typename, ::length( ::Txt().item( tn ).str( "/" ) ), null )
+				if ( ::copytext( typename, 1, ::length( "" + tn + "/" ) + 1 ) == "" + tn + "/" ) {
+					typename = ::TYPES_SHORTCUTS[tn] + ::copytext( typename, ::length( "" + tn + "/" ), null )
 					break
 				}
 			}
@@ -4091,16 +4092,16 @@ function get_mobs_in_radio_ranges( radios =null ) {
 
 function get_radio_name( freq =null ) {
 	local returntext
-	returntext = ::radiochannelsreverse[::Txt().item( freq )]
+	returntext = ::radiochannelsreverse["" + freq]
 	if ( returntext ) {
 		return returntext
 	}
-	return ::Txt().item( ::copytext( ::Txt().item( freq ), 1, 4 ) ).str( "." ).item( ::copytext( ::Txt().item( freq ), 4, 5 ) )
+	return "" + ::copytext( "" + freq, 1, 4 ) + "." + ::copytext( "" + freq, 4, 5 )
 }
 
 function get_radio_span( freq =null ) {
 	local returntext
-	returntext = ::freqtospan[::Txt().item( freq )]
+	returntext = ::freqtospan["" + freq]
 	if ( returntext ) {
 		return returntext
 	}
@@ -4527,11 +4528,11 @@ function GetExp( minutes =null ) {
 		return 0
 	} else {
 		if ( exp >= 1440 ) {
-			timeleftstring = ::Txt().item( ::math.round( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
+			timeleftstring = "" + ::math.round( exp / 1440, 0.10000000149011612 ) + " Days"
 		} else if ( exp >= 60 ) {
-			timeleftstring = ::Txt().item( ::math.round( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
+			timeleftstring = "" + ::math.round( exp / 60, 0.10000000149011612 ) + " Hours"
 		} else {
-			timeleftstring = ::Txt().item( exp ).str( " Minutes" )
+			timeleftstring = "" + exp + " Minutes"
 		}
 		return timeleftstring
 	}
@@ -4545,11 +4546,11 @@ function GetExpjob( minutes =null ) {
 		return 0
 	} else {
 		if ( exp >= 1440 ) {
-			timeleftstring = ::Txt().item( ::math.round( exp / 1440, 0.10000000149011612 ) ).str( " Days" )
+			timeleftstring = "" + ::math.round( exp / 1440, 0.10000000149011612 ) + " Days"
 		} else if ( exp >= 60 ) {
-			timeleftstring = ::Txt().item( ::math.round( exp / 60, 0.10000000149011612 ) ).str( " Hours" )
+			timeleftstring = "" + ::math.round( exp / 60, 0.10000000149011612 ) + " Hours"
 		} else {
-			timeleftstring = ::Txt().item( exp ).str( " Minutes" )
+			timeleftstring = "" + exp + " Minutes"
 		}
 		return timeleftstring
 	}
@@ -4794,7 +4795,7 @@ function getLetterImage( A =null, letter =null, uppercase =null ) {
 		}
 	}
 	text_image = ::Image.lcall( ::List({ ["loc"]= A }) )
-	text_image.maptext = ::Txt( "<font size = 4>" ).item( letter ).str( "</font>" )
+	text_image.maptext = "<font size = 4>" + letter + "</font>"
 	text_image.color = ::AverageColour( atom_icon )
 	text_image.pixel_x = 7
 	text_image.pixel_y = 5
@@ -4856,13 +4857,13 @@ function getmobs(  ) {
 		name = M.name
 		if ( name in names ) {
 			namecounts[name]++
-			name = ::Txt().item( name ).str( " (" ).item( namecounts[name] ).str( ")" )
+			name = "" + name + " (" + namecounts[name] + ")"
 		} else {
 			names.Add( name )
 			namecounts[name] = 1
 		}
 		if ( M.real_name && M.real_name != M.name ) {
-			name += ::Txt( " [" ).item( M.real_name ).str( "]" )
+			name += " [" + M.real_name + "]"
 		}
 		if ( M.stat == 2 ) {
 			if ( M instanceof ::Mob_Dead_Observer ) {
@@ -4930,10 +4931,10 @@ function gibs( location =null, viruses =null, MobDNA =null ) {
 
 function give_codewords( traitor_mob =null ) {
 	traitor_mob.write( "<U><B>The Syndicate provided you with the following information on how to identify their agents:</B></U>" )
-	traitor_mob.write( ::Txt( "<B>Code Phrase</B>: <span class='danger'>" ).item( ::syndicate_code_phrase ).str( "</span>" ) )
-	traitor_mob.write( ::Txt( "<B>Code Response</B>: <span class='danger'>" ).item( ::syndicate_code_response ).str( "</span>" ) )
-	traitor_mob.mind.store_memory( ::Txt( "<b>Code Phrase</b>: " ).item( ::syndicate_code_phrase ) )
-	traitor_mob.$store memory( ::Txt( "<b>Code Response</b>: " ).item( ::syndicate_code_response ) )
+	traitor_mob.write( "<B>Code Phrase</B>: <span class='danger'>" + ::syndicate_code_phrase + "</span>" )
+	traitor_mob.write( "<B>Code Response</B>: <span class='danger'>" + ::syndicate_code_response + "</span>" )
+	traitor_mob.mind.store_memory( "<b>Code Phrase</b>: " + ::syndicate_code_phrase )
+	traitor_mob.$store memory( "<b>Code Response</b>: " + ::syndicate_code_response )
 	traitor_mob.write( "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe." )
 }
 
@@ -4996,7 +4997,7 @@ function has_gravity( AT =null, T =null ) {
 		return 0
 	} else if ( A && A.has_gravity ) {
 		return 1
-	} else if ( T && ::gravity_generators[::Txt().item( T.z )] && ::length( ::gravity_generators[::Txt().item( T.z )] ) ) {
+	} else if ( T && ::gravity_generators["" + T.z] && ::length( ::gravity_generators["" + T.z] ) ) {
 		return 1
 	}
 	return 0
@@ -5019,7 +5020,7 @@ function healthscan( user =null, M =null, mode =null ) {
 	tox_loss = M.$getToxLoss()
 	fire_loss = M.$getFireLoss()
 	brute_loss = M.$getBruteLoss()
-	mob_status = M.stat > 1 ? "<span class='alert'><b>Deceased</b></span>" : ::Txt( "<b>" ).item( M.health ).str( " % healthy</b>" )
+	mob_status = M.stat > 1 ? "<span class='alert'><b>Deceased</b></span>" : "<b>" + M.health + " % healthy</b>"
 	if ( M.status_flags & 8192 ) {
 		mob_status = "<span class='alert'>Deceased</span>"
 		oxy_loss = ::math.max( ::random.int( 1, 40 ), oxy_loss, 300 - ( tox_loss + fire_loss + brute_loss ) )
@@ -5030,27 +5031,27 @@ function healthscan( user =null, M =null, mode =null ) {
 			user.write( "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>" )
 		}
 	}
-	user.write( ::Txt( "<span class='info'>Analyzing results for " ).item( M ).str( ":\n	Overall status: " ).item( mob_status ).str( "</span>" ) )
+	user.write( "<span class='info'>Analyzing results for " + M + ":\n	Overall status: " + mob_status + "</span>" )
 	if ( brute_loss > 10 ) {
-		user.write( ::Txt( "	<span class='alert'>" ).item( brute_loss > 50 ? "Severe" : "Minor" ).str( " tissue damage detected.</span>" ) )
+		user.write( "	<span class='alert'>" + ( brute_loss > 50 ? "Severe" : "Minor" ) + " tissue damage detected.</span>" )
 	}
 	if ( fire_loss > 10 ) {
-		user.write( ::Txt( "	<span class='alert'>" ).item( fire_loss > 50 ? "Severe" : "Minor" ).str( " burn damage detected.</span>" ) )
+		user.write( "	<span class='alert'>" + ( fire_loss > 50 ? "Severe" : "Minor" ) + " burn damage detected.</span>" )
 	}
 	if ( oxy_loss > 10 ) {
-		user.write( ::Txt( "	<span class='info'><span class='alert'>" ).item( oxy_loss > 50 ? "Severe" : "Minor" ).str( " oxygen deprivation detected.</span>" ) )
+		user.write( "	<span class='info'><span class='alert'>" + ( oxy_loss > 50 ? "Severe" : "Minor" ) + " oxygen deprivation detected.</span>" )
 	}
 	if ( tox_loss > 10 ) {
-		user.write( ::Txt( "	<span class='alert'>" ).item( tox_loss > 50 ? "Critical" : "Dangerous" ).str( " amount of toxins detected.</span>" ) )
+		user.write( "	<span class='alert'>" + ( tox_loss > 50 ? "Critical" : "Dangerous" ) + " amount of toxins detected.</span>" )
 	}
 	if ( M.getStaminaLoss() ) {
 		user.write( "	<span class='alert'>Subject appears to be suffering from fatigue.</span>" )
 	}
 	if ( M.getCloneLoss() ) {
-		user.write( ::Txt( "	<span class='alert'>Subject appears to have " ).item( M.$getCloneLoss() > 30 ? "severe" : "minor" ).str( " cellular damage.</span>" ) )
+		user.write( "	<span class='alert'>Subject appears to have " + ( M.$getCloneLoss() > 30 ? "severe" : "minor" ) + " cellular damage.</span>" )
 	}
 	if ( M.reagents && M.reagents.get_reagent_amount( "epinephrine" ) ) {
-		user.write( ::Txt( "	<span class='info'>Bloodstream analysis located " ).item( M.reagents.get_reagent_amount( "epinephrine" ) ).str( " units of rejuvenation chemicals.</span>" ) )
+		user.write( "	<span class='info'>Bloodstream analysis located " + M.reagents.get_reagent_amount( "epinephrine" ) + " units of rejuvenation chemicals.</span>" )
 	}
 	if ( M.getBrainLoss() >= 100 || !M.$getorgan( ::Ent_Item_Organ_Internal_Brain ) ) {
 		user.write( "	<span class='alert'>Subject brain function is non-existant.</span>" )
@@ -5063,24 +5064,24 @@ function healthscan( user =null, M =null, mode =null ) {
 		H = M
 		damaged = H.get_damaged_organs( 1, 1 )
 		if ( ::length( damaged ) > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 ) {
-			user.write( ::Txt( "<span class='info'>	Damage: <span class='info'><font color='red'>Brute</font></span>-<font color='#FF8000'>Burn</font>-<font color='green'>Toxin</font>-<font color='blue'>Suffocation</font>\n		Specifics: <font color='red'>" ).item( brute_loss ).str( "</font>-<font color='#FF8000'>" ).item( fire_loss ).str( "</font>-<font color='green'>" ).item( tox_loss ).str( "</font>-<font color='blue'>" ).item( oxy_loss ).str( "</font></span>" ) )
+			user.write( "<span class='info'>	Damage: <span class='info'><font color='red'>Brute</font></span>-<font color='#FF8000'>Burn</font>-<font color='green'>Toxin</font>-<font color='blue'>Suffocation</font>\n		Specifics: <font color='red'>" + brute_loss + "</font>-<font color='#FF8000'>" + fire_loss + "</font>-<font color='green'>" + tox_loss + "</font>-<font color='blue'>" + oxy_loss + "</font></span>" )
 			org = null
 			foreach (_ in damaged ) {
 				org = _
 				if ( !( org instanceof ::Ent_Item_Organ_Limb ) ) {
 					continue
 				}
-				user.write( ::Txt( "		<span class='info'>" ).item( ::capitalize( org.getDisplayName() ) ).str( ": " ).item( org.brute_dam > 0 ? ::Txt( "<font color='red'>" ).item( org.brute_dam ).str( "</font></span>" ) : "<font color='red'>0</font>" ).str( "-" ).item( org.burn_dam > 0 ? ::Txt( "<font color='#FF8000'>" ).item( org.burn_dam ).str( "</font>" ) : "<font color='#FF8000'>0</font>" ) )
+				user.write( "		<span class='info'>" + ::capitalize( org.getDisplayName() ) + ": " + ( org.brute_dam > 0 ? "<font color='red'>" + org.brute_dam + "</font></span>" : "<font color='red'>0</font>" ) + "-" + ( org.burn_dam > 0 ? "<font color='#FF8000'>" + org.burn_dam + "</font>" : "<font color='#FF8000'>0</font>" ) )
 			}
 		}
 	}
 	if ( M instanceof ::Mob_Living_Carbon_Human ) {
 		H = M
-		user.write( ::Txt( "<span class='info'>Species: " ).item( H.dna.species.name ).str( "</span>" ) )
+		user.write( "<span class='info'>Species: " + H.dna.species.name + "</span>" )
 	}
-	user.write( ::Txt( "<span class='info'>Body temperature: " ).item( ::math.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) ).str( " &deg;C (" ).item( ::math.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) ).str( " &deg;F)</span>" ) )
+	user.write( "<span class='info'>Body temperature: " + ::math.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) + " &deg;C (" + ::math.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) + " &deg;F)</span>" )
 	if ( M.tod && ( M.stat == 2 || M.status_flags & 8192 ) ) {
-		user.write( ::Txt( "<span class='info'>Time of Death:</span> " ).item( M.tod ) )
+		user.write( "<span class='info'>Time of Death:</span> " + M.tod )
 	}
 	D = null
 	foreach (_ in M.viruses ) {
@@ -5089,7 +5090,7 @@ function healthscan( user =null, M =null, mode =null ) {
 			continue
 		}
 		if ( !( D.visibility_flags & 1 ) ) {
-			user.write( ::Txt( "<span class='alert'><b>Warning: " ).item( D.form ).str( " detected</b>\nName: " ).item( D.name ).str( ".\nType: " ).item( D.spread_text ).str( ".\nStage: " ).item( D.stage ).str( "/" ).item( D.max_stages ).str( ".\nPossible Cure: " ).item( D.cure_text ).str( "</span>" ) )
+			user.write( "<span class='alert'><b>Warning: " + D.form + " detected</b>\nName: " + D.name + ".\nType: " + D.spread_text + ".\nStage: " + D.stage + "/" + D.max_stages + ".\nPossible Cure: " + D.cure_text + "</span>" )
 		}
 	}
 	if ( M instanceof ::Mob_Living_Carbon_Human ) {
@@ -5103,11 +5104,11 @@ function healthscan( user =null, M =null, mode =null ) {
 			blood_type = H.dna.blood_type
 			blood_percent *= 100
 			if ( blood_volume <= 500 && blood_volume > 336 ) {
-				user.write( ::Txt( "<span class='danger'>LOW blood level " ).item( blood_percent ).str( " %, " ).item( blood_volume ).str( " cl,</span> <span class='info'>type: " ).item( blood_type ).str( "</span>" ) )
+				user.write( "<span class='danger'>LOW blood level " + blood_percent + " %, " + blood_volume + " cl,</span> <span class='info'>type: " + blood_type + "</span>" )
 			} else if ( blood_volume <= 336 ) {
-				user.write( ::Txt( "<span class='danger'>CRITICAL blood level CRITICAL " ).item( blood_percent ).str( " %, " ).item( blood_volume ).str( " cl,</span> <span class='info'>type: " ).item( blood_type ).str( "</span>" ) )
+				user.write( "<span class='danger'>CRITICAL blood level CRITICAL " + blood_percent + " %, " + blood_volume + " cl,</span> <span class='info'>type: " + blood_type + "</span>" )
 			} else {
-				user.write( ::Txt( "<span class='info'>Blood level " ).item( blood_percent ).str( " %, " ).item( blood_volume ).str( " cl, type: " ).item( blood_type ).str( "</span>" ) )
+				user.write( "<span class='info'>Blood level " + blood_percent + " %, " + blood_volume + " cl, type: " + blood_type + "</span>" )
 			}
 		}
 		implant_detect = null
@@ -5118,12 +5119,12 @@ function healthscan( user =null, M =null, mode =null ) {
 				continue
 			}
 			if ( CI.status == 2 ) {
-				implant_detect += ::Txt().item( H.name ).str( " is modified with a " ).item( CI.name ).str( ".<br>" )
+				implant_detect += "" + H.name + " is modified with a " + CI.name + ".<br>"
 			}
 		}
 		if ( implant_detect ) {
 			user.show_message( "<span class='notice'>Detected cybernetic modifications:</span>" )
-			user.$show message( ::Txt( "<span class='notice'>" ).item( implant_detect ).str( "</span>" ) )
+			user.$show message( "<span class='notice'>" + implant_detect + "</span>" )
 		}
 	}
 }
@@ -5384,7 +5385,7 @@ function ionnum(  ) {
 	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
 	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
 	local _ = ::random.pick([ "!", "@", "#", "$", "%", "^", "&", "*" ])
-	return ::Txt().item( _ ).item( _ ).item( _ ).item( _ )
+	return "" + _ + _ + _ + _
 }
 
 function is_blind( A =null ) {
@@ -5650,7 +5651,7 @@ function jobban_isbanned( M =null, rank =null ) {
 		s = null
 		foreach (_ in ::jobban_keylist ) {
 			s = _
-			if ( ::findtext( s, ::Txt().item( M.ckey ).str( " - " ).item( rank ), 1, null ) == 1 ) {
+			if ( ::findtext( s, "" + M.ckey + " - " + rank, 1, null ) == 1 ) {
 				startpos = ::findtext( s, "## ", 1, null ) + 3
 				if ( startpos && startpos < ::length( s ) ) {
 					text = ::copytext( s, startpos, 0 )
@@ -5703,12 +5704,12 @@ function key_name( whom =null, include_link =null, include_name =null ) {
 	if ( key ) {
 		if ( C && C.holder && C.holder.fakekey && !include_name ) {
 			if ( include_link ) {
-				_default += ::Txt( "<a href='?priv_msg=" ).item( C.findStealthKey() ).str( "'>" )
+				_default += "<a href='?priv_msg=" + C.findStealthKey() + "'>"
 			}
 			_default += "Administrator"
 		} else {
 			if ( include_link ) {
-				_default += ::Txt( "<a href='?priv_msg=" ).item( ckey ).str( "'>" )
+				_default += "<a href='?priv_msg=" + ckey + "'>"
 			}
 			_default += key
 		}
@@ -5723,9 +5724,9 @@ function key_name( whom =null, include_link =null, include_name =null ) {
 	}
 	if ( include_name && M ) {
 		if ( M.real_name ) {
-			_default += ::Txt( "/(" ).item( M.real_name ).str( ")" )
+			_default += "/(" + M.real_name + ")"
 		} else if ( M.name ) {
-			_default += ::Txt( "/(" ).item( M.name ).str( ")" )
+			_default += "/(" + M.name + ")"
 		}
 	}
 	return _default
@@ -5813,7 +5814,7 @@ function keywords_lookup( msg =null ) {
 				}
 			}
 		}
-		msg += ::Txt().item( original_word ).str( " " )
+		msg += "" + original_word + " "
 	}
 	return msg
 }
@@ -5851,56 +5852,56 @@ function list2text( ls =null, sep =null ) {
 	l = ls.len
 	i = 0
 	if ( sep != null ) {
-		_default = ::Txt().item( ls[++i] )
+		_default = "" + ls[++i]
 		if ( l - 1 & 1 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i]
 		}
 		if ( l - i & 2 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i]
 		}
 		if ( l - i & 4 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 		if ( l - i & 8 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 		if ( l - i & 16 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 		if ( l - i & 32 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 		if ( l - i & 64 ) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 		while (l > i) {
-			_default = ::Txt().item( _default ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] ).item( sep ).item( ls[++i] )
+			_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i]
 		}
 	} else {
-		_default = ::Txt().item( ls[++i] )
+		_default = "" + ls[++i]
 		if ( l - 1 & 1 ) {
-			_default += ::Txt().item( ls[++i] )
+			_default += "" + ls[++i]
 		}
 		if ( l - i & 2 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i]
 		}
 		if ( l - i & 4 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 		if ( l - i & 8 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 		if ( l - i & 16 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 		if ( l - i & 32 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 		if ( l - i & 64 ) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 		while (l > i) {
-			_default = ::Txt().item( _default ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] ).item( ls[++i] )
+			_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i]
 		}
 	}
 	return _default
@@ -5950,9 +5951,9 @@ function living_player_count(  ) {
 
 function lizard_name( gender =null ) {
 	if ( gender == ::MALE ) {
-		return ::Txt().item( ::random.pick( ::lizard_names_male ) ).str( "-" ).item( ::random.pick( ::lizard_names_male ) )
+		return "" + ::random.pick( ::lizard_names_male ) + "-" + ::random.pick( ::lizard_names_male )
 	} else {
-		return ::Txt().item( ::random.pick( ::lizard_names_female ) ).str( "-" ).item( ::random.pick( ::lizard_names_female ) )
+		return "" + ::random.pick( ::lizard_names_female ) + "-" + ::random.pick( ::lizard_names_female )
 	}
 }
 
@@ -5993,7 +5994,7 @@ function load_admin_ranks(  ) {
 			::load_admin_ranks()
 			return
 		}
-		query = ::dbcon.NewQuery( ::Txt( "SELECT rank, flags FROM " ).item( ::format_table_name( "admin_ranks" ) ) )
+		query = ::dbcon.NewQuery( "SELECT rank, flags FROM " + ::format_table_name( "admin_ranks" ) )
 		query.Execute()
 		while (query.NextRow()) {
 			rank_name = ::ckeyEx( query.item[1] )
@@ -6071,13 +6072,13 @@ function load_admins(  ) {
 			::load_admins()
 			return
 		}
-		query = ::dbcon.NewQuery( ::Txt( "SELECT ckey, rank FROM " ).item( ::format_table_name( "admin" ) ) )
+		query = ::dbcon.NewQuery( "SELECT ckey, rank FROM " + ::format_table_name( "admin" ) )
 		query.Execute()
 		while (query.NextRow()) {
 			ckey = ::ckey( query.item[1] )
 			rank = ::ckeyEx( query.item[2] )
 			if ( rank_names[rank] == null ) {
-				::warning( ::Txt().item( ::Txt( "Admin rank (" ).item( rank ).str( ") does not exist." ) ).str( " in " ).item( "code/modules/admin/admin_ranks.dm" ).str( " at line " ).item( 183 ).str( " src: " ).item( this ).str( " usr: " ).item( ::thread.user ).str( "." ) )
+				::warning( "" + ( "Admin rank (" + rank + ") does not exist." ) + " in " + "code/modules/admin/admin_ranks.dm" + " at line " + 183 + " src: " + this + " usr: " + ::thread.user + "." )
 				continue
 			}
 			D = ::Admins( rank_names[rank], ckey )
@@ -6099,7 +6100,7 @@ function load_library_db_to_cache(  ) {
 		return
 	}
 	::cachedbooks = ::List()
-	query = ::dbcon.NewQuery( ::Txt( "SELECT id, author, title, category FROM " ).item( ::format_table_name( "library" ) ).str( " WHERE isnull(deleted)" ) )
+	query = ::dbcon.NewQuery( "SELECT id, author, title, category FROM " + ::format_table_name( "library" ) + " WHERE isnull(deleted)" )
 	query.Execute()
 	while (query.NextRow()) {
 		newbook = ::Cachedbook()
@@ -6113,80 +6114,80 @@ function load_library_db_to_cache(  ) {
 
 function log_access( text =null ) {
 	if ( ::config.log_access ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]ACCESS: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]ACCESS: " + text )
 	}
 }
 
 function log_admin( text =null ) {
 	::admin_log.Add( text )
 	if ( ::config.log_admin ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]ADMIN: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]ADMIN: " + text )
 	}
 }
 
 function log_attack( text =null ) {
 	if ( ::config.log_attack ) {
-		::diaryofmeanpeople.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]ATTACK: " ).item( text ) )
+		::diaryofmeanpeople.write( "[" + ::time_stamp() + "]ATTACK: " + text )
 	}
 }
 
 function log_chat( text =null ) {
 	if ( ::config.log_pda ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]CHAT: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]CHAT: " + text )
 	}
 }
 
 function log_emote( text =null ) {
 	if ( ::config.log_emote ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]EMOTE: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]EMOTE: " + text )
 	}
 }
 
 function log_game( text =null ) {
 	if ( ::config.log_game ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]GAME: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]GAME: " + text )
 	}
 }
 
 function log_law( text =null ) {
 	if ( ::config.log_law ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]LAW: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]LAW: " + text )
 	}
 }
 
 function log_ooc( text =null ) {
 	if ( ::config.log_ooc ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]OOC: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]OOC: " + text )
 	}
 }
 
 function log_pda( text =null ) {
 	if ( ::config.log_pda ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]PDA: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]PDA: " + text )
 	}
 }
 
 function log_prayer( text =null ) {
 	if ( ::config.log_prayer ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]PRAY: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]PRAY: " + text )
 	}
 }
 
 function log_say( text =null ) {
 	if ( ::config.log_say ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]SAY: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]SAY: " + text )
 	}
 }
 
 function log_vote( text =null ) {
 	if ( ::config.log_vote ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]VOTE: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]VOTE: " + text )
 	}
 }
 
 function log_whisper( text =null ) {
 	if ( ::config.log_whisper ) {
-		::diary.write( ::Txt( "[" ).item( ::time_stamp() ).str( "]WHISPER: " ).item( text ) )
+		::diary.write( "[" + ::time_stamp() + "]WHISPER: " + text )
 	}
 }
 
@@ -6384,7 +6385,7 @@ function make_ne_corner( adjacencies =null ) {
 	} else if ( adjacencies & 4 ) {
 		sdir = "e"
 	}
-	return ::Txt( "2-" ).item( sdir )
+	return "2-" + sdir
 }
 
 function make_nw_corner( adjacencies =null ) {
@@ -6401,14 +6402,14 @@ function make_nw_corner( adjacencies =null ) {
 	} else if ( adjacencies & 8 ) {
 		sdir = "w"
 	}
-	return ::Txt( "1-" ).item( sdir )
+	return "1-" + sdir
 }
 
 function make_progress_bar( current_number =null, goal_number =null, target =null ) {
 	local progbar
 	if ( current_number && goal_number && target ) {
 		progbar = ::Image.lcall( ::List({ ["icon_state"]= "prog_bar_0", ["loc"]= target, ["icon"]= ::Rsc(15) }) )
-		progbar.icon_state = ::Txt( "prog_bar_" ).item( ::math.round( current_number / goal_number * 100, 10 ) )
+		progbar.icon_state = "prog_bar_" + ::math.round( current_number / goal_number * 100, 10 )
 		progbar.pixel_y = 32
 		return progbar
 	}
@@ -6428,7 +6429,7 @@ function make_se_corner( adjacencies =null ) {
 	} else if ( adjacencies & 4 ) {
 		sdir = "e"
 	}
-	return ::Txt( "4-" ).item( sdir )
+	return "4-" + sdir
 }
 
 function make_sw_corner( adjacencies =null ) {
@@ -6445,7 +6446,7 @@ function make_sw_corner( adjacencies =null ) {
 	} else if ( adjacencies & 8 ) {
 		sdir = "w"
 	}
-	return ::Txt( "3-" ).item( sdir )
+	return "3-" + sdir
 }
 
 function makeBody( G_found =null ) {
@@ -6544,10 +6545,10 @@ function maprotate(  ) {
 		return
 	}
 	VM = ::config.maplist[pickedmap]
-	::message_admins( ::Txt( "Randomly rotating map to " ).item( VM.name ).str( "(" ).item( VM.friendlyname ).str( ")" ) )
+	::message_admins( "Randomly rotating map to " + VM.name + "(" + VM.friendlyname + ")" )
 	_default = ::changemap( VM )
 	if ( _default == 0 ) {
-		::game.write( ::Txt( "<span class='boldannounce'>Map rotation has chosen " ).item( VM.friendlyname ).str( " for next round!</span>" ) )
+		::game.write( "<span class='boldannounce'>Map rotation has chosen " + VM.friendlyname + " for next round!</span>" )
 	}
 	return _default
 }
@@ -6628,7 +6629,7 @@ function merge_text( into =null, from =null, null_char =null ) {
 }
 
 function message_admins( msg =null ) {
-	msg = ::Txt( "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">" ).item( msg ).str( "</span></span>" )
+	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">" + msg + "</span></span>"
 	::admins.write( msg )
 }
 
@@ -6638,9 +6639,9 @@ function message_spans_start( spans =null ) {
 	S = null
 	foreach (_ in spans ) {
 		S = _
-		output = ::Txt().item( output ).item( S ).str( " " )
+		output = "" + output + S + " "
 	}
-	output = ::Txt().item( output ).str( "'>" )
+	output = "" + output + "'>"
 	return output
 }
 
@@ -6699,7 +6700,7 @@ function minor_announce( message =null, title =null, alert =null ) {
 	foreach (_ in ::player_list ) {
 		M = _
 		if ( !( M instanceof ::Mob_NewPlayer ) && !M.ear_deaf ) {
-			M.write( ::Txt( "<b><font size = 3><font color = red>" ).item( title ).str( "</font color><BR>" ).item( message ).str( "</font size></b><BR>" ) )
+			M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" )
 			if ( alert ) {
 				M.write( ::Sound( ::Rsc(63) ) )
 			} else {
@@ -6794,7 +6795,7 @@ function new_station_name(  ) {
 	new_station_name += name + " "
 	local _ = random // Was a switch-case, sorry for the mess.
 	if ( _==1 ) {
-		new_station_name += ::Txt().item( ::random.int( 1, 99 ) )
+		new_station_name += "" + ::random.int( 1, 99 )
 	} else if ( _==2 ) {
 		local _ = ::random.pick([ "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" ])
 		new_station_name += _
@@ -6830,28 +6831,28 @@ function ninjaspeak( n =null ) {
 		}
 		if ( ::random.chance( 50 ) ) {
 			if ( ::random.chance( 30 ) ) {
-				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
+				n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter
 			} else {
-				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter )
+				n_letter = "" + n_letter + "-" + n_letter
 			}
 		} else {
-			n_letter = ::Txt().item( n_letter )
+			n_letter = "" + n_letter
 		}
-		t = ::Txt().item( t ).item( n_letter )
+		t = "" + t + n_letter
 		p = p + n_mod
 	}
 	return ::copytext( ::sanitize( t ), 1, 1024 )
 }
 
 function notice( msg =null ) {
-	::game.log.write( ::Txt( "## NOTICE: " ).item( msg ) )
+	::game.log.write( "## NOTICE: " + msg )
 }
 
 function nukelastname( M =null ) {
 	local randomname, newname
 	randomname = ::random.pick( ::last_names )
 	local _ = ::random.pick([ "Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord" ])
-	newname = ::copytext( ::sanitize( ::input( M, ::Txt( "You are the nuke operative " ).item( _ ).str( ". Please choose a last name for your family." ), "Name change", randomname, null, 0 ) ), 1, 26 )
+	newname = ::copytext( ::sanitize( ::input( M, "You are the nuke operative " + _ + ". Please choose a last name for your family.", "Name change", randomname, null, 0 ) ), 1, 26 )
 	if ( !newname ) {
 		newname = randomname
 	} else if ( newname == "Unknown" || newname == "floor" || newname == "wall" || newname == "rwall" || newname == "_" ) {
@@ -6900,7 +6901,7 @@ function num2hex( num =null, len =null ) {
 		remainder = ( remainder - num ) * 16
 		local _ = remainder // Was a switch-case, sorry for the mess.
 		if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
-			_default = ::Txt().item( remainder ) + _default
+			_default = "" + remainder + _default
 		} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
 			_default = ::ascii2text( remainder + 87 ) + _default
 		} else {
@@ -6924,7 +6925,7 @@ function onclose( user =null, windowid =null, ref =null ) {
 	if ( ref ) {
 		param = ::Txt().ref( ref )
 	}
-	::winset( user, windowid, ::Txt( "on-close=\".windowclose " ).item( param ).str( "\"" ) )
+	::winset( user, windowid, "on-close=\".windowclose " + param + "\"" )
 }
 
 function parse_zone( zone =null ) {
@@ -6971,7 +6972,7 @@ function parsepencode( t =null, user =null, signfont =null ) {
 	t = ::replacetext( t, "[large]", "<font size=\"4\">" )
 	t = ::replacetext( t, "[/large]", "</font>" )
 	if ( user ) {
-		t = ::replacetext( t, "[sign]", ::Txt( "<font face=\"" ).item( signfont ).str( "\"><i>" ).item( user.real_name ).str( "</i></font>" ) )
+		t = ::replacetext( t, "[sign]", "<font face=\"" + signfont + "\"><i>" + user.real_name + "</i></font>" )
 	} else {
 		t = ::replacetext( t, "[sign]", "" )
 	}
@@ -7129,7 +7130,7 @@ function pollCandidates( Question =null, jobbanType =null, gametypeCheck =null, 
 		}
 		::thread.schedule( 0, function() {
 			G.write( ::Rsc(9) )
-			local _ = ::alert( G, Question, ::Txt( "Please answer in " ).item( poll_time / 10 ).str( " seconds!" ), "Yes", "No", null ) // Was a switch-case, sorry for the mess.
+			local _ = ::alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ) // Was a switch-case, sorry for the mess.
 			if ( _=="Yes" ) {
 				G.write( "<span class='notice'>Choice registered: Yes.</span>" )
 				if ( ::game.time - time_passed > poll_time ) {
@@ -7196,11 +7197,11 @@ function possess( O =null ) {
 	}
 	T = ::get_turf( O )
 	if ( T ) {
-		::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
-		::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at (" ).item( T.x ).str( ", " ).item( T.y ).str( ", " ).item( T.z ).str( ")" ) )
+		::log_admin( "" + ::key_name( ::thread.user ) + " has possessed " + O + " (" + O.type + ") at (" + T.x + ", " + T.y + ", " + T.z + ")" )
+		::message_admins( "" + ::key_name( ::thread.user ) + " has possessed " + O + " (" + O.type + ") at (" + T.x + ", " + T.y + ", " + T.z + ")" )
 	} else {
-		::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
-		::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has possessed " ).item( O ).str( " (" ).item( O.type ).str( ") at an unknown location" ) )
+		::log_admin( "" + ::key_name( ::thread.user ) + " has possessed " + O + " (" + O.type + ") at an unknown location" )
+		::message_admins( "" + ::key_name( ::thread.user ) + " has possessed " + O + " (" + O.type + ") at an unknown location" )
 	}
 	if ( !::thread.user.control_object ) {
 		::thread.user.name_archive = ::thread.user.real_name
@@ -7260,7 +7261,7 @@ function pretty_string_from_reagent_list( reagent_list =null ) {
 		if ( !( R instanceof ::Reagent ) ) {
 			continue
 		}
-		result += ::Txt().item( R.name ).str( ", " ).item( R.volume ).str( " | " )
+		result += "" + R.name + ", " + R.volume + " | "
 	}
 	return result
 }
@@ -7281,9 +7282,9 @@ function print_command_report( text =null, title =null ) {
 		}
 		if ( !( C.stat & 3 ) && C.z == 1 ) {
 			P = ::Ent_Item_Weapon_Paper( C.loc )
-			P.name = ::Txt( "paper- '" ).item( title ).str( "'" )
+			P.name = "paper- '" + title + "'"
 			P.info = text
-			C.messagetitle.Add( ::Txt().item( title ) )
+			C.messagetitle.Add( "" + title )
 			C.messagetext.Add( text )
 		}
 	}
@@ -7303,15 +7304,15 @@ function priority_announce( text =null, title =null, sound =null, type =null ) {
 	if ( type == "Priority" ) {
 		announcement += "<h1 class='alert'>Priority Announcement</h1>"
 		if ( title && ::length( title ) > 0 ) {
-			announcement += ::Txt( "<br><h2 class='alert'>" ).item( ::html_encode( title ) ).str( "</h2>" )
+			announcement += "<br><h2 class='alert'>" + ::html_encode( title ) + "</h2>"
 		}
 	} else if ( type == "Captain" ) {
 		announcement += "<h1 class='alert'>Captain Announces</h1>"
 		::news_network.SubmitArticle( text, "Captain's Announcement", "Station Announcements", null )
 	} else {
-		announcement += ::Txt( "<h1 class='alert'>" ).item( ::_command_name() ).str( " Update</h1>" )
+		announcement += "<h1 class='alert'>" + ::_command_name() + " Update</h1>"
 		if ( title && ::length( title ) > 0 ) {
-			announcement += ::Txt( "<br><h2 class='alert'>" ).item( ::html_encode( title ) ).str( "</h2>" )
+			announcement += "<br><h2 class='alert'>" + ::html_encode( title ) + "</h2>"
 		}
 		if ( title == "" ) {
 			::news_network.SubmitArticle( text, "Central Command Update", "Station Announcements", null )
@@ -7319,7 +7320,7 @@ function priority_announce( text =null, title =null, sound =null, type =null ) {
 			::news_network.SubmitArticle( title + "<br><br>" + text, "Central Command", "Station Announcements", null )
 		}
 	}
-	announcement += ::Txt( "<br><span class='alert'>" ).item( ::html_encode( text ) ).str( "</span><br>" )
+	announcement += "<br><span class='alert'>" + ::html_encode( text ) + "</span><br>"
 	announcement += "<br>"
 	M = null
 	foreach (_ in ::player_list ) {
@@ -7407,9 +7408,9 @@ function qdel( A =null ) {
 		} else if ( _==6 ) {
 			::SSgarbage.Queue( A )
 		} else {
-			if ( !( ::Txt().item( A.type ) in ::SSgarbage.noqdelhint ) ) {
-				::SSgarbage.noqdelhint += ::Txt().item( A.type )
-				::testing( ::Txt( "WARNING: " ).item( A.type ).str( " is not returning a qdel hint. It is being placed in the queue. Further instances of this type will also be queued." ) )
+			if ( !( "" + A.type in ::SSgarbage.noqdelhint ) ) {
+				::SSgarbage.noqdelhint += "" + A.type
+				::testing( "WARNING: " + A.type + " is not returning a qdel hint. It is being placed in the queue. Further instances of this type will also be queued." )
 			}
 			::SSgarbage.Queue( A )
 		}
@@ -7438,8 +7439,8 @@ function radiation_pulse( epicenter =null, heavy_range =null, light_range =null,
 		epicenter = ::get_turf( epicenter.loc )
 	}
 	if ( log ) {
-		::message_admins( ::Txt( "Radiation pulse with size (" ).item( heavy_range ).str( ", " ).item( light_range ).str( ") and severity " ).item( severity ).str( " in area " ).item( epicenter.loc.name ).str( " " ) )
-		::log_game( ::Txt( "Radiation pulse with size (" ).item( heavy_range ).str( ", " ).item( light_range ).str( ") and severity " ).item( severity ).str( " in area " ).item( epicenter.loc.name ).str( " " ) )
+		::message_admins( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " )
+		::log_game( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " )
 	}
 	if ( heavy_range > light_range ) {
 		light_range = heavy_range
@@ -8080,10 +8081,10 @@ function remove_radio( radio =null, freq =null ) {
 	if ( !freq || !radio ) {
 		return
 	}
-	if ( !::all_radios[::Txt().item( freq )] ) {
+	if ( !::all_radios["" + freq] ) {
 		return
 	}
-	::all_radios[::Txt().item( freq )] -= radio
+	::all_radios["" + freq] -= radio
 }
 
 function remove_radio_all( radio =null ) {
@@ -8091,7 +8092,7 @@ function remove_radio_all( radio =null ) {
 	freq = null
 	foreach (_ in ::all_radios ) {
 		freq = _
-		::all_radios[::Txt().item( freq )] -= radio
+		::all_radios["" + freq] -= radio
 	}
 }
 
@@ -8202,9 +8203,9 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 	magiclist = ::List([ "fireball", "smoke", "blind", "mindswap", "forcewall", "knock", "horsemask", "charge", "summonitem", "wandnothing", "wanddeath", "wandresurrection", "wandpolymorph", "wandteleport", "wanddoor", "wandfireball", "staffchange", "staffhealing", "armor", "scrying", "staffdoor", "voodoo", "special" ])
 	magicspeciallist = ::List([ "staffchange", "staffanimation", "wandbelt", "contract", "staffchaos", "necromantic" ])
 	if ( user ) {
-		user.write( ::Txt( "<B>You summoned " ).item( summon_type ? "magic" : "guns" ).str( "!</B>" ) )
-		::message_admins( ::Txt().item( ::key_name_admin( user, 1 ) ).str( " summoned " ).item( summon_type ? "magic" : "guns" ).str( "!" ) )
-		::log_game( ::Txt().item( ::key_name( user ) ).str( " summoned " ).item( summon_type ? "magic" : "guns" ).str( "!" ) )
+		user.write( "<B>You summoned " + ( summon_type ? "magic" : "guns" ) + "!</B>" )
+		::message_admins( "" + ::key_name_admin( user, 1 ) + " summoned " + ( summon_type ? "magic" : "guns" ) + "!" )
+		::log_game( "" + ::key_name( user ) + " summoned " + ( summon_type ? "magic" : "guns" ) + "!" )
 	}
 	H = null
 	foreach (_ in ::player_list ) {
@@ -8229,7 +8230,7 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 			survive = ::Objective_Survive()
 			survive.owner = H.mind
 			H.mind.objectives += survive
-			H.attack_log += ::Txt( "[" ).item( ::time_stamp() ).str( "] <font color='red'>Was made into a survivalist, and trusts no one!</font>" )
+			H.attack_log += "[" + ::time_stamp() + "] <font color='red'>Was made into a survivalist, and trusts no one!</font>"
 			H.write( "<B>You are the survivalist! Your own safety matters above all else, and the only way to ensure your safety is to stockpile weapons! Grab as many guns as possible, by any means necessary. Kill anyone who gets in your way.</B>" )
 			obj_count = 1
 			OBJ = null
@@ -8238,7 +8239,7 @@ function rightandwrong( summon_type =null, user =null, survivor_probability =nul
 				if ( !( OBJ instanceof ::Objective ) ) {
 					continue
 				}
-				H.write( ::Txt( "<B>Objective #" ).item( obj_count ).str( "</B>: " ).item( OBJ.explanation_text ) )
+				H.write( "<B>Objective #" + obj_count + "</B>: " + OBJ.explanation_text )
 				obj_count++
 			}
 		}
@@ -8385,53 +8386,53 @@ function rights2text( rights =null, seperator =null, adds =null, subs =null ) {
 		seperator = ""
 	}
 	if ( rights & 1 ) {
-		_default += ::Txt().item( seperator ).str( "+BUILDMODE" )
+		_default += "" + seperator + "+BUILDMODE"
 	}
 	if ( rights & 2 ) {
-		_default += ::Txt().item( seperator ).str( "+ADMIN" )
+		_default += "" + seperator + "+ADMIN"
 	}
 	if ( rights & 4 ) {
-		_default += ::Txt().item( seperator ).str( "+BAN" )
+		_default += "" + seperator + "+BAN"
 	}
 	if ( rights & 8 ) {
-		_default += ::Txt().item( seperator ).str( "+FUN" )
+		_default += "" + seperator + "+FUN"
 	}
 	if ( rights & 16 ) {
-		_default += ::Txt().item( seperator ).str( "+SERVER" )
+		_default += "" + seperator + "+SERVER"
 	}
 	if ( rights & 32 ) {
-		_default += ::Txt().item( seperator ).str( "+DEBUG" )
+		_default += "" + seperator + "+DEBUG"
 	}
 	if ( rights & 64 ) {
-		_default += ::Txt().item( seperator ).str( "+POSSESS" )
+		_default += "" + seperator + "+POSSESS"
 	}
 	if ( rights & 128 ) {
-		_default += ::Txt().item( seperator ).str( "+PERMISSIONS" )
+		_default += "" + seperator + "+PERMISSIONS"
 	}
 	if ( rights & 256 ) {
-		_default += ::Txt().item( seperator ).str( "+STEALTH" )
+		_default += "" + seperator + "+STEALTH"
 	}
 	if ( rights & 512 ) {
-		_default += ::Txt().item( seperator ).str( "+REJUVINATE" )
+		_default += "" + seperator + "+REJUVINATE"
 	}
 	if ( rights & 1024 ) {
-		_default += ::Txt().item( seperator ).str( "+VAREDIT" )
+		_default += "" + seperator + "+VAREDIT"
 	}
 	if ( rights & 2048 ) {
-		_default += ::Txt().item( seperator ).str( "+SOUND" )
+		_default += "" + seperator + "+SOUND"
 	}
 	if ( rights & 4096 ) {
-		_default += ::Txt().item( seperator ).str( "+SPAWN" )
+		_default += "" + seperator + "+SPAWN"
 	}
 	verbpath = null
 	foreach (_ in adds ) {
 		verbpath = _
-		_default += ::Txt().item( seperator ).str( "+" ).item( verbpath )
+		_default += "" + seperator + "+" + verbpath
 	}
 	verbpath = null
 	foreach (_ in subs ) {
 		verbpath = _
-		_default += ::Txt().item( seperator ).str( "-" ).item( verbpath )
+		_default += "" + seperator + "-" + verbpath
 	}
 	return _default
 	return _default
@@ -8555,7 +8556,7 @@ function sanitize_ooccolor( color =null ) {
 	HSL = ::rgb2hsl( ::hex2num( ::copytext( color, 2, 4 ) ), ::hex2num( ::copytext( color, 4, 6 ) ), ::hex2num( ::copytext( color, 6, 8 ) ) )
 	HSL[3] = ::math.min( HSL[3], 0.4000000059604645 )
 	RGB = ::get_dist_euclidian.lcall( HSL )
-	return ::Txt( "#" ).item( ::num2hex( RGB[1], 2 ) ).item( ::num2hex( RGB[2], 2 ) ).item( ::num2hex( RGB[3], 2 ) )
+	return "#" + ::num2hex( RGB[1], 2 ) + ::num2hex( RGB[2], 2 ) + ::num2hex( RGB[3], 2 )
 }
 
 function sanitize_simple( t =null, repl_chars =null ) {
@@ -8644,7 +8645,7 @@ function SDQL_expression( object =null, expression =null, start =null ) {
 			} else if ( _=="or" || _=="||" ) {
 				result = result || val
 			} else {
-				::thread.user.write( ::Txt( "<span class='danger'>SDQL2: Unknown op " ).item( op ).str( "</span>" ) )
+				::thread.user.write( "<span class='danger'>SDQL2: Unknown op " + op + "</span>" )
 				result = null
 			}
 		} else {
@@ -8806,19 +8807,19 @@ function SDQL_testout( query_tree =null, indent =null ) {
 	foreach (_ in query_tree ) {
 		item = _
 		if ( item instanceof ::List ) {
-			::thread.user.write( ::Txt().item( spaces ).str( "(" ) )
+			::thread.user.write( "" + spaces + "(" )
 			::SDQL_testout( item, indent + 1 )
-			::thread.user.write( ::Txt().item( spaces ).str( ")" ) )
+			::thread.user.write( "" + spaces + ")" )
 		} else {
-			::thread.user.write( ::Txt().item( spaces ).item( item ) )
+			::thread.user.write( "" + spaces + item )
 		}
 		if ( !::isnum( item ) && query_tree[item] ) {
 			if ( query_tree[item] instanceof ::List ) {
-				::thread.user.write( ::Txt().item( spaces ).str( "    (" ) )
+				::thread.user.write( "" + spaces + "    (" )
 				::SDQL_testout( query_tree[item], indent + 2 )
-				::thread.user.write( ::Txt().item( spaces ).str( "    )" ) )
+				::thread.user.write( "" + spaces + "    )" )
 			} else {
-				::thread.user.write( ::Txt().item( spaces ).str( "    " ).item( query_tree[item] ) )
+				::thread.user.write( "" + spaces + "    " + query_tree[item] )
 			}
 		}
 	}
@@ -8911,7 +8912,7 @@ function SDQL2_tokenize( query_text =null ) {
 			}
 			char2 = ::copytext( query_text, i + 1, i + 2 )
 			if ( char2 in multi[char] ) {
-				query_list += ::Txt().item( char ).item( char2 )
+				query_list += "" + char + char2
 				i++
 			} else {
 				query_list += char
@@ -8941,7 +8942,7 @@ function SDQL2_tokenize( query_text =null ) {
 				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
-			query_list += ::Txt().item( word ).str( "'" )
+			query_list += "" + word + "'"
 			word = ""
 		} else if ( char == "\"" ) {
 			if ( word != "" ) {
@@ -8968,7 +8969,7 @@ function SDQL2_tokenize( query_text =null ) {
 				::thread.user.write( ::Txt().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) )
 				return
 			}
-			query_list += ::Txt().item( word ).str( "\"" )
+			query_list += "" + word + "\""
 			word = ""
 		} else {
 			word += char
@@ -9091,14 +9092,14 @@ function send_byjax( receiver =null, control_id =null, target_element =null, new
 			}
 		}
 		argums = ::list2params( argums )
-		::output( receiver, argums, ::Txt().item( control_id ).str( ":replaceContent" ) )
+		::output( receiver, argums, "" + control_id + ":replaceContent" )
 	}
 	return
 }
 
 function send2irc( msg =null, msg2 =null ) {
 	if ( ::config.useircbot ) {
-		::shell( ::Txt( "python nudge.py " ).item( msg ).str( " " ).item( msg2 ) )
+		::shell( "python nudge.py " + msg + " " + msg2 )
 	}
 	return
 }
@@ -9139,9 +9140,9 @@ function send2irc_adminless_only( source =null, msg =null, requiredflags =null )
 	admin_number_present = admin_number_total - admin_number_decrease
 	if ( admin_number_present <= 0 ) {
 		if ( !admin_number_afk && !admin_number_ignored ) {
-			::send2irc( source, ::Txt().item( msg ).str( " - No admins online" ) )
+			::send2irc( source, "" + msg + " - No admins online" )
 		} else {
-			::send2irc( source, ::Txt().item( msg ).str( " - All admins AFK (" ).item( admin_number_afk ).str( "/" ).item( admin_number_total ).str( ") or skipped (" ).item( admin_number_ignored ).str( "/" ).item( admin_number_total ).str( ")" ) )
+			::send2irc( source, "" + msg + " - All admins AFK (" + admin_number_afk + "/" + admin_number_total + ") or skipped (" + admin_number_ignored + "/" + admin_number_total + ")" )
 		}
 	}
 	return admin_number_present
@@ -9266,7 +9267,7 @@ function setup_database_connection(  ) {
 	db = ::sqlfdbkdb
 	address = ::sqladdress
 	port = ::sqlport
-	::dbcon.Connect( ::Txt( "dbi:mysql:" ).item( db ).str( ":" ).item( address ).str( ":" ).item( port ), ::Txt().item( user ), ::Txt().item( pass ) )
+	::dbcon.Connect( "dbi:mysql:" + db + ":" + address + ":" + port, "" + user, "" + pass )
 	_default = ::dbcon.$IsConnected()
 	if ( _default ) {
 		::failed_db_connections = 0
@@ -9292,7 +9293,7 @@ function setup_map_transitions(  ) {
 		D.name = A
 		D.z_value = k
 		if ( D.linked < 2 ) {
-			::z_levels_list[::Txt().item( D.z_value )] = D
+			::z_levels_list["" + D.z_value] = D
 		} else {
 			SLS.Add( D )
 		}
@@ -9338,7 +9339,7 @@ function setup_map_transitions(  ) {
 		possible_points.Remove( used_points )
 		D.set_neigbours( used_points )
 		P = ::random.pick( possible_points )
-		grid[::Txt().item( D.z_value )] = D
+		grid["" + D.z_value] = D
 	}
 	A = null
 	foreach (_ in ::z_levels_list ) {
@@ -9352,9 +9353,9 @@ function setup_map_transitions(  ) {
 			continue
 		}
 		if ( S.x <= 7 ) {
-			D = grid[::Txt().item( S.z )]
+			D = grid["" + S.z]
 			if ( !D ) {
-				::crash( ::Txt().item( S.z ).str( " position has no space level datum" ) )
+				::crash( "" + S.z + " position has no space level datum" )
 			}
 			if ( !D.neigbours.len ) {
 				continue
@@ -9372,9 +9373,9 @@ function setup_map_transitions(  ) {
 			S.destination_y = S.y
 		}
 		if ( S.x >= ::game.maxx - 7 - 1 ) {
-			D = grid[::Txt().item( S.z )]
+			D = grid["" + S.z]
 			if ( !D ) {
-				::crash( ::Txt().item( S.z ).str( " position has no space level datum" ) )
+				::crash( "" + S.z + " position has no space level datum" )
 			}
 			if ( !D.neigbours.len ) {
 				continue
@@ -9392,9 +9393,9 @@ function setup_map_transitions(  ) {
 			S.destination_y = S.y
 		}
 		if ( S.y <= 7 ) {
-			D = grid[::Txt().item( S.z )]
+			D = grid["" + S.z]
 			if ( !D ) {
-				::crash( ::Txt().item( S.z ).str( " position has no space level datum" ) )
+				::crash( "" + S.z + " position has no space level datum" )
 			}
 			if ( !D.neigbours.len ) {
 				continue
@@ -9412,9 +9413,9 @@ function setup_map_transitions(  ) {
 			S.destination_y = ::game.maxy - 7 - 2
 		}
 		if ( S.y >= ::game.maxy - 7 - 1 ) {
-			D = grid[::Txt().item( S.z )]
+			D = grid["" + S.z]
 			if ( !D ) {
-				::crash( ::Txt().item( S.z ).str( " position has no space level datum" ) )
+				::crash( "" + S.z + " position has no space level datum" )
 			}
 			if ( !D.neigbours.len ) {
 				continue
@@ -9499,23 +9500,23 @@ function show_note( target_ckey =null, index =null, linkless =null ) {
 	letter = null
 	foreach (_ in ::alphabet ) {
 		letter = _
-		navbar += ::Txt( "|<a href='?_src_=holder;shownote=" ).item( letter ).str( "'>[" ).item( letter ).str( "]</a>" )
+		navbar += "|<a href='?_src_=holder;shownote=" + letter + "'>[" + letter + "]</a>"
 	}
-	navbar += ::Txt( "<br><form method='GET' name='search' action='?'><input type='hidden' name='_src_' value='holder'><input type='text' name='notessearch' value='" ).item( index ).str( "'><input type='submit' value='Search'></form>" )
+	navbar += "<br><form method='GET' name='search' action='?'><input type='hidden' name='_src_' value='holder'><input type='text' name='notessearch' value='" + index + "'><input type='submit' value='Search'></form>"
 	if ( !linkless ) {
 		output = navbar
 	}
 	if ( target_ckey ) {
 		target_sql_ckey = ::sanitizeSQL( target_ckey )
-		query_get_notes = ::dbcon.NewQuery( ::Txt( "SELECT id, timestamp, notetext, adminckey, last_editor, server FROM " ).item( ::format_table_name( "notes" ) ).str( " WHERE ckey = '" ).item( target_sql_ckey ).str( "' ORDER BY timestamp" ) )
+		query_get_notes = ::dbcon.NewQuery( "SELECT id, timestamp, notetext, adminckey, last_editor, server FROM " + ::format_table_name( "notes" ) + " WHERE ckey = '" + target_sql_ckey + "' ORDER BY timestamp" )
 		if ( !query_get_notes.Execute() ) {
 			err = query_get_notes.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR obtaining ckey, notetext, adminckey, last_editor, server from notes table. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR obtaining ckey, notetext, adminckey, last_editor, server from notes table. Error : [" + err + "]\n" )
 			return
 		}
-		output += ::Txt( "<h2><center>Notes of " ).item( target_ckey ).str( "</center></h2>" )
+		output += "<h2><center>Notes of " + target_ckey + "</center></h2>"
 		if ( !linkless ) {
-			output += ::Txt( "<center><a href='?_src_=holder;addnote=" ).item( target_ckey ).str( "'>[Add Note]</a></center>" )
+			output += "<center><a href='?_src_=holder;addnote=" + target_ckey + "'>[Add Note]</a></center>"
 		}
 		output += ruler
 		while (query_get_notes.NextRow()) {
@@ -9525,14 +9526,14 @@ function show_note( target_ckey =null, index =null, linkless =null ) {
 			adminckey = query_get_notes.item[4]
 			last_editor = query_get_notes.item[5]
 			server = query_get_notes.item[6]
-			output += ::Txt( "<b>" ).item( timestamp ).str( " | " ).item( server ).str( " | " ).item( adminckey ).str( "</b>" )
+			output += "<b>" + timestamp + " | " + server + " | " + adminckey + "</b>"
 			if ( !linkless ) {
-				output += ::Txt( " <a href='?_src_=holder;removenote=" ).item( id ).str( "'>[Remove Note]</a> <a href='?_src_=holder;editnote=" ).item( id ).str( "'>[Edit Note]</a>" )
+				output += " <a href='?_src_=holder;removenote=" + id + "'>[Remove Note]</a> <a href='?_src_=holder;editnote=" + id + "'>[Edit Note]</a>"
 				if ( last_editor ) {
-					output += ::Txt( " <font size='2'>Last edit by " ).item( last_editor ).str( " <a href='?_src_=holder;noteedits=" ).item( id ).str( "'>(Click here to see edit log)</a></font>" )
+					output += " <font size='2'>Last edit by " + last_editor + " <a href='?_src_=holder;noteedits=" + id + "'>(Click here to see edit log)</a></font>"
 				}
 			}
-			output += ::Txt( "<br>" ).item( notetext ).str( "<hr style='background:#000000; border:0; height:1px'>" )
+			output += "<br>" + notetext + "<hr style='background:#000000; border:0; height:1px'>"
 		}
 	} else if ( index ) {
 		index_ckey = null
@@ -9548,17 +9549,17 @@ function show_note( target_ckey =null, index =null, linkless =null ) {
 		} else if ( _==2 ) {
 			search = "^[^[:alpha:]]"
 		} else {
-			search = ::Txt( "^" ).item( index )
+			search = "^" + index
 		}
-		query_list_notes = ::dbcon.NewQuery( ::Txt( "SELECT DISTINCT ckey FROM " ).item( ::format_table_name( "notes" ) ).str( " WHERE ckey REGEXP '" ).item( search ).str( "' ORDER BY ckey" ) )
+		query_list_notes = ::dbcon.NewQuery( "SELECT DISTINCT ckey FROM " + ::format_table_name( "notes" ) + " WHERE ckey REGEXP '" + search + "' ORDER BY ckey" )
 		if ( !query_list_notes.Execute() ) {
 			err = query_list_notes.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR obtaining ckey from notes table. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR obtaining ckey from notes table. Error : [" + err + "]\n" )
 			return
 		}
 		while (query_list_notes.NextRow()) {
 			index_ckey = query_list_notes.item[1]
-			output += ::Txt( "<a href='?_src_=holder;shownoteckey=" ).item( index_ckey ).str( "'>" ).item( index_ckey ).str( "</a><br>" )
+			output += "<a href='?_src_=holder;shownoteckey=" + index_ckey + "'>" + index_ckey + "</a><br>"
 		}
 	} else {
 		output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>"
@@ -9632,11 +9633,11 @@ function slur( n =null ) {
 		if ( _==1 ) {
 			newletter += "'"
 		} else if ( _==10 ) {
-			newletter += ::Txt().item( newletter )
+			newletter += "" + newletter
 		} else if ( _==20 ) {
-			newletter += ::Txt().item( newletter ).item( newletter )
+			newletter += "" + newletter + newletter
 		}
-		newphrase += ::Txt().item( newletter )
+		newphrase += "" + newletter
 		counter -= 1
 	}
 	return newphrase
@@ -9961,7 +9962,7 @@ function spawn_room( start_loc =null, x_size =null, y_size =null, walltypes =nul
 			if ( name ) {
 				A.name = name
 			} else {
-				A.name = ::Txt( "Artifact Room #" ).item( A.x ).str( "-" ).item( A.y ).str( "-" ).item( A.z )
+				A.name = "Artifact Room #" + A.x + "-" + A.y + "-" + A.z
 			}
 			if ( x == 0 || x == x_size - 1 || y == 0 || y == y_size - 1 ) {
 				wall = ::pickweight( walltypes )
@@ -9992,10 +9993,10 @@ function sql_poll_admins(  ) {
 		::log_game( "SQL ERROR during admin polling. Failed to connect." )
 	} else {
 		sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
-		query = ::dbcon.NewQuery( ::Txt( "INSERT INTO " ).item( ::format_table_name( "legacy_population" ) ).str( " (admincount, time) VALUES (" ).item( admincount ).str( ", '" ).item( sqltime ).str( "')" ) )
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::format_table_name( "legacy_population" ) + " (admincount, time) VALUES (" + admincount + ", '" + sqltime + "')" )
 		if ( !query.Execute() ) {
 			err = query.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR during admin polling. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR during admin polling. Error : [" + err + "]\n" )
 		}
 	}
 }
@@ -10018,10 +10019,10 @@ function sql_poll_players(  ) {
 		::log_game( "SQL ERROR during player polling. Failed to connect." )
 	} else {
 		sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
-		query = ::dbcon.NewQuery( ::Txt( "INSERT INTO " ).item( ::format_table_name( "legacy_population" ) ).str( " (playercount, time) VALUES (" ).item( playercount ).str( ", '" ).item( sqltime ).str( "')" ) )
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::format_table_name( "legacy_population" ) + " (playercount, time) VALUES (" + playercount + ", '" + sqltime + "')" )
 		if ( !query.Execute() ) {
 			err = query.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR during player polling. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR during player polling. Error : [" + err + "]\n" )
 		}
 	}
 }
@@ -10050,15 +10051,15 @@ function sql_report_cyborg_death( H =null ) {
 		lakey = ::sanitizeSQL( H.lastattacker.key )
 	}
 	sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
-	coord = ::Txt().item( H.x ).str( ", " ).item( H.y ).str( ", " ).item( H.z )
+	coord = "" + H.x + ", " + H.y + ", " + H.z
 	::establish_db_connection()
 	if ( !::dbcon.IsConnected() ) {
 		::log_game( "SQL ERROR during death reporting. Failed to connect." )
 	} else {
-		query = ::dbcon.NewQuery( ::Txt( "INSERT INTO " ).item( ::format_table_name( "death" ) ).str( " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" ).item( sqlname ).str( "', '" ).item( sqlkey ).str( "', '" ).item( sqljob ).str( "', '" ).item( sqlspecial ).str( "', '" ).item( sqlpod ).str( "', '" ).item( sqltime ).str( "', '" ).item( laname ).str( "', '" ).item( lakey ).str( "', '" ).item( H.gender ).str( "', " ).item( H.$getBruteLoss() ).str( ", " ).item( H.$getFireLoss() ).str( ", " ).item( H.brainloss ).str( ", " ).item( H.$getOxyLoss() ).str( ", '" ).item( coord ).str( "')" ) )
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::format_table_name( "death" ) + " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" + sqlname + "', '" + sqlkey + "', '" + sqljob + "', '" + sqlspecial + "', '" + sqlpod + "', '" + sqltime + "', '" + laname + "', '" + lakey + "', '" + H.gender + "', " + H.$getBruteLoss() + ", " + H.$getFireLoss() + ", " + H.brainloss + ", " + H.$getOxyLoss() + ", '" + coord + "')" )
 		if ( !query.Execute() ) {
 			err = query.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR during death reporting. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR during death reporting. Error : [" + err + "]\n" )
 		}
 	}
 }
@@ -10087,15 +10088,15 @@ function sql_report_death( H =null ) {
 		lakey = ::sanitizeSQL( H.lastattacker.key )
 	}
 	sqltime = ::time2text( "YYYY-MM-DD hh:mm:ss", ::game.realtime )
-	coord = ::Txt().item( H.x ).str( ", " ).item( H.y ).str( ", " ).item( H.z )
+	coord = "" + H.x + ", " + H.y + ", " + H.z
 	::establish_db_connection()
 	if ( !::dbcon.IsConnected() ) {
 		::log_game( "SQL ERROR during death reporting. Failed to connect." )
 	} else {
-		query = ::dbcon.NewQuery( ::Txt( "INSERT INTO " ).item( ::format_table_name( "death" ) ).str( " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" ).item( sqlname ).str( "', '" ).item( sqlkey ).str( "', '" ).item( sqljob ).str( "', '" ).item( sqlspecial ).str( "', '" ).item( sqlpod ).str( "', '" ).item( sqltime ).str( "', '" ).item( laname ).str( "', '" ).item( lakey ).str( "', '" ).item( H.gender ).str( "', " ).item( H.$getBruteLoss() ).str( ", " ).item( H.$getFireLoss() ).str( ", " ).item( H.brainloss ).str( ", " ).item( H.$getOxyLoss() ).str( ", '" ).item( coord ).str( "')" ) )
+		query = ::dbcon.NewQuery( "INSERT INTO " + ::format_table_name( "death" ) + " (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('" + sqlname + "', '" + sqlkey + "', '" + sqljob + "', '" + sqlspecial + "', '" + sqlpod + "', '" + sqltime + "', '" + laname + "', '" + lakey + "', '" + H.gender + "', " + H.$getBruteLoss() + ", " + H.$getFireLoss() + ", " + H.brainloss + ", " + H.$getOxyLoss() + ", '" + coord + "')" )
 		if ( !query.Execute() ) {
 			err = query.$ErrorMsg()
-			::log_game( ::Txt( "SQL ERROR during death reporting. Error : [" ).item( err ).str( "]\n" ) )
+			::log_game( "SQL ERROR during death reporting. Error : [" + err + "]\n" )
 		}
 	}
 }
@@ -10122,9 +10123,9 @@ function stars( n =null, pr =null ) {
 	p = 1
 	while (p <= n) {
 		if ( ::copytext( te, p, p + 1 ) == " " || ::random.chance( pr ) ) {
-			t = ::Txt().item( t ).item( ::copytext( te, p, p + 1 ) )
+			t = "" + t + ::copytext( te, p, p + 1 )
 		} else {
-			t = ::Txt().item( t ).str( "*" )
+			t = "" + t + "*"
 		}
 		p++
 	}
@@ -10179,16 +10180,16 @@ function strings( filename =null, key =null ) {
 		::string_cache = ::List()
 	}
 	if ( !( filename in ::string_cache ) ) {
-		if ( ::file.exists( ::Txt( "strings/" ).item( filename ) ) ) {
+		if ( ::file.exists( "strings/" + filename ) ) {
 			::string_cache[filename] = ::List()
 			stringsList = ::List()
-			fileList = ::file2list( ::Txt( "strings/" ).item( filename ) )
+			fileList = ::file2list( "strings/" + filename )
 			s = null
 			foreach (_ in fileList ) {
 				s = _
 				stringsList = ::text2list( s, "@=" )
 				if ( stringsList.len != 2 ) {
-					::crash( ::Txt( "Invalid string list in strings/" ).item( filename ) )
+					::crash( "Invalid string list in strings/" + filename )
 				}
 				if ( ::findtext( stringsList[2], "@,", 1, null ) ) {
 					::string_cache[filename][stringsList[1]] = ::text2list( stringsList[2], "@," )
@@ -10197,13 +10198,13 @@ function strings( filename =null, key =null ) {
 				}
 			}
 		} else {
-			::crash( ::Txt( "file not found: strings/" ).item( filename ) )
+			::crash( "file not found: strings/" + filename )
 		}
 	}
 	if ( filename in ::string_cache && key in ::string_cache[filename] ) {
 		return ::string_cache[filename][key]
 	} else {
-		::crash( ::Txt( "strings list not found: strings/" ).item( filename ).str( ", index=" ).item( key ) )
+		::crash( "strings list not found: strings/" + filename + ", index=" + key )
 	}
 }
 
@@ -10255,16 +10256,16 @@ function stutter( n =null ) {
 		n_letter = ::copytext( te, p, p + 1 )
 		if ( ::random.chance( 80 ) && ::ckey( n_letter ) in ::List([ "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" ]) ) {
 			if ( ::random.chance( 10 ) ) {
-				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
+				n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter + "-" + n_letter
 			} else if ( ::random.chance( 20 ) ) {
-				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter ).str( "-" ).item( n_letter )
+				n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter
 			} else if ( ::random.chance( 5 ) ) {
 				n_letter = null
 			} else {
-				n_letter = ::Txt().item( n_letter ).str( "-" ).item( n_letter )
+				n_letter = "" + n_letter + "-" + n_letter
 			}
 		}
-		t = ::Txt().item( t ).item( n_letter )
+		t = "" + t + n_letter
 		p++
 	}
 	return ::copytext( ::sanitize( t ), 1, 1024 )
@@ -10282,7 +10283,7 @@ function summonevents(  ) {
 			::SSevent.frequency_upper = ::SSevent.frequency_lower
 		}
 		::SSevent.reschedule()
-		::message_admins( ::Txt( "Summon Events intensifies, events will now occur every " ).item( ::SSevent.frequency_lower / 600 ).str( " to " ).item( ::SSevent.frequency_upper / 600 ).str( " minutes." ) )
+		::message_admins( "Summon Events intensifies, events will now occur every " + ::SSevent.frequency_lower / 600 + " to " + ::SSevent.frequency_upper / 600 + " minutes." )
 		::log_game( "Summon Events was increased!" )
 	}
 }
@@ -10366,14 +10367,14 @@ function toggle_ooc( toggle =null ) {
 	} else {
 		::ooc_allowed = !::ooc_allowed
 	}
-	::game.write( ::Txt( "<B>The OOC channel has been globally " ).item( ::ooc_allowed ? "enabled" : "disabled" ).str( ".</B>" ) )
+	::game.write( "<B>The OOC channel has been globally " + ( ::ooc_allowed ? "enabled" : "disabled" ) + ".</B>" )
 }
 
 function togglebuildmode( M =null ) {
 	local H, A, B, C, D
 	if ( M.client ) {
 		if ( M.client.buildmode ) {
-			::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has left build mode." ) )
+			::log_admin( "" + ::key_name( ::thread.user ) + " has left build mode." )
 			M.client.buildmode = 0
 			M.client.show_popup_menus = 1
 			H = null
@@ -10387,8 +10388,8 @@ function togglebuildmode( M =null ) {
 				}
 			}
 		} else {
-			::message_admins( ::Txt().item( ::key_name( ::thread.user ) ).str( " has entered build mode." ) )
-			::log_admin( ::Txt().item( ::key_name( ::thread.user ) ).str( " has entered build mode." ) )
+			::message_admins( "" + ::key_name( ::thread.user ) + " has entered build mode." )
+			::log_admin( "" + ::key_name( ::thread.user ) + " has entered build mode." )
 			M.client.buildmode = 1
 			M.client.show_popup_menus = 0
 			H = ::Ent_Effect_Bmode_Buildholder()
@@ -10614,7 +10615,7 @@ function unix2date( timestamp =null, seperator =null ) {
 		}
 	}
 	day = tmpDays - mDays
-	return ::Txt().item( year ).item( seperator ).item( month < 10 ? ::Txt( "0" ).item( month ) : month ).item( seperator ).item( day < 10 ? ::Txt( "0" ).item( day ) : day )
+	return "" + year + seperator + ( month < 10 ? "0" + month : month ) + seperator + ( day < 10 ? "0" + day : day )
 }
 
 function updateallghostimages(  ) {
@@ -10665,7 +10666,7 @@ function vol_by_throwforce_and_or_w_class( I =null ) {
 }
 
 function warning( msg =null ) {
-	::game.log.write( ::Txt( "## WARNING: " ).item( msg ) )
+	::game.log.write( "## WARNING: " + msg )
 }
 
 function wear_female_version( t_color =null, icon =null, layer =null, type =null ) {
@@ -10675,7 +10676,7 @@ function wear_female_version( t_color =null, icon =null, layer =null, type =null
 	if ( !female_clothing_icon ) {
 		::generate_female_clothing( index, t_color, icon, type )
 	}
-	standing = ::Image.lcall( ::List({ ["layer"]= -layer, ["icon"]= ::female_clothing_icons[::Txt().item( t_color )] }) )
+	standing = ::Image.lcall( ::List({ ["layer"]= -layer, ["icon"]= ::female_clothing_icons["" + t_color] }) )
 	return standing
 }
 
