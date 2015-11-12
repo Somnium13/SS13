@@ -240,6 +240,7 @@
 ::dooc_allowed <- 1
 ::doppler_arrays <- null
 ::DOWN <- 32
+::duration <- 13
 ::ears_list <- null
 ::EAST <- 4
 ::EFFECTS_LAYER <- 5000
@@ -275,6 +276,7 @@
 ::gaussian_next <- null
 ::ghost_darkness_images <- null
 ::ghost_forms <- null
+::gid <- 1
 ::gl_uid <- 1
 ::global_hud <- null
 ::global_map <- null
@@ -296,6 +298,7 @@
 ::holdingfacility <- null
 ::HOLOPAD_MODE <- 4
 ::horns_list <- null
+::host <- null
 ::href_logfile <- null
 ::hrefs <- null
 ::hsboxspawn <- 1
@@ -329,6 +332,7 @@
 ::master_controller <- null
 ::master_mode <- "traitor"
 ::MAX_ACTIVE_TIME <- 400
+::MAX_CHICKENS <- 50
 ::MAX_EX_DEVESTATION_RANGE <- 3
 ::MAX_EX_FLAME_RANGE <- 14
 ::MAX_EX_FLASH_RANGE <- 14
@@ -362,6 +366,7 @@
 ::modules <- null
 ::monkey_recipes <- null
 ::monkeystart <- null
+::mulebot_count <- 0
 ::multiverse <- null
 ::mutations_list <- null
 ::navbeacons <- null
@@ -387,6 +392,8 @@
 ::OOClog <- null
 ::OPEN_DURATION <- 6
 ::OPERATING <- 2
+::PARTICLE_STRENGTH_WIRE <- 2
+::PARTICLE_TOGGLE_WIRE <- 1
 ::PATCH <- 4
 ::PDAs <- null
 ::pipe_types <- null
@@ -488,6 +495,8 @@
 ::SOUTHEAST <- 6
 ::SOUTHWEST <- 10
 ::spawn_forbidden <- null
+::SPAWN_HEAT <- 1
+::SPAWN_OXYGEN <- 8
 ::special_roles <- null
 ::species_list <- null
 ::spells <- null
@@ -518,7 +527,16 @@
 ::SSvote <- null
 ::start_landmarks_list <- null
 ::start_state <- null
+::STATE_ALERT_LEVEL <- 8
+::STATE_CALLSHUTTLE <- 2
+::STATE_CANCELSHUTTLE <- 3
+::STATE_CONFIRM_LEVEL <- 9
+::STATE_DEFAULT <- 1
+::STATE_DELMESSAGE <- 6
 ::STATE_MESSAGELIST <- 4
+::STATE_STATUSDISPLAY <- 7
+::STATE_TOGGLE_EMERGENCY <- 10
+::STATE_VIEWMESSAGE <- 5
 ::station_name <- null
 ::status_overlays <- 0
 ::status_overlays_charging <- null
@@ -548,6 +566,7 @@
 ::swapmaps_initialized <- null
 ::swapmaps_loaded <- null
 ::swapmaps_mode <- 0
+::SYMPTOM_ACTIVATION_PROB <- 3
 ::SYND_FREQ <- 1213
 ::syndicate_code_phrase <- null
 ::syndicate_code_response <- null

@@ -95,6 +95,29 @@ function active_ais( check_mind =null ) {
 	return _default
 }
 
+function active_free_borgs(  ) {
+	local R, _default
+	_default = ::List()
+	R = null
+	foreach (_ in ::living_mob_list ) {
+		R = _
+		if ( !( R instanceof ::Mob_Living_Silicon_Robot ) ) {
+			continue
+		}
+		if ( R.connected_ai ) {
+			continue
+		}
+		if ( R.stat == 2 ) {
+			continue
+		}
+		if ( R.emagged || R.scrambledcodes || R.syndicate ) {
+			continue
+		}
+		_default += R
+	}
+	return _default
+}
+
 function add_logs( user =null, target =null, what_done =null, object =null, addition =null ) {
 	local newhealthtxt, L
 	if ( object == null ) {
@@ -561,6 +584,23 @@ function attempt_initiate_surgery( I =null, M =null, user =null ) {
 	return 0
 }
 
+function AutoUpdateAI( subject =null ) {
+	local is_in_use, A, M
+	is_in_use = 0
+	if ( subject != null ) {
+		A = null
+		foreach (_ in ::ai_list ) {
+			A = _
+			M = A
+			if ( M.client && M.machine == subject ) {
+				is_in_use = 1
+				subject.attack_ai( M )
+			}
+		}
+	}
+	return is_in_use
+}
+
 function AverageColour( I =null ) {
 	local colours, x_pixel, y_pixel, this_colour, final_average, colour
 	colours = ::List()
@@ -586,6 +626,10 @@ function AverageColour( I =null ) {
 		final_average = ::BlendRGB( final_average, colour, 1 )
 	}
 	return final_average
+}
+
+function ban_unban_log_save( formatted_log =null ) {
+	// Decompile Failure: fail decode_fail,153,13
 }
 
 function blendMode2iconMode( blend_mode =null ) {
@@ -1225,6 +1269,64 @@ function calculate_adjacencies( A =null ) {
 	return adjacencies
 }
 
+function CallMaterialName( ID =null ) {
+	local temp_reagent, return_name, R
+	return_name = null
+	if ( ::copytext( ID, 1, 2 ) == "$" ) {
+		return_name = ::copytext( ID, 2, null )
+		local _ = return_name // Was a switch-case, sorry for the mess.
+		if ( _=="metal" ) {
+			return_name = "Metal"
+		} else if ( _=="glass" ) {
+			return_name = "Glass"
+		} else if ( _=="gold" ) {
+			return_name = "Gold"
+		} else if ( _=="silver" ) {
+			return_name = "Silver"
+		} else if ( _=="plasma" ) {
+			return_name = "Solid Plasma"
+		} else if ( _=="uranium" ) {
+			return_name = "Uranium"
+		} else if ( _=="diamond" ) {
+			return_name = "Diamond"
+		} else if ( _=="clown" ) {
+			return_name = "Bananium"
+		}
+	} else {
+		R = null
+		foreach (_ in ::typesof( ::Reagent ) - ::Reagent ) {
+			R = _
+			temp_reagent = null
+			temp_reagent = R()
+			if ( temp_reagent.id == ID ) {
+				return_name = temp_reagent.name
+				::qdel( temp_reagent )
+				temp_reagent = null
+				break
+			}
+		}
+	}
+	return return_name
+}
+
+function CallTechName( ID =null ) {
+	local check_tech, return_name, T
+	return_name = null
+	T = null
+	foreach (_ in ::typesof( ::Tech ) - ::Tech ) {
+		T = _
+		check_tech = null
+		check_tech = T()
+		if ( check_tech.id == ID ) {
+			return_name = check_tech.name
+			::qdel( check_tech )
+			check_tech = null
+			break
+		}
+	}
+	return return_name
+}
+
 function camera_sort( L =null ) {
 	local a, b, i, j
 	i = null
@@ -1345,6 +1447,13 @@ function cardinalrange( center =null ) {
 
 function Ceiling( x =null ) {
 	return -::math.round( -x )
+}
+
+function Centcomm_announce( text =null, Sender =null ) {
+	local msg
+	msg = ::copytext( ::sanitize( text ), 1, 1024 )
+	msg = ::Txt( "<span class='adminnotice'><b><font color=orange>CENTCOM:</font>" ).item( ::key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" )
+	::admins.write( msg )
 }
 
 function center_image( I =null, x_dimension =null, y_dimension =null ) {
@@ -1769,6 +1878,11 @@ function construct_block( value =null, values =null, blocksize =null ) {
 	return ::num2hex( value, blocksize )
 }
 
+function convert_notes_sql( ckey =null ) {
+	local notesfile, notetext, server, regex, results, timestamp, adminckey, query_convert_time, err
+	
+}
+
 function count_by_type( L =null, type =null ) {
 	local i, T
 	i = 0
@@ -1979,6 +2093,22 @@ function deconstruct_block( value =null, values =null, blocksize =null ) {
 		value = values
 	}
 	return value
+}
+
+function deltimer( id =null ) {
+	local event
+	event = null
+	foreach (_ in ::SStimer.processing ) {
+		event = _
+		if ( !( event instanceof ::Timedevent ) ) {
+			continue
+		}
+		if ( event.id == id ) {
+			::qdel( event )
+			return 1
+		}
+	}
+	return 0
 }
 
 function derpspeech( message =null, stuttering =null ) {
@@ -3013,6 +3143,83 @@ function Gcd( a =null, b =null ) {
 	return b ? ::Gcd( b, a % b ) : a
 }
 
+function generate_code_phrase(  ) {
+	local code_phrase, words, safety, nouns, drinks, locations, names, t, maxwords
+	code_phrase = ""
+	local _ = ::random.int(0,65535) // Was a weighted pick, sorry for the mess.
+	if ( _ < 10082 ) { _ = 2 }
+	else if ( _ < 50411 ) { _ = 3 }
+	else if ( _ < 60493 ) { _ = 4 }
+	else  { _ = 5 }
+	words = _
+	safety = ::List([ 1, 2, 3 ])
+	nouns = ::List([ "love", "hate", "anger", "peace", "pride", "sympathy", "bravery", "loyalty", "honesty", "integrity", "compassion", "charity", "success", "courage", "deceit", "skill", "beauty", "brilliance", "pain", "misery", "beliefs", "dreams", "justice", "truth", "faith", "liberty", "knowledge", "thought", "information", "culture", "trust", "dedication", "progress", "education", "hospitality", "leisure", "trouble", "friendships", "relaxation" ])
+	drinks = ::List([ "vodka and tonic", "gin fizz", "bahama mama", "manhattan", "black Russian", "whiskey soda", "long island tea", "margarita", "Irish coffee", " manly dwarf", "Irish cream", "doctor's delight", "Beepksy Smash", "tequila sunrise", "brave bull", "gargle blaster", "bloody mary", "whiskey cola", "white Russian", "vodka martini", "martini", "Cuba libre", "kahlua", "vodka", "wine", "moonshine" ])
+	locations = ::teleportlocs.len ? ::teleportlocs : drinks
+	names = ::List()
+	t = null
+	foreach (_ in ::data_core.general ) {
+		t = _
+		if ( !( t instanceof ::Data_Record ) ) {
+			continue
+		}
+		names += t.fields.name
+	}
+	maxwords = words
+	while (words > 0) {
+		if ( words == 1 && 1 in safety && 2 in safety ) {
+			local _ = ::random.pick([ 1, 2 ])
+			safety = ::List([ _ ])
+		} else if ( words == 1 && maxwords == 2 ) {
+			safety = ::List([ 3 ])
+		}
+		local _ = ::random.pick( safety ) // Was a switch-case, sorry for the mess.
+		if ( _==1 ) {
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
+			if ( _==1 ) {
+				if ( names.len && ::random.chance( 70 ) ) {
+					code_phrase += ::random.pick( names )
+				} else if ( ::random.chance( 10 ) ) {
+					local _ = ::random.pick([ ::lizard_name( ::MALE ), ::lizard_name( ::FEMALE ) ])
+					code_phrase += _
+				} else {
+					local _ = ::random.pick([ ::first_names_male, ::first_names_female ])
+					code_phrase += ::random.pick( _ )
+					code_phrase += " "
+					code_phrase += ::random.pick( ::last_names )
+				}
+			} else if ( _==2 ) {
+				code_phrase += ::random.pick( ::get_all_jobs() )
+			}
+			safety -= 1
+		} else if ( _==2 ) {
+			local _ = ::random.int( 1, 2 ) // Was a switch-case, sorry for the mess.
+			if ( _==1 ) {
+				code_phrase += ::random.pick( drinks )
+			} else if ( _==2 ) {
+				code_phrase += ::random.pick( locations )
+			}
+			safety -= 2
+		} else if ( _==3 ) {
+			local _ = ::random.int( 1, 3 ) // Was a switch-case, sorry for the mess.
+			if ( _==1 ) {
+				code_phrase += ::random.pick( nouns )
+			} else if ( _==2 ) {
+				code_phrase += ::random.pick( ::adjectives )
+			} else if ( _==3 ) {
+				code_phrase += ::random.pick( ::verbs )
+			}
+		}
+		if ( words == 1 ) {
+			code_phrase += "."
+		} else {
+			code_phrase += ", "
+		}
+		words--
+	}
+	return code_phrase
+}
+
 function generate_female_clothing( index =null, t_color =null, icon =null, type =null ) {
 	local female_clothing_icon, female_s
 	female_clothing_icon = ::Icon.lcall( ::List({ ["icon_state"]= t_color, ["icon"]= icon }) )
@@ -3831,6 +4038,27 @@ function get_centcom_access( job =null ) {
 	}
 }
 
+function get_centcom_access_desc( A =null ) {
+	local _ = A // Was a switch-case, sorry for the mess.
+	if ( _==101 ) {
+		return "Code Grey"
+	} else if ( _==102 ) {
+		return "Code Yellow"
+	} else if ( _==106 ) {
+		return "Code Orange"
+	} else if ( _==105 ) {
+		return "Code Green"
+	} else if ( _==104 ) {
+		return "Code White"
+	} else if ( _==107 ) {
+		return "Code Blue"
+	} else if ( _==103 ) {
+		return "Code Black"
+	} else if ( _==109 ) {
+		return "Code Gold"
+	}
+}
+
 function get_department_heads( job_title =null ) {
 	local J
 	if ( !job_title ) {
@@ -4243,6 +4471,27 @@ function get_stickyban_from_ckey( ckey =null ) {
 		}
 	}
 	return _default
+}
+
+function get_supply_group_name( cat =null ) {
+	local _ = cat // Was a switch-case, sorry for the mess.
+	if ( _==1 ) {
+		return "Emergency"
+	} else if ( _==2 ) {
+		return "Security"
+	} else if ( _==3 ) {
+		return "Engineering"
+	} else if ( _==4 ) {
+		return "Medical"
+	} else if ( _==5 ) {
+		return "Science"
+	} else if ( _==6 ) {
+		return "Food & Livestock"
+	} else if ( _==7 ) {
+		return "Raw Materials"
+	} else if ( _==8 ) {
+		return "Miscellaneous"
+	}
 }
 
 function get_teleport_loc( location =null, target =null, distance =null, density =null, errorx =null, errory =null, eoffsetx =null, eoffsety =null ) {
@@ -5645,6 +5894,30 @@ function iswizard( M =null ) {
 	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.wizards
 }
 
+function item_heal_robotic( H =null, user =null, brute =null, burn =null ) {
+	local affecting, dam
+	affecting = H.get_organ( ::check_zone( user.zone_sel.selecting ) )
+	if ( brute > burn ) {
+		dam = 1
+	} else {
+		dam = 0
+	}
+	if ( affecting.status == 2 ) {
+		if ( brute > 0 && affecting.brute_dam > 0 || burn > 0 && affecting.burn_dam > 0 ) {
+			affecting.heal_damage( brute, burn, 1 )
+			H.update_damage_overlays( 0 )
+			H.$updatehealth()
+			user.visible_message( "" + user + " has fixed some of the " + ( dam ? "dents on" : "burnt wires in" ) + " " + H + "'s " + affecting.getDisplayName() + ".", "<span class='notice'>You fix some of the " + ( dam ? "dents on" : "burnt wires in" ) + " " + H + "'s " + affecting.getDisplayName() + ".</span>" )
+			return
+		} else {
+			user.write( "<span class='warning'>" + H + "'s " + affecting.getDisplayName() + " is already in good condition!</span>" )
+			return
+		}
+	} else {
+		return
+	}
+}
+
 function jobban_isbanned( M =null, rank =null ) {
 	local s, startpos, text
 	if ( M && rank ) {
@@ -6134,6 +6407,12 @@ function log_attack( text =null ) {
 function log_chat( text =null ) {
 	if ( ::config.log_pda ) {
 		::diary.write( "[" + ::time_stamp() + "]CHAT: " + text )
+	}
+}
+
+function log_comment( text =null ) {
+	if ( ::config.log_pda ) {
+		::diary.write( "[" + ::time_stamp() + "]COMMENT: " + text )
 	}
 }
 
@@ -6848,6 +7127,14 @@ function notice( msg =null ) {
 	::game.log.write( "## NOTICE: " + msg )
 }
 
+function Nuke_request( text =null, Sender =null ) {
+	local msg
+	msg = ::copytext( ::sanitize( text ), 1, 1024 )
+	msg = ::Txt( "<span class='adminnotice'><b><font color=orange>NUKE CODE REQUEST:</font>" ).item( ::key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" )
+	::admins.write( msg )
+	::admins.write( "<span class='adminnotice'><b>At this current time, the nuke must have the code manually set via varedit.</b></span>" )
+}
+
 function nukelastname( M =null ) {
 	local randomname, newname
 	randomname = ::random.pick( ::last_names )
@@ -6911,6 +7198,19 @@ function num2hex( num =null, len =null ) {
 	}
 	return _default
 	return _default
+}
+
+function num2seclevel( num =null ) {
+	local _ = num // Was a switch-case, sorry for the mess.
+	if ( _==0 ) {
+		return "green"
+	} else if ( _==1 ) {
+		return "blue"
+	} else if ( _==2 ) {
+		return "red"
+	} else if ( _==3 ) {
+		return "delta"
+	}
 }
 
 function onclose( user =null, windowid =null, ref =null ) {
@@ -7021,7 +7321,7 @@ function PlaceInPool( diver =null, destroy =null ) {
 	if ( destroy == null ) {
 		destroy = 1
 	}
-	if ( !( diver instanceof ::Datum ) ) {
+	if ( !( diver instanceof ::BaseClass ) ) {
 		return
 	}
 	if ( diver in ::GlobalPool[diver.type] ) {
@@ -7383,7 +7683,7 @@ function qdel( A =null ) {
 	if ( !A ) {
 		return
 	}
-	if ( !( A instanceof ::Datum ) ) {
+	if ( !( A instanceof ::BaseClass ) ) {
 		::del( A )
 		A = null
 	} else if ( ::isnull( A.gc_destroyed ) ) {
@@ -7418,7 +7718,7 @@ function qdel( A =null ) {
 }
 
 function qdeleted( A =null ) {
-	if ( !( A instanceof ::Datum ) ) {
+	if ( !( A instanceof ::BaseClass ) ) {
 		return 0
 	}
 	if ( A.gc_destroyed ) {
@@ -7496,6 +7796,20 @@ function ran_zone( zone =null, probability =null ) {
 		return "chest"
 	}
 	return zone
+}
+
+function randmut( M =null, candidates =null, difficulty =null ) {
+	local num, _default
+	if ( difficulty == null ) {
+		difficulty = 2
+	}
+	if ( !M.has_dna() ) {
+		return
+	}
+	num = ::random.pick( candidates )
+	_default = num.force_give( M )
+	return
+	return _default
 }
 
 function randmutb( M =null ) {
@@ -8096,6 +8410,10 @@ function remove_radio_all( radio =null ) {
 	}
 }
 
+function RemoveBan( foldername =null ) {
+	// Decompile Failure: fail decode_fail,176,273
+}
+
 function removeNullsFromList( L =null ) {
 	while (L.Remove( null )) {
 		continue
@@ -8158,6 +8476,28 @@ function reverseRange( L =null, start =null, end =null ) {
 		}
 	}
 	return L
+}
+
+function revoke_maint_all_access(  ) {
+	local A, D
+	A = null
+	foreach (_ in ::game ) {
+		A = _
+		if ( !( A instanceof ::Area(2826) ) ) {
+			continue
+		}
+		D = null
+		foreach (_ in A ) {
+			D = _
+			if ( !( D instanceof ::Ent_Machinery_Door_Airlock ) ) {
+				continue
+			}
+			D.emergency = 0
+			D.$update icon( 0 )
+		}
+	}
+	::minor_announce( "Access restrictions in maintenance areas have been restored.", "Attention! Station-wide emergency rescinded:" )
+	::emergency_access = 0
 }
 
 function rgb2hsl( red =null, green =null, blue =null ) {
@@ -8582,6 +8922,42 @@ function sanitizeSQL( t =null ) {
 	return ::copytext( sqltext, 2, ::length( sqltext ) )
 }
 
+function scramble_dna( M =null, ui =null, se =null, probability =null ) {
+	local i
+	if ( ui == null ) {
+		ui = ::FALSE
+	}
+	if ( se == null ) {
+		se = ::FALSE
+	}
+	if ( !M.has_dna() ) {
+		return 0
+	}
+	if ( se ) {
+		i = null
+		i = 1
+		while (i <= 20) {
+			if ( ::random.chance( probability ) ) {
+				M.dna.struc_enzymes = ::setblock( M.dna.struc_enzymes, i, ::random_string( 3, ::hex_characters ) )
+			}
+			i++
+		}
+		M.domutcheck()
+	}
+	if ( ui ) {
+		i = null
+		i = 1
+		while (i <= 7) {
+			if ( ::random.chance( probability ) ) {
+				M.dna.uni_identity = ::setblock( M.dna.uni_identity, i, ::random_string( 3, ::hex_characters ) )
+			}
+			i++
+		}
+		M.updateappearance.lcall( ::List({ ["mutations_overlay_update"]= 1 }) )
+	}
+	return 1
+}
+
 function screen_loc2turf( scr_loc =null, origin =null ) {
 	local tX, tY, tZ
 	tX = ::text2list( scr_loc, "," )
@@ -8682,7 +9058,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !( d instanceof ::Datum ) ) {
+			if ( !( d instanceof ::BaseClass ) ) {
 				continue
 			}
 			out += d
@@ -8740,7 +9116,7 @@ function SDQL_get_all( type =null, location =null ) {
 		d = null
 		foreach (_ in location ) {
 			d = _
-			if ( !( d instanceof ::Datum ) ) {
+			if ( !( d instanceof ::BaseClass ) ) {
 				continue
 			}
 			if ( d instanceof type ) {
@@ -9070,6 +9446,20 @@ function select_active_ai_with_fewest_borgs(  ) {
 		}
 	}
 	return selected
+}
+
+function select_active_free_borg( user =null ) {
+	local borgs, _default
+	borgs = ::active_free_borgs()
+	if ( borgs.len ) {
+		if ( user ) {
+			_default = ::input( user, "Unshackled cyborg signals detected:", "Cyborg Selection", borgs[1], borgs, 0 )
+		} else {
+			_default = ::random.pick( borgs )
+		}
+	}
+	return _default
+	return _default
 }
 
 function send_byjax( receiver =null, control_id =null, target_element =null, new_content =null, callback =null, callback_args =null ) {
@@ -10245,6 +10635,24 @@ function stripped_input( user =null, message =null, title =null, __default =null
 	return ::trim( ::html_encode( name ), max_length )
 }
 
+function stripped_multiline_input( user =null, message =null, title =null, __default =null, max_length =null ) {
+	local name
+	if ( message == null ) {
+		message = ""
+	}
+	if ( title == null ) {
+		title = ""
+	}
+	if ( __default == null ) {
+		__default = ""
+	}
+	if ( max_length == null ) {
+		max_length = 1024
+	}
+	name = ::input( user, message, title, __default, null, 2176 )
+	return ::html_encode( ::trim( name, max_length ) )
+}
+
 function stutter( n =null ) {
 	local te, t, p, n_letter
 	te = ::html_decode( n )
@@ -10286,6 +10694,13 @@ function summonevents(  ) {
 		::message_admins( "Summon Events intensifies, events will now occur every " + ::SSevent.frequency_lower / 600 + " to " + ::SSevent.frequency_upper / 600 + " minutes." )
 		::log_game( "Summon Events was increased!" )
 	}
+}
+
+function Syndicate_announce( text =null, Sender =null ) {
+	local msg
+	msg = ::copytext( ::sanitize( text ), 1, 1024 )
+	msg = ::Txt( "<span class='adminnotice'><b><font color=crimson>SYNDICATE:</font>" ).item( ::key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;SyndicateReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" )
+	::admins.write( msg )
 }
 
 function testing( msg =null ) {
@@ -10443,6 +10858,16 @@ function transform_dir( direction =null ) {
 	} else if ( _==10 ) {
 		return 128
 	}
+}
+
+function TransformUsingVariable( input =null, inputmaximum =null, scaling_modifier =null ) {
+	local inputToDegrees, size_factor
+	if ( scaling_modifier == null ) {
+		scaling_modifier = 0
+	}
+	inputToDegrees = input / inputmaximum * 180
+	size_factor = ( -::math.cos( inputToDegrees ) + 1 ) / 2
+	return size_factor + scaling_modifier
 }
 
 function trim( text =null, max_length =null ) {
@@ -10662,6 +11087,185 @@ function vol_by_throwforce_and_or_w_class( I =null ) {
 		return ::Clamp( I.w_class * 8, 20, 100 )
 	} else {
 		return 0
+	}
+}
+
+function wabbajack( M =null ) {
+	local Robot, W, new_mob, randomize, robot, D, Slime, beast, animal, A, H, all_species, speciestype, S
+	if ( M instanceof ::Mob_Living ) {
+		if ( M instanceof ::Mob_Living && M.stat != 2 ) {
+			if ( M.notransform ) {
+				return
+			}
+			M.notransform = 1
+			M.canmove = 0
+			M.icon = null
+			M.overlays.Cut()
+			M.invisibility = 101
+			if ( M instanceof ::Mob_Living_Silicon_Robot ) {
+				Robot = M
+				if ( Robot.mmi ) {
+					::qdel( Robot.mmi )
+				}
+				Robot.notify_ai( 1 )
+			} else {
+				W = null
+				foreach (_ in M ) {
+					W = _
+					if ( !( W instanceof ::Ent_Item ) ) {
+						continue
+					}
+					if ( W instanceof ::Ent_Item_Weapon_Implant ) {
+						::qdel( W )
+						continue
+					}
+					W.layer = ::initial( W.layer )
+					W.loc = M.loc
+					W.$dropped( M )
+				}
+			}
+			new_mob = null
+			local _ = ::random.pick([ "monkey", "robot", "slime", "xeno", "humanoid", "animal" ])
+			randomize = _
+			local _ = randomize // Was a switch-case, sorry for the mess.
+			if ( _=="monkey" ) {
+				new_mob = ::Mob_Living_Carbon_Monkey( M.loc )
+				new_mob.languages = new_mob.languages | 1
+			} else if ( _=="robot" ) {
+				local _ = ::random.pick([ "cyborg", "syndiborg", "drone" ])
+				robot = _
+				local _ = robot // Was a switch-case, sorry for the mess.
+				if ( _=="cyborg" ) {
+					new_mob = ::Mob_Living_Silicon_Robot( M.loc )
+				} else if ( _=="syndiborg" ) {
+					new_mob = ::Mob_Living_Silicon_Robot_Syndicate( M.loc )
+				} else if ( _=="drone" ) {
+					new_mob = ::Mob_Living_SimpleAnimal_Drone( M.loc )
+					D = new_mob
+					D.update_drone_hack()
+				}
+				if ( new_mob instanceof ::Mob_Living_Silicon ) {
+					new_mob.gender = M.gender
+					new_mob.invisibility = 0
+					new_mob.job = "Cyborg"
+					Robot = new_mob
+					Robot.mmi = ::Ent_Item_Device_Mmi( new_mob )
+					Robot.mmi.transfer_identity( M )
+				} else {
+					new_mob.languages = new_mob.languages | 1
+				}
+			} else if ( _=="slime" ) {
+				new_mob = ::Mob_Living_SimpleAnimal_Slime( M.loc )
+				if ( ::random.chance( 50 ) ) {
+					Slime = new_mob
+					Slime.is_adult = 1
+				}
+				new_mob.languages = new_mob.languages | 1
+			} else if ( _=="xeno" ) {
+				if ( ::random.chance( 50 ) ) {
+					new_mob = ::Mob_Living_Carbon_Alien_Humanoid_Hunter( M.loc )
+				} else {
+					new_mob = ::Mob_Living_Carbon_Alien_Humanoid_Sentinel( M.loc )
+				}
+				new_mob.languages = new_mob.languages | 1
+			} else if ( _=="animal" ) {
+				if ( ::random.chance( 50 ) ) {
+					local _ = ::random.pick([ "carp", "bear", "mushroom", "statue", "bat", "goat", "killertomato", "spiderbase", "spiderhunter", "blobbernaut", "magicarp", "chaosmagicarp" ])
+					beast = _
+					local _ = beast // Was a switch-case, sorry for the mess.
+					if ( _=="carp" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Carp( M.loc )
+					} else if ( _=="bear" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Bear( M.loc )
+					} else if ( _=="mushroom" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Mushroom( M.loc )
+					} else if ( _=="statue" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Statue( M.loc )
+					} else if ( _=="bat" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Retaliate_Bat( M.loc )
+					} else if ( _=="goat" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Retaliate_Goat( M.loc )
+					} else if ( _=="killertomato" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Killertomato( M.loc )
+					} else if ( _=="spiderbase" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Poison_GiantSpider( M.loc )
+					} else if ( _=="spiderhunter" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Poison_GiantSpider_Hunter( M.loc )
+					} else if ( _=="blobbernaut" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Blob_Blobbernaut( M.loc )
+					} else if ( _=="magicarp" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Carp_Ranged( M.loc )
+					} else if ( _=="chaosmagicarp" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Hostile_Carp_Ranged_Chaos( M.loc )
+					}
+				} else {
+					local _ = ::random.pick([ "parrot", "corgi", "crab", "pug", "cat", "mouse", "chicken", "cow", "lizard", "chick", "fox", "butterfly" ])
+					animal = _
+					local _ = animal // Was a switch-case, sorry for the mess.
+					if ( _=="parrot" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Parrot( M.loc )
+					} else if ( _=="corgi" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Pet_Dog_Corgi( M.loc )
+					} else if ( _=="crab" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Crab( M.loc )
+					} else if ( _=="pug" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Pet_Dog_Pug( M.loc )
+					} else if ( _=="cat" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Pet_Cat( M.loc )
+					} else if ( _=="mouse" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Mouse( M.loc )
+					} else if ( _=="chicken" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Chicken( M.loc )
+					} else if ( _=="cow" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Cow( M.loc )
+					} else if ( _=="lizard" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Lizard( M.loc )
+					} else if ( _=="fox" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Pet_Fox( M.loc )
+					} else if ( _=="butterfly" ) {
+						new_mob = ::Mob_Living_SimpleAnimal_Butterfly( M.loc )
+					} else {
+						new_mob = ::Mob_Living_SimpleAnimal_Chick( M.loc )
+					}
+				}
+				new_mob.languages = new_mob.languages | 1
+			} else if ( _=="humanoid" ) {
+				new_mob = ::Mob_Living_Carbon_Human( M.loc )
+				A = ::Preferences()
+				A.copy_to.lcall( ::List({ ["icon_updates"]= 0, [1]= new_mob }) )
+				H = new_mob
+				if ( ::random.chance( 50 ) ) {
+					all_species = ::List()
+					speciestype = null
+					foreach (_ in ::typesof( ::Species ) - ::Species ) {
+						speciestype = _
+						S = speciestype()
+						if ( !S.dangerous_existence ) {
+							all_species += speciestype
+						}
+					}
+					H.set_species.lcall( ::List({ ["icon_update"]= 0, [1]= ::random.pick( all_species ) }) )
+					H.real_name = H.dna.species.random_name( H.gender, 1 )
+				}
+				H.update_body()
+				H.$update hair()
+				H.$update mutcolor()
+				H.dna.update_dna_identity()
+			} else {
+				return
+			}
+			new_mob.attack_log = M.attack_log
+			M.attack_log += "[" + ::time_stamp() + "] <font color='orange'>" + M.real_name + " (" + M.ckey + ") became " + new_mob.real_name + ".</font>"
+			new_mob.a_intent = "harm"
+			if ( M.mind ) {
+				M.mind.transfer_to( new_mob )
+			} else {
+				new_mob.key = M.key
+			}
+			new_mob.write( "<B>Your form morphs into that of a " + randomize + ".</B>" )
+			::qdel( M )
+			return new_mob
+		}
 	}
 }
 
