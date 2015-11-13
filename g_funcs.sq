@@ -3082,6 +3082,29 @@ function findname( msg =null ) {
 	return 0
 }
 
+function flick_overlay( I =null, show_to =null, duration =null ) {
+	local C
+	C = null
+	foreach (_ in show_to ) {
+		C = _
+		if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) ) {
+			continue
+		}
+		C.images += I
+	}
+	::thread.schedule( duration, function() {
+		C = null
+		foreach (_ in show_to ) {
+			C = _
+			if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) ) {
+				continue
+			}
+			C.images -= I
+		}
+		return
+	})
+}
+
 function forbidden_atoms_check( A =null ) {
 	local blacklist, thing
 	blacklist = ::List([ ::Mob_Living, ::Ent_Effect_Blob, ::Ent_Effect_Spider_Spiderling, ::Ent_Item_Weapon_Disk_Nuclear, ::Ent_Machinery_Nuclearbomb, ::Ent_Item_Device_Radio_Beacon, ::Ent_Machinery_TheSingularitygen, ::Ent_Singularity, ::Ent_Machinery_Teleport_Station, ::Ent_Machinery_Teleport_Hub, ::Ent_Machinery_Telepad ])

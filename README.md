@@ -17,6 +17,7 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 9: Fixed oddball indexing.
 - Nov 10: 8701 / 13382 total functions decompiled.
 - Nov 11: 12892 / 13406
+- Nov 12: 12953 / 13407
 
 **Current:** 96% coverage of all functions. Failed to restructure 21 gotos.
 

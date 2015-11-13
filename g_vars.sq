@@ -374,6 +374,7 @@
 ::news_network <- null
 ::next_mob_id <- 0
 ::nextid <- 1
+::nextmap <- null
 ::ninja_names <- null
 ::ninja_titles <- null
 ::NO_SLIP_WHEN_WALKING <- 1
