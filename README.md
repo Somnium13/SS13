@@ -18,8 +18,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 10: 8701 / 13382 total functions decompiled.
 - Nov 11: 12892 / 13406
 - Nov 12: 12953 / 13407
+- Nov 13: 13148 / 13432
 
-**Current:** 96% coverage of all functions. Failed to restructure 21 gotos.
+**Current:** 97.8% coverage of all functions. Failed to restructure 36 gotos.
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.

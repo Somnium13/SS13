@@ -140,6 +140,78 @@ function add_logs( user =null, target =null, what_done =null, object =null, addi
 	::log_attack( "" + ( user ? "" + user.name + ( ::ismob( user ) && user.ckey ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( target ? "" + target.name + ( ::ismob( target ) && target.ckey ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( object ? " with " + object : " " ) + addition + newhealthtxt )
 }
 
+function add_lspace( t =null, u =null ) {
+	while (::length( t ) < u) {
+		t = " " + t
+	}
+	return t
+}
+
+function add_note( target_ckey =null, notetext =null, timestamp =null, adminckey =null, logged =null, server =null ) {
+	local new_ckey, query_find_ckey, err, target_sql_ckey, admin_sql_ckey, query_noteadd
+	if ( logged == null ) {
+		logged = 1
+	}
+	if ( !::dbcon.IsConnected() ) {
+		::thread.user.write( "<span class='danger'>Failed to establish database connection.</span>" )
+		return
+	}
+	if ( !target_ckey ) {
+		new_ckey = ::ckey( ::input( ::thread.user, "Who would you like to add a note for?", "Enter a ckey", null, null, 4 ) )
+		if ( !new_ckey ) {
+			return
+		}
+		new_ckey = ::sanitizeSQL( new_ckey )
+		query_find_ckey = ::dbcon.NewQuery( "SELECT ckey FROM " + ::format_table_name( "player" ) + " WHERE ckey = '" + new_ckey + "'" )
+		if ( !query_find_ckey.Execute() ) {
+			err = query_find_ckey.$ErrorMsg()
+			::log_game( "SQL ERROR obtaining ckey from player table. Error : [" + err + "]\n" )
+			return
+		}
+		if ( !query_find_ckey.NextRow() ) {
+			if ( ::alert( ::thread.user, "" + new_ckey + " has not been seen before, are you sure you want to add them to the watchlist?", "Unknown ckey", "Yes", "No", "Cancel" ) != "Yes" ) {
+				return
+			}
+		}
+		target_ckey = new_ckey
+	}
+	target_sql_ckey = ::sanitizeSQL( target_ckey )
+	if ( !notetext ) {
+		notetext = ::input( ::thread.user, "Write your Note", "Add Note", null, null, 2048 )
+		if ( !notetext ) {
+			return
+		}
+	}
+	notetext = ::sanitizeSQL( notetext )
+	if ( !timestamp ) {
+		timestamp = ::SQLtime()
+	}
+	if ( !adminckey ) {
+		adminckey = ::thread.user.ckey
+		if ( !adminckey ) {
+			return
+		}
+	}
+	admin_sql_ckey = ::sanitizeSQL( adminckey )
+	if ( !server ) {
+		if ( ::config && ::config.server_name ) {
+			server = ::config.server_name
+		}
+	}
+	server = ::sanitizeSQL( server )
+	query_noteadd = ::dbcon.NewQuery( "INSERT INTO " + ::format_table_name( "notes" ) + " (ckey, timestamp, notetext, adminckey, server) VALUES ('" + target_sql_ckey + "', '" + timestamp + "', '" + notetext + "', '" + admin_sql_ckey + "', '" + server + "')" )
+	if ( !query_noteadd.Execute() ) {
+		err = query_noteadd.$ErrorMsg()
+		::log_game( "SQL ERROR adding new note to table. Error : [" + err + "]\n" )
+		return
+	}
+	if ( logged ) {
+		::log_admin( "" + ::key_name( ::thread.user ) + " has added a note to " + target_ckey + ": " + notetext )
+		::message_admins( "" + ::key_name_admin( ::thread.user ) + " has added a note to " + target_ckey + ":<br>" + notetext )
+		::show_note( target_ckey )
+	}
+}
+
 function add_radio( radio =null, freq =null ) {
 	if ( !freq || !radio ) {
 		return
@@ -152,11 +224,49 @@ function add_radio( radio =null, freq =null ) {
 	return freq
 }
 
+function add_tspace( t =null, u =null ) {
+	while (::length( t ) < u) {
+		t = "" + t + " "
+	}
+	return t
+}
+
 function add_zero( t =null, u =null ) {
 	while (::length( t ) < u) {
 		t = "0" + t
 	}
 	return t
+}
+
+function AddBan( ckey =null, computerid =null, reason =null, bannedby =null, temp =null, minutes =null, address =null ) {
+	local bantimestamp
+	if ( temp ) {
+		::UpdateTime()
+		bantimestamp = ::CMinutes + minutes
+	}
+	::Banlist.cd = "/base"
+	if ( ::Banlist.dir.Find( "" + ckey + computerid ) ) {
+		::thread.user.write( "<span class='danger'>Ban already exists.</span>" )
+		return 0
+	} else {
+		::Banlist.$Add( "" + ckey + computerid )
+		::Banlist.cd = "/base/" + ckey + computerid
+		::Banlist.key._GOOFY_LIST_.write( ckey )
+		::Banlist.id._GOOFY_LIST_.write( computerid )
+		::Banlist.ip._GOOFY_LIST_.write( address )
+		::Banlist.reason._GOOFY_LIST_.write( reason )
+		::Banlist.bannedby._GOOFY_LIST_.write( bannedby )
+		::Banlist.temp._GOOFY_LIST_.write( temp )
+		if ( temp ) {
+			::Banlist.minutes._GOOFY_LIST_.write( bantimestamp )
+		}
+		if ( !temp ) {
+			::add_note( ckey, "Permanently banned - " + reason, null, bannedby, 0 )
+		} else {
+			::add_note( ckey, "Banned for " + minutes + " minutes - " + reason, null, bannedby, 0 )
+		}
+	}
+	return 1
 }
 
 function addtimer( thingToCall =null, procToCall =null, wait =null, argList =null ) {
@@ -373,6 +483,14 @@ function anyprob( value =null ) {
 	return ::random.int( 1, value ) == value
 }
 
+function appearance_fullban( M =null, reason =null ) {
+	if ( !M || !M.key ) {
+		return
+	}
+	::appearance_keylist.Add( "" + M.ckey + " ## " + reason )
+	::appearance_savebanfile()
+}
+
 function appearance_isbanned( M =null ) {
 	local s, startpos, text
 	if ( M ) {
@@ -392,6 +510,31 @@ function appearance_isbanned( M =null ) {
 		}
 	}
 	return 0
+}
+
+function appearance_remove( X =null ) {
+	local i
+	i = null
+	i = 1
+	while (i <= ::length( ::appearance_keylist )) {
+		if ( ::findtext( ::appearance_keylist[i], "" + X, 1, null ) ) {
+			::appearance_keylist.Remove( ::appearance_keylist[i] )
+			::appearance_savebanfile()
+			return 1
+		}
+		i++
+	}
+	return 0
+}
+
+function appearance_savebanfile(  ) {
+	local S
+	
+}
+
+function appearance_unban( M =null ) {
+	::appearance_remove( "" + M.ckey )
+	::appearance_savebanfile()
 }
 
 function arctan( x =null ) {
@@ -629,7 +772,7 @@ function AverageColour( I =null ) {
 }
 
 function ban_unban_log_save( formatted_log =null ) {
-	// Decompile Failure: fail decode_fail,153,13
+	::file.write( formatted_log, "data/ban_unban_log.txt" )
 }
 
 function blendMode2iconMode( blend_mode =null ) {
@@ -1539,6 +1682,18 @@ function changemap( VM =null ) {
 
 function cheap_hypotenuse( Ax =null, Ay =null, Bx =null, By =null ) {
 	return ::math.sqrt( ::pow( ::math.abs( Ax - Bx ), 2 ) + ::pow( ::math.abs( Ay - By ), 2 ) )
+}
+
+function check_if_greater_rights_than( other =null ) {
+	if ( ::thread.user && ::thread.user.client ) {
+		if ( ::thread.user.client.holder ) {
+			if ( !other || !other.holder ) {
+				return 1
+			}
+			return ::thread.user.client.holder.check_if_greater_rights_than_holder( other.holder )
+		}
+	}
+	return 0
 }
 
 function check_rights( rights_required =null, show_msg =null ) {
@@ -2497,6 +2652,46 @@ function DuplicateObject( original =null, perfectcopy =null, sameloc =null ) {
 		}
 	}
 	return O
+}
+
+function edit_note( note_id =null ) {
+	local target_ckey, sql_ckey, query_find_note_edit, err, old_note, adminckey, new_note, edit_text, query_update_note
+	if ( !::dbcon.IsConnected() ) {
+		::thread.user.write( "<span class='danger'>Failed to establish database connection.</span>" )
+		return
+	}
+	if ( !note_id ) {
+		return
+	}
+	note_id = ::text2num( note_id )
+	sql_ckey = ::sanitizeSQL( ::thread.user.ckey )
+	query_find_note_edit = ::dbcon.NewQuery( "SELECT ckey, notetext, adminckey FROM " + ::format_table_name( "notes" ) + " WHERE id = " + note_id )
+	if ( !query_find_note_edit.Execute() ) {
+		err = query_find_note_edit.$ErrorMsg()
+		::log_game( "SQL ERROR obtaining notetext from notes table. Error : [" + err + "]\n" )
+		return
+	}
+	if ( query_find_note_edit.NextRow() ) {
+		target_ckey = query_find_note_edit.item[1]
+		old_note = query_find_note_edit.item[2]
+		adminckey = query_find_note_edit.item[3]
+		new_note = ::input( "Input new note", "New Note", "" + old_note, null, null, 2048 )
+		if ( !new_note ) {
+			return
+		}
+		new_note = ::sanitizeSQL( new_note )
+		edit_text = "Edited by " + sql_ckey + " on " + ::SQLtime() + " from<br>" + old_note + "<br>to<br>" + new_note + "<hr>"
+		edit_text = ::sanitizeSQL( edit_text )
+		query_update_note = ::dbcon.NewQuery( "UPDATE " + ::format_table_name( "notes" ) + " SET notetext = '" + new_note + "', last_editor = '" + sql_ckey + "', edits = CONCAT(IFNULL(edits,''),'" + edit_text + "') WHERE id = " + note_id )
+		if ( !query_update_note.Execute() ) {
+			err = query_update_note.$ErrorMsg()
+			::log_game( "SQL ERROR editing note. Error : [" + err + "]\n" )
+			return
+		}
+		::log_admin( "" + ::key_name( ::thread.user ) + " has edited " + target_ckey + "'s note made by " + adminckey + " from " + old_note + " to " + new_note )
+		::message_admins( "" + ::key_name_admin( ::thread.user ) + " has edited " + target_ckey + "'s note made by " + adminckey + " from<br>" + old_note + "<br>to<br>" + new_note )
+		::show_note( target_ckey )
+	}
 }
 
 function electrocute_mob( M =null, power_source =null, source =null, siemens_coeff =null ) {
@@ -4341,6 +4536,13 @@ function get_mobs_in_radio_ranges( radios =null ) {
 	return _default
 }
 
+function get_offset_target_turf( A =null, dx =null, dy =null ) {
+	local x, y
+	x = ::math.min( ::game.maxx, ::math.max( 1, A.x + dx ) )
+	y = ::math.min( ::game.maxy, ::math.max( 1, A.y + dy ) )
+	return ::locate3( x, y, A.z )
+}
+
 function get_radio_name( freq =null ) {
 	local returntext
 	returntext = ::radiochannelsreverse["" + freq]
@@ -5480,6 +5682,52 @@ function hgibs( location =null, viruses =null, MobDNA =null ) {
 	::Ent_Effect_Gibspawner_Human( location, viruses, MobDNA )
 }
 
+function hsv( hue =null, sat =null, val =null, alpha =null ) {
+	if ( hue < 0 || hue >= 1536 ) {
+		hue %= 1536
+	}
+	if ( hue < 0 ) {
+		hue += 1536
+	}
+	if ( ( hue & 255 ) == 255 ) {
+		hue++
+		if ( hue >= 1536 ) {
+			hue = 0
+		}
+	}
+	if ( sat < 0 ) {
+		sat = 0
+	}
+	if ( sat > 255 ) {
+		sat = 255
+	}
+	if ( val < 0 ) {
+		val = 0
+	}
+	if ( val > 255 ) {
+		val = 255
+	}
+	_default = "#"
+	_default += ::ascii2text( ( hue >> 8 & 15 ) + ( ( hue >> 8 & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( hue >> 4 & 15 ) + ( ( hue >> 4 & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( hue & 15 ) + ( ( hue & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( sat >> 4 & 15 ) + ( ( sat >> 4 & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( sat & 15 ) + ( ( sat & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( val >> 4 & 15 ) + ( ( val >> 4 & 15 ) < 10 ? 48 : 87 ) )
+	_default += ::ascii2text( ( val & 15 ) + ( ( val & 15 ) < 10 ? 48 : 87 ) )
+	if ( !::isnull( alpha ) ) {
+		if ( alpha < 0 ) {
+			alpha = 0
+		}
+		if ( alpha > 255 ) {
+			alpha = 255
+		}
+		_default += ::ascii2text( ( alpha >> 4 & 15 ) + ( ( alpha >> 4 & 15 ) < 10 ? 48 : 87 ) )
+		_default += ::ascii2text( ( alpha & 15 ) + ( ( alpha & 15 ) < 10 ? 48 : 87 ) )
+	}
+	return _default
+}
+
 function init_paths( prototype =null, L =null ) {
 	local path
 	if ( !( L instanceof ::List ) ) {
@@ -5913,6 +6161,18 @@ function istool( O =null ) {
 	return 0
 }
 
+function IsValidSrc( A =null ) {
+	local B
+	if ( A instanceof ::BaseClass ) {
+		B = A
+		return !B.gc_destroyed
+	}
+	if ( A instanceof BAD_GOOFY_EXPANSION??? ) {
+		return 1
+	}
+	return 0
+}
+
 function iswizard( M =null ) {
 	return M instanceof ::Mob_Living && M.mind && ::ticker && ::ticker.mode && M.mind in ::ticker.mode.wizards
 }
@@ -5941,6 +6201,14 @@ function item_heal_robotic( H =null, user =null, brute =null, burn =null ) {
 	}
 }
 
+function jobban_fullban( M =null, rank =null, reason =null ) {
+	if ( !M || !M.key ) {
+		return
+	}
+	::jobban_keylist.Add( "" + M.ckey + " - " + rank + " ## " + reason )
+	::jobban_savebanfile()
+}
+
 function jobban_isbanned( M =null, rank =null ) {
 	local s, startpos, text
 	if ( M && rank ) {
@@ -5960,6 +6228,31 @@ function jobban_isbanned( M =null, rank =null ) {
 		}
 	}
 	return 0
+}
+
+function jobban_remove( X =null ) {
+	local i
+	i = null
+	i = 1
+	while (i <= ::length( ::jobban_keylist )) {
+		if ( ::findtext( ::jobban_keylist[i], "" + X, 1, null ) ) {
+			::jobban_keylist.Remove( ::jobban_keylist[i] )
+			::jobban_savebanfile()
+			return 1
+		}
+		i++
+	}
+	return 0
+}
+
+function jobban_savebanfile(  ) {
+	local S
+	
+}
+
+function jobban_unban( M =null, rank =null ) {
+	::jobban_remove( "" + M.ckey + " - " + rank )
+	::jobban_savebanfile()
 }
 
 function key_name( whom =null, include_link =null, include_name =null ) {
@@ -6113,6 +6406,33 @@ function keywords_lookup( msg =null ) {
 		msg += "" + original_word + " "
 	}
 	return msg
+}
+
+function kick_clients_in_lobby( message =null, kick_only_afk =null ) {
+	local kicked_client_names, C
+	if ( kick_only_afk == null ) {
+		kick_only_afk = 0
+	}
+	kicked_client_names = ::List()
+	C = null
+	foreach (_ in ::clients ) {
+		C = _
+		if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) ) {
+			continue
+		}
+		if ( C.mob instanceof ::Mob_NewPlayer ) {
+			if ( kick_only_afk && !C.$is afk() ) {
+				continue
+			}
+			if ( message ) {
+				C.write( message )
+			}
+			kicked_client_names.Add( "" + C.ckey )
+			::del( C )
+			C = null
+		}
+	}
+	return kicked_client_names
 }
 
 function list2json( L =null ) {
@@ -7049,6 +7369,40 @@ function moveElement( L =null, fromIndex =null, toIndex =null ) {
 	L.$Cut( fromIndex, fromIndex + 1 )
 }
 
+function moveRange( L =null, fromIndex =null, toIndex =null, len =null ) {
+	local distance, i
+	if ( len == null ) {
+		len = 1
+	}
+	distance = ::math.abs( toIndex - fromIndex )
+	if ( len >= distance ) {
+		if ( fromIndex <= toIndex ) {
+			return
+		}
+		fromIndex += len
+		i = null
+		i = 0
+		while (i < distance) {
+			L.Insert( fromIndex, null )
+			L.$Swap( fromIndex, toIndex )
+			L.$Cut( toIndex, toIndex + 1 )
+			i++
+		}
+	} else {
+		if ( fromIndex > toIndex ) {
+			fromIndex += len
+		}
+		i = null
+		i = 0
+		while (i < len) {
+			L.Insert( toIndex, null )
+			L.$Swap( fromIndex, toIndex )
+			L.$Cut( fromIndex, fromIndex + 1 )
+			i++
+		}
+	}
+}
+
 function near_camera( M =null ) {
 	local R
 	if ( !::isturf( M.loc ) ) {
@@ -7115,6 +7469,17 @@ function new_station_name(  ) {
 		new_station_name += _
 	}
 	return new_station_name
+}
+
+function next_list_item( item =null, L =null ) {
+	local i
+	i = L.Find( item )
+	if ( i == L.len ) {
+		i = 1
+	} else {
+		i++
+	}
+	return L[i]
 }
 
 function ninjaspeak( n =null ) {
@@ -7587,6 +7952,17 @@ function pretty_string_from_reagent_list( reagent_list =null ) {
 		result += "" + R.name + ", " + R.volume + " | "
 	}
 	return result
+}
+
+function previous_list_item( item =null, L =null ) {
+	local i
+	i = L.Find( item )
+	if ( i == 1 ) {
+		i = L.len
+	} else {
+		i--
+	}
+	return L[i]
 }
 
 function print_command_report( text =null, title =null ) {
@@ -8108,6 +8484,84 @@ function randomize_human( H =null ) {
 	H.$update hair()
 }
 
+function ReadHSV( hsv =null ) {
+	local i, start, ch, which, hue, sat, val, alpha, usealpha, digits, _default
+	if ( !hsv ) {
+		return
+	}
+	i = 1
+	start = 1
+	if ( ::text2ascii( hsv, null ) == 35 ) {
+		start++
+	}
+	which = 0
+	hue = 0
+	sat = 0
+	val = 0
+	alpha = 0
+	digits = 0
+	i = start
+	while (i <= ::length( hsv )) {
+		ch = ::text2ascii( hsv, i )
+		if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 ) {
+			break
+		}
+		digits++
+		if ( digits == 9 ) {
+			break
+		}
+		i++
+	}
+	if ( digits > 7 ) {
+		usealpha = 1
+	}
+	if ( digits <= 4 ) {
+		which++
+	}
+	if ( digits <= 2 ) {
+		which++
+	}
+	i = start
+	while (digits > 0) {
+		ch = ::text2ascii( hsv, i )
+		if ( ch >= 48 && ch <= 57 ) {
+			ch -= 48
+		} else if ( ch >= 65 && ch <= 70 ) {
+			ch -= 55
+		} else if ( ch >= 97 && ch <= 102 ) {
+			ch -= 87
+		} else {
+			break
+		}
+		digits--
+		local _ = which // Was a switch-case, sorry for the mess.
+		if ( _==0 ) {
+			hue = hue << 4 | ch
+			if ( digits == ( usealpha ? 6 : 4 ) ) {
+				which++
+			}
+		} else if ( _==1 ) {
+			sat = sat << 4 | ch
+			if ( digits == ( usealpha ? 4 : 2 ) ) {
+				which++
+			}
+		} else if ( _==2 ) {
+			val = val << 4 | ch
+			if ( digits == ( usealpha ? 2 : 0 ) ) {
+				which++
+			}
+		} else if ( _==3 ) {
+			alpha = alpha << 4 | ch
+		}
+		i++
+	}
+	_default = ::List([ hue, sat, val ])
+	if ( usealpha ) {
+		_default += alpha
+	}
+	return _default
+}
+
 function ReadRGB( rgb =null ) {
 	local i, start, ch, which, r, g, b, alpha, usealpha, digits, single, _default
 	if ( !rgb ) {
@@ -8414,6 +8868,38 @@ function release( O =null ) {
 	::feedback_add_details( "admin_verb", "RO" )
 }
 
+function remove_note( note_id =null ) {
+	local ckey, notetext, adminckey, query_find_note_del, err, query_del_note
+	if ( !::dbcon.IsConnected() ) {
+		::thread.user.write( "<span class='danger'>Failed to establish database connection.</span>" )
+		return
+	}
+	if ( !note_id ) {
+		return
+	}
+	note_id = ::text2num( note_id )
+	query_find_note_del = ::dbcon.NewQuery( "SELECT ckey, notetext, adminckey FROM " + ::format_table_name( "notes" ) + " WHERE id = " + note_id )
+	if ( !query_find_note_del.Execute() ) {
+		err = query_find_note_del.$ErrorMsg()
+		::log_game( "SQL ERROR obtaining ckey, notetext, adminckey from notes table. Error : [" + err + "]\n" )
+		return
+	}
+	if ( query_find_note_del.NextRow() ) {
+		ckey = query_find_note_del.item[1]
+		notetext = query_find_note_del.item[2]
+		adminckey = query_find_note_del.item[3]
+	}
+	query_del_note = ::dbcon.NewQuery( "DELETE FROM " + ::format_table_name( "notes" ) + " WHERE id = " + note_id )
+	if ( !query_del_note.Execute() ) {
+		err = query_del_note.$ErrorMsg()
+		::log_game( "SQL ERROR removing note from table. Error : [" + err + "]\n" )
+		return
+	}
+	::log_admin( "" + ::key_name( ::thread.user ) + " has removed a note made by " + adminckey + " from " + ckey + ": " + notetext )
+	::message_admins( "" + ::key_name_admin( ::thread.user ) + " has removed a note made by " + adminckey + " from " + ckey + ":<br>" + notetext )
+	::show_note( ckey )
+}
+
 function remove_radio( radio =null, freq =null ) {
 	if ( !freq || !radio ) {
 		return
@@ -8434,7 +8920,133 @@ function remove_radio_all( radio =null ) {
 }
 
 function RemoveBan( foldername =null ) {
-	// Decompile Failure: fail decode_fail,176,273
+	// -
+	// /proc/RemoveBan
+	/*[
+		[
+			"push",
+			[
+				"local",
+				2
+			]
+		],
+		[
+			"call",
+			"member",
+			[
+				"member",
+				[
+					"global",
+					"Banlist"
+				],
+				[
+					"dir",
+					"$Remove"
+				]
+			],
+			1
+		],
+		[
+			"pop"
+		],
+		[
+			"dbg",
+			"line",
+			150
+		],
+		[
+			"jmp",
+			"goto",
+			83
+		],
+		[
+			"jmp",
+			"goto",
+			83
+		],
+		[
+			"dbg",
+			"line",
+			152
+		],
+		[
+			"push",
+			"val",
+			1
+		],
+		[
+			"return",
+			"pop"
+		],
+		[
+			"return"
+		]
+	]*/
+}
+
+function RemoveBanjob( foldername =null ) {
+	// -
+	// /proc/RemoveBanjob
+	/*[
+		[
+			"push",
+			[
+				"local",
+				3
+			]
+		],
+		[
+			"call",
+			"member",
+			[
+				"member",
+				[
+					"global",
+					"Banlistjob"
+				],
+				[
+					"dir",
+					"$Remove"
+				]
+			],
+			1
+		],
+		[
+			"pop"
+		],
+		[
+			"dbg",
+			"line",
+			189
+		],
+		[
+			"jmp",
+			"goto",
+			93
+		],
+		[
+			"jmp",
+			"goto",
+			93
+		],
+		[
+			"dbg",
+			"line",
+			191
+		],
+		[
+			"push",
+			"val",
+			1
+		],
+		[
+			"return",
+			"pop"
+		],
+		[
+			"return"
+		]
+	]*/
 }
 
 function removeNullsFromList( L =null ) {
@@ -8558,6 +9170,60 @@ function rgb2hsl( red =null, green =null, blue =null ) {
 		}
 	}
 	return ::List([ hue, saturation, lightness ])
+}
+
+function RGBtoHSV( rgb =null ) {
+	local RGB, r, g, b, hi, lo, val, sat, hue, dir, mid
+	if ( !rgb ) {
+		return "#0000000"
+	}
+	RGB = ::ReadRGB( rgb )
+	if ( !RGB ) {
+		return "#0000000"
+	}
+	r = RGB[1]
+	g = RGB[2]
+	b = RGB[3]
+	hi = ::math.max( r, g, b )
+	lo = ::math.min( r, g, b )
+	val = hi
+	sat = hi ? ::math.round( ( hi - lo ) * 255 / hi, 1 ) : 0
+	hue = 0
+	if ( sat ) {
+		if ( hi == r ) {
+			if ( lo == b ) {
+				hue = 0
+				dir = 1
+				mid = g
+			} else {
+				hue = 1535
+				dir = -1
+				mid = b
+			}
+		} else if ( hi == g ) {
+			if ( lo == r ) {
+				hue = 512
+				dir = 1
+				mid = b
+			} else {
+				hue = 511
+				dir = -1
+				mid = r
+			}
+		} else if ( hi == b ) {
+			if ( lo == g ) {
+				hue = 1024
+				dir = 1
+				mid = r
+			} else {
+				hue = 1023
+				dir = -1
+				mid = g
+			}
+		}
+		hue += dir * ::math.round( ( mid - lo ) * 255 / ( hi - lo ), 1 )
+	}
+	return ::hsv( hue, sat, val, RGB.len > 3 ? RGB[4] : null )
 }
 
 function rightandwrong( summon_type =null, user =null, survivor_probability =null ) {
