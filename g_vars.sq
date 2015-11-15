@@ -265,6 +265,7 @@
 ::first_names_female <- null
 ::first_names_male <- null
 ::FLOAT_LAYER <- -1
+::floorIsLava <- 0
 ::FLY_LAYER <- 5
 ::forbidden_varedit_object_types <- null
 ::FREQ_LISTENING <- 1
@@ -305,6 +306,7 @@
 ::html_interfaces <- null
 ::huds <- null
 ::IClog <- null
+::ICON_SIZE <- 4
 ::icons_to_ignore_at_floor_init <- null
 ::iconsetids <- null
 ::INGEST <- 2
@@ -339,6 +341,7 @@
 ::MAX_EX_HEAVY_RANGE <- 7
 ::MAX_EX_LIGHT_RANGE <- 14
 ::max_health <- 100
+::MAX_ICON_DIMENSION <- 1024
 ::MAX_IMPREGNATION_TIME <- 150
 ::max_secret_rooms <- 6
 ::max_signs <- 4

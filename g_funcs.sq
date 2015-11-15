@@ -349,6 +349,76 @@ function admin_keyword_to_path( word =null ) {
 	return ::text2path( ::copytext( word, 2, ::findtext( word, " ", 2, 0 ) ) )
 }
 
+function AdminCreateVirus( user =null ) {
+	local i, D, symptoms, symptom, S, new_name, AD, H, name_symptoms
+	if ( !user ) {
+		return
+	}
+	i = 5
+	D = ::Disease_Advance( 0, null )
+	D.symptoms = ::List()
+	symptoms = ::List()
+	symptoms += "Done"
+	symptoms += ::list_symptoms.Copy()
+	while (1) { // Was a do-while, sorry for the mess.
+		if ( user ) {
+			symptom = ::input( user, "Choose a symptom to add (" + i + " remaining)", "Choose a Symptom", null, symptoms, 0 )
+			if ( ::isnull( symptom ) ) {
+				return
+			} else if ( ::istext( symptom ) ) {
+				i = 0
+			} else if ( ::ispath( symptom ) ) {
+				S = symptom()
+				if ( !D.HasSymptom( S ) ) {
+					D.symptoms += S
+					i -= 1
+				}
+			}
+		}
+		if (!( i > 0 )) break;
+	}
+	if ( D.symptoms.len > 0 ) {
+		new_name = ::stripped_input( user, "Name your new disease.", "New Name" )
+		if ( !new_name ) {
+			return
+		}
+		D.AssignName( new_name )
+		D.Refresh()
+		AD = null
+		foreach (_ in ::SSdisease.processing ) {
+			AD = _
+			if ( !( AD instanceof ::Disease_Advance ) ) {
+				continue
+			}
+			AD.Refresh()
+		}
+		H = null
+		foreach (_ in ::shuffle( ::living_mob_list ) ) {
+			H = _
+			if ( !( H instanceof ::Mob_Living_Carbon_Human ) ) {
+				continue
+			}
+			if ( H.z != 1 ) {
+				continue
+			}
+			if ( !H.HasDisease( D ) ) {
+				H.$ForceContractDisease( D )
+				break
+			}
+		}
+		name_symptoms = ::List()
+		S = null
+		foreach (_ in D.symptoms ) {
+			S = _
+			if ( !( S instanceof ::Symptom ) ) {
+				continue
+			}
+			name_symptoms += S.name
+		}
+		::message_admins( "" + ::key_name_admin( user ) + " has triggered a custom virus outbreak of " + D.name + "! It has these symptoms: " + ::english_list( name_symptoms ) )
+	}
+}
+
 function adminscrub( t =null, limit =null ) {
 	if ( limit == null ) {
 		limit = 1024
@@ -4824,6 +4894,10 @@ function get_teleport_loc( location =null, target =null, distance =null, density
 	return destination
 }
 
+function get_timestamp(  ) {
+	return ::time2text( ":ss", ::game.time + 432000 )
+}
+
 function get_turf( A =null ) {
 	if ( !( A instanceof ::BaseStatic ) ) {
 		return
@@ -7902,6 +7976,86 @@ function possess( O =null ) {
 	::feedback_add_details( "admin_verb", "PO" )
 }
 
+function power_failure(  ) {
+	local S, skipped_areas, A, skip, area_type, AT, C
+	::priority_announce( "Abnormal activity detected in " + ::_station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", ::Rsc(54) )
+	S = null
+	foreach (_ in ::machines ) {
+		S = _
+		if ( !( S instanceof ::Ent_Machinery_Power_Smes ) ) {
+			continue
+		}
+		if ( ::get_area( S ) instanceof ::Area(2739) || S.z != 1 ) {
+			continue
+		}
+		S.charge = 0
+		S.output_level = 0
+		S.output_attempt = 0
+		S.$update icon()
+		S.$power change()
+	}
+	skipped_areas = ::List([ ::Area(2719), ::Area(2727) ])
+	A = null
+	foreach (_ in ::game ) {
+		A = _
+		if ( !A.requires_power || A.always_unpowered ) {
+			continue
+		}
+		skip = 0
+		area_type = null
+		foreach (_ in skipped_areas ) {
+			area_type = _
+			if ( A instanceof area_type ) {
+				skip = 1
+				break
+			}
+		}
+		if ( A.contents ) {
+			AT = null
+			foreach (_ in A.contents ) {
+				AT = _
+				if ( !( AT instanceof ::BaseStatic ) ) {
+					continue
+				}
+				if ( AT.z != 1 ) {
+					skip = 1
+				}
+				break
+			}
+		}
+		if ( skip ) {
+			continue
+		}
+		A.power_light = 0
+		A.power_equip = 0
+		A.power_environ = 0
+		A.power_change()
+	}
+	C = null
+	foreach (_ in ::apcs_list ) {
+		C = _
+		if ( !( C instanceof ::Ent_Machinery_Power_Apc ) ) {
+			continue
+		}
+		if ( C.cell && C.z == 1 ) {
+			A = ::get_area( C )
+			skip = 0
+			area_type = null
+			foreach (_ in skipped_areas ) {
+				area_type = _
+				if ( A instanceof area_type ) {
+					skip = 1
+					break
+				}
+			}
+			if ( skip ) {
+				continue
+			}
+			C.cell.charge = 0
+		}
+	}
+}
+
 function power_list( T =null, source =null, d =null, unmarked =null, cable_only =null ) {
 	local AM, P, C, _default
 	if ( unmarked == null ) {
@@ -7938,6 +8092,66 @@ function power_list( T =null, source =null, d =null, unmarked =null, cable_only 
 	}
 	return _default
 	return _default
+}
+
+function power_restore(  ) {
+	local C, S, A
+	::priority_announce( "Power has been restored to " + ::_station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", ::Rsc(55) )
+	C = null
+	foreach (_ in ::machines ) {
+		C = _
+		if ( !( C instanceof ::Ent_Machinery_Power_Apc ) ) {
+			continue
+		}
+		if ( C.cell && C.z == 1 ) {
+			C.charge = C.cell.maxcharge
+		}
+	}
+	S = null
+	foreach (_ in ::machines ) {
+		S = _
+		if ( !( S instanceof ::Ent_Machinery_Power_Smes ) ) {
+			continue
+		}
+		if ( S.z != 1 ) {
+			continue
+		}
+		S.charge = S.capacity
+		S.output_level = S.output_level_max
+		S.output_attempt = 1
+		S.$update icon()
+		S.$power change()
+	}
+	A = null
+	foreach (_ in ::game ) {
+		A = _
+		if ( !( A instanceof ::Area(2717) ) && !( A instanceof ::Area(2755) ) && !( A instanceof ::Area(2741) ) ) {
+			A.power_light = 1
+			A.power_equip = 1
+			A.power_environ = 1
+			A.power_change()
+		}
+	}
+}
+
+function power_restore_quick(  ) {
+	local S
+	::priority_announce( "All SMESs on " + ::_station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", ::Rsc(55) )
+	S = null
+	foreach (_ in ::machines ) {
+		S = _
+		if ( !( S instanceof ::Ent_Machinery_Power_Smes ) ) {
+			continue
+		}
+		if ( S.z != 1 ) {
+			continue
+		}
+		S.charge = S.capacity
+		S.output_level = S.output_level_max
+		S.output_attempt = 1
+		S.$update icon()
+		S.$power change()
+	}
 }
 
 function pretty_string_from_reagent_list( reagent_list =null ) {
@@ -9073,6 +9287,10 @@ function repeat_string( times =null, string =null ) {
 
 function replacetext( str =null, exp =null, fmt =null ) {
 	return ::getf_dll( "bin/bygex", "regex_replaceallliteral" )( str, exp, fmt )
+}
+
+function replacetextEx( str =null, exp =null, fmt =null ) {
+	return ::getf_dll( "bin/bygex", "regEx_replaceallliteral" )( str, exp, fmt )
 }
 
 function return_file_text( filename =null ) {
