@@ -599,7 +599,8 @@ function appearance_remove( X =null ) {
 
 function appearance_savebanfile(  ) {
 	local S
-	
+	S = ::SaveFile( "data/appearance_full.ban" )
+	S["keys" + 0]._GOOFY_LIST_.write( ::appearance_keylist )
 }
 
 function appearance_unban( M =null ) {
@@ -1742,12 +1743,42 @@ function changeling_transform( user =null, chosen_prof =null ) {
 }
 
 function changemap( VM =null ) {
-	local file
+	local file, _default
 	return
 	if ( !( VM instanceof ::Votablemap ) ) {
 		return
 	}
 	::log_game( "Changing map to " + VM.name + "(" + VM.friendlyname + ")" )
+	file = ::File( "setnewmap.bat" )
+	file.write( "\nset MAPROTATE=" + VM.name + "\n" )
+	_default = ::shell( "..\\bin\\maprotate.bat" )
+	local _ = _default // Was a switch-case, sorry for the mess.
+	if ( _==null ) {
+		::message_admins( "Failed to change map: Could not run map rotator" )
+		::log_game( "Failed to change map: Could not run map rotator" )
+	} else if ( _==0 ) {
+		::log_game( "Changed to map " + VM.friendlyname )
+		::nextmap = VM
+	} else if ( _==11 ) {
+		::message_admins( "Failed to change map: File error: Map rotator script couldn't find file listing new map" )
+		::log_game( "Failed to change map: File error: Map rotator script couldn't find file listing new map" )
+	} else if ( _==12 ) {
+		::message_admins( "Failed to change map: File error: Map rotator script couldn't find tgstation-server framework" )
+		::log_game( "Failed to change map: File error: Map rotator script couldn't find tgstation-server framework" )
+	} else if ( _==21 ) {
+		::message_admins( "Failed to change map: Conflicting operation error: Current server update operation detected" )
+		::log_game( "Failed to change map: Conflicting operation error: Current server update operation detected" )
+	} else if ( _==22 ) {
+		::message_admins( "Failed to change map: Conflicting operation error: Current map rotation operation detected" )
+		::log_game( "Failed to change map: Conflicting operation error: Current map rotation operation detected" )
+	} else if ( _==31 ) {
+		::message_admins( "Failed to change map: External error: Could not compile new map:" + VM.name )
+		::log_game( "Failed to change map: External error: Could not compile new map:" + VM.name )
+	} else {
+		::message_admins( "Failed to change map: Unknown error: Error code #" + _default )
+		::log_game( "Failed to change map: Unknown error: Error code #" + _default )
+	}
+	return _default
 }
 
 function cheap_hypotenuse( Ax =null, Ay =null, Bx =null, By =null ) {
@@ -2105,7 +2136,39 @@ function construct_block( value =null, values =null, blocksize =null ) {
 
 function convert_notes_sql( ckey =null ) {
 	local notesfile, notetext, server, regex, results, timestamp, adminckey, query_convert_time, err
-	
+	notesfile = ::SaveFile( "data/player_notes.sav" )
+	if ( !notesfile ) {
+		::log_game( "Error: Cannot access " + "data/player_notes.sav" )
+		return
+	}
+	notesfile.cd = "/" + ckey
+	while (!notesfile.eof) {
+		notetext = null
+		notetext = notesfile.read()
+		server = null
+		if ( ::config && ::config.server_name ) {
+			server = ::config.server_name
+		}
+		regex = "^(\\d{2}-\\w{3}-\\d{4}) \\| (.+) ~(\\w+)$"
+		results = ::regex_note_sql_extract( notetext, regex )
+		timestamp = results.f_str( 2 )
+		notetext = results.$str( 3 )
+		adminckey = results.$str( 4 )
+		query_convert_time = ::dbcon.NewQuery( "SELECT ADDTIME(STR_TO_DATE('" + timestamp + "','%d-%b-%Y'), '0')" )
+		if ( !query_convert_time.Execute() ) {
+			err = query_convert_time.$ErrorMsg()
+			::log_game( "SQL ERROR converting timestamp. Error : [" + err + "]\n" )
+			return
+		}
+		if ( query_convert_time.NextRow() ) {
+			timestamp = query_convert_time.item[1]
+		}
+		if ( ckey && notetext && timestamp && adminckey && server ) {
+			::add_note( ckey, notetext, timestamp, adminckey, 0, server )
+		}
+	}
+	notesfile.cd = "/"
+	notesfile.dir.Remove( ckey )
 }
 
 function count_by_type( L =null, type =null ) {
@@ -2231,10 +2294,30 @@ function createRandomZlevel(  ) {
 		potentialRandomZlevels.Add( t )
 	}
 	if ( potentialRandomZlevels.len ) {
-		
+		::game.write( "<span class='boldannounce'>Loading away mission...</span>" )
+		map = ::random.pick( potentialRandomZlevels )
+		file = ::File( map )
+		if ( ::isfile( file ) ) {
+			::get_verb( ::maploader, "load map" )( file )
+			::game.log.write( "away mission loaded: " + map )
+		}
+		::map_transition_config.Add( ::List({ ["Away Mission"]= 0 }) )
+		L = null
+		foreach (_ in ::landmarks_list ) {
+			L = _
+			if ( !( L instanceof ::Ent_Effect_Landmark ) ) {
+				continue
+			}
+			if ( L.name != "awaystart" ) {
+				continue
+			}
+			::awaydestinations.Add( L )
+		}
+		::game.write( "<span class='boldannounce'>Away mission loaded.</span>" )
+	} else {
+		::game.write( "<span class='boldannounce'>No away missions found.</span>" )
+		return
 	}
-	::game.write( "<span class='boldannounce'>Loading away mission...</span>" )
-	map = ::random.pick( potentialRandomZlevels )
 }
 
 function cultist_commune( user =null, clear =null, say =null, message =null ) {
@@ -4859,7 +4942,7 @@ function get_teleport_loc( location =null, target =null, distance =null, density
 			destination_list = ::List()
 			center = ::locate3( destination.x + xoffset, destination.y + yoffset, location.z )
 			T = null
-			foreach (_ in null( ::locate3( center.x + b1xerror, center.y + b1yerror, location.z ), ::locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
+			foreach (_ in ::block( ::locate3( center.x + b1xerror, center.y + b1yerror, location.z ), ::locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
 				T = _
 				if ( density && T.density ) {
 					continue
@@ -5971,7 +6054,7 @@ function intent_numeric( argument =null ) {
 }
 
 function investigate_subject2file( subject =null ) {
-	
+	return ::File( "" + "data/investigate/" + subject + ".html" )
 }
 
 function ionnum(  ) {
@@ -6321,7 +6404,8 @@ function jobban_remove( X =null ) {
 
 function jobban_savebanfile(  ) {
 	local S
-	
+	S = ::SaveFile( "data/job_full.ban" )
+	S["keys" + 0]._GOOFY_LIST_.write( ::jobban_keylist )
 }
 
 function jobban_unban( M =null, rank =null ) {
@@ -8945,6 +9029,10 @@ function regex_find( str =null, exp =null ) {
 	return ::Regex( str, exp, ::getf_dll( "bin/bygex", "regex_find" )( str, exp ) )
 }
 
+function regex_note_sql_extract( str =null, exp =null ) {
+	return ::Regex( str, exp, ::getf_dll( "bin/bygex", "regEx_find" )( str, exp ) )
+}
+
 function reject_bad_name( t_in =null, allow_numbers =null, max_length =null ) {
 	local number_of_alphanumeric, last_char_group, t_out, i, ascii_char, bad_name
 	if ( allow_numbers == null ) {
@@ -9134,133 +9222,68 @@ function remove_radio_all( radio =null ) {
 }
 
 function RemoveBan( foldername =null ) {
-	// -
-	// /proc/RemoveBan
-	/*[
-		[
-			"push",
-			[
-				"local",
-				2
-			]
-		],
-		[
-			"call",
-			"member",
-			[
-				"member",
-				[
-					"global",
-					"Banlist"
-				],
-				[
-					"dir",
-					"$Remove"
-				]
-			],
-			1
-		],
-		[
-			"pop"
-		],
-		[
-			"dbg",
-			"line",
-			150
-		],
-		[
-			"jmp",
-			"goto",
-			83
-		],
-		[
-			"jmp",
-			"goto",
-			83
-		],
-		[
-			"dbg",
-			"line",
-			152
-		],
-		[
-			"push",
-			"val",
-			1
-		],
-		[
-			"return",
-			"pop"
-		],
-		[
-			"return"
-		]
-	]*/
+	local key, id, A
+	::Banlist.cd = "/base/" + foldername
+	key = ::Banlist.key._GOOFY_LIST_.read()
+	id = ::Banlist.id._GOOFY_LIST_.read()
+	::Banlist.cd = "/base"
+	if ( !::Banlist.dir.Remove( foldername ) ) {
+		return 0
+	}
+	if ( !::thread.user ) {
+		::log_admin( "Ban Expired: " + key )
+		::message_admins( "Ban Expired: " + key )
+	} else {
+		::ban_unban_log_save( "" + ::key_name( ::thread.user ) + " unbanned " + key )
+		::log_admin( "" + ::key_name( ::thread.user ) + " unbanned " + key )
+		::message_admins( "" + ::key_name_admin( ::thread.user ) + " unbanned: " + key )
+		::feedback_inc( "ban_unban", 1 )
+		::thread.user.client.holder.DB_ban_unban( ::ckey( key ), 5 )
+	}
+	A = null
+	foreach (_ in ::Banlist.dir ) {
+		A = _
+		::Banlist.cd = "/base/" + A
+		if ( key == ::Banlist.key ) {
+			::Banlist.cd = "/base"
+			::Banlist.dir.Remove( A )
+			continue
+		}
+	}
+	return 1
 }
 
 function RemoveBanjob( foldername =null ) {
-	// -
-	// /proc/RemoveBanjob
-	/*[
-		[
-			"push",
-			[
-				"local",
-				3
-			]
-		],
-		[
-			"call",
-			"member",
-			[
-				"member",
-				[
-					"global",
-					"Banlistjob"
-				],
-				[
-					"dir",
-					"$Remove"
-				]
-			],
-			1
-		],
-		[
-			"pop"
-		],
-		[
-			"dbg",
-			"line",
-			189
-		],
-		[
-			"jmp",
-			"goto",
-			93
-		],
-		[
-			"jmp",
-			"goto",
-			93
-		],
-		[
-			"dbg",
-			"line",
-			191
-		],
-		[
-			"push",
-			"val",
-			1
-		],
-		[
-			"return",
-			"pop"
-		],
-		[
-			"return"
-		]
-	]*/
+	local key, id, rank, A
+	::Banlistjob.cd = "/base/" + foldername
+	key = ::Banlistjob.key._GOOFY_LIST_.read()
+	id = ::Banlistjob.id._GOOFY_LIST_.read()
+	rank = ::Banlistjob.rank._GOOFY_LIST_.read()
+	::Banlistjob.cd = "/base"
+	if ( !::Banlistjob.dir.Remove( foldername ) ) {
+		return 0
+	}
+	if ( !::thread.user ) {
+		::log_admin( "Banjob Expired: " + key )
+		::message_admins( "Banjob Expired: " + key )
+	} else {
+		::log_admin( "" + ::key_name( ::thread.user ) + " unjobbanned " + key + " from " + rank )
+		::message_admins( "" + ::key_name_admin( ::thread.user ) + " unjobbanned:" + key + " from " + rank )
+		::ban_unban_log_save( "" + ::key_name( ::thread.user ) + " unjobbanned " + key + " from " + rank )
+		::feedback_inc( "ban_job_unban", 1 )
+		::feedback_add_details( "ban_job_unban", "- " + rank )
+	}
+	A = null
+	foreach (_ in ::Banlistjob.dir ) {
+		A = _
+		::Banlistjob.cd = "/base/" + A
+		if ( ( key == ::Banlistjob.key || id == ::Banlistjob.id ) && rank == ::Banlistjob.rank ) {
+			::Banlistjob.cd = "/base"
+			::Banlistjob.dir.Remove( A )
+			continue
+		}
+	}
+	return 1
 }
 
 function removeNullsFromList( L =null ) {
@@ -9756,6 +9779,35 @@ function sanitize_frequency( f =null ) {
 	return f
 }
 
+function sanitize_gender( gender =null, neuter =null, plural =null, __default =null ) {
+	if ( neuter == null ) {
+		neuter = 0
+	}
+	if ( plural == null ) {
+		plural = 0
+	}
+	if ( __default == null ) {
+		__default = "male"
+	}
+	local _ = gender // Was a switch-case, sorry for the mess.
+	if ( _=="male" || _=="female" ) {
+		return gender
+	} else if ( _=="neuter" ) {
+		if ( neuter ) {
+			return gender
+		} else {
+			return __default
+		}
+	} else if ( _=="plural" ) {
+		if ( plural ) {
+			return gender
+		} else {
+			return __default
+		}
+	}
+	return __default
+}
+
 function sanitize_hexcolor( color =null, desired_format =null, include_crunch =null, __default =null ) {
 	local crunch, start, len, step_size, i, ascii, _default
 	if ( desired_format == null ) {
@@ -9798,6 +9850,37 @@ function sanitize_hexcolor( color =null, desired_format =null, include_crunch =n
 	return _default
 }
 
+function sanitize_inlist( value =null, List =null, __default =null ) {
+	if ( value in List ) {
+		return value
+	}
+	if ( __default ) {
+		return __default
+	}
+	if ( List && List.len ) {
+		return ::random.pick( List )
+	}
+}
+
+function sanitize_integer( number =null, min =null, max =null, __default =null ) {
+	if ( min == null ) {
+		min = 0
+	}
+	if ( max == null ) {
+		max = 1
+	}
+	if ( __default == null ) {
+		__default = 0
+	}
+	if ( ::isnum( number ) ) {
+		number = ::math.round( number )
+		if ( min <= number && number <= max ) {
+			return number
+		}
+	}
+	return __default
+}
+
 function sanitize_ooccolor( color =null ) {
 	local HSL, RGB
 	HSL = ::rgb2hsl( ::hex2num( ::copytext( color, 2, 4 ) ), ::hex2num( ::copytext( color, 4, 6 ) ), ::hex2num( ::copytext( color, 6, 8 ) ) )
@@ -9821,6 +9904,16 @@ function sanitize_simple( t =null, repl_chars =null ) {
 		}
 	}
 	return t
+}
+
+function sanitize_text( text =null, __default =null ) {
+	if ( __default == null ) {
+		__default = ""
+	}
+	if ( ::istext( text ) ) {
+		return text
+	}
+	return __default
 }
 
 function sanitizeSQL( t =null ) {
