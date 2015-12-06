@@ -22,9 +22,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 14: 13223 / 13438
 - Nov 15: 13443 / 13443 **(100% -- 1st LTG complete!)**
 - Hiatus
-- Nov 21: Eliminated most gotos.
+- Dec 5: Began conversion to C#... Global vars looking good, functions not so much!
 
-**Current:** Failed to restructure 3 gotos. Many issues persist. Currently considering C# as a target language.
+**Current:** Switching languages for the second time. It's for the best. Probably.
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.
