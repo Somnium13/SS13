@@ -23,8 +23,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Nov 15: 13443 / 13443 **(100% -- 1st LTG complete!)**
 - Hiatus
 - Dec 5: Began conversion to C#... Global vars looking good, functions not so much!
+- Dec 6: Started on Global func conversion. Type inference is hard.
 
-**Current:** Switching languages for the second time. It's for the best. Probably.
+**Current:** Switching languages for the second time. It's for the best. Probably. I want the damn thing to compile by the time finals are over. This is gonna be intense.
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.

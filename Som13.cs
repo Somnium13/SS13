@@ -32,4 +32,6 @@
 	class Client {
 		
 	}
+
+	class UNKNOWN { }
 }
