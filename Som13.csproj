@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="game.cs" />
-    <Compile Include="g_funcs.cs" />
-    <Compile Include="g_vars.cs" />
-    <Compile Include="Som13.cs" />
+    <Compile Include="GlobalFuncs.cs" />
+    <Compile Include="GlobalVars.cs" />
+    <Compile Include="Core13.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

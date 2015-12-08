@@ -1,5 +1,5 @@
-﻿namespace Som13 {
-	class Som13 {
+﻿namespace Core13 {
+	static class Main13 {
 		static int Main() {
 			System.Reflection.MethodInfo t = typeof(ByTable).GetMethod("gert");
 
@@ -18,11 +18,11 @@
 			
 		}
 		
-		public ByTable(dynamic[] o) {
+		public ByTable(object[] os) {
 
 		}
 
-		public int gert() {
+		public int Find(object o) {
 			return 5;
 		}
 
@@ -34,4 +34,14 @@
 	}
 
 	class UNKNOWN { }
+
+	static class Rand {
+		public static object pick(object[] a) {
+			return null;
+		}
+
+		public static bool chance(int n) {
+			return true;
+		}
+	}
 }

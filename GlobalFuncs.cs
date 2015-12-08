@@ -1,10 +1,11 @@
 using System;
+using Core13;
 
 namespace Som13 {
 	static class GlobalFuncs {
-		public static string	_command_name(  ) {
-			string	name = null;
-			if ( GlobalVars.command_name != null ) {
+		public static string _command_name(  ) {
+			string name = null;
+			if ( GlobalVars.command_name != "" ) {
 				return GlobalVars.command_name;
 			}
 			name = "Central Command";
@@ -12,16 +13,16 @@ namespace Som13 {
 			return name;
 		}
 
-		public static UNKNOWN	_station_name(  ) {
+		public static dynamic _station_name(  ) {
 			if ( GlobalVars.station_name != null ) {
 				return GlobalVars.station_name;
 			}
-			if ( GlobalVars.config && GlobalVars.config.station_name != null ) {
+			if ( GlobalVars.config != null && GlobalVars.config.station_name != null ) {
 				GlobalVars.station_name = GlobalVars.config.station_name;
 			} else {
 				GlobalVars.station_name = GlobalFuncs.new_station_name();
 			}
-			if ( GlobalVars.config && GlobalVars.config.server_name != null ) {
+			if ( GlobalVars.config != null && GlobalVars.config.server_name != null ) {
 				Game.name = "" + GlobalVars.config.server_name + ( GlobalVars.config.server_name == GlobalVars.station_name ? "" : ": " + GlobalVars.station_name );
 			} else {
 				Game.name = GlobalVars.station_name;
@@ -29,9 +30,9 @@ namespace Som13 {
 			return GlobalVars.station_name;
 		}
 
-		public static string	_syndicate_name(  ) {
-			string	name = null;
-			if ( GlobalVars.syndicate_name != null ) {
+		public static string _syndicate_name(  ) {
+			string name = null;
+			if ( GlobalVars.syndicate_name != "" ) {
 				return GlobalVars.syndicate_name;
 			}
 			name = "";
@@ -53,8 +54,8 @@ namespace Som13 {
 			return name;
 		}
 
-		public static int	above_neck( UNKNOWN [object Object] =null ) {
-			ByTable	zones = null;
+		public static int above_neck( dynamic zone = null ) {
+			ByTable zones = null;
 			zones = new ByTable(new object [] {"head","mouth","eyes"});
 			if ( zones.Find( zone ) != null ) {
 				return 1;
@@ -63,92 +64,92 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	active_ais( UNKNOWN [object Object] =null ) {
-			dynamic	A = null;
-			UNKNOWN _default;
-			if ( check_mind == null != null ) {
+		public static ByTable active_ais( int check_mind = 0 ) {
+			dynamic A = null;
+			ByTable _default;
+			if ( check_mind == null ) {
 				check_mind = 0;
 			}
-			undefined = new ByTable();
+			_default = new ByTable();
 			A = null;
-			foreach (_ in GlobalVars.living_mob_list ) {
+			foreach (dynamic _ in GlobalVars.living_mob_list ) {
 				A = undefined;
-				if ( !( A instanceof Mob_Living_Silicon_Ai ) != null ) {
+				if ( !( A is Mob_Living_Silicon_Ai ) != null ) {
 					continue;
 				}
-				if ( A.stat == 2 != null ) {
+				if ( A.stat == 2 ) {
 					continue;
 				}
-				if ( A.control_disabled == 1 != null ) {
+				if ( A.control_disabled == 1 ) {
 					continue;
 				}
-				if ( check_mind != null ) {
+				if ( check_mind != 0 ) {
 					if ( !A.mind != null ) {
 						continue;
 					}
 				}
-				undefined += A;
+				_default += A;
 			};
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	active_free_borgs(  ) {
-			dynamic	R = null;
-			UNKNOWN _default;
-			undefined = new ByTable();
+		public static ByTable active_free_borgs(  ) {
+			dynamic R = null;
+			ByTable _default;
+			_default = new ByTable();
 			R = null;
-			foreach (_ in GlobalVars.living_mob_list ) {
+			foreach (dynamic _ in GlobalVars.living_mob_list ) {
 				R = undefined;
-				if ( !( R instanceof Mob_Living_Silicon_Robot ) != null ) {
+				if ( !( R is Mob_Living_Silicon_Robot ) != null ) {
 					continue;
 				}
 				if ( R.connected_ai != null ) {
 					continue;
 				}
-				if ( R.stat == 2 != null ) {
+				if ( R.stat == 2 ) {
 					continue;
 				}
-				if ( R.emagged || R.scrambledcodes || R.syndicate != null ) {
+				if ( R.emagged != null || R.scrambledcodes != null || R.syndicate != null ) {
 					continue;
 				}
-				undefined += R;
+				_default += R;
 			};
 			return _default;
 		}
 
-		public static dynamic	add_logs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	newhealthtxt = null;
-			if ( _object == null != null ) {
+		public static dynamic add_logs( dynamic user = null, dynamic target = null, dynamic what_done = null, dynamic _object = null, dynamic addition = null ) {
+			string newhealthtxt = null;
+			if ( _object == null ) {
 				_object = null;
 			}
-			if ( addition == null != null ) {
+			if ( addition == null ) {
 				addition = null;
 			}
 			newhealthtxt = "";
-			if ( target && target instanceof Mob_Living != null ) {
+			if ( target != null && target is Mob_Living != null ) {
 				L = target;
 				newhealthtxt = " (NEWHP: " + L.health + ")";
 			}
-			if ( user && GlobalVars.undefined( user ) != null ) {
-				user.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='red'>Has " + what_done + " " + ( target ? "" + target.name + ( GlobalVars.undefined( target ) && target.ckey ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
+			if ( user != null && GlobalVars.undefined( user ) != null ) {
+				user.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='red'>Has " + what_done + " " + ( target ? "" + target.name + ( GlobalVars.undefined( target ) != null && target.ckey != null ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
 			}
-			if ( target && GlobalVars.undefined( target ) != null ) {
-				target.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='orange'>Has been " + what_done + " by " + ( user ? "" + user.name + ( GlobalVars.undefined( user ) && user.ckey ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
+			if ( target != null && GlobalVars.undefined( target ) != null ) {
+				target.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='orange'>Has been " + what_done + " by " + ( user ? "" + user.name + ( GlobalVars.undefined( user ) != null && user.ckey != null ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
 			}
-			GlobalFuncs.log_attack( "" + ( user ? "" + user.name + ( GlobalVars.undefined( user ) && user.ckey ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( target ? "" + target.name + ( GlobalVars.undefined( target ) && target.ckey ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt );
+			GlobalFuncs.log_attack( "" + ( user ? "" + user.name + ( GlobalVars.undefined( user ) != null && user.ckey != null ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( target ? "" + target.name + ( GlobalVars.undefined( target ) != null && target.ckey != null ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( _object ? " with " + _object : " " ) + addition + newhealthtxt );
 		}
 
-		public static UNKNOWN	add_lspace( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic add_lspace( dynamic t = null, dynamic u = null ) {
 			while (GlobalVars.undefined( t ) < u) {
 				t = " " + t;
 			};
 			return t;
 		}
 
-		public static dynamic	add_note( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	new_ckey = null;
-			if ( logged == null != null ) {
+		public static dynamic add_note( dynamic target_ckey = null, dynamic notetext = null, dynamic timestamp = null, dynamic adminckey = null, int logged = 0, dynamic server = null ) {
+			dynamic new_ckey = null;
+			if ( logged == null ) {
 				logged = 1;
 			}
 			if ( !GlobalVars.dbcon.IsConnected() != null ) {
@@ -168,7 +169,7 @@ namespace Som13 {
 					return;
 				}
 				if ( !query_find_ckey.NextRow() != null ) {
-					if ( GlobalVars.undefined( GlobalVars.undefined.user, "" + new_ckey + " has not been seen before, are you sure you want to add them to the watchlist?", "Unknown ckey", "Yes", "No", "Cancel" ) != "Yes" != null ) {
+					if ( GlobalVars.undefined( GlobalVars.undefined.user, "" + new_ckey + " has not been seen before, are you sure you want to add them to the watchlist?", "Unknown ckey", "Yes", "No", "Cancel" ) != "Yes" ) {
 						return;
 					}
 				}
@@ -193,7 +194,7 @@ namespace Som13 {
 			}
 			admin_sql_ckey = GlobalFuncs.sanitizeSQL( adminckey );
 			if ( !server != null ) {
-				if ( GlobalVars.config && GlobalVars.config.server_name != null ) {
+				if ( GlobalVars.config != null && GlobalVars.config.server_name != null ) {
 					server = GlobalVars.config.server_name;
 				}
 			}
@@ -204,41 +205,41 @@ namespace Som13 {
 				GlobalFuncs.log_game( "SQL ERROR adding new note to table. Error : [" + err + "]\n" );
 				return;
 			}
-			if ( logged != null ) {
+			if ( logged != 0 ) {
 				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " has added a note to " + target_ckey + ": " + notetext );
 				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( GlobalVars.undefined.user ) + " has added a note to " + target_ckey + ":<br>" + notetext );
 				GlobalFuncs.show_note( target_ckey );
 			}
 		}
 
-		public static dynamic	add_radio( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( !freq || !radio != null ) {
+		public static dynamic add_radio( dynamic radio = null, dynamic freq = null ) {
+			if ( !freq != null || !radio != null ) {
 				return;
 			}
-			if ( !GlobalVars.all_radios["" + freq] != null ) {
-				GlobalVars.all_radios["" + freq] = new ByTable(new object [] {radio});
+			if ( !GlobalVars.all_radios.[object Object] != null ) {
+				GlobalVars.all_radios.[object Object] = new ByTable(new object [] {radio});
 				return freq;
 			}
-			GlobalVars.all_radios["" + freq] = GlobalVars.all_radios["" + freq] | radio;
+			GlobalVars.all_radios.[object Object] = GlobalVars.all_radios.[object Object] | radio;
 			return freq;
 		}
 
-		public static UNKNOWN	add_tspace( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic add_tspace( dynamic t = null, dynamic u = null ) {
 			while (GlobalVars.undefined( t ) < u) {
 				t = "" + t + " ";
 			};
 			return t;
 		}
 
-		public static UNKNOWN	add_zero( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic add_zero( dynamic t = null, dynamic u = null ) {
 			while (GlobalVars.undefined( t ) < u) {
 				t = "0" + t;
 			};
 			return t;
 		}
 
-		public static int	AddBan( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	bantimestamp = null;
+		public static int AddBan( dynamic ckey = null, dynamic computerid = null, dynamic reason = null, dynamic bannedby = null, dynamic temp = null, dynamic minutes = null, dynamic address = null ) {
+			dynamic bantimestamp = null;
 			if ( temp != null ) {
 				GlobalFuncs.UpdateTime();
 				bantimestamp = GlobalVars.CMinutes + minutes;
@@ -268,15 +269,15 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	addtimer( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			Timedevent	_event = null;
-			if ( argList == null != null ) {
+		public static dynamic addtimer( dynamic thingToCall = null, dynamic procToCall = null, dynamic wait = null, ByTable argList = null ) {
+			Timedevent _event = null;
+			if ( argList == null ) {
 				argList = new ByTable();
 			}
 			if ( !GlobalVars.SStimer != null ) {
 				return;
 			}
-			if ( !thingToCall || !procToCall || wait <= 0 != null ) {
+			if ( !thingToCall != null || !procToCall != null || wait <= 0 ) {
 				return;
 			}
 			if ( !GlobalVars.SStimer.can_fire != null ) {
@@ -292,7 +293,7 @@ namespace Som13 {
 			return _event.id;
 		}
 
-		public static dynamic	admin_forcemove( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic admin_forcemove( dynamic mover = null, dynamic newloc = null ) {
 			if ( mover.buckled != null ) {
 				mover.buckled.unbuckle_mob();
 			}
@@ -303,9 +304,9 @@ namespace Som13 {
 			mover.$on forcemove( newloc );
 		}
 
-		public static int	admin_keyword_to_flag( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	flag = null;
-			if ( previous_rights == null != null ) {
+		public static int admin_keyword_to_flag( dynamic word = null, int previous_rights = 0 ) {
+			int flag = 0;
+			if ( previous_rights == null ) {
 				previous_rights = 0;
 			}
 			flag = 0;
@@ -344,12 +345,12 @@ namespace Som13 {
 			return flag;
 		}
 
-		public static UNKNOWN	admin_keyword_to_path( UNKNOWN [object Object] =null ) {
+		public static dynamic admin_keyword_to_path( dynamic word = null ) {
 			return GlobalVars.undefined( GlobalVars.undefined( word, 2, GlobalVars.undefined( word, " ", 2, 0 ) ) );
 		}
 
-		public static dynamic	AdminCreateVirus( UNKNOWN [object Object] =null ) {
-			int	i = null;
+		public static dynamic AdminCreateVirus( dynamic user = null ) {
+			int i = 0;
 			if ( !user != null ) {
 				return;
 			}
@@ -376,7 +377,7 @@ namespace Som13 {
 				}
 				if (!( i > 0 )) break;
 			};
-			if ( D.symptoms.len > 0 != null ) {
+			if ( D.symptoms.len > 0 ) {
 				new_name = GlobalFuncs.stripped_input( user, "Name your new disease.", "New Name" );
 				if ( !new_name != null ) {
 					return;
@@ -384,20 +385,20 @@ namespace Som13 {
 				D.AssignName( new_name );
 				D.Refresh();
 				AD = null;
-				foreach (_ in GlobalVars.SSdisease.processing ) {
+				foreach (dynamic _ in GlobalVars.SSdisease.processing ) {
 					AD = undefined;
-					if ( !( AD instanceof Disease_Advance ) != null ) {
+					if ( !( AD is Disease_Advance ) != null ) {
 						continue;
 					}
 					AD.Refresh();
 				};
 				H = null;
-				foreach (_ in GlobalFuncs.shuffle( GlobalVars.living_mob_list ) ) {
+				foreach (dynamic _ in GlobalFuncs.shuffle( GlobalVars.living_mob_list ) ) {
 					H = undefined;
-					if ( !( H instanceof Mob_Living_Carbon_Human ) != null ) {
+					if ( !( H is Mob_Living_Carbon_Human ) != null ) {
 						continue;
 					}
-					if ( H.z != 1 != null ) {
+					if ( H.z != 1 ) {
 						continue;
 					}
 					if ( !H.HasDisease( D ) != null ) {
@@ -407,9 +408,9 @@ namespace Som13 {
 				};
 				name_symptoms = new ByTable();
 				S = null;
-				foreach (_ in D.symptoms ) {
+				foreach (dynamic _ in D.symptoms ) {
 					S = undefined;
-					if ( !( S instanceof Symptom ) != null ) {
+					if ( !( S is Symptom ) != null ) {
 						continue;
 					}
 					name_symptoms += S.name;
@@ -418,20 +419,20 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	adminscrub( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( limit == null != null ) {
+		public static dynamic adminscrub( dynamic t = null, int limit = 0 ) {
+			if ( limit == null ) {
 				limit = 1024;
 			}
 			return GlobalVars.undefined( GlobalVars.undefined( GlobalFuncs.strip_html_simple( t ) ), 1, limit );
 		}
 
-		public static UNKNOWN	Advance_Mix( UNKNOWN [object Object] =null ) {
-			ByTable	diseases = null;
+		public static dynamic Advance_Mix( dynamic D_list = null ) {
+			ByTable diseases = null;
 			diseases = new ByTable();
 			A = null;
-			foreach (_ in D_list ) {
+			foreach (dynamic _ in D_list ) {
 				A = undefined;
-				if ( !( A instanceof Disease_Advance ) != null ) {
+				if ( !( A is Disease_Advance ) != null ) {
 					continue;
 				}
 				diseases += A.Copy();
@@ -439,7 +440,7 @@ namespace Som13 {
 			if ( !diseases.len != null ) {
 				return;
 			}
-			if ( diseases.len <= 1 != null ) {
+			if ( diseases.len <= 1 ) {
 				return Rand.pick( diseases );
 			}
 			i = 0;
@@ -455,18 +456,18 @@ namespace Som13 {
 			return to_return;
 		}
 
-		public static int	alien_type_present( UNKNOWN [object Object] =null ) {
-			dynamic	A = null;
+		public static int alien_type_present( dynamic alienpath = null ) {
+			dynamic A = null;
 			A = null;
-			foreach (_ in GlobalVars.living_mob_list ) {
+			foreach (dynamic _ in GlobalVars.living_mob_list ) {
 				A = undefined;
-				if ( !( A instanceof Mob_Living_Carbon_Alien_Humanoid ) != null ) {
+				if ( !( A is Mob_Living_Carbon_Alien_Humanoid ) != null ) {
 					continue;
 				}
-				if ( !( A instanceof alienpath ) != null ) {
+				if ( !( A is alienpath ) != null ) {
 					continue;
 				}
-				if ( !A.key || A.stat == 2 != null ) {
+				if ( !A.key != null || A.stat == 2 ) {
 					continue;
 				}
 				return 1;
@@ -474,61 +475,61 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	alone_in_area( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	our_area = null;
-			if ( check_type == null != null ) {
+		public static int alone_in_area( dynamic the_area = null, dynamic must_be_alone = null, UNKNOWN check_type = null ) {
+			dynamic our_area = null;
+			if ( check_type == null ) {
 				check_type = Mob_Living_Carbon;
 			}
 			our_area = GlobalFuncs.get_area_master( the_area );
 			C = null;
-			foreach (_ in GlobalVars.living_mob_list ) {
+			foreach (dynamic _ in GlobalVars.living_mob_list ) {
 				C = undefined;
-				if ( !( C instanceof check_type ) != null ) {
+				if ( !( C is check_type ) != null ) {
 					continue;
 				}
-				if ( C == must_be_alone != null ) {
+				if ( C == must_be_alone ) {
 					continue;
 				}
-				if ( our_area == GlobalFuncs.get_area_master( C ) != null ) {
+				if ( our_area == GlobalFuncs.get_area_master( C ) ) {
 					return 0;
 				}
 			};
 			return 1;
 		}
 
-		public static int	angle2dir( UNKNOWN [object Object] =null ) {
+		public static int angle2dir( dynamic degree = null ) {
 			degree = GlobalFuncs.SimplifyDegrees( degree );
-			if ( degree < 45 != null ) {
+			if ( degree < 45 ) {
 				return GlobalVars.NORTH;
 			}
-			if ( degree < 90 != null ) {
+			if ( degree < 90 ) {
 				return GlobalVars.NORTHEAST;
 			}
-			if ( degree < 135 != null ) {
+			if ( degree < 135 ) {
 				return GlobalVars.EAST;
 			}
-			if ( degree < 180 != null ) {
+			if ( degree < 180 ) {
 				return GlobalVars.SOUTHEAST;
 			}
-			if ( degree < 225 != null ) {
+			if ( degree < 225 ) {
 				return GlobalVars.SOUTH;
 			}
-			if ( degree < 270 != null ) {
+			if ( degree < 270 ) {
 				return GlobalVars.SOUTHWEST;
 			}
-			if ( degree < 315 != null ) {
+			if ( degree < 315 ) {
 				return GlobalVars.WEST;
 			}
 			return 9;
 		}
 
-		public static UNKNOWN	angle2text( UNKNOWN [object Object] =null ) {
+		public static dynamic angle2text( dynamic degree = null ) {
 			return GlobalFuncs.dir2text( GlobalFuncs.angle2dir( degree ) );
 		}
 
-		public static dynamic	anim( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			BaseDynamic_Overlay	animation = null;
-			if ( sleeptime == null != null ) {
+		public static dynamic anim( dynamic location = null, dynamic target = null, dynamic a_icon = null, dynamic a_icon_state = null, dynamic flick_anim = null, int sleeptime = 0, dynamic direction = null ) {
+			BaseDynamic_Overlay animation = null;
+			if ( sleeptime == null ) {
 				sleeptime = 0;
 			}
 			animation = new BaseDynamic_Overlay( location );
@@ -548,27 +549,27 @@ namespace Som13 {
 			GlobalFuncs.qdel( animation );
 		}
 
-		public static UNKNOWN	anyprob( UNKNOWN [object Object] =null ) {
+		public static bool anyprob( dynamic value = null ) {
 			return Rand.Int( 1, value ) == value;
 		}
 
-		public static dynamic	appearance_fullban( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( !M || !M.key != null ) {
+		public static dynamic appearance_fullban( dynamic M = null, dynamic reason = null ) {
+			if ( !M != null || !M.key != null ) {
 				return;
 			}
 			GlobalVars.appearance_keylist.Add( "" + M.ckey + " ## " + reason );
 			GlobalFuncs.appearance_savebanfile();
 		}
 
-		public static UNKNOWN	appearance_isbanned( UNKNOWN [object Object] =null ) {
-			dynamic	s = null;
+		public static int appearance_isbanned( dynamic M = null ) {
+			dynamic s = null;
 			if ( M != null ) {
 				s = null;
-				foreach (_ in GlobalVars.appearance_keylist ) {
+				foreach (dynamic _ in GlobalVars.appearance_keylist ) {
 					s = undefined;
-					if ( GlobalVars.undefined( s, "" + M.ckey, 1, null ) == 1 != null ) {
+					if ( GlobalVars.undefined( s, "" + M.ckey, 1, null ) == 1 ) {
 						startpos = GlobalVars.undefined( s, "## ", 1, null ) + 3;
-						if ( startpos && startpos < GlobalVars.undefined( s ) != null ) {
+						if ( startpos != null && startpos < GlobalVars.undefined( s ) ) {
 							text = GlobalVars.undefined( s, startpos, 0 );
 							if ( text != null ) {
 								return text;
@@ -581,13 +582,13 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	appearance_remove( UNKNOWN [object Object] =null ) {
-			int	i = null;
+		public static int appearance_remove( dynamic X = null ) {
+			int i = 0;
 			i = null;
 			i = 1;
 			while (i <= GlobalVars.undefined( GlobalVars.appearance_keylist )) {
-				if ( GlobalVars.undefined( GlobalVars.appearance_keylist[i], "" + X, 1, null ) != null ) {
-					GlobalVars.appearance_keylist.Remove( GlobalVars.appearance_keylist[i] );
+				if ( GlobalVars.undefined( GlobalVars.appearance_keylist.[object Object], "" + X, 1, null ) != null ) {
+					GlobalVars.appearance_keylist.Remove( GlobalVars.appearance_keylist.[object Object] );
 					GlobalFuncs.appearance_savebanfile();
 					return 1;
 				}
@@ -596,48 +597,48 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static dynamic	appearance_savebanfile(  ) {
-			UNKNOWN	S = null;
+		public static dynamic appearance_savebanfile(  ) {
+			dynamic S = null;
 			S = SaveFile( "data/appearance_full.ban" );
-			S["keys" + 0]._GOOFY_LIST_.write( GlobalVars.appearance_keylist );
+			S.[object Object]._GOOFY_LIST_.write( GlobalVars.appearance_keylist );
 		}
 
-		public static dynamic	appearance_unban( UNKNOWN [object Object] =null ) {
+		public static dynamic appearance_unban( dynamic M = null ) {
 			GlobalFuncs.appearance_remove( "" + M.ckey );
 			GlobalFuncs.appearance_savebanfile();
 		}
 
-		public static UNKNOWN	arctan( UNKNOWN [object Object] =null ) {
-			UNKNOWN	y = null;
+		public static dynamic arctan( dynamic x = null ) {
+			dynamic y = null;
 			y = GlobalVars.undefined.arcsin( x / GlobalVars.undefined.sqrt( x * x + 1 ) );
 			return y;
 		}
 
-		public static dynamic	assign_progress_bar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( user && user.client && progbar != null ) {
+		public static dynamic assign_progress_bar( dynamic user = null, dynamic progbar = null ) {
+			if ( user != null && user.client != null && progbar != null ) {
 				user.client.images = user.client.images | progbar;
 			}
 		}
 
-		public static UNKNOWN	AStar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			Heap	open = null;
-			if ( maxnodedepth == null != null ) {
+		public static int AStar( dynamic start = null, dynamic end = null, dynamic atom = null, dynamic dist = null, dynamic maxnodes = null, int maxnodedepth = 0, dynamic mintargetdist = null, UNKNOWN adjacent = null, dynamic id = null, dynamic exclude = null, int simulated_only = 0 ) {
+			Heap open = null;
+			if ( maxnodedepth == null ) {
 				maxnodedepth = 30;
 			}
-			if ( adjacent == null != null ) {
+			if ( adjacent == null ) {
 				adjacent = typeof( Tile ).GetMethod( "reachableAdjacentTurfs" );
 			}
-			if ( id == null != null ) {
+			if ( id == null ) {
 				id = null;
 			}
-			if ( exclude == null != null ) {
+			if ( exclude == null ) {
 				exclude = null;
 			}
-			if ( simulated_only == null != null ) {
+			if ( simulated_only == null ) {
 				simulated_only = 1;
 			}
 			if ( maxnodes != null ) {
-				if ( GlobalVars.undefined( start, dist )( end ) > maxnodes != null ) {
+				if ( GlobalVars.undefined( start, dist )( end ) > maxnodes ) {
 					return 0;
 				}
 				maxnodedepth = maxnodes;
@@ -650,14 +651,14 @@ namespace Som13 {
 				return 0;
 			}
 			open.Insert( new PathNode( start, null, 0, GlobalVars.undefined( start, dist )( end ), 0 ) );
-			while (!open.IsEmpty() && !path) {
+			while (!open.IsEmpty() != null && !path != null) {
 				cur = open.Pop();
 				closed.Add( cur.source );
 				closeenough = null;
 				if ( mintargetdist != null ) {
 					closeenough = GlobalVars.undefined( cur.source, dist )( end ) <= mintargetdist;
 				}
-				if ( maxnodedepth && cur.nt > maxnodedepth != null ) {
+				if ( maxnodedepth != 0 && cur.nt > maxnodedepth ) {
 					continue;
 				}
 				if ( cur.source == end || closeenough != null ) {
@@ -671,15 +672,15 @@ namespace Som13 {
 				}
 				L = GlobalVars.undefined( cur.source, adjacent )( atom, id, simulated_only );
 				T = null;
-				foreach (_ in L ) {
+				foreach (dynamic _ in L ) {
 					T = undefined;
-					if ( ( T == exclude || T ) in closed != null ) {
+					if ( T == exclude || T != null in closed != null ) {
 						continue;
 					}
 					newg = cur.g + GlobalVars.undefined( cur.source, dist )( T );
 					if ( !T.PNode != null ) {
 						open.Insert( new PathNode( T, cur, newg, GlobalVars.undefined( T, dist )( end ), cur.nt + 1 ) );
-					} else if ( newg < T.PNode.g != null ) {
+					} else if ( newg < T.PNode.g ) {
 						T.prevNode = cur;
 						T.PNode.g = newg;
 						T.PNode.calc_f();
@@ -689,15 +690,15 @@ namespace Som13 {
 				};
 			};
 			PN = null;
-			foreach (_ in open.L ) {
+			foreach (dynamic _ in open.L ) {
 				PN = undefined;
-				if ( !( PN instanceof PathNode ) != null ) {
+				if ( !( PN is PathNode ) != null ) {
 					continue;
 				}
 				PN.source.PNode = null;
 			};
 			T = null;
-			foreach (_ in closed ) {
+			foreach (dynamic _ in closed ) {
 				T = undefined;
 				T.PNode = null;
 			};
@@ -712,26 +713,26 @@ namespace Som13 {
 			return path;
 		}
 
-		public static UNKNOWN	attach_spans( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic attach_spans( dynamic input = null, dynamic spans = null ) {
 			return "" + GlobalFuncs.message_spans_start( spans ) + input + "</span>";
 		}
 
-		public static int	attempt_initiate_surgery( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	H = null;
-			if ( M instanceof Mob_Living != null ) {
+		public static int attempt_initiate_surgery( dynamic I = null, dynamic M = null, dynamic user = null ) {
+			dynamic H = null;
+			if ( M is Mob_Living != null ) {
 				selected_zone = user.zone_sel.selecting;
-				if ( M instanceof Mob_Living_Carbon_Human != null ) {
+				if ( M is Mob_Living_Carbon_Human != null ) {
 					H = M;
 					affecting = H.get_organ( GlobalFuncs.check_zone( selected_zone ) );
 				}
-				if ( M.lying || M instanceof Mob_Living_SimpleAnimal_Slime != null ) {
+				if ( M.lying != null || M is Mob_Living_SimpleAnimal_Slime != null ) {
 					S = null;
-					foreach (_ in M.surgeries ) {
+					foreach (dynamic _ in M.surgeries ) {
 						S = undefined;
-						if ( !( S instanceof Surgery ) != null ) {
+						if ( !( S is Surgery ) != null ) {
 							continue;
 						}
-						if ( S.location == selected_zone != null ) {
+						if ( S.location == selected_zone ) {
 							current_surgery = S;
 						}
 					};
@@ -739,36 +740,36 @@ namespace Som13 {
 						all_surgeries = GlobalVars.surgeries_list.Copy();
 						available_surgeries = new ByTable();
 						S = null;
-						foreach (_ in all_surgeries ) {
+						foreach (dynamic _ in all_surgeries ) {
 							S = undefined;
-							if ( !( S instanceof Surgery ) != null ) {
+							if ( !( S is Surgery ) != null ) {
 								continue;
 							}
 							if ( !S.possible_locs.Find( selected_zone ) != null ) {
 								continue;
 							}
-							if ( affecting && S.requires_organic_bodypart && affecting.status == 2 != null ) {
+							if ( affecting != null && S.requires_organic_bodypart != null && affecting.status == 2 ) {
 								continue;
 							}
 							if ( !S.can_start( user, M ) != null ) {
 								continue;
 							}
 							path = null;
-							foreach (_ in S.species ) {
+							foreach (dynamic _ in S.species ) {
 								path = undefined;
-								if ( M instanceof path != null ) {
-									available_surgeries[S.name] = S;
+								if ( M is path != null ) {
+									available_surgeries.[object Object] = S;
 									break;
 								}
 							};
 						};
 						P = GlobalVars.undefined( "Begin which procedure?", "Surgery", null, null, available_surgeries, 4224 );
-						if ( P && user && user.Adjacent( M ) && I in user != null ) {
-							S = available_surgeries[P];
+						if ( P != null && user != null && user.Adjacent( M ) != null && I in user != null ) {
+							S = available_surgeries.[object Object];
 							procedure = S.type();
 							if ( procedure != null ) {
 								procedure.location = selected_zone;
-								if ( procedure.ignore_clothes || GlobalFuncs.get_location_accessible( M, selected_zone ) != null ) {
+								if ( procedure.ignore_clothes != null || GlobalFuncs.get_location_accessible( M, selected_zone ) != null ) {
 									M.surgeries += procedure;
 									procedure.organ = affecting;
 									user.visible_message( GlobalVars.undefined().item( user ).str( " drapes " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( "." ), GlobalVars.undefined( "<span class='notice'>You drape " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( ".</span>" ) );
@@ -779,11 +780,11 @@ namespace Som13 {
 							}
 						}
 					} else if ( !current_surgery.step_in_progress != null ) {
-						if ( current_surgery.status == 1 != null ) {
+						if ( current_surgery.status == 1 ) {
 							M.surgeries -= current_surgery;
 							user.visible_message( "" + user + " removes the drapes from " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + ".", "<span class='notice'>You remove the drapes from " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + ".</span>" );
 							GlobalFuncs.qdel( current_surgery );
-						} else if ( user.get_inactive_hand() instanceof Ent_Item_Weapon_Cautery && current_surgery.can_cancel != null ) {
+						} else if ( user.get_inactive_hand() is Ent_Item_Weapon_Cautery != null && current_surgery.can_cancel != null ) {
 							M.surgeries -= current_surgery;
 							user.visible_message( "" + user + " mends the incision and removes the drapes from " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + ".", "<span class='notice'>You mend the incision and remove the drapes from " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + ".</span>" );
 							GlobalFuncs.qdel( current_surgery );
@@ -797,15 +798,15 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	AutoUpdateAI( UNKNOWN [object Object] =null ) {
-			int	is_in_use = null;
+		public static int AutoUpdateAI( dynamic subject = null ) {
+			int is_in_use = 0;
 			is_in_use = 0;
-			if ( subject != null != null ) {
+			if ( subject != null ) {
 				A = null;
-				foreach (_ in GlobalVars.ai_list ) {
+				foreach (dynamic _ in GlobalVars.ai_list ) {
 					A = undefined;
 					M = A;
-					if ( M.client && M.machine == subject != null ) {
+					if ( M.client != null && M.machine == subject ) {
 						is_in_use = 1;
 						subject.attack_ai( M );
 					}
@@ -814,14 +815,14 @@ namespace Som13 {
 			return is_in_use;
 		}
 
-		public static UNKNOWN	AverageColour( UNKNOWN [object Object] =null ) {
-			ByTable	colours = null;
+		public static dynamic AverageColour( dynamic I = null ) {
+			ByTable colours = null;
 			colours = new ByTable();
 			x_pixel = null;
-			foreach (_ in GlobalVars.undefined( 1, I.Width() ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( 1, I.Width() ) ) {
 				x_pixel = undefined;
 				y_pixel = null;
-				foreach (_ in GlobalVars.undefined( 1, I.Height() ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( 1, I.Height() ) ) {
 					y_pixel = undefined;
 					this_colour = I.GetPixel( x_pixel, y_pixel );
 					if ( this_colour != null ) {
@@ -832,20 +833,20 @@ namespace Som13 {
 			if ( !colours.len != null ) {
 				return;
 			}
-			final_average = colours[1];
+			final_average = colours.1;
 			colour = null;
-			foreach (_ in colours - colours[1] ) {
+			foreach (dynamic _ in colours - colours.1 ) {
 				colour = undefined;
 				final_average = GlobalFuncs.BlendRGB( final_average, colour, 1 );
 			};
 			return final_average;
 		}
 
-		public static dynamic	ban_unban_log_save( UNKNOWN [object Object] =null ) {
+		public static dynamic ban_unban_log_save( dynamic formatted_log = null ) {
 			GlobalVars.undefined.write( formatted_log, "data/ban_unban_log.txt" );
 		}
 
-		public static int	blendMode2iconMode( UNKNOWN [object Object] =null ) {
+		public static dynamic blendMode2iconMode( dynamic blend_mode = null ) {
 			local _ = blend_mode // Was a switch-case, sorry for the mess.
 			if ( _==4 ) {
 				return 2;
@@ -858,30 +859,30 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	BlendRGB( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	RGB1 = null;
+		public static UNKNOWN BlendRGB( dynamic rgb1 = null, dynamic rgb2 = null, dynamic amount = null ) {
+			dynamic RGB1 = null;
 			RGB1 = GlobalFuncs.ReadRGB( rgb1 );
 			RGB2 = GlobalFuncs.ReadRGB( rgb2 );
-			if ( RGB1.len < RGB2.len != null ) {
+			if ( RGB1.len < RGB2.len ) {
 				RGB1 += 255;
-			} else if ( RGB2.len < RGB1.len != null ) {
+			} else if ( RGB2.len < RGB1.len ) {
 				RGB2 += 255;
 			}
 			usealpha = RGB1.len > 3;
-			r = GlobalVars.undefined.round( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 );
-			g = GlobalVars.undefined.round( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 );
-			b = GlobalVars.undefined.round( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 );
-			alpha = usealpha ? GlobalVars.undefined.round( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null;
+			r = GlobalVars.undefined.round( RGB1.1 + ( RGB2.1 - RGB1.1 ) * amount, 1 );
+			g = GlobalVars.undefined.round( RGB1.2 + ( RGB2.2 - RGB1.2 ) * amount, 1 );
+			b = GlobalVars.undefined.round( RGB1.3 + ( RGB2.3 - RGB1.3 ) * amount, 1 );
+			alpha = usealpha ? GlobalVars.undefined.round( RGB1.4 + ( RGB2.4 - RGB1.4 ) * amount, 1 ) : null;
 			return GlobalVars.undefined( alpha ) ? GlobalVars.undefined( r, g, b ) : GlobalVars.undefined( r, g, b, alpha );
 		}
 
-		public static int	blood_incompatible( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	donor_antigen = null;
-			if ( !donor || !receiver != null ) {
+		public static int blood_incompatible( dynamic donor = null, dynamic receiver = null, dynamic donor_species = null, dynamic receiver_species = null ) {
+			dynamic donor_antigen = null;
+			if ( !donor != null || !receiver != null ) {
 				return 0;
 			}
-			if ( donor_species && receiver_species != null ) {
-				if ( donor_species != receiver_species != null ) {
+			if ( donor_species != null && receiver_species != null ) {
+				if ( donor_species != receiver_species ) {
 					return 1;
 				}
 			}
@@ -894,29 +895,29 @@ namespace Som13 {
 			}
 			local _ = receiver_antigen // Was a switch-case, sorry for the mess.
 			if ( _=="A" ) {
-				if ( donor_antigen != "A" && donor_antigen != "O" != null ) {
+				if ( donor_antigen != "A" && donor_antigen != "O" ) {
 					return 1;
 				}
 			} else if ( _=="B" ) {
-				if ( donor_antigen != "B" && donor_antigen != "O" != null ) {
+				if ( donor_antigen != "B" && donor_antigen != "O" ) {
 					return 1;
 				}
 			} else if ( _=="O" ) {
-				if ( donor_antigen != "O" != null ) {
+				if ( donor_antigen != "O" ) {
 					return 1;
 				}
 			};
 			return 0;
 		}
 
-		public static UNKNOWN	blood_splatter( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	B = null;
+		public static dynamic blood_splatter( dynamic target = null, Reagent_Blood source = null, dynamic large = null ) {
+			dynamic B = null;
 			decal_type = Ent_Effect_Decal_Cleanable_Blood_Splatter;
 			T = GlobalFuncs.get_turf( target );
-			if ( source instanceof Mob_Living_Carbon_Human != null ) {
+			if ( source is Mob_Living_Carbon_Human != null ) {
 				M = source;
 				source = M.get_blood( M.vessel );
-			} else if ( source instanceof Mob_Living_Carbon_Monkey != null ) {
+			} else if ( source is Mob_Living_Carbon_Monkey != null ) {
 				donor = source;
 				source = new Reagent_Blood();
 				source.data.blood_DNA = donor.dna.unique_enzymes;
@@ -924,15 +925,15 @@ namespace Som13 {
 			}
 			drips = new ByTable();
 			drop = null;
-			foreach (_ in T ) {
+			foreach (dynamic _ in T ) {
 				drop = undefined;
-				if ( !( drop instanceof Ent_Effect_Decal_Cleanable_Blood_Drip ) != null ) {
+				if ( !( drop is Ent_Effect_Decal_Cleanable_Blood_Drip ) != null ) {
 					continue;
 				}
 				drips = drips | drop.drips;
 				GlobalFuncs.qdel( drop );
 			};
-			if ( !large && drips.len < 3 != null ) {
+			if ( !large != null && drips.len < 3 ) {
 				decal_type = Ent_Effect_Decal_Cleanable_Blood_Drip;
 			}
 			B = GlobalVars.undefined( decal_type, T );
@@ -940,7 +941,7 @@ namespace Som13 {
 				B = decal_type( T );
 			}
 			drop = B;
-			if ( drop instanceof Ent_Effect_Decal_Cleanable_Blood_Drip && drips && drips.len && !large != null ) {
+			if ( drop is Ent_Effect_Decal_Cleanable_Blood_Drip != null && drips != null && drips.len != null && !large != null ) {
 				drop.overlays = drop.overlays | drips;
 				drop.drips = drop.drips | drips;
 			}
@@ -950,16 +951,16 @@ namespace Som13 {
 			if ( source.data.blood_DNA != null ) {
 				B.blood_DNA = new ByTable();
 				if ( source.data.blood_type != null ) {
-					B.blood_DNA[source.data.blood_DNA] = source.data.blood_type;
+					B.blood_DNA.[object Object] = source.data.blood_type;
 				} else {
-					B.blood_DNA[source.data.blood_DNA] = "O+";
+					B.blood_DNA.[object Object] = "O+";
 				}
 			}
 			return B;
 		}
 
-		public static dynamic	Broadcast_Message( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	radios = null;
+		public static dynamic Broadcast_Message( dynamic AM = null, dynamic vmask = null, dynamic radio = null, dynamic message = null, dynamic name = null, dynamic job = null, dynamic realname = null, dynamic data = null, dynamic compression = null, dynamic level = null, dynamic freq = null, dynamic spans = null, dynamic verb_say = null, dynamic verb_ask = null, dynamic verb_exclaim = null, dynamic verb_yell = null ) {
+			ByTable radios = null;
 			message = GlobalVars.undefined( message, 1, 512 );
 			if ( !message != null ) {
 				return;
@@ -975,98 +976,98 @@ namespace Som13 {
 			virt.verb_ask = verb_ask;
 			virt.verb_exclaim = verb_exclaim;
 			virt.verb_yell = verb_yell;
-			if ( compression > 0 != null ) {
+			if ( compression > 0 ) {
 				message = GlobalFuncs.Gibberish( message, compression + 40 );
 			}
-			if ( data == 1 != null ) {
+			if ( data == 1 ) {
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + freq] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio_Intercom ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio_Intercom ) != null ) {
 						continue;
 					}
-					if ( R.receive_range( freq, level ) > -1 != null ) {
+					if ( R.receive_range( freq, level ) > -1 ) {
 						radios += R;
 					}
 				};
-			} else if ( data == 2 != null ) {
+			} else if ( data == 2 ) {
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + freq] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					if ( R.subspace_transmission != null ) {
 						continue;
 					}
-					if ( R.receive_range( freq, level ) > -1 != null ) {
+					if ( R.receive_range( freq, level ) > -1 ) {
 						radios += R;
 					}
 				};
-			} else if ( data == 5 != null ) {
+			} else if ( data == 5 ) {
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + freq] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					if ( !R.centcom != null ) {
 						continue;
 					}
-					if ( R.receive_range( freq, level ) > -1 != null ) {
+					if ( R.receive_range( freq, level ) > -1 ) {
 						radios += R;
 					}
 				};
 			} else {
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + freq] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
-					if ( R.receive_range( freq, level ) > -1 != null ) {
+					if ( R.receive_range( freq, level ) > -1 ) {
 						radios += R;
 					}
 				};
 				freqtext = GlobalVars.undefined( freq );
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + GlobalVars.SYND_FREQ] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
-					if ( R.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] {R.z}) ) > -1 && freqtext in GlobalVars.radiochannelsreverse != null ) {
+					if ( R.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] {R.z}) ) > -1 && freqtext != null in GlobalVars.radiochannelsreverse != null ) {
 						radios = radios | R;
 					}
 				};
 			}
 			receive = GlobalFuncs.get_mobs_in_radio_ranges( radios );
 			R = null;
-			foreach (_ in receive ) {
+			foreach (dynamic _ in receive ) {
 				R = undefined;
-				if ( R.client && R.client.holder && !( R.client.prefs.chat_toggles & 32 ) != null ) {
+				if ( R.client != null && R.client.holder != null && !( R.client.prefs.chat_toggles & 32 ) != null ) {
 					receive -= R;
 				}
 			};
 			M = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				M = undefined;
-				if ( M instanceof Mob_Dead_Observer && M.client && M.client.prefs.chat_toggles & 512 != null ) {
+				if ( M is Mob_Dead_Observer != null && M.client != null && M.client.prefs.chat_toggles & 512 != null ) {
 					receive = receive | M;
 				}
 			};
 			rendered = virt.compose_message( virt, virt.languages, message, freq, spans );
 			hearer = null;
-			foreach (_ in receive ) {
+			foreach (dynamic _ in receive ) {
 				hearer = undefined;
-				if ( !( hearer instanceof BaseDynamic ) != null ) {
+				if ( !( hearer is BaseDynamic ) != null ) {
 					continue;
 				}
 				hearer.Hear( rendered, virt, AM.languages, message, freq, spans );
 			};
 			if ( GlobalVars.undefined( receive ) != null ) {
 				blackbox_msg = "" + AM + " " + AM.say_quote( message, spans );
-				if ( GlobalVars.blackbox instanceof Ent_Machinery_BlackboxRecorder != null ) {
+				if ( GlobalVars.blackbox is Ent_Machinery_BlackboxRecorder != null ) {
 					local _ = freq // Was a switch-case, sorry for the mess.
 					if ( _==1459 ) {
 						GlobalVars.blackbox.msg_common += blackbox_msg;
@@ -1099,8 +1100,8 @@ namespace Som13 {
 			});
 		}
 
-		public static dynamic	Broadcast_SimpleMessage( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			Mob_Living_Carbon_Human	H = null;
+		public static dynamic Broadcast_SimpleMessage( dynamic source = null, dynamic frequency = null, dynamic text = null, dynamic data = null, Mob_Living_Carbon_Human M = null, dynamic compression = null, dynamic level = null ) {
+			Mob_Living_Carbon_Human H = null;
 			if ( !M != null ) {
 				H = new Mob_Living_Carbon_Human();
 				M = H;
@@ -1108,51 +1109,51 @@ namespace Som13 {
 			connection = GlobalVars.radio_controller.return_frequency( frequency );
 			display_freq = connection.frequency;
 			receive = new ByTable();
-			if ( data == 1 != null ) {
+			if ( data == 1 ) {
 				R = null;
-				foreach (_ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+				foreach (dynamic _ in connection.devices.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio_Intercom ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio_Intercom ) != null ) {
 						continue;
 					}
 					position = GlobalFuncs.get_turf( R );
-					if ( position && position.z == level != null ) {
+					if ( position != null && position.z == level ) {
 						receive = receive | R.send_hear( display_freq, level );
 					}
 				};
-			} else if ( data == 2 != null ) {
+			} else if ( data == 2 ) {
 				R = null;
-				foreach (_ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+				foreach (dynamic _ in connection.devices.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					if ( R.subspace_transmission != null ) {
 						continue;
 					}
 					position = GlobalFuncs.get_turf( R );
-					if ( position && position.z == level != null ) {
+					if ( position != null && position.z == level ) {
 						receive = receive | R.send_hear( display_freq );
 					}
 				};
-			} else if ( data == 3 != null ) {
+			} else if ( data == 3 ) {
 				syndicateconnection = GlobalVars.radio_controller.return_frequency( GlobalVars.SYND_FREQ );
 				R = null;
-				foreach (_ in syndicateconnection.devices["" + GlobalVars.RADIO_CHAT] ) {
+				foreach (dynamic _ in syndicateconnection.devices.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					position = GlobalFuncs.get_turf( R );
-					if ( position && position.z == level != null ) {
+					if ( position != null && position.z == level ) {
 						receive = receive | R.send_hear( GlobalVars.SYND_FREQ );
 					}
 				};
-			} else if ( data == 5 != null ) {
+			} else if ( data == 5 ) {
 				R = null;
-				foreach (_ in GlobalVars.all_radios["" + GlobalVars.RADIO_CHAT] ) {
+				foreach (dynamic _ in GlobalVars.all_radios.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					if ( R.centcom != null ) {
@@ -1161,13 +1162,13 @@ namespace Som13 {
 				};
 			} else {
 				R = null;
-				foreach (_ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+				foreach (dynamic _ in connection.devices.[object Object] ) {
 					R = undefined;
-					if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+					if ( !( R is Ent_Item_Device_Radio ) != null ) {
 						continue;
 					}
 					position = GlobalFuncs.get_turf( R );
-					if ( position && position.z == level != null ) {
+					if ( position != null && position.z == level ) {
 						receive = receive | R.send_hear( display_freq );
 					}
 				};
@@ -1176,12 +1177,12 @@ namespace Som13 {
 			heard_garbled = new ByTable();
 			heard_gibberish = new ByTable();
 			R = null;
-			foreach (_ in receive ) {
+			foreach (dynamic _ in receive ) {
 				R = undefined;
-				if ( R.client && !( R.client.prefs.chat_toggles & 32 ) != null ) {
+				if ( R.client != null && !( R.client.prefs.chat_toggles & 32 ) != null ) {
 					continue;
 				}
-				if ( compression > 0 != null ) {
+				if ( compression > 0 ) {
 					heard_gibberish += R;
 					continue;
 				}
@@ -1191,7 +1192,7 @@ namespace Som13 {
 					heard_garbled += R;
 				}
 			};
-			if ( GlobalVars.undefined( heard_normal ) || GlobalVars.undefined( heard_garbled ) || GlobalVars.undefined( heard_gibberish ) != null ) {
+			if ( GlobalVars.undefined( heard_normal ) != null || GlobalVars.undefined( heard_garbled ) != null || GlobalVars.undefined( heard_gibberish ) != null ) {
 				part_a = "<span class='radio'><span class='name'>";
 				freq_text = null;
 				local _ = display_freq // Was a switch-case, sorry for the mess.
@@ -1218,36 +1219,36 @@ namespace Som13 {
 					freq_text = GlobalFuncs.format_frequency( display_freq );
 				}
 				part_b_extra = "";
-				if ( data == 3 != null ) {
+				if ( data == 3 ) {
 					part_b_extra = " <i>(Intercepted)</i>";
 				}
 				radio = new Ent_Item_Device_Radio_Headset();
 				part_b = GlobalVars.undefined( "</span><b> " ).icon( radio ).str( "[" ).item( freq_text ).str( "]" ).item( part_b_extra ).str( "</b> <span class='message'>" );
 				part_c = "</span></span>";
-				if ( display_freq == GlobalVars.SYND_FREQ != null ) {
+				if ( display_freq == GlobalVars.SYND_FREQ ) {
 					part_a = "<span class='syndradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.COMM_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.COMM_FREQ ) {
 					part_a = "<span class='comradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.SCI_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.SCI_FREQ ) {
 					part_a = "<span class='sciradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.MED_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.MED_FREQ ) {
 					part_a = "<span class='medradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.ENG_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.ENG_FREQ ) {
 					part_a = "<span class='engradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.SEC_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.SEC_FREQ ) {
 					part_a = "<span class='secradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.SERV_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.SERV_FREQ ) {
 					part_a = "<span class='servradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.SUPP_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.SUPP_FREQ ) {
 					part_a = "<span class='suppradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.CENTCOM_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.CENTCOM_FREQ ) {
 					part_a = "<span class='centcomradio'><span class='name'>";
-				} else if ( display_freq == GlobalVars.AIPRIV_FREQ != null ) {
+				} else if ( display_freq == GlobalVars.AIPRIV_FREQ ) {
 					part_a = "<span class='aiprivradio'><span class='name'>";
 				}
 				part_blackbox_b = "</span><b> [" + freq_text + "]</b> <span class='message'>";
 				blackbox_msg = "" + part_a + source + part_blackbox_b + "\"" + text + "\"" + part_c;
-				if ( GlobalVars.blackbox instanceof Ent_Machinery_BlackboxRecorder != null ) {
+				if ( GlobalVars.blackbox is Ent_Machinery_BlackboxRecorder != null ) {
 					local _ = display_freq // Was a switch-case, sorry for the mess.
 					if ( _==1459 ) {
 						GlobalVars.blackbox.msg_common += blackbox_msg;
@@ -1276,7 +1277,7 @@ namespace Som13 {
 				if ( GlobalVars.undefined( heard_normal ) != null ) {
 					rendered = "" + part_a + source + part_b + "\"" + text + "\"" + part_c;
 					R = null;
-					foreach (_ in heard_normal ) {
+					foreach (dynamic _ in heard_normal ) {
 						R = undefined;
 						R.show_message( rendered, 2 );
 					};
@@ -1285,7 +1286,7 @@ namespace Som13 {
 					quotedmsg = "\"" + GlobalFuncs.stars( text ) + "\"";
 					rendered = "" + part_a + source + part_b + quotedmsg + part_c;
 					R = null;
-					foreach (_ in heard_garbled ) {
+					foreach (dynamic _ in heard_garbled ) {
 						R = undefined;
 						R.show_message( rendered, 2 );
 					};
@@ -1294,7 +1295,7 @@ namespace Som13 {
 					quotedmsg = "\"" + GlobalFuncs.Gibberish( text, compression + 50 ) + "\"";
 					rendered = "" + part_a + GlobalFuncs.Gibberish( source, compression + 50 ) + part_b + quotedmsg + part_c;
 					R = null;
-					foreach (_ in heard_gibberish ) {
+					foreach (dynamic _ in heard_gibberish ) {
 						R = undefined;
 						R.show_message( rendered, 2 );
 					};
@@ -1302,16 +1303,16 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	build_click( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	holder = null;
+		public static dynamic build_click( dynamic user = null, dynamic buildmode = null, dynamic _params = null, dynamic _object = null ) {
+			dynamic holder = null;
 			holder = null;
 			H = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				H = undefined;
-				if ( !( H instanceof Ent_Effect_Bmode_Buildholder ) != null ) {
+				if ( !( H is Ent_Effect_Bmode_Buildholder ) != null ) {
 					continue;
 				}
-				if ( H.cl == user.client != null ) {
+				if ( H.cl == user.client ) {
 					holder = H;
 					break;
 				}
@@ -1320,41 +1321,41 @@ namespace Som13 {
 				return;
 			}
 			pa = GlobalVars.undefined( _params );
-			if ( _object instanceof Ent_Effect_Bmode != null ) {
+			if ( _object is Ent_Effect_Bmode != null ) {
 				return;
 			}
 			local _ = buildmode // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
-				if ( _object instanceof Tile && pa.Find( "left" ) && !pa.$Find( "alt" ) && !pa.$Find( "ctrl" ) != null ) {
+				if ( _object is Tile != null && pa.Find( "left" ) != null && !pa.$Find( "alt" ) != null && !pa.$Find( "ctrl" ) != null ) {
 					T = _object;
-					if ( _object instanceof Tile_Space != null ) {
+					if ( _object is Tile_Space != null ) {
 						T.ChangeTurf( Tile_Simulated_Floor_Plasteel );
-					} else if ( _object instanceof Tile_Simulated_Floor != null ) {
+					} else if ( _object is Tile_Simulated_Floor != null ) {
 						T.ChangeTurf( Tile_Simulated_Wall );
-					} else if ( _object instanceof Tile_Simulated_Wall != null ) {
+					} else if ( _object is Tile_Simulated_Wall != null ) {
 						T.ChangeTurf( Tile_Simulated_Wall_RWall );
 					}
 					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " built " + T + " at (" + T.x + "," + T.y + "," + T.z + ")" );
 					return;
 				} else if ( pa.Find( "right" ) != null ) {
 					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " deleted " + _object + " at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
-					if ( _object instanceof Tile_Simulated_Wall != null ) {
+					if ( _object is Tile_Simulated_Wall != null ) {
 						T = _object;
 						T.ChangeTurf( Tile_Simulated_Floor_Plasteel );
-					} else if ( _object instanceof Tile_Simulated_Floor != null ) {
+					} else if ( _object is Tile_Simulated_Floor != null ) {
 						T = _object;
 						T.ChangeTurf( Tile_Space );
-					} else if ( _object instanceof Tile_Simulated_Wall_RWall != null ) {
+					} else if ( _object is Tile_Simulated_Wall_RWall != null ) {
 						T = _object;
 						T.ChangeTurf( Tile_Simulated_Wall );
-					} else if ( _object instanceof Entity != null ) {
+					} else if ( _object is Entity != null ) {
 						GlobalFuncs.qdel( _object );
 					}
 					return;
-				} else if ( _object instanceof Tile && T.$Find( "alt" ) && T.$Find( "left" ) != null ) {
+				} else if ( _object is Tile != null && T.$Find( "alt" ) != null && T.$Find( "left" ) != null ) {
 					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " built an airlock at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					new Ent_Machinery_Door_Airlock( GlobalFuncs.get_turf( _object ) );
-				} else if ( _object instanceof Tile && pa.Find( "ctrl" ) && pa.$Find( "left" ) != null ) {
+				} else if ( _object is Tile != null && pa.Find( "ctrl" ) != null && pa.$Find( "left" ) != null ) {
 					local _ = holder.builddir.dir // Was a switch-case, sorry for the mess.
 					if ( _==1 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
@@ -1395,7 +1396,7 @@ namespace Som13 {
 				if ( pa.Find( "left" ) != null ) {
 					if ( _object.vars.Find( holder.buildmode.varholder ) != null ) {
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder );
-						_object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder;
+						_object.vars.[object Object] = holder.buildmode.valueholder;
 					} else {
 						GlobalVars.undefined.user.write( "<span class='warning'>" + GlobalVars.undefined( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
 					}
@@ -1403,7 +1404,7 @@ namespace Som13 {
 				if ( pa.Find( "right" ) != null ) {
 					if ( _object.vars.Find( holder.buildmode.varholder ) != null ) {
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder );
-						_object.vars[holder.buildmode.varholder] = GlobalVars.undefined( _object.vars[holder.buildmode.varholder] );
+						_object.vars.[object Object] = GlobalVars.undefined( _object.vars.[object Object] );
 					} else {
 						GlobalVars.undefined.user.write( "<span class='warning'>" + GlobalVars.undefined( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
 					}
@@ -1426,11 +1427,11 @@ namespace Som13 {
 					holder.cornerA = GlobalFuncs.get_turf( _object );
 					return;
 				}
-				if ( holder.cornerA && !holder.cornerB != null ) {
+				if ( holder.cornerA != null && !holder.cornerB != null ) {
 					holder.cornerB = GlobalFuncs.get_turf( _object );
 				}
 				if ( pa.Find( "left" ) != null ) {
-					if ( holder.cornerA && holder.cornerB != null ) {
+					if ( holder.cornerA != null && holder.cornerB != null ) {
 						if ( !holder.generator_path != null ) {
 							GlobalVars.undefined.user.write( "<span class='warning'>Select generator type first.</span>" );
 						}
@@ -1447,8 +1448,8 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	calculate_adjacencies( UNKNOWN [object Object] =null ) {
-			UNKNOWN	adjacencies = null;
+		public static int calculate_adjacencies( dynamic A = null ) {
+			int adjacencies = 0;
 			if ( !A.loc != null ) {
 				return 0;
 			}
@@ -1459,10 +1460,10 @@ namespace Som13 {
 					return 0;
 				}
 				direction = null;
-				foreach (_ in GlobalVars.alldirs ) {
+				foreach (dynamic _ in GlobalVars.alldirs ) {
 					direction = undefined;
 					AM = GlobalFuncs.find_type_in_direction( A, direction );
-					if ( AM instanceof BaseDynamic != null ) {
+					if ( AM is BaseDynamic != null ) {
 						if ( AM.anchored != null ) {
 							adjacencies = adjacencies | GlobalFuncs.transform_dir( direction );
 						}
@@ -1472,7 +1473,7 @@ namespace Som13 {
 				};
 			} else {
 				direction = null;
-				foreach (_ in GlobalVars.alldirs ) {
+				foreach (dynamic _ in GlobalVars.alldirs ) {
 					direction = undefined;
 					if ( GlobalFuncs.find_type_in_direction( A, direction ) != null ) {
 						adjacencies = adjacencies | GlobalFuncs.transform_dir( direction );
@@ -1482,10 +1483,10 @@ namespace Som13 {
 			return adjacencies;
 		}
 
-		public static UNKNOWN	CallMaterialName( UNKNOWN [object Object] =null ) {
-			UNKNOWN	temp_reagent = null;
+		public static dynamic CallMaterialName( dynamic ID = null ) {
+			dynamic temp_reagent = null;
 			return_name = null;
-			if ( GlobalVars.undefined( ID, 1, 2 ) == "$" != null ) {
+			if ( GlobalVars.undefined( ID, 1, 2 ) == "$" ) {
 				return_name = GlobalVars.undefined( ID, 2, null );
 				local _ = return_name // Was a switch-case, sorry for the mess.
 				if ( _=="metal" ) {
@@ -1507,11 +1508,11 @@ namespace Som13 {
 				};
 			} else {
 				R = null;
-				foreach (_ in GlobalVars.undefined( Reagent ) - Reagent ) {
+				foreach (dynamic _ in GlobalVars.undefined( Reagent ) - Reagent ) {
 					R = undefined;
 					temp_reagent = null;
 					temp_reagent = R();
-					if ( temp_reagent.id == ID != null ) {
+					if ( temp_reagent.id == ID ) {
 						return_name = temp_reagent.name;
 						GlobalFuncs.qdel( temp_reagent );
 						temp_reagent = null;
@@ -1522,15 +1523,15 @@ namespace Som13 {
 			return return_name;
 		}
 
-		public static UNKNOWN	CallTechName( UNKNOWN [object Object] =null ) {
-			UNKNOWN	check_tech = null;
+		public static dynamic CallTechName( dynamic ID = null ) {
+			dynamic check_tech = null;
 			return_name = null;
 			T = null;
-			foreach (_ in GlobalVars.undefined( Tech ) - Tech ) {
+			foreach (dynamic _ in GlobalVars.undefined( Tech ) - Tech ) {
 				T = undefined;
 				check_tech = null;
 				check_tech = T();
-				if ( check_tech.id == ID != null ) {
+				if ( check_tech.id == ID ) {
 					return_name = check_tech.name;
 					GlobalFuncs.qdel( check_tech );
 					check_tech = null;
@@ -1540,21 +1541,21 @@ namespace Som13 {
 			return return_name;
 		}
 
-		public static dynamic	camera_sort( UNKNOWN [object Object] =null ) {
-			UNKNOWN	a = null;
+		public static dynamic camera_sort( dynamic L = null ) {
+			dynamic a = null;
 			i = null;
 			i = L.len;
 			while (i > 0) {
 				j = null;
-				foreach (_ in GlobalVars.undefined( 1, i - 1 ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( 1, i - 1 ) ) {
 					j = undefined;
-					a = L[j];
-					b = L[j + 1];
-					if ( a.c_tag_order != b.c_tag_order != null ) {
-						if ( a.c_tag_order > b.c_tag_order != null ) {
+					a = L.[object Object];
+					b = L.[object Object];
+					if ( a.c_tag_order != b.c_tag_order ) {
+						if ( a.c_tag_order > b.c_tag_order ) {
 							L.Swap( j, j + 1 );
 						}
-					} else if ( GlobalVars.undefined( a.c_tag, b.c_tag ) < 0 != null ) {
+					} else if ( GlobalVars.undefined( a.c_tag, b.c_tag ) < 0 ) {
 						L.Swap( j, j + 1 );
 					}
 				};
@@ -1563,8 +1564,8 @@ namespace Som13 {
 			return L;
 		}
 
-		public static int	can_embed( UNKNOWN [object Object] =null ) {
-			ByTable	embed_items = null;
+		public static int can_embed( dynamic W = null ) {
+			ByTable embed_items = null;
 			if ( W.is_sharp() != null ) {
 				return 1;
 			}
@@ -1577,25 +1578,25 @@ namespace Som13 {
 			}
 		}
 
-		public static int	can_see( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	current = null;
-			if ( length == null != null ) {
+		public static int can_see( dynamic source = null, dynamic target = null, int length = 0 ) {
+			dynamic current = null;
+			if ( length == null ) {
 				length = 5;
 			}
 			current = GlobalFuncs.get_turf( source );
 			target_turf = GlobalFuncs.get_turf( target );
 			steps = 0;
 			while (current != target_turf) {
-				if ( steps > length != null ) {
+				if ( steps > length ) {
 					return 0;
 				}
 				if ( current.opacity != null ) {
 					return 0;
 				}
 				A = null;
-				foreach (_ in current ) {
+				foreach (dynamic _ in current ) {
 					A = undefined;
-					if ( !( A instanceof BaseStatic ) != null ) {
+					if ( !( A is BaseStatic ) != null ) {
 						continue;
 					}
 					if ( A.opacity != null ) {
@@ -1608,28 +1609,28 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static dynamic	cancel_progress_bar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( user && user.client && progbar != null ) {
+		public static dynamic cancel_progress_bar( dynamic user = null, dynamic progbar = null ) {
+			if ( user != null && user.client != null && progbar != null ) {
 				user.client.images -= progbar;
 			}
 		}
 
-		public static int	CanHug( UNKNOWN [object Object] =null ) {
-			dynamic	C = null;
-			if ( !( M instanceof Mob_Living ) != null ) {
+		public static int CanHug( dynamic M = null ) {
+			dynamic C = null;
+			if ( !( M is Mob_Living ) != null ) {
 				return 0;
 			}
-			if ( M.stat == 2 != null ) {
+			if ( M.stat == 2 ) {
 				return 0;
 			}
 			if ( M.getorgan( Ent_Item_Organ_Internal_Alien_Hivenode ) != null ) {
 				return 0;
 			}
-			if ( M instanceof Mob_Living_SimpleAnimal_Pet_Dog_Corgi || M instanceof Mob_Living_Carbon_Monkey != null ) {
+			if ( M is Mob_Living_SimpleAnimal_Pet_Dog_Corgi != null || M is Mob_Living_Carbon_Monkey != null ) {
 				return 1;
 			}
 			C = M;
-			if ( C instanceof Mob_Living_Carbon_Human != null ) {
+			if ( C is Mob_Living_Carbon_Human != null ) {
 				H = C;
 				if ( H.is_mouth_covered.lcall( new ByTable().set( "head_only", 1 ) ) != null ) {
 					return 0;
@@ -1639,15 +1640,15 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	capitalize( UNKNOWN [object Object] =null ) {
+		public static dynamic capitalize( dynamic t = null ) {
 			return GlobalVars.undefined( GlobalVars.undefined( t, 1, 2 ) ) + GlobalVars.undefined( t, 2, null );
 		}
 
-		public static ByTable	cardinalrange( UNKNOWN [object Object] =null ) {
-			ByTable	things = null;
+		public static ByTable cardinalrange( dynamic center = null ) {
+			ByTable things = null;
 			things = new ByTable();
 			direction = null;
-			foreach (_ in GlobalVars.cardinal ) {
+			foreach (dynamic _ in GlobalVars.cardinal ) {
 				direction = undefined;
 				T = GlobalVars.undefined( center, direction );
 				if ( !T != null ) {
@@ -1658,40 +1659,40 @@ namespace Som13 {
 			return things;
 		}
 
-		public static UNKNOWN	Ceiling( UNKNOWN [object Object] =null ) {
+		public static UNKNOWN Ceiling( dynamic x = null ) {
 			return -GlobalVars.undefined.round( -x );
 		}
 
-		public static dynamic	Centcomm_announce( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	msg = null;
+		public static dynamic Centcomm_announce( dynamic text = null, dynamic Sender = null ) {
+			dynamic msg = null;
 			msg = GlobalVars.undefined( GlobalFuncs.sanitize( text ), 1, 1024 );
 			msg = GlobalVars.undefined( "<span class='adminnotice'><b><font color=orange>CENTCOM:</font>" ).item( GlobalFuncs.key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" );
 			GlobalVars.admins.write( msg );
 		}
 
-		public static dynamic	center_image( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	x_offset = null;
-			if ( x_dimension == null != null ) {
+		public static dynamic center_image( dynamic I = null, int x_dimension = 0, int y_dimension = 0 ) {
+			dynamic x_offset = null;
+			if ( x_dimension == null ) {
 				x_dimension = 0;
 			}
-			if ( y_dimension == null != null ) {
+			if ( y_dimension == null ) {
 				y_dimension = 0;
 			}
 			if ( !I != null ) {
 				return;
 			}
-			if ( !x_dimension || !y_dimension != null ) {
+			if ( !x_dimension != null || !y_dimension != null ) {
 				return;
 			}
-			if ( x_dimension == Game.icon_size && y_dimension == Game.icon_size != null ) {
+			if ( x_dimension == Game.icon_size && y_dimension == Game.icon_size ) {
 				return I;
 			}
 			x_offset = -( x_dimension / Game.icon_size - 1 ) * Game.icon_size * 0.5;
 			y_offset = -( y_dimension / Game.icon_size - 1 ) * Game.icon_size * 0.5;
-			if ( x_dimension < Game.icon_size != null ) {
+			if ( x_dimension < Game.icon_size ) {
 				x_offset *= -1;
 			}
-			if ( y_dimension < Game.icon_size != null ) {
+			if ( y_dimension < Game.icon_size ) {
 				y_offset *= -1;
 			}
 			I.pixel_x = x_offset;
@@ -1699,8 +1700,8 @@ namespace Som13 {
 			return I;
 		}
 
-		public static dynamic	changeling_transform( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	chosen_dna = null;
+		public static dynamic changeling_transform( dynamic user = null, dynamic chosen_prof = null ) {
+			dynamic chosen_dna = null;
 			chosen_dna = chosen_prof.dna;
 			user.real_name = chosen_prof.name;
 			user.underwear = chosen_prof.underwear;
@@ -1711,48 +1712,48 @@ namespace Som13 {
 			user.update_body();
 			user.$domutcheck();
 			slot = null;
-			foreach (_ in GlobalVars.slots ) {
+			foreach (dynamic _ in GlobalVars.slots ) {
 				slot = undefined;
-				if ( user.vars[slot] instanceof GlobalVars.slot2type[slot] && !chosen_prof.exists_list[slot] != null ) {
-					GlobalFuncs.qdel( user.vars[slot] );
+				if ( user.vars.[object Object] is GlobalVars.slot2type.[object Object] != null && !chosen_prof.exists_list.[object Object] != null ) {
+					GlobalFuncs.qdel( user.vars.[object Object] );
 					continue;
 				}
-				if ( user.vars[slot] && !( user.vars[slot] instanceof GlobalVars.slot2type[slot] ) || !chosen_prof.exists_list[slot] != null ) {
+				if ( user.vars.[object Object] != null && !( user.vars.[object Object] is GlobalVars.slot2type.[object Object] ) != null || !chosen_prof.exists_list.[object Object] != null ) {
 					continue;
 				}
 				C = null;
 				equip = 0;
-				if ( !user.vars[slot] != null ) {
-					thetype = GlobalVars.slot2type[slot];
+				if ( !user.vars.[object Object] != null ) {
+					thetype = GlobalVars.slot2type.[object Object];
 					equip = 1;
 					C = thetype( user );
-				} else if ( user.vars[slot] instanceof GlobalVars.slot2type[slot] != null ) {
-					C = user.vars[slot];
+				} else if ( user.vars.[object Object] is GlobalVars.slot2type.[object Object] != null ) {
+					C = user.vars.[object Object];
 				}
-				C.appearance = chosen_prof.appearance_list[slot];
-				C.name = chosen_prof.name_list[slot];
-				C.flags_cover = chosen_prof.flags_cover_list[slot];
-				C.item_color = chosen_prof.item_color_list[slot];
-				C.item_state = chosen_prof.item_state_list[slot];
+				C.appearance = chosen_prof.appearance_list.[object Object];
+				C.name = chosen_prof.name_list.[object Object];
+				C.flags_cover = chosen_prof.flags_cover_list.[object Object];
+				C.item_color = chosen_prof.item_color_list.[object Object];
+				C.item_state = chosen_prof.item_state_list.[object Object];
 				if ( equip != null ) {
-					user.equip_to_slot_or_del( C, GlobalVars.slot2slot[slot] );
+					user.equip_to_slot_or_del( C, GlobalVars.slot2slot.[object Object] );
 				}
 			};
 			user.regenerate_icons();
 		}
 
-		public static dynamic	changemap( UNKNOWN [object Object] =null ) {
-			UNKNOWN	file = null;
-			UNKNOWN _default;
+		public static dynamic changemap( dynamic VM = null ) {
+			dynamic file = null;
+			null _default;
 			return;
-			if ( !( VM instanceof Votablemap ) != null ) {
+			if ( !( VM is Votablemap ) != null ) {
 				return;
 			}
 			GlobalFuncs.log_game( "Changing map to " + VM.name + "(" + VM.friendlyname + ")" );
 			file = File( "setnewmap.bat" );
 			file.write( "\nset MAPROTATE=" + VM.name + "\n" );
-			undefined = GlobalVars.undefined( "..\\bin\\maprotate.bat" );
-			local _ = undefined // Was a switch-case, sorry for the mess.
+			_default = GlobalVars.undefined( "..\\bin\\maprotate.bat" );
+			local _ = _default // Was a switch-case, sorry for the mess.
 			if ( _==null ) {
 				GlobalFuncs.message_admins( "Failed to change map: Could not run map rotator" );
 				GlobalFuncs.log_game( "Failed to change map: Could not run map rotator" );
@@ -1775,20 +1776,20 @@ namespace Som13 {
 				GlobalFuncs.message_admins( "Failed to change map: External error: Could not compile new map:" + VM.name );
 				GlobalFuncs.log_game( "Failed to change map: External error: Could not compile new map:" + VM.name );
 			} else {
-				GlobalFuncs.message_admins( "Failed to change map: Unknown error: Error code #" + undefined );
-				GlobalFuncs.log_game( "Failed to change map: Unknown error: Error code #" + undefined );
+				GlobalFuncs.message_admins( "Failed to change map: Unknown error: Error code #" + _default );
+				GlobalFuncs.log_game( "Failed to change map: Unknown error: Error code #" + _default );
 			};
 			return _default;
 		}
 
-		public static UNKNOWN	cheap_hypotenuse( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cheap_hypotenuse( dynamic Ax = null, dynamic Ay = null, dynamic Bx = null, dynamic By = null ) {
 			return GlobalVars.undefined.sqrt( GlobalVars.undefined( GlobalVars.undefined.abs( Ax - Bx ), 2 ) + GlobalVars.undefined( GlobalVars.undefined.abs( Ay - By ), 2 ) );
 		}
 
-		public static UNKNOWN	check_if_greater_rights_than( UNKNOWN [object Object] =null ) {
-			if ( GlobalVars.undefined.user && GlobalVars.undefined.user.client != null ) {
+		public static int check_if_greater_rights_than( dynamic other = null ) {
+			if ( GlobalVars.undefined.user != null && GlobalVars.undefined.user.client != null ) {
 				if ( GlobalVars.undefined.user.client.holder != null ) {
-					if ( !other || !other.holder != null ) {
+					if ( !other != null || !other.holder != null ) {
 						return 1;
 					}
 					return GlobalVars.undefined.user.client.holder.check_if_greater_rights_than_holder( other.holder );
@@ -1797,23 +1798,23 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	check_rights( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( show_msg == null != null ) {
+		public static int check_rights( dynamic rights_required = null, int show_msg = 0 ) {
+			if ( show_msg == null ) {
 				show_msg = 1;
 			}
-			if ( GlobalVars.undefined.user && GlobalVars.undefined.user.client != null ) {
+			if ( GlobalVars.undefined.user != null && GlobalVars.undefined.user.client != null ) {
 				if ( GlobalFuncs.check_rights_for( GlobalVars.undefined.user.client, rights_required ) != null ) {
 					return 1;
-				} else if ( show_msg != null ) {
+				} else if ( show_msg != 0 ) {
 					GlobalVars.undefined.user.write( "<font color='red'>Error: You do not have sufficient rights to do that. You require one of the following flags:" + GlobalFuncs.rights2text( rights_required, " " ) + ".</font>" );
 				}
 			}
 			return 0;
 		}
 
-		public static int	check_rights_for( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( subject && subject.holder && subject.holder.rank != null ) {
-				if ( rights_required && !( rights_required & subject.holder.rank.rights ) != null ) {
+		public static int check_rights_for( dynamic subject = null, dynamic rights_required = null ) {
+			if ( subject != null && subject.holder != null && subject.holder.rank != null ) {
+				if ( rights_required != null && !( rights_required & subject.holder.rank.rights ) != null ) {
 					return 0;
 				}
 				return 1;
@@ -1821,8 +1822,8 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	check_tank_exists( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( !parent_tank || !( parent_tank instanceof Ent_Item_Weapon_Watertank ) != null ) {
+		public static int check_tank_exists( dynamic parent_tank = null, dynamic M = null, dynamic O = null ) {
+			if ( !parent_tank != null || !( parent_tank is Ent_Item_Weapon_Watertank ) != null ) {
 				M.unEquip( O );
 				GlobalFuncs.qdel( 0 );
 				return 0;
@@ -1831,7 +1832,7 @@ namespace Som13 {
 			}
 		}
 
-		public static string	check_zone( UNKNOWN [object Object] =null ) {
+		public static string check_zone( dynamic zone = null ) {
 			if ( !zone != null ) {
 				return "chest";
 			}
@@ -1854,17 +1855,17 @@ namespace Som13 {
 			return zone;
 		}
 
-		public static dynamic	chemscan( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	H = null;
-			if ( M instanceof Mob_Living_Carbon_Human != null ) {
+		public static dynamic chemscan( dynamic user = null, dynamic M = null ) {
+			dynamic H = null;
+			if ( M is Mob_Living_Carbon_Human != null ) {
 				H = M;
 				if ( H.reagents != null ) {
 					if ( H.reagents.reagent_list.len != null ) {
 						user.write( "<span class='notice'>Subject contains the following reagents:</span>" );
 						R = null;
-						foreach (_ in H.reagents.reagent_list ) {
+						foreach (dynamic _ in H.reagents.reagent_list ) {
 							R = undefined;
-							if ( !( R instanceof Reagent ) != null ) {
+							if ( !( R is Reagent ) != null ) {
 								continue;
 							}
 							user.write( "<span class='notice'>" + R.volume + " units of " + R.name + ( R.overdosed == 1 ? "</span> - <span class='boldannounce'>OVERDOSING</span>" : ".</span>" ) );
@@ -1875,9 +1876,9 @@ namespace Som13 {
 					if ( H.reagents.addiction_list.len != null ) {
 						user.write( "<span class='boldannounce'>Subject is addicted to the following reagents:</span>" );
 						R = null;
-						foreach (_ in H.reagents.addiction_list ) {
+						foreach (dynamic _ in H.reagents.addiction_list ) {
 							R = undefined;
-							if ( !( R instanceof Reagent ) != null ) {
+							if ( !( R is Reagent ) != null ) {
 								continue;
 							}
 							user.write( "<span class='danger'>" + R.name + "</span>" );
@@ -1889,77 +1890,77 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	circlerange( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	centerturf = null;
-			if ( center == null != null ) {
+		public static dynamic circlerange( dynamic center = null, int radius = 0 ) {
+			dynamic centerturf = null;
+			if ( center == null ) {
 				center = GlobalVars.undefined.user;
 			}
-			if ( radius == null != null ) {
+			if ( radius == null ) {
 				radius = 3;
 			}
 			centerturf = GlobalFuncs.get_turf( center );
 			turfs = new List();
 			rsq = radius * ( radius + 0.5 );
 			T = null;
-			foreach (_ in GlobalVars.undefined( radius, centerturf ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( radius, centerturf ) ) {
 				T = undefined;
-				if ( !( T instanceof BaseStatic ) != null ) {
+				if ( !( T is BaseStatic ) != null ) {
 					continue;
 				}
 				dx = T.x - centerturf.x;
 				dy = T.y - centerturf.y;
-				if ( dx * dx + dy * dy <= rsq != null ) {
+				if ( dx * dx + dy * dy <= rsq ) {
 					turfs += T;
 				}
 			};
 			return turfs;
 		}
 
-		public static UNKNOWN	circlerangeturfs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	centerturf = null;
-			if ( center == null != null ) {
+		public static dynamic circlerangeturfs( dynamic center = null, int radius = 0 ) {
+			dynamic centerturf = null;
+			if ( center == null ) {
 				center = GlobalVars.undefined.user;
 			}
-			if ( radius == null != null ) {
+			if ( radius == null ) {
 				radius = 3;
 			}
 			centerturf = GlobalFuncs.get_turf( center );
 			turfs = new List();
 			rsq = radius * ( radius + 0.5 );
 			T = null;
-			foreach (_ in GlobalVars.undefined( radius, centerturf ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( radius, centerturf ) ) {
 				T = undefined;
 				dx = T.x - centerturf.x;
 				dy = T.y - centerturf.y;
-				if ( dx * dx + dy * dy <= rsq != null ) {
+				if ( dx * dx + dy * dy <= rsq ) {
 					turfs += T;
 				}
 			};
 			return turfs;
 		}
 
-		public static UNKNOWN	Clamp( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic Clamp( dynamic val = null, dynamic min = null, dynamic max = null ) {
 			return GlobalVars.undefined.max( min, GlobalVars.undefined.min( val, max ) );
 		}
 
-		public static dynamic	clearlist( UNKNOWN [object Object] =null ) {
-			if ( list instanceof new List != null ) {
+		public static dynamic clearlist( dynamic list = null ) {
+			if ( list is new List != null ) {
 				list.len = 0;
 			}
 			return;
 		}
 
-		public static dynamic	closeToolTip( UNKNOWN [object Object] =null ) {
-			if ( user instanceof Mob != null ) {
-				if ( user.client && user.client.tooltips != null ) {
+		public static dynamic closeToolTip( dynamic user = null ) {
+			if ( user is Mob != null ) {
+				if ( user.client != null && user.client.tooltips != null ) {
 					user.client.tooltips.f_hide();
 				}
 			}
 		}
 
-		public static dynamic	cmd_admin_mute( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			string	muteunmute = null;
-			if ( automute == null != null ) {
+		public static dynamic cmd_admin_mute( dynamic whom = null, dynamic mute_type = null, int automute = 0 ) {
+			string muteunmute = null;
+			if ( automute == null ) {
 				automute = 0;
 			}
 			if ( !whom != null ) {
@@ -1982,10 +1983,10 @@ namespace Som13 {
 				return;
 			};
 			C = null;
-			if ( whom instanceof BAD_GOOFY_EXPANSION??? != null ) {
+			if ( whom is BAD_GOOFY_EXPANSION??? != null ) {
 				C = whom;
 			} else if ( GlobalVars.undefined( whom ) != null ) {
-				C = GlobalVars.directory[whom];
+				C = GlobalVars.directory.[object Object];
 			} else {
 				return;
 			}
@@ -1993,19 +1994,19 @@ namespace Som13 {
 			if ( C != null ) {
 				P = C.prefs;
 			} else {
-				P = GlobalVars.preferences_datums[whom];
+				P = GlobalVars.preferences_datums.[object Object];
 			}
 			if ( !P != null ) {
 				return;
 			}
-			if ( automute != null ) {
+			if ( automute != 0 ) {
 				if ( !GlobalVars.config.automute_on != null ) {
 					return;
 				}
 			} else if ( !GlobalFuncs.check_rights() != null ) {
 				return;
 			}
-			if ( automute != null ) {
+			if ( automute != 0 ) {
 				muteunmute = "auto-muted";
 				P.muted = P.muted | mute_type;
 				GlobalFuncs.log_admin( "SPAM AUTOMUTE: " + muteunmute + " " + GlobalFuncs.key_name( whom ) + " from " + mute_string );
@@ -2031,51 +2032,51 @@ namespace Som13 {
 			GlobalFuncs.feedback_add_details( "admin_verb", "MUTE" );
 		}
 
-		public static UNKNOWN	cmp_abilities_cost( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_abilities_cost( dynamic a = null, dynamic b = null ) {
 			return b.plasma_cost - a.plasma_cost;
 		}
 
-		public static UNKNOWN	cmp_ckey_asc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_ckey_asc( dynamic a = null, dynamic b = null ) {
 			return GlobalVars.undefined( b.ckey, a.ckey );
 		}
 
-		public static UNKNOWN	cmp_ckey_dsc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_ckey_dsc( dynamic a = null, dynamic b = null ) {
 			return GlobalVars.undefined( a.ckey, b.ckey );
 		}
 
-		public static UNKNOWN	cmp_name_asc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_name_asc( dynamic a = null, dynamic b = null ) {
 			return GlobalVars.undefined( b.name, a.name );
 		}
 
-		public static UNKNOWN	cmp_name_dsc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_name_dsc( dynamic a = null, dynamic b = null ) {
 			return GlobalVars.undefined( a.name, b.name );
 		}
 
-		public static UNKNOWN	cmp_numeric_asc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_numeric_asc( dynamic a = null, dynamic b = null ) {
 			return a - b;
 		}
 
-		public static UNKNOWN	cmp_records_asc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			return GlobalVars.undefined( b.fields[GlobalVars.cmp_field], a.fields[GlobalVars.cmp_field] );
+		public static dynamic cmp_records_asc( dynamic a = null, dynamic b = null ) {
+			return GlobalVars.undefined( b.fields.[object Object], a.fields.[object Object] );
 		}
 
-		public static UNKNOWN	cmp_records_dsc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			return GlobalVars.undefined( a.fields[GlobalVars.cmp_field], b.fields[GlobalVars.cmp_field] );
+		public static dynamic cmp_records_dsc( dynamic a = null, dynamic b = null ) {
+			return GlobalVars.undefined( a.fields.[object Object], b.fields.[object Object] );
 		}
 
-		public static UNKNOWN	cmp_rped_sort( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_rped_sort( dynamic A = null, dynamic B = null ) {
 			return B.rating - A.rating;
 		}
 
-		public static UNKNOWN	cmp_subsystem_priority( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_subsystem_priority( dynamic a = null, dynamic b = null ) {
 			return b.priority - a.priority;
 		}
 
-		public static UNKNOWN	cmp_text_asc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic cmp_text_asc( dynamic a = null, dynamic b = null ) {
 			return GlobalVars.undefined( b, a );
 		}
 
-		public static string	color2hex( UNKNOWN [object Object] =null ) {
+		public static string color2hex( dynamic color = null ) {
 			if ( !color != null ) {
 				return "#000000";
 			}
@@ -2121,21 +2122,21 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	construct_block( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	width = null;
-			if ( blocksize == null != null ) {
+		public static dynamic construct_block( int value = 0, dynamic values = null, int blocksize = 0 ) {
+			dynamic width = null;
+			if ( blocksize == null ) {
 				blocksize = 3;
 			}
 			width = GlobalVars.undefined.round( GlobalVars.undefined( 16, blocksize ) / values );
-			if ( value < 1 != null ) {
+			if ( value < 1 ) {
 				value = 1;
 			}
 			value = value * width - Rand.Int( 1, width );
 			return GlobalFuncs.num2hex( value, blocksize );
 		}
 
-		public static dynamic	convert_notes_sql( UNKNOWN [object Object] =null ) {
-			UNKNOWN	notesfile = null;
+		public static dynamic convert_notes_sql( dynamic ckey = null ) {
+			dynamic notesfile = null;
 			notesfile = SaveFile( "data/player_notes.sav" );
 			if ( !notesfile != null ) {
 				GlobalFuncs.log_game( "Error: Cannot access " + "data/player_notes.sav" );
@@ -2146,7 +2147,7 @@ namespace Som13 {
 				notetext = null;
 				notetext = notesfile.read();
 				server = null;
-				if ( GlobalVars.config && GlobalVars.config.server_name != null ) {
+				if ( GlobalVars.config != null && GlobalVars.config.server_name != null ) {
 					server = GlobalVars.config.server_name;
 				}
 				regex = "^(\\d{2}-\\w{3}-\\d{4}) \\| (.+) ~(\\w+)$";
@@ -2161,9 +2162,9 @@ namespace Som13 {
 					return;
 				}
 				if ( query_convert_time.NextRow() != null ) {
-					timestamp = query_convert_time.item[1];
+					timestamp = query_convert_time.item.1;
 				}
-				if ( ckey && notetext && timestamp && adminckey && server != null ) {
+				if ( ckey != null && notetext != null && timestamp != null && adminckey != null && server != null ) {
 					GlobalFuncs.add_note( ckey, notetext, timestamp, adminckey, 0, server );
 				}
 			};
@@ -2171,21 +2172,21 @@ namespace Som13 {
 			notesfile.dir.Remove( ckey );
 		}
 
-		public static int	count_by_type( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
+		public static int count_by_type( dynamic L = null, dynamic type = null ) {
+			int i = 0;
 			i = 0;
 			T = null;
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				T = undefined;
-				if ( T instanceof type != null ) {
+				if ( T is type != null ) {
 					i++;
 				}
 			};
 			return i;
 		}
 
-		public static Mind	create_ninja_mind( UNKNOWN [object Object] =null ) {
-			Mind	Mind = null;
+		public static Mind create_ninja_mind( dynamic key = null ) {
+			Mind Mind = null;
 			Mind = new Mind( key );
 			Mind.assigned_role = "Space Ninja";
 			Mind.special_role = "Space Ninja";
@@ -2193,8 +2194,8 @@ namespace Som13 {
 			return Mind;
 		}
 
-		public static Mob_Living_Carbon_Human	create_space_ninja( UNKNOWN [object Object] =null ) {
-			Mob_Living_Carbon_Human	new_ninja = null;
+		public static Mob_Living_Carbon_Human create_space_ninja( dynamic spawn_loc = null ) {
+			Mob_Living_Carbon_Human new_ninja = null;
 			new_ninja = new Mob_Living_Carbon_Human( spawn_loc );
 			A = new Preferences();
 			A.real_name = "" + Rand.pick( GlobalVars.ninja_titles ) + " " + Rand.pick( GlobalVars.ninja_names );
@@ -2204,14 +2205,14 @@ namespace Som13 {
 			return new_ninja;
 		}
 
-		public static int	create_xeno( UNKNOWN [object Object] =null ) {
-			ByTable	candidates = null;
+		public static int create_xeno( dynamic ckey = null ) {
+			ByTable candidates = null;
 			if ( !ckey != null ) {
 				candidates = new ByTable();
 				M = null;
-				foreach (_ in GlobalVars.player_list ) {
+				foreach (dynamic _ in GlobalVars.player_list ) {
 					M = undefined;
-					if ( M.stat != 2 != null ) {
+					if ( M.stat != 2 ) {
 						continue;
 					}
 					if ( !M.client.prefs.be_special & 64 != null ) {
@@ -2220,7 +2221,7 @@ namespace Som13 {
 					if ( M.client.is_afk() != null ) {
 						continue;
 					}
-					if ( M.mind && M.mind.current && M.mind.current.stat != 2 != null ) {
+					if ( M.mind != null && M.mind.current != null && M.mind.current.stat != 2 ) {
 						continue;
 					}
 					candidates += M.ckey;
@@ -2258,8 +2259,8 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static dynamic	createRandomZlevel(  ) {
-			ByTable	potentialRandomZlevels = null;
+		public static dynamic createRandomZlevel(  ) {
+			ByTable potentialRandomZlevels = null;
 			if ( GlobalVars.awaydestinations.len != null ) {
 				return;
 			}
@@ -2270,15 +2271,15 @@ namespace Som13 {
 				return;
 			}
 			t = null;
-			foreach (_ in Lines ) {
+			foreach (dynamic _ in Lines ) {
 				t = undefined;
 				if ( !t != null ) {
 					continue;
 				}
 				t = GlobalFuncs.trim( t );
-				if ( GlobalVars.undefined( t ) == 0 != null ) {
+				if ( GlobalVars.undefined( t ) == 0 ) {
 					continue;
-				} else if ( GlobalVars.undefined( t, 1, 2 ) == "#" != null ) {
+				} else if ( GlobalVars.undefined( t, 1, 2 ) == "#" ) {
 					continue;
 				}
 				pos = GlobalVars.undefined( t, " ", 1, null );
@@ -2303,12 +2304,12 @@ namespace Som13 {
 				}
 				GlobalVars.map_transition_config.Add( new ByTable().set( "Away Mission", 0 ) );
 				L = null;
-				foreach (_ in GlobalVars.landmarks_list ) {
+				foreach (dynamic _ in GlobalVars.landmarks_list ) {
 					L = undefined;
-					if ( !( L instanceof Ent_Effect_Landmark ) != null ) {
+					if ( !( L is Ent_Effect_Landmark ) != null ) {
 						continue;
 					}
-					if ( L.name != "awaystart" != null ) {
+					if ( L.name != "awaystart" ) {
 						continue;
 					}
 					GlobalVars.awaydestinations.Add( L );
@@ -2320,18 +2321,18 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	cultist_commune( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	M = null;
-			if ( clear == null != null ) {
+		public static dynamic cultist_commune( dynamic user = null, int clear = 0, int say = 0, dynamic message = null ) {
+			dynamic M = null;
+			if ( clear == null ) {
 				clear = 0;
 			}
-			if ( say == null != null ) {
+			if ( say == null ) {
 				say = 0;
 			}
 			if ( !message != null ) {
 				return;
 			}
-			if ( say != null ) {
+			if ( say != 0 ) {
 				user.say( "O bidai nabora se" + Rand.pick(new object [] { "'", "`" }) + "sma!" );
 			} else {
 				GlobalVars.undefined( user, "Whisper" )( "O bidai nabora se" + Rand.pick(new object [] { "'", "`" }) + "sma!" );
@@ -2340,17 +2341,17 @@ namespace Som13 {
 			if ( !user != null ) {
 				return;
 			}
-			if ( say != null ) {
+			if ( say != 0 ) {
 				user.say( message );
 			} else {
 				GlobalVars.undefined( user, "Whisper" )( message );
 			}
 			M = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				M = undefined;
-				if ( GlobalFuncs.iscultist( M ) || M in GlobalVars.dead_mob_list != null ) {
-					if ( clear || !( user instanceof Mob_Living_Carbon_Human ) != null ) {
-						M.write( "<span class='boldannounce'><i>" + ( user instanceof Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</i> " + message + "</span>" );
+				if ( GlobalFuncs.iscultist( M ) != null || M in GlobalVars.dead_mob_list != null ) {
+					if ( clear != 0 || !( user is Mob_Living_Carbon_Human ) != null ) {
+						M.write( "<span class='boldannounce'><i>" + ( user is Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</i> " + message + "</span>" );
 					} else {
 						M.write( "<span class='ghostalert'><i>Acolyte ???:</i> " + message + "</span>" );
 					}
@@ -2359,15 +2360,15 @@ namespace Som13 {
 			GlobalFuncs.log_say( "" + user.real_name + "/" + user.key + " : " + message );
 		}
 
-		public static UNKNOWN	dd_hasprefix_case( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	start = null;
+		public static dynamic dd_hasprefix_case( dynamic text = null, dynamic prefix = null ) {
+			int start = 0;
 			start = 1;
 			end = GlobalVars.undefined( prefix ) + 1;
 			return GlobalVars.undefined( text, prefix, start, end );
 		}
 
-		public static UNKNOWN	dd_hassuffix( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	start = null;
+		public static dynamic dd_hassuffix( dynamic text = null, dynamic suffix = null ) {
+			dynamic start = null;
 			start = GlobalVars.undefined( text ) - GlobalVars.undefined( suffix );
 			if ( start != null ) {
 				return GlobalVars.undefined( text, suffix, start, null );
@@ -2375,41 +2376,41 @@ namespace Som13 {
 			return;
 		}
 
-		public static UNKNOWN	dd_limittext( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	size = null;
+		public static dynamic dd_limittext( dynamic message = null, dynamic length = null ) {
+			dynamic size = null;
 			size = GlobalVars.undefined( message );
-			if ( size <= length != null ) {
+			if ( size <= length ) {
 				return message;
 			}
 			return GlobalVars.undefined( message, 1, length + 1 );
 		}
 
-		public static UNKNOWN	dd_range( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic dd_range( dynamic low = null, dynamic high = null, dynamic num = null ) {
 			return GlobalVars.undefined.max( low, GlobalVars.undefined.min( high, num ) );
 		}
 
-		public static UNKNOWN	deconstruct_block( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	width = null;
-			if ( blocksize == null != null ) {
+		public static dynamic deconstruct_block( dynamic value = null, dynamic values = null, int blocksize = 0 ) {
+			dynamic width = null;
+			if ( blocksize == null ) {
 				blocksize = 3;
 			}
 			width = GlobalVars.undefined.round( GlobalVars.undefined( 16, blocksize ) / values );
 			value = GlobalVars.undefined.round( GlobalFuncs.hex2num( value ) / width ) + 1;
-			if ( value > values != null ) {
+			if ( value > values ) {
 				value = values;
 			}
 			return value;
 		}
 
-		public static int	deltimer( UNKNOWN [object Object] =null ) {
-			dynamic	_event = null;
+		public static int deltimer( dynamic id = null ) {
+			dynamic _event = null;
 			_event = null;
-			foreach (_ in GlobalVars.SStimer.processing ) {
+			foreach (dynamic _ in GlobalVars.SStimer.processing ) {
 				_event = undefined;
-				if ( !( _event instanceof Timedevent ) != null ) {
+				if ( !( _event is Timedevent ) != null ) {
 					continue;
 				}
-				if ( _event.id == id != null ) {
+				if ( _event.id == id ) {
 					GlobalFuncs.qdel( _event );
 					return 1;
 				}
@@ -2417,7 +2418,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	derpspeech( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic derpspeech( dynamic message = null, dynamic stuttering = null ) {
 			message = GlobalFuncs.replacetext( message, " am ", " " );
 			message = GlobalFuncs.replacetext( message, " is ", " " );
 			message = GlobalFuncs.replacetext( message, " are ", " " );
@@ -2431,13 +2432,13 @@ namespace Som13 {
 				message = GlobalVars.undefined( message );
 				message += "" + GlobalFuncs.stutter( Rand.pick(new object [] { "!", "!!", "!!!" }) );
 			}
-			if ( !stuttering && Rand.chance( 15 ) != null ) {
+			if ( !stuttering != null && Rand.chance( 15 ) != null ) {
 				message = GlobalFuncs.stutter( message );
 			}
 			return message;
 		}
 
-		public static UNKNOWN	dir2angle( UNKNOWN [object Object] =null ) {
+		public static dynamic dir2angle( dynamic D = null ) {
 			local _ = D // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				return 0;
@@ -2460,7 +2461,7 @@ namespace Som13 {
 			};
 		}
 
-		public static string	dir2text( UNKNOWN [object Object] =null ) {
+		public static dynamic dir2text( dynamic direction = null ) {
 			local _ = direction // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				return "north";
@@ -2482,7 +2483,7 @@ namespace Som13 {
 			return;
 		}
 
-		public static string	dir2text_short( UNKNOWN [object Object] =null ) {
+		public static dynamic dir2text_short( dynamic direction = null ) {
 			local _ = direction // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				return "N";
@@ -2504,28 +2505,28 @@ namespace Som13 {
 			return;
 		}
 
-		public static int	DirBlockedWithAccess( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	D = null;
+		public static int DirBlockedWithAccess( dynamic T = null, dynamic dir = null, dynamic ID = null ) {
+			dynamic D = null;
 			D = null;
-			foreach (_ in T ) {
+			foreach (dynamic _ in T ) {
 				D = undefined;
-				if ( !( D instanceof Ent_Structure_Window ) != null ) {
+				if ( !( D is Ent_Structure_Window ) != null ) {
 					continue;
 				}
 				if ( !D.density != null ) {
 					continue;
 				}
-				if ( D.dir == GlobalVars.SOUTHWEST != null ) {
+				if ( D.dir == GlobalVars.SOUTHWEST ) {
 					return 1;
 				}
-				if ( D.dir == dir != null ) {
+				if ( D.dir == dir ) {
 					return 1;
 				}
 			};
 			D = null;
-			foreach (_ in T ) {
+			foreach (dynamic _ in T ) {
 				D = undefined;
-				if ( !( D instanceof Ent_Machinery_Door ) != null ) {
+				if ( !( D is Ent_Machinery_Door ) != null ) {
 					continue;
 				}
 				if ( !D.CanAStarPass( ID, dir ) != null ) {
@@ -2535,24 +2536,24 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static dynamic	display_roundstart_logout_report(  ) {
-			string	msg = null;
+		public static dynamic display_roundstart_logout_report(  ) {
+			string msg = null;
 			msg = "<span class='boldnotice'>Roundstart logout report\n\n</span>";
 			L = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				L = undefined;
-				if ( !( L instanceof Mob_Living ) != null ) {
+				if ( !( L is Mob_Living ) != null ) {
 					continue;
 				}
 				if ( L.ckey != null ) {
 					found = 0;
 					C = null;
-					foreach (_ in GlobalVars.clients ) {
+					foreach (dynamic _ in GlobalVars.clients ) {
 						C = undefined;
-						if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+						if ( !( C is BAD_GOOFY_EXPANSION??? ) != null ) {
 							continue;
 						}
-						if ( C.ckey == L.ckey != null ) {
+						if ( C.ckey == L.ckey ) {
 							found = 1;
 							break;
 						}
@@ -2561,8 +2562,8 @@ namespace Som13 {
 						msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<font color='#ffcc00'><b>Disconnected</b></font>)\n";
 					}
 				}
-				if ( L.ckey && L.client != null ) {
-					if ( L.client.inactivity >= 3000 != null ) {
+				if ( L.ckey != null && L.client != null ) {
+					if ( L.client.inactivity >= 3000 ) {
 						msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<font color='#ffcc00'><b>Connected, Inactive</b></font>)\n";
 						continue;
 					}
@@ -2571,11 +2572,11 @@ namespace Som13 {
 							msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (<span class='boldannounce'>Suicide</span>)\n";
 							continue;
 						}
-						if ( L.stat == 1 != null ) {
+						if ( L.stat == 1 ) {
 							msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (Dying)\n";
 							continue;
 						}
-						if ( L.stat == 2 != null ) {
+						if ( L.stat == 2 ) {
 							msg += "<b>" + L.name + "</b> (" + L.ckey + "), the " + L.job + " (Dead)\n";
 							continue;
 						}
@@ -2583,13 +2584,13 @@ namespace Som13 {
 					continue;
 				}
 				D = null;
-				foreach (_ in GlobalVars.mob_list ) {
+				foreach (dynamic _ in GlobalVars.mob_list ) {
 					D = undefined;
-					if ( !( D instanceof Mob_Dead_Observer ) != null ) {
+					if ( !( D is Mob_Dead_Observer ) != null ) {
 						continue;
 					}
-					if ( D.mind && D.mind.current == L != null ) {
-						if ( L.stat == 2 != null ) {
+					if ( D.mind != null && D.mind.current == L ) {
+						if ( L.stat == 2 ) {
 							if ( L.suiciding != null ) {
 								msg += "<b>" + L.name + "</b> (" + GlobalVars.undefined( D.mind.key ) + "), the " + L.job + " (<span class='boldannounce'>Suicide</span>)\n";
 								continue;
@@ -2608,32 +2609,32 @@ namespace Som13 {
 				};
 			};
 			M = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				M = undefined;
-				if ( M.client && M.client.holder != null ) {
+				if ( M.client != null && M.client.holder != null ) {
 					M.write( msg );
 				}
 			};
 		}
 
-		public static int	do_after( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	Tloc = null;
-			if ( numticks == null != null ) {
+		public static int do_after( dynamic user = null, dynamic delay = null, int numticks = 0, int needhand = 0, dynamic target = null, int progress = 0 ) {
+			dynamic Tloc = null;
+			if ( numticks == null ) {
 				numticks = 5;
 			}
-			if ( needhand == null != null ) {
+			if ( needhand == null ) {
 				needhand = 1;
 			}
-			if ( target == null != null ) {
+			if ( target == null ) {
 				target = null;
 			}
-			if ( progress == null != null ) {
+			if ( progress == null ) {
 				progress = 1;
 			}
 			if ( !user != null ) {
 				return 0;
 			}
-			if ( numticks == 0 != null ) {
+			if ( numticks == 0 ) {
 				return 0;
 			}
 			Tloc = null;
@@ -2649,26 +2650,26 @@ namespace Som13 {
 			}
 			continue_looping = 1;
 			i = null;
-			foreach (_ in GlobalVars.undefined( 1, numticks ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( 1, numticks ) ) {
 				i = undefined;
-				if ( user.client && progress != null ) {
+				if ( user.client != null && progress != 0 ) {
 					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
 					GlobalFuncs.assign_progress_bar( user, progbar );
 				}
 				GlobalVars.undefined.sleep( delayfraction );
-				if ( !user || user.stat || user.weakened || user.stunned || !( user.loc == Uloc ) != null ) {
+				if ( !user != null || user.stat != null || user.weakened != null || user.stunned != null || !( user.loc == Uloc ) != null ) {
 					continue_looping = 0;
 				}
-				if ( continue_looping && Tloc && ( !target || Tloc != target.loc ) != null ) {
+				if ( continue_looping != 0 && Tloc != null && ( !target != null || Tloc != target.loc ) ) {
 					continue_looping = 0;
 				}
-				if ( continue_looping && needhand != null ) {
+				if ( continue_looping != 0 && needhand != 0 ) {
 					if ( !holdingnull != null ) {
 						if ( !holding != null ) {
 							continue_looping = 0;
 						}
 					}
-					if ( continue_looping && user.get_active_hand() != holding != null ) {
+					if ( continue_looping != 0 && user.get_active_hand() != holding ) {
 						continue_looping = 0;
 					}
 				}
@@ -2681,24 +2682,24 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static int	do_mob( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	user_loc = null;
-			if ( time == null != null ) {
+		public static int do_mob( dynamic user = null, dynamic target = null, int time = 0, int numticks = 0, int uninterruptible = 0, int progress = 0 ) {
+			dynamic user_loc = null;
+			if ( time == null ) {
 				time = 30;
 			}
-			if ( numticks == null != null ) {
+			if ( numticks == null ) {
 				numticks = 5;
 			}
-			if ( uninterruptible == null != null ) {
+			if ( uninterruptible == null ) {
 				uninterruptible = 0;
 			}
-			if ( progress == null != null ) {
+			if ( progress == null ) {
 				progress = 1;
 			}
-			if ( !user || !target != null ) {
+			if ( !user != null || !target != null ) {
 				return 0;
 			}
-			if ( numticks == 0 != null ) {
+			if ( numticks == 0 ) {
 				return 0;
 			}
 			user_loc = user.loc;
@@ -2707,17 +2708,17 @@ namespace Som13 {
 			timefraction = GlobalVars.undefined.round( time / numticks );
 			continue_looping = 1;
 			i = null;
-			foreach (_ in GlobalVars.undefined( 1, numticks ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( 1, numticks ) ) {
 				i = undefined;
-				if ( user.client && progress != null ) {
+				if ( user.client != null && progress != 0 ) {
 					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
 					GlobalFuncs.assign_progress_bar( user, progbar );
 				}
 				GlobalVars.undefined.sleep( timefraction );
-				if ( !user || !target != null ) {
+				if ( !user != null || !target != null ) {
 					continue_looping = 0;
 				}
-				if ( continue_looping && !uninterruptible && ( user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding || user.$incapacitated() || user.lying ) != null ) {
+				if ( continue_looping != 0 && !uninterruptible != null && ( user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding || user.$incapacitated() != null || user.lying != null ) ) {
 					continue_looping = 0;
 				}
 				GlobalFuncs.cancel_progress_bar( user, progbar );
@@ -2729,25 +2730,25 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static int	do_teleport( ... ) { // Arg Names: 0: [object Object], 1: [object Object], 2: [object Object], 3: [object Object], 4: [object Object], 5: [object Object], 6: [object Object], 7: [object Object]
-			Teleport_Instant_Science	D = null;
-			if ( undefined[2] == null != null ) {
-				undefined[2] = 0;
+		public static int do_teleport( ... ) { // Arg Names: 0: [object Object], 1: [object Object], 2: [object Object], 3: [object Object], 4: [object Object], 5: [object Object], 6: [object Object], 7: [object Object]
+			Teleport_Instant_Science D = null;
+			if ( undefined.2 == null ) {
+				undefined.2 = 0;
 			}
-			if ( undefined[3] == null != null ) {
-				undefined[3] = 1;
+			if ( undefined.3 == null ) {
+				undefined.3 = 1;
 			}
-			if ( undefined[4] == null != null ) {
-				undefined[4] = null;
+			if ( undefined.4 == null ) {
+				undefined.4 = null;
 			}
-			if ( undefined[5] == null != null ) {
-				undefined[5] = null;
+			if ( undefined.5 == null ) {
+				undefined.5 = null;
 			}
-			if ( undefined[6] == null != null ) {
-				undefined[6] = null;
+			if ( undefined.6 == null ) {
+				undefined.6 = null;
 			}
-			if ( undefined[7] == null != null ) {
-				undefined[7] = null;
+			if ( undefined.7 == null ) {
+				undefined.7 = null;
 			}
 			D = new Teleport_Instant_Science();
 			if ( D.f_start.lcall( undefined ) != null ) {
@@ -2756,47 +2757,47 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	DrawPixel( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	Iwidth = null;
+		public static int DrawPixel( dynamic I = null, dynamic colour = null, dynamic drawX = null, dynamic drawY = null ) {
+			dynamic Iwidth = null;
 			if ( !I != null ) {
 				return 0;
 			}
 			Iwidth = I.Width();
 			Iheight = I.$Height();
-			if ( drawX > Iwidth || drawX <= 0 != null ) {
+			if ( drawX > Iwidth || drawX <= 0 ) {
 				return 0;
 			}
-			if ( drawY > Iheight || drawY <= 0 != null ) {
+			if ( drawY > Iheight || drawY <= 0 ) {
 				return 0;
 			}
 			I.DrawBox( colour, drawX, drawY );
 			return I;
 		}
 
-		public static UNKNOWN	DuplicateObject( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	O = null;
-			if ( perfectcopy == null != null ) {
+		public static dynamic DuplicateObject( dynamic original = null, int perfectcopy = 0, int sameloc = 0 ) {
+			dynamic O = null;
+			if ( perfectcopy == null ) {
 				perfectcopy = 0;
 			}
-			if ( sameloc == null != null ) {
+			if ( sameloc == null ) {
 				sameloc = 0;
 			}
 			if ( !original != null ) {
 				return;
 			}
 			O = null;
-			if ( sameloc != null ) {
+			if ( sameloc != 0 ) {
 				O = original.type( original.loc );
 			} else {
 				O = original.type( GlobalVars.undefined( 0, 0, 0 ) );
 			}
-			if ( perfectcopy != null ) {
-				if ( O && original != null ) {
+			if ( perfectcopy != 0 ) {
+				if ( O != null && original != null ) {
 					V = null;
-					foreach (_ in original.vars ) {
+					foreach (dynamic _ in original.vars ) {
 						V = undefined;
-						if ( !( V in new ByTable(new object [] {"type","loc","locs","vars","parent","parent_type","verbs","ckey","key"}) ) != null ) {
-							O.vars[V] = original.vars[V];
+						if ( !V in new ByTable(new object [] {"type","loc","locs","vars","parent","parent_type","verbs","ckey","key"}) != null ) {
+							O.vars.[object Object] = original.vars.[object Object];
 						}
 					};
 				}
@@ -2804,8 +2805,8 @@ namespace Som13 {
 			return O;
 		}
 
-		public static dynamic	edit_note( UNKNOWN [object Object] =null ) {
-			UNKNOWN	target_ckey = null;
+		public static dynamic edit_note( dynamic note_id = null ) {
+			dynamic target_ckey = null;
 			if ( !GlobalVars.dbcon.IsConnected() != null ) {
 				GlobalVars.undefined.user.write( "<span class='danger'>Failed to establish database connection.</span>" );
 				return;
@@ -2822,9 +2823,9 @@ namespace Som13 {
 				return;
 			}
 			if ( query_find_note_edit.NextRow() != null ) {
-				target_ckey = query_find_note_edit.item[1];
-				old_note = query_find_note_edit.item[2];
-				adminckey = query_find_note_edit.item[3];
+				target_ckey = query_find_note_edit.item.1;
+				old_note = query_find_note_edit.item.2;
+				adminckey = query_find_note_edit.item.3;
 				new_note = GlobalVars.undefined( "Input new note", "New Note", "" + old_note, null, null, 2048 );
 				if ( !new_note != null ) {
 					return;
@@ -2844,36 +2845,36 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	electrocute_mob( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	H = null;
-			if ( siemens_coeff == null != null ) {
+		public static int electrocute_mob( dynamic M = null, dynamic power_source = null, dynamic source = null, int siemens_coeff = 0 ) {
+			dynamic H = null;
+			if ( siemens_coeff == null ) {
 				siemens_coeff = 1;
 			}
-			if ( M.loc instanceof Ent_Mecha != null ) {
+			if ( M.loc is Ent_Mecha != null ) {
 				return 0;
 			}
-			if ( M instanceof Mob_Living_Carbon_Human != null ) {
+			if ( M is Mob_Living_Carbon_Human != null ) {
 				H = M;
 				if ( H.gloves != null ) {
 					G = H.gloves;
-					if ( G.siemens_coefficient == 0 != null ) {
+					if ( G.siemens_coefficient == 0 ) {
 						return 0;
 					}
 				}
 			}
-			if ( power_source instanceof new ByArea(3137) != null ) {
+			if ( power_source is new ByArea(3137) != null ) {
 				source_area = power_source;
 				power_source = source_area.get_apc();
 			}
-			if ( power_source instanceof Ent_Structure_Cable != null ) {
+			if ( power_source is Ent_Structure_Cable != null ) {
 				Cable = power_source;
 				power_source = Cable.powernet;
 			}
-			if ( power_source instanceof Powernet != null ) {
+			if ( power_source is Powernet != null ) {
 				PN = power_source;
-			} else if ( power_source instanceof Ent_Item_Weapon_StockParts_Cell != null ) {
+			} else if ( power_source is Ent_Item_Weapon_StockParts_Cell != null ) {
 				cell = power_source;
-			} else if ( power_source instanceof Ent_Machinery_Power_Apc != null ) {
+			} else if ( power_source is Ent_Machinery_Power_Apc != null ) {
 				apc = power_source;
 				cell = apc.cell;
 				if ( apc.terminal != null ) {
@@ -2885,7 +2886,7 @@ namespace Som13 {
 				GlobalFuncs.log_admin( "ERROR: /proc/electrocute_mob(" + M + ", " + power_source + ", " + source + "): wrong power_source" );
 				return 0;
 			}
-			if ( !cell && !PN != null ) {
+			if ( !cell != null && !PN != null ) {
 				return 0;
 			}
 			PN_damage = 0;
@@ -2897,7 +2898,7 @@ namespace Som13 {
 				cell_damage = cell.get_electrocute_damage();
 			}
 			shock_damage = 0;
-			if ( PN_damage >= cell_damage != null ) {
+			if ( PN_damage >= cell_damage ) {
 				power_source = PN;
 				shock_damage = PN_damage;
 			} else {
@@ -2908,31 +2909,31 @@ namespace Som13 {
 			drained_energy = drained_hp * 20;
 			if ( source_area != null ) {
 				source_area.f_use_power( drained_energy / GlobalVars.CELLRATE );
-			} else if ( power_source instanceof Powernet != null ) {
+			} else if ( power_source is Powernet != null ) {
 				drained_power = drained_energy / GlobalVars.CELLRATE;
 				PN.load += drained_power;
-			} else if ( power_source instanceof Ent_Item_Weapon_StockParts_Cell != null ) {
+			} else if ( power_source is Ent_Item_Weapon_StockParts_Cell != null ) {
 				cell.use( drained_energy );
 			}
 			return drained_energy;
 		}
 
-		public static UNKNOWN	Ellipsis( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	words = null;
-			if ( chance == null != null ) {
+		public static string Ellipsis( dynamic original_msg = null, int chance = 0, dynamic keep_words = null ) {
+			dynamic words = null;
+			if ( chance == null ) {
 				chance = 50;
 			}
-			if ( chance <= 0 != null ) {
+			if ( chance <= 0 ) {
 				return "...";
 			}
-			if ( chance >= 100 != null ) {
+			if ( chance >= 100 ) {
 				return original_msg;
 			}
 			words = GlobalFuncs.text2list( original_msg, " " );
 			new_words = new ByTable();
 			new_msg = "";
 			w = null;
-			foreach (_ in words ) {
+			foreach (dynamic _ in words ) {
 				w = undefined;
 				if ( Rand.chance( chance ) != null ) {
 					new_words += "...";
@@ -2946,8 +2947,8 @@ namespace Som13 {
 			return new_msg;
 		}
 
-		public static string	emoji_parse( UNKNOWN [object Object] =null ) {
-			string	parsed = null;
+		public static string emoji_parse( dynamic text = null ) {
+			string parsed = null;
 			if ( !GlobalVars.config.emojis != null ) {
 				return text;
 			}
@@ -2961,10 +2962,10 @@ namespace Som13 {
 			while (1) {
 				search = GlobalVars.undefined( text, ":", pos, null );
 				parsed += GlobalVars.undefined( text, pos, search );
-				if ( search != null ) {
+				if ( search != 0 ) {
 					pos = search;
 					search = GlobalVars.undefined( text, ":", pos + 1, null );
-					if ( search != null ) {
+					if ( search != 0 ) {
 						emoji = GlobalVars.undefined( GlobalVars.undefined( text, pos + 1, search ) );
 						if ( emoji in GlobalVars.emojis != null ) {
 							parsed += GlobalVars.undefined( "<img class=icon src=" ).ref( new ByRsc(60) ).str( " iconstate='" ).item( emoji ).str( "'>" );
@@ -2984,110 +2985,110 @@ namespace Som13 {
 			return parsed;
 		}
 
-		public static int	empulse( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	T = null;
-			if ( log == null != null ) {
+		public static int empulse( dynamic epicenter = null, dynamic heavy_range = null, dynamic light_range = null, int log = 0 ) {
+			dynamic T = null;
+			if ( log == null ) {
 				log = 0;
 			}
 			if ( !epicenter != null ) {
 				return;
 			}
-			if ( !( epicenter instanceof Tile ) != null ) {
+			if ( !( epicenter is Tile ) != null ) {
 				epicenter = GlobalFuncs.get_turf( epicenter.loc );
 			}
-			if ( log != null ) {
+			if ( log != 0 ) {
 				GlobalFuncs.message_admins( "EMP with size (" + heavy_range + ", " + light_range + ") in area " + epicenter.loc.name + " " );
 				GlobalFuncs.log_game( "EMP with size (" + heavy_range + ", " + light_range + ") in area " + epicenter.loc.name + " " );
 			}
-			if ( heavy_range > 1 != null ) {
+			if ( heavy_range > 1 ) {
 				new Ent_Effect_Overlay_Temp_Emp_Pulse( epicenter );
 			}
-			if ( heavy_range > light_range != null ) {
+			if ( heavy_range > light_range ) {
 				light_range = heavy_range;
 			}
 			T = null;
-			foreach (_ in GlobalVars.undefined( light_range, epicenter ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( light_range, epicenter ) ) {
 				T = undefined;
-				if ( !( T instanceof BaseStatic ) != null ) {
+				if ( !( T is BaseStatic ) != null ) {
 					continue;
 				}
 				distance = GlobalVars.undefined( epicenter, T );
-				if ( distance < 0 != null ) {
+				if ( distance < 0 ) {
 					distance = 0;
 				}
-				if ( distance < heavy_range != null ) {
+				if ( distance < heavy_range ) {
 					T.emp_act( 1 );
-				} else if ( distance == heavy_range != null ) {
+				} else if ( distance == heavy_range ) {
 					if ( Rand.chance( 50 ) != null ) {
 						T.emp_act( 1 );
 					} else {
 						T.emp_act( 2 );
 					}
-				} else if ( distance <= light_range != null ) {
+				} else if ( distance <= light_range ) {
 					T.emp_act( 2 );
 				}
 			};
 			return 1;
 		}
 
-		public static UNKNOWN	english_list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	total = null;
-			if ( nothing_text == null != null ) {
+		public static dynamic english_list( dynamic input = null, string nothing_text = null, string and_text = null, string comma_text = null, string final_comma_text = null ) {
+			dynamic total = null;
+			if ( nothing_text == null ) {
 				nothing_text = "nothing";
 			}
-			if ( and_text == null != null ) {
+			if ( and_text == null ) {
 				and_text = " and ";
 			}
-			if ( comma_text == null != null ) {
+			if ( comma_text == null ) {
 				comma_text = ", ";
 			}
-			if ( final_comma_text == null != null ) {
+			if ( final_comma_text == null ) {
 				final_comma_text = "";
 			}
 			total = input.len;
 			if ( !total != null ) {
 				return "" + nothing_text;
-			} else if ( total == 1 != null ) {
-				return "" + input[1];
-			} else if ( total == 2 != null ) {
-				return "" + input[1] + and_text + input[2];
+			} else if ( total == 1 ) {
+				return "" + input.1;
+			} else if ( total == 2 ) {
+				return "" + input.1 + and_text + input.2;
 			} else {
 				output = "";
 				index = 1;
 				while (index < total) {
-					if ( index == total - 1 != null ) {
+					if ( index == total - 1 ) {
 						comma_text = final_comma_text;
 					}
-					output += "" + input[index] + comma_text;
+					output += "" + input.[object Object] + comma_text;
 					index++;
 				};
-				return "" + output + and_text + input[index];
+				return "" + output + and_text + input.[object Object];
 			}
 		}
 
-		public static UNKNOWN	establish_db_connection(  ) {
-			if ( GlobalVars.failed_db_connections > 5 != null ) {
+		public static int establish_db_connection(  ) {
+			if ( GlobalVars.failed_db_connections > 5 ) {
 				return 0;
 			}
-			if ( !GlobalVars.dbcon || !GlobalVars.dbcon.IsConnected() != null ) {
+			if ( !GlobalVars.dbcon != null || !GlobalVars.dbcon.IsConnected() != null ) {
 				return GlobalFuncs.setup_database_connection();
 			} else {
 				return 1;
 			}
 		}
 
-		public static int	explosion( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	orig_dev_range = null;
-			if ( adminlog == null != null ) {
+		public static int explosion( dynamic epicenter = null, dynamic devastation_range = null, dynamic heavy_impact_range = null, dynamic light_impact_range = null, dynamic flash_range = null, int adminlog = 0, int ignorecap = 0, int flame_range = 0, int silent = 0 ) {
+			dynamic orig_dev_range = null;
+			if ( adminlog == null ) {
 				adminlog = 1;
 			}
-			if ( ignorecap == null != null ) {
+			if ( ignorecap == null ) {
 				ignorecap = 0;
 			}
-			if ( flame_range == null != null ) {
+			if ( flame_range == null ) {
 				flame_range = 0;
 			}
-			if ( silent == null != null ) {
+			if ( silent == null ) {
 				silent = 0;
 			}
 			undefined = null;
@@ -3109,7 +3110,7 @@ namespace Som13 {
 				}
 				max_range = GlobalVars.undefined.max( devastation_range, heavy_impact_range, light_impact_range, flame_range );
 				cached_exp_block = new ByTable();
-				if ( adminlog != null ) {
+				if ( adminlog != 0 ) {
 					GlobalFuncs.message_admins( "Explosion with size (" + devastation_range + ", " + heavy_impact_range + ", " + light_impact_range + ", " + flame_range + ") in area " + epicenter.loc.name + " (" + epicenter.x + "," + epicenter.y + "," + epicenter.z + ")" );
 					GlobalFuncs.log_game( "Explosion with size (" + devastation_range + ", " + heavy_impact_range + ", " + light_impact_range + ", " + flame_range + ") in area " + epicenter.loc.name + " (" + epicenter.x + "," + epicenter.y + "," + epicenter.z + ")" );
 				}
@@ -3119,15 +3120,15 @@ namespace Som13 {
 				if ( !silent != null ) {
 					frequency = GlobalFuncs.get_rand_frequency();
 					M = null;
-					foreach (_ in GlobalVars.player_list ) {
+					foreach (dynamic _ in GlobalVars.player_list ) {
 						M = undefined;
-						if ( M && M.client != null ) {
+						if ( M != null && M.client != null ) {
 							M_turf = GlobalFuncs.get_turf( M );
-							if ( M_turf && M_turf.z == epicenter.z != null ) {
+							if ( M_turf != null && M_turf.z == epicenter.z ) {
 								dist = GlobalVars.undefined( M_turf, epicenter );
-								if ( dist <= GlobalVars.undefined.round( max_range + Game.view - 2, 1 ) != null ) {
+								if ( dist <= GlobalVars.undefined.round( max_range + Game.view - 2, 1 ) ) {
 									M.playsound_local.lcall( new ByTable().set( "falloff", 5 ).set( 5, frequency ).set( 4, 1 ).set( 3, 100 ).set( 2, GlobalFuncs.get_sfx( "explosion" ) ).set( 1, epicenter ) );
-								} else if ( dist <= far_dist != null ) {
+								} else if ( dist <= far_dist ) {
 									far_volume = GlobalFuncs.Clamp( far_dist, 30, 50 );
 									far_volume += dist <= far_dist * 0.5 ? 50 : 0;
 									M.playsound_local.lcall( new ByTable().set( "falloff", 5 ).set( 5, frequency ).set( 4, 1 ).set( 3, far_volume ).set( 2, new ByRsc(58) ).set( 1, epicenter ) );
@@ -3139,7 +3140,7 @@ namespace Som13 {
 				postponeCycles = GlobalVars.undefined.max( GlobalVars.undefined.round( devastation_range / 8 ), 1 );
 				GlobalVars.SSlighting.postpone( postponeCycles );
 				GlobalVars.SSmachine.postpone( postponeCycles );
-				if ( heavy_impact_range > 1 != null ) {
+				if ( heavy_impact_range > 1 ) {
 					E = new EffectSystem_Explosion();
 					E.set_up( epicenter );
 					E.f_start();
@@ -3150,84 +3151,84 @@ namespace Som13 {
 				affected_turfs = GlobalFuncs.trange( max_range, epicenter );
 				if ( GlobalVars.config.reactionary_explosions != null ) {
 					T = null;
-					foreach (_ in affected_turfs ) {
+					foreach (dynamic _ in affected_turfs ) {
 						T = undefined;
-						cached_exp_block[T] = 0;
-						if ( T.density && T.explosion_block != null ) {
-							cached_exp_block[T] += T.explosion_block;
+						cached_exp_block.[object Object] = 0;
+						if ( T.density != null && T.explosion_block != null ) {
+							cached_exp_block.[object Object] += T.explosion_block;
 						}
 						D = null;
-						foreach (_ in T ) {
+						foreach (dynamic _ in T ) {
 							D = undefined;
-							if ( !( D instanceof Ent_Machinery_Door ) != null ) {
+							if ( !( D is Ent_Machinery_Door ) != null ) {
 								continue;
 							}
-							if ( D.density && D.explosion_block != null ) {
-								cached_exp_block[T] += D.explosion_block;
+							if ( D.density != null && D.explosion_block != null ) {
+								cached_exp_block.[object Object] += D.explosion_block;
 							}
 						};
 						W = null;
-						foreach (_ in T ) {
+						foreach (dynamic _ in T ) {
 							W = undefined;
-							if ( !( W instanceof Ent_Structure_Window ) != null ) {
+							if ( !( W is Ent_Structure_Window ) != null ) {
 								continue;
 							}
-							if ( W.reinf && W.fulltile != null ) {
-								cached_exp_block[T] += W.explosion_block;
+							if ( W.reinf != null && W.fulltile != null ) {
+								cached_exp_block.[object Object] += W.explosion_block;
 							}
 						};
 						B = null;
-						foreach (_ in T ) {
+						foreach (dynamic _ in T ) {
 							B = undefined;
-							if ( !( B instanceof Ent_Effect_Blob ) != null ) {
+							if ( !( B is Ent_Effect_Blob ) != null ) {
 								continue;
 							}
-							cached_exp_block[T] += B.explosion_block;
+							cached_exp_block.[object Object] += B.explosion_block;
 						};
 					};
 				}
 				T = null;
-				foreach (_ in affected_turfs ) {
+				foreach (dynamic _ in affected_turfs ) {
 					T = undefined;
 					dist = GlobalFuncs.cheap_hypotenuse( T.x, T.y, x0, y0 );
 					if ( GlobalVars.config.reactionary_explosions != null ) {
 						Trajectory = T;
 						while (Trajectory != epicenter) {
 							Trajectory = GlobalVars.undefined( Trajectory, epicenter );
-							dist += cached_exp_block[Trajectory];
+							dist += cached_exp_block.[object Object];
 						};
 					}
 					flame_dist = 0;
 					throw_dist = dist;
-					if ( dist < flame_range != null ) {
+					if ( dist < flame_range ) {
 						flame_dist = 1;
 					}
-					if ( dist < devastation_range != null ) {
+					if ( dist < devastation_range ) {
 						dist = 1;
-					} else if ( dist < heavy_impact_range != null ) {
+					} else if ( dist < heavy_impact_range ) {
 						dist = 2;
-					} else if ( dist < light_impact_range != null ) {
+					} else if ( dist < light_impact_range ) {
 						dist = 3;
 					} else {
 						dist = 0;
 					}
 					if ( T != null ) {
-						if ( flame_dist && Rand.chance( 40 ) && !( T instanceof Tile_Space ) && !T.density != null ) {
+						if ( flame_dist != null && Rand.chance( 40 ) != null && !( T is Tile_Space ) != null && !T.density != null ) {
 							GlobalFuncs.PoolOrNew( Ent_Effect_Hotspot, T );
 						}
-						if ( dist > 0 != null ) {
+						if ( dist > 0 ) {
 							T.ex_act( dist );
 						}
 					}
 					throw_dir = GlobalVars.undefined( epicenter, T );
 					I = null;
-					foreach (_ in T ) {
+					foreach (dynamic _ in T ) {
 						I = undefined;
-						if ( !( I instanceof Ent_Item ) != null ) {
+						if ( !( I is Ent_Item ) != null ) {
 							continue;
 						}
 						::thread.schedule( 0, function() {
-							if ( I && !I.anchored != null ) {
+							if ( I != null && !I.anchored != null ) {
 								throw_range = Rand.Int( throw_dist, max_range );
 								throw_at = GlobalFuncs.get_ranged_target_turf( I, throw_dir, throw_range );
 								I.throw_speed = 4;
@@ -3238,12 +3239,12 @@ namespace Som13 {
 					};
 				};
 				took = ( Game.timeofday - start ) / 10;
-				if ( GlobalVars.Debug2 != null ) {
+				if ( GlobalVars.Debug2 != 0 ) {
 					Game.log.write( "## DEBUG: Explosion(" + x0 + "," + y0 + "," + z0 + ")(d" + devastation_range + ",h" + heavy_impact_range + ",l" + light_impact_range + "): Took " + took + " seconds." );
 				}
 				i = null;
 				while (i <= GlobalVars.doppler_arrays.len) {
-					Array = GlobalVars.doppler_arrays[i];
+					Array = GlobalVars.doppler_arrays.[object Object];
 					if ( Array != null ) {
 						Array.sense_explosion( x0, y0, z0, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range );
 					}
@@ -3254,8 +3255,8 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static dynamic	feedback_add_details( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	FV = null;
+		public static dynamic feedback_add_details( dynamic variable = null, dynamic details = null ) {
+			dynamic FV = null;
 			if ( !GlobalVars.blackbox != null ) {
 				return;
 			}
@@ -3266,8 +3267,8 @@ namespace Som13 {
 			FV.add_details( details );
 		}
 
-		public static dynamic	feedback_inc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	FV = null;
+		public static dynamic feedback_inc( dynamic variable = null, dynamic value = null ) {
+			dynamic FV = null;
 			if ( !GlobalVars.blackbox != null ) {
 				return;
 			}
@@ -3278,8 +3279,8 @@ namespace Som13 {
 			FV.inc( value );
 		}
 
-		public static dynamic	feedback_set( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	FV = null;
+		public static dynamic feedback_set( dynamic variable = null, dynamic value = null ) {
+			dynamic FV = null;
 			if ( !GlobalVars.blackbox != null ) {
 				return;
 			}
@@ -3290,8 +3291,8 @@ namespace Som13 {
 			FV.set_value( value );
 		}
 
-		public static dynamic	feedback_set_details( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	FV = null;
+		public static dynamic feedback_set_details( dynamic variable = null, dynamic details = null ) {
+			dynamic FV = null;
 			if ( !GlobalVars.blackbox != null ) {
 				return;
 			}
@@ -3302,44 +3303,44 @@ namespace Som13 {
 			FV.set_details( details );
 		}
 
-		public static UNKNOWN	file2list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( seperator == null != null ) {
+		public static dynamic file2list( dynamic filename = null, string seperator = null ) {
+			if ( seperator == null ) {
 				seperator = "\n";
 			}
 			return GlobalFuncs.text2list( GlobalFuncs.return_file_text( filename ), seperator );
 		}
 
-		public static UNKNOWN	filter_fancy_list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	matches = null;
+		public static dynamic filter_fancy_list( dynamic L = null, dynamic filter = null ) {
+			dynamic matches = null;
 			matches = new List();
 			key = null;
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				key = undefined;
-				value = L[key];
-				if ( GlobalVars.undefined( "" + key, filter, 1, null ) || GlobalVars.undefined( "" + value, filter, 1, null ) != null ) {
-					matches[key] = value;
+				value = L.[object Object];
+				if ( GlobalVars.undefined( "" + key, filter, 1, null ) != null || GlobalVars.undefined( "" + value, filter, 1, null ) != null ) {
+					matches.[object Object] = value;
 				}
 			};
 			return matches;
 		}
 
-		public static dynamic	find_record( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	R = null;
+		public static dynamic find_record( dynamic field = null, dynamic value = null, dynamic L = null ) {
+			dynamic R = null;
 			R = null;
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				R = undefined;
-				if ( !( R instanceof Data_Record ) != null ) {
+				if ( !( R is Data_Record ) != null ) {
 					continue;
 				}
-				if ( R.fields[field] == value != null ) {
+				if ( R.fields.[object Object] == value ) {
 					return R;
 				}
 			};
 		}
 
-		public static UNKNOWN	find_type_in_direction( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	x_offset = null;
-			if ( range == null != null ) {
+		public static UNKNOWN find_type_in_direction( dynamic source = null, dynamic direction = null, int range = 0 ) {
+			int x_offset = 0;
+			if ( range == null ) {
 				range = 1;
 			}
 			x_offset = 0;
@@ -3356,11 +3357,11 @@ namespace Som13 {
 			}
 			target_turf = GlobalVars.undefined( source.x + x_offset, source.y + y_offset, source.z );
 			if ( source.canSmoothWith != null ) {
-				if ( source.smooth == 2 != null ) {
+				if ( source.smooth == 2 ) {
 					a_type = null;
-					foreach (_ in source.canSmoothWith ) {
+					foreach (dynamic _ in source.canSmoothWith ) {
 						a_type = undefined;
-						if ( target_turf instanceof a_type != null ) {
+						if ( target_turf is a_type != null ) {
 							return target_turf;
 						}
 						A = GlobalVars.undefined( a_type, target_turf );
@@ -3371,13 +3372,13 @@ namespace Som13 {
 					return;
 				}
 				a_type = null;
-				foreach (_ in source.canSmoothWith ) {
+				foreach (dynamic _ in source.canSmoothWith ) {
 					a_type = undefined;
-					if ( a_type == target_turf.type != null ) {
+					if ( a_type == target_turf.type ) {
 						return target_turf;
 					}
 					A = GlobalVars.undefined( a_type, target_turf );
-					if ( A && A.type == a_type != null ) {
+					if ( A != null && A.type == a_type ) {
 						return A;
 					}
 				};
@@ -3387,16 +3388,16 @@ namespace Som13 {
 					return A.type == target_turf.type ? target_turf : null;
 				}
 				A = GlobalVars.undefined( source.type, target_turf );
-				return A && A.type == source.type ? A : null;
+				return A != null && A.type == source.type ? A : null;
 			}
 		}
 
-		public static UNKNOWN	findchar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	temp = null;
-			if ( start == null != null ) {
+		public static int findchar( dynamic haystack = null, dynamic needles = null, int start = 0, int end = 0 ) {
+			dynamic temp = null;
+			if ( start == null ) {
 				start = 1;
 			}
-			if ( end == null != null ) {
+			if ( end == null ) {
 				end = 0;
 			}
 			len = GlobalVars.undefined( needles );
@@ -3412,36 +3413,36 @@ namespace Som13 {
 			return end;
 		}
 
-		public static int	findname( UNKNOWN [object Object] =null ) {
-			dynamic	M = null;
+		public static int findname( dynamic msg = null ) {
+			dynamic M = null;
 			if ( !GlobalVars.undefined( msg ) != null ) {
 				msg = "" + msg;
 			}
 			M = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				M = undefined;
-				if ( M.real_name == msg != null ) {
+				if ( M.real_name == msg ) {
 					return M;
 				}
 			};
 			return 0;
 		}
 
-		public static dynamic	flick_overlay( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	C = null;
+		public static dynamic flick_overlay( dynamic I = null, dynamic show_to = null, dynamic duration = null ) {
+			dynamic C = null;
 			C = null;
-			foreach (_ in show_to ) {
+			foreach (dynamic _ in show_to ) {
 				C = undefined;
-				if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+				if ( !( C is BAD_GOOFY_EXPANSION??? ) != null ) {
 					continue;
 				}
 				C.images += I;
 			};
 			::thread.schedule( duration, function() {
 				C = null;
-				foreach (_ in show_to ) {
+				foreach (dynamic _ in show_to ) {
 					C = undefined;
-					if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+					if ( !( C is BAD_GOOFY_EXPANSION??? ) != null ) {
 						continue;
 					}
 					C.images -= I;
@@ -3450,15 +3451,15 @@ namespace Som13 {
 			});
 		}
 
-		public static int	forbidden_atoms_check( UNKNOWN [object Object] =null ) {
-			ByTable	blacklist = null;
+		public static int forbidden_atoms_check( dynamic A = null ) {
+			ByTable blacklist = null;
 			blacklist = new ByTable(new object [] {Mob_Living,Ent_Effect_Blob,Ent_Effect_Spider_Spiderling,Ent_Item_Weapon_Disk_Nuclear,Ent_Machinery_Nuclearbomb,Ent_Item_Device_Radio_Beacon,Ent_Machinery_TheSingularitygen,Ent_Singularity,Ent_Machinery_Teleport_Station,Ent_Machinery_Teleport_Hub,Ent_Machinery_Telepad});
 			if ( A != null ) {
 				if ( GlobalFuncs.is_type_in_list( A, blacklist ) != null ) {
 					return 1;
 				}
 				thing = null;
-				foreach (_ in A ) {
+				foreach (dynamic _ in A ) {
 					thing = undefined;
 					if ( NULLVAR( thing ) != null ) {
 						return 1;
@@ -3468,29 +3469,29 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	format_frequency( UNKNOWN [object Object] =null ) {
+		public static dynamic format_frequency( dynamic f = null ) {
 			f = GlobalVars.undefined( f );
 			return "" + GlobalVars.undefined.round( f / 10 ) + "." + f % 10;
 		}
 
-		public static UNKNOWN	format_table_name( UNKNOWN [object Object] =null ) {
+		public static dynamic format_table_name( dynamic table = null ) {
 			return GlobalVars.sqlfdbktableprefix + table;
 		}
 
-		public static UNKNOWN	format_text( UNKNOWN [object Object] =null ) {
+		public static dynamic format_text( dynamic text = null ) {
 			return GlobalFuncs.replacetext( GlobalFuncs.replacetext( text, "ÿ", "" ), "ÿ", "" );
 		}
 
-		public static UNKNOWN	gameTimestamp( UNKNOWN [object Object] =null ) {
-			if ( format == null != null ) {
+		public static dynamic gameTimestamp( string format = null ) {
+			if ( format == null ) {
 				format = "hh:mm:ss";
 			}
 			return GlobalVars.undefined( format, Game.time - GlobalVars.timezoneOffset + 432000 );
 		}
 
-		public static UNKNOWN	gaussian( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	R1 = null;
-			if ( GlobalVars.gaussian_next != null != null ) {
+		public static dynamic gaussian( dynamic mean = null, dynamic stddev = null ) {
+			dynamic R1 = null;
+			if ( GlobalVars.gaussian_next != null ) {
 				R1 = GlobalVars.gaussian_next;
 				GlobalVars.gaussian_next = null;
 			} else {
@@ -3507,12 +3508,12 @@ namespace Som13 {
 			return mean + stddev * R1;
 		}
 
-		public static UNKNOWN	Gcd( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static UNKNOWN Gcd( dynamic a = null, dynamic b = null ) {
 			return b ? GlobalFuncs.Gcd( b, a % b ) : a;
 		}
 
-		public static string	generate_code_phrase(  ) {
-			string	code_phrase = null;
+		public static string generate_code_phrase(  ) {
+			string code_phrase = null;
 			code_phrase = "";
 			words = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
 			if ( _ < 10082 ) { _ = 2 }
@@ -3525,25 +3526,25 @@ namespace Som13 {
 			locations = GlobalVars.teleportlocs.len ? GlobalVars.teleportlocs : drinks;
 			names = new ByTable();
 			t = null;
-			foreach (_ in GlobalVars.data_core.general ) {
+			foreach (dynamic _ in GlobalVars.data_core.general ) {
 				t = undefined;
-				if ( !( t instanceof Data_Record ) != null ) {
+				if ( !( t is Data_Record ) != null ) {
 					continue;
 				}
 				names += t.fields.name;
 			};
 			maxwords = words;
 			while (words > 0) {
-				if ( words == 1 && 1 in safety && 2 in safety != null ) {
+				if ( words == 1 && 1 in safety != null && 2 in safety != null ) {
 					safety = new ByTable(new object [] {Rand.pick(new object [] { 1, 2 })});
-				} else if ( words == 1 && maxwords == 2 != null ) {
+				} else if ( words == 1 && maxwords == 2 ) {
 					safety = new ByTable(new object [] {3});
 				}
 				local _ = Rand.pick( safety ) // Was a switch-case, sorry for the mess.
 				if ( _==1 ) {
 					local _ = Rand.Int( 1, 2 ) // Was a switch-case, sorry for the mess.
 					if ( _==1 ) {
-						if ( names.len && Rand.chance( 70 ) != null ) {
+						if ( names.len != null && Rand.chance( 70 ) != null ) {
 							code_phrase += Rand.pick( names );
 						} else if ( Rand.chance( 10 ) != null ) {
 							code_phrase += Rand.pick(new object [] { GlobalFuncs.lizard_name( GlobalVars.MALE ), GlobalFuncs.lizard_name( GlobalVars.FEMALE ) });
@@ -3574,7 +3575,7 @@ namespace Som13 {
 						code_phrase += Rand.pick( GlobalVars.verbs );
 					};
 				};
-				if ( words == 1 != null ) {
+				if ( words == 1 ) {
 					code_phrase += ".";
 				} else {
 					code_phrase += ", ";
@@ -3584,17 +3585,17 @@ namespace Som13 {
 			return code_phrase;
 		}
 
-		public static dynamic	generate_female_clothing( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	female_clothing_icon = null;
+		public static dynamic generate_female_clothing( dynamic index = null, dynamic t_color = null, dynamic icon = null, dynamic type = null ) {
+			dynamic female_clothing_icon = null;
 			female_clothing_icon = GlobalVars.undefined.lcall( new ByTable().set( "icon_state", t_color ).set( "icon", icon ) );
 			female_s = GlobalVars.undefined.lcall( new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", new ByRsc(59) ) );
 			female_clothing_icon.Blend( female_s, 2 );
 			female_clothing_icon = GlobalVars.undefined( female_clothing_icon );
-			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
+			GlobalVars.female_clothing_icons.[object Object] = female_clothing_icon;
 		}
 
-		public static UNKNOWN	generate_ion_law( UNKNOWN [object Object] =null ) {
-			UNKNOWN	ionthreats = null;
+		public static string generate_ion_law( dynamic ionMessage = null ) {
+			dynamic ionthreats = null;
 			if ( ionMessage != null ) {
 				return ionMessage;
 			}
@@ -4035,9 +4036,9 @@ namespace Som13 {
 			return message;
 		}
 
-		public static dynamic	get( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic get( dynamic loc = null, dynamic type = null ) {
 			while (loc) {
-				if ( loc instanceof type != null ) {
+				if ( loc is type != null ) {
 					return loc;
 				}
 				loc = loc.loc;
@@ -4045,7 +4046,7 @@ namespace Som13 {
 			return;
 		}
 
-		public static string	get_access_desc( UNKNOWN [object Object] =null ) {
+		public static dynamic get_access_desc( dynamic A = null ) {
 			local _ = A // Was a switch-case, sorry for the mess.
 			if ( _==31 ) {
 				return "Cargo Bay";
@@ -4178,44 +4179,44 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	get_airlock_overlay( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	iconkey = null;
+		public static dynamic get_airlock_overlay( dynamic icon_state = null, dynamic icon_file = null ) {
+			dynamic iconkey = null;
 			iconkey = "" + icon_state + icon_file;
-			if ( GlobalVars.airlock_overlays[iconkey] != null ) {
-				return GlobalVars.airlock_overlays[iconkey];
+			if ( GlobalVars.airlock_overlays.[object Object] != null ) {
+				return GlobalVars.airlock_overlays.[object Object];
 			}
-			GlobalVars.airlock_overlays[iconkey] = GlobalVars.undefined( icon_file, icon_state );
-			return GlobalVars.airlock_overlays[iconkey];
+			GlobalVars.airlock_overlays.[object Object] = GlobalVars.undefined( icon_file, icon_state );
+			return GlobalVars.airlock_overlays.[object Object];
 		}
 
-		public static ByTable	get_all_accesses(  ) {
+		public static ByTable get_all_accesses(  ) {
 			return new ByTable(new object [] {GlobalVars.access_security,GlobalVars.access_sec_doors,GlobalVars.access_brig,GlobalVars.access_armory,GlobalVars.access_forensics_lockers,GlobalVars.access_court,GlobalVars.access_medical,GlobalVars.access_genetics,GlobalVars.access_morgue,GlobalVars.access_rd,GlobalVars.access_tox,GlobalVars.access_tox_storage,GlobalVars.access_chemistry,GlobalVars.access_engine,GlobalVars.access_engine_equip,GlobalVars.access_maint_tunnels,GlobalVars.access_external_airlocks,GlobalVars.access_change_ids,GlobalVars.access_ai_upload,GlobalVars.access_teleporter,GlobalVars.access_eva,GlobalVars.access_heads,GlobalVars.access_captain,GlobalVars.access_all_personal_lockers,GlobalVars.access_tech_storage,GlobalVars.access_chapel_office,GlobalVars.access_atmospherics,GlobalVars.access_kitchen,GlobalVars.access_bar,GlobalVars.access_janitor,GlobalVars.access_crematorium,GlobalVars.access_robotics,GlobalVars.access_cargo,GlobalVars.access_construction,GlobalVars.access_hydroponics,GlobalVars.access_library,GlobalVars.access_lawyer,GlobalVars.access_virology,GlobalVars.access_cmo,GlobalVars.access_qm,GlobalVars.access_surgery,GlobalVars.access_theatre,GlobalVars.access_research,GlobalVars.access_mining,GlobalVars.access_mailsorting,GlobalVars.access_weapons,GlobalVars.access_heads_vault,GlobalVars.access_mining_station,GlobalVars.access_xenobiology,GlobalVars.access_ce,GlobalVars.access_hop,GlobalVars.access_hos,GlobalVars.access_RC_announce,GlobalVars.access_keycard_auth,GlobalVars.access_tcomsat,GlobalVars.access_gateway,GlobalVars.access_mineral_storeroom,GlobalVars.access_minisat});
 		}
 
-		public static ByTable	get_all_centcom_access(  ) {
+		public static ByTable get_all_centcom_access(  ) {
 			return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_thunder,GlobalVars.access_cent_specops,GlobalVars.access_cent_medical,GlobalVars.access_cent_living,GlobalVars.access_cent_storage,GlobalVars.access_cent_teleporter,GlobalVars.access_cent_captain});
 		}
 
-		public static ByTable	get_all_centcom_jobs(  ) {
+		public static ByTable get_all_centcom_jobs(  ) {
 			return new ByTable(new object [] {"VIP Guest","Custodian","Thunderdome Overseer","Centcom Official","Medical Officer","Death Commando","Research Officer","Special Ops Officer","Admiral","Centcom Commander","Emergency Response Team Commander","Security Response Officer","Engineer Response Officer","Medical Response Officer"});
 		}
 
-		public static UNKNOWN	get_all_job_icons(  ) {
+		public static dynamic get_all_job_icons(  ) {
 			return GlobalFuncs.get_all_jobs() + new ByTable(new object [] {"Prisoner"});
 		}
 
-		public static ByTable	get_all_jobs(  ) {
+		public static ByTable get_all_jobs(  ) {
 			return new ByTable(new object [] {"Assistant","Captain","Head of Personnel","Bartender","Cook","Botanist","Quartermaster","Cargo Technician","Shaft Miner","Clown","Mime","Janitor","Librarian","Lawyer","Chaplain","Chief Engineer","Station Engineer","Atmospheric Technician","Chief Medical Officer","Medical Doctor","Chemist","Geneticist","Virologist","Research Director","Scientist","Roboticist","Head of Security","Warden","Detective","Security Officer"});
 		}
 
-		public static ByTable	get_all_syndicate_access(  ) {
+		public static ByTable get_all_syndicate_access(  ) {
 			return new ByTable(new object [] {GlobalVars.access_syndicate,GlobalVars.access_syndicate});
 		}
 
-		public static UNKNOWN	Get_Angle( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	dy = null;
+		public static UNKNOWN Get_Angle( dynamic start = null, dynamic end = null ) {
+			dynamic dy = null;
 			UNKNOWN _default;
-			if ( !start || !end != null ) {
+			if ( !start != null || !end != null ) {
 				return 0;
 			}
 			dy = end.y * 32 + end.pixel_y - ( start.y * 32 + start.pixel_y );
@@ -4223,23 +4224,23 @@ namespace Som13 {
 			if ( !dy != null ) {
 				return dx >= 0 ? 90 : 270;
 			}
-			undefined = GlobalFuncs.arctan( dx / dy );
-			if ( dy < 0 != null ) {
-				undefined += 180;
-			} else if ( dx < 0 != null ) {
-				undefined += 360;
+			_default = GlobalFuncs.arctan( dx / dy );
+			if ( dy < 0 ) {
+				_default += 180;
+			} else if ( dx < 0 ) {
+				_default += 360;
 			}
 			return _default;
 		}
 
-		public static int	get_area( UNKNOWN [object Object] =null ) {
-			UNKNOWN	location = null;
+		public static int get_area( dynamic O = null ) {
+			dynamic location = null;
 			location = O;
 			i = 1;
 			while (i <= 20) {
 				if ( GlobalVars.undefined( location ) != null ) {
 					return location;
-				} else if ( location instanceof BaseStatic != null ) {
+				} else if ( location is BaseStatic != null ) {
 					location = location.loc;
 				} else {
 					return;
@@ -4249,8 +4250,8 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	get_area_all_atoms( UNKNOWN [object Object] =null ) {
-			UNKNOWN	areatemp = null;
+		public static dynamic get_area_all_atoms( dynamic areatype = null ) {
+			dynamic areatemp = null;
 			if ( !areatype != null ) {
 				return;
 			}
@@ -4263,13 +4264,13 @@ namespace Som13 {
 			}
 			atoms = new List();
 			N = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				N = undefined;
-				if ( N instanceof areatype != null ) {
+				if ( N is areatype != null ) {
 					A = null;
-					foreach (_ in N ) {
+					foreach (dynamic _ in N ) {
 						A = undefined;
-						if ( !( A instanceof BaseStatic ) != null ) {
+						if ( !( A is BaseStatic ) != null ) {
 							continue;
 						}
 						atoms += A;
@@ -4279,29 +4280,29 @@ namespace Som13 {
 			return atoms;
 		}
 
-		public static UNKNOWN	get_area_master( UNKNOWN [object Object] =null ) {
-			UNKNOWN	A = null;
+		public static dynamic get_area_master( dynamic O = null ) {
+			dynamic A = null;
 			A = GlobalFuncs.get_area( O );
-			if ( A && A.master != null ) {
+			if ( A != null && A.master != null ) {
 				A = A.master;
 			}
 			return A;
 		}
 
-		public static int	get_area_name( UNKNOWN [object Object] =null ) {
-			dynamic	A = null;
+		public static int get_area_name( dynamic N = null ) {
+			dynamic A = null;
 			A = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				A = undefined;
-				if ( A.name == N != null ) {
+				if ( A.name == N ) {
 					return A;
 				}
 			};
 			return 0;
 		}
 
-		public static UNKNOWN	get_area_turfs( UNKNOWN [object Object] =null ) {
-			UNKNOWN	areatemp = null;
+		public static dynamic get_area_turfs( dynamic areatype = null ) {
+			dynamic areatemp = null;
 			if ( !areatype != null ) {
 				return;
 			}
@@ -4314,11 +4315,11 @@ namespace Som13 {
 			}
 			turfs = new List();
 			N = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				N = undefined;
-				if ( N instanceof areatype != null ) {
+				if ( N is areatype != null ) {
 					T = null;
-					foreach (_ in N ) {
+					foreach (dynamic _ in N ) {
 						T = undefined;
 						turfs += T;
 					};
@@ -4327,33 +4328,33 @@ namespace Som13 {
 			return turfs;
 		}
 
-		public static ByTable	get_both_hands( UNKNOWN [object Object] =null ) {
-			ByTable	hands = null;
+		public static ByTable get_both_hands( dynamic M = null ) {
+			ByTable hands = null;
 			hands = new ByTable(new object [] {M.l_hand,M.r_hand});
 			return hands;
 		}
 
-		public static ByTable	get_candidates( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	candidates = null;
-			if ( be_special_flag == null != null ) {
+		public static ByTable get_candidates( int be_special_flag = 0, int afk_bracket = 0, dynamic jobbanType = null ) {
+			ByTable candidates = null;
+			if ( be_special_flag == null ) {
 				be_special_flag = 0;
 			}
-			if ( afk_bracket == null != null ) {
+			if ( afk_bracket == null ) {
 				afk_bracket = 3000;
 			}
 			candidates = new ByTable();
-			while (!candidates.len && afk_bracket < 6000) {
+			while (!candidates.len != null && afk_bracket < 6000) {
 				G = null;
-				foreach (_ in GlobalVars.player_list ) {
+				foreach (dynamic _ in GlobalVars.player_list ) {
 					G = undefined;
-					if ( !( G instanceof Mob_Dead_Observer ) != null ) {
+					if ( !( G is Mob_Dead_Observer ) != null ) {
 						continue;
 					}
-					if ( G.client != null != null ) {
-						if ( !( G.mind && G.mind.current && G.mind.current.stat != 2 ) != null ) {
-							if ( !G.client.is_afk( afk_bracket ) && G.client.prefs.be_special & be_special_flag != null ) {
+					if ( G.client != null ) {
+						if ( !( G.mind != null && G.mind.current != null && G.mind.current.stat != 2 ) != null ) {
+							if ( !G.client.is_afk( afk_bracket ) != null && G.client.prefs.be_special & be_special_flag != null ) {
 								if ( jobbanType != null ) {
-									if ( !( GlobalFuncs.jobban_isbanned( G, jobbanType ) || GlobalFuncs.jobban_isbanned( G, "Syndicate" ) ) != null ) {
+									if ( !( GlobalFuncs.jobban_isbanned( G, jobbanType ) != null || GlobalFuncs.jobban_isbanned( G, "Syndicate" ) != null ) != null ) {
 										candidates += G.client;
 									}
 								} else {
@@ -4368,7 +4369,7 @@ namespace Som13 {
 			return candidates;
 		}
 
-		public static UNKNOWN	get_centcom_access( UNKNOWN [object Object] =null ) {
+		public static dynamic get_centcom_access( dynamic job = null ) {
 			local _ = job // Was a switch-case, sorry for the mess.
 			if ( _=="VIP Guest" ) {
 				return new ByTable(new object [] {GlobalVars.access_cent_general});
@@ -4401,7 +4402,7 @@ namespace Som13 {
 			};
 		}
 
-		public static string	get_centcom_access_desc( UNKNOWN [object Object] =null ) {
+		public static dynamic get_centcom_access_desc( dynamic A = null ) {
 			local _ = A // Was a switch-case, sorry for the mess.
 			if ( _==101 ) {
 				return "Code Grey";
@@ -4422,39 +4423,39 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	get_department_heads( UNKNOWN [object Object] =null ) {
-			dynamic	J = null;
+		public static ByTable get_department_heads( dynamic job_title = null ) {
+			dynamic J = null;
 			if ( !job_title != null ) {
 				return new ByTable();
 			}
 			J = null;
-			foreach (_ in GlobalVars.SSjob.occupations ) {
+			foreach (dynamic _ in GlobalVars.SSjob.occupations ) {
 				J = undefined;
-				if ( !( J instanceof Job ) != null ) {
+				if ( !( J is Job ) != null ) {
 					continue;
 				}
-				if ( J.title == job_title != null ) {
+				if ( J.title == job_title ) {
 					return J.department_head;
 				}
 			};
 		}
 
-		public static UNKNOWN	get_dist_euclidian( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	dx = null;
+		public static dynamic get_dist_euclidian( dynamic Loc1 = null, dynamic Loc2 = null ) {
+			dynamic dx = null;
 			dx = Loc1.x - Loc2.x;
 			dy = Loc1.y - Loc2.y;
 			dist = GlobalVars.undefined.sqrt( GlobalVars.undefined( dx, 2 ) + GlobalVars.undefined( dy, 2 ) );
 			return dist;
 		}
 
-		public static UNKNOWN	get_domination_time( UNKNOWN [object Object] =null ) {
+		public static dynamic get_domination_time( dynamic G = null ) {
 			return GlobalVars.undefined.max( 180, 900 - GlobalVars.undefined.round( G.territory.len / GlobalVars.start_state.num_territories * 100, 1 ) * 12 );
 		}
 
-		public static UNKNOWN	get_edge_target_turf( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	target = null;
+		public static int get_edge_target_turf( dynamic A = null, dynamic direction = null ) {
+			dynamic target = null;
 			target = GlobalVars.undefined( A.x, A.y, A.z );
-			if ( !A || !target != null ) {
+			if ( !A != null || !target != null ) {
 				return 0;
 			}
 			if ( direction & 1 != null ) {
@@ -4472,7 +4473,7 @@ namespace Som13 {
 			return target;
 		}
 
-		public static UNKNOWN	get_ert_access( UNKNOWN [object Object] =null ) {
+		public static dynamic get_ert_access( dynamic _class = null ) {
 			local _ = _class // Was a switch-case, sorry for the mess.
 			if ( _=="commander" ) {
 				return GlobalFuncs.get_all_centcom_access();
@@ -4485,31 +4486,31 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	get_fancy_list_of_types(  ) {
-			UNKNOWN	temp = null;
+		public static dynamic get_fancy_list_of_types(  ) {
+			dynamic temp = null;
 			if ( GlobalVars.undefined( GlobalVars.g_fancy_list_of_types ) != null ) {
 				temp = GlobalFuncs.sortList( GlobalVars.undefined( BaseStatic ) - GlobalVars.undefined( new ByArea(3137) ) - BaseStatic - BaseDynamic );
 				GlobalVars.g_fancy_list_of_types = new List( temp.len );
 				type = null;
-				foreach (_ in temp ) {
+				foreach (dynamic _ in temp ) {
 					type = undefined;
 					typename = "" + type;
 					tn = null;
-					foreach (_ in GlobalVars.TYPES_SHORTCUTS ) {
+					foreach (dynamic _ in GlobalVars.TYPES_SHORTCUTS ) {
 						tn = undefined;
-						if ( GlobalVars.undefined( typename, 1, GlobalVars.undefined( "" + tn + "/" ) + 1 ) == "" + tn + "/" != null ) {
-							typename = GlobalVars.TYPES_SHORTCUTS[tn] + GlobalVars.undefined( typename, GlobalVars.undefined( "" + tn + "/" ), null );
+						if ( GlobalVars.undefined( typename, 1, GlobalVars.undefined( "" + tn + "/" ) + 1 ) == "" + tn + "/" ) {
+							typename = GlobalVars.TYPES_SHORTCUTS.[object Object] + GlobalVars.undefined( typename, GlobalVars.undefined( "" + tn + "/" ), null );
 							break;
 						}
 					};
-					GlobalVars.g_fancy_list_of_types[typename] = type;
+					GlobalVars.g_fancy_list_of_types.[object Object] = type;
 				};
 			}
 			return GlobalVars.g_fancy_list_of_types;
 		}
 
-		public static UNKNOWN	get_hear( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	lum = null;
+		public static dynamic get_hear( dynamic range = null, dynamic source = null ) {
+			dynamic lum = null;
 			lum = source.luminosity;
 			source.luminosity = 6;
 			heard = GlobalVars.undefined( range, source );
@@ -4517,8 +4518,8 @@ namespace Som13 {
 			return heard;
 		}
 
-		public static UNKNOWN	get_hearers_in_view( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
+		public static ByTable get_hearers_in_view( dynamic R = null, dynamic source = null ) {
+			dynamic T = null;
 			T = GlobalFuncs.get_turf( source );
 			hear = new ByTable();
 			if ( !T != null ) {
@@ -4526,9 +4527,9 @@ namespace Som13 {
 			}
 			range = GlobalFuncs.get_hear( R, T );
 			A = null;
-			foreach (_ in range ) {
+			foreach (dynamic _ in range ) {
 				A = undefined;
-				if ( !( A instanceof BaseDynamic ) != null ) {
+				if ( !( A is BaseDynamic ) != null ) {
 					continue;
 				}
 				hear = hear | GlobalFuncs.recursive_hear_check( A );
@@ -4536,29 +4537,29 @@ namespace Som13 {
 			return hear;
 		}
 
-		public static int	get_location_accessible( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	covered_locations = null;
+		public static int get_location_accessible( dynamic M = null, dynamic location = null ) {
+			int covered_locations = 0;
 			covered_locations = 0;
 			face_covered = 0;
 			eyesmouth_covered = 0;
-			if ( M instanceof Mob_Living_Carbon != null ) {
+			if ( M is Mob_Living_Carbon != null ) {
 				C = M;
 				I = null;
-				foreach (_ in new ByTable(new object [] {C.back,C.wear_mask,C.head}) ) {
+				foreach (dynamic _ in new ByTable(new object [] {C.back,C.wear_mask,C.head}) ) {
 					I = undefined;
-					if ( !( I instanceof Ent_Item_Clothing ) != null ) {
+					if ( !( I is Ent_Item_Clothing ) != null ) {
 						continue;
 					}
 					covered_locations = covered_locations | I.body_parts_covered;
 					face_covered = face_covered | I.flags_inv;
 					eyesmouth_covered = eyesmouth_covered | I.flags_cover;
 				};
-				if ( C instanceof Mob_Living_Carbon_Human != null ) {
+				if ( C is Mob_Living_Carbon_Human != null ) {
 					H = C;
 					I = null;
-					foreach (_ in new ByTable(new object [] {H.wear_suit,H.w_uniform,H.shoes,H.belt,H.gloves,H.glasses,H.ears}) ) {
+					foreach (dynamic _ in new ByTable(new object [] {H.wear_suit,H.w_uniform,H.shoes,H.belt,H.gloves,H.glasses,H.ears}) ) {
 						I = undefined;
-						if ( !( I instanceof Ent_Item ) != null ) {
+						if ( !( I is Ent_Item ) != null ) {
 							continue;
 						}
 						covered_locations = covered_locations | I.body_parts_covered;
@@ -4573,11 +4574,11 @@ namespace Som13 {
 					return 0;
 				}
 			} else if ( _=="eyes" ) {
-				if ( covered_locations & 1 || face_covered & 4 || eyesmouth_covered & 1 != null ) {
+				if ( covered_locations & 1 != null || face_covered & 4 != null || eyesmouth_covered & 1 != null ) {
 					return 0;
 				}
 			} else if ( _=="mouth" ) {
-				if ( covered_locations & 1 || face_covered & 8 || eyesmouth_covered & 8 || eyesmouth_covered & 16 != null ) {
+				if ( covered_locations & 1 != null || face_covered & 8 != null || eyesmouth_covered & 8 != null || eyesmouth_covered & 16 != null ) {
 					return 0;
 				}
 			} else if ( _=="chest" ) {
@@ -4624,8 +4625,8 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static double	get_location_modifier( UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
+		public static double get_location_modifier( dynamic M = null ) {
+			dynamic T = null;
 			T = GlobalFuncs.get_turf( M );
 			if ( GlobalVars.undefined( Ent_Structure_Optable, T ) != null ) {
 				return 1;
@@ -4638,81 +4639,81 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	get_mob_by_ckey( UNKNOWN [object Object] =null ) {
-			UNKNOWN	mobs = null;
+		public static dynamic get_mob_by_ckey( dynamic key = null ) {
+			dynamic mobs = null;
 			if ( !key != null ) {
 				return;
 			}
 			mobs = GlobalFuncs.sortmobs();
 			M = null;
-			foreach (_ in mobs ) {
+			foreach (dynamic _ in mobs ) {
 				M = undefined;
-				if ( M.ckey == key != null ) {
+				if ( M.ckey == key ) {
 					return M;
 				}
 			};
 		}
 
-		public static dynamic	get_mob_by_key( UNKNOWN [object Object] =null ) {
-			dynamic	M = null;
+		public static dynamic get_mob_by_key( dynamic key = null ) {
+			dynamic M = null;
 			M = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				M = undefined;
-				if ( M.ckey == GlobalVars.undefined( key ) != null ) {
+				if ( M.ckey == GlobalVars.undefined( key ) ) {
 					return M;
 				}
 			};
 			return;
 		}
 
-		public static dynamic	get_mobs_in_radio_ranges( UNKNOWN [object Object] =null ) {
-			dynamic	R = null;
-			UNKNOWN _default;
-			undefined = new ByTable();
+		public static ByTable get_mobs_in_radio_ranges( dynamic radios = null ) {
+			dynamic R = null;
+			ByTable _default;
+			_default = new ByTable();
 			R = null;
-			foreach (_ in radios ) {
+			foreach (dynamic _ in radios ) {
 				R = undefined;
-				if ( !( R instanceof Ent_Item_Device_Radio ) != null ) {
+				if ( !( R is Ent_Item_Device_Radio ) != null ) {
 					continue;
 				}
 				if ( R != null ) {
-					undefined = undefined | GlobalFuncs.get_hearers_in_view( R.canhear_range, R );
+					_default = _default | GlobalFuncs.get_hearers_in_view( R.canhear_range, R );
 				}
 			};
 			return _default;
 		}
 
-		public static UNKNOWN	get_offset_target_turf( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	x = null;
+		public static dynamic get_offset_target_turf( dynamic A = null, dynamic dx = null, dynamic dy = null ) {
+			dynamic x = null;
 			x = GlobalVars.undefined.min( Game.maxx, GlobalVars.undefined.max( 1, A.x + dx ) );
 			y = GlobalVars.undefined.min( Game.maxy, GlobalVars.undefined.max( 1, A.y + dy ) );
 			return GlobalVars.undefined( x, y, A.z );
 		}
 
-		public static UNKNOWN	get_radio_name( UNKNOWN [object Object] =null ) {
-			UNKNOWN	returntext = null;
-			returntext = GlobalVars.radiochannelsreverse["" + freq];
+		public static dynamic get_radio_name( dynamic freq = null ) {
+			dynamic returntext = null;
+			returntext = GlobalVars.radiochannelsreverse.[object Object];
 			if ( returntext != null ) {
 				return returntext;
 			}
 			return "" + GlobalVars.undefined( "" + freq, 1, 4 ) + "." + GlobalVars.undefined( "" + freq, 4, 5 );
 		}
 
-		public static UNKNOWN	get_radio_span( UNKNOWN [object Object] =null ) {
-			UNKNOWN	returntext = null;
-			returntext = GlobalVars.freqtospan["" + freq];
+		public static string get_radio_span( dynamic freq = null ) {
+			dynamic returntext = null;
+			returntext = GlobalVars.freqtospan.[object Object];
 			if ( returntext != null ) {
 				return returntext;
 			}
 			return "radio";
 		}
 
-		public static UNKNOWN	get_rand_frequency(  ) {
+		public static dynamic get_rand_frequency(  ) {
 			return Rand.Int( 32000, 55000 );
 		}
 
-		public static UNKNOWN	get_ranged_target_turf( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	x = null;
+		public static dynamic get_ranged_target_turf( dynamic A = null, dynamic direction = null, dynamic range = null ) {
+			dynamic x = null;
 			x = A.x;
 			y = A.y;
 			if ( direction & 1 != null ) {
@@ -4730,7 +4731,7 @@ namespace Som13 {
 			return GlobalVars.undefined( x, y, A.z );
 		}
 
-		public static UNKNOWN	get_region_accesses( UNKNOWN [object Object] =null ) {
+		public static dynamic get_region_accesses( dynamic code = null ) {
 			local _ = code // Was a switch-case, sorry for the mess.
 			if ( _==0 ) {
 				return GlobalFuncs.get_all_accesses();
@@ -4751,7 +4752,7 @@ namespace Som13 {
 			};
 		}
 
-		public static string	get_region_accesses_name( UNKNOWN [object Object] =null ) {
+		public static dynamic get_region_accesses_name( dynamic code = null ) {
 			local _ = code // Was a switch-case, sorry for the mess.
 			if ( _==0 ) {
 				return "All";
@@ -4772,7 +4773,7 @@ namespace Som13 {
 			};
 		}
 
-		public static string	get_security_level(  ) {
+		public static dynamic get_security_level(  ) {
 			local _ = GlobalVars.security_level // Was a switch-case, sorry for the mess.
 			if ( _==0 ) {
 				return "green";
@@ -4785,7 +4786,7 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	get_sfx( UNKNOWN [object Object] =null ) {
+		public static dynamic get_sfx( dynamic soundin = null ) {
 			if ( GlobalVars.undefined( soundin ) != null ) {
 				local _ = soundin // Was a switch-case, sorry for the mess.
 				if ( _=="shatter" ) {
@@ -4815,26 +4816,26 @@ namespace Som13 {
 			return soundin;
 		}
 
-		public static dynamic	get_stickyban_from_ckey( UNKNOWN [object Object] =null ) {
-			dynamic	key = null;
-			UNKNOWN _default;
+		public static dynamic get_stickyban_from_ckey( dynamic ckey = null ) {
+			dynamic key = null;
+			null _default;
 			if ( !ckey != null ) {
 				return;
 			}
 			ckey = GlobalVars.undefined( ckey );
-			undefined = null;
+			_default = null;
 			key = null;
-			foreach (_ in Game.GetConfig( "ban" ) ) {
+			foreach (dynamic _ in Game.GetConfig( "ban" ) ) {
 				key = undefined;
-				if ( GlobalVars.undefined( key ) == ckey != null ) {
-					undefined = GlobalFuncs.stickyban2list( Game.GetConfig( "ban", key ) );
+				if ( GlobalVars.undefined( key ) == ckey ) {
+					_default = GlobalFuncs.stickyban2list( Game.GetConfig( "ban", key ) );
 					break;
 				}
 			};
 			return _default;
 		}
 
-		public static string	get_supply_group_name( UNKNOWN [object Object] =null ) {
+		public static dynamic get_supply_group_name( dynamic cat = null ) {
 			local _ = cat // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				return "Emergency";
@@ -4855,24 +4856,24 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	get_teleport_loc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	dirx = null;
-			if ( distance == null != null ) {
+		public static dynamic get_teleport_loc( dynamic location = null, dynamic target = null, int distance = 0, int density = 0, int errorx = 0, int errory = 0, int eoffsetx = 0, int eoffsety = 0 ) {
+			int dirx = 0;
+			if ( distance == null ) {
 				distance = 1;
 			}
-			if ( density == null != null ) {
+			if ( density == null ) {
 				density = 0;
 			}
-			if ( errorx == null != null ) {
+			if ( errorx == null ) {
 				errorx = 0;
 			}
-			if ( errory == null != null ) {
+			if ( errory == null ) {
 				errory = 0;
 			}
-			if ( eoffsetx == null != null ) {
+			if ( eoffsetx == null ) {
 				eoffsetx = 0;
 			}
-			if ( eoffsety == null != null ) {
+			if ( eoffsety == null ) {
 				eoffsety = 0;
 			}
 			dirx = 0;
@@ -4921,19 +4922,19 @@ namespace Som13 {
 			};
 			destination = GlobalVars.undefined( location.x + dirx, location.y + diry, location.z );
 			if ( destination != null ) {
-				if ( errorx || errory != null ) {
+				if ( errorx != 0 || errory != 0 ) {
 					destination_list = new ByTable();
 					center = GlobalVars.undefined( destination.x + xoffset, destination.y + yoffset, location.z );
 					T = null;
-					foreach (_ in GlobalVars.undefined( GlobalVars.undefined( center.x + b1xerror, center.y + b1yerror, location.z ), GlobalVars.undefined( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
+					foreach (dynamic _ in GlobalVars.undefined( GlobalVars.undefined( center.x + b1xerror, center.y + b1yerror, location.z ), GlobalVars.undefined( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
 						T = undefined;
-						if ( density && T.density != null ) {
+						if ( density != 0 && T.density != null ) {
 							continue;
 						}
-						if ( T.x > Game.maxx || T.x < 1 != null ) {
+						if ( T.x > Game.maxx || T.x < 1 ) {
 							continue;
 						}
-						if ( T.y > Game.maxy || T.y < 1 != null ) {
+						if ( T.y > Game.maxy || T.y < 1 ) {
 							continue;
 						}
 						destination_list += T;
@@ -4944,13 +4945,13 @@ namespace Som13 {
 						return;
 					}
 				} else {
-					if ( density && destination.density != null ) {
+					if ( density != 0 && destination.density != null ) {
 						return;
 					}
-					if ( destination.x > Game.maxx || destination.x < 1 != null ) {
+					if ( destination.x > Game.maxx || destination.x < 1 ) {
 						return;
 					}
-					if ( destination.y > Game.maxy || destination.y < 1 != null ) {
+					if ( destination.y > Game.maxy || destination.y < 1 ) {
 						return;
 					}
 				}
@@ -4960,30 +4961,30 @@ namespace Som13 {
 			return destination;
 		}
 
-		public static UNKNOWN	get_timestamp(  ) {
+		public static dynamic get_timestamp(  ) {
 			return GlobalVars.undefined( ":ss", Game.time + 432000 );
 		}
 
-		public static UNKNOWN	get_turf( UNKNOWN [object Object] =null ) {
-			if ( !( A instanceof BaseStatic ) != null ) {
+		public static dynamic get_turf( dynamic A = null ) {
+			if ( !( A is BaseStatic ) != null ) {
 				return;
 			}
-			while (A && !GlobalVars.undefined( A )) {
+			while (A != null && !GlobalVars.undefined( A ) != null) {
 				A = A.loc;
 			};
 			return A;
 		}
 
-		public static UNKNOWN	get_turf_pixel( UNKNOWN [object Object] =null ) {
-			UNKNOWN	rough_x = null;
-			if ( AM instanceof BaseDynamic != null ) {
+		public static dynamic get_turf_pixel( dynamic AM = null ) {
+			int rough_x = 0;
+			if ( AM is BaseDynamic != null ) {
 				rough_x = 0;
 				rough_y = 0;
 				final_x = 0;
 				final_y = 0;
 				i_width = Game.icon_size;
 				i_height = Game.icon_size;
-				if ( AM.bound_height != Game.icon_size || AM.bound_width != Game.icon_size != null ) {
+				if ( AM.bound_height != Game.icon_size || AM.bound_width != Game.icon_size ) {
 					AMicon = Icon( AM.icon, AM.icon_state );
 					i_width = AMicon.Width();
 					i_height = AMicon.$Height();
@@ -4999,21 +5000,21 @@ namespace Som13 {
 				}
 				final_x = AM.x + rough_x;
 				final_y = AM.y + rough_y;
-				if ( final_x || final_y != null ) {
+				if ( final_x != 0 || final_y != 0 ) {
 					return GlobalVars.undefined( final_x, final_y, AM.z );
 				}
 			}
 		}
 
-		public static ByTable	get_uplink_items( UNKNOWN [object Object] =null ) {
-			ByTable	last = null;
-			if ( gamemode_override == null != null ) {
+		public static ByTable get_uplink_items( dynamic gamemode_override = null ) {
+			ByTable last = null;
+			if ( gamemode_override == null ) {
 				gamemode_override = null;
 			}
 			if ( !GlobalVars.uplink_items.len != null ) {
 				last = new ByTable();
 				item = null;
-				foreach (_ in GlobalVars.undefined( UplinkItem ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( UplinkItem ) ) {
 					item = undefined;
 					I = item();
 					if ( !I.item != null ) {
@@ -5023,84 +5024,84 @@ namespace Som13 {
 						last += I;
 						continue;
 					}
-					if ( !GlobalVars.uplink_items[I.category] != null ) {
-						GlobalVars.uplink_items[I.category] = new ByTable();
+					if ( !GlobalVars.uplink_items.[object Object] != null ) {
+						GlobalVars.uplink_items.[object Object] = new ByTable();
 					}
-					GlobalVars.uplink_items[I.category] += I;
+					GlobalVars.uplink_items.[object Object] += I;
 				};
 				I = null;
-				foreach (_ in last ) {
+				foreach (dynamic _ in last ) {
 					I = undefined;
-					if ( !( I instanceof UplinkItem ) != null ) {
+					if ( !( I is UplinkItem ) != null ) {
 						continue;
 					}
-					if ( !GlobalVars.uplink_items[I.category] != null ) {
-						GlobalVars.uplink_items[I.category] = new ByTable();
+					if ( !GlobalVars.uplink_items.[object Object] != null ) {
+						GlobalVars.uplink_items.[object Object] = new ByTable();
 					}
-					GlobalVars.uplink_items[I.category] += I;
+					GlobalVars.uplink_items.[object Object] += I;
 				};
 			}
 			filtered_uplink_items = new ByTable();
 			category = null;
-			foreach (_ in GlobalVars.uplink_items ) {
+			foreach (dynamic _ in GlobalVars.uplink_items ) {
 				category = undefined;
 				I = null;
-				foreach (_ in GlobalVars.uplink_items[category] ) {
+				foreach (dynamic _ in GlobalVars.uplink_items.[object Object] ) {
 					I = undefined;
-					if ( !( I instanceof UplinkItem ) != null ) {
+					if ( !( I is UplinkItem ) != null ) {
 						continue;
 					}
 					if ( I.gamemodes.len != null ) {
-						if ( !gamemode_override && GlobalVars.ticker && !( GlobalVars.ticker.mode.type in I.gamemodes ) != null ) {
+						if ( !gamemode_override != null && GlobalVars.ticker != null && !GlobalVars.ticker.mode.type in I.gamemodes != null ) {
 							continue;
 						}
-						if ( gamemode_override && !( gamemode_override in I.gamemodes ) != null ) {
+						if ( gamemode_override != null && !gamemode_override in I.gamemodes != null ) {
 							continue;
 						}
 					}
 					if ( I.excludefrom.len != null ) {
-						if ( !gamemode_override && GlobalVars.ticker && GlobalVars.ticker.mode.type in I.excludefrom != null ) {
+						if ( !gamemode_override != null && GlobalVars.ticker != null && GlobalVars.ticker.mode.type in I.excludefrom != null ) {
 							continue;
 						}
-						if ( gamemode_override && gamemode_override in I.excludefrom != null ) {
+						if ( gamemode_override != null && gamemode_override in I.excludefrom != null ) {
 							continue;
 						}
 					}
-					if ( !filtered_uplink_items[I.category] != null ) {
-						filtered_uplink_items[I.category] = new ByTable();
+					if ( !filtered_uplink_items.[object Object] != null ) {
+						filtered_uplink_items.[object Object] = new ByTable();
 					}
-					filtered_uplink_items[category] += I;
+					filtered_uplink_items.[object Object] += I;
 				};
 			};
 			return filtered_uplink_items;
 		}
 
-		public static dynamic	get_viewable_pdas(  ) {
-			dynamic	P = null;
-			UNKNOWN _default;
-			undefined = new ByTable();
+		public static ByTable get_viewable_pdas(  ) {
+			dynamic P = null;
+			ByTable _default;
+			_default = new ByTable();
 			P = null;
-			foreach (_ in GlobalVars.PDAs ) {
+			foreach (dynamic _ in GlobalVars.PDAs ) {
 				P = undefined;
-				if ( !( P instanceof Ent_Item_Device_Pda ) != null ) {
+				if ( !( P is Ent_Item_Device_Pda ) != null ) {
 					continue;
 				}
-				if ( !P.owner || P.toff || P.hidden != null ) {
+				if ( !P.owner != null || P.toff != null || P.hidden != null ) {
 					continue;
 				}
-				undefined += P;
+				_default += P;
 			};
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static UNKNOWN	getb( UNKNOWN [object Object] =null ) {
+		public static dynamic getb( dynamic col = null ) {
 			return GlobalFuncs.hex2num( GlobalVars.undefined( col, 6, null ) );
 		}
 
-		public static Icon	getBlankIcon( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	flat_icon = null;
-			if ( safety == null != null ) {
+		public static Icon getBlankIcon( dynamic A = null, int safety = 0 ) {
+			UNKNOWN flat_icon = null;
+			if ( safety == null ) {
 				safety = 1;
 			}
 			flat_icon = safety ? A : new Icon( A );
@@ -5111,17 +5112,17 @@ namespace Som13 {
 			return blank_icon;
 		}
 
-		public static UNKNOWN	getblock( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( blocksize == null != null ) {
+		public static dynamic getblock( dynamic input = null, dynamic blocknumber = null, int blocksize = 0 ) {
+			if ( blocksize == null ) {
 				blocksize = 3;
 			}
 			return GlobalVars.undefined( input, blocksize * ( blocknumber - 1 ) + 1, blocksize * blocknumber + 1 );
 		}
 
-		public static ByTable	GetColors( UNKNOWN [object Object] =null ) {
-			UNKNOWN	hi1 = null;
+		public static ByTable GetColors( dynamic hex = null ) {
+			dynamic hi1 = null;
 			hex = GlobalVars.undefined( hex );
-			if ( GlobalVars.undefined( hex ) == 7 != null ) {
+			if ( GlobalVars.undefined( hex ) == 7 ) {
 				hex += "FF";
 			}
 			hi1 = GlobalVars.undefined( hex, 2 );
@@ -5135,16 +5136,16 @@ namespace Som13 {
 			return new ByTable(new object [] {( hi1 >= 65 ? hi1 - 55 : hi1 - 48 ) << 4 | ( lo1 >= 65 ? lo1 - 55 : lo1 - 48 ),( hi2 >= 65 ? hi2 - 55 : hi2 - 48 ) << 4 | ( lo2 >= 65 ? lo2 - 55 : lo2 - 48 ),( hi3 >= 65 ? hi3 - 55 : hi3 - 48 ) << 4 | ( lo3 >= 65 ? lo3 - 55 : lo3 - 48 ),( hi4 >= 65 ? hi4 - 55 : hi4 - 48 ) << 4 | ( lo4 >= 65 ? lo4 - 55 : lo4 - 48 )});
 		}
 
-		public static UNKNOWN	GetExp( UNKNOWN [object Object] =null ) {
-			UNKNOWN	exp = null;
+		public static int GetExp( dynamic minutes = null ) {
+			dynamic exp = null;
 			GlobalFuncs.UpdateTime();
 			exp = minutes - GlobalVars.CMinutes;
-			if ( exp <= 0 != null ) {
+			if ( exp <= 0 ) {
 				return 0;
 			} else {
-				if ( exp >= 1440 != null ) {
+				if ( exp >= 1440 ) {
 					timeleftstring = "" + GlobalVars.undefined.round( exp / 1440, 0.10000000149011612 ) + " Days";
-				} else if ( exp >= 60 != null ) {
+				} else if ( exp >= 60 ) {
 					timeleftstring = "" + GlobalVars.undefined.round( exp / 60, 0.10000000149011612 ) + " Hours";
 				} else {
 					timeleftstring = "" + exp + " Minutes";
@@ -5153,16 +5154,16 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	GetExpjob( UNKNOWN [object Object] =null ) {
-			UNKNOWN	exp = null;
+		public static int GetExpjob( dynamic minutes = null ) {
+			dynamic exp = null;
 			GlobalFuncs.UpdateTime();
 			exp = minutes - GlobalVars.CMinutes;
-			if ( exp <= 0 != null ) {
+			if ( exp <= 0 ) {
 				return 0;
 			} else {
-				if ( exp >= 1440 != null ) {
+				if ( exp >= 1440 ) {
 					timeleftstring = "" + GlobalVars.undefined.round( exp / 1440, 0.10000000149011612 ) + " Days";
-				} else if ( exp >= 60 != null ) {
+				} else if ( exp >= 60 ) {
 					timeleftstring = "" + GlobalVars.undefined.round( exp / 60, 0.10000000149011612 ) + " Hours";
 				} else {
 					timeleftstring = "" + exp + " Minutes";
@@ -5171,25 +5172,25 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	getFlatIcon( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	flat = null;
-			if ( defdir == null != null ) {
+		public static dynamic getFlatIcon( dynamic A = null, dynamic defdir = null, dynamic deficon = null, dynamic defstate = null, dynamic defblend = null ) {
+			dynamic flat = null;
+			if ( defdir == null ) {
 				defdir = A.dir;
 			}
-			if ( deficon == null != null ) {
+			if ( deficon == null ) {
 				deficon = A.icon;
 			}
-			if ( defstate == null != null ) {
+			if ( defstate == null ) {
 				defstate = A.icon_state;
 			}
-			if ( defblend == null != null ) {
+			if ( defblend == null ) {
 				defblend = A.blend_mode;
 			}
 			flat = Icon( new ByRsc(11), "nothing" );
 			if ( !A != null ) {
 				return flat;
 			}
-			if ( A.alpha <= 0 != null ) {
+			if ( A.alpha <= 0 ) {
 				return flat;
 			}
 			noIcon = GlobalVars.FALSE;
@@ -5206,19 +5207,19 @@ namespace Som13 {
 			} else {
 				curstate = defstate;
 			}
-			if ( !noIcon && !( curstate in GlobalVars.undefined( null, curicon ) ) != null ) {
+			if ( !noIcon != null && !curstate in GlobalVars.undefined( null, curicon ) != null ) {
 				if ( "" in GlobalVars.undefined( null, curicon ) != null ) {
 					curstate = "";
 				} else {
 					noIcon = GlobalVars.TRUE;
 				}
 			}
-			if ( A.dir != 2 != null ) {
+			if ( A.dir != 2 ) {
 				curdir = A.dir;
 			} else {
 				curdir = defdir;
 			}
-			if ( A.blend_mode == GlobalVars.BLEND_DEFAULT != null ) {
+			if ( A.blend_mode == GlobalVars.BLEND_DEFAULT ) {
 				curblend = defblend;
 			} else {
 				curblend = A.blend_mode;
@@ -5229,24 +5230,24 @@ namespace Som13 {
 				copy.color = A.color;
 				copy.alpha = A.alpha;
 				copy.blend_mode = curblend;
-				layers[copy] = A.layer;
+				layers.[object Object] = A.layer;
 			}
 			process = A.underlays;
 			pSet = 0;
 			curIndex = 1;
 			while (GlobalVars.TRUE) {
-				if ( curIndex <= process.len != null ) {
-					current = process[curIndex];
+				if ( curIndex <= process.len ) {
+					current = process.[object Object];
 					if ( !current != null ) {
 						curIndex++;
 						continue;
 					}
 					currentLayer = current.layer;
-					if ( currentLayer < 0 != null ) {
-						if ( currentLayer <= -1000 != null ) {
+					if ( currentLayer < 0 ) {
+						if ( currentLayer <= -1000 ) {
 							return flat;
 						}
-						if ( pSet == 0 != null ) {
+						if ( pSet == 0 ) {
 							currentLayer = A.layer + currentLayer / 1000;
 						} else {
 							currentLayer = A.layer + ( currentLayer + 1000 ) / 1000;
@@ -5254,21 +5255,21 @@ namespace Som13 {
 					}
 					cmpIndex = 1;
 					while (cmpIndex <= layers.len) {
-						compare = layers[cmpIndex];
-						if ( currentLayer < layers[compare] != null ) {
+						compare = layers.[object Object];
+						if ( currentLayer < layers.[object Object] ) {
 							layers.$Insert( cmpIndex, current );
-							layers[current] = currentLayer;
+							layers.[object Object] = currentLayer;
 							break;
 						}
 						cmpIndex++;
 					};
-					if ( cmpIndex > layers.len != null ) {
-						layers[current] = currentLayer;
+					if ( cmpIndex > layers.len ) {
+						layers.[object Object] = currentLayer;
 					}
 					curIndex++;
 				}
-				if ( curIndex > process.len != null ) {
-					if ( pSet == 0 != null ) {
+				if ( curIndex > process.len ) {
+					if ( pSet == 0 ) {
 						curIndex = 1;
 						pSet = 1;
 						process = A.overlays;
@@ -5287,12 +5288,12 @@ namespace Som13 {
 			addY1 = null;
 			addY2 = null;
 			I = null;
-			foreach (_ in layers ) {
+			foreach (dynamic _ in layers ) {
 				I = undefined;
-				if ( I.alpha == 0 != null ) {
+				if ( I.alpha == 0 ) {
 					continue;
 				}
-				if ( I == copy != null ) {
+				if ( I == copy ) {
 					curblend = GlobalVars.BLEND_OVERLAY;
 					add = Icon( I.icon, I.icon_state, I.dir );
 				} else {
@@ -5302,7 +5303,7 @@ namespace Som13 {
 				addX2 = GlobalVars.undefined.max( flatX2, I.pixel_x + add.Width() );
 				addY1 = GlobalVars.undefined.min( flatY1, I.pixel_y + 1 );
 				addY2 = GlobalVars.undefined.max( flatY2, I.pixel_y + add.Height() );
-				if ( addX1 != flatX1 || addX2 != flatX2 || addY1 != flatY1 || addY2 != flatY2 != null ) {
+				if ( addX1 != flatX1 || addX2 != flatX2 || addY1 != flatY1 || addY2 != flatY2 ) {
 					flat.Crop( addX1 - flatX1 + 1, addY1 - flatY1 + 1, addX2 - flatX1 + 1, addY2 - flatY1 + 1 );
 					flatX1 = addX1;
 					flatX2 = addX2;
@@ -5314,31 +5315,31 @@ namespace Som13 {
 			if ( A.color != null ) {
 				flat.Blend( A.color, 2 );
 			}
-			if ( A.alpha < 255 != null ) {
+			if ( A.alpha < 255 ) {
 				flat.Blend( GlobalVars.undefined( 255, 255, 255, A.alpha ), 2 );
 			}
 			return Icon( flat, "", GlobalVars.SOUTH );
 		}
 
-		public static UNKNOWN	GetFromPool( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	pooled = null;
+		public static dynamic GetFromPool( dynamic get_type = null, dynamic second_arg = null ) {
+			dynamic pooled = null;
 			if ( !get_type != null ) {
 				return;
 			}
-			if ( GlobalVars.undefined( GlobalVars.GlobalPool[get_type] ) != null ) {
+			if ( GlobalVars.undefined( GlobalVars.GlobalPool.[object Object] ) != null ) {
 				return;
 			}
-			if ( GlobalVars.undefined( GlobalVars.GlobalPool[get_type] ) == 0 != null ) {
+			if ( GlobalVars.undefined( GlobalVars.GlobalPool.[object Object] ) == 0 ) {
 				return;
 			}
-			pooled = GlobalFuncs.pop( GlobalVars.GlobalPool[get_type] );
+			pooled = GlobalFuncs.pop( GlobalVars.GlobalPool.[object Object] );
 			if ( pooled != null ) {
-				if ( pooled instanceof BaseDynamic != null ) {
+				if ( pooled is BaseDynamic != null ) {
 					AM = pooled;
 				}
-				if ( second_arg instanceof new List != null ) {
+				if ( second_arg is new List != null ) {
 					if ( AM != null ) {
-						AM.loc = second_arg[1];
+						AM.loc = second_arg.1;
 					}
 					pooled.New.lcall( second_arg );
 				} else {
@@ -5351,13 +5352,13 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	getg( UNKNOWN [object Object] =null ) {
+		public static dynamic getg( dynamic col = null ) {
 			return GlobalFuncs.hex2num( GlobalVars.undefined( col, 4, 6 ) );
 		}
 
-		public static UNKNOWN	getHologramIcon( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	flat_icon = null;
-			if ( safety == null != null ) {
+		public static UNKNOWN getHologramIcon( dynamic A = null, int safety = 0 ) {
+			UNKNOWN flat_icon = null;
+			if ( safety == null ) {
 				safety = 1;
 			}
 			flat_icon = safety ? A : new Icon( A );
@@ -5368,13 +5369,13 @@ namespace Som13 {
 			return flat_icon;
 		}
 
-		public static Icon	getIconMask( UNKNOWN [object Object] =null ) {
-			Icon	alpha_mask = null;
+		public static Icon getIconMask( dynamic A = null ) {
+			Icon alpha_mask = null;
 			alpha_mask = new Icon( A.icon, A.icon_state );
 			I = null;
-			foreach (_ in A.overlays ) {
+			foreach (dynamic _ in A.overlays ) {
 				I = undefined;
-				if ( I.layer > A.layer != null ) {
+				if ( I.layer > A.layer ) {
 					continue;
 				}
 				image_overlay = new Icon( I.icon, I.icon_state );
@@ -5383,18 +5384,18 @@ namespace Som13 {
 			return alpha_mask;
 		}
 
-		public static UNKNOWN	getleftblocks( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( blocknumber > 1 != null ) {
+		public static dynamic getleftblocks( dynamic input = null, dynamic blocknumber = null, dynamic blocksize = null ) {
+			if ( blocknumber > 1 ) {
 				return GlobalVars.undefined( input, 1, blocksize * blocknumber - ( blocksize - 1 ) );
 			}
 		}
 
-		public static UNKNOWN	getLetterImage( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	atom_icon = null;
-			if ( letter == null != null ) {
+		public static dynamic getLetterImage( dynamic A = null, string letter = null, int uppercase = 0 ) {
+			Icon atom_icon = null;
+			if ( letter == null ) {
 				letter = "";
 			}
-			if ( uppercase == null != null ) {
+			if ( uppercase == null ) {
 				uppercase = 0;
 			}
 			if ( !A != null ) {
@@ -5403,9 +5404,9 @@ namespace Som13 {
 			atom_icon = new Icon( A.icon, A.icon_state );
 			if ( !letter != null ) {
 				letter = GlobalVars.undefined( A.name, 1, 2 );
-				if ( uppercase == 1 != null ) {
+				if ( uppercase == 1 ) {
 					letter = GlobalVars.undefined( letter );
-				} else if ( uppercase == -1 != null ) {
+				} else if ( uppercase == -1 ) {
 					letter = GlobalVars.undefined( letter );
 				}
 			}
@@ -5419,8 +5420,8 @@ namespace Som13 {
 			return text_image;
 		}
 
-		public static ByTable	getline( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	px = null;
+		public static ByTable getline( dynamic M = null, dynamic N = null ) {
+			dynamic px = null;
 			px = M.x;
 			py = M.y;
 			line = new ByTable(new object [] {GlobalVars.undefined( px, py, M.z )});
@@ -5432,11 +5433,11 @@ namespace Som13 {
 			sdy = GlobalFuncs.sign( dy );
 			x = dxabs >> 1;
 			y = dyabs >> 1;
-			if ( dxabs >= dyabs != null ) {
+			if ( dxabs >= dyabs ) {
 				j = 0;
 				while (j < dxabs) {
 					y += dyabs;
-					if ( y >= dxabs != null ) {
+					if ( y >= dxabs ) {
 						y -= dxabs;
 						py += sdy;
 					}
@@ -5448,7 +5449,7 @@ namespace Som13 {
 				j = 0;
 				while (j < dyabs) {
 					x += dxabs;
-					if ( x >= dyabs != null ) {
+					if ( x >= dyabs ) {
 						x -= dyabs;
 						px += sdx;
 					}
@@ -5460,51 +5461,51 @@ namespace Som13 {
 			return line;
 		}
 
-		public static ByTable	getmobs(  ) {
-			UNKNOWN	mobs = null;
+		public static ByTable getmobs(  ) {
+			dynamic mobs = null;
 			mobs = GlobalFuncs.sortmobs();
 			names = new ByTable();
 			creatures = new ByTable();
 			namecounts = new ByTable();
 			M = null;
-			foreach (_ in mobs ) {
+			foreach (dynamic _ in mobs ) {
 				M = undefined;
 				name = M.name;
 				if ( name in names != null ) {
-					namecounts[name]++;
-					name = "" + name + " (" + namecounts[name] + ")";
+					namecounts.[object Object]++;
+					name = "" + name + " (" + namecounts.[object Object] + ")";
 				} else {
 					names.Add( name );
-					namecounts[name] = 1;
+					namecounts.[object Object] = 1;
 				}
-				if ( M.real_name && M.real_name != M.name != null ) {
+				if ( M.real_name != null && M.real_name != M.name ) {
 					name += " [" + M.real_name + "]";
 				}
-				if ( M.stat == 2 != null ) {
-					if ( M instanceof Mob_Dead_Observer != null ) {
+				if ( M.stat == 2 ) {
+					if ( M is Mob_Dead_Observer != null ) {
 						name += " [ghost]";
 					} else {
 						name += " [dead]";
 					}
 				}
-				creatures[name] = M;
+				creatures.[object Object] = M;
 			};
 			return creatures;
 		}
 
-		public static UNKNOWN	getr( UNKNOWN [object Object] =null ) {
+		public static dynamic getr( dynamic col = null ) {
 			return GlobalFuncs.hex2num( GlobalVars.undefined( col, 2, 4 ) );
 		}
 
-		public static UNKNOWN	getrightblocks( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( blocknumber < GlobalVars.undefined( input ) / blocksize != null ) {
+		public static dynamic getrightblocks( dynamic input = null, dynamic blocknumber = null, dynamic blocksize = null ) {
+			if ( blocknumber < GlobalVars.undefined( input ) / blocksize ) {
 				return GlobalVars.undefined( input, blocksize * blocknumber + 1, GlobalVars.undefined( input ) + 1 );
 			}
 		}
 
-		public static Icon	getStaticIcon( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	flat_icon = null;
-			if ( safety == null != null ) {
+		public static Icon getStaticIcon( dynamic A = null, int safety = 0 ) {
+			UNKNOWN flat_icon = null;
+			if ( safety == null ) {
 				safety = 1;
 			}
 			flat_icon = safety ? A : new Icon( A );
@@ -5515,15 +5516,15 @@ namespace Som13 {
 			return static_icon;
 		}
 
-		public static string	Gibberish( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			string	returntext = null;
+		public static string Gibberish( dynamic t = null, dynamic p = null ) {
+			string returntext = null;
 			returntext = "";
 			i = null;
 			i = 1;
 			while (i <= GlobalVars.undefined( t )) {
 				letter = GlobalVars.undefined( t, i, i + 1 );
 				if ( Rand.chance( 50 ) != null ) {
-					if ( p >= 70 != null ) {
+					if ( p >= 70 ) {
 						letter = "";
 					}
 					j = null;
@@ -5539,11 +5540,11 @@ namespace Som13 {
 			return returntext;
 		}
 
-		public static dynamic	gibs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic gibs( dynamic location = null, dynamic viruses = null, dynamic MobDNA = null ) {
 			new Ent_Effect_Gibspawner_Generic( location, viruses, MobDNA );
 		}
 
-		public static dynamic	give_codewords( UNKNOWN [object Object] =null ) {
+		public static dynamic give_codewords( dynamic traitor_mob = null ) {
 			traitor_mob.write( "<U><B>The Syndicate provided you with the following information on how to identify their agents:</B></U>" );
 			traitor_mob.write( "<B>Code Phrase</B>: <span class='danger'>" + GlobalVars.syndicate_code_phrase + "</span>" );
 			traitor_mob.write( "<B>Code Response</B>: <span class='danger'>" + GlobalVars.syndicate_code_response + "</span>" );
@@ -5552,48 +5553,48 @@ namespace Som13 {
 			traitor_mob.write( "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe." );
 		}
 
-		public static int	gotwallitem( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	locdir = null;
-			if ( check_external == null != null ) {
+		public static int gotwallitem( dynamic loc = null, dynamic dir = null, int check_external = 0 ) {
+			dynamic locdir = null;
+			if ( check_external == null ) {
 				check_external = 0;
 			}
 			locdir = GlobalVars.undefined( loc, dir );
 			O = null;
-			foreach (_ in loc ) {
+			foreach (dynamic _ in loc ) {
 				O = undefined;
-				if ( !( O instanceof Entity ) != null ) {
+				if ( !( O is Entity ) != null ) {
 					continue;
 				}
-				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS ) && check_external != 2 != null ) {
+				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS ) != null && check_external != 2 ) {
 					if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS_INVERSE ) != null ) {
-						if ( O.dir == GlobalVars.undefined( dir, 180 ) != null ) {
+						if ( O.dir == GlobalVars.undefined( dir, 180 ) ) {
 							return 1;
 						}
-					} else if ( O.dir == dir != null ) {
+					} else if ( O.dir == dir ) {
 						return 1;
 					}
-					if ( GlobalFuncs.get_turf_pixel( O ) == locdir != null ) {
+					if ( GlobalFuncs.get_turf_pixel( O ) == locdir ) {
 						return 1;
 					}
 				}
-				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS_EXTERNAL ) && check_external != null ) {
+				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS_EXTERNAL ) != null && check_external != 0 ) {
 					if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS_INVERSE ) != null ) {
-						if ( O.dir == GlobalVars.undefined( dir, 180 ) != null ) {
+						if ( O.dir == GlobalVars.undefined( dir, 180 ) ) {
 							return 1;
 						}
-					} else if ( O.dir == dir != null ) {
+					} else if ( O.dir == dir ) {
 						return 1;
 					}
 				}
 			};
 			O = null;
-			foreach (_ in locdir ) {
+			foreach (dynamic _ in locdir ) {
 				O = undefined;
-				if ( !( O instanceof Entity ) != null ) {
+				if ( !( O is Entity ) != null ) {
 					continue;
 				}
-				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS ) && check_external != 2 != null ) {
-					if ( O.pixel_x == 0 && O.pixel_y == 0 != null ) {
+				if ( GlobalFuncs.is_type_in_list( O, GlobalVars.WALLITEMS ) != null && check_external != 2 ) {
+					if ( O.pixel_x == 0 && O.pixel_y == 0 ) {
 						return 1;
 					}
 				}
@@ -5601,23 +5602,23 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	has_gravity( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	A = null;
+		public static int has_gravity( dynamic AT = null, dynamic T = null ) {
+			dynamic A = null;
 			if ( !T != null ) {
 				T = GlobalFuncs.get_turf( AT );
 			}
 			A = GlobalFuncs.get_area( T );
-			if ( T instanceof Tile_Space != null ) {
+			if ( T is Tile_Space != null ) {
 				return 0;
-			} else if ( A && A.has_gravity != null ) {
+			} else if ( A != null && A.has_gravity != null ) {
 				return 1;
-			} else if ( T && GlobalVars.gravity_generators["" + T.z] && GlobalVars.undefined( GlobalVars.gravity_generators["" + T.z] ) != null ) {
+			} else if ( T != null && GlobalVars.gravity_generators.[object Object] != null && GlobalVars.undefined( GlobalVars.gravity_generators.[object Object] ) != null ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public static int	hasvar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static int hasvar( dynamic A = null, dynamic varname = null ) {
 			if ( A.vars.Find( GlobalVars.undefined( varname ) ) != null ) {
 				return 1;
 			} else {
@@ -5625,9 +5626,9 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	healthscan( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	oxy_loss = null;
-			if ( mode == null != null ) {
+		public static dynamic healthscan( dynamic user = null, dynamic M = null, int mode = 0 ) {
+			dynamic oxy_loss = null;
+			if ( mode == null ) {
 				mode = 1;
 			}
 			oxy_loss = M.getOxyLoss();
@@ -5639,23 +5640,23 @@ namespace Som13 {
 				mob_status = "<span class='alert'>Deceased</span>";
 				oxy_loss = GlobalVars.undefined.max( Rand.Int( 1, 40 ), oxy_loss, 300 - ( tox_loss + fire_loss + brute_loss ) );
 			}
-			if ( M instanceof Mob_Living_Carbon_Human != null ) {
+			if ( M is Mob_Living_Carbon_Human != null ) {
 				H = M;
 				if ( H.heart_attack != null ) {
 					user.write( "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>" );
 				}
 			}
 			user.write( "<span class='info'>Analyzing results for " + M + ":\n	Overall status: " + mob_status + "</span>" );
-			if ( brute_loss > 10 != null ) {
+			if ( brute_loss > 10 ) {
 				user.write( "	<span class='alert'>" + ( brute_loss > 50 ? "Severe" : "Minor" ) + " tissue damage detected.</span>" );
 			}
-			if ( fire_loss > 10 != null ) {
+			if ( fire_loss > 10 ) {
 				user.write( "	<span class='alert'>" + ( fire_loss > 50 ? "Severe" : "Minor" ) + " burn damage detected.</span>" );
 			}
-			if ( oxy_loss > 10 != null ) {
+			if ( oxy_loss > 10 ) {
 				user.write( "	<span class='info'><span class='alert'>" + ( oxy_loss > 50 ? "Severe" : "Minor" ) + " oxygen deprivation detected.</span>" );
 			}
-			if ( tox_loss > 10 != null ) {
+			if ( tox_loss > 10 ) {
 				user.write( "	<span class='alert'>" + ( tox_loss > 50 ? "Critical" : "Dangerous" ) + " amount of toxins detected.</span>" );
 			}
 			if ( M.getStaminaLoss() != null ) {
@@ -5664,50 +5665,50 @@ namespace Som13 {
 			if ( M.getCloneLoss() != null ) {
 				user.write( "	<span class='alert'>Subject appears to have " + ( M.$getCloneLoss() > 30 ? "severe" : "minor" ) + " cellular damage.</span>" );
 			}
-			if ( M.reagents && M.reagents.get_reagent_amount( "epinephrine" ) != null ) {
+			if ( M.reagents != null && M.reagents.get_reagent_amount( "epinephrine" ) != null ) {
 				user.write( "	<span class='info'>Bloodstream analysis located " + M.reagents.get_reagent_amount( "epinephrine" ) + " units of rejuvenation chemicals.</span>" );
 			}
 			if ( M.getBrainLoss() >= 100 || !M.$getorgan( Ent_Item_Organ_Internal_Brain ) != null ) {
 				user.write( "	<span class='alert'>Subject brain function is non-existant.</span>" );
-			} else if ( M.getBrainLoss() >= 60 != null ) {
+			} else if ( M.getBrainLoss() >= 60 ) {
 				user.write( "	<span class='alert'>Severe brain damage detected. Subject likely to have mental retardation.</span>" );
-			} else if ( M.$getBrainLoss() >= 10 != null ) {
+			} else if ( M.$getBrainLoss() >= 10 ) {
 				user.write( "	<span class='alert'>Brain damage detected. Subject may have had a concussion.</span>" );
 			}
-			if ( M instanceof Mob_Living_Carbon_Human && mode == 1 != null ) {
+			if ( M is Mob_Living_Carbon_Human != null && mode == 1 ) {
 				H = M;
 				damaged = H.get_damaged_organs( 1, 1 );
-				if ( GlobalVars.undefined( damaged ) > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 != null ) {
+				if ( GlobalVars.undefined( damaged ) > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 ) {
 					user.write( "<span class='info'>	Damage: <span class='info'><font color='red'>Brute</font></span>-<font color='#FF8000'>Burn</font>-<font color='green'>Toxin</font>-<font color='blue'>Suffocation</font>\n		Specifics: <font color='red'>" + brute_loss + "</font>-<font color='#FF8000'>" + fire_loss + "</font>-<font color='green'>" + tox_loss + "</font>-<font color='blue'>" + oxy_loss + "</font></span>" );
 					org = null;
-					foreach (_ in damaged ) {
+					foreach (dynamic _ in damaged ) {
 						org = undefined;
-						if ( !( org instanceof Ent_Item_Organ_Limb ) != null ) {
+						if ( !( org is Ent_Item_Organ_Limb ) != null ) {
 							continue;
 						}
 						user.write( "		<span class='info'>" + GlobalFuncs.capitalize( org.getDisplayName() ) + ": " + ( org.brute_dam > 0 ? "<font color='red'>" + org.brute_dam + "</font></span>" : "<font color='red'>0</font>" ) + "-" + ( org.burn_dam > 0 ? "<font color='#FF8000'>" + org.burn_dam + "</font>" : "<font color='#FF8000'>0</font>" ) );
 					};
 				}
 			}
-			if ( M instanceof Mob_Living_Carbon_Human != null ) {
+			if ( M is Mob_Living_Carbon_Human != null ) {
 				H = M;
 				user.write( "<span class='info'>Species: " + H.dna.species.name + "</span>" );
 			}
 			user.write( "<span class='info'>Body temperature: " + GlobalVars.undefined.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) + " &deg;C (" + GlobalVars.undefined.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) + " &deg;F)</span>" );
-			if ( M.tod && ( M.stat == 2 || M.status_flags & 8192 ) != null ) {
+			if ( M.tod != null && ( M.stat == 2 || M.status_flags & 8192 != null ) ) {
 				user.write( "<span class='info'>Time of Death:</span> " + M.tod );
 			}
 			D = null;
-			foreach (_ in M.viruses ) {
+			foreach (dynamic _ in M.viruses ) {
 				D = undefined;
-				if ( !( D instanceof Disease ) != null ) {
+				if ( !( D is Disease ) != null ) {
 					continue;
 				}
 				if ( !( D.visibility_flags & 1 ) != null ) {
 					user.write( "<span class='alert'><b>Warning: " + D.form + " detected</b>\nName: " + D.name + ".\nType: " + D.spread_text + ".\nStage: " + D.stage + "/" + D.max_stages + ".\nPossible Cure: " + D.cure_text + "</span>" );
 				}
 			};
-			if ( M instanceof Mob_Living_Carbon_Human != null ) {
+			if ( M is Mob_Living_Carbon_Human != null ) {
 				H = M;
 				if ( H.vessel != null ) {
 					if ( H.blood_max != null ) {
@@ -5717,9 +5718,9 @@ namespace Som13 {
 					blood_percent = GlobalVars.undefined.round( blood_volume / 560, 0.009999999776482582 );
 					blood_type = H.dna.blood_type;
 					blood_percent *= 100;
-					if ( blood_volume <= 500 && blood_volume > 336 != null ) {
+					if ( blood_volume <= 500 && blood_volume > 336 ) {
 						user.write( "<span class='danger'>LOW blood level " + blood_percent + " %, " + blood_volume + " cl,</span> <span class='info'>type: " + blood_type + "</span>" );
-					} else if ( blood_volume <= 336 != null ) {
+					} else if ( blood_volume <= 336 ) {
 						user.write( "<span class='danger'>CRITICAL blood level CRITICAL " + blood_percent + " %, " + blood_volume + " cl,</span> <span class='info'>type: " + blood_type + "</span>" );
 					} else {
 						user.write( "<span class='info'>Blood level " + blood_percent + " %, " + blood_volume + " cl, type: " + blood_type + "</span>" );
@@ -5727,12 +5728,12 @@ namespace Som13 {
 				}
 				implant_detect = null;
 				CI = null;
-				foreach (_ in H.internal_organs ) {
+				foreach (dynamic _ in H.internal_organs ) {
 					CI = undefined;
-					if ( !( CI instanceof Ent_Item_Organ_Internal_Cyberimp ) != null ) {
+					if ( !( CI is Ent_Item_Organ_Internal_Cyberimp ) != null ) {
 						continue;
 					}
-					if ( CI.status == 2 != null ) {
+					if ( CI.status == 2 ) {
 						implant_detect += "" + H.name + " is modified with a " + CI.name + ".<br>";
 					}
 				};
@@ -5743,46 +5744,46 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	HeapPathWeightCompare( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic HeapPathWeightCompare( dynamic a = null, dynamic b = null ) {
 			return b.f - a.f;
 		}
 
-		public static dynamic	heat2colour_b( UNKNOWN [object Object] =null ) {
+		public static int heat2colour_b( dynamic temp = null ) {
 			temp /= 100;
-			if ( temp >= 66 != null ) {
-				undefined = 255;
-			} else if ( temp <= 16 != null ) {
-				undefined = 0;
+			if ( temp >= 66 ) {
+				_default = 255;
+			} else if ( temp <= 16 ) {
+				_default = 0;
 			} else {
-				undefined = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined.log( temp - 10 ) * 138.51773071289062 - 305.0447998046875 ) );
+				_default = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined.log( temp - 10 ) * 138.51773071289062 - 305.0447998046875 ) );
 			}
 			return _default;
 		}
 
-		public static dynamic	heat2colour_g( UNKNOWN [object Object] =null ) {
+		public static dynamic heat2colour_g( dynamic temp = null ) {
 			temp /= 100;
-			if ( temp <= 66 != null ) {
-				undefined = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined.log( temp ) * 99.4708023071289 - 161.11956787109375 ) );
+			if ( temp <= 66 ) {
+				_default = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined.log( temp ) * 99.4708023071289 - 161.11956787109375 ) );
 			} else {
-				undefined = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined( temp - 60, -0.07514849305152893 ) * 288.1221618652344 ) );
+				_default = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined( temp - 60, -0.07514849305152893 ) * 288.1221618652344 ) );
 			}
 			return _default;
 		}
 
-		public static dynamic	heat2colour_r( UNKNOWN [object Object] =null ) {
+		public static int heat2colour_r( dynamic temp = null ) {
 			temp /= 100;
-			if ( temp <= 66 != null ) {
-				undefined = 255;
+			if ( temp <= 66 ) {
+				_default = 255;
 			} else {
-				undefined = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined( temp - 60, -0.13320475816726685 ) * 329.69873046875 ) );
+				_default = GlobalVars.undefined.max( 0, GlobalVars.undefined.min( 255, GlobalVars.undefined( temp - 60, -0.13320475816726685 ) * 329.69873046875 ) );
 			}
 			return _default;
 		}
 
-		public static dynamic	hex2num( UNKNOWN [object Object] =null ) {
-			int	negative = null;
-			UNKNOWN _default;
-			undefined = 0;
+		public static int hex2num( dynamic hex = null ) {
+			int negative = 0;
+			int _default;
+			_default = 0;
 			if ( GlobalVars.undefined( hex ) != null ) {
 				negative = 0;
 				len = GlobalVars.undefined( hex );
@@ -5807,76 +5808,76 @@ namespace Som13 {
 							continue;
 						}
 					};
-					undefined *= 16;
-					undefined += num;
+					_default *= 16;
+					_default += num;
 					i++;
 				};
-				if ( negative != null ) {
-					undefined *= -1;
+				if ( negative != 0 ) {
+					_default *= -1;
 				}
 			}
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	hgibs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic hgibs( dynamic location = null, dynamic viruses = null, dynamic MobDNA = null ) {
 			new Ent_Effect_Gibspawner_Human( location, viruses, MobDNA );
 		}
 
-		public static dynamic	hsv( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( hue < 0 || hue >= 1536 != null ) {
+		public static string hsv( int hue = 0, int sat = 0, int val = 0, int alpha = 0 ) {
+			if ( hue < 0 || hue >= 1536 ) {
 				hue %= 1536;
 			}
-			if ( hue < 0 != null ) {
+			if ( hue < 0 ) {
 				hue += 1536;
 			}
-			if ( ( hue & 255 ) == 255 != null ) {
+			if ( ( hue & 255 ) == 255 ) {
 				hue++;
-				if ( hue >= 1536 != null ) {
+				if ( hue >= 1536 ) {
 					hue = 0;
 				}
 			}
-			if ( sat < 0 != null ) {
+			if ( sat < 0 ) {
 				sat = 0;
 			}
-			if ( sat > 255 != null ) {
+			if ( sat > 255 ) {
 				sat = 255;
 			}
-			if ( val < 0 != null ) {
+			if ( val < 0 ) {
 				val = 0;
 			}
-			if ( val > 255 != null ) {
+			if ( val > 255 ) {
 				val = 255;
 			}
-			undefined = "#";
-			undefined += GlobalVars.undefined( ( hue >> 8 & 15 ) + ( ( hue >> 8 & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( hue >> 4 & 15 ) + ( ( hue >> 4 & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( hue & 15 ) + ( ( hue & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( sat >> 4 & 15 ) + ( ( sat >> 4 & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( sat & 15 ) + ( ( sat & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( val >> 4 & 15 ) + ( ( val >> 4 & 15 ) < 10 ? 48 : 87 ) );
-			undefined += GlobalVars.undefined( ( val & 15 ) + ( ( val & 15 ) < 10 ? 48 : 87 ) );
+			_default = "#";
+			_default += GlobalVars.undefined( ( hue >> 8 & 15 ) + ( ( hue >> 8 & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( hue >> 4 & 15 ) + ( ( hue >> 4 & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( hue & 15 ) + ( ( hue & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( sat >> 4 & 15 ) + ( ( sat >> 4 & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( sat & 15 ) + ( ( sat & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( val >> 4 & 15 ) + ( ( val >> 4 & 15 ) < 10 ? 48 : 87 ) );
+			_default += GlobalVars.undefined( ( val & 15 ) + ( ( val & 15 ) < 10 ? 48 : 87 ) );
 			if ( !GlobalVars.undefined( alpha ) != null ) {
-				if ( alpha < 0 != null ) {
+				if ( alpha < 0 ) {
 					alpha = 0;
 				}
-				if ( alpha > 255 != null ) {
+				if ( alpha > 255 ) {
 					alpha = 255;
 				}
-				undefined += GlobalVars.undefined( ( alpha >> 4 & 15 ) + ( ( alpha >> 4 & 15 ) < 10 ? 48 : 87 ) );
-				undefined += GlobalVars.undefined( ( alpha & 15 ) + ( ( alpha & 15 ) < 10 ? 48 : 87 ) );
+				_default += GlobalVars.undefined( ( alpha >> 4 & 15 ) + ( ( alpha >> 4 & 15 ) < 10 ? 48 : 87 ) );
+				_default += GlobalVars.undefined( ( alpha & 15 ) + ( ( alpha & 15 ) < 10 ? 48 : 87 ) );
 			}
 			return _default;
 		}
 
-		public static ByTable	init_paths( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	path = null;
-			if ( !( L instanceof new List ) != null ) {
+		public static ByTable init_paths( dynamic prototype = null, ByTable L = null ) {
+			dynamic path = null;
+			if ( !( L is new List ) != null ) {
 				L = new ByTable();
 				path = null;
-				foreach (_ in GlobalVars.undefined( prototype ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( prototype ) ) {
 					path = undefined;
-					if ( path == prototype != null ) {
+					if ( path == prototype ) {
 						continue;
 					}
 					L += path;
@@ -5885,26 +5886,26 @@ namespace Som13 {
 			}
 		}
 
-		public static ByTable	init_sprite_accessory_subtypes( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	path = null;
-			if ( !( L instanceof new List ) != null ) {
+		public static ByTable init_sprite_accessory_subtypes( dynamic prototype = null, ByTable L = null, ByTable male = null, ByTable female = null ) {
+			dynamic path = null;
+			if ( !( L is new List ) != null ) {
 				L = new ByTable();
 			}
-			if ( !( male instanceof new List ) != null ) {
+			if ( !( male is new List ) != null ) {
 				male = new ByTable();
 			}
-			if ( !( female instanceof new List ) != null ) {
+			if ( !( female is new List ) != null ) {
 				female = new ByTable();
 			}
 			path = null;
-			foreach (_ in GlobalVars.undefined( prototype ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( prototype ) ) {
 				path = undefined;
-				if ( path == prototype != null ) {
+				if ( path == prototype ) {
 					continue;
 				}
 				D = path();
 				if ( D.icon_state != null ) {
-					L[D.name] = D;
+					L.[object Object] = D;
 				} else {
 					L += D.name;
 				}
@@ -5921,15 +5922,15 @@ namespace Som13 {
 			return L;
 		}
 
-		public static ByTable	init_subtypes( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	path = null;
-			if ( !( L instanceof new List ) != null ) {
+		public static ByTable init_subtypes( dynamic prototype = null, ByTable L = null ) {
+			dynamic path = null;
+			if ( !( L is new List ) != null ) {
 				L = new ByTable();
 			}
 			path = null;
-			foreach (_ in GlobalVars.undefined( prototype ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( prototype ) ) {
 				path = undefined;
-				if ( path == prototype != null ) {
+				if ( path == prototype ) {
 					continue;
 				}
 				L += path();
@@ -5937,9 +5938,9 @@ namespace Som13 {
 			return L;
 		}
 
-		public static dynamic	InitializeSwapMaps(  ) {
-			dynamic	V = null;
-			if ( GlobalVars.swapmaps_initialized != null ) {
+		public static dynamic InitializeSwapMaps(  ) {
+			dynamic V = null;
+			if ( GlobalVars.swapmaps_initialized != 0 ) {
 				return;
 			}
 			GlobalVars.swapmaps_initialized = 1;
@@ -5950,32 +5951,32 @@ namespace Som13 {
 			GlobalVars.swapmaps_byname = new ByTable();
 			if ( GlobalVars.swapmaps_iconcache != null ) {
 				V = null;
-				foreach (_ in GlobalVars.swapmaps_iconcache ) {
+				foreach (dynamic _ in GlobalVars.swapmaps_iconcache ) {
 					V = undefined;
-					GlobalVars.swapmaps_iconcache[GlobalVars.swapmaps_iconcache[V]] = V;
+					GlobalVars.swapmaps_iconcache.[object Object] = V;
 				};
 			}
 		}
 
-		public static int	inLineOfSight( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
-			if ( Z == null != null ) {
+		public static int inLineOfSight( dynamic X1 = null, dynamic Y1 = null, dynamic X2 = null, dynamic Y2 = null, int Z = 0, double PX1 = 0, double PY1 = 0, double PX2 = 0, double PY2 = 0 ) {
+			dynamic T = null;
+			if ( Z == null ) {
 				Z = 1;
 			}
-			if ( PX1 == null != null ) {
+			if ( PX1 == null ) {
 				PX1 = 16.5;
 			}
-			if ( PY1 == null != null ) {
+			if ( PY1 == null ) {
 				PY1 = 16.5;
 			}
-			if ( PX2 == null != null ) {
+			if ( PX2 == null ) {
 				PX2 = 16.5;
 			}
-			if ( PY2 == null != null ) {
+			if ( PY2 == null ) {
 				PY2 = 16.5;
 			}
-			if ( X1 == X2 != null ) {
-				if ( Y1 == Y2 != null ) {
+			if ( X1 == X2 ) {
+				if ( Y1 == Y2 ) {
 					return 1;
 				} else {
 					s = Y2 - Y1 < 0 ? -1 : 1;
@@ -5993,7 +5994,7 @@ namespace Som13 {
 				b = Y1 + PY1 / 32 - 0.015625 - m * ( X1 + PX1 / 32 - 0.015625 );
 				signX = X2 - X1 < 0 ? -1 : 1;
 				signY = Y2 - Y1 < 0 ? -1 : 1;
-				if ( X1 < X2 != null ) {
+				if ( X1 < X2 ) {
 					b += m;
 				}
 				while (X1 != X2 || Y1 != Y2) {
@@ -6011,7 +6012,7 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	intent_numeric( UNKNOWN [object Object] =null ) {
+		public static dynamic intent_numeric( dynamic argument = null ) {
 			if ( GlobalVars.undefined( argument ) != null ) {
 				local _ = argument // Was a switch-case, sorry for the mess.
 				if ( _=="help" ) {
@@ -6037,16 +6038,16 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	investigate_subject2file( UNKNOWN [object Object] =null ) {
+		public static dynamic investigate_subject2file( dynamic subject = null ) {
 			return File( "" + "data/investigate/" + subject + ".html" );
 		}
 
-		public static UNKNOWN	ionnum(  ) {
+		public static dynamic ionnum(  ) {
 			return "" + Rand.pick(new object [] { "!", "@", "#", "$", "%", "^", "&" }) + Rand.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" }) + Rand.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" }) + Rand.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" });
 		}
 
-		public static UNKNOWN	is_blind( UNKNOWN [object Object] =null ) {
-			dynamic	B = null;
+		public static int is_blind( dynamic A = null ) {
+			dynamic B = null;
 			if ( GlobalVars.undefined( A ) != null ) {
 				B = A;
 				return B.eye_blind;
@@ -6054,17 +6055,17 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	is_convertable_to_cult( UNKNOWN [object Object] =null ) {
-			if ( !( mind instanceof Mind ) != null ) {
+		public static int is_convertable_to_cult( dynamic mind = null ) {
+			if ( !( mind is Mind ) != null ) {
 				return 0;
 			}
-			if ( mind.current instanceof Mob_Living_Carbon_Human && mind.assigned_role in new ByTable(new object [] {"Captain","Chaplain"}) != null ) {
+			if ( mind.current is Mob_Living_Carbon_Human != null && mind.assigned_role in new ByTable(new object [] {"Captain","Chaplain"}) != null ) {
 				return 0;
 			}
 			if ( GlobalFuncs.isloyal( mind.current ) != null ) {
 				return 0;
 			}
-			if ( GlobalVars.ticker.mode.name == "cult" != null ) {
+			if ( GlobalVars.ticker.mode.name == "cult" ) {
 				if ( GlobalFuncs.is_sacrifice_target( mind ) != null ) {
 					return 0;
 				}
@@ -6072,85 +6073,85 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	is_gangster( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && M.mind.gang_datum;
+		public static bool is_gangster( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && M.mind.gang_datum != null;
 		}
 
-		public static int	is_in_gang( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	G = null;
-			if ( !GlobalFuncs.is_gangster( M ) || !gang_type != null ) {
+		public static int is_in_gang( dynamic M = null, dynamic gang_type = null ) {
+			dynamic G = null;
+			if ( !GlobalFuncs.is_gangster( M ) != null || !gang_type != null ) {
 				return 0;
 			}
 			G = M.mind.gang_datum;
-			if ( G.name == gang_type != null ) {
+			if ( G.name == gang_type ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public static int	is_pointed( UNKNOWN [object Object] =null ) {
-			if ( W instanceof Ent_Item_Weapon_Pen != null ) {
+		public static int is_pointed( dynamic W = null ) {
+			if ( W is Ent_Item_Weapon_Pen != null ) {
 				return 1;
 			}
-			if ( W instanceof Ent_Item_Weapon_Screwdriver != null ) {
+			if ( W is Ent_Item_Weapon_Screwdriver != null ) {
 				return 1;
 			}
-			if ( W instanceof Ent_Item_Weapon_ReagentContainers_Syringe != null ) {
+			if ( W is Ent_Item_Weapon_ReagentContainers_Syringe != null ) {
 				return 1;
 			}
-			if ( W instanceof Ent_Item_Weapon_Kitchen_Fork != null ) {
+			if ( W is Ent_Item_Weapon_Kitchen_Fork != null ) {
 				return 1;
 			} else {
 				return 0;
 			}
 		}
 
-		public static int	is_sacrifice_target( UNKNOWN [object Object] =null ) {
-			UNKNOWN	cult_mode = null;
-			if ( GlobalVars.ticker.mode.name == "cult" != null ) {
+		public static int is_sacrifice_target( dynamic mind = null ) {
+			dynamic cult_mode = null;
+			if ( GlobalVars.ticker.mode.name == "cult" ) {
 				cult_mode = GlobalVars.ticker.mode;
-				if ( mind == cult_mode.sacrifice_target != null ) {
+				if ( mind == cult_mode.sacrifice_target ) {
 					return 1;
 				}
 			}
 			return 0;
 		}
 
-		public static UNKNOWN	is_shadow( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && GlobalVars.ticker && GlobalVars.ticker.mode && M.mind in GlobalVars.ticker.mode.shadows;
+		public static bool is_shadow( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && GlobalVars.ticker != null && GlobalVars.ticker.mode != null && M.mind in GlobalVars.ticker.mode.shadows != null;
 		}
 
-		public static UNKNOWN	is_shadow_or_thrall( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && GlobalVars.ticker && GlobalVars.ticker.mode && ( M.mind in GlobalVars.ticker.mode.thralls || M.mind in GlobalVars.ticker.mode.shadows );
+		public static bool is_shadow_or_thrall( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && GlobalVars.ticker != null && GlobalVars.ticker.mode != null && ( M.mind in GlobalVars.ticker.mode.thralls != null || M.mind in GlobalVars.ticker.mode.shadows != null );
 		}
 
-		public static int	is_special_character( UNKNOWN [object Object] =null ) {
-			dynamic	R = null;
-			if ( !GlobalVars.ticker || !GlobalVars.ticker.mode != null ) {
+		public static int is_special_character( dynamic M = null ) {
+			dynamic R = null;
+			if ( !GlobalVars.ticker != null || !GlobalVars.ticker.mode != null ) {
 				return 0;
 			}
-			if ( !( M instanceof Mob ) != null ) {
+			if ( !( M is Mob ) != null ) {
 				return 0;
 			}
-			if ( M instanceof Mob_Living_Silicon != null ) {
-				if ( M instanceof Mob_Living_Silicon_Robot != null ) {
+			if ( M is Mob_Living_Silicon != null ) {
+				if ( M is Mob_Living_Silicon_Robot != null ) {
 					R = M;
-					if ( R.emagged || R.syndicate != null ) {
+					if ( R.emagged != null || R.syndicate != null ) {
 						return 1;
 					}
-					if ( R.mind && R.mind.special_role && R.laws && R.laws.zeroth != null ) {
+					if ( R.mind != null && R.mind.special_role != null && R.laws != null && R.laws.zeroth != null ) {
 						if ( R.connected_ai != null ) {
-							if ( GlobalFuncs.is_special_character( R.connected_ai ) && R.connected_ai.laws && ( R.connected_ai.laws.zeroth_borg == R.laws.zeroth || R.connected_ai.laws.zeroth == R.laws.zeroth ) != null ) {
+							if ( GlobalFuncs.is_special_character( R.connected_ai ) != null && R.connected_ai.laws != null && ( R.connected_ai.laws.zeroth_borg == R.laws.zeroth || R.connected_ai.laws.zeroth == R.laws.zeroth ) ) {
 								return 0;
 							}
 							return 1;
 						}
 						return 1;
 					}
-				} else if ( M instanceof Mob_Living_Silicon_Ai != null ) {
+				} else if ( M is Mob_Living_Silicon_Ai != null ) {
 					A = M;
-					if ( A.laws && A.laws.zeroth && A.mind && A.mind.special_role != null ) {
-						if ( GlobalVars.ticker.config_tag == "malfunction" && M.mind in GlobalVars.ticker.mode.malf_ai != null ) {
+					if ( A.laws != null && A.laws.zeroth != null && A.mind != null && A.mind.special_role != null ) {
+						if ( GlobalVars.ticker.config_tag == "malfunction" && M.mind != null in GlobalVars.ticker.mode.malf_ai != null ) {
 							return 2;
 						}
 						return 1;
@@ -6158,10 +6159,10 @@ namespace Som13 {
 				}
 				return 0;
 			}
-			if ( M.mind && M.mind.special_role != null ) {
+			if ( M.mind != null && M.mind.special_role != null ) {
 				local _ = GlobalVars.ticker.mode.config_tag // Was a switch-case, sorry for the mess.
 				if ( _=="revolution" ) {
-					if ( M.mind in GlobalVars.ticker.head_revolutionaries || M.mind in GlobalVars.ticker.mode.revolutionaries != null ) {
+					if ( M.mind in GlobalVars.ticker.head_revolutionaries != null || M.mind in GlobalVars.ticker.mode.revolutionaries != null ) {
 						return 2;
 					}
 				} else if ( _=="cult" ) {
@@ -6181,7 +6182,7 @@ namespace Som13 {
 						return 2;
 					}
 				} else if ( _=="monkey" ) {
-					if ( M.viruses && GlobalVars.undefined( Disease_Transformation_JungleFever, M.viruses ) != null ) {
+					if ( M.viruses != null && GlobalVars.undefined( Disease_Transformation_JungleFever, M.viruses ) != null ) {
 						return 2;
 					}
 				} else if ( _=="abductor" ) {
@@ -6194,47 +6195,47 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static UNKNOWN	is_thrall( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && GlobalVars.ticker && GlobalVars.ticker.mode && M.mind in GlobalVars.ticker.mode.thralls;
+		public static bool is_thrall( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && GlobalVars.ticker != null && GlobalVars.ticker.mode != null && M.mind in GlobalVars.ticker.mode.thralls != null;
 		}
 
-		public static int	is_type_in_list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	type = null;
+		public static int is_type_in_list( dynamic A = null, dynamic L = null ) {
+			dynamic type = null;
 			type = null;
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				type = undefined;
-				if ( A instanceof type != null ) {
+				if ( A is type != null ) {
 					return 1;
 				}
 			};
 			return 0;
 		}
 
-		public static UNKNOWN	iscultist( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && GlobalVars.ticker && GlobalVars.ticker.mode && M.mind in GlobalVars.ticker.mode.cult;
+		public static bool iscultist( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && GlobalVars.ticker != null && GlobalVars.ticker.mode != null && M.mind in GlobalVars.ticker.mode.cult != null;
 		}
 
-		public static int	isemptylist( UNKNOWN [object Object] =null ) {
+		public static int isemptylist( dynamic L = null ) {
 			if ( !L.len != null ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public static UNKNOWN	IsEven( UNKNOWN [object Object] =null ) {
+		public static bool IsEven( dynamic x = null ) {
 			return x % 2 == 0;
 		}
 
-		public static int	IsGuestKey( UNKNOWN [object Object] =null ) {
-			int	i = null;
-			if ( GlobalVars.undefined( key, "Guest-", 1, 7 ) != 1 != null ) {
+		public static int IsGuestKey( dynamic key = null ) {
+			int i = 0;
+			if ( GlobalVars.undefined( key, "Guest-", 1, 7 ) != 1 ) {
 				return 0;
 			}
 			len = GlobalVars.undefined( key );
 			i = 7;
 			while (i <= len) {
 				ch = GlobalVars.undefined( key, i );
-				if ( ch < 48 || ch > 57 != null ) {
+				if ( ch < 48 || ch > 57 ) {
 					return 0;
 				}
 				i++;
@@ -6242,15 +6243,15 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	IsInRange( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static bool IsInRange( dynamic val = null, dynamic min = null, dynamic max = null ) {
 			return min <= val && val <= max;
 		}
 
-		public static int	isInSight( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	Aturf = null;
+		public static int isInSight( dynamic A = null, dynamic B = null ) {
+			dynamic Aturf = null;
 			Aturf = GlobalFuncs.get_turf( A );
 			Bturf = GlobalFuncs.get_turf( B );
-			if ( !Aturf || !Bturf != null ) {
+			if ( !Aturf != null || !Bturf != null ) {
 				return 0;
 			}
 			if ( GlobalFuncs.inLineOfSight( Aturf.x, Aturf.y, Bturf.x, Bturf.y, Aturf.z ) != null ) {
@@ -6260,70 +6261,70 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	isLeap( UNKNOWN [object Object] =null ) {
+		public static bool isLeap( dynamic y = null ) {
 			return y % 4 == 0 && ( y % 100 != 0 || y % 400 == 0 );
 		}
 
-		public static int	isloyal( UNKNOWN [object Object] =null ) {
-			dynamic	L = null;
+		public static int isloyal( dynamic A = null ) {
+			dynamic L = null;
 			L = null;
-			foreach (_ in A ) {
+			foreach (dynamic _ in A ) {
 				L = undefined;
-				if ( !( L instanceof Ent_Item_Weapon_Implant_Loyalty ) != null ) {
+				if ( !( L is Ent_Item_Weapon_Implant_Loyalty ) != null ) {
 					continue;
 				}
-				if ( L && L.implanted != null ) {
+				if ( L != null && L.implanted != null ) {
 					return 1;
 				}
 			};
 			return 0;
 		}
 
-		public static UNKNOWN	IsMultiple( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static bool IsMultiple( dynamic x = null, dynamic y = null ) {
 			return x % y == 0;
 		}
 
-		public static UNKNOWN	IsOdd( UNKNOWN [object Object] =null ) {
+		public static UNKNOWN IsOdd( dynamic x = null ) {
 			return !GlobalFuncs.IsEven( x );
 		}
 
-		public static UNKNOWN	isorgan( UNKNOWN [object Object] =null ) {
-			return A instanceof Ent_Item_Organ_Internal;
+		public static dynamic isorgan( dynamic A = null ) {
+			return A is Ent_Item_Organ_Internal;
 		}
 
-		public static int	istool( UNKNOWN [object Object] =null ) {
-			if ( O && GlobalFuncs.is_type_in_list( O, GlobalVars.common_tools ) != null ) {
+		public static int istool( dynamic O = null ) {
+			if ( O != null && GlobalFuncs.is_type_in_list( O, GlobalVars.common_tools ) != null ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public static UNKNOWN	IsValidSrc( UNKNOWN [object Object] =null ) {
-			dynamic	B = null;
-			if ( A instanceof BaseClass != null ) {
+		public static UNKNOWN IsValidSrc( dynamic A = null ) {
+			dynamic B = null;
+			if ( A is BaseClass != null ) {
 				B = A;
 				return !B.gc_destroyed;
 			}
-			if ( A instanceof BAD_GOOFY_EXPANSION??? != null ) {
+			if ( A is BAD_GOOFY_EXPANSION??? != null ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public static UNKNOWN	iswizard( UNKNOWN [object Object] =null ) {
-			return M instanceof Mob_Living && M.mind && GlobalVars.ticker && GlobalVars.ticker.mode && M.mind in GlobalVars.ticker.mode.wizards;
+		public static bool iswizard( dynamic M = null ) {
+			return M is Mob_Living != null && M.mind != null && GlobalVars.ticker != null && GlobalVars.ticker.mode != null && M.mind in GlobalVars.ticker.mode.wizards != null;
 		}
 
-		public static dynamic	item_heal_robotic( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	affecting = null;
+		public static dynamic item_heal_robotic( dynamic H = null, dynamic user = null, dynamic brute = null, dynamic burn = null ) {
+			dynamic affecting = null;
 			affecting = H.get_organ( GlobalFuncs.check_zone( user.zone_sel.selecting ) );
-			if ( brute > burn != null ) {
+			if ( brute > burn ) {
 				dam = 1;
 			} else {
 				dam = 0;
 			}
-			if ( affecting.status == 2 != null ) {
-				if ( brute > 0 && affecting.brute_dam > 0 || burn > 0 && affecting.burn_dam > 0 != null ) {
+			if ( affecting.status == 2 ) {
+				if ( brute > 0 && affecting.brute_dam > 0 || burn > 0 && affecting.burn_dam > 0 ) {
 					affecting.heal_damage( brute, burn, 1 );
 					H.update_damage_overlays( 0 );
 					H.$updatehealth();
@@ -6338,23 +6339,23 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	jobban_fullban( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( !M || !M.key != null ) {
+		public static dynamic jobban_fullban( dynamic M = null, dynamic rank = null, dynamic reason = null ) {
+			if ( !M != null || !M.key != null ) {
 				return;
 			}
 			GlobalVars.jobban_keylist.Add( "" + M.ckey + " - " + rank + " ## " + reason );
 			GlobalFuncs.jobban_savebanfile();
 		}
 
-		public static UNKNOWN	jobban_isbanned( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	s = null;
-			if ( M && rank != null ) {
+		public static int jobban_isbanned( dynamic M = null, dynamic rank = null ) {
+			dynamic s = null;
+			if ( M != null && rank != null ) {
 				s = null;
-				foreach (_ in GlobalVars.jobban_keylist ) {
+				foreach (dynamic _ in GlobalVars.jobban_keylist ) {
 					s = undefined;
-					if ( GlobalVars.undefined( s, "" + M.ckey + " - " + rank, 1, null ) == 1 != null ) {
+					if ( GlobalVars.undefined( s, "" + M.ckey + " - " + rank, 1, null ) == 1 ) {
 						startpos = GlobalVars.undefined( s, "## ", 1, null ) + 3;
-						if ( startpos && startpos < GlobalVars.undefined( s ) != null ) {
+						if ( startpos != null && startpos < GlobalVars.undefined( s ) ) {
 							text = GlobalVars.undefined( s, startpos, 0 );
 							if ( text != null ) {
 								return text;
@@ -6367,13 +6368,13 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	jobban_remove( UNKNOWN [object Object] =null ) {
-			int	i = null;
+		public static int jobban_remove( dynamic X = null ) {
+			int i = 0;
 			i = null;
 			i = 1;
 			while (i <= GlobalVars.undefined( GlobalVars.jobban_keylist )) {
-				if ( GlobalVars.undefined( GlobalVars.jobban_keylist[i], "" + X, 1, null ) != null ) {
-					GlobalVars.jobban_keylist.Remove( GlobalVars.jobban_keylist[i] );
+				if ( GlobalVars.undefined( GlobalVars.jobban_keylist.[object Object], "" + X, 1, null ) != null ) {
+					GlobalVars.jobban_keylist.Remove( GlobalVars.jobban_keylist.[object Object] );
 					GlobalFuncs.jobban_savebanfile();
 					return 1;
 				}
@@ -6382,30 +6383,30 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static dynamic	jobban_savebanfile(  ) {
-			UNKNOWN	S = null;
+		public static dynamic jobban_savebanfile(  ) {
+			dynamic S = null;
 			S = SaveFile( "data/job_full.ban" );
-			S["keys" + 0]._GOOFY_LIST_.write( GlobalVars.jobban_keylist );
+			S.[object Object]._GOOFY_LIST_.write( GlobalVars.jobban_keylist );
 		}
 
-		public static dynamic	jobban_unban( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic jobban_unban( dynamic M = null, dynamic rank = null ) {
 			GlobalFuncs.jobban_remove( "" + M.ckey + " - " + rank );
 			GlobalFuncs.jobban_savebanfile();
 		}
 
-		public static UNKNOWN	key_name( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	M = null;
-			UNKNOWN _default;
-			if ( include_link == null != null ) {
+		public static string key_name( dynamic whom = null, int include_link = 0, int include_name = 0 ) {
+			dynamic M = null;
+			string _default;
+			if ( include_link == null ) {
 				include_link = null;
 			}
-			if ( include_name == null != null ) {
+			if ( include_name == null ) {
 				include_name = 1;
 			}
 			if ( !whom != null ) {
 				return "*null*";
 			}
-			if ( whom instanceof BAD_GOOFY_EXPANSION??? != null ) {
+			if ( whom is BAD_GOOFY_EXPANSION??? != null ) {
 				C = whom;
 				M = C.mob;
 				key = C.key;
@@ -6418,81 +6419,81 @@ namespace Som13 {
 			} else if ( GlobalVars.undefined( whom ) != null ) {
 				key = whom;
 				ckey = GlobalVars.undefined( whom );
-				C = GlobalVars.directory[ckey];
+				C = GlobalVars.directory.[object Object];
 				if ( C != null ) {
 					M = C.mob;
 				}
 			} else {
 				return "*invalid*";
 			}
-			undefined = "";
+			_default = "";
 			if ( !ckey != null ) {
 				include_link = 0;
 			}
 			if ( key != null ) {
-				if ( C && C.holder && C.holder.fakekey && !include_name != null ) {
-					if ( include_link != null ) {
-						undefined += "<a href='?priv_msg=" + C.findStealthKey() + "'>";
+				if ( C != null && C.holder != null && C.holder.fakekey != null && !include_name != null ) {
+					if ( include_link != 0 ) {
+						_default += "<a href='?priv_msg=" + C.findStealthKey() + "'>";
 					}
-					undefined += "Administrator";
+					_default += "Administrator";
 				} else {
-					if ( include_link != null ) {
-						undefined += "<a href='?priv_msg=" + ckey + "'>";
+					if ( include_link != 0 ) {
+						_default += "<a href='?priv_msg=" + ckey + "'>";
 					}
-					undefined += key;
+					_default += key;
 				}
 				if ( !C != null ) {
-					undefined += "[DC]";
+					_default += "[DC]";
 				}
-				if ( include_link != null ) {
-					undefined += "</a>";
+				if ( include_link != 0 ) {
+					_default += "</a>";
 				}
 			} else {
-				undefined += "*no key*";
+				_default += "*no key*";
 			}
-			if ( include_name && M != null ) {
+			if ( include_name != 0 && M != null ) {
 				if ( M.real_name != null ) {
-					undefined += "/(" + M.real_name + ")";
+					_default += "/(" + M.real_name + ")";
 				} else if ( M.name != null ) {
-					undefined += "/(" + M.name + ")";
+					_default += "/(" + M.name + ")";
 				}
 			}
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static UNKNOWN	key_name_admin( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( include_name == null != null ) {
+		public static dynamic key_name_admin( dynamic whom = null, int include_name = 0 ) {
+			if ( include_name == null ) {
 				include_name = 1;
 			}
 			return GlobalFuncs.key_name( whom, 1, include_name );
 		}
 
-		public static string	keywords_lookup( UNKNOWN [object Object] =null ) {
-			ByTable	adminhelp_ignored_words = null;
+		public static string keywords_lookup( string msg = null ) {
+			ByTable adminhelp_ignored_words = null;
 			adminhelp_ignored_words = new ByTable(new object [] {"unknown","the","a","an","of","monkey","alien","as","i"});
 			msglist = GlobalFuncs.text2list( msg, " " );
 			surnames = new ByTable();
 			forenames = new ByTable();
 			ckeys = new ByTable();
 			M = null;
-			foreach (_ in GlobalVars.mob_list ) {
+			foreach (dynamic _ in GlobalVars.mob_list ) {
 				M = undefined;
 				indexing = new ByTable(new object [] {M.real_name,M.name});
 				if ( M.mind != null ) {
 					indexing += M.mind.name;
 				}
 				_string = null;
-				foreach (_ in indexing ) {
+				foreach (dynamic _ in indexing ) {
 					_string = undefined;
 					L = GlobalFuncs.text2list( _string, " " );
 					surname_found = 0;
 					i = null;
 					i = L.len;
 					while (i >= 1) {
-						word = GlobalVars.undefined( L[i] );
+						word = GlobalVars.undefined( L.[object Object] );
 						if ( word != null ) {
-							surnames[word] = M;
+							surnames.[object Object] = M;
 							surname_found = i;
 							break;
 						}
@@ -6501,38 +6502,38 @@ namespace Som13 {
 					i = null;
 					i = 1;
 					while (i < surname_found) {
-						word = GlobalVars.undefined( L[i] );
+						word = GlobalVars.undefined( L.[object Object] );
 						if ( word != null ) {
-							forenames[word] = M;
+							forenames.[object Object] = M;
 						}
 						i++;
 					};
-					ckeys[M.ckey] = M;
+					ckeys.[object Object] = M;
 				};
 			};
 			ai_found = 0;
 			msg = "";
 			mobs_found = new ByTable();
 			original_word = null;
-			foreach (_ in msglist ) {
+			foreach (dynamic _ in msglist ) {
 				original_word = undefined;
 				word = GlobalVars.undefined( original_word );
 				if ( word != null ) {
-					if ( !( word in adminhelp_ignored_words ) != null ) {
-						if ( word == "ai" != null ) {
+					if ( !word in adminhelp_ignored_words != null ) {
+						if ( word == "ai" ) {
 							ai_found = 1;
 						} else {
-							found = ckeys[word];
+							found = ckeys.[object Object];
 							if ( !found != null ) {
-								found = surnames[word];
+								found = surnames.[object Object];
 								if ( !found != null ) {
-									found = forenames[word];
+									found = forenames.[object Object];
 								}
 							}
 							if ( found != null ) {
-								if ( !( found in mobs_found ) != null ) {
+								if ( !found in mobs_found != null ) {
 									mobs_found += found;
-									if ( !ai_found && found instanceof Mob_Living_Silicon_Ai != null ) {
+									if ( !ai_found != null && found is Mob_Living_Silicon_Ai != null ) {
 										ai_found = 1;
 									}
 									msg += GlobalVars.undefined().item( original_word ).str( "<font size='1' color='black'>(<A HREF='?_src_=holder;adminmoreinfo=" ).ref( found ).str( "'>?</A>|<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( found ).str( "'>F</A>)</font> " );
@@ -6547,20 +6548,20 @@ namespace Som13 {
 			return msg;
 		}
 
-		public static ByTable	kick_clients_in_lobby( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	kicked_client_names = null;
-			if ( kick_only_afk == null != null ) {
+		public static ByTable kick_clients_in_lobby( dynamic message = null, int kick_only_afk = 0 ) {
+			ByTable kicked_client_names = null;
+			if ( kick_only_afk == null ) {
 				kick_only_afk = 0;
 			}
 			kicked_client_names = new ByTable();
 			C = null;
-			foreach (_ in GlobalVars.clients ) {
+			foreach (dynamic _ in GlobalVars.clients ) {
 				C = undefined;
-				if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+				if ( !( C is BAD_GOOFY_EXPANSION??? ) != null ) {
 					continue;
 				}
-				if ( C.mob instanceof Mob_NewPlayer != null ) {
-					if ( kick_only_afk && !C.$is afk() != null ) {
+				if ( C.mob is Mob_NewPlayer != null ) {
+					if ( kick_only_afk != 0 && !C.$is afk() != null ) {
 						continue;
 					}
 					if ( message != null ) {
@@ -6574,103 +6575,103 @@ namespace Som13 {
 			return kicked_client_names;
 		}
 
-		public static UNKNOWN	list2json( UNKNOWN [object Object] =null ) {
+		public static dynamic list2json( dynamic L = null ) {
 			return GlobalVars._jsonw.WriteObject( L );
 		}
 
-		public static dynamic	list2stickyban( UNKNOWN [object Object] =null ) {
-			if ( !ban || !( ban instanceof new List ) != null ) {
+		public static dynamic list2stickyban( dynamic ban = null ) {
+			if ( !ban != null || !( ban is new List ) != null ) {
 				return;
 			}
-			undefined = ban.Copy();
-			if ( undefined.keys != null ) {
-				undefined.keys = GlobalFuncs.list2text( undefined.keys, "," );
+			_default = ban.Copy();
+			if ( _default.keys != null ) {
+				_default.keys = GlobalFuncs.list2text( _default.keys, "," );
 			}
-			if ( undefined.type != null ) {
-				undefined.type = GlobalFuncs.list2text( undefined.type, "," );
+			if ( _default.type != null ) {
+				_default.type = GlobalFuncs.list2text( _default.type, "," );
 			}
-			if ( undefined.IP != null ) {
-				undefined.IP = GlobalFuncs.list2text( undefined.IP, "," );
+			if ( _default.IP != null ) {
+				_default.IP = GlobalFuncs.list2text( _default.IP, "," );
 			}
-			if ( undefined.computer_id != null ) {
-				undefined.computer_id = GlobalFuncs.list2text( undefined.computer_id, "," );
+			if ( _default.computer_id != null ) {
+				_default.computer_id = GlobalFuncs.list2text( _default.computer_id, "," );
 			}
-			undefined = GlobalVars.undefined( undefined );
+			_default = GlobalVars.undefined( _default );
 			return _default;
 		}
 
-		public static UNKNOWN	list2text( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	l = null;
+		public static UNKNOWN list2text( dynamic ls = null, dynamic sep = null ) {
+			dynamic l = null;
 			UNKNOWN _default;
-			if ( ls.len <= 1 != null ) {
-				return ls.len ? ls[1] : "";
+			if ( ls.len <= 1 ) {
+				return ls.len ? ls.1 : "";
 			}
 			l = ls.len;
 			i = 0;
-			if ( sep != null != null ) {
-				undefined = "" + ls[++i];
+			if ( sep != null ) {
+				_default = "" + ls.[object Object];
 				if ( l - 1 & 1 != null ) {
-					undefined = "" + undefined + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object];
 				}
 				if ( l - i & 2 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				if ( l - i & 4 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				if ( l - i & 8 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				if ( l - i & 16 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				if ( l - i & 32 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				if ( l - i & 64 != null ) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				}
 				while (l > i) {
-					undefined = "" + undefined + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
+					_default = "" + _default + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object] + sep + ls.[object Object];
 				};
 			} else {
-				undefined = "" + ls[++i];
+				_default = "" + ls.[object Object];
 				if ( l - 1 & 1 != null ) {
-					undefined += "" + ls[++i];
+					_default += "" + ls.[object Object];
 				}
 				if ( l - i & 2 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object];
 				}
 				if ( l - i & 4 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				}
 				if ( l - i & 8 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				}
 				if ( l - i & 16 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				}
 				if ( l - i & 32 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				}
 				if ( l - i & 64 != null ) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				}
 				while (l > i) {
-					undefined = "" + undefined + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
+					_default = "" + _default + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object] + ls.[object Object];
 				};
 			}
 			return _default;
 		}
 
-		public static dynamic	listclearnulls( UNKNOWN [object Object] =null ) {
-			int	i = null;
-			if ( L instanceof new List != null ) {
+		public static dynamic listclearnulls( dynamic L = null ) {
+			int i = 0;
+			if ( L is new List != null ) {
 				i = 1;
 				thing = null;
-				foreach (_ in L ) {
+				foreach (dynamic _ in L ) {
 					thing = undefined;
-					if ( thing != null != null ) {
+					if ( thing != null ) {
 						i++;
 						continue;
 					}
@@ -6679,24 +6680,24 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	listgetindex( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( L instanceof new List != null ) {
+		public static dynamic listgetindex( dynamic L = null, dynamic index = null ) {
+			if ( L is new List != null ) {
 				if ( GlobalVars.undefined( index ) != null ) {
 					if ( GlobalFuncs.IsInRange( index, 1, L.len ) != null ) {
-						return L[index];
+						return L.[object Object];
 					}
 				} else if ( index in L != null ) {
-					return L[index];
+					return L.[object Object];
 				}
 			}
 			return;
 		}
 
-		public static int	living_player_count(  ) {
-			int	living_player_count = null;
+		public static int living_player_count(  ) {
+			int living_player_count = 0;
 			living_player_count = 0;
 			mob = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				mob = undefined;
 				if ( mob in GlobalVars.living_mob_list != null ) {
 					living_player_count += 1;
@@ -6705,21 +6706,21 @@ namespace Som13 {
 			return living_player_count;
 		}
 
-		public static UNKNOWN	lizard_name( UNKNOWN [object Object] =null ) {
-			if ( gender == GlobalVars.MALE != null ) {
+		public static dynamic lizard_name( dynamic gender = null ) {
+			if ( gender == GlobalVars.MALE ) {
 				return "" + Rand.pick( GlobalVars.lizard_names_male ) + "-" + Rand.pick( GlobalVars.lizard_names_male );
 			} else {
 				return "" + Rand.pick( GlobalVars.lizard_names_female ) + "-" + Rand.pick( GlobalVars.lizard_names_female );
 			}
 		}
 
-		public static dynamic	load_admin_ranks(  ) {
-			UNKNOWN	previous_rights = null;
+		public static dynamic load_admin_ranks(  ) {
+			int previous_rights = 0;
 			GlobalVars.admin_ranks.Cut();
 			if ( GlobalVars.config.admin_legacy_system != null ) {
 				previous_rights = 0;
 				line = null;
-				foreach (_ in GlobalFuncs.file2list( "config/admin_ranks.txt" ) ) {
+				foreach (dynamic _ in GlobalFuncs.file2list( "config/admin_ranks.txt" ) ) {
 					line = undefined;
 					if ( !line != null ) {
 						continue;
@@ -6753,8 +6754,8 @@ namespace Som13 {
 				query = GlobalVars.dbcon.NewQuery( "SELECT rank, flags FROM " + GlobalFuncs.format_table_name( "admin_ranks" ) );
 				query.Execute();
 				while (query.NextRow()) {
-					rank_name = GlobalVars.undefined( query.item[1] );
-					flags = query.item[2];
+					rank_name = GlobalVars.undefined( query.item.1 );
+					flags = query.item.2;
 					if ( GlobalVars.undefined( flags ) != null ) {
 						flags = GlobalVars.undefined( flags );
 					}
@@ -6767,13 +6768,13 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	load_admins(  ) {
-			dynamic	C = null;
+		public static dynamic load_admins(  ) {
+			dynamic C = null;
 			GlobalVars.admin_datums.Cut();
 			C = null;
-			foreach (_ in GlobalVars.admins ) {
+			foreach (dynamic _ in GlobalVars.admins ) {
 				C = undefined;
-				if ( !( C instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+				if ( !( C is BAD_GOOFY_EXPANSION??? ) != null ) {
 					continue;
 				}
 				C.remove_admin_verbs();
@@ -6783,17 +6784,17 @@ namespace Som13 {
 			GlobalFuncs.load_admin_ranks();
 			rank_names = new ByTable();
 			R = null;
-			foreach (_ in GlobalVars.admin_ranks ) {
+			foreach (dynamic _ in GlobalVars.admin_ranks ) {
 				R = undefined;
-				if ( !( R instanceof AdminRank ) != null ) {
+				if ( !( R is AdminRank ) != null ) {
 					continue;
 				}
-				rank_names[R.name] = R;
+				rank_names.[object Object] = R;
 			};
 			if ( GlobalVars.config.admin_legacy_system != null ) {
 				Lines = GlobalFuncs.file2list( "config/admins.txt" );
 				line = null;
-				foreach (_ in Lines ) {
+				foreach (dynamic _ in Lines ) {
 					line = undefined;
 					if ( !GlobalVars.undefined( line ) != null ) {
 						continue;
@@ -6805,19 +6806,19 @@ namespace Som13 {
 					if ( !List.len != null ) {
 						continue;
 					}
-					ckey = GlobalVars.undefined( List[1] );
+					ckey = GlobalVars.undefined( List.1 );
 					if ( !ckey != null ) {
 						continue;
 					}
 					rank = "";
-					if ( List.len >= 2 != null ) {
-						rank = GlobalVars.undefined( List[2] );
+					if ( List.len >= 2 ) {
+						rank = GlobalVars.undefined( List.2 );
 					}
-					D = new Admins( rank_names[rank], ckey );
+					D = new Admins( rank_names.[object Object], ckey );
 					if ( !D != null ) {
 						continue;
 					}
-					D.associate( GlobalVars.directory[ckey] );
+					D.associate( GlobalVars.directory.[object Object] );
 				};
 			} else {
 				GlobalFuncs.establish_db_connection();
@@ -6831,23 +6832,23 @@ namespace Som13 {
 				query = GlobalVars.dbcon.NewQuery( "SELECT ckey, rank FROM " + GlobalFuncs.format_table_name( "admin" ) );
 				query.Execute();
 				while (query.NextRow()) {
-					ckey = GlobalVars.undefined( query.item[1] );
-					rank = GlobalVars.undefined( query.item[2] );
-					if ( rank_names[rank] == null != null ) {
+					ckey = GlobalVars.undefined( query.item.1 );
+					rank = GlobalVars.undefined( query.item.2 );
+					if ( rank_names.[object Object] == null ) {
 						GlobalFuncs.warning( "" + ( "Admin rank (" + rank + ") does not exist." ) + " in " + "code/modules/admin/admin_ranks.dm" + " at line " + 183 + " src: " + undefined + " usr: " + GlobalVars.undefined.user + "." );
 						continue;
 					}
-					D = new Admins( rank_names[rank], ckey );
+					D = new Admins( rank_names.[object Object], ckey );
 					if ( !D != null ) {
 						continue;
 					}
-					D.associate( GlobalVars.directory[ckey] );
+					D.associate( GlobalVars.directory.[object Object] );
 				};
 			}
 		}
 
-		public static dynamic	load_library_db_to_cache(  ) {
-			UNKNOWN	query = null;
+		public static dynamic load_library_db_to_cache(  ) {
+			dynamic query = null;
 			if ( GlobalVars.cachedbooks != null ) {
 				return;
 			}
@@ -6860,107 +6861,107 @@ namespace Som13 {
 			query.Execute();
 			while (query.NextRow()) {
 				newbook = new Cachedbook();
-				newbook.id = query.item[1];
-				newbook.author = query.item[2];
-				newbook.title = query.item[3];
-				newbook.category = query.item[4];
+				newbook.id = query.item.1;
+				newbook.author = query.item.2;
+				newbook.title = query.item.3;
+				newbook.category = query.item.4;
 				GlobalVars.cachedbooks += newbook;
 			};
 		}
 
-		public static dynamic	log_access( UNKNOWN [object Object] =null ) {
+		public static dynamic log_access( dynamic text = null ) {
 			if ( GlobalVars.config.log_access != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]ACCESS: " + text );
 			}
 		}
 
-		public static dynamic	log_admin( UNKNOWN [object Object] =null ) {
+		public static dynamic log_admin( dynamic text = null ) {
 			GlobalVars.admin_log.Add( text );
 			if ( GlobalVars.config.log_admin != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]ADMIN: " + text );
 			}
 		}
 
-		public static dynamic	log_attack( UNKNOWN [object Object] =null ) {
+		public static dynamic log_attack( dynamic text = null ) {
 			if ( GlobalVars.config.log_attack != null ) {
 				GlobalVars.diaryofmeanpeople.write( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + text );
 			}
 		}
 
-		public static dynamic	log_chat( UNKNOWN [object Object] =null ) {
+		public static dynamic log_chat( dynamic text = null ) {
 			if ( GlobalVars.config.log_pda != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]CHAT: " + text );
 			}
 		}
 
-		public static dynamic	log_comment( UNKNOWN [object Object] =null ) {
+		public static dynamic log_comment( dynamic text = null ) {
 			if ( GlobalVars.config.log_pda != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]COMMENT: " + text );
 			}
 		}
 
-		public static dynamic	log_emote( UNKNOWN [object Object] =null ) {
+		public static dynamic log_emote( dynamic text = null ) {
 			if ( GlobalVars.config.log_emote != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]EMOTE: " + text );
 			}
 		}
 
-		public static dynamic	log_game( UNKNOWN [object Object] =null ) {
+		public static dynamic log_game( dynamic text = null ) {
 			if ( GlobalVars.config.log_game != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]GAME: " + text );
 			}
 		}
 
-		public static dynamic	log_law( UNKNOWN [object Object] =null ) {
+		public static dynamic log_law( dynamic text = null ) {
 			if ( GlobalVars.config.log_law != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]LAW: " + text );
 			}
 		}
 
-		public static dynamic	log_ooc( UNKNOWN [object Object] =null ) {
+		public static dynamic log_ooc( dynamic text = null ) {
 			if ( GlobalVars.config.log_ooc != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]OOC: " + text );
 			}
 		}
 
-		public static dynamic	log_pda( UNKNOWN [object Object] =null ) {
+		public static dynamic log_pda( dynamic text = null ) {
 			if ( GlobalVars.config.log_pda != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]PDA: " + text );
 			}
 		}
 
-		public static dynamic	log_prayer( UNKNOWN [object Object] =null ) {
+		public static dynamic log_prayer( dynamic text = null ) {
 			if ( GlobalVars.config.log_prayer != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]PRAY: " + text );
 			}
 		}
 
-		public static dynamic	log_say( UNKNOWN [object Object] =null ) {
+		public static dynamic log_say( dynamic text = null ) {
 			if ( GlobalVars.config.log_say != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]SAY: " + text );
 			}
 		}
 
-		public static dynamic	log_vote( UNKNOWN [object Object] =null ) {
+		public static dynamic log_vote( dynamic text = null ) {
 			if ( GlobalVars.config.log_vote != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]VOTE: " + text );
 			}
 		}
 
-		public static dynamic	log_whisper( UNKNOWN [object Object] =null ) {
+		public static dynamic log_whisper( dynamic text = null ) {
 			if ( GlobalVars.config.log_whisper != null ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]WHISPER: " + text );
 			}
 		}
 
-		public static dynamic	machine_upgrade( UNKNOWN [object Object] =null ) {
-			UNKNOWN	new_rating = null;
+		public static dynamic machine_upgrade( dynamic M = null ) {
+			dynamic new_rating = null;
 			new_rating = GlobalVars.undefined( "Enter new rating:", "Num", null, null, null, 8 );
-			if ( new_rating && M.component_parts != null ) {
+			if ( new_rating != null && M.component_parts != null ) {
 				P = null;
-				foreach (_ in M.component_parts ) {
+				foreach (dynamic _ in M.component_parts ) {
 					P = undefined;
-					if ( !( P instanceof Ent_Item_Weapon_StockParts ) != null ) {
+					if ( !( P is Ent_Item_Weapon_StockParts ) != null ) {
 						continue;
 					}
 					P.rating = new_rating;
@@ -6970,18 +6971,18 @@ namespace Som13 {
 			GlobalFuncs.feedback_add_details( "admin_verb", "MU" );
 		}
 
-		public static dynamic	make_maint_all_access(  ) {
-			dynamic	A = null;
+		public static dynamic make_maint_all_access(  ) {
+			dynamic A = null;
 			A = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				A = undefined;
-				if ( !( A instanceof new ByArea(2826) ) != null ) {
+				if ( !( A is new ByArea(2826) ) != null ) {
 					continue;
 				}
 				D = null;
-				foreach (_ in A ) {
+				foreach (dynamic _ in A ) {
 					D = undefined;
-					if ( !( D instanceof Ent_Machinery_Door_Airlock ) != null ) {
+					if ( !( D is Ent_Machinery_Door_Airlock ) != null ) {
 						continue;
 					}
 					D.emergency = 1;
@@ -6992,8 +6993,8 @@ namespace Som13 {
 			GlobalVars.emergency_access = 1;
 		}
 
-		public static int	make_mining_asteroid_secret(  ) {
-			int	valid = null;
+		public static int make_mining_asteroid_secret(  ) {
+			int valid = 0;
 			valid = 0;
 			T = null;
 			sanity = 0;
@@ -7065,7 +7066,7 @@ namespace Som13 {
 			while (!valid) {
 				valid = 1;
 				sanity++;
-				if ( sanity > 100 != null ) {
+				if ( sanity > 100 ) {
 					return 0;
 				}
 				T = Rand.pick( turfs );
@@ -7101,12 +7102,12 @@ namespace Som13 {
 			if ( room != null ) {
 				emptyturfs = room.floors;
 				A = null;
-				foreach (_ in emptyturfs ) {
+				foreach (dynamic _ in emptyturfs ) {
 					A = undefined;
-					if ( !( A instanceof Tile_Simulated_Floor ) != null ) {
+					if ( !( A is Tile_Simulated_Floor ) != null ) {
 						continue;
 					}
-					if ( A instanceof Tile_Simulated_Floor != null ) {
+					if ( A is Tile_Simulated_Floor != null ) {
 						::thread.schedule( 2, function() {
 							A.fullUpdateMineralOverlays();
 							return;
@@ -7133,10 +7134,10 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	make_ne_corner( UNKNOWN [object Object] =null ) {
-			string	sdir = null;
+		public static dynamic make_ne_corner( dynamic adjacencies = null ) {
+			string sdir = null;
 			sdir = "i";
-			if ( adjacencies & 1 && adjacencies & 4 != null ) {
+			if ( adjacencies & 1 != null && adjacencies & 4 != null ) {
 				if ( adjacencies & 16 != null ) {
 					sdir = "f";
 				} else {
@@ -7150,10 +7151,10 @@ namespace Som13 {
 			return "2-" + sdir;
 		}
 
-		public static UNKNOWN	make_nw_corner( UNKNOWN [object Object] =null ) {
-			string	sdir = null;
+		public static dynamic make_nw_corner( dynamic adjacencies = null ) {
+			string sdir = null;
 			sdir = "i";
-			if ( adjacencies & 1 && adjacencies & 8 != null ) {
+			if ( adjacencies & 1 != null && adjacencies & 8 != null ) {
 				if ( adjacencies & 32 != null ) {
 					sdir = "f";
 				} else {
@@ -7167,9 +7168,9 @@ namespace Som13 {
 			return "1-" + sdir;
 		}
 
-		public static UNKNOWN	make_progress_bar( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	progbar = null;
-			if ( current_number && goal_number && target != null ) {
+		public static dynamic make_progress_bar( dynamic current_number = null, dynamic goal_number = null, dynamic target = null ) {
+			dynamic progbar = null;
+			if ( current_number != null && goal_number != null && target != null ) {
 				progbar = GlobalVars.undefined.lcall( new ByTable().set( "icon_state", "prog_bar_0" ).set( "loc", target ).set( "icon", new ByRsc(15) ) );
 				progbar.icon_state = "prog_bar_" + GlobalVars.undefined.round( current_number / goal_number * 100, 10 );
 				progbar.pixel_y = 32;
@@ -7177,10 +7178,10 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	make_se_corner( UNKNOWN [object Object] =null ) {
-			string	sdir = null;
+		public static dynamic make_se_corner( dynamic adjacencies = null ) {
+			string sdir = null;
 			sdir = "i";
-			if ( adjacencies & 2 && adjacencies & 4 != null ) {
+			if ( adjacencies & 2 != null && adjacencies & 4 != null ) {
 				if ( adjacencies & 64 != null ) {
 					sdir = "f";
 				} else {
@@ -7194,10 +7195,10 @@ namespace Som13 {
 			return "4-" + sdir;
 		}
 
-		public static UNKNOWN	make_sw_corner( UNKNOWN [object Object] =null ) {
-			string	sdir = null;
+		public static dynamic make_sw_corner( dynamic adjacencies = null ) {
+			string sdir = null;
 			sdir = "i";
-			if ( adjacencies & 2 && adjacencies & 8 != null ) {
+			if ( adjacencies & 2 != null && adjacencies & 8 != null ) {
 				if ( adjacencies & 128 != null ) {
 					sdir = "f";
 				} else {
@@ -7211,9 +7212,9 @@ namespace Som13 {
 			return "3-" + sdir;
 		}
 
-		public static Mob_Living_Carbon_Human	makeBody( UNKNOWN [object Object] =null ) {
-			Mob_Living_Carbon_Human	new_character = null;
-			if ( !G_found || !G_found.key != null ) {
+		public static Mob_Living_Carbon_Human makeBody( dynamic G_found = null ) {
+			Mob_Living_Carbon_Human new_character = null;
+			if ( !G_found != null || !G_found.key != null ) {
 				return;
 			}
 			new_character = new Mob_Living_Carbon_Human( Rand.pick( GlobalVars.latejoin ) );
@@ -7223,19 +7224,19 @@ namespace Som13 {
 			return new_character;
 		}
 
-		public static dynamic	makeNewConstruct( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	newstruct = null;
-			if ( stoner == null != null ) {
+		public static dynamic makeNewConstruct( dynamic ctype = null, dynamic target = null, dynamic stoner = null, int cultoverride = 0 ) {
+			dynamic newstruct = null;
+			if ( stoner == null ) {
 				stoner = null;
 			}
-			if ( cultoverride == null != null ) {
+			if ( cultoverride == null ) {
 				cultoverride = 0;
 			}
 			newstruct = ctype( GlobalFuncs.get_turf( target ) );
 			newstruct.faction = newstruct.faction | GlobalVars.undefined().ref( stoner );
 			newstruct.key = target.key;
-			if ( stoner && GlobalFuncs.iscultist( stoner ) || cultoverride != null ) {
-				if ( GlobalVars.ticker.mode.name == "cult" != null ) {
+			if ( stoner != null && GlobalFuncs.iscultist( stoner ) != null || cultoverride != 0 ) {
+				if ( GlobalVars.ticker.mode.name == "cult" ) {
 					GlobalVars.ticker.mode.add_cultist( newstruct.mind );
 				} else {
 					GlobalVars.ticker.mode.cult += newstruct.mind;
@@ -7243,9 +7244,9 @@ namespace Som13 {
 				GlobalVars.ticker.mode.update_cult_icons_added( newstruct.mind );
 			}
 			newstruct.write( newstruct.playstyle_string );
-			if ( stoner && GlobalFuncs.iswizard( stoner ) != null ) {
+			if ( stoner != null && GlobalFuncs.iswizard( stoner ) != null ) {
 				newstruct.write( "<B>You are still bound to serve your creator, follow their orders and help them complete their goals at all costs.</B>" );
-			} else if ( stoner && GlobalFuncs.iscultist( stoner ) != null ) {
+			} else if ( stoner != null && GlobalFuncs.iscultist( stoner ) != null ) {
 				newstruct.write( "<B>You are still bound to serve the cult, follow their orders and help them complete their goals at all costs.</B>" );
 			} else {
 				newstruct.write( "<B>You are still bound to serve your creator, follow their orders and help them complete their goals at all costs.</B>" );
@@ -7253,94 +7254,94 @@ namespace Som13 {
 			GlobalVars.undefined( newstruct, "Cancel Camera View" )();
 		}
 
-		public static dynamic	maprotate(  ) {
-			UNKNOWN	players = null;
-			UNKNOWN _default;
+		public static dynamic maprotate(  ) {
+			dynamic players = null;
+			null _default;
 			return;
 			players = GlobalVars.clients.len;
 			mapvotes = new ByTable();
 			c = null;
-			foreach (_ in GlobalVars.clients ) {
+			foreach (dynamic _ in GlobalVars.clients ) {
 				c = undefined;
-				if ( !( c instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+				if ( !( c is BAD_GOOFY_EXPANSION??? ) != null ) {
 					continue;
 				}
 				vote = c.prefs.preferred_map;
 				if ( !vote != null ) {
 					if ( GlobalVars.config.defaultmap != null ) {
-						mapvotes[GlobalVars.config.defaultmap.name] += 1;
+						mapvotes.[object Object] += 1;
 					}
 					continue;
 				}
-				mapvotes[vote] += 1;
+				mapvotes.[object Object] += 1;
 			};
 			map = null;
-			foreach (_ in mapvotes ) {
+			foreach (dynamic _ in mapvotes ) {
 				map = undefined;
 				if ( !map != null ) {
 					mapvotes.Remove( map );
 				}
-				if ( !( map in GlobalVars.config.maplist ) != null ) {
+				if ( !map in GlobalVars.config.maplist != null ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				VM = GlobalVars.config.maplist[map];
+				VM = GlobalVars.config.maplist.[object Object];
 				if ( !VM != null ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.voteweight <= 0 != null ) {
+				if ( VM.voteweight <= 0 ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.minusers > 0 && players < VM.minusers != null ) {
+				if ( VM.minusers > 0 && players < VM.minusers ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.maxusers > 0 && players > VM.maxusers != null ) {
+				if ( VM.maxusers > 0 && players > VM.maxusers ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				mapvotes[map] = mapvotes[map] * VM.voteweight;
+				mapvotes.[object Object] = mapvotes.[object Object] * VM.voteweight;
 			};
 			pickedmap = GlobalFuncs.pickweight( mapvotes );
 			if ( !pickedmap != null ) {
 				return;
 			}
-			VM = GlobalVars.config.maplist[pickedmap];
+			VM = GlobalVars.config.maplist.[object Object];
 			GlobalFuncs.message_admins( "Randomly rotating map to " + VM.name + "(" + VM.friendlyname + ")" );
-			undefined = GlobalFuncs.changemap( VM );
-			if ( undefined == 0 != null ) {
+			_default = GlobalFuncs.changemap( VM );
+			if ( _default == 0 ) {
 				Game.write( "<span class='boldannounce'>Map rotation has chosen " + VM.friendlyname + " for next round!</span>" );
 			}
 			return _default;
 		}
 
-		public static dynamic	merge_powernets( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	temp = null;
-			if ( !net1 || !net2 != null ) {
+		public static dynamic merge_powernets( dynamic net1 = null, dynamic net2 = null ) {
+			dynamic temp = null;
+			if ( !net1 != null || !net2 != null ) {
 				return;
 			}
-			if ( net1 == net2 != null ) {
+			if ( net1 == net2 ) {
 				return;
 			}
-			if ( net1.cables.len < net2.cables.len != null ) {
+			if ( net1.cables.len < net2.cables.len ) {
 				temp = net1;
 				net1 = net2;
 				net2 = temp;
 			}
 			Cable = null;
-			foreach (_ in net2.cables ) {
+			foreach (dynamic _ in net2.cables ) {
 				Cable = undefined;
-				if ( !( Cable instanceof Ent_Structure_Cable ) != null ) {
+				if ( !( Cable is Ent_Structure_Cable ) != null ) {
 					continue;
 				}
 				net1.add_cable( Cable );
 			};
 			Node = null;
-			foreach (_ in net2.nodes ) {
+			foreach (dynamic _ in net2.nodes ) {
 				Node = undefined;
-				if ( !( Node instanceof Ent_Machinery_Power ) != null ) {
+				if ( !( Node is Ent_Machinery_Power ) != null ) {
 					continue;
 				}
 				if ( !Node.connect_to_network() != null ) {
@@ -7350,13 +7351,13 @@ namespace Som13 {
 			return net1;
 		}
 
-		public static dynamic	merge_text( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	null_ascii = null;
-			UNKNOWN _default;
-			if ( null_char == null != null ) {
+		public static string merge_text( string into = null, string from = null, string null_char = null ) {
+			UNKNOWN null_ascii = null;
+			string _default;
+			if ( null_char == null ) {
 				null_char = "_";
 			}
-			undefined = "";
+			_default = "";
 			if ( !GlobalVars.undefined( into ) != null ) {
 				into = "";
 			}
@@ -7371,37 +7372,37 @@ namespace Som13 {
 			i = 1;
 			while (i < end) {
 				ascii = GlobalVars.undefined( from, i );
-				if ( ascii == null_ascii != null ) {
-					if ( previous != 1 != null ) {
-						undefined += GlobalVars.undefined( from, start, i );
+				if ( ascii == null_ascii ) {
+					if ( previous != 1 ) {
+						_default += GlobalVars.undefined( from, start, i );
 						start = i;
 						previous = 1;
 					}
-				} else if ( previous != 0 != null ) {
-					undefined += GlobalVars.undefined( into, start, i );
+				} else if ( previous != 0 ) {
+					_default += GlobalVars.undefined( into, start, i );
 					start = i;
 					previous = 0;
 				}
 				i++;
 			};
-			if ( previous == 0 != null ) {
-				undefined += GlobalVars.undefined( from, start, end );
+			if ( previous == 0 ) {
+				_default += GlobalVars.undefined( from, start, end );
 			} else {
-				undefined += GlobalVars.undefined( into, start, end );
+				_default += GlobalVars.undefined( into, start, end );
 			}
 			return _default;
 		}
 
-		public static dynamic	message_admins( UNKNOWN [object Object] =null ) {
+		public static dynamic message_admins( dynamic msg = null ) {
 			msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">" + msg + "</span></span>";
 			GlobalVars.admins.write( msg );
 		}
 
-		public static UNKNOWN	message_spans_start( UNKNOWN [object Object] =null ) {
-			UNKNOWN	output = null;
+		public static string message_spans_start( dynamic spans = null ) {
+			string output = null;
 			output = "<span class='";
 			S = null;
-			foreach (_ in spans ) {
+			foreach (dynamic _ in spans ) {
 				S = undefined;
 				output = "" + output + S + " ";
 			};
@@ -7409,16 +7410,16 @@ namespace Som13 {
 			return output;
 		}
 
-		public static dynamic	mineral_scan_pulse( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	minerals = null;
-			if ( range == null != null ) {
+		public static dynamic mineral_scan_pulse( dynamic mobs = null, dynamic T = null, dynamic range = null ) {
+			ByTable minerals = null;
+			if ( range == null ) {
 				range = Game.view;
 			}
 			minerals = new ByTable();
 			M = null;
-			foreach (_ in GlobalVars.undefined( range, T ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( range, T ) ) {
 				M = undefined;
-				if ( !( M instanceof Tile_Simulated_Mineral ) != null ) {
+				if ( !( M is Tile_Simulated_Mineral ) != null ) {
 					continue;
 				}
 				if ( M.scan_state != null ) {
@@ -7427,14 +7428,14 @@ namespace Som13 {
 			};
 			if ( minerals.len != null ) {
 				user = null;
-				foreach (_ in mobs ) {
+				foreach (dynamic _ in mobs ) {
 					user = undefined;
 					if ( user.client != null ) {
 						C = user.client;
 						M = null;
-						foreach (_ in minerals ) {
+						foreach (dynamic _ in minerals ) {
 							M = undefined;
-							if ( !( M instanceof Tile_Simulated_Mineral ) != null ) {
+							if ( !( M is Tile_Simulated_Mineral ) != null ) {
 								continue;
 							}
 							F = GlobalFuncs.get_turf( M );
@@ -7452,18 +7453,18 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	minor_announce( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	M = null;
-			if ( title == null != null ) {
+		public static dynamic minor_announce( dynamic message = null, string title = null, dynamic alert = null ) {
+			dynamic M = null;
+			if ( title == null ) {
 				title = "Attention:";
 			}
 			if ( !message != null ) {
 				return;
 			}
 			M = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				M = undefined;
-				if ( !( M instanceof Mob_NewPlayer ) && !M.ear_deaf != null ) {
+				if ( !( M is Mob_NewPlayer ) != null && !M.ear_deaf != null ) {
 					M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" );
 					if ( alert != null ) {
 						M.write( Sound( new ByRsc(63) ) );
@@ -7474,23 +7475,23 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	mix_color_from_reagents( UNKNOWN [object Object] =null ) {
-			UNKNOWN	color = null;
-			if ( !( reagent_list instanceof new List ) != null ) {
+		public static dynamic mix_color_from_reagents( dynamic reagent_list = null ) {
+			dynamic color = null;
+			if ( !( reagent_list is new List ) != null ) {
 				return;
 			}
 			vol_counter = 0;
 			R = null;
-			foreach (_ in reagent_list ) {
+			foreach (dynamic _ in reagent_list ) {
 				R = undefined;
-				if ( !( R instanceof Reagent ) != null ) {
+				if ( !( R is Reagent ) != null ) {
 					continue;
 				}
 				vol_temp = R.volume;
 				vol_counter += vol_temp;
 				if ( !color != null ) {
 					color = R.color;
-				} else if ( GlobalVars.undefined( color ) >= GlobalVars.undefined( R.color ) != null ) {
+				} else if ( GlobalVars.undefined( color ) >= GlobalVars.undefined( R.color ) ) {
 					color = GlobalFuncs.BlendRGB( color, R.color, vol_temp / vol_counter );
 				} else {
 					color = GlobalFuncs.BlendRGB( R.color, color, vol_temp / vol_counter );
@@ -7499,11 +7500,11 @@ namespace Som13 {
 			return color;
 		}
 
-		public static dynamic	moveElement( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( fromIndex == toIndex || fromIndex + 1 == toIndex != null ) {
+		public static dynamic moveElement( dynamic L = null, dynamic fromIndex = null, dynamic toIndex = null ) {
+			if ( fromIndex == toIndex || fromIndex + 1 == toIndex ) {
 				return;
 			}
-			if ( fromIndex > toIndex != null ) {
+			if ( fromIndex > toIndex ) {
 				fromIndex++;
 			}
 			L.Insert( toIndex, null );
@@ -7511,14 +7512,14 @@ namespace Som13 {
 			L.$Cut( fromIndex, fromIndex + 1 );
 		}
 
-		public static dynamic	moveRange( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	distance = null;
-			if ( len == null != null ) {
+		public static dynamic moveRange( dynamic L = null, dynamic fromIndex = null, dynamic toIndex = null, int len = 0 ) {
+			dynamic distance = null;
+			if ( len == null ) {
 				len = 1;
 			}
 			distance = GlobalVars.undefined.abs( toIndex - fromIndex );
-			if ( len >= distance != null ) {
-				if ( fromIndex <= toIndex != null ) {
+			if ( len >= distance ) {
+				if ( fromIndex <= toIndex ) {
 					return;
 				}
 				fromIndex += len;
@@ -7531,7 +7532,7 @@ namespace Som13 {
 					i++;
 				};
 			} else {
-				if ( fromIndex > toIndex != null ) {
+				if ( fromIndex > toIndex ) {
 					fromIndex += len;
 				}
 				i = null;
@@ -7545,14 +7546,14 @@ namespace Som13 {
 			}
 		}
 
-		public static int	near_camera( UNKNOWN [object Object] =null ) {
-			dynamic	R = null;
+		public static int near_camera( dynamic M = null ) {
+			dynamic R = null;
 			if ( !GlobalVars.undefined( M.loc ) != null ) {
 				return 0;
 			}
-			if ( M instanceof Mob_Living_Silicon_Robot != null ) {
+			if ( M is Mob_Living_Silicon_Robot != null ) {
 				R = M;
-				if ( !( R.camera && R.camera.f_can_use() ) && !GlobalVars.cameranet.checkCameraVis( M ) != null ) {
+				if ( !( R.camera != null && R.camera.f_can_use() != null ) != null && !GlobalVars.cameranet.checkCameraVis( M ) != null ) {
 					return 0;
 				}
 			} else if ( !GlobalVars.cameranet.checkCameraVis( M ) != null ) {
@@ -7561,8 +7562,8 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	new_station_name(  ) {
-			UNKNOWN	random = null;
+		public static string new_station_name(  ) {
+			dynamic random = null;
 			random = Rand.Int( 1, 5 );
 			name = "";
 			new_station_name = "";
@@ -7572,12 +7573,12 @@ namespace Som13 {
 				name = "";
 			}
 			holiday_name = null;
-			foreach (_ in GlobalVars.SSevent.holidays ) {
+			foreach (dynamic _ in GlobalVars.SSevent.holidays ) {
 				holiday_name = undefined;
-				if ( holiday_name == "Friday the 13th" != null ) {
+				if ( holiday_name == "Friday the 13th" ) {
 					random = 13;
 				}
-				holiday = GlobalVars.SSevent.holidays[holiday_name];
+				holiday = GlobalVars.SSevent.holidays.[object Object];
 				name = holiday.getStationPrefix();
 			};
 			if ( !name != null ) {
@@ -7605,19 +7606,19 @@ namespace Som13 {
 			return new_station_name;
 		}
 
-		public static UNKNOWN	next_list_item( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	i = null;
+		public static dynamic next_list_item( dynamic item = null, dynamic L = null ) {
+			int i = 0;
 			i = L.Find( item );
-			if ( i == L.len != null ) {
+			if ( i == L.len ) {
 				i = 1;
 			} else {
 				i++;
 			}
-			return L[i];
+			return L.[object Object];
 		}
 
-		public static UNKNOWN	ninjaspeak( UNKNOWN [object Object] =null ) {
-			UNKNOWN	te = null;
+		public static dynamic ninjaspeak( dynamic n = null ) {
+			dynamic te = null;
 			te = GlobalVars.undefined( n );
 			t = "";
 			n = GlobalVars.undefined( n );
@@ -7625,7 +7626,7 @@ namespace Som13 {
 			while (p <= n) {
 				n_letter = null;
 				n_mod = Rand.Int( 1, 4 );
-				if ( p + n_mod > n + 1 != null ) {
+				if ( p + n_mod > n + 1 ) {
 					n_letter = GlobalVars.undefined( te, p, n + 1 );
 				} else {
 					n_letter = GlobalVars.undefined( te, p, p + n_mod );
@@ -7645,37 +7646,37 @@ namespace Som13 {
 			return GlobalVars.undefined( GlobalFuncs.sanitize( t ), 1, 1024 );
 		}
 
-		public static dynamic	notice( UNKNOWN [object Object] =null ) {
+		public static dynamic notice( dynamic msg = null ) {
 			Game.log.write( "## NOTICE: " + msg );
 		}
 
-		public static dynamic	Nuke_request( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	msg = null;
+		public static dynamic Nuke_request( dynamic text = null, dynamic Sender = null ) {
+			dynamic msg = null;
 			msg = GlobalVars.undefined( GlobalFuncs.sanitize( text ), 1, 1024 );
 			msg = GlobalVars.undefined( "<span class='adminnotice'><b><font color=orange>NUKE CODE REQUEST:</font>" ).item( GlobalFuncs.key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" );
 			GlobalVars.admins.write( msg );
 			GlobalVars.admins.write( "<span class='adminnotice'><b>At this current time, the nuke must have the code manually set via varedit.</b></span>" );
 		}
 
-		public static UNKNOWN	nukelastname( UNKNOWN [object Object] =null ) {
-			UNKNOWN	randomname = null;
+		public static dynamic nukelastname( dynamic M = null ) {
+			dynamic randomname = null;
 			randomname = Rand.pick( GlobalVars.last_names );
 			newname = GlobalVars.undefined( GlobalFuncs.sanitize( GlobalVars.undefined( M, "You are the nuke operative " + Rand.pick(new object [] { "Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord" }) + ". Please choose a last name for your family.", "Name change", randomname, null, 0 ) ), 1, 26 );
 			if ( !newname != null ) {
 				newname = randomname;
-			} else if ( newname == "Unknown" || newname == "floor" || newname == "wall" || newname == "rwall" || newname == "_" != null ) {
+			} else if ( newname == "Unknown" || newname == "floor" || newname == "wall" || newname == "rwall" || newname == "_" ) {
 				M.write( "That name is reserved." );
 				return GlobalFuncs.nukelastname( M );
 			}
 			return GlobalFuncs.capitalize( newname );
 		}
 
-		public static dynamic	NukeNameAssign( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	synd_mind = null;
+		public static dynamic NukeNameAssign( dynamic lastname = null, dynamic syndicates = null ) {
+			dynamic synd_mind = null;
 			synd_mind = null;
-			foreach (_ in syndicates ) {
+			foreach (dynamic _ in syndicates ) {
 				synd_mind = undefined;
-				if ( !( synd_mind instanceof Mind ) != null ) {
+				if ( !( synd_mind is Mind ) != null ) {
 					continue;
 				}
 				H = synd_mind.current;
@@ -7685,24 +7686,24 @@ namespace Som13 {
 			return;
 		}
 
-		public static dynamic	num2hex( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
-			if ( len == null != null ) {
+		public static string num2hex( int num = 0, int len = 0 ) {
+			int i = 0;
+			string _default;
+			if ( len == null ) {
 				len = 2;
 			}
 			if ( !GlobalVars.undefined( num ) != null ) {
 				num = 0;
 			}
 			num = GlobalVars.undefined.round( GlobalVars.undefined.abs( num ) );
-			undefined = "";
+			_default = "";
 			i = 0;
 			while (1) {
-				if ( len <= 0 != null ) {
+				if ( len <= 0 ) {
 					if ( !num != null ) {
 						break;
 					}
-				} else if ( i >= len != null ) {
+				} else if ( i >= len ) {
 					break;
 				}
 				remainder = num / 16;
@@ -7710,19 +7711,19 @@ namespace Som13 {
 				remainder = ( remainder - num ) * 16;
 				local _ = remainder // Was a switch-case, sorry for the mess.
 				if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
-					undefined = "" + remainder + undefined;
+					_default = "" + remainder + _default;
 				} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
-					undefined = GlobalVars.undefined( remainder + 87 ) + undefined;
+					_default = GlobalVars.undefined( remainder + 87 ) + _default;
 				} else {
-					undefined = "0" + undefined;
+					_default = "0" + _default;
 				};
 				i++;
 			};
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static string	num2seclevel( UNKNOWN [object Object] =null ) {
+		public static dynamic num2seclevel( dynamic num = null ) {
 			local _ = num // Was a switch-case, sorry for the mess.
 			if ( _==0 ) {
 				return "green";
@@ -7735,9 +7736,9 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	onclose( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	param = null;
-			if ( _ref == null != null ) {
+		public static dynamic onclose( dynamic user = null, dynamic windowid = null, dynamic _ref = null ) {
+			string param = null;
+			if ( _ref == null ) {
 				_ref = null;
 			}
 			if ( !user.client != null ) {
@@ -7750,36 +7751,36 @@ namespace Som13 {
 			GlobalVars.undefined( user, windowid, "on-close=\".windowclose " + param + "\"" );
 		}
 
-		public static UNKNOWN	parse_zone( UNKNOWN [object Object] =null ) {
-			if ( zone == "r_hand" != null ) {
+		public static string parse_zone( dynamic zone = null ) {
+			if ( zone == "r_hand" ) {
 				return "right hand";
-			} else if ( zone == "l_hand" != null ) {
+			} else if ( zone == "l_hand" ) {
 				return "left hand";
-			} else if ( zone == "l_arm" != null ) {
+			} else if ( zone == "l_arm" ) {
 				return "left arm";
-			} else if ( zone == "r_arm" != null ) {
+			} else if ( zone == "r_arm" ) {
 				return "right arm";
-			} else if ( zone == "l_leg" != null ) {
+			} else if ( zone == "l_leg" ) {
 				return "left leg";
-			} else if ( zone == "r_leg" != null ) {
+			} else if ( zone == "r_leg" ) {
 				return "right leg";
-			} else if ( zone == "l_foot" != null ) {
+			} else if ( zone == "l_foot" ) {
 				return "left foot";
-			} else if ( zone == "r_foot" != null ) {
+			} else if ( zone == "r_foot" ) {
 				return "right foot";
 			} else {
 				return zone;
 			}
 		}
 
-		public static UNKNOWN	parsepencode( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( user == null != null ) {
+		public static dynamic parsepencode( dynamic t = null, dynamic user = null, string signfont = null ) {
+			if ( user == null ) {
 				user = null;
 			}
-			if ( signfont == null != null ) {
+			if ( signfont == null ) {
 				signfont = "Times New Roman";
 			}
-			if ( GlobalVars.undefined( t ) < 1 != null ) {
+			if ( GlobalVars.undefined( t ) < 1 ) {
 				return;
 			}
 			t = GlobalFuncs.replacetext( t, "[center]", "<center>" );
@@ -7808,72 +7809,72 @@ namespace Som13 {
 			return t;
 		}
 
-		public static dynamic	pick_n_take( UNKNOWN [object Object] =null ) {
-			UNKNOWN	picked = null;
-			UNKNOWN _default;
+		public static dynamic pick_n_take( dynamic L = null ) {
+			dynamic picked = null;
+			null _default;
 			if ( L.len != null ) {
 				picked = Rand.Int( 1, L.len );
-				undefined = L[picked];
+				_default = L.[object Object];
 				L.$Cut( picked, picked + 1 );
 			}
 			return _default;
 		}
 
-		public static dynamic	pickweight( UNKNOWN [object Object] =null ) {
-			UNKNOWN	total = null;
+		public static dynamic pickweight( dynamic L = null ) {
+			int total = 0;
 			total = 0;
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				item = undefined;
-				if ( !L[item] != null ) {
-					L[item] = 1;
+				if ( !L.[object Object] != null ) {
+					L.[object Object] = 1;
 				}
-				total += L[item];
+				total += L.[object Object];
 			};
 			total = Rand.Int( 1, total );
-			foreach (_ in L ) {
+			foreach (dynamic _ in L ) {
 				item = undefined;
-				total -= L[item];
-				if ( total <= 0 != null ) {
+				total -= L.[object Object];
+				if ( total <= 0 ) {
 					return item;
 				}
 			};
 			return;
 		}
 
-		public static dynamic	PlaceInPool( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( destroy == null != null ) {
+		public static dynamic PlaceInPool( dynamic diver = null, int destroy = 0 ) {
+			if ( destroy == null ) {
 				destroy = 1;
 			}
-			if ( !( diver instanceof BaseClass ) != null ) {
+			if ( !( diver is BaseClass ) != null ) {
 				return;
 			}
-			if ( diver in GlobalVars.GlobalPool[diver.type] != null ) {
+			if ( diver in GlobalVars.GlobalPool.[object Object] != null ) {
 				return;
 			}
-			if ( !GlobalVars.GlobalPool[diver.type] != null ) {
-				GlobalVars.GlobalPool[diver.type] = new ByTable();
+			if ( !GlobalVars.GlobalPool.[object Object] != null ) {
+				GlobalVars.GlobalPool.[object Object] = new ByTable();
 			}
-			GlobalVars.GlobalPool[diver.type] = GlobalVars.GlobalPool[diver.type] | diver;
-			if ( destroy != null ) {
+			GlobalVars.GlobalPool.[object Object] = GlobalVars.GlobalPool.[object Object] | diver;
+			if ( destroy != 0 ) {
 				diver.Destroy();
 			}
 			diver.ResetVars();
 		}
 
-		public static int	play_vox_word( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	sound_file = null;
+		public static int play_vox_word( dynamic word = null, dynamic z_level = null, dynamic only_listener = null ) {
+			dynamic sound_file = null;
 			word = GlobalVars.undefined( word );
-			if ( GlobalVars.vox_sounds[word] != null ) {
-				sound_file = GlobalVars.vox_sounds[word];
+			if ( GlobalVars.vox_sounds.[object Object] != null ) {
+				sound_file = GlobalVars.vox_sounds.[object Object];
 				voice = GlobalVars.undefined.lcall( new ByTable().set( "channel", GlobalVars.VOX_CHANNEL ).set( "wait", 1 ).set( 1, sound_file ) );
 				voice.status = GlobalVars.SOUND_STREAM;
 				if ( !only_listener != null ) {
 					M = null;
-					foreach (_ in GlobalVars.player_list ) {
+					foreach (dynamic _ in GlobalVars.player_list ) {
 						M = undefined;
-						if ( M.client && !M.ear_deaf != null ) {
+						if ( M.client != null && !M.ear_deaf != null ) {
 							T = GlobalFuncs.get_turf( M );
-							if ( T.z == z_level != null ) {
+							if ( T.z == z_level ) {
 								M.write( voice );
 							}
 						}
@@ -7886,9 +7887,9 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static dynamic	playsound( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	frequency = null;
-			if ( surround == null != null ) {
+		public static dynamic playsound( dynamic source = null, dynamic soundin = null, dynamic vol = null, dynamic vary = null, dynamic extrarange = null, dynamic falloff = null, int surround = 0 ) {
+			dynamic frequency = null;
+			if ( surround == null ) {
 				surround = 1;
 			}
 			soundin = GlobalFuncs.get_sfx( soundin );
@@ -7899,27 +7900,27 @@ namespace Som13 {
 			frequency = GlobalFuncs.get_rand_frequency();
 			turf_source = GlobalFuncs.get_turf( source );
 			P = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				P = undefined;
 				M = P;
-				if ( !M || !M.client != null ) {
+				if ( !M != null || !M.client != null ) {
 					continue;
 				}
-				if ( GlobalVars.undefined( M, turf_source ) <= Game.view + extrarange != null ) {
+				if ( GlobalVars.undefined( M, turf_source ) <= Game.view + extrarange ) {
 					T = GlobalFuncs.get_turf( M );
-					if ( T && T.z == turf_source.z != null ) {
+					if ( T != null && T.z == turf_source.z ) {
 						M.playsound_local( turf_source, soundin, vol, vary, frequency, falloff, surround );
 					}
 				}
 			};
 		}
 
-		public static ByTable	pollCandidates( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	candidates = null;
-			if ( be_special_flag == null != null ) {
+		public static ByTable pollCandidates( string Question = null, dynamic jobbanType = null, dynamic gametypeCheck = null, int be_special_flag = 0, int poll_time = 0 ) {
+			ByTable candidates = null;
+			if ( be_special_flag == null ) {
 				be_special_flag = 0;
 			}
-			if ( poll_time == null != null ) {
+			if ( poll_time == null ) {
 				poll_time = 300;
 			}
 			candidates = new ByTable();
@@ -7928,15 +7929,15 @@ namespace Som13 {
 				Question = "Would you like to be a special role?";
 			}
 			G = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				G = undefined;
-				if ( !( G instanceof Mob_Dead_Observer ) != null ) {
+				if ( !( G is Mob_Dead_Observer ) != null ) {
 					continue;
 				}
-				if ( !G.key || !G.client != null ) {
+				if ( !G.key != null || !G.client != null ) {
 					continue;
 				}
-				if ( be_special_flag != null ) {
+				if ( be_special_flag != 0 ) {
 					if ( !( G.client.prefs.be_special & be_special_flag ) != null ) {
 						continue;
 					}
@@ -7947,7 +7948,7 @@ namespace Som13 {
 					}
 				}
 				if ( jobbanType != null ) {
-					if ( GlobalFuncs.jobban_isbanned( G, jobbanType ) || GlobalFuncs.jobban_isbanned( G, "Syndicate" ) != null ) {
+					if ( GlobalFuncs.jobban_isbanned( G, jobbanType ) != null || GlobalFuncs.jobban_isbanned( G, "Syndicate" ) != null ) {
 						continue;
 					}
 				}
@@ -7956,7 +7957,7 @@ namespace Som13 {
 					local _ = GlobalVars.undefined( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ) // Was a switch-case, sorry for the mess.
 					if ( _=="Yes" ) {
 						G.write( "<span class='notice'>Choice registered: Yes.</span>" );
-						if ( Game.time - time_passed > poll_time != null ) {
+						if ( Game.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
 							G.write( new ByRsc(10) );
 							return;
@@ -7973,46 +7974,46 @@ namespace Som13 {
 			};
 			GlobalVars.undefined.sleep( poll_time );
 			G = null;
-			foreach (_ in candidates ) {
+			foreach (dynamic _ in candidates ) {
 				G = undefined;
-				if ( !( G instanceof Mob_Dead_Observer ) != null ) {
+				if ( !( G is Mob_Dead_Observer ) != null ) {
 					continue;
 				}
-				if ( !G.key || !G.client != null ) {
+				if ( !G.key != null || !G.client != null ) {
 					candidates.Remove( G );
 				}
 			};
 			return candidates;
 		}
 
-		public static dynamic	PoolOrNew( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic PoolOrNew( dynamic get_type = null, dynamic second_arg = null ) {
 			if ( !get_type != null ) {
 				return;
 			}
-			undefined = GlobalFuncs.GetFromPool( get_type, second_arg );
-			if ( !undefined != null ) {
+			_default = GlobalFuncs.GetFromPool( get_type, second_arg );
+			if ( !_default != null ) {
 				if ( GlobalVars.undefined( get_type ) != null ) {
-					if ( second_arg instanceof new List != null ) {
-						undefined = get_type.lcall( second_arg );
+					if ( second_arg is new List != null ) {
+						_default = get_type.lcall( second_arg );
 					} else {
-						undefined = get_type( second_arg );
+						_default = get_type( second_arg );
 					}
 				}
 			}
 			return _default;
 		}
 
-		public static dynamic	pop( UNKNOWN [object Object] =null ) {
+		public static dynamic pop( dynamic L = null ) {
 			if ( L.len != null ) {
-				undefined = L[L.len];
+				_default = L.[object Object];
 				L.len--;
 			}
 			return _default;
 		}
 
-		public static dynamic	possess( UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
-			if ( O instanceof Ent_Singularity != null ) {
+		public static dynamic possess( dynamic O = null ) {
+			dynamic T = null;
+			if ( O is Ent_Singularity != null ) {
 				if ( GlobalVars.config.forbid_singulo_possession != null ) {
 					GlobalVars.undefined.user.write( "It is forbidden to possess singularities." );
 					return;
@@ -8037,16 +8038,16 @@ namespace Som13 {
 			GlobalFuncs.feedback_add_details( "admin_verb", "PO" );
 		}
 
-		public static dynamic	power_failure(  ) {
-			dynamic	S = null;
+		public static dynamic power_failure(  ) {
+			dynamic S = null;
 			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs._station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", new ByRsc(54) );
 			S = null;
-			foreach (_ in GlobalVars.machines ) {
+			foreach (dynamic _ in GlobalVars.machines ) {
 				S = undefined;
-				if ( !( S instanceof Ent_Machinery_Power_Smes ) != null ) {
+				if ( !( S is Ent_Machinery_Power_Smes ) != null ) {
 					continue;
 				}
-				if ( GlobalFuncs.get_area( S ) instanceof new ByArea(2739) || S.z != 1 != null ) {
+				if ( GlobalFuncs.get_area( S ) is new ByArea(2739) != null || S.z != 1 ) {
 					continue;
 				}
 				S.charge = 0;
@@ -8057,28 +8058,28 @@ namespace Som13 {
 			};
 			skipped_areas = new ByTable(new object [] {new ByArea(2719),new ByArea(2727)});
 			A = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				A = undefined;
-				if ( !A.requires_power || A.always_unpowered != null ) {
+				if ( !A.requires_power != null || A.always_unpowered != null ) {
 					continue;
 				}
 				skip = 0;
 				area_type = null;
-				foreach (_ in skipped_areas ) {
+				foreach (dynamic _ in skipped_areas ) {
 					area_type = undefined;
-					if ( A instanceof area_type != null ) {
+					if ( A is area_type != null ) {
 						skip = 1;
 						break;
 					}
 				};
 				if ( A.contents != null ) {
 					AT = null;
-					foreach (_ in A.contents ) {
+					foreach (dynamic _ in A.contents ) {
 						AT = undefined;
-						if ( !( AT instanceof BaseStatic ) != null ) {
+						if ( !( AT is BaseStatic ) != null ) {
 							continue;
 						}
-						if ( AT.z != 1 != null ) {
+						if ( AT.z != 1 ) {
 							skip = 1;
 						}
 						break;
@@ -8093,18 +8094,18 @@ namespace Som13 {
 				A.power_change();
 			};
 			C = null;
-			foreach (_ in GlobalVars.apcs_list ) {
+			foreach (dynamic _ in GlobalVars.apcs_list ) {
 				C = undefined;
-				if ( !( C instanceof Ent_Machinery_Power_Apc ) != null ) {
+				if ( !( C is Ent_Machinery_Power_Apc ) != null ) {
 					continue;
 				}
-				if ( C.cell && C.z == 1 != null ) {
+				if ( C.cell != null && C.z == 1 ) {
 					A = GlobalFuncs.get_area( C );
 					skip = 0;
 					area_type = null;
-					foreach (_ in skipped_areas ) {
+					foreach (dynamic _ in skipped_areas ) {
 						area_type = undefined;
-						if ( A instanceof area_type != null ) {
+						if ( A is area_type != null ) {
 							skip = 1;
 							break;
 						}
@@ -8117,65 +8118,65 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	power_list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	AM = null;
-			UNKNOWN _default;
-			if ( unmarked == null != null ) {
+		public static ByTable power_list( dynamic T = null, dynamic source = null, dynamic d = null, int unmarked = 0, int cable_only = 0 ) {
+			dynamic AM = null;
+			ByTable _default;
+			if ( unmarked == null ) {
 				unmarked = 0;
 			}
-			if ( cable_only == null != null ) {
+			if ( cable_only == null ) {
 				cable_only = 0;
 			}
-			undefined = new ByTable();
+			_default = new ByTable();
 			AM = null;
-			foreach (_ in T ) {
+			foreach (dynamic _ in T ) {
 				AM = undefined;
-				if ( AM == source != null ) {
+				if ( AM == source ) {
 					continue;
 				}
-				if ( !cable_only && AM instanceof Ent_Machinery_Power != null ) {
+				if ( !cable_only != null && AM is Ent_Machinery_Power != null ) {
 					P = AM;
-					if ( P.powernet == 0 != null ) {
+					if ( P.powernet == 0 ) {
 						continue;
 					}
-					if ( !unmarked || !P.powernet != null ) {
-						if ( d == 0 != null ) {
-							undefined += P;
+					if ( !unmarked != null || !P.powernet != null ) {
+						if ( d == 0 ) {
+							_default += P;
 						}
 					}
-				} else if ( AM instanceof Ent_Structure_Cable != null ) {
+				} else if ( AM is Ent_Structure_Cable != null ) {
 					C = AM;
-					if ( !unmarked || !C.powernet != null ) {
-						if ( C.d1 == d || C.d2 == d != null ) {
-							undefined += C;
+					if ( !unmarked != null || !C.powernet != null ) {
+						if ( C.d1 == d || C.d2 == d ) {
+							_default += C;
 						}
 					}
 				}
 			};
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	power_restore(  ) {
-			dynamic	C = null;
+		public static dynamic power_restore(  ) {
+			dynamic C = null;
 			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs._station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
 			C = null;
-			foreach (_ in GlobalVars.machines ) {
+			foreach (dynamic _ in GlobalVars.machines ) {
 				C = undefined;
-				if ( !( C instanceof Ent_Machinery_Power_Apc ) != null ) {
+				if ( !( C is Ent_Machinery_Power_Apc ) != null ) {
 					continue;
 				}
-				if ( C.cell && C.z == 1 != null ) {
+				if ( C.cell != null && C.z == 1 ) {
 					C.charge = C.cell.maxcharge;
 				}
 			};
 			S = null;
-			foreach (_ in GlobalVars.machines ) {
+			foreach (dynamic _ in GlobalVars.machines ) {
 				S = undefined;
-				if ( !( S instanceof Ent_Machinery_Power_Smes ) != null ) {
+				if ( !( S is Ent_Machinery_Power_Smes ) != null ) {
 					continue;
 				}
-				if ( S.z != 1 != null ) {
+				if ( S.z != 1 ) {
 					continue;
 				}
 				S.charge = S.capacity;
@@ -8185,9 +8186,9 @@ namespace Som13 {
 				S.$power change();
 			};
 			A = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				A = undefined;
-				if ( !( A instanceof new ByArea(2717) ) && !( A instanceof new ByArea(2755) ) && !( A instanceof new ByArea(2741) ) != null ) {
+				if ( !( A is new ByArea(2717) ) != null && !( A is new ByArea(2755) ) != null && !( A is new ByArea(2741) ) != null ) {
 					A.power_light = 1;
 					A.power_equip = 1;
 					A.power_environ = 1;
@@ -8196,16 +8197,16 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	power_restore_quick(  ) {
-			dynamic	S = null;
+		public static dynamic power_restore_quick(  ) {
+			dynamic S = null;
 			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs._station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
 			S = null;
-			foreach (_ in GlobalVars.machines ) {
+			foreach (dynamic _ in GlobalVars.machines ) {
 				S = undefined;
-				if ( !( S instanceof Ent_Machinery_Power_Smes ) != null ) {
+				if ( !( S is Ent_Machinery_Power_Smes ) != null ) {
 					continue;
 				}
-				if ( S.z != 1 != null ) {
+				if ( S.z != 1 ) {
 					continue;
 				}
 				S.charge = S.capacity;
@@ -8216,13 +8217,13 @@ namespace Som13 {
 			};
 		}
 
-		public static string	pretty_string_from_reagent_list( UNKNOWN [object Object] =null ) {
-			string	result = null;
+		public static string pretty_string_from_reagent_list( dynamic reagent_list = null ) {
+			string result = null;
 			result = "| ";
 			R = null;
-			foreach (_ in reagent_list ) {
+			foreach (dynamic _ in reagent_list ) {
 				R = undefined;
-				if ( !( R instanceof Reagent ) != null ) {
+				if ( !( R is Reagent ) != null ) {
 					continue;
 				}
 				result += "" + R.name + ", " + R.volume + " | ";
@@ -8230,32 +8231,32 @@ namespace Som13 {
 			return result;
 		}
 
-		public static UNKNOWN	previous_list_item( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	i = null;
+		public static dynamic previous_list_item( dynamic item = null, dynamic L = null ) {
+			dynamic i = null;
 			i = L.Find( item );
-			if ( i == 1 != null ) {
+			if ( i == 1 ) {
 				i = L.len;
 			} else {
 				i--;
 			}
-			return L[i];
+			return L.[object Object];
 		}
 
-		public static dynamic	print_command_report( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	C = null;
-			if ( text == null != null ) {
+		public static dynamic print_command_report( string text = null, string title = null ) {
+			dynamic C = null;
+			if ( text == null ) {
 				text = "";
 			}
-			if ( title == null != null ) {
+			if ( title == null ) {
 				title = "Central Command Update";
 			}
 			C = null;
-			foreach (_ in GlobalVars.machines ) {
+			foreach (dynamic _ in GlobalVars.machines ) {
 				C = undefined;
-				if ( !( C instanceof Ent_Machinery_Computer_Communications ) != null ) {
+				if ( !( C is Ent_Machinery_Computer_Communications ) != null ) {
 					continue;
 				}
-				if ( !( C.stat & 3 ) && C.z == 1 != null ) {
+				if ( !( C.stat & 3 ) != null && C.z == 1 ) {
 					P = new Ent_Item_Weapon_Paper( C.loc );
 					P.name = "paper- '" + title + "'";
 					P.info = text;
@@ -8265,31 +8266,31 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	priority_announce( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	announcement = null;
-			if ( title == null != null ) {
+		public static dynamic priority_announce( dynamic text = null, string title = null, UNKNOWN sound = null, dynamic type = null ) {
+			dynamic announcement = null;
+			if ( title == null ) {
 				title = "";
 			}
-			if ( sound == null != null ) {
+			if ( sound == null ) {
 				sound = new ByRsc(62);
 			}
 			if ( !text != null ) {
 				return;
 			}
-			if ( type == "Priority" != null ) {
+			if ( type == "Priority" ) {
 				announcement += "<h1 class='alert'>Priority Announcement</h1>";
-				if ( title && GlobalVars.undefined( title ) > 0 != null ) {
+				if ( title != "" && GlobalVars.undefined( title ) > 0 ) {
 					announcement += "<br><h2 class='alert'>" + GlobalVars.undefined( title ) + "</h2>";
 				}
-			} else if ( type == "Captain" != null ) {
+			} else if ( type == "Captain" ) {
 				announcement += "<h1 class='alert'>Captain Announces</h1>";
 				GlobalVars.news_network.SubmitArticle( text, "Captain's Announcement", "Station Announcements", null );
 			} else {
 				announcement += "<h1 class='alert'>" + GlobalFuncs._command_name() + " Update</h1>";
-				if ( title && GlobalVars.undefined( title ) > 0 != null ) {
+				if ( title != "" && GlobalVars.undefined( title ) > 0 ) {
 					announcement += "<br><h2 class='alert'>" + GlobalVars.undefined( title ) + "</h2>";
 				}
-				if ( title == "" != null ) {
+				if ( title == "" ) {
 					GlobalVars.news_network.SubmitArticle( text, "Central Command Update", "Station Announcements", null );
 				} else {
 					GlobalVars.news_network.SubmitArticle( title + "<br><br>" + text, "Central Command", "Station Announcements", null );
@@ -8298,17 +8299,17 @@ namespace Som13 {
 			announcement += "<br><span class='alert'>" + GlobalVars.undefined( text ) + "</span><br>";
 			announcement += "<br>";
 			M = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				M = undefined;
-				if ( !( M instanceof Mob_NewPlayer ) && !M.ear_deaf != null ) {
+				if ( !( M is Mob_NewPlayer ) != null && !M.ear_deaf != null ) {
 					M.write( announcement );
 					M.write( Sound( sound ) );
 				}
 			};
 		}
 
-		public static ProjectileData	projectile_trajectory( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	power_x = null;
+		public static ProjectileData projectile_trajectory( dynamic src_x = null, dynamic src_y = null, dynamic rotation = null, dynamic angle = null, dynamic power = null ) {
+			dynamic power_x = null;
 			power_x = power * GlobalVars.undefined.cos( angle );
 			power_y = power * GlobalVars.undefined.sin( angle );
 			time = power_y * 2 / 10;
@@ -8318,23 +8319,23 @@ namespace Som13 {
 			return new ProjectileData( src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y );
 		}
 
-		public static dynamic	propagate_network( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	worklist = null;
+		public static dynamic propagate_network( dynamic O = null, dynamic PN = null ) {
+			ByTable worklist = null;
 			worklist = new ByTable();
 			found_machines = new ByTable();
 			index = 1;
 			P = null;
 			worklist += O;
 			while (index <= worklist.len) {
-				P = worklist[index];
+				P = worklist.[object Object];
 				index++;
-				if ( P instanceof Ent_Structure_Cable != null ) {
+				if ( P is Ent_Structure_Cable != null ) {
 					C = P;
-					if ( C.powernet != PN != null ) {
+					if ( C.powernet != PN ) {
 						PN.add_cable( C );
 					}
 					worklist = worklist | C.get_connections();
-				} else if ( P.anchored && P instanceof Ent_Machinery_Power != null ) {
+				} else if ( P.anchored != null && P is Ent_Machinery_Power != null ) {
 					M = P;
 					found_machines = found_machines | M;
 				} else {
@@ -8342,9 +8343,9 @@ namespace Som13 {
 				}
 			};
 			PM = null;
-			foreach (_ in found_machines ) {
+			foreach (dynamic _ in found_machines ) {
 				PM = undefined;
-				if ( !( PM instanceof Ent_Machinery_Power ) != null ) {
+				if ( !( PM is Ent_Machinery_Power ) != null ) {
 					continue;
 				}
 				if ( !PM.connect_to_network() != null ) {
@@ -8353,12 +8354,12 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	qdel( UNKNOWN [object Object] =null ) {
-			UNKNOWN	hint = null;
+		public static dynamic qdel( dynamic A = null ) {
+			dynamic hint = null;
 			if ( !A != null ) {
 				return;
 			}
-			if ( !( A instanceof BaseClass ) != null ) {
+			if ( !( A is BaseClass ) != null ) {
 				GlobalVars.undefined( A );
 				A = null;
 			} else if ( GlobalVars.undefined( A.gc_destroyed ) != null ) {
@@ -8383,7 +8384,7 @@ namespace Som13 {
 				} else if ( _==6 ) {
 					GlobalVars.SSgarbage.Queue( A );
 				} else {
-					if ( !( "" + A.type in GlobalVars.SSgarbage.noqdelhint ) != null ) {
+					if ( !"" + A.type in GlobalVars.SSgarbage.noqdelhint != null ) {
 						GlobalVars.SSgarbage.noqdelhint += "" + A.type;
 						GlobalFuncs.testing( "WARNING: " + A.type + " is not returning a qdel hint. It is being placed in the queue. Further instances of this type will also be queued." );
 					}
@@ -8392,8 +8393,8 @@ namespace Som13 {
 			}
 		}
 
-		public static int	qdeleted( UNKNOWN [object Object] =null ) {
-			if ( !( A instanceof BaseClass ) != null ) {
+		public static int qdeleted( dynamic A = null ) {
+			if ( !( A is BaseClass ) != null ) {
 				return 0;
 			}
 			if ( A.gc_destroyed != null ) {
@@ -8402,53 +8403,53 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static int	radiation_pulse( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	light_severity = null;
-			if ( log == null != null ) {
+		public static int radiation_pulse( dynamic epicenter = null, dynamic heavy_range = null, dynamic light_range = null, dynamic severity = null, int log = 0 ) {
+			dynamic light_severity = null;
+			if ( log == null ) {
 				log = 0;
 			}
-			if ( !epicenter || !severity != null ) {
+			if ( !epicenter != null || !severity != null ) {
 				return;
 			}
-			if ( !( epicenter instanceof Tile ) != null ) {
+			if ( !( epicenter is Tile ) != null ) {
 				epicenter = GlobalFuncs.get_turf( epicenter.loc );
 			}
-			if ( log != null ) {
+			if ( log != 0 ) {
 				GlobalFuncs.message_admins( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " );
 				GlobalFuncs.log_game( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " );
 			}
-			if ( heavy_range > light_range != null ) {
+			if ( heavy_range > light_range ) {
 				light_range = heavy_range;
 			}
 			light_severity = severity * 0.5;
 			T = null;
-			foreach (_ in GlobalVars.undefined( light_range, epicenter ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( light_range, epicenter ) ) {
 				T = undefined;
-				if ( !( T instanceof BaseStatic ) != null ) {
+				if ( !( T is BaseStatic ) != null ) {
 					continue;
 				}
 				distance = GlobalVars.undefined( epicenter, T );
-				if ( distance < 0 != null ) {
+				if ( distance < 0 ) {
 					distance = 0;
 				}
-				if ( distance < heavy_range != null ) {
+				if ( distance < heavy_range ) {
 					T.rad_act( severity );
-				} else if ( distance == heavy_range != null ) {
+				} else if ( distance == heavy_range ) {
 					if ( Rand.chance( 50 ) != null ) {
 						T.rad_act( severity );
 					} else {
 						T.rad_act( light_severity );
 					}
-				} else if ( distance <= light_range != null ) {
+				} else if ( distance <= light_range ) {
 					T.rad_act( light_severity );
 				}
 			};
 			return 1;
 		}
 
-		public static UNKNOWN	ran_zone( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	t = null;
-			if ( probability == null != null ) {
+		public static dynamic ran_zone( dynamic zone = null, int probability = 0 ) {
+			dynamic t = null;
+			if ( probability == null ) {
 				probability = 80;
 			}
 			zone = GlobalFuncs.check_zone( zone );
@@ -8473,45 +8474,45 @@ namespace Som13 {
 			return zone;
 		}
 
-		public static dynamic	randmut( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	num = null;
-			UNKNOWN _default;
-			if ( difficulty == null != null ) {
+		public static dynamic randmut( dynamic M = null, dynamic candidates = null, int difficulty = 0 ) {
+			dynamic num = null;
+			null _default;
+			if ( difficulty == null ) {
 				difficulty = 2;
 			}
 			if ( !M.has_dna() != null ) {
 				return;
 			}
 			num = Rand.pick( candidates );
-			undefined = num.force_give( M );
+			_default = num.force_give( M );
 			return;
 			return _default;
 		}
 
-		public static dynamic	randmutb( UNKNOWN [object Object] =null ) {
-			UNKNOWN	HM = null;
-			UNKNOWN _default;
+		public static dynamic randmutb( dynamic M = null ) {
+			dynamic HM = null;
+			null _default;
 			if ( !M.has_dna() != null ) {
 				return;
 			}
 			HM = Rand.pick( ( GlobalVars.bad_mutations | GlobalVars.not_good_mutations ) - GlobalVars.mutations_list.Monkified );
-			undefined = HM.force_give( M );
+			_default = HM.force_give( M );
 			return _default;
 		}
 
-		public static dynamic	randmutg( UNKNOWN [object Object] =null ) {
-			UNKNOWN	HM = null;
-			UNKNOWN _default;
+		public static dynamic randmutg( dynamic M = null ) {
+			dynamic HM = null;
+			null _default;
 			if ( !M.has_dna() != null ) {
 				return;
 			}
 			HM = Rand.pick( GlobalVars.good_mutations );
-			undefined = HM.force_give( M );
+			_default = HM.force_give( M );
 			return _default;
 		}
 
-		public static dynamic	randmuti( UNKNOWN [object Object] =null ) {
-			UNKNOWN	num = null;
+		public static dynamic randmuti( dynamic M = null ) {
+			dynamic num = null;
 			if ( !M.has_dna() != null ) {
 				return;
 			}
@@ -8521,7 +8522,7 @@ namespace Som13 {
 			return;
 		}
 
-		public static UNKNOWN	random_blood_type(  ) {
+		public static UNKNOWN random_blood_type(  ) {
 			return int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
 	<-REP->if ( _ < 2674 ) { _ = "O-" }
 	<-REP->else if ( _ < 26748 ) { _ = "O+" }
@@ -8533,7 +8534,7 @@ namespace Som13 {
 	<-REP->else  { _ = "AB+" };
 		}
 
-		public static UNKNOWN	random_eye_color(  ) {
+		public static dynamic random_eye_color(  ) {
 			local _ = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
 	<-REP->if ( _ < 14246 ) { _ = "brown" }
 	<-REP->else if ( _ < 28492 ) { _ = "hazel" }
@@ -8561,7 +8562,7 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	random_facial_hair_style( UNKNOWN [object Object] =null ) {
+		public static dynamic random_facial_hair_style( dynamic gender = null ) {
 			local _ = gender // Was a switch-case, sorry for the mess.
 			if ( _=="male" ) {
 				return Rand.pick( GlobalVars.facial_hair_styles_male_list );
@@ -8572,7 +8573,7 @@ namespace Som13 {
 			};
 		}
 
-		public static ByTable	random_features(  ) {
+		public static ByTable random_features(  ) {
 			if ( !GlobalVars.tails_list_human.len != null ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( SpriteAccessory_Tails_Human, GlobalVars.tails_list_human );
 			}
@@ -8600,7 +8601,7 @@ namespace Som13 {
 			return new ByTable().set( "body_markings", Rand.pick( GlobalVars.body_markings_list ) ).set( "spines", Rand.pick( GlobalVars.spines_list ) ).set( "frills", Rand.pick( GlobalVars.frills_list ) ).set( "ears", "None" ).set( "horns", Rand.pick( GlobalVars.horns_list ) ).set( "snout", Rand.pick( GlobalVars.snouts_list ) ).set( "tail_human", "None" ).set( "tail_lizard", Rand.pick( GlobalVars.tails_list_lizard ) ).set( "mcolor", Rand.pick(new object [] { "FFFFFF", "7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F" }) );
 		}
 
-		public static UNKNOWN	random_hair_style( UNKNOWN [object Object] =null ) {
+		public static dynamic random_hair_style( dynamic gender = null ) {
 			local _ = gender // Was a switch-case, sorry for the mess.
 			if ( _=="male" ) {
 				return Rand.pick( GlobalVars.hair_styles_male_list );
@@ -8611,15 +8612,15 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	random_short_color(  ) {
+		public static dynamic random_short_color(  ) {
 			return GlobalFuncs.random_string( 3, GlobalVars.hex_characters );
 		}
 
-		public static UNKNOWN	random_skin_tone(  ) {
+		public static dynamic random_skin_tone(  ) {
 			return Rand.pick( GlobalVars.skin_tones );
 		}
 
-		public static UNKNOWN	random_socks( UNKNOWN [object Object] =null ) {
+		public static dynamic random_socks( dynamic gender = null ) {
 			if ( !GlobalVars.socks_list.len != null ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( SpriteAccessory_Socks, GlobalVars.socks_list, GlobalVars.socks_m, GlobalVars.socks_f );
 			}
@@ -8633,8 +8634,8 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	random_step( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	initial_chance = null;
+		public static dynamic random_step( dynamic AM = null, dynamic steps = null, dynamic chance = null ) {
+			dynamic initial_chance = null;
 			initial_chance = chance;
 			while (steps > 0) {
 				if ( Rand.chance( chance ) != null ) {
@@ -8645,20 +8646,20 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	random_string( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
-			undefined = "";
+		public static string random_string( dynamic length = null, dynamic characters = null ) {
+			int i = 0;
+			string _default;
+			_default = "";
 			i = null;
 			i = 1;
 			while (i <= length) {
-				undefined += Rand.pick( characters );
+				_default += Rand.pick( characters );
 				i++;
 			};
 			return _default;
 		}
 
-		public static UNKNOWN	random_undershirt( UNKNOWN [object Object] =null ) {
+		public static dynamic random_undershirt( dynamic gender = null ) {
 			if ( !GlobalVars.undershirt_list.len != null ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( SpriteAccessory_Undershirt, GlobalVars.undershirt_list, GlobalVars.undershirt_m, GlobalVars.undershirt_f );
 			}
@@ -8672,7 +8673,7 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	random_underwear( UNKNOWN [object Object] =null ) {
+		public static dynamic random_underwear( dynamic gender = null ) {
 			if ( !GlobalVars.underwear_list.len != null ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( SpriteAccessory_Underwear, GlobalVars.underwear_list, GlobalVars.underwear_m, GlobalVars.underwear_f );
 			}
@@ -8686,17 +8687,17 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	random_unique_lizard_name( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
-			if ( attempts_to_find_unique_name == null != null ) {
+		public static dynamic random_unique_lizard_name( dynamic gender = null, int attempts_to_find_unique_name = 0 ) {
+			int i = 0;
+			null _default;
+			if ( attempts_to_find_unique_name == null ) {
 				attempts_to_find_unique_name = 10;
 			}
 			i = null;
 			i = 1;
 			while (i <= attempts_to_find_unique_name) {
-				undefined = GlobalFuncs.capitalize( GlobalFuncs.lizard_name( gender ) );
-				if ( i != attempts_to_find_unique_name && !GlobalFuncs.findname( undefined ) != null ) {
+				_default = GlobalFuncs.capitalize( GlobalFuncs.lizard_name( gender ) );
+				if ( i != attempts_to_find_unique_name && !GlobalFuncs.findname( _default ) != null ) {
 					break;
 				}
 				i++;
@@ -8704,21 +8705,21 @@ namespace Som13 {
 			return _default;
 		}
 
-		public static dynamic	random_unique_name( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
-			if ( attempts_to_find_unique_name == null != null ) {
+		public static dynamic random_unique_name( dynamic gender = null, int attempts_to_find_unique_name = 0 ) {
+			int i = 0;
+			null _default;
+			if ( attempts_to_find_unique_name == null ) {
 				attempts_to_find_unique_name = 10;
 			}
 			i = null;
 			i = 1;
 			while (i <= attempts_to_find_unique_name) {
-				if ( gender == GlobalVars.FEMALE != null ) {
-					undefined = GlobalFuncs.capitalize( Rand.pick( GlobalVars.first_names_female ) ) + " " + GlobalFuncs.capitalize( Rand.pick( GlobalVars.last_names ) );
+				if ( gender == GlobalVars.FEMALE ) {
+					_default = GlobalFuncs.capitalize( Rand.pick( GlobalVars.first_names_female ) ) + " " + GlobalFuncs.capitalize( Rand.pick( GlobalVars.last_names ) );
 				} else {
-					undefined = GlobalFuncs.capitalize( Rand.pick( GlobalVars.first_names_male ) ) + " " + GlobalFuncs.capitalize( Rand.pick( GlobalVars.last_names ) );
+					_default = GlobalFuncs.capitalize( Rand.pick( GlobalVars.first_names_male ) ) + " " + GlobalFuncs.capitalize( Rand.pick( GlobalVars.last_names ) );
 				}
-				if ( i != attempts_to_find_unique_name && !GlobalFuncs.findname( undefined ) != null ) {
+				if ( i != attempts_to_find_unique_name && !GlobalFuncs.findname( _default ) != null ) {
 					break;
 				}
 				i++;
@@ -8726,8 +8727,8 @@ namespace Som13 {
 			return _default;
 		}
 
-		public static UNKNOWN	randomColor( UNKNOWN [object Object] =null ) {
-			if ( mode == null != null ) {
+		public static dynamic randomColor( int mode = 0 ) {
+			if ( mode == null ) {
 				mode = 0;
 			}
 			local _ = mode // Was a switch-case, sorry for the mess.
@@ -8740,7 +8741,7 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	randomize_human( UNKNOWN [object Object] =null ) {
+		public static dynamic randomize_human( dynamic H = null ) {
 			H.gender = Rand.pick(new object [] { GlobalVars.MALE, GlobalVars.FEMALE });
 			H.real_name = GlobalFuncs.random_unique_name( H.gender );
 			H.name = H.real_name;
@@ -8756,15 +8757,15 @@ namespace Som13 {
 			H.$update hair();
 		}
 
-		public static dynamic	ReadHSV( UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
+		public static ByTable ReadHSV( dynamic hsv = null ) {
+			int i = 0;
+			ByTable _default;
 			if ( !hsv != null ) {
 				return;
 			}
 			i = 1;
 			start = 1;
-			if ( GlobalVars.undefined( hsv, null ) == 35 != null ) {
+			if ( GlobalVars.undefined( hsv, null ) == 35 ) {
 				start++;
 			}
 			which = 0;
@@ -8776,32 +8777,32 @@ namespace Som13 {
 			i = start;
 			while (i <= GlobalVars.undefined( hsv )) {
 				ch = GlobalVars.undefined( hsv, i );
-				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 != null ) {
+				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 ) {
 					break;
 				}
 				digits++;
-				if ( digits == 9 != null ) {
+				if ( digits == 9 ) {
 					break;
 				}
 				i++;
 			};
-			if ( digits > 7 != null ) {
+			if ( digits > 7 ) {
 				usealpha = 1;
 			}
-			if ( digits <= 4 != null ) {
+			if ( digits <= 4 ) {
 				which++;
 			}
-			if ( digits <= 2 != null ) {
+			if ( digits <= 2 ) {
 				which++;
 			}
 			i = start;
 			while (digits > 0) {
 				ch = GlobalVars.undefined( hsv, i );
-				if ( ch >= 48 && ch <= 57 != null ) {
+				if ( ch >= 48 && ch <= 57 ) {
 					ch -= 48;
-				} else if ( ch >= 65 && ch <= 70 != null ) {
+				} else if ( ch >= 65 && ch <= 70 ) {
 					ch -= 55;
-				} else if ( ch >= 97 && ch <= 102 != null ) {
+				} else if ( ch >= 97 && ch <= 102 ) {
 					ch -= 87;
 				} else {
 					break;
@@ -8810,17 +8811,17 @@ namespace Som13 {
 				local _ = which // Was a switch-case, sorry for the mess.
 				if ( _==0 ) {
 					hue = hue << 4 | ch;
-					if ( digits == ( usealpha ? 6 : 4 ) != null ) {
+					if ( digits == ( usealpha ? 6 : 4 ) ) {
 						which++;
 					}
 				} else if ( _==1 ) {
 					sat = sat << 4 | ch;
-					if ( digits == ( usealpha ? 4 : 2 ) != null ) {
+					if ( digits == ( usealpha ? 4 : 2 ) ) {
 						which++;
 					}
 				} else if ( _==2 ) {
 					val = val << 4 | ch;
-					if ( digits == ( usealpha ? 2 : 0 ) != null ) {
+					if ( digits == ( usealpha ? 2 : 0 ) ) {
 						which++;
 					}
 				} else if ( _==3 ) {
@@ -8828,22 +8829,22 @@ namespace Som13 {
 				};
 				i++;
 			};
-			undefined = new ByTable(new object [] {hue,sat,val});
-			if ( usealpha != null ) {
-				undefined += alpha;
+			_default = new ByTable(new object [] {hue,sat,val});
+			if ( usealpha != 0 ) {
+				_default += alpha;
 			}
 			return _default;
 		}
 
-		public static dynamic	ReadRGB( UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
+		public static ByTable ReadRGB( dynamic rgb = null ) {
+			int i = 0;
+			ByTable _default;
 			if ( !rgb != null ) {
 				return;
 			}
 			i = 1;
 			start = 1;
-			if ( GlobalVars.undefined( rgb, null ) == 35 != null ) {
+			if ( GlobalVars.undefined( rgb, null ) == 35 ) {
 				start++;
 			}
 			which = 0;
@@ -8855,30 +8856,30 @@ namespace Som13 {
 			i = start;
 			while (i <= GlobalVars.undefined( rgb )) {
 				ch = GlobalVars.undefined( rgb, i );
-				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 != null ) {
+				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 ) {
 					break;
 				}
 				digits++;
-				if ( digits == 8 != null ) {
+				if ( digits == 8 ) {
 					break;
 				}
 				i++;
 			};
 			single = digits < 6;
-			if ( digits != 3 && digits != 4 && digits != 6 && digits != 8 != null ) {
+			if ( digits != 3 && digits != 4 && digits != 6 && digits != 8 ) {
 				return;
 			}
-			if ( digits == 4 || digits == 8 != null ) {
+			if ( digits == 4 || digits == 8 ) {
 				usealpha = 1;
 			}
 			i = start;
 			while (digits > 0) {
 				ch = GlobalVars.undefined( rgb, i );
-				if ( ch >= 48 && ch <= 57 != null ) {
+				if ( ch >= 48 && ch <= 57 ) {
 					ch -= 48;
-				} else if ( ch >= 65 && ch <= 70 != null ) {
+				} else if ( ch >= 65 && ch <= 70 ) {
 					ch -= 55;
-				} else if ( ch >= 97 && ch <= 102 != null ) {
+				} else if ( ch >= 97 && ch <= 102 ) {
 					ch -= 87;
 				} else {
 					break;
@@ -8887,7 +8888,7 @@ namespace Som13 {
 				local _ = which // Was a switch-case, sorry for the mess.
 				if ( _==0 ) {
 					r = r << 4 | ch;
-					if ( single != null ) {
+					if ( single ) {
 						r = r | r << 4;
 						which++;
 					} else if ( !( digits & 1 ) != null ) {
@@ -8895,7 +8896,7 @@ namespace Som13 {
 					}
 				} else if ( _==1 ) {
 					g = g << 4 | ch;
-					if ( single != null ) {
+					if ( single ) {
 						g = g | g << 4;
 						which++;
 					} else if ( !( digits & 1 ) != null ) {
@@ -8903,7 +8904,7 @@ namespace Som13 {
 					}
 				} else if ( _==2 ) {
 					b = b << 4 | ch;
-					if ( single != null ) {
+					if ( single ) {
 						b = b | b << 4;
 						which++;
 					} else if ( !( digits & 1 ) != null ) {
@@ -8911,74 +8912,74 @@ namespace Som13 {
 					}
 				} else if ( _==3 ) {
 					alpha = alpha << 4 | ch;
-					if ( single != null ) {
+					if ( single ) {
 						alpha = alpha | alpha << 4;
 					}
 				};
 				i++;
 			};
-			undefined = new ByTable(new object [] {r,g,b});
-			if ( usealpha != null ) {
-				undefined += alpha;
+			_default = new ByTable(new object [] {r,g,b});
+			if ( usealpha != 0 ) {
+				_default += alpha;
 			}
 			return _default;
 		}
 
-		public static UNKNOWN	recursive_hear_check( UNKNOWN [object Object] =null ) {
-			UNKNOWN	processing_list = null;
+		public static ByTable recursive_hear_check( dynamic O = null ) {
+			ByTable processing_list = null;
 			processing_list = new ByTable(new object [] {O});
 			processed_list = new ByTable();
 			found_atoms = new ByTable();
 			while (processing_list.len) {
-				A = processing_list[1];
+				A = processing_list.1;
 				if ( A.flags & 16 != null ) {
 					found_atoms = found_atoms | A;
 				}
 				B = null;
-				foreach (_ in A ) {
+				foreach (dynamic _ in A ) {
 					B = undefined;
-					if ( !( B instanceof BaseStatic ) != null ) {
+					if ( !( B is BaseStatic ) != null ) {
 						continue;
 					}
-					if ( !processed_list[B] != null ) {
+					if ( !processed_list.[object Object] != null ) {
 						processing_list = processing_list | B;
 					}
 				};
 				processing_list.Cut( 1, 2 );
-				processed_list[A] = A;
+				processed_list.[object Object] = A;
 			};
 			return found_atoms;
 		}
 
-		public static UNKNOWN	recursive_mob_check( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	processing_list = null;
-			if ( client_check == null != null ) {
+		public static ByTable recursive_mob_check( dynamic O = null, int client_check = 0, int sight_check = 0, int include_radio = 0 ) {
+			ByTable processing_list = null;
+			if ( client_check == null ) {
 				client_check = 1;
 			}
-			if ( sight_check == null != null ) {
+			if ( sight_check == null ) {
 				sight_check = 1;
 			}
-			if ( include_radio == null != null ) {
+			if ( include_radio == null ) {
 				include_radio = 1;
 			}
 			processing_list = new ByTable(new object [] {O});
 			processed_list = new ByTable();
 			found_mobs = new ByTable();
 			while (processing_list.len) {
-				A = processing_list[1];
+				A = processing_list.1;
 				passed = 0;
 				if ( GlobalVars.undefined( A ) != null ) {
 					A_tmp = A;
 					passed = 1;
-					if ( client_check && !A_tmp.client != null ) {
+					if ( client_check != 0 && !A_tmp.client != null ) {
 						passed = 0;
 					}
-					if ( sight_check && !GlobalFuncs.isInSight( A_tmp, O ) != null ) {
+					if ( sight_check != 0 && !GlobalFuncs.isInSight( A_tmp, O ) != null ) {
 						passed = 0;
 					}
-				} else if ( include_radio && A instanceof Ent_Item_Device_Radio != null ) {
+				} else if ( include_radio != 0 && A is Ent_Item_Device_Radio != null ) {
 					passed = 1;
-					if ( sight_check && !GlobalFuncs.isInSight( A, O ) != null ) {
+					if ( sight_check != 0 && !GlobalFuncs.isInSight( A, O ) != null ) {
 						passed = 0;
 					}
 				}
@@ -8986,38 +8987,38 @@ namespace Som13 {
 					found_mobs = found_mobs | A;
 				}
 				B = null;
-				foreach (_ in A ) {
+				foreach (dynamic _ in A ) {
 					B = undefined;
-					if ( !( B instanceof BaseStatic ) != null ) {
+					if ( !( B is BaseStatic ) != null ) {
 						continue;
 					}
-					if ( !processed_list[B] != null ) {
+					if ( !processed_list.[object Object] != null ) {
 						processing_list = processing_list | B;
 					}
 				};
 				processing_list.Cut( 1, 2 );
-				processed_list[A] = A;
+				processed_list.[object Object] = A;
 			};
 			return found_mobs;
 		}
 
-		public static Regex	regex_find( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static Regex regex_find( dynamic str = null, dynamic exp = null ) {
 			return new Regex( str, exp, GlobalVars.undefined( "bin/bygex", "regex_find" )( str, exp ) );
 		}
 
-		public static Regex	regex_note_sql_extract( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static Regex regex_note_sql_extract( dynamic str = null, dynamic exp = null ) {
 			return new Regex( str, exp, GlobalVars.undefined( "bin/bygex", "regEx_find" )( str, exp ) );
 		}
 
-		public static UNKNOWN	reject_bad_name( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	number_of_alphanumeric = null;
-			if ( allow_numbers == null != null ) {
+		public static string reject_bad_name( dynamic t_in = null, int allow_numbers = 0, int max_length = 0 ) {
+			int number_of_alphanumeric = 0;
+			if ( allow_numbers == null ) {
 				allow_numbers = 0;
 			}
-			if ( max_length == null != null ) {
+			if ( max_length == null ) {
 				max_length = 26;
 			}
-			if ( !t_in || GlobalVars.undefined( t_in ) > max_length != null ) {
+			if ( !t_in != null || GlobalVars.undefined( t_in ) > max_length ) {
 				return;
 			}
 			number_of_alphanumeric = 0;
@@ -9033,7 +9034,7 @@ namespace Som13 {
 					number_of_alphanumeric++;
 					last_char_group = 4;
 				} else if ( 97<=_&&_<=122 ) {
-					if ( last_char_group < 2 != null ) {
+					if ( last_char_group < 2 ) {
 						t_out += GlobalVars.undefined( ascii_char - 32 );
 					} else {
 						t_out += GlobalVars.undefined( ascii_char );
@@ -9071,7 +9072,7 @@ namespace Som13 {
 					t_out += GlobalVars.undefined( ascii_char );
 					last_char_group = 2;
 				} else if ( _==32 ) {
-					if ( last_char_group <= 1 != null ) {
+					if ( last_char_group <= 1 ) {
 						i++;
 						continue;
 					}
@@ -9082,14 +9083,14 @@ namespace Som13 {
 				};
 				i++;
 			};
-			if ( number_of_alphanumeric < 2 != null ) {
+			if ( number_of_alphanumeric < 2 ) {
 				return;
 			}
-			if ( last_char_group == 1 != null ) {
+			if ( last_char_group == 1 ) {
 				t_out = GlobalVars.undefined( t_out, 1, GlobalVars.undefined( t_out ) );
 			}
 			bad_name = null;
-			foreach (_ in new ByTable(new object [] {"space","floor","wall","r-wall","monkey","unknown","inactive ai"}) ) {
+			foreach (dynamic _ in new ByTable(new object [] {"space","floor","wall","r-wall","monkey","unknown","inactive ai"}) ) {
 				bad_name = undefined;
 				if ( GlobalVars.undefined( bad_name, t_out ) != null ) {
 					return;
@@ -9098,12 +9099,12 @@ namespace Som13 {
 			return t_out;
 		}
 
-		public static dynamic	reject_bad_text( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	non_whitespace = null;
-			if ( max_length == null != null ) {
+		public static dynamic reject_bad_text( dynamic text = null, int max_length = 0 ) {
+			int non_whitespace = 0;
+			if ( max_length == null ) {
 				max_length = 512;
 			}
-			if ( GlobalVars.undefined( text ) > max_length != null ) {
+			if ( GlobalVars.undefined( text ) > max_length ) {
 				return;
 			}
 			non_whitespace = 0;
@@ -9125,17 +9126,17 @@ namespace Som13 {
 				};
 				i++;
 			};
-			if ( non_whitespace != null ) {
+			if ( non_whitespace != 0 ) {
 				return text;
 			}
 		}
 
-		public static dynamic	release( UNKNOWN [object Object] =null ) {
-			UNKNOWN	H = null;
-			if ( GlobalVars.undefined.user.control_object && GlobalVars.undefined.user.name_archive != null ) {
+		public static dynamic release( dynamic O = null ) {
+			dynamic H = null;
+			if ( GlobalVars.undefined.user.control_object != null && GlobalVars.undefined.user.name_archive != null ) {
 				GlobalVars.undefined.user.real_name = GlobalVars.undefined.user.name_archive;
 				GlobalVars.undefined.user.name = GlobalVars.undefined.user.real_name;
-				if ( GlobalVars.undefined.user instanceof Mob_Living_Carbon_Human != null ) {
+				if ( GlobalVars.undefined.user is Mob_Living_Carbon_Human != null ) {
 					H = GlobalVars.undefined.user;
 					H.name = H.get_visible_name();
 				}
@@ -9146,8 +9147,8 @@ namespace Som13 {
 			GlobalFuncs.feedback_add_details( "admin_verb", "RO" );
 		}
 
-		public static dynamic	remove_note( UNKNOWN [object Object] =null ) {
-			UNKNOWN	ckey = null;
+		public static dynamic remove_note( dynamic note_id = null ) {
+			dynamic ckey = null;
 			if ( !GlobalVars.dbcon.IsConnected() != null ) {
 				GlobalVars.undefined.user.write( "<span class='danger'>Failed to establish database connection.</span>" );
 				return;
@@ -9163,9 +9164,9 @@ namespace Som13 {
 				return;
 			}
 			if ( query_find_note_del.NextRow() != null ) {
-				ckey = query_find_note_del.item[1];
-				notetext = query_find_note_del.item[2];
-				adminckey = query_find_note_del.item[3];
+				ckey = query_find_note_del.item.1;
+				notetext = query_find_note_del.item.2;
+				adminckey = query_find_note_del.item.3;
 			}
 			query_del_note = GlobalVars.dbcon.NewQuery( "DELETE FROM " + GlobalFuncs.format_table_name( "notes" ) + " WHERE id = " + note_id );
 			if ( !query_del_note.Execute() != null ) {
@@ -9178,27 +9179,27 @@ namespace Som13 {
 			GlobalFuncs.show_note( ckey );
 		}
 
-		public static dynamic	remove_radio( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( !freq || !radio != null ) {
+		public static dynamic remove_radio( dynamic radio = null, dynamic freq = null ) {
+			if ( !freq != null || !radio != null ) {
 				return;
 			}
-			if ( !GlobalVars.all_radios["" + freq] != null ) {
+			if ( !GlobalVars.all_radios.[object Object] != null ) {
 				return;
 			}
-			GlobalVars.all_radios["" + freq] -= radio;
+			GlobalVars.all_radios.[object Object] -= radio;
 		}
 
-		public static dynamic	remove_radio_all( UNKNOWN [object Object] =null ) {
-			dynamic	freq = null;
+		public static dynamic remove_radio_all( dynamic radio = null ) {
+			dynamic freq = null;
 			freq = null;
-			foreach (_ in GlobalVars.all_radios ) {
+			foreach (dynamic _ in GlobalVars.all_radios ) {
 				freq = undefined;
-				GlobalVars.all_radios["" + freq] -= radio;
+				GlobalVars.all_radios.[object Object] -= radio;
 			};
 		}
 
-		public static int	RemoveBan( UNKNOWN [object Object] =null ) {
-			UNKNOWN	key = null;
+		public static int RemoveBan( dynamic foldername = null ) {
+			dynamic key = null;
 			GlobalVars.Banlist.cd = "/base/" + foldername;
 			key = GlobalVars.Banlist.key._GOOFY_LIST_.read();
 			id = GlobalVars.Banlist.id._GOOFY_LIST_.read();
@@ -9217,10 +9218,10 @@ namespace Som13 {
 				GlobalVars.undefined.user.client.holder.DB_ban_unban( GlobalVars.undefined( key ), 5 );
 			}
 			A = null;
-			foreach (_ in GlobalVars.Banlist.dir ) {
+			foreach (dynamic _ in GlobalVars.Banlist.dir ) {
 				A = undefined;
 				GlobalVars.Banlist.cd = "/base/" + A;
-				if ( key == GlobalVars.Banlist.key != null ) {
+				if ( key == GlobalVars.Banlist.key ) {
 					GlobalVars.Banlist.cd = "/base";
 					GlobalVars.Banlist.dir.Remove( A );
 					continue;
@@ -9229,8 +9230,8 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static int	RemoveBanjob( UNKNOWN [object Object] =null ) {
-			UNKNOWN	key = null;
+		public static int RemoveBanjob( dynamic foldername = null ) {
+			dynamic key = null;
 			GlobalVars.Banlistjob.cd = "/base/" + foldername;
 			key = GlobalVars.Banlistjob.key._GOOFY_LIST_.read();
 			id = GlobalVars.Banlistjob.id._GOOFY_LIST_.read();
@@ -9250,10 +9251,10 @@ namespace Som13 {
 				GlobalFuncs.feedback_add_details( "ban_job_unban", "- " + rank );
 			}
 			A = null;
-			foreach (_ in GlobalVars.Banlistjob.dir ) {
+			foreach (dynamic _ in GlobalVars.Banlistjob.dir ) {
 				A = undefined;
 				GlobalVars.Banlistjob.cd = "/base/" + A;
-				if ( ( key == GlobalVars.Banlistjob.key || id == GlobalVars.Banlistjob.id ) && rank == GlobalVars.Banlistjob.rank != null ) {
+				if ( ( key == GlobalVars.Banlistjob.key || id == GlobalVars.Banlistjob.id ) && rank == GlobalVars.Banlistjob.rank ) {
 					GlobalVars.Banlistjob.cd = "/base";
 					GlobalVars.Banlistjob.dir.Remove( A );
 					continue;
@@ -9262,40 +9263,40 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static dynamic	removeNullsFromList( UNKNOWN [object Object] =null ) {
+		public static dynamic removeNullsFromList( dynamic L = null ) {
 			while (L.Remove( null )) {
 				continue;
 			};
 			return L;
 		}
 
-		public static dynamic	repeat_string( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			UNKNOWN _default;
-			if ( _string == null != null ) {
+		public static string repeat_string( dynamic times = null, string _string = null ) {
+			int i = 0;
+			string _default;
+			if ( _string == null ) {
 				_string = "";
 			}
-			undefined = "";
+			_default = "";
 			i = null;
 			i = 1;
 			while (i <= times) {
-				undefined += _string;
+				_default += _string;
 				i++;
 			};
 			return _default;
 		}
 
-		public static UNKNOWN	replacetext( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic replacetext( dynamic str = null, dynamic exp = null, dynamic fmt = null ) {
 			return GlobalVars.undefined( "bin/bygex", "regex_replaceallliteral" )( str, exp, fmt );
 		}
 
-		public static UNKNOWN	replacetextEx( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic replacetextEx( dynamic str = null, dynamic exp = null, dynamic fmt = null ) {
 			return GlobalVars.undefined( "bin/bygex", "regEx_replaceallliteral" )( str, exp, fmt );
 		}
 
-		public static UNKNOWN	return_file_text( UNKNOWN [object Object] =null ) {
-			UNKNOWN	text = null;
-			if ( GlobalVars.undefined.exists( filename ) == 0 != null ) {
+		public static dynamic return_file_text( dynamic filename = null ) {
+			dynamic text = null;
+			if ( GlobalVars.undefined.exists( filename ) == 0 ) {
 				throw new Exception( "return_file_text(): File not found", "code/__HELPERS/files.dm", 5 );
 				return;
 			}
@@ -9307,20 +9308,20 @@ namespace Som13 {
 			return text;
 		}
 
-		public static dynamic	reverseRange( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( start == null != null ) {
+		public static dynamic reverseRange( dynamic L = null, int start = 0, int end = 0 ) {
+			if ( start == null ) {
 				start = 1;
 			}
-			if ( end == null != null ) {
+			if ( end == null ) {
 				end = 0;
 			}
 			if ( L.len != null ) {
 				start = start % L.len;
 				end = end % ( L.len + 1 );
-				if ( start <= 0 != null ) {
+				if ( start <= 0 ) {
 					start += L.len;
 				}
-				if ( end <= 0 != null ) {
+				if ( end <= 0 ) {
 					end += L.len + 1;
 				}
 				end--;
@@ -9331,18 +9332,18 @@ namespace Som13 {
 			return L;
 		}
 
-		public static dynamic	revoke_maint_all_access(  ) {
-			dynamic	A = null;
+		public static dynamic revoke_maint_all_access(  ) {
+			dynamic A = null;
 			A = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				A = undefined;
-				if ( !( A instanceof new ByArea(2826) ) != null ) {
+				if ( !( A is new ByArea(2826) ) != null ) {
 					continue;
 				}
 				D = null;
-				foreach (_ in A ) {
+				foreach (dynamic _ in A ) {
 					D = undefined;
-					if ( !( D instanceof Ent_Machinery_Door_Airlock ) != null ) {
+					if ( !( D is Ent_Machinery_Door_Airlock ) != null ) {
 						continue;
 					}
 					D.emergency = 0;
@@ -9353,8 +9354,8 @@ namespace Som13 {
 			GlobalVars.emergency_access = 0;
 		}
 
-		public static ByTable	rgb2hsl( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	max = null;
+		public static ByTable rgb2hsl( dynamic red = null, dynamic green = null, dynamic blue = null ) {
+			dynamic max = null;
 			red /= 255;
 			green /= 255;
 			blue /= 255;
@@ -9365,8 +9366,8 @@ namespace Som13 {
 			saturation = 0;
 			lightness = 0;
 			lightness = ( max + min ) / 2;
-			if ( range != 0 != null ) {
-				if ( lightness < 0.5 != null ) {
+			if ( range != 0 ) {
+				if ( lightness < 0.5 ) {
 					saturation = range / ( max + min );
 				} else {
 					saturation = range / ( 2 - max - min );
@@ -9374,24 +9375,24 @@ namespace Som13 {
 				dred = ( max - red ) / ( max * 6 ) + 0.5;
 				dgreen = ( max - green ) / ( max * 6 ) + 0.5;
 				dblue = ( max - blue ) / ( max * 6 ) + 0.5;
-				if ( max == red != null ) {
+				if ( max == red ) {
 					hue = dblue - dgreen;
-				} else if ( max == green != null ) {
+				} else if ( max == green ) {
 					hue = dred - dblue + 0.3333333432674408;
 				} else {
 					hue = dgreen - dred + 0.6666666865348816;
 				}
-				if ( hue < 0 != null ) {
+				if ( hue < 0 ) {
 					hue++;
-				} else if ( hue > 1 != null ) {
+				} else if ( hue > 1 ) {
 					hue--;
 				}
 			}
 			return new ByTable(new object [] {hue,saturation,lightness});
 		}
 
-		public static UNKNOWN	RGBtoHSV( UNKNOWN [object Object] =null ) {
-			UNKNOWN	RGB = null;
+		public static string RGBtoHSV( dynamic rgb = null ) {
+			dynamic RGB = null;
 			if ( !rgb != null ) {
 				return "#0000000";
 			}
@@ -9399,17 +9400,17 @@ namespace Som13 {
 			if ( !RGB != null ) {
 				return "#0000000";
 			}
-			r = RGB[1];
-			g = RGB[2];
-			b = RGB[3];
+			r = RGB.1;
+			g = RGB.2;
+			b = RGB.3;
 			hi = GlobalVars.undefined.max( r, g, b );
 			lo = GlobalVars.undefined.min( r, g, b );
 			val = hi;
 			sat = hi ? GlobalVars.undefined.round( ( hi - lo ) * 255 / hi, 1 ) : 0;
 			hue = 0;
 			if ( sat != null ) {
-				if ( hi == r != null ) {
-					if ( lo == b != null ) {
+				if ( hi == r ) {
+					if ( lo == b ) {
 						hue = 0;
 						dir = 1;
 						mid = g;
@@ -9418,8 +9419,8 @@ namespace Som13 {
 						dir = -1;
 						mid = b;
 					}
-				} else if ( hi == g != null ) {
-					if ( lo == r != null ) {
+				} else if ( hi == g ) {
+					if ( lo == r ) {
 						hue = 512;
 						dir = 1;
 						mid = b;
@@ -9428,8 +9429,8 @@ namespace Som13 {
 						dir = -1;
 						mid = r;
 					}
-				} else if ( hi == b != null ) {
-					if ( lo == g != null ) {
+				} else if ( hi == b ) {
+					if ( lo == g ) {
 						hue = 1024;
 						dir = 1;
 						mid = r;
@@ -9441,11 +9442,11 @@ namespace Som13 {
 				}
 				hue += dir * GlobalVars.undefined.round( ( mid - lo ) * 255 / ( hi - lo ), 1 );
 			}
-			return GlobalFuncs.hsv( hue, sat, val, RGB.len > 3 ? RGB[4] : null );
+			return GlobalFuncs.hsv( hue, sat, val, RGB.len > 3 ? RGB.4 : null );
 		}
 
-		public static dynamic	rightandwrong( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	gunslist = null;
+		public static dynamic rightandwrong( dynamic summon_type = null, dynamic user = null, dynamic survivor_probability = null ) {
+			ByTable gunslist = null;
 			gunslist = new ByTable(new object [] {"taser","egun","laser","revolver","detective","c20r","nuclear","deagle","gyrojet","pulse","suppressed","cannon","doublebarrel","shotgun","combatshotgun","bulldog","mateba","sabr","crossbow","saw","car","boltaction","speargun","arg","uzi"});
 			magiclist = new ByTable(new object [] {"fireball","smoke","blind","mindswap","forcewall","knock","horsemask","charge","summonitem","wandnothing","wanddeath","wandresurrection","wandpolymorph","wandteleport","wanddoor","wandfireball","staffchange","staffhealing","armor","scrying","staffdoor","voodoo","special"});
 			magicspeciallist = new ByTable(new object [] {"staffchange","staffanimation","wandbelt","contract","staffchaos","necromantic"});
@@ -9455,20 +9456,20 @@ namespace Som13 {
 				GlobalFuncs.log_game( "" + GlobalFuncs.key_name( user ) + " summoned " + ( summon_type ? "magic" : "guns" ) + "!" );
 			}
 			H = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				H = undefined;
-				if ( !( H instanceof Mob_Living_Carbon_Human ) != null ) {
+				if ( !( H is Mob_Living_Carbon_Human ) != null ) {
 					continue;
 				}
 				if ( H.stat == 2 || !H.client != null ) {
 					continue;
 				}
 				if ( H.mind != null ) {
-					if ( H.mind.special_role == "Wizard" || H.special_role == "apprentice" || H.special_role == "survivalist" != null ) {
+					if ( H.mind.special_role == "Wizard" || H.special_role == "apprentice" || H.special_role == "survivalist" ) {
 						continue;
 					}
 				}
-				if ( Rand.chance( survivor_probability ) && !( H.mind in GlobalVars.ticker.mode.traitors ) != null ) {
+				if ( Rand.chance( survivor_probability ) != null && !H.mind in GlobalVars.ticker.mode.traitors != null ) {
 					GlobalVars.ticker.mode.traitors += H.mind;
 					guns = new Objective_SummonGuns();
 					guns.owner = H.mind;
@@ -9481,9 +9482,9 @@ namespace Som13 {
 					H.write( "<B>You are the survivalist! Your own safety matters above all else, and the only way to ensure your safety is to stockpile weapons! Grab as many guns as possible, by any means necessary. Kill anyone who gets in your way.</B>" );
 					obj_count = 1;
 					OBJ = null;
-					foreach (_ in H.mind.objectives ) {
+					foreach (dynamic _ in H.mind.objectives ) {
 						OBJ = undefined;
-						if ( !( OBJ instanceof Objective ) != null ) {
+						if ( !( OBJ is Objective ) != null ) {
 							continue;
 						}
 						H.write( "<B>Objective #" + obj_count + "</B>: " + OBJ.explanation_text );
@@ -9627,70 +9628,70 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	rights2text( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	verbpath = null;
-			UNKNOWN _default;
-			if ( seperator == null != null ) {
+		public static dynamic rights2text( dynamic rights = null, string seperator = null, dynamic adds = null, dynamic subs = null ) {
+			dynamic verbpath = null;
+			null _default;
+			if ( seperator == null ) {
 				seperator = "";
 			}
 			if ( rights & 1 != null ) {
-				undefined += "" + seperator + "+BUILDMODE";
+				_default += "" + seperator + "+BUILDMODE";
 			}
 			if ( rights & 2 != null ) {
-				undefined += "" + seperator + "+ADMIN";
+				_default += "" + seperator + "+ADMIN";
 			}
 			if ( rights & 4 != null ) {
-				undefined += "" + seperator + "+BAN";
+				_default += "" + seperator + "+BAN";
 			}
 			if ( rights & 8 != null ) {
-				undefined += "" + seperator + "+FUN";
+				_default += "" + seperator + "+FUN";
 			}
 			if ( rights & 16 != null ) {
-				undefined += "" + seperator + "+SERVER";
+				_default += "" + seperator + "+SERVER";
 			}
 			if ( rights & 32 != null ) {
-				undefined += "" + seperator + "+DEBUG";
+				_default += "" + seperator + "+DEBUG";
 			}
 			if ( rights & 64 != null ) {
-				undefined += "" + seperator + "+POSSESS";
+				_default += "" + seperator + "+POSSESS";
 			}
 			if ( rights & 128 != null ) {
-				undefined += "" + seperator + "+PERMISSIONS";
+				_default += "" + seperator + "+PERMISSIONS";
 			}
 			if ( rights & 256 != null ) {
-				undefined += "" + seperator + "+STEALTH";
+				_default += "" + seperator + "+STEALTH";
 			}
 			if ( rights & 512 != null ) {
-				undefined += "" + seperator + "+REJUVINATE";
+				_default += "" + seperator + "+REJUVINATE";
 			}
 			if ( rights & 1024 != null ) {
-				undefined += "" + seperator + "+VAREDIT";
+				_default += "" + seperator + "+VAREDIT";
 			}
 			if ( rights & 2048 != null ) {
-				undefined += "" + seperator + "+SOUND";
+				_default += "" + seperator + "+SOUND";
 			}
 			if ( rights & 4096 != null ) {
-				undefined += "" + seperator + "+SPAWN";
+				_default += "" + seperator + "+SPAWN";
 			}
 			verbpath = null;
-			foreach (_ in adds ) {
+			foreach (dynamic _ in adds ) {
 				verbpath = undefined;
-				undefined += "" + seperator + "+" + verbpath;
+				_default += "" + seperator + "+" + verbpath;
 			};
 			verbpath = null;
-			foreach (_ in subs ) {
+			foreach (dynamic _ in subs ) {
 				verbpath = undefined;
-				undefined += "" + seperator + "-" + verbpath;
+				_default += "" + seperator + "-" + verbpath;
 			};
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	robogibs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic robogibs( dynamic location = null, dynamic viruses = null ) {
 			new Ent_Effect_Gibspawner_Robot( location, viruses );
 		}
 
-		public static string	RoundDiagBar( UNKNOWN [object Object] =null ) {
+		public static string RoundDiagBar( dynamic value = null ) {
 			local _ = value * 100 // Was a switch-case, sorry for the mess.
 			if ( 95<=_&&_<=9.999999848243207e+30 ) {
 				return "max";
@@ -9710,7 +9711,7 @@ namespace Som13 {
 			return "dead";
 		}
 
-		public static string	RoundHealth( UNKNOWN [object Object] =null ) {
+		public static string RoundHealth( dynamic health = null ) {
 			local _ = health // Was a switch-case, sorry for the mess.
 			if ( 100<=_&&_<=9.999999848243207e+30 ) {
 				return "health100";
@@ -9734,50 +9735,50 @@ namespace Som13 {
 			return "0";
 		}
 
-		public static UNKNOWN	safepick( UNKNOWN [object Object] =null ) {
-			if ( L instanceof new List && L.len != null ) {
+		public static dynamic safepick( dynamic L = null ) {
+			if ( L is new List != null && L.len != null ) {
 				return Rand.pick( L );
 			}
 		}
 
-		public static UNKNOWN	sanitize( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( repl_chars == null != null ) {
+		public static dynamic sanitize( dynamic t = null, dynamic repl_chars = null ) {
+			if ( repl_chars == null ) {
 				repl_chars = null;
 			}
 			return GlobalVars.undefined( GlobalFuncs.sanitize_simple( t, repl_chars ) );
 		}
 
-		public static UNKNOWN	sanitize_frequency( UNKNOWN [object Object] =null ) {
+		public static dynamic sanitize_frequency( dynamic f = null ) {
 			f = GlobalVars.undefined.round( f );
 			f = GlobalVars.undefined.max( 1441, f );
 			f = GlobalVars.undefined.min( 1489, f );
-			if ( f % 2 == 0 != null ) {
+			if ( f % 2 == 0 ) {
 				f += 1;
 			}
 			return f;
 		}
 
-		public static UNKNOWN	sanitize_gender( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( neuter == null != null ) {
+		public static string sanitize_gender( dynamic gender = null, int neuter = 0, int plural = 0, string __default = null ) {
+			if ( neuter == null ) {
 				neuter = 0;
 			}
-			if ( plural == null != null ) {
+			if ( plural == null ) {
 				plural = 0;
 			}
-			if ( __default == null != null ) {
+			if ( __default == null ) {
 				__default = "male";
 			}
 			local _ = gender // Was a switch-case, sorry for the mess.
 			if ( _=="male" || _=="female" ) {
 				return gender;
 			} else if ( _=="neuter" ) {
-				if ( neuter != null ) {
+				if ( neuter != 0 ) {
 					return gender;
 				} else {
 					return __default;
 				}
 			} else if ( _=="plural" ) {
-				if ( plural != null ) {
+				if ( plural != 0 ) {
 					return gender;
 				} else {
 					return __default;
@@ -9786,13 +9787,13 @@ namespace Som13 {
 			return __default;
 		}
 
-		public static UNKNOWN	sanitize_hexcolor( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	crunch = null;
-			UNKNOWN _default;
-			if ( desired_format == null != null ) {
+		public static string sanitize_hexcolor( string color = null, int desired_format = 0, int include_crunch = 0, dynamic __default = null ) {
+			UNKNOWN crunch = null;
+			string _default;
+			if ( desired_format == null ) {
 				desired_format = 3;
 			}
-			if ( include_crunch == null != null ) {
+			if ( include_crunch == null ) {
 				include_crunch = 0;
 			}
 			crunch = include_crunch ? "#" : "";
@@ -9802,91 +9803,91 @@ namespace Som13 {
 			start = ( GlobalVars.undefined( color, 1 ) == 35 ) + 1;
 			len = GlobalVars.undefined( color );
 			step_size = ( len + 1 - start != desired_format ) + 1;
-			undefined = "";
+			_default = "";
 			i = null;
 			i = start;
 			while (i <= len) {
 				ascii = GlobalVars.undefined( color, i );
 				local _ = ascii // Was a switch-case, sorry for the mess.
 				if ( 48<=_&&_<=57 ) {
-					undefined += GlobalVars.undefined( ascii );
+					_default += GlobalVars.undefined( ascii );
 				} else if ( 97<=_&&_<=102 ) {
-					undefined += GlobalVars.undefined( ascii );
+					_default += GlobalVars.undefined( ascii );
 				} else if ( 65<=_&&_<=70 ) {
-					undefined += GlobalVars.undefined( ascii + 32 );
+					_default += GlobalVars.undefined( ascii + 32 );
 				} else {
 					break;
 				};
 				i += step_size;
 			};
-			if ( GlobalVars.undefined( undefined ) != desired_format != null ) {
+			if ( GlobalVars.undefined( _default ) != desired_format ) {
 				if ( __default != null ) {
 					return __default;
 				}
 				return crunch + GlobalFuncs.repeat_string( desired_format, "0" );
 			}
-			return crunch + undefined;
+			return crunch + _default;
 			return _default;
 		}
 
-		public static UNKNOWN	sanitize_inlist( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic sanitize_inlist( dynamic value = null, dynamic List = null, dynamic __default = null ) {
 			if ( value in List != null ) {
 				return value;
 			}
 			if ( __default != null ) {
 				return __default;
 			}
-			if ( List && List.len != null ) {
+			if ( List != null && List.len != null ) {
 				return Rand.pick( List );
 			}
 		}
 
-		public static UNKNOWN	sanitize_integer( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( min == null != null ) {
+		public static int sanitize_integer( dynamic number = null, int min = 0, int max = 0, int __default = 0 ) {
+			if ( min == null ) {
 				min = 0;
 			}
-			if ( max == null != null ) {
+			if ( max == null ) {
 				max = 1;
 			}
-			if ( __default == null != null ) {
+			if ( __default == null ) {
 				__default = 0;
 			}
 			if ( GlobalVars.undefined( number ) != null ) {
 				number = GlobalVars.undefined.round( number );
-				if ( min <= number && number <= max != null ) {
+				if ( min <= number && number <= max ) {
 					return number;
 				}
 			}
 			return __default;
 		}
 
-		public static UNKNOWN	sanitize_ooccolor( UNKNOWN [object Object] =null ) {
-			UNKNOWN	HSL = null;
+		public static dynamic sanitize_ooccolor( dynamic color = null ) {
+			dynamic HSL = null;
 			HSL = GlobalFuncs.rgb2hsl( GlobalFuncs.hex2num( GlobalVars.undefined( color, 2, 4 ) ), GlobalFuncs.hex2num( GlobalVars.undefined( color, 4, 6 ) ), GlobalFuncs.hex2num( GlobalVars.undefined( color, 6, 8 ) ) );
-			HSL[3] = GlobalVars.undefined.min( HSL[3], 0.4000000059604645 );
+			HSL.3 = GlobalVars.undefined.min( HSL.3, 0.4000000059604645 );
 			RGB = GlobalFuncs.get_dist_euclidian.lcall( HSL );
-			return "#" + GlobalFuncs.num2hex( RGB[1], 2 ) + GlobalFuncs.num2hex( RGB[2], 2 ) + GlobalFuncs.num2hex( RGB[3], 2 );
+			return "#" + GlobalFuncs.num2hex( RGB.1, 2 ) + GlobalFuncs.num2hex( RGB.2, 2 ) + GlobalFuncs.num2hex( RGB.3, 2 );
 		}
 
-		public static UNKNOWN	sanitize_simple( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	_char = null;
-			if ( repl_chars == null != null ) {
+		public static dynamic sanitize_simple( dynamic t = null, ByTable repl_chars = null ) {
+			dynamic _char = null;
+			if ( repl_chars == null ) {
 				repl_chars = new ByTable().set( "	", "#" ).set( "\n", "#" );
 			}
 			_char = null;
-			foreach (_ in repl_chars ) {
+			foreach (dynamic _ in repl_chars ) {
 				_char = undefined;
 				index = GlobalVars.undefined( t, _char, 1, null );
 				while (index) {
-					t = GlobalVars.undefined( t, 1, index ) + repl_chars[_char] + GlobalVars.undefined( t, index + 1, null );
+					t = GlobalVars.undefined( t, 1, index ) + repl_chars.[object Object] + GlobalVars.undefined( t, index + 1, null );
 					index = GlobalVars.undefined( t, _char, index + 1, null );
 				};
 			};
 			return t;
 		}
 
-		public static string	sanitize_text( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( __default == null != null ) {
+		public static string sanitize_text( dynamic text = null, string __default = null ) {
+			if ( __default == null ) {
 				__default = "";
 			}
 			if ( GlobalVars.undefined( text ) != null ) {
@@ -9895,24 +9896,24 @@ namespace Som13 {
 			return __default;
 		}
 
-		public static UNKNOWN	sanitizeSQL( UNKNOWN [object Object] =null ) {
-			UNKNOWN	sqltext = null;
+		public static dynamic sanitizeSQL( dynamic t = null ) {
+			dynamic sqltext = null;
 			sqltext = GlobalVars.dbcon.Quote( t );
 			return GlobalVars.undefined( sqltext, 2, GlobalVars.undefined( sqltext ) );
 		}
 
-		public static int	scramble_dna( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			if ( ui == null != null ) {
+		public static int scramble_dna( dynamic M = null, int ui = 0, int se = 0, dynamic probability = null ) {
+			int i = 0;
+			if ( ui == null ) {
 				ui = GlobalVars.FALSE;
 			}
-			if ( se == null != null ) {
+			if ( se == null ) {
 				se = GlobalVars.FALSE;
 			}
 			if ( !M.has_dna() != null ) {
 				return 0;
 			}
-			if ( se != null ) {
+			if ( se != 0 ) {
 				i = null;
 				i = 1;
 				while (i <= 20) {
@@ -9923,7 +9924,7 @@ namespace Som13 {
 				};
 				M.domutcheck();
 			}
-			if ( ui != null ) {
+			if ( ui != 0 ) {
 				i = null;
 				i = 1;
 				while (i <= 7) {
@@ -9937,22 +9938,22 @@ namespace Som13 {
 			return 1;
 		}
 
-		public static UNKNOWN	screen_loc2turf( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	tX = null;
+		public static dynamic screen_loc2turf( dynamic scr_loc = null, dynamic origin = null ) {
+			dynamic tX = null;
 			tX = GlobalFuncs.text2list( scr_loc, "," );
-			tY = GlobalFuncs.text2list( tX[2], ":" );
+			tY = GlobalFuncs.text2list( tX.2, ":" );
 			tZ = origin.z;
-			tY = tY[1];
-			tX = GlobalFuncs.text2list( tX[1], ":" );
-			tX = tX[1];
+			tY = tY.1;
+			tX = GlobalFuncs.text2list( tX.1, ":" );
+			tX = tX.1;
 			tX = GlobalVars.undefined.max( 1, GlobalVars.undefined.min( Game.maxx, origin.x + ( GlobalVars.undefined( tX ) - ( Game.view + 1 ) ) ) );
 			tY = GlobalVars.undefined.max( 1, GlobalVars.undefined.min( Game.maxy, origin.y + ( GlobalVars.undefined( tY ) - ( Game.view + 1 ) ) ) );
 			return GlobalVars.undefined( tX, tY, tZ );
 		}
 
-		public static UNKNOWN	SDQL_expression( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	result = null;
-			if ( start == null != null ) {
+		public static int SDQL_expression( dynamic _object = null, dynamic expression = null, int start = 0 ) {
+			int result = 0;
+			if ( start == null ) {
 				start = 1;
 			}
 			result = 0;
@@ -9960,14 +9961,14 @@ namespace Som13 {
 			i = start;
 			while (i <= expression.len) {
 				op = "";
-				if ( i > start != null ) {
-					op = expression[i];
+				if ( i > start ) {
+					op = expression.[object Object];
 					i++;
 				}
 				ret = GlobalFuncs.SDQL_value( _object, expression, i );
 				val = ret.val;
 				i = ret.i;
-				if ( op != "" != null ) {
+				if ( op != "" ) {
 					local _ = op // Was a switch-case, sorry for the mess.
 					if ( _=="+" ) {
 						result += val;
@@ -9996,9 +9997,9 @@ namespace Som13 {
 					} else if ( _==">=" ) {
 						result = result >= val;
 					} else if ( _=="and" || _=="&&" ) {
-						result = result && val;
+						result = result != 0 && val != null;
 					} else if ( _=="or" || _=="||" ) {
-						result = result || val;
+						result = result != 0 || val != null;
 					} else {
 						GlobalVars.undefined.user.write( "<span class='danger'>SDQL2: Unknown op " + op + "</span>" );
 						result = null;
@@ -10011,33 +10012,33 @@ namespace Som13 {
 			return result;
 		}
 
-		public static ByTable	SDQL_from_objs( UNKNOWN [object Object] =null ) {
-			ByTable	_out = null;
+		public static ByTable SDQL_from_objs( dynamic tree = null ) {
+			ByTable _out = null;
 			if ( "world" in tree != null ) {
 				return new ByTable(new object [] {Game});
 			}
 			_out = new ByTable();
 			type = null;
-			foreach (_ in tree ) {
+			foreach (dynamic _ in tree ) {
 				type = undefined;
 				_char = GlobalVars.undefined( type, 1, 2 );
-				if ( _char == "/" != null ) {
+				if ( _char == "/" ) {
 					_out += GlobalFuncs.SDQL_get_all( type, Game );
-				} else if ( _char == "'" || _char == "\"" != null ) {
+				} else if ( _char == "'" || _char == "\"" ) {
 					_out += GlobalVars.undefined( GlobalVars.undefined( type, 2, GlobalVars.undefined( type ) ) );
 				}
 			};
 			return _out;
 		}
 
-		public static ByTable	SDQL_get_all( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	_out = null;
+		public static ByTable SDQL_get_all( dynamic type = null, dynamic location = null ) {
+			ByTable _out = null;
 			_out = new ByTable();
-			if ( type == "*" != null ) {
+			if ( type == "*" ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( !( d instanceof BaseClass ) != null ) {
+					if ( !( d is BaseClass ) != null ) {
 						continue;
 					}
 					_out += d;
@@ -10047,58 +10048,58 @@ namespace Som13 {
 			type = GlobalVars.undefined( type );
 			if ( GlobalVars.undefined( type, Mob ) != null ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
 			} else if ( GlobalVars.undefined( type, Tile ) != null ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
 			} else if ( GlobalVars.undefined( type, Entity ) != null ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( !( d instanceof Entity ) != null ) {
+					if ( !( d is Entity ) != null ) {
 						continue;
 					}
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
 			} else if ( GlobalVars.undefined( type, new ByArea(3137) ) != null ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
 			} else if ( GlobalVars.undefined( type, BaseStatic ) != null ) {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( !( d instanceof BaseStatic ) != null ) {
+					if ( !( d is BaseStatic ) != null ) {
 						continue;
 					}
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
 			} else {
 				d = null;
-				foreach (_ in location ) {
+				foreach (dynamic _ in location ) {
 					d = undefined;
-					if ( !( d instanceof BaseClass ) != null ) {
+					if ( !( d is BaseClass ) != null ) {
 						continue;
 					}
-					if ( d instanceof type != null ) {
+					if ( d is type != null ) {
 						_out += d;
 					}
 				};
@@ -10106,8 +10107,8 @@ namespace Som13 {
 			return _out;
 		}
 
-		public static ByTable	SDQL_parse( UNKNOWN [object Object] =null ) {
-			SDQLParser	parser = null;
+		public static ByTable SDQL_parse( dynamic query_list = null ) {
+			SDQLParser parser = null;
 			parser = new SDQLParser();
 			querys = new ByTable();
 			query_tree = new ByTable();
@@ -10115,21 +10116,21 @@ namespace Som13 {
 			querys_pos = 1;
 			do_parse = 0;
 			val = null;
-			foreach (_ in query_list ) {
+			foreach (dynamic _ in query_list ) {
 				val = undefined;
-				if ( val == ";" != null ) {
+				if ( val == ";" ) {
 					do_parse = 1;
-				} else if ( pos >= query_list.len != null ) {
+				} else if ( pos >= query_list.len ) {
 					query_tree += val;
 					do_parse = 1;
 				}
-				if ( do_parse != null ) {
+				if ( do_parse != 0 ) {
 					parser.query = query_tree;
 					parsed_tree = null;
 					parsed_tree = parser.parse();
-					if ( parsed_tree.len > 0 != null ) {
+					if ( parsed_tree.len > 0 ) {
 						querys.len = querys_pos;
-						querys[querys_pos] = parsed_tree;
+						querys.[object Object] = parsed_tree;
 						querys_pos++;
 					} else {
 						GlobalVars.undefined.user.write( GlobalVars.undefined( "<span class='danger'>Parsing error on " ).st_nd_rd( querys_pos ).str( " query. Nothing was executed.</span>" ) );
@@ -10146,9 +10147,9 @@ namespace Som13 {
 			return querys;
 		}
 
-		public static dynamic	SDQL_testout( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			string	spaces = null;
-			if ( indent == null != null ) {
+		public static dynamic SDQL_testout( dynamic query_tree = null, int indent = 0 ) {
+			string spaces = null;
+			if ( indent == null ) {
 				indent = 0;
 			}
 			spaces = "";
@@ -10159,57 +10160,57 @@ namespace Som13 {
 				s++;
 			};
 			item = null;
-			foreach (_ in query_tree ) {
+			foreach (dynamic _ in query_tree ) {
 				item = undefined;
-				if ( item instanceof new List != null ) {
+				if ( item is new List != null ) {
 					GlobalVars.undefined.user.write( "" + spaces + "(" );
 					GlobalFuncs.SDQL_testout( item, indent + 1 );
 					GlobalVars.undefined.user.write( "" + spaces + ")" );
 				} else {
 					GlobalVars.undefined.user.write( "" + spaces + item );
 				}
-				if ( !GlobalVars.undefined( item ) && query_tree[item] != null ) {
-					if ( query_tree[item] instanceof new List != null ) {
+				if ( !GlobalVars.undefined( item ) != null && query_tree.[object Object] != null ) {
+					if ( query_tree.[object Object] is new List != null ) {
 						GlobalVars.undefined.user.write( "" + spaces + "    (" );
-						GlobalFuncs.SDQL_testout( query_tree[item], indent + 2 );
+						GlobalFuncs.SDQL_testout( query_tree.[object Object], indent + 2 );
 						GlobalVars.undefined.user.write( "" + spaces + "    )" );
 					} else {
-						GlobalVars.undefined.user.write( "" + spaces + "    " + query_tree[item] );
+						GlobalVars.undefined.user.write( "" + spaces + "    " + query_tree.[object Object] );
 					}
 				}
 			};
 		}
 
-		public static ByTable	SDQL_value( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	i = null;
-			if ( start == null != null ) {
+		public static ByTable SDQL_value( dynamic _object = null, dynamic expression = null, int start = 0 ) {
+			int i = 0;
+			if ( start == null ) {
 				start = 1;
 			}
 			i = start;
 			val = null;
-			if ( i > expression.len != null ) {
+			if ( i > expression.len ) {
 				return new ByTable().set( "i", i ).set( "val", null );
 			}
-			if ( expression[i] instanceof new List != null ) {
-				val = GlobalFuncs.SDQL_expression( _object, expression[i] );
-			} else if ( expression[i] == "!" != null ) {
+			if ( expression.[object Object] is new List != null ) {
+				val = GlobalFuncs.SDQL_expression( _object, expression.[object Object] );
+			} else if ( expression.[object Object] == "!" ) {
 				ret = GlobalFuncs.SDQL_value( _object, expression, i + 1 );
 				val = !ret.val;
 				i = ret.i;
-			} else if ( expression[i] == "~" != null ) {
+			} else if ( expression.[object Object] == "~" ) {
 				ret = GlobalFuncs.SDQL_value( _object, expression, i + 1 );
 				val = ~ret.val;
 				i = ret.i;
-			} else if ( expression[i] == "-" != null ) {
+			} else if ( expression.[object Object] == "-" ) {
 				ret = GlobalFuncs.SDQL_value( _object, expression, i + 1 );
 				val = -ret.val;
 				i = ret.i;
-			} else if ( expression[i] == "null" != null ) {
+			} else if ( expression.[object Object] == "null" ) {
 				val = null;
-			} else if ( GlobalVars.undefined( expression[i] ) != null ) {
-				val = expression[i];
-			} else if ( GlobalVars.undefined( expression[i], 1, 2 ) in new ByTable(new object [] {"'","\""}) != null ) {
-				val = GlobalVars.undefined( expression[i], 2, GlobalVars.undefined( expression[i] ) );
+			} else if ( GlobalVars.undefined( expression.[object Object] ) != null ) {
+				val = expression.[object Object];
+			} else if ( GlobalVars.undefined( expression.[object Object], 1, 2 ) in new ByTable(new object [] {"'","\""}) != null ) {
+				val = GlobalVars.undefined( expression.[object Object], 2, GlobalVars.undefined( expression.[object Object] ) );
 			} else {
 				val = GlobalFuncs.SDQL_var( _object, expression, i );
 				i = expression.len;
@@ -10217,23 +10218,23 @@ namespace Som13 {
 			return new ByTable().set( "i", i ).set( "val", val );
 		}
 
-		public static UNKNOWN	SDQL_var( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( start == null != null ) {
+		public static dynamic SDQL_var( dynamic _object = null, dynamic expression = null, int start = 0 ) {
+			if ( start == null ) {
 				start = 1;
 			}
-			if ( expression[start] in _object.vars != null ) {
-				if ( start < expression.len && expression[start + 1] == "." != null ) {
-					return GlobalFuncs.SDQL_var( _object.vars[expression[start]], expression[start + 2] );
+			if ( expression.[object Object] in _object.vars != null ) {
+				if ( start < expression.len && expression.[object Object] == "." ) {
+					return GlobalFuncs.SDQL_var( _object.vars.[object Object], expression.[object Object] );
 				} else {
-					return _object.vars[expression[start]];
+					return _object.vars.[object Object];
 				}
 			} else {
 				return;
 			}
 		}
 
-		public static ByTable	SDQL2_tokenize( UNKNOWN [object Object] =null ) {
-			ByTable	whitespace = null;
+		public static ByTable SDQL2_tokenize( dynamic query_text = null ) {
+			ByTable whitespace = null;
 			whitespace = new ByTable(new object [] {" ","\n","	"});
 			single = new ByTable(new object [] {"(",")",",","+","-",".",";"});
 			multi = new ByTable()
@@ -10251,30 +10252,30 @@ namespace Som13 {
 			while (i <= len) {
 				_char = GlobalVars.undefined( query_text, i, i + 1 );
 				if ( _char in whitespace != null ) {
-					if ( word != "" != null ) {
+					if ( word != "" ) {
 						query_list += word;
 						word = "";
 					}
 				} else if ( _char in single != null ) {
-					if ( word != "" != null ) {
+					if ( word != "" ) {
 						query_list += word;
 						word = "";
 					}
 					query_list += _char;
 				} else if ( _char in multi != null ) {
-					if ( word != "" != null ) {
+					if ( word != "" ) {
 						query_list += word;
 						word = "";
 					}
 					char2 = GlobalVars.undefined( query_text, i + 1, i + 2 );
-					if ( char2 in multi[_char] != null ) {
+					if ( char2 in multi.[object Object] != null ) {
 						query_list += "" + _char + char2;
 						i++;
 					} else {
 						query_list += _char;
 					}
-				} else if ( _char == "'" != null ) {
-					if ( word != "" != null ) {
+				} else if ( _char == "'" ) {
+					if ( word != "" ) {
 						GlobalVars.undefined.user.write( GlobalVars.undefined().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) );
 						return;
 					}
@@ -10282,8 +10283,8 @@ namespace Som13 {
 					i++;
 					while (i <= len) {
 						_char = GlobalVars.undefined( query_text, i, i + 1 );
-						if ( _char == "'" != null ) {
-							if ( GlobalVars.undefined( query_text, i + 1, i + 2 ) == "'" != null ) {
+						if ( _char == "'" ) {
+							if ( GlobalVars.undefined( query_text, i + 1, i + 2 ) == "'" ) {
 								word += "'";
 								i++;
 							} else {
@@ -10294,14 +10295,14 @@ namespace Som13 {
 						}
 						i++;
 					};
-					if ( i > len != null ) {
+					if ( i > len ) {
 						GlobalVars.undefined.user.write( GlobalVars.undefined().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) );
 						return;
 					}
 					query_list += "" + word + "'";
 					word = "";
-				} else if ( _char == "\"" != null ) {
-					if ( word != "" != null ) {
+				} else if ( _char == "\"" ) {
+					if ( word != "" ) {
 						GlobalVars.undefined.user.write( GlobalVars.undefined().red().str( "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\" following \"<font color=gray>" ).item( word ).str( "</font>\". Please check your syntax, and try again." ) );
 						return;
 					}
@@ -10309,8 +10310,8 @@ namespace Som13 {
 					i++;
 					while (i <= len) {
 						_char = GlobalVars.undefined( query_text, i, i + 1 );
-						if ( _char == "\"" != null ) {
-							if ( GlobalVars.undefined( query_text, i + 1, i + 2 ) == "'" != null ) {
+						if ( _char == "\"" ) {
+							if ( GlobalVars.undefined( query_text, i + 1, i + 2 ) == "'" ) {
 								word += "\"";
 								i++;
 							} else {
@@ -10321,7 +10322,7 @@ namespace Som13 {
 						}
 						i++;
 					};
-					if ( i > len != null ) {
+					if ( i > len ) {
 						GlobalVars.undefined.user.write( GlobalVars.undefined().red().str( "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" ).item( query_text ).str( "</font>\". Please check your syntax, and try again." ) );
 						return;
 					}
@@ -10332,13 +10333,13 @@ namespace Som13 {
 				}
 				i++;
 			};
-			if ( word != "" != null ) {
+			if ( word != "" ) {
 				query_list += word;
 			}
 			return query_list;
 		}
 
-		public static int	seclevel2num( UNKNOWN [object Object] =null ) {
+		public static dynamic seclevel2num( dynamic seclevel = null ) {
 			local _ = GlobalVars.undefined( seclevel ) // Was a switch-case, sorry for the mess.
 			if ( _=="green" ) {
 				return 0;
@@ -10351,17 +10352,17 @@ namespace Som13 {
 			};
 		}
 
-		public static int	seedify( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	t_amount = null;
+		public static int seedify( dynamic O = null, dynamic t_max = null, dynamic extractor = null ) {
+			int t_amount = 0;
 			t_amount = 0;
-			if ( t_max == -1 != null ) {
+			if ( t_max == -1 ) {
 				if ( extractor != null ) {
 					t_max = Rand.Int( 1, 4 ) * extractor.seed_multiplier;
 				} else {
 					t_max = Rand.Int( 1, 4 );
 				}
 			}
-			if ( O instanceof Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown != null ) {
+			if ( O is Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown != null ) {
 				F = O;
 				while (t_amount < t_max) {
 					t_prod = F.seed( O.loc, O );
@@ -10375,7 +10376,7 @@ namespace Som13 {
 				};
 				GlobalFuncs.qdel( O );
 				return 1;
-			} else if ( O instanceof Ent_Item_Weapon_Grown != null ) {
+			} else if ( O is Ent_Item_Weapon_Grown != null ) {
 				F = O;
 				if ( F.seed != null ) {
 					while (t_amount < t_max) {
@@ -10398,64 +10399,64 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	select_active_ai( UNKNOWN [object Object] =null ) {
-			UNKNOWN	ais = null;
-			UNKNOWN _default;
+		public static dynamic select_active_ai( dynamic user = null ) {
+			dynamic ais = null;
+			null _default;
 			ais = GlobalFuncs.active_ais();
 			if ( ais.len != null ) {
 				if ( user != null ) {
-					undefined = GlobalVars.undefined( user, "AI signals detected:", "AI Selection", ais[1], ais, 0 );
+					_default = GlobalVars.undefined( user, "AI signals detected:", "AI Selection", ais.1, ais, 0 );
 				} else {
-					undefined = Rand.pick( ais );
+					_default = Rand.pick( ais );
 				}
 			}
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	select_active_ai_with_fewest_borgs(  ) {
-			dynamic	selected = null;
+		public static dynamic select_active_ai_with_fewest_borgs(  ) {
+			dynamic selected = null;
 			active = GlobalFuncs.active_ais();
 			A = null;
-			foreach (_ in active ) {
+			foreach (dynamic _ in active ) {
 				A = undefined;
-				if ( !( A instanceof Mob_Living_Silicon_Ai ) != null ) {
+				if ( !( A is Mob_Living_Silicon_Ai ) != null ) {
 					continue;
 				}
-				if ( !selected || selected.connected_robots.len > A.connected_robots.len != null ) {
+				if ( !selected != null || selected.connected_robots.len > A.connected_robots.len ) {
 					selected = A;
 				}
 			};
 			return selected;
 		}
 
-		public static dynamic	select_active_free_borg( UNKNOWN [object Object] =null ) {
-			UNKNOWN	borgs = null;
-			UNKNOWN _default;
+		public static dynamic select_active_free_borg( dynamic user = null ) {
+			dynamic borgs = null;
+			null _default;
 			borgs = GlobalFuncs.active_free_borgs();
 			if ( borgs.len != null ) {
 				if ( user != null ) {
-					undefined = GlobalVars.undefined( user, "Unshackled cyborg signals detected:", "Cyborg Selection", borgs[1], borgs, 0 );
+					_default = GlobalVars.undefined( user, "Unshackled cyborg signals detected:", "Cyborg Selection", borgs.1, borgs, 0 );
 				} else {
-					undefined = Rand.pick( borgs );
+					_default = Rand.pick( borgs );
 				}
 			}
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	send_byjax( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	argums = null;
-			if ( new_content == null != null ) {
+		public static dynamic send_byjax( dynamic receiver = null, dynamic control_id = null, dynamic target_element = null, dynamic new_content = null, dynamic callback = null, dynamic callback_args = null ) {
+			ByTable argums = null;
+			if ( new_content == null ) {
 				new_content = null;
 			}
-			if ( callback == null != null ) {
+			if ( callback == null ) {
 				callback = null;
 			}
-			if ( callback_args == null != null ) {
+			if ( callback_args == null ) {
 				callback_args = null;
 			}
-			if ( receiver && target_element && control_id != null ) {
+			if ( receiver != null && target_element != null && control_id != null ) {
 				argums = new ByTable(new object [] {target_element,new_content});
 				if ( callback != null ) {
 					argums += callback;
@@ -10469,16 +10470,16 @@ namespace Som13 {
 			return;
 		}
 
-		public static dynamic	send2irc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic send2irc( dynamic msg = null, dynamic msg2 = null ) {
 			if ( GlobalVars.config.useircbot != null ) {
 				GlobalVars.undefined( "python nudge.py " + msg + " " + msg2 );
 			}
 			return;
 		}
 
-		public static UNKNOWN	send2irc_adminless_only( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	admin_number_total = null;
-			if ( requiredflags == null != null ) {
+		public static dynamic send2irc_adminless_only( dynamic source = null, dynamic msg = null, int requiredflags = 0 ) {
+			int admin_number_total = 0;
+			if ( requiredflags == null ) {
 				requiredflags = 4;
 			}
 			admin_number_total = 0;
@@ -10486,9 +10487,9 @@ namespace Som13 {
 			admin_number_ignored = 0;
 			admin_number_decrease = 0;
 			X = null;
-			foreach (_ in GlobalVars.admins ) {
+			foreach (dynamic _ in GlobalVars.admins ) {
 				X = undefined;
-				if ( !( X instanceof BAD_GOOFY_EXPANSION??? ) != null ) {
+				if ( !( X is BAD_GOOFY_EXPANSION??? ) != null ) {
 					continue;
 				}
 				admin_number_total++;
@@ -10510,8 +10511,8 @@ namespace Som13 {
 				}
 			};
 			admin_number_present = admin_number_total - admin_number_decrease;
-			if ( admin_number_present <= 0 != null ) {
-				if ( !admin_number_afk && !admin_number_ignored != null ) {
+			if ( admin_number_present <= 0 ) {
+				if ( !admin_number_afk != null && !admin_number_ignored != null ) {
 					GlobalFuncs.send2irc( source, "" + msg + " - No admins online" );
 				} else {
 					GlobalFuncs.send2irc( source, "" + msg + " - All admins AFK (" + admin_number_afk + "/" + admin_number_total + ") or skipped (" + admin_number_ignored + "/" + admin_number_total + ")" );
@@ -10520,8 +10521,8 @@ namespace Som13 {
 			return admin_number_present;
 		}
 
-		public static dynamic	set_security_level( UNKNOWN [object Object] =null ) {
-			dynamic	FA = null;
+		public static dynamic set_security_level( dynamic level = null ) {
+			dynamic FA = null;
 			local _ = level // Was a switch-case, sorry for the mess.
 			if ( _=="green" ) {
 				level = 0;
@@ -10532,59 +10533,59 @@ namespace Som13 {
 			} else if ( _=="delta" ) {
 				level = 3;
 			};
-			if ( level >= 0 && level <= 3 && level != GlobalVars.security_level != null ) {
+			if ( level >= 0 && level <= 3 && level != GlobalVars.security_level ) {
 				local _ = level // Was a switch-case, sorry for the mess.
 				if ( _==0 ) {
 					GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_green, "Attention! Security level lowered to green:" );
 					GlobalVars.security_level = 0;
 					FA = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						FA = undefined;
-						if ( !( FA instanceof Ent_Machinery_Firealarm ) != null ) {
+						if ( !( FA is Ent_Machinery_Firealarm ) != null ) {
 							continue;
 						}
-						if ( FA.z == 1 != null ) {
+						if ( FA.z == 1 ) {
 							FA.$update icon();
 						}
 					};
 				} else if ( _==1 ) {
-					if ( GlobalVars.security_level < 1 != null ) {
+					if ( GlobalVars.security_level < 1 ) {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_blue_upto, "Attention! Security level elevated to blue:", 1 );
 					} else {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_blue_downto, "Attention! Security level lowered to blue:" );
 					}
 					GlobalVars.security_level = 1;
 					FA = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						FA = undefined;
-						if ( !( FA instanceof Ent_Machinery_Firealarm ) != null ) {
+						if ( !( FA is Ent_Machinery_Firealarm ) != null ) {
 							continue;
 						}
-						if ( FA.z == 1 != null ) {
+						if ( FA.z == 1 ) {
 							FA.$update icon();
 						}
 					};
 				} else if ( _==2 ) {
-					if ( GlobalVars.security_level < 2 != null ) {
+					if ( GlobalVars.security_level < 2 ) {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_red_upto, "Attention! Code red!", 1 );
 					} else {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_red_downto, "Attention! Code red!" );
 					}
 					GlobalVars.security_level = 2;
 					FA = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						FA = undefined;
-						if ( !( FA instanceof Ent_Machinery_Firealarm ) != null ) {
+						if ( !( FA is Ent_Machinery_Firealarm ) != null ) {
 							continue;
 						}
-						if ( FA.z == 1 != null ) {
+						if ( FA.z == 1 ) {
 							FA.$update icon();
 						}
 					};
 					pod = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						pod = undefined;
-						if ( !( pod instanceof Ent_Machinery_Computer_Shuttle_Pod ) != null ) {
+						if ( !( pod is Ent_Machinery_Computer_Shuttle_Pod ) != null ) {
 							continue;
 						}
 						pod.admin_controlled = 0;
@@ -10593,19 +10594,19 @@ namespace Som13 {
 					GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_delta, "Attention! Delta security level reached!", 1 );
 					GlobalVars.security_level = 3;
 					FA = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						FA = undefined;
-						if ( !( FA instanceof Ent_Machinery_Firealarm ) != null ) {
+						if ( !( FA is Ent_Machinery_Firealarm ) != null ) {
 							continue;
 						}
-						if ( FA.z == 1 != null ) {
+						if ( FA.z == 1 ) {
 							FA.$update icon();
 						}
 					};
 					pod = null;
-					foreach (_ in GlobalVars.machines ) {
+					foreach (dynamic _ in GlobalVars.machines ) {
 						pod = undefined;
-						if ( !( pod instanceof Ent_Machinery_Computer_Shuttle_Pod ) != null ) {
+						if ( !( pod is Ent_Machinery_Computer_Shuttle_Pod ) != null ) {
 							continue;
 						}
 						pod.admin_controlled = 0;
@@ -10616,20 +10617,20 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	setblock( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( blocksize == null != null ) {
+		public static int setblock( dynamic istring = null, dynamic blocknumber = null, dynamic replacement = null, int blocksize = 0 ) {
+			if ( blocksize == null ) {
 				blocksize = 3;
 			}
-			if ( !istring || !blocknumber || !replacement || !blocksize != null ) {
+			if ( !istring != null || !blocknumber != null || !replacement != null || !blocksize != null ) {
 				return 0;
 			}
 			return GlobalFuncs.getleftblocks( istring, blocknumber, blocksize ) + replacement + GlobalFuncs.getrightblocks( istring, blocknumber, blocksize );
 		}
 
-		public static UNKNOWN	setup_database_connection(  ) {
-			string	user = null;
-			UNKNOWN _default;
-			if ( GlobalVars.failed_db_connections >= 5 != null ) {
+		public static int setup_database_connection(  ) {
+			string user = null;
+			int _default;
+			if ( GlobalVars.failed_db_connections >= 5 ) {
 				return 0;
 			}
 			if ( !GlobalVars.dbcon != null ) {
@@ -10641,8 +10642,8 @@ namespace Som13 {
 			address = GlobalVars.sqladdress;
 			port = GlobalVars.sqlport;
 			GlobalVars.dbcon.Connect( "dbi:mysql:" + db + ":" + address + ":" + port, "" + user, "" + pass );
-			undefined = GlobalVars.dbcon.$IsConnected();
-			if ( undefined != null ) {
+			_default = GlobalVars.dbcon.$IsConnected();
+			if ( _default != null ) {
 				GlobalVars.failed_db_connections = 0;
 			} else {
 				GlobalVars.failed_db_connections++;
@@ -10650,23 +10651,23 @@ namespace Som13 {
 					Game.log.write( "SQL error: " + GlobalVars.dbcon.ErrorMsg() );
 				}
 			}
-			return undefined;
+			return _default;
 			return _default;
 		}
 
-		public static dynamic	setup_map_transitions(  ) {
-			ByTable	SLS = null;
+		public static dynamic setup_map_transitions(  ) {
+			ByTable SLS = null;
 			SLS = new ByTable();
 			conf_set_len = GlobalVars.map_transition_config.len;
 			k = 1;
 			A = null;
-			foreach (_ in GlobalVars.map_transition_config ) {
+			foreach (dynamic _ in GlobalVars.map_transition_config ) {
 				A = undefined;
-				D = new SpaceLevel( GlobalVars.map_transition_config[A] );
+				D = new SpaceLevel( GlobalVars.map_transition_config.[object Object] );
 				D.name = A;
 				D.z_value = k;
-				if ( D.linked < 2 != null ) {
-					GlobalVars.z_levels_list["" + D.z_value] = D;
+				if ( D.linked < 2 ) {
+					GlobalVars.z_levels_list.[object Object] = D;
 				} else {
 					SLS.Add( D );
 				}
@@ -10683,21 +10684,21 @@ namespace Som13 {
 				j = 1;
 				while (j <= conf_set_len * 2 + 1) {
 					P = new Point( i, j, point_grid );
-					point_grid[i][j] = P;
+					point_grid.[object Object].[object Object] = P;
 					grid.Add( P );
 					j++;
 				};
 				i++;
 			};
 			pnt = null;
-			foreach (_ in grid ) {
+			foreach (dynamic _ in grid ) {
 				pnt = undefined;
-				if ( !( pnt instanceof Point ) != null ) {
+				if ( !( pnt is Point ) != null ) {
 					continue;
 				}
 				pnt.set_neigbours( point_grid );
 			};
-			P = point_grid[conf_set_len + 1][conf_set_len + 1];
+			P = point_grid.[object Object].[object Object];
 			possible_points = new ByTable();
 			used_points = new ByTable();
 			grid.Cut();
@@ -10712,32 +10713,32 @@ namespace Som13 {
 				possible_points.Remove( used_points );
 				D.set_neigbours( used_points );
 				P = Rand.pick( possible_points );
-				grid["" + D.z_value] = D;
+				grid.[object Object] = D;
 			};
 			A = null;
-			foreach (_ in GlobalVars.z_levels_list ) {
+			foreach (dynamic _ in GlobalVars.z_levels_list ) {
 				A = undefined;
-				grid[A] = GlobalVars.z_levels_list[A];
+				grid.[object Object] = GlobalVars.z_levels_list.[object Object];
 			};
 			S = null;
-			foreach (_ in Game ) {
+			foreach (dynamic _ in Game ) {
 				S = undefined;
-				if ( !( S instanceof Tile_Space ) != null ) {
+				if ( !( S is Tile_Space ) != null ) {
 					continue;
 				}
-				if ( S.x <= 7 != null ) {
-					D = grid["" + S.z];
+				if ( S.x <= 7 ) {
+					D = grid.[object Object];
 					if ( !D != null ) {
 						GlobalVars.undefined( "" + S.z + " position has no space level datum" );
 					}
 					if ( !D.neigbours.len != null ) {
 						continue;
 					}
-					if ( D.neigbours.8 && D.neigbours.8 != D != null ) {
+					if ( D.neigbours.8 != null && D.neigbours.8 != D ) {
 						D = D.neigbours.8;
 						S.destination_z = D.z_value;
 					} else {
-						while (D.neigbours.4 && D.neigbours.4 != D) {
+						while (D.neigbours.4 != null && D.neigbours.4 != D) {
 							D = D.neigbours.4;
 						};
 						S.destination_z = D.z_value;
@@ -10745,19 +10746,19 @@ namespace Som13 {
 					S.destination_x = Game.maxx - 7 - 2;
 					S.destination_y = S.y;
 				}
-				if ( S.x >= Game.maxx - 7 - 1 != null ) {
-					D = grid["" + S.z];
+				if ( S.x >= Game.maxx - 7 - 1 ) {
+					D = grid.[object Object];
 					if ( !D != null ) {
 						GlobalVars.undefined( "" + S.z + " position has no space level datum" );
 					}
 					if ( !D.neigbours.len != null ) {
 						continue;
 					}
-					if ( D.neigbours.4 && D.neigbours.4 != D != null ) {
+					if ( D.neigbours.4 != null && D.neigbours.4 != D ) {
 						D = D.neigbours.4;
 						S.destination_z = D.z_value;
 					} else {
-						while (D.neigbours.8 && D.neigbours.8 != D) {
+						while (D.neigbours.8 != null && D.neigbours.8 != D) {
 							D = D.neigbours.8;
 						};
 						S.destination_z = D.z_value;
@@ -10765,19 +10766,19 @@ namespace Som13 {
 					S.destination_x = 9;
 					S.destination_y = S.y;
 				}
-				if ( S.y <= 7 != null ) {
-					D = grid["" + S.z];
+				if ( S.y <= 7 ) {
+					D = grid.[object Object];
 					if ( !D != null ) {
 						GlobalVars.undefined( "" + S.z + " position has no space level datum" );
 					}
 					if ( !D.neigbours.len != null ) {
 						continue;
 					}
-					if ( D.neigbours.2 && D.neigbours.2 != D != null ) {
+					if ( D.neigbours.2 != null && D.neigbours.2 != D ) {
 						D = D.neigbours.2;
 						S.destination_z = D.z_value;
 					} else {
-						while (D.neigbours.1 && D.neigbours.1 != D) {
+						while (D.neigbours.1 != null && D.neigbours.1 != D) {
 							D = D.neigbours.1;
 						};
 						S.destination_z = D.z_value;
@@ -10785,19 +10786,19 @@ namespace Som13 {
 					S.destination_x = S.x;
 					S.destination_y = Game.maxy - 7 - 2;
 				}
-				if ( S.y >= Game.maxy - 7 - 1 != null ) {
-					D = grid["" + S.z];
+				if ( S.y >= Game.maxy - 7 - 1 ) {
+					D = grid.[object Object];
 					if ( !D != null ) {
 						GlobalVars.undefined( "" + S.z + " position has no space level datum" );
 					}
 					if ( !D.neigbours.len != null ) {
 						continue;
 					}
-					if ( D.neigbours.1 && D.neigbours.1 != D != null ) {
+					if ( D.neigbours.1 != null && D.neigbours.1 != D ) {
 						D = D.neigbours.1;
 						S.destination_z = D.z_value;
 					} else {
-						while (D.neigbours.2 && D.neigbours.2 != D) {
+						while (D.neigbours.2 != null && D.neigbours.2 != D) {
 							D = D.neigbours.2;
 						};
 						S.destination_z = D.z_value;
@@ -10807,21 +10808,21 @@ namespace Som13 {
 				}
 			};
 			A = null;
-			foreach (_ in grid ) {
+			foreach (dynamic _ in grid ) {
 				A = undefined;
-				GlobalVars.z_levels_list[A] = grid[A];
+				GlobalVars.z_levels_list.[object Object] = grid.[object Object];
 			};
 		}
 
-		public static dynamic	SetViruses( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	preserve = null;
+		public static dynamic SetViruses( dynamic R = null, dynamic data = null ) {
+			ByTable preserve = null;
 			if ( data != null ) {
 				preserve = new ByTable();
-				if ( data instanceof new List && data.viruses != null ) {
+				if ( data is new List != null && data.viruses != null ) {
 					A = null;
-					foreach (_ in data.viruses ) {
+					foreach (dynamic _ in data.viruses ) {
 						A = undefined;
-						if ( !( A instanceof Disease ) != null ) {
+						if ( !( A is Disease ) != null ) {
 							continue;
 						}
 						preserve += A.Copy();
@@ -10834,20 +10835,20 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	shake_camera( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	oldeye = null;
-			if ( strength == null != null ) {
+		public static dynamic shake_camera( dynamic M = null, dynamic duration = null, int strength = 0 ) {
+			dynamic oldeye = null;
+			if ( strength == null ) {
 				strength = 1;
 			}
 			::thread.schedule( 0, function() {
-				if ( !M || !M.client || M.shakecamera != null ) {
+				if ( !M != null || !M.client != null || M.shakecamera != null ) {
 					return;
 				}
 				oldeye = M.client.eye;
 				M.shakecamera = 1;
 				x = 0;
 				while (x < duration) {
-					if ( M && M.client != null ) {
+					if ( M != null && M.client != null ) {
 						M.client.eye = GlobalVars.undefined( GlobalFuncs.dd_range( 1, M.loc.x + Rand.Int( -strength, strength ), Game.maxx ), GlobalFuncs.dd_range( 1, M.loc.y + Rand.Int( -strength, strength ), Game.maxy ), M.loc.z );
 						GlobalVars.undefined.sleep( 1 );
 					}
@@ -10863,15 +10864,15 @@ namespace Som13 {
 			});
 		}
 
-		public static dynamic	show_note( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			string	output = null;
-			if ( linkless == null != null ) {
+		public static dynamic show_note( dynamic target_ckey = null, dynamic index = null, int linkless = 0 ) {
+			string output = null;
+			if ( linkless == null ) {
 				linkless = 0;
 			}
 			ruler = "<hr style='background:#000000; border:0; height:3px'>";
 			navbar = "<a href='?_src_=holder;nonalpha=1'>[All]</a>|<a href='?_src_=holder;nonalpha=2'>[#]</a>";
 			letter = null;
-			foreach (_ in GlobalVars.alphabet ) {
+			foreach (dynamic _ in GlobalVars.alphabet ) {
 				letter = undefined;
 				navbar += "|<a href='?_src_=holder;shownote=" + letter + "'>[" + letter + "]</a>";
 			};
@@ -10893,12 +10894,12 @@ namespace Som13 {
 				}
 				output += ruler;
 				while (query_get_notes.NextRow()) {
-					id = query_get_notes.item[1];
-					timestamp = query_get_notes.item[2];
-					notetext = query_get_notes.item[3];
-					adminckey = query_get_notes.item[4];
-					last_editor = query_get_notes.item[5];
-					server = query_get_notes.item[6];
+					id = query_get_notes.item.1;
+					timestamp = query_get_notes.item.2;
+					notetext = query_get_notes.item.3;
+					adminckey = query_get_notes.item.4;
+					last_editor = query_get_notes.item.5;
+					server = query_get_notes.item.6;
 					output += "<b>" + timestamp + " | " + server + " | " + adminckey + "</b>";
 					if ( !linkless != null ) {
 						output += " <a href='?_src_=holder;removenote=" + id + "'>[Remove Note]</a> <a href='?_src_=holder;editnote=" + id + "'>[Edit Note]</a>";
@@ -10931,7 +10932,7 @@ namespace Som13 {
 					return;
 				}
 				while (query_list_notes.NextRow()) {
-					index_ckey = query_list_notes.item[1];
+					index_ckey = query_list_notes.item.1;
 					output += "<a href='?_src_=holder;shownoteckey=" + index_ckey + "'>" + index_ckey + "</a><br>";
 				};
 			} else {
@@ -10941,8 +10942,8 @@ namespace Som13 {
 			GlobalVars.undefined( GlobalVars.undefined.user, output, "window=show_notes;size=900x500" );
 		}
 
-		public static UNKNOWN	shuffle( UNKNOWN [object Object] =null ) {
-			int	i = null;
+		public static dynamic shuffle( dynamic L = null ) {
+			int i = 0;
 			if ( !L != null ) {
 				return;
 			}
@@ -10956,20 +10957,20 @@ namespace Som13 {
 			return L;
 		}
 
-		public static UNKNOWN	sign( UNKNOWN [object Object] =null ) {
+		public static UNKNOWN sign( dynamic x = null ) {
 			return x != 0 ? x / GlobalVars.undefined.abs( x ) : 0;
 		}
 
-		public static UNKNOWN	SimplifyDegrees( UNKNOWN [object Object] =null ) {
+		public static dynamic SimplifyDegrees( dynamic degrees = null ) {
 			degrees = degrees % 360;
-			if ( degrees < 0 != null ) {
+			if ( degrees < 0 ) {
 				degrees += 360;
 			}
 			return degrees;
 		}
 
-		public static string	slur( UNKNOWN [object Object] =null ) {
-			UNKNOWN	phrase = null;
+		public static string slur( dynamic n = null ) {
+			dynamic phrase = null;
 			phrase = GlobalVars.undefined( n );
 			leng = GlobalVars.undefined( phrase );
 			counter = GlobalVars.undefined( phrase );
@@ -10977,28 +10978,28 @@ namespace Som13 {
 			newletter = "";
 			while (counter >= 1) {
 				newletter = GlobalVars.undefined( phrase, leng - counter + 1, leng - counter + 2 );
-				if ( Rand.Int( 1, 3 ) == 3 != null ) {
-					if ( GlobalVars.undefined( newletter ) == "o" != null ) {
+				if ( Rand.Int( 1, 3 ) == 3 ) {
+					if ( GlobalVars.undefined( newletter ) == "o" ) {
 						newletter = "u";
 					}
-					if ( GlobalVars.undefined( newletter ) == "s" != null ) {
+					if ( GlobalVars.undefined( newletter ) == "s" ) {
 						newletter = "ch";
 					}
-					if ( GlobalVars.undefined( newletter ) == "a" != null ) {
+					if ( GlobalVars.undefined( newletter ) == "a" ) {
 						newletter = "ah";
 					}
-					if ( GlobalVars.undefined( newletter ) == "u" != null ) {
+					if ( GlobalVars.undefined( newletter ) == "u" ) {
 						newletter = "oo";
 					}
-					if ( GlobalVars.undefined( newletter ) == "c" != null ) {
+					if ( GlobalVars.undefined( newletter ) == "c" ) {
 						newletter = "k";
 					}
 				}
-				if ( Rand.Int( 1, 20 ) == 20 != null ) {
-					if ( newletter == " " != null ) {
+				if ( Rand.Int( 1, 20 ) == 20 ) {
+					if ( newletter == " " ) {
 						newletter = "...huuuhhh...";
 					}
-					if ( newletter == "." != null ) {
+					if ( newletter == "." ) {
 						newletter = " *BURP*.";
 					}
 				}
@@ -11016,13 +11017,13 @@ namespace Som13 {
 			return newphrase;
 		}
 
-		public static dynamic	smooth_icon( UNKNOWN [object Object] =null ) {
-			UNKNOWN	adjacencies = null;
+		public static dynamic smooth_icon( dynamic A = null ) {
+			dynamic adjacencies = null;
 			if ( GlobalFuncs.qdeleted( A ) != null ) {
 				return;
 			}
 			::thread.schedule( 0, function() {
-				if ( A && A.smooth != null ) {
+				if ( A != null && A.smooth != null ) {
 					adjacencies = GlobalFuncs.calculate_adjacencies( A );
 					A.clear_smooth_overlays();
 					A.top_left_corner = GlobalFuncs.make_nw_corner( adjacencies );
@@ -11038,12 +11039,12 @@ namespace Som13 {
 			});
 		}
 
-		public static dynamic	smooth_icon_neighbors( UNKNOWN [object Object] =null ) {
-			dynamic	T = null;
+		public static dynamic smooth_icon_neighbors( dynamic A = null ) {
+			dynamic T = null;
 			T = null;
-			foreach (_ in GlobalVars.undefined( 1, A ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( 1, A ) ) {
 				T = undefined;
-				if ( !( T instanceof BaseStatic ) != null ) {
+				if ( !( T is BaseStatic ) != null ) {
 					continue;
 				}
 				if ( T.smooth != null ) {
@@ -11052,23 +11053,23 @@ namespace Som13 {
 			};
 		}
 
-		public static dynamic	sortInsert( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( cmp == null != null ) {
+		public static dynamic sortInsert( dynamic L = null, UNKNOWN cmp = null, dynamic associative = null, int fromIndex = 0, int toIndex = 0 ) {
+			if ( cmp == null ) {
 				cmp = typeof( GlobalFuncs ).GetMethod( "undefined" );
 			}
-			if ( fromIndex == null != null ) {
+			if ( fromIndex == null ) {
 				fromIndex = 1;
 			}
-			if ( toIndex == null != null ) {
+			if ( toIndex == null ) {
 				toIndex = 0;
 			}
-			if ( L && L.len >= 2 != null ) {
+			if ( L != null && L.len >= 2 ) {
 				fromIndex = fromIndex % L.len;
 				toIndex = toIndex % ( L.len + 1 );
-				if ( fromIndex <= 0 != null ) {
+				if ( fromIndex <= 0 ) {
 					fromIndex += L.len;
 				}
-				if ( toIndex <= 0 != null ) {
+				if ( toIndex <= 0 ) {
 					toIndex += L.len + 1;
 				}
 				GlobalVars.sortInstance.L = L;
@@ -11079,116 +11080,116 @@ namespace Som13 {
 			return L;
 		}
 
-		public static UNKNOWN	sortKey( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( order == null != null ) {
+		public static dynamic sortKey( dynamic L = null, int order = 0 ) {
+			if ( order == null ) {
 				order = 1;
 			}
 			return GlobalFuncs.sortTim( L, order >= 0 ? typeof( GlobalFuncs ).GetMethod( "undefined" ) : typeof( GlobalFuncs ).GetMethod( "undefined" ) );
 		}
 
-		public static UNKNOWN	sortList( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( cmp == null != null ) {
+		public static dynamic sortList( dynamic L = null, UNKNOWN cmp = null ) {
+			if ( cmp == null ) {
 				cmp = typeof( GlobalFuncs ).GetMethod( "undefined" );
 			}
 			return GlobalFuncs.sortTim( L.Copy(), cmp );
 		}
 
-		public static ByTable	sortmobs(  ) {
-			ByTable	moblist = null;
+		public static ByTable sortmobs(  ) {
+			ByTable moblist = null;
 			moblist = new ByTable();
 			sortmob = GlobalFuncs.sortNames( GlobalVars.mob_list );
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Silicon_Ai ) != null ) {
+				if ( !( M is Mob_Living_Silicon_Ai ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Camera ) != null ) {
+				if ( !( M is Mob_Camera ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Silicon_Pai ) != null ) {
+				if ( !( M is Mob_Living_Silicon_Pai ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Silicon_Robot ) != null ) {
+				if ( !( M is Mob_Living_Silicon_Robot ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Carbon_Human ) != null ) {
+				if ( !( M is Mob_Living_Carbon_Human ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Carbon_Brain ) != null ) {
+				if ( !( M is Mob_Living_Carbon_Brain ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Carbon_Alien ) != null ) {
+				if ( !( M is Mob_Living_Carbon_Alien ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Dead_Observer ) != null ) {
+				if ( !( M is Mob_Dead_Observer ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_NewPlayer ) != null ) {
+				if ( !( M is Mob_NewPlayer ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_Carbon_Monkey ) != null ) {
+				if ( !( M is Mob_Living_Carbon_Monkey ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_SimpleAnimal_Slime ) != null ) {
+				if ( !( M is Mob_Living_SimpleAnimal_Slime ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (_ in sortmob ) {
+			foreach (dynamic _ in sortmob ) {
 				M = undefined;
-				if ( !( M instanceof Mob_Living_SimpleAnimal ) != null ) {
+				if ( !( M is Mob_Living_SimpleAnimal ) != null ) {
 					continue;
 				}
 				moblist.Add( M );
@@ -11196,41 +11197,41 @@ namespace Som13 {
 			return moblist;
 		}
 
-		public static UNKNOWN	sortNames( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( order == null != null ) {
+		public static dynamic sortNames( dynamic L = null, int order = 0 ) {
+			if ( order == null ) {
 				order = 1;
 			}
 			return GlobalFuncs.sortTim( L, order >= 0 ? typeof( GlobalFuncs ).GetMethod( "undefined" ) : typeof( GlobalFuncs ).GetMethod( "undefined" ) );
 		}
 
-		public static UNKNOWN	sortRecord( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( field == null != null ) {
+		public static dynamic sortRecord( dynamic L = null, string field = null, int order = 0 ) {
+			if ( field == null ) {
 				field = "name";
 			}
-			if ( order == null != null ) {
+			if ( order == null ) {
 				order = 1;
 			}
 			GlobalVars.cmp_field = field;
 			return GlobalFuncs.sortTim( L, order >= 0 ? typeof( GlobalFuncs ).GetMethod( "undefined" ) : typeof( GlobalFuncs ).GetMethod( "undefined" ) );
 		}
 
-		public static dynamic	sortTim( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( cmp == null != null ) {
+		public static dynamic sortTim( dynamic L = null, UNKNOWN cmp = null, dynamic associative = null, int fromIndex = 0, int toIndex = 0 ) {
+			if ( cmp == null ) {
 				cmp = typeof( GlobalFuncs ).GetMethod( "undefined" );
 			}
-			if ( fromIndex == null != null ) {
+			if ( fromIndex == null ) {
 				fromIndex = 1;
 			}
-			if ( toIndex == null != null ) {
+			if ( toIndex == null ) {
 				toIndex = 0;
 			}
-			if ( L && L.len >= 2 != null ) {
+			if ( L != null && L.len >= 2 ) {
 				fromIndex = fromIndex % L.len;
 				toIndex = toIndex % ( L.len + 1 );
-				if ( fromIndex <= 0 != null ) {
+				if ( fromIndex <= 0 ) {
 					fromIndex += L.len;
 				}
-				if ( toIndex <= 0 != null ) {
+				if ( toIndex <= 0 ) {
 					toIndex += L.len + 1;
 				}
 				GlobalVars.sortInstance.L = L;
@@ -11241,8 +11242,8 @@ namespace Som13 {
 			return L;
 		}
 
-		public static UNKNOWN	spaceDebrisFinishLoc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	endy = null;
+		public static dynamic spaceDebrisFinishLoc( dynamic startSide = null, dynamic Z = null ) {
+			dynamic endy = null;
 			local _ = startSide // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				endy = 7;
@@ -11261,8 +11262,8 @@ namespace Som13 {
 			return T;
 		}
 
-		public static UNKNOWN	spaceDebrisStartLoc( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	starty = null;
+		public static dynamic spaceDebrisStartLoc( dynamic startSide = null, dynamic Z = null ) {
+			dynamic starty = null;
 			local _ = startSide // Was a switch-case, sorry for the mess.
 			if ( _==1 ) {
 				starty = Game.maxy - 8;
@@ -11281,15 +11282,15 @@ namespace Som13 {
 			return T;
 		}
 
-		public static dynamic	spawn_meteor( UNKNOWN [object Object] =null ) {
-			UNKNOWN	pickedstart = null;
+		public static dynamic spawn_meteor( dynamic meteortypes = null ) {
+			dynamic pickedstart = null;
 			max_i = 10;
-			while (!( pickedstart instanceof Tile_Space )) {
+			while (!( pickedstart is Tile_Space )) {
 				startSide = Rand.pick( GlobalVars.cardinal );
 				pickedstart = GlobalFuncs.spaceDebrisStartLoc( startSide, 1 );
 				pickedgoal = GlobalFuncs.spaceDebrisFinishLoc( startSide, 1 );
 				max_i--;
-				if ( max_i <= 0 != null ) {
+				if ( max_i <= 0 ) {
 					return;
 				}
 			};
@@ -11304,9 +11305,9 @@ namespace Som13 {
 			return;
 		}
 
-		public static dynamic	spawn_meteors( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	i = null;
-			if ( number == null != null ) {
+		public static dynamic spawn_meteors( int number = 0, dynamic meteortypes = null ) {
+			int i = 0;
+			if ( number == null ) {
 				number = 10;
 			}
 			i = null;
@@ -11317,8 +11318,8 @@ namespace Som13 {
 			};
 		}
 
-		public static ByTable	spawn_room( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	room_turfs = null;
+		public static ByTable spawn_room( dynamic start_loc = null, dynamic x_size = null, dynamic y_size = null, dynamic walltypes = null, dynamic floor = null, dynamic name = null ) {
+			ByTable room_turfs = null;
 			room_turfs = new ByTable()
 				.set( "floors", new ByTable() )
 				.set( "walls", new ByTable() )
@@ -11338,7 +11339,7 @@ namespace Som13 {
 					} else {
 						A.name = "Artifact Room #" + A.x + "-" + A.y + "-" + A.z;
 					}
-					if ( x == 0 || x == x_size - 1 || y == 0 || y == y_size - 1 != null ) {
+					if ( x == 0 || x == x_size - 1 || y == 0 || y == y_size - 1 ) {
 						wall = GlobalFuncs.pickweight( walltypes );
 						T = cur_loc;
 						T.ChangeTurf( wall );
@@ -11356,8 +11357,8 @@ namespace Som13 {
 			return room_turfs;
 		}
 
-		public static dynamic	sql_poll_admins(  ) {
-			UNKNOWN	admincount = null;
+		public static dynamic sql_poll_admins(  ) {
+			dynamic admincount = null;
 			if ( !GlobalVars.config.sql_enabled != null ) {
 				return;
 			}
@@ -11375,14 +11376,14 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	sql_poll_players(  ) {
-			int	playercount = null;
+		public static dynamic sql_poll_players(  ) {
+			int playercount = 0;
 			if ( !GlobalVars.config.sql_enabled != null ) {
 				return;
 			}
 			playercount = 0;
 			M = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				M = undefined;
 				if ( M.client != null ) {
 					playercount += 1;
@@ -11401,15 +11402,15 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	sql_report_cyborg_death( UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
+		public static dynamic sql_report_cyborg_death( dynamic H = null ) {
+			dynamic T = null;
 			if ( !GlobalVars.config.sql_enabled != null ) {
 				return;
 			}
 			if ( !H != null ) {
 				return;
 			}
-			if ( !H.key || !H.mind != null ) {
+			if ( !H.key != null || !H.mind != null ) {
 				return;
 			}
 			T = H.loc;
@@ -11438,15 +11439,15 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	sql_report_death( UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
+		public static dynamic sql_report_death( dynamic H = null ) {
+			dynamic T = null;
 			if ( !GlobalVars.config.sql_enabled != null ) {
 				return;
 			}
 			if ( !H != null ) {
 				return;
 			}
-			if ( !H.key || !H.mind != null ) {
+			if ( !H.key != null || !H.mind != null ) {
 				return;
 			}
 			T = H.loc;
@@ -11475,19 +11476,19 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	SQLtime(  ) {
+		public static dynamic SQLtime(  ) {
 			return GlobalVars.undefined( "YYYY-MM-DD hh:mm:ss", Game.realtime );
 		}
 
-		public static UNKNOWN	stars( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	te = null;
+		public static dynamic stars( dynamic n = null, int pr = 0 ) {
+			dynamic te = null;
 			n = GlobalVars.undefined( n );
-			if ( pr == null != null ) {
+			if ( pr == null ) {
 				pr = 25;
 			}
-			if ( pr <= 0 != null ) {
+			if ( pr <= 0 ) {
 				return;
-			} else if ( pr >= 100 != null ) {
+			} else if ( pr >= 100 ) {
 				return n;
 			}
 			te = n;
@@ -11506,25 +11507,25 @@ namespace Som13 {
 			return GlobalFuncs.sanitize( t );
 		}
 
-		public static dynamic	stickyban2list( UNKNOWN [object Object] =null ) {
+		public static dynamic stickyban2list( dynamic ban = null ) {
 			if ( !ban != null ) {
 				return;
 			}
-			undefined = GlobalVars.undefined( ban );
-			undefined.keys = GlobalFuncs.text2list( undefined.keys, "," );
-			undefined.type = GlobalFuncs.text2list( undefined.type, "," );
-			undefined.IP = GlobalFuncs.text2list( undefined.IP, "," );
-			undefined.computer_id = GlobalFuncs.text2list( undefined.computer_id, "," );
+			_default = GlobalVars.undefined( ban );
+			_default.keys = GlobalFuncs.text2list( _default.keys, "," );
+			_default.type = GlobalFuncs.text2list( _default.type, "," );
+			_default.IP = GlobalFuncs.text2list( _default.IP, "," );
+			_default.computer_id = GlobalFuncs.text2list( _default.computer_id, "," );
 			return _default;
 		}
 
-		public static ByTable	string2listofvars( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	var_found = null;
-			UNKNOWN _default;
-			if ( !t_string || !var_source != null ) {
+		public static ByTable string2listofvars( dynamic t_string = null, dynamic var_source = null ) {
+			dynamic var_found = null;
+			ByTable _default;
+			if ( !t_string != null || !var_source != null ) {
 				return new ByTable();
 			}
-			undefined = new ByTable();
+			_default = new ByTable();
 			var_found = GlobalVars.undefined( t_string, "[", 1, null );
 			if ( var_found != null ) {
 				t_string = GlobalFuncs.replacetext( t_string, "[", "[ " );
@@ -11532,15 +11533,15 @@ namespace Som13 {
 				intermediate_stage = GlobalFuncs.list2text( list_value );
 				list_value = GlobalFuncs.text2list( intermediate_stage, " " );
 				value = null;
-				foreach (_ in list_value ) {
+				foreach (dynamic _ in list_value ) {
 					value = undefined;
 					if ( GlobalVars.undefined( value, "]", 1, null ) != null ) {
 						value = GlobalFuncs.text2list( value, "]" );
 						A = null;
-						foreach (_ in value ) {
+						foreach (dynamic _ in value ) {
 							A = undefined;
 							if ( var_source.vars.Find( A ) != null ) {
-								undefined += A;
+								_default += A;
 							}
 						};
 					}
@@ -11549,49 +11550,49 @@ namespace Som13 {
 			return _default;
 		}
 
-		public static UNKNOWN	strings( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	fileList = null;
+		public static dynamic strings( dynamic filename = null, dynamic key = null ) {
+			dynamic fileList = null;
 			if ( !GlobalVars.string_cache != null ) {
 				GlobalVars.string_cache = new List();
 			}
-			if ( !( filename in GlobalVars.string_cache ) != null ) {
+			if ( !filename in GlobalVars.string_cache != null ) {
 				if ( GlobalVars.undefined.exists( "strings/" + filename ) != null ) {
-					GlobalVars.string_cache[filename] = new ByTable();
+					GlobalVars.string_cache.[object Object] = new ByTable();
 					stringsList = new ByTable();
 					fileList = GlobalFuncs.file2list( "strings/" + filename );
 					s = null;
-					foreach (_ in fileList ) {
+					foreach (dynamic _ in fileList ) {
 						s = undefined;
 						stringsList = GlobalFuncs.text2list( s, "@=" );
-						if ( stringsList.len != 2 != null ) {
+						if ( stringsList.len != 2 ) {
 							GlobalVars.undefined( "Invalid string list in strings/" + filename );
 						}
-						if ( GlobalVars.undefined( stringsList[2], "@,", 1, null ) != null ) {
-							GlobalVars.string_cache[filename][stringsList[1]] = GlobalFuncs.text2list( stringsList[2], "@," );
+						if ( GlobalVars.undefined( stringsList.2, "@,", 1, null ) != null ) {
+							GlobalVars.string_cache.[object Object].[object Object] = GlobalFuncs.text2list( stringsList.2, "@," );
 						} else {
-							GlobalVars.string_cache[filename][stringsList[1]] = stringsList[2];
+							GlobalVars.string_cache.[object Object].[object Object] = stringsList.2;
 						}
 					};
 				} else {
 					GlobalVars.undefined( "file not found: strings/" + filename );
 				}
 			}
-			if ( filename in GlobalVars.string_cache && key in GlobalVars.string_cache[filename] != null ) {
-				return GlobalVars.string_cache[filename][key];
+			if ( filename in GlobalVars.string_cache != null && key in GlobalVars.string_cache.[object Object] != null ) {
+				return GlobalVars.string_cache.[object Object].[object Object];
 			} else {
 				GlobalVars.undefined( "strings list not found: strings/" + filename + ", index=" + key );
 			}
 		}
 
-		public static UNKNOWN	strip_html_simple( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			ByTable	strip_chars = null;
-			if ( limit == null != null ) {
+		public static dynamic strip_html_simple( dynamic t = null, int limit = 0 ) {
+			ByTable strip_chars = null;
+			if ( limit == null ) {
 				limit = 1024;
 			}
 			strip_chars = new ByTable(new object [] {"<",">"});
 			t = GlobalVars.undefined( t, 1, limit );
 			_char = null;
-			foreach (_ in strip_chars ) {
+			foreach (dynamic _ in strip_chars ) {
 				_char = undefined;
 				index = GlobalVars.undefined( t, _char, 1, null );
 				while (index) {
@@ -11602,44 +11603,44 @@ namespace Som13 {
 			return t;
 		}
 
-		public static UNKNOWN	stripped_input( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	name = null;
-			if ( message == null != null ) {
+		public static dynamic stripped_input( dynamic user = null, string message = null, string title = null, string __default = null, int max_length = 0 ) {
+			dynamic name = null;
+			if ( message == null ) {
 				message = "";
 			}
-			if ( title == null != null ) {
+			if ( title == null ) {
 				title = "";
 			}
-			if ( __default == null != null ) {
+			if ( __default == null ) {
 				__default = "";
 			}
-			if ( max_length == null != null ) {
+			if ( max_length == null ) {
 				max_length = 1024;
 			}
 			name = GlobalVars.undefined( user, message, title, __default, null, 132 );
 			return GlobalFuncs.trim( GlobalVars.undefined( name ), max_length );
 		}
 
-		public static UNKNOWN	stripped_multiline_input( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	name = null;
-			if ( message == null != null ) {
+		public static dynamic stripped_multiline_input( dynamic user = null, string message = null, string title = null, string __default = null, int max_length = 0 ) {
+			dynamic name = null;
+			if ( message == null ) {
 				message = "";
 			}
-			if ( title == null != null ) {
+			if ( title == null ) {
 				title = "";
 			}
-			if ( __default == null != null ) {
+			if ( __default == null ) {
 				__default = "";
 			}
-			if ( max_length == null != null ) {
+			if ( max_length == null ) {
 				max_length = 1024;
 			}
 			name = GlobalVars.undefined( user, message, title, __default, null, 2176 );
 			return GlobalVars.undefined( GlobalFuncs.trim( name, max_length ) );
 		}
 
-		public static UNKNOWN	stutter( UNKNOWN [object Object] =null ) {
-			UNKNOWN	te = null;
+		public static dynamic stutter( dynamic n = null ) {
+			dynamic te = null;
 			te = GlobalVars.undefined( n );
 			t = "";
 			n = GlobalVars.undefined( n );
@@ -11647,7 +11648,7 @@ namespace Som13 {
 			p = 1;
 			while (p <= n) {
 				n_letter = GlobalVars.undefined( te, p, p + 1 );
-				if ( Rand.chance( 80 ) && GlobalVars.undefined( n_letter ) in new ByTable(new object [] {"b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"}) != null ) {
+				if ( Rand.chance( 80 ) != null && GlobalVars.undefined( n_letter ) in new ByTable(new object [] {"b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"}) != null ) {
 					if ( Rand.chance( 10 ) != null ) {
 						n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter + "-" + n_letter;
 					} else if ( Rand.chance( 20 ) != null ) {
@@ -11664,7 +11665,7 @@ namespace Som13 {
 			return GlobalVars.undefined( GlobalFuncs.sanitize( t ), 1, 1024 );
 		}
 
-		public static dynamic	summonevents(  ) {
+		public static dynamic summonevents(  ) {
 			if ( !GlobalVars.SSevent.wizardmode != null ) {
 				GlobalVars.SSevent.frequency_lower = 600;
 				GlobalVars.SSevent.frequency_upper = 3000;
@@ -11672,7 +11673,7 @@ namespace Som13 {
 				GlobalVars.SSevent.$reschedule();
 			} else {
 				GlobalVars.SSevent.frequency_upper -= 600;
-				if ( GlobalVars.SSevent.frequency_upper < GlobalVars.SSevent.frequency_lower != null ) {
+				if ( GlobalVars.SSevent.frequency_upper < GlobalVars.SSevent.frequency_lower ) {
 					GlobalVars.SSevent.frequency_upper = GlobalVars.SSevent.frequency_lower;
 				}
 				GlobalVars.SSevent.reschedule();
@@ -11681,18 +11682,18 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	Syndicate_announce( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	msg = null;
+		public static dynamic Syndicate_announce( dynamic text = null, dynamic Sender = null ) {
+			dynamic msg = null;
 			msg = GlobalVars.undefined( GlobalFuncs.sanitize( text ), 1, 1024 );
 			msg = GlobalVars.undefined( "<span class='adminnotice'><b><font color=crimson>SYNDICATE:</font>" ).item( GlobalFuncs.key_name_admin( Sender ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).ref( Sender ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).ref( Sender ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).ref( Sender ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).ref( Sender ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).ref( Sender ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).ref( Sender ).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).ref( Sender ).str( "'>BSA</A>) (<A HREF='?_src_=holder;SyndicateReply=" ).ref( Sender ).str( "'>RPLY</A>):</b> " ).item( msg ).str( "</span>" );
 			GlobalVars.admins.write( msg );
 		}
 
-		public static dynamic	testing( UNKNOWN [object Object] =null ) {
+		public static dynamic testing( dynamic msg = null ) {
 			
 		}
 
-		public static int	text2dir_extended( UNKNOWN [object Object] =null ) {
+		public static int text2dir_extended( dynamic direction = null ) {
 			local _ = GlobalVars.undefined( direction ) // Was a switch-case, sorry for the mess.
 			if ( _=="NORTH" || _=="N" ) {
 				return 1;
@@ -11714,53 +11715,53 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static ByTable	text2list( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	delim_len = null;
-			UNKNOWN _default;
-			if ( delimiter == null != null ) {
+		public static ByTable text2list( dynamic text = null, string delimiter = null ) {
+			dynamic delim_len = null;
+			ByTable _default;
+			if ( delimiter == null ) {
 				delimiter = "\n";
 			}
 			delim_len = GlobalVars.undefined( delimiter );
-			if ( delim_len < 1 != null ) {
+			if ( delim_len < 1 ) {
 				return new ByTable(new object [] {text});
 			}
-			undefined = new ByTable();
+			_default = new ByTable();
 			last_found = 1;
 			while (1) { // Was a do-while, sorry for the mess.
 				found = GlobalVars.undefined( text, delimiter, last_found, 0 );
-				undefined += GlobalVars.undefined( text, last_found, found );
+				_default += GlobalVars.undefined( text, last_found, found );
 				last_found = found + delim_len;
 				if (!( found )) break;
 			};
 			return _default;
 		}
 
-		public static UNKNOWN	time_stamp( UNKNOWN [object Object] =null ) {
-			if ( format == null != null ) {
+		public static dynamic time_stamp( string format = null ) {
+			if ( format == null ) {
 				format = "hh:mm:ss";
 			}
 			return GlobalVars.undefined( format, Game.timeofday );
 		}
 
-		public static int	tkMaxRangeCheck( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	d = null;
+		public static int tkMaxRangeCheck( dynamic user = null, dynamic target = null, dynamic focus = null ) {
+			dynamic d = null;
 			d = GlobalVars.undefined( user, target );
 			if ( focus != null ) {
 				d = GlobalVars.undefined.max( d, GlobalVars.undefined( user, focus ) );
 			}
-			if ( d > GlobalVars.tk_maxrange != null ) {
+			if ( d > GlobalVars.tk_maxrange ) {
 				user.write( "<span class ='warning'>Your mind won't reach that far.</span>" );
 				return 0;
 			}
 			return 1;
 		}
 
-		public static dynamic	toggle_ooc( UNKNOWN [object Object] =null ) {
-			if ( toggle == null != null ) {
+		public static dynamic toggle_ooc( dynamic toggle = null ) {
+			if ( toggle == null ) {
 				toggle = null;
 			}
-			if ( toggle != null != null ) {
-				if ( toggle != GlobalVars.ooc_allowed != null ) {
+			if ( toggle != null ) {
+				if ( toggle != GlobalVars.ooc_allowed ) {
 					GlobalVars.ooc_allowed = toggle;
 				} else {
 					return;
@@ -11771,20 +11772,20 @@ namespace Som13 {
 			Game.write( "<B>The OOC channel has been globally " + ( GlobalVars.ooc_allowed ? "enabled" : "disabled" ) + ".</B>" );
 		}
 
-		public static dynamic	togglebuildmode( UNKNOWN [object Object] =null ) {
-			dynamic	H = null;
+		public static dynamic togglebuildmode( dynamic M = null ) {
+			dynamic H = null;
 			if ( M.client != null ) {
 				if ( M.client.buildmode != null ) {
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( GlobalVars.undefined.user ) + " has left build mode." );
 					M.client.buildmode = 0;
 					M.client.show_popup_menus = 1;
 					H = null;
-					foreach (_ in Game ) {
+					foreach (dynamic _ in Game ) {
 						H = undefined;
-						if ( !( H instanceof Ent_Effect_Bmode_Buildholder ) != null ) {
+						if ( !( H is Ent_Effect_Bmode_Buildholder ) != null ) {
 							continue;
 						}
-						if ( H.cl == M.client != null ) {
+						if ( H.cl == M.client ) {
 							GlobalFuncs.qdel( H );
 						}
 					};
@@ -11815,15 +11816,15 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	trange( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	x1y1 = null;
-			if ( Dist == null != null ) {
+		public static dynamic trange( int Dist = 0, dynamic Center = null ) {
+			dynamic x1y1 = null;
+			if ( Dist == null ) {
 				Dist = 0;
 			}
-			if ( Center == null != null ) {
+			if ( Center == null ) {
 				Center = null;
 			}
-			if ( Center == null != null ) {
+			if ( Center == null ) {
 				return;
 			}
 			x1y1 = GlobalVars.undefined( Center.x - Dist < 1 ? 1 : Center.x - Dist, Center.y - Dist < 1 ? 1 : Center.y - Dist, Center.z );
@@ -11831,7 +11832,7 @@ namespace Som13 {
 			return GlobalVars.undefined( x1y1, x2y2 );
 		}
 
-		public static int	transform_dir( UNKNOWN [object Object] =null ) {
+		public static dynamic transform_dir( dynamic direction = null ) {
 			local _ = direction // Was a switch-case, sorry for the mess.
 			if ( _==1 || _==2 || _==4 || _==8 ) {
 				return direction;
@@ -11846,9 +11847,9 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	TransformUsingVariable( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	inputToDegrees = null;
-			if ( scaling_modifier == null != null ) {
+		public static dynamic TransformUsingVariable( dynamic input = null, dynamic inputmaximum = null, int scaling_modifier = 0 ) {
+			dynamic inputToDegrees = null;
+			if ( scaling_modifier == null ) {
 				scaling_modifier = 0;
 			}
 			inputToDegrees = input / inputmaximum * 180;
@@ -11856,31 +11857,31 @@ namespace Som13 {
 			return size_factor + scaling_modifier;
 		}
 
-		public static UNKNOWN	trim( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic trim( dynamic text = null, dynamic max_length = null ) {
 			if ( max_length != null ) {
 				text = GlobalVars.undefined( text, 1, max_length );
 			}
 			return GlobalFuncs.trim_left( GlobalFuncs.trim_right( text ) );
 		}
 
-		public static UNKNOWN	trim_left( UNKNOWN [object Object] =null ) {
-			dynamic	i = null;
+		public static string trim_left( dynamic text = null ) {
+			dynamic i = null;
 			i = null;
-			foreach (_ in GlobalVars.undefined( 1, GlobalVars.undefined( text ) ) ) {
+			foreach (dynamic _ in GlobalVars.undefined( 1, GlobalVars.undefined( text ) ) ) {
 				i = undefined;
-				if ( GlobalVars.undefined( text, i ) > 32 != null ) {
+				if ( GlobalVars.undefined( text, i ) > 32 ) {
 					return GlobalVars.undefined( text, i, null );
 				}
 			};
 			return "";
 		}
 
-		public static UNKNOWN	trim_right( UNKNOWN [object Object] =null ) {
-			UNKNOWN	i = null;
+		public static string trim_right( dynamic text = null ) {
+			dynamic i = null;
 			i = null;
 			i = GlobalVars.undefined( text );
 			while (i > 0) {
-				if ( GlobalVars.undefined( text, i ) > 32 != null ) {
+				if ( GlobalVars.undefined( text, i ) > 32 ) {
 					return GlobalVars.undefined( text, 1, i + 1 );
 				}
 				i--;
@@ -11888,11 +11889,11 @@ namespace Som13 {
 			return "";
 		}
 
-		public static dynamic	try_move_adjacent( UNKNOWN [object Object] =null ) {
-			UNKNOWN	T = null;
+		public static dynamic try_move_adjacent( dynamic AM = null ) {
+			dynamic T = null;
 			T = GlobalFuncs.get_turf( AM );
 			direction = null;
-			foreach (_ in GlobalVars.cardinal ) {
+			foreach (dynamic _ in GlobalVars.cardinal ) {
 				direction = undefined;
 				if ( AM.Move( GlobalVars.undefined( T, direction ) ) != null ) {
 					break;
@@ -11900,7 +11901,7 @@ namespace Som13 {
 			};
 		}
 
-		public static UNKNOWN	ui_style2icon( UNKNOWN [object Object] =null ) {
+		public static dynamic ui_style2icon( dynamic ui_style = null ) {
 			local _ = ui_style // Was a switch-case, sorry for the mess.
 			if ( _=="Retro" ) {
 				return new ByRsc(12);
@@ -11911,15 +11912,15 @@ namespace Som13 {
 			};
 		}
 
-		public static ByTable	ultra_range( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	t_center = null;
-			if ( dist == null != null ) {
+		public static ByTable ultra_range( int dist = 0, dynamic center = null, int orange = 0 ) {
+			dynamic t_center = null;
+			if ( dist == null ) {
 				dist = 0;
 			}
-			if ( center == null != null ) {
+			if ( center == null ) {
 				center = GlobalVars.undefined.user;
 			}
-			if ( orange == null != null ) {
+			if ( orange == null ) {
 				orange = 0;
 			}
 			if ( !dist != null ) {
@@ -11942,7 +11943,7 @@ namespace Som13 {
 			while (c_dist <= dist) {
 				y = t_center.y + c_dist;
 				x = t_center.x - c_dist + 1;
-				foreach (_ in GlobalVars.undefined( x, t_center.x + c_dist ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( x, t_center.x + c_dist ) ) {
 					x = undefined;
 					T = GlobalVars.undefined( x, y, t_center.z );
 					if ( T != null ) {
@@ -11952,7 +11953,7 @@ namespace Som13 {
 				};
 				y = t_center.y + c_dist - 1;
 				x = t_center.x + c_dist;
-				foreach (_ in GlobalVars.undefined( t_center.y - c_dist, y ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( t_center.y - c_dist, y ) ) {
 					y = undefined;
 					T = GlobalVars.undefined( x, y, t_center.z );
 					if ( T != null ) {
@@ -11962,7 +11963,7 @@ namespace Som13 {
 				};
 				y = t_center.y - c_dist;
 				x = t_center.x + c_dist - 1;
-				foreach (_ in GlobalVars.undefined( t_center.x - c_dist, x ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( t_center.x - c_dist, x ) ) {
 					x = undefined;
 					T = GlobalVars.undefined( x, y, t_center.z );
 					if ( T != null ) {
@@ -11972,7 +11973,7 @@ namespace Som13 {
 				};
 				y = t_center.y - c_dist + 1;
 				x = t_center.x - c_dist;
-				foreach (_ in GlobalVars.undefined( y, t_center.y + c_dist ) ) {
+				foreach (dynamic _ in GlobalVars.undefined( y, t_center.y + c_dist ) ) {
 					y = undefined;
 					T = GlobalVars.undefined( x, y, t_center.z );
 					if ( T != null ) {
@@ -11985,12 +11986,12 @@ namespace Som13 {
 			return L;
 		}
 
-		public static UNKNOWN	unix2date( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			int	year = null;
-			if ( seperator == null != null ) {
+		public static int unix2date( dynamic timestamp = null, string seperator = null ) {
+			int year = 0;
+			if ( seperator == null ) {
 				seperator = "-";
 			}
-			if ( timestamp < 0 != null ) {
+			if ( timestamp < 0 ) {
 				return 0;
 			}
 			year = 1970;
@@ -12017,10 +12018,10 @@ namespace Som13 {
 			mDays = 0;
 			monthIndex = 0;
 			m = null;
-			foreach (_ in monthsInDays ) {
+			foreach (dynamic _ in monthsInDays ) {
 				m = undefined;
 				monthIndex++;
-				if ( tmpDays > m != null ) {
+				if ( tmpDays > m ) {
 					mDays = m;
 					month = monthIndex;
 				}
@@ -12029,45 +12030,45 @@ namespace Som13 {
 			return "" + year + seperator + ( month < 10 ? "0" + month : month ) + seperator + ( day < 10 ? "0" + day : day );
 		}
 
-		public static dynamic	updateallghostimages(  ) {
-			dynamic	O = null;
+		public static dynamic updateallghostimages(  ) {
+			dynamic O = null;
 			O = null;
-			foreach (_ in GlobalVars.player_list ) {
+			foreach (dynamic _ in GlobalVars.player_list ) {
 				O = undefined;
-				if ( !( O instanceof Mob_Dead_Observer ) != null ) {
+				if ( !( O is Mob_Dead_Observer ) != null ) {
 					continue;
 				}
 				O.updateghostimages();
 			};
 		}
 
-		public static int	UpdateTime(  ) {
+		public static int UpdateTime(  ) {
 			GlobalVars.CMinutes = Game.realtime / 10 / 60;
 			return 1;
 		}
 
-		public static dynamic	view_or_range( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			if ( distance == null != null ) {
+		public static dynamic view_or_range( dynamic distance = null, dynamic center = null, dynamic type = null ) {
+			if ( distance == null ) {
 				distance = Game.view;
 			}
-			if ( center == null != null ) {
+			if ( center == null ) {
 				center = GlobalVars.undefined.user;
 			}
 			local _ = type // Was a switch-case, sorry for the mess.
 			if ( _=="view" ) {
-				undefined = GlobalVars.undefined( distance, center );
+				_default = GlobalVars.undefined( distance, center );
 			} else if ( _=="range" ) {
-				undefined = GlobalVars.undefined( distance, center );
+				_default = GlobalVars.undefined( distance, center );
 			};
 			return;
 			return _default;
 		}
 
-		public static UNKNOWN	vol_by_throwforce_and_or_w_class( UNKNOWN [object Object] =null ) {
+		public static int vol_by_throwforce_and_or_w_class( dynamic I = null ) {
 			if ( !I != null ) {
 				return 0;
 			}
-			if ( I.throwforce && I.w_class != null ) {
+			if ( I.throwforce != null && I.w_class != null ) {
 				return GlobalFuncs.Clamp( ( I.throwforce + I.w_class ) * 5, 30, 100 );
 			} else if ( I.w_class != null ) {
 				return GlobalFuncs.Clamp( I.w_class * 8, 20, 100 );
@@ -12076,10 +12077,10 @@ namespace Som13 {
 			}
 		}
 
-		public static UNKNOWN	wabbajack( UNKNOWN [object Object] =null ) {
-			dynamic	Robot = null;
-			if ( M instanceof Mob_Living != null ) {
-				if ( M instanceof Mob_Living && M.stat != 2 != null ) {
+		public static dynamic wabbajack( dynamic M = null ) {
+			dynamic Robot = null;
+			if ( M is Mob_Living != null ) {
+				if ( M is Mob_Living != null && M.stat != 2 ) {
 					if ( M.notransform != null ) {
 						return;
 					}
@@ -12088,7 +12089,7 @@ namespace Som13 {
 					M.icon = null;
 					M.overlays.Cut();
 					M.invisibility = 101;
-					if ( M instanceof Mob_Living_Silicon_Robot != null ) {
+					if ( M is Mob_Living_Silicon_Robot != null ) {
 						Robot = M;
 						if ( Robot.mmi != null ) {
 							GlobalFuncs.qdel( Robot.mmi );
@@ -12096,12 +12097,12 @@ namespace Som13 {
 						Robot.notify_ai( 1 );
 					} else {
 						W = null;
-						foreach (_ in M ) {
+						foreach (dynamic _ in M ) {
 							W = undefined;
-							if ( !( W instanceof Ent_Item ) != null ) {
+							if ( !( W is Ent_Item ) != null ) {
 								continue;
 							}
-							if ( W instanceof Ent_Item_Weapon_Implant != null ) {
+							if ( W is Ent_Item_Weapon_Implant != null ) {
 								GlobalFuncs.qdel( W );
 								continue;
 							}
@@ -12128,7 +12129,7 @@ namespace Som13 {
 							D = new_mob;
 							D.update_drone_hack();
 						};
-						if ( new_mob instanceof Mob_Living_Silicon != null ) {
+						if ( new_mob is Mob_Living_Silicon != null ) {
 							new_mob.gender = M.gender;
 							new_mob.invisibility = 0;
 							new_mob.job = "Cyborg";
@@ -12219,7 +12220,7 @@ namespace Som13 {
 						if ( Rand.chance( 50 ) != null ) {
 							all_species = new ByTable();
 							speciestype = null;
-							foreach (_ in GlobalVars.undefined( Species ) - Species ) {
+							foreach (dynamic _ in GlobalVars.undefined( Species ) - Species ) {
 								speciestype = undefined;
 								S = speciestype();
 								if ( !S.dangerous_existence != null ) {
@@ -12251,33 +12252,33 @@ namespace Som13 {
 			}
 		}
 
-		public static dynamic	warning( UNKNOWN [object Object] =null ) {
+		public static dynamic warning( dynamic msg = null ) {
 			Game.log.write( "## WARNING: " + msg );
 		}
 
-		public static UNKNOWN	wear_female_version( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			dynamic	index = null;
+		public static dynamic wear_female_version( dynamic t_color = null, dynamic icon = null, dynamic layer = null, dynamic type = null ) {
+			dynamic index = null;
 			index = t_color;
-			female_clothing_icon = GlobalVars.female_clothing_icons[index];
+			female_clothing_icon = GlobalVars.female_clothing_icons.[object Object];
 			if ( !female_clothing_icon != null ) {
 				GlobalFuncs.generate_female_clothing( index, t_color, icon, type );
 			}
-			standing = GlobalVars.undefined.lcall( new ByTable().set( "layer", -layer ).set( "icon", GlobalVars.female_clothing_icons["" + t_color] ) );
+			standing = GlobalVars.undefined.lcall( new ByTable().set( "layer", -layer ).set( "icon", GlobalVars.female_clothing_icons.[object Object] ) );
 			return standing;
 		}
 
-		public static UNKNOWN	worldtime2text(  ) {
+		public static dynamic worldtime2text(  ) {
 			return GlobalFuncs.gameTimestamp( "hh:mm" );
 		}
 
-		public static UNKNOWN	Wrap( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
-			UNKNOWN	d = null;
+		public static dynamic Wrap( dynamic val = null, dynamic min = null, dynamic max = null ) {
+			dynamic d = null;
 			d = max - min;
 			t = GlobalVars.undefined.round( ( val - min ) / d );
 			return val - t * d;
 		}
 
-		public static dynamic	xgibs( UNKNOWN [object Object] =null, UNKNOWN [object Object] =null ) {
+		public static dynamic xgibs( dynamic location = null, dynamic viruses = null ) {
 			new Ent_Effect_Gibspawner_Xeno( location, viruses );
 		}
 
