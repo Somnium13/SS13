@@ -25,6 +25,8 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Dec 5: Began conversion to C#... Global vars looking good, functions not so much!
 - Dec 6: Started on Global func conversion. Type inference is hard.
 - Dec 7: Refined type inference. Still working on globals. This javscript is getting super lit.
+- Dec 8: Looking sexy AF.
+- Dec 9: Work on member naming. Will re-add classes soon!
 
 **Current:** Switching languages for the second time. It's for the best. Probably. I want the damn thing to compile by the time finals are over. This is gonna be intense.
 

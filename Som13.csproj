@@ -44,10 +44,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="game.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="GlobalFuncs.cs" />
     <Compile Include="GlobalVars.cs" />
-    <Compile Include="Core13.cs" />
+    <Compile Include="Som13.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
