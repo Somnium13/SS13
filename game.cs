@@ -1,3 +1,6 @@
+using System;
+using Som13;
+
 namespace Game13 {
 	static class Game {
 		public const int fps = 10;

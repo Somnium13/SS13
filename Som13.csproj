@@ -44,6 +44,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GlobalFuncs.cs" />
     <Compile Include="GlobalVars.cs" />

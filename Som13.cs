@@ -70,6 +70,14 @@ namespace Som13 {
 		}
 	}
 
+	class ByRsc {
+		public ByRsc(int n) { }
+	}
+
+	class ImageN {
+		public ImageN(params object[] v) { }
+	}
+
 	class Client {
 		
 	}
