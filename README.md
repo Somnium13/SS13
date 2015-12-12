@@ -6,6 +6,8 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 
 *Note: Due to the discovery algorithem, more global functions will be found as more code is decompiled!*
 
+Project started early October. It took about a month to start generating coherant code.
+
 - Nov 1: 102 / 234 global functions decompiled.
 - Nov 2: 242 / 366
 - Nov 3: 301 / 373
@@ -28,8 +30,9 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 - Dec 8: Looking sexy AF.
 - Dec 9: Work on member naming. Will re-add classes soon!
 - Dec 10: Classes are back! Even more issues are cropping up, but teemo will guide us to victory.
+- Dec 11: Back to quantitative measures of progress! 1305 compile errors!
 
-**Current:** Switching languages for the second time. It's for the best. Probably. I want the damn thing to compile by the time finals are over. This is gonna be intense.
+**Current:** Burning hard for LTG #2. Trying to hit it by Dec 18.
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.

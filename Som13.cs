@@ -9,6 +9,12 @@ namespace Som13 {
 		}
 	}
 
+	static class Ext13 {
+		public static object BTNew(this Type t,ByTable args) {
+			return null;
+		}
+	}
+
 	static class Misc13 {
 		public static dynamic thread_user;
 
@@ -27,16 +33,51 @@ namespace Som13 {
 		public static bool isValid(dynamic v) {
 			return !(v == null || v == "" || v == 0);
 		}
+
+		public static string formatTime(double t, string fmt) {
+			return "time";
+		}
+
+		// Thought about using a builtin parsing method but not sure how well it will conform. Also, https://facepunch.com/showthread.php?t=1478507
+		public static double parseNumber(string n) {
+			return 0;
+		}
+
+		public static Type findType(string s) {
+			return null;
+		}
+
+		public static ByTable types(Type t) {
+			return null;
+		}
+
+		public static String str_sub(string s, int a, int b) {
+			return "";
+		}
+
+		public static String str_find(string s, string t, int a, int? b) {
+			return "";
+		}
+
+		public static String html_encode(string s) {
+			return "";
+		}
+
+		public static String html_decode(string s) {
+			return "";
+		}
 	}
 
 	class ByTable : System.Collections.IEnumerable {
-		public ByTable() {
+		public ByTable(int len=0) {
 			
 		}
 		
 		public ByTable(object[] os) {
 
 		}
+
+		public int len = 0;
 
 		public dynamic this[dynamic x] {
 			get {
@@ -49,6 +90,14 @@ namespace Som13 {
 
 		public System.Collections.IEnumerator GetEnumerator() {
 			return new ByEnum();
+		}
+
+		public static ByTable operator -(ByTable a, dynamic b) {
+			return new ByTable();
+		}
+
+		public static ByTable operator +(ByTable a, dynamic b) {
+			return new ByTable();
 		}
 
 		public int Find(object o) {
@@ -74,12 +123,25 @@ namespace Som13 {
 		public ByRsc(int n) { }
 	}
 
-	class ImageN {
-		public ImageN(params object[] v) { }
+	class ByArea {
+		public ByArea(int n) { }
+	}
+
+	partial class Image {
+		public Image(params object[] v) { }
+
+		public int pixel_x;
+		public int pixel_y;
 	}
 
 	class Client {
 		
+	}
+
+	class Txt {
+		public Txt(string s="") {
+
+		}
 	}
 
 	class UNKNOWN { }

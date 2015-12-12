@@ -7,5 +7,6 @@ namespace Game13 {
 		public const int icon_size = 32;
 		public static string name;
 		public static double time;
+		public static double realtime;
 	}
 }
