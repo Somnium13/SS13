@@ -129,7 +129,7 @@ namespace Game13 {
 		public const ByTable animated_tails_list_human = new ByTable();
 		public const ByTable animated_tails_list_lizard = new ByTable();
 		public static ByTable announcement_systems = new ByTable();
-		public static int announcing_vox = 0;
+		public static double announcing_vox = 0;
 		public const int APC_WIRE_AI_CONTROL = 8;
 		public const int APC_WIRE_MAIN_POWER1 = 2;
 		public const int APC_WIRE_MAIN_POWER2 = 4;
@@ -304,7 +304,7 @@ namespace Game13 {
 		public const int FALSE = 0;
 		public const string FEMALE = "female";
 		public const ByTable female_clothing_icons = new ByTable();
-		public static int fileaccess_timer = 0;
+		public static double fileaccess_timer = 0;
 		public const dynamic fire_overlay = typeof(Image).BTNew( new ByTable().set( "icon_state", "fire" ).set( "icon", new ByRsc(292) ) );
 		public const ByTable first_names_female = GlobalFuncs.file2list( "config/names/first_female.txt" );
 		public const ByTable first_names_male = GlobalFuncs.file2list( "config/names/first_male.txt" );
@@ -531,7 +531,7 @@ namespace Game13 {
 		public const ByTable rod_recipes = new ByTable(new object [] {typeof(StackRecipe).BTNew( new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( "time", 10 ).set( 3, 2 ).set( 2, typeof(Ent_Structure_Grille) ).set( 1, "grille" ) ),typeof(StackRecipe).BTNew( new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( "time", 10 ).set( 3, 2 ).set( 2, typeof(Ent_Structure_TableFrame) ).set( 1, "table frame" ) )});
 		public const int ROOM_ERR_SPACE = -1;
 		public const int ROOM_ERR_TOOLARGE = -2;
-		public static int round_start_time = 0;
+		public static double round_start_time = 0;
 		public const ByTable roundstart_species = new ByTable( 0 );
 		public const ByTable RPD_recipes = new ByTable()
 			.set( "Disposal Pipes", new ByTable().set( "Sort Junction", new PipeInfo_Disposal( 9, 2 ) ).set( "Chute", new PipeInfo_Disposal( 8, 4 ) ).set( "Outlet", new PipeInfo_Disposal( 7, 4 ) ).set( "Bin", new PipeInfo_Disposal( 6, 5 ) ).set( "Trunk", new PipeInfo_Disposal( 5, 2 ) ).set( "Y-Junction", new PipeInfo_Disposal( 4, 2 ) ).set( "Junction", new PipeInfo_Disposal( 2, 2 ) ).set( "Bent Pipe", new PipeInfo_Disposal( 1, 2 ) ).set( "Pipe", new PipeInfo_Disposal( 0, 0 ) ) )
@@ -627,7 +627,7 @@ namespace Game13 {
 		public const int STATE_STATUSDISPLAY = 7;
 		public const int STATE_TOGGLE_EMERGENCY = 10;
 		public const int STATE_VIEWMESSAGE = 5;
-		public static dynamic station_name = null;
+		public static string station_name = null;
 		public static int status_overlays = 0;
 		public static ByTable status_overlays_charging = null;
 		public static ByTable status_overlays_environ = null;
@@ -677,7 +677,7 @@ namespace Game13 {
 		public static Ent_Machinery_Gateway_Centerstation the_gateway = null;
 		public const ByTable the_station_areas = new ByTable(new object [] {new ByArea(2804),new ByArea(2826),new ByArea(2837),new ByArea(2839),new ByArea(2858),new ByArea(2876),new ByArea(2862),new ByArea(2865),new ByArea(2866),new ByArea(2724),new ByArea(2885),new ByArea(2890),new ByArea(2891),new ByArea(2910),new ByArea(2929),new ByArea(2937),new ByArea(2938),new ByArea(2939),new ByArea(2949),new ByArea(2961),new ByArea(2996),new ByArea(2711),new ByArea(2725),new ByArea(2726),new ByArea(2727)});
 		public static Subsystem_Ticker ticker = null;
-		public static int time_last_changed_position = 0;
+		public static double time_last_changed_position = 0;
 		public const int timezoneOffset = 0;
 		public static dynamic tinted_weldhelh = 1;
 		public const int tk_maxrange = 15;

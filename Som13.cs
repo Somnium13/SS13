@@ -51,6 +51,14 @@ namespace Som13 {
 			return null;
 		}
 
+		public static double max(params double[] nums) {
+			return 0;
+		}
+
+		public static double round(double a, double b) {
+			return 0;
+		}
+
 		public static String str_sub(string s, int a, int b) {
 			return "";
 		}
@@ -66,6 +74,30 @@ namespace Som13 {
 		public static String html_decode(string s) {
 			return "";
 		}
+
+		public static void flick(object a, object b) {
+
+		}
+
+		public static System.Reflection.MethodInfo getf2(object a,object b) {
+			return null;
+		}
+
+		public static string conv_num2text(double a, double b = 6) {
+			return "";
+		}
+	}
+
+	static class Thread13 {
+		public static void sleep(double t) {
+			// oh christ this is going to be ugly
+		}
+
+		private delegate void sheduled_closure();
+
+		public static void schedule(double t, sheduled_closure d) {
+			// this will hopefully be less ugly
+		}
 	}
 
 	class ByTable : System.Collections.IEnumerable {
@@ -78,6 +110,7 @@ namespace Som13 {
 		}
 
 		public int len = 0;
+		public int Length = 0;
 
 		public dynamic this[dynamic x] {
 			get {
@@ -100,11 +133,29 @@ namespace Som13 {
 			return new ByTable();
 		}
 
-		public int Find(object o) {
-			return 5;
+		public void Add(params object[] items) {
+
 		}
 
-		public ByTable set(object k, object v);
+		public int Find(object o) {
+			return 0;
+		}
+
+		public bool Remove(params object[] items) {
+			return false;
+		}
+
+		public void Swap(object k1, object k2) {
+
+		}
+
+		public ByTable set(object k, object v) {
+			return this;
+		}
+
+		public bool HasValue(object v) {
+			return false;
+		}
 	}
 
 	class ByEnum : System.Collections.IEnumerator {
@@ -127,15 +178,14 @@ namespace Som13 {
 		public ByArea(int n) { }
 	}
 
-	partial class Image {
-		public Image(params object[] v) { }
-
-		public int pixel_x;
-		public int pixel_y;
-	}
-
 	class Client {
 		
+	}
+
+	class Color {
+		public Color(int r, int g, int b, int a = 255) {
+
+		}
 	}
 
 	class Txt {
@@ -162,5 +212,34 @@ namespace Som13 {
 		public static int Int(int a, int b) {
 			return 0;
 		}
+	}
+
+	class SaveFile {
+		public SaveFile(string filename) {
+
+		}
+
+		public dynamic this[dynamic x] {
+			get {
+				return null;
+			}
+			set {
+
+			}
+		}
+	}
+
+	partial class Image {
+		public Image(params object[] v) { }
+
+		public int pixel_x;
+		public int pixel_y;
+	}
+
+	partial class BaseStatic : Game13.Base13 {
+		public int dir;
+		public Game13.Icon icon;
+		public string icon_state;
+		public int layer;
 	}
 }

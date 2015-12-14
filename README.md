@@ -31,6 +31,8 @@ Project started early October. It took about a month to start generating coheran
 - Dec 9: Work on member naming. Will re-add classes soon!
 - Dec 10: Classes are back! Even more issues are cropping up, but teemo will guide us to victory.
 - Dec 11: Back to quantitative measures of progress! 1305 compile errors!
+- Dec 12: God damn it constructors are hard.
+- Dec 13: 737 Errors (I do not trust this number, VS is dumb. On the bright side, most constructor insanity has been dealt with.)
 
 **Current:** Burning hard for LTG #2. Trying to hit it by Dec 18.
 

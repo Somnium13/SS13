@@ -497,11 +497,11 @@ namespace Game13 {
 		}
 
 		public static void anim( dynamic location = null, dynamic target = null, dynamic a_icon = null, dynamic a_icon_state = null, dynamic flick_anim = null, int sleeptime = 0, dynamic direction = null ) {
-			BaseDynamic_Overlay animation = null;
+			Dynamic_Overlay animation = null;
 			if ( sleeptime == null ) {
 				sleeptime = 0;
 			}
-			animation = new BaseDynamic_Overlay( location );
+			animation = new Dynamic_Overlay( location );
 			if ( Misc13.isValid( direction ) ) {
 				animation.dir = direction;
 			}
@@ -596,7 +596,7 @@ namespace Game13 {
 			ByTable closed = null;
 			ByTable path = null;
 			dynamic cur = null;
-			bool closeenough = null;
+			bool closeenough = false;
 			dynamic L = null;
 			dynamic T = null;
 			dynamic newg = null;
@@ -858,7 +858,7 @@ namespace Game13 {
 		public static Color BlendRGB( dynamic rgb1 = null, dynamic rgb2 = null, dynamic amount = null ) {
 			ByTable RGB1 = null;
 			ByTable RGB2 = null;
-			bool usealpha = null;
+			bool usealpha = false;
 			dynamic r = null;
 			dynamic g = null;
 			dynamic b = null;
@@ -871,18 +871,18 @@ namespace Game13 {
 				RGB2 += 255;
 			}
 			usealpha = RGB1.len > 3;
-			r = Math13.round( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 );
-			g = Math13.round( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 );
-			b = Math13.round( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 );
-			alpha = usealpha ? Math13.round( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null;
+			r = Misc13.round( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount, 1 );
+			g = Misc13.round( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount, 1 );
+			b = Misc13.round( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount, 1 );
+			alpha = usealpha ? Misc13.round( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount, 1 ) : null;
 			return alpha == null ? new Color( r, g, b ) : new Color( r, g, b, alpha );
 		}
 
 		public static int blood_incompatible( dynamic donor = null, dynamic receiver = null, dynamic donor_species = null, dynamic receiver_species = null ) {
 			dynamic donor_antigen = null;
 			dynamic receiver_antigen = null;
-			bool donor_rh = null;
-			bool receiver_rh = null;
+			bool donor_rh = false;
+			bool receiver_rh = false;
 			if ( !Misc13.isValid( donor ) || !Misc13.isValid( receiver ) ) {
 				return 0;
 			}
@@ -985,7 +985,7 @@ namespace Game13 {
 				return;
 			}
 			radios = new ByTable();
-			virt = GlobalFuncs.PoolOrNew( typeof(BaseDynamic_Virtualspeaker), null );
+			virt = GlobalFuncs.PoolOrNew( typeof(Dynamic_Virtualspeaker), null );
 			virt.name = name;
 			virt.job = job;
 			virt.languages = AM.languages;
@@ -1719,7 +1719,7 @@ namespace Game13 {
 		}
 
 		public static dynamic Ceiling( dynamic x = null ) {
-			return -Math13.round( -x );
+			return -Misc13.round( -x );
 		}
 
 		public static void Centcomm_announce( dynamic text = null, dynamic Sender = null ) {
@@ -1850,7 +1850,7 @@ namespace Game13 {
 			return Math.Sqrt( Math.Pow( Math.abs( Ax - Bx ), 2 ) + Math.Pow( Math.abs( Ay - By ), 2 ) );
 		}
 
-		public static dynamic check_if_greater_rights_than( dynamic other = null ) {
+		public static int check_if_greater_rights_than( dynamic other = null ) {
 			if ( Misc13.isValid( Misc13.thread_user ) && Misc13.isValid( Misc13.thread_user.client ) ) {
 				if ( Misc13.isValid( Misc13.thread_user.client.holder ) ) {
 					if ( !Misc13.isValid( other ) || !Misc13.isValid( other.holder ) ) {
@@ -2215,7 +2215,7 @@ namespace Game13 {
 			if ( blocksize == null ) {
 				blocksize = 3;
 			}
-			width = Math13.round( Math.Pow( 16, blocksize ) / values );
+			width = Misc13.round( Math.Pow( 16, blocksize ) / values );
 			if ( value < 1 ) {
 				value = 1;
 			}
@@ -2504,8 +2504,8 @@ namespace Game13 {
 			if ( blocksize == null ) {
 				blocksize = 3;
 			}
-			width = Math13.round( Math.Pow( 16, blocksize ) / values );
-			value = Math13.round( GlobalFuncs.hex2num( value ) / width ) + 1;
+			width = Misc13.round( Math.Pow( 16, blocksize ) / values );
+			value = Misc13.round( GlobalFuncs.hex2num( value ) / width ) + 1;
 			if ( value > values ) {
 				value = values;
 			}
@@ -2763,7 +2763,7 @@ namespace Game13 {
 			if ( Misc13.isValid( target ) ) {
 				Tloc = target.loc;
 			}
-			delayfraction = Math13.round( delay / numticks );
+			delayfraction = Misc13.round( delay / numticks );
 			Uloc = user.loc;
 			holding = user.get_active_hand();
 			holdingnull = 1;
@@ -2833,7 +2833,7 @@ namespace Game13 {
 			user_loc = user.loc;
 			target_loc = target.loc;
 			holding = user.get_active_hand();
-			timefraction = Math13.round( time / numticks );
+			timefraction = Misc13.round( time / numticks );
 			continue_looping = 1;
 			i = null;
 			foreach (dynamic _ in Misc13.iter_range( 1, numticks ) ) {
@@ -3226,7 +3226,7 @@ namespace Game13 {
 			}
 		}
 
-		public static dynamic establish_db_connection(  ) {
+		public static int establish_db_connection(  ) {
 			if ( GlobalVars.failed_db_connections > 5 ) {
 				return 0;
 			}
@@ -3465,7 +3465,7 @@ namespace Game13 {
 
 		public static string format_frequency( dynamic f = null ) {
 			f = Misc13.parseNumber( f );
-			return "" + Math13.round( f / 10 ) + "." + f % 10;
+			return "" + Misc13.round( f / 10 ) + "." + f % 10;
 		}
 
 		public static string format_table_name( dynamic table = null ) {
@@ -4237,8 +4237,8 @@ namespace Game13 {
 			return new ByTable(new object [] {GlobalVars.access_syndicate,GlobalVars.access_syndicate});
 		}
 
-		public static dynamic Get_Angle( dynamic start = null, dynamic end = null ) {
-			dynamic _default = null;
+		public static int Get_Angle( dynamic start = null, dynamic end = null ) {
+			int _default = null;
 			dynamic dy = null;
 			dynamic dx = null;
 			if ( !Misc13.isValid( start ) || !Misc13.isValid( end ) ) {
@@ -4402,7 +4402,7 @@ namespace Game13 {
 			return candidates;
 		}
 
-		public static dynamic get_centcom_access( dynamic job = null ) {
+		public static ByTable get_centcom_access( dynamic job = null ) {
 			dynamic _ = job; // Was a switch-case, sorry for the mess.
 			if ( _=="VIP Guest" ) {
 				return new ByTable(new object [] {GlobalVars.access_cent_general});
@@ -4484,7 +4484,7 @@ namespace Game13 {
 		}
 
 		public static dynamic get_domination_time( dynamic G = null ) {
-			return Misc13.max( 180, 900 - Math13.round( G.territory.len / GlobalVars.start_state.num_territories * 100, 1 ) * 12 );
+			return Misc13.max( 180, 900 - Misc13.round( G.territory.len / GlobalVars.start_state.num_territories * 100, 1 ) * 12 );
 		}
 
 		public static int get_edge_target_turf( dynamic A = null, dynamic direction = null ) {
@@ -5062,10 +5062,10 @@ namespace Game13 {
 				n_width = Game.icon_size - i_width / 2;
 				n_height = Game.icon_size - i_height / 2;
 				if ( Misc13.isValid( n_width ) ) {
-					rough_x = Math13.round( AM.pixel_x / n_width );
+					rough_x = Misc13.round( AM.pixel_x / n_width );
 				}
 				if ( Misc13.isValid( n_height ) ) {
-					rough_y = Math13.round( AM.pixel_y / n_height );
+					rough_y = Misc13.round( AM.pixel_y / n_height );
 				}
 				final_x = AM.x + rough_x;
 				final_y = AM.y + rough_y;
@@ -5226,9 +5226,9 @@ namespace Game13 {
 				return 0;
 			} else {
 				if ( exp >= 1440 ) {
-					timeleftstring = "" + Math13.round( exp / 1440, 0.10000000149011612 ) + " Days";
+					timeleftstring = "" + Misc13.round( exp / 1440, 0.10000000149011612 ) + " Days";
 				} else if ( exp >= 60 ) {
-					timeleftstring = "" + Math13.round( exp / 60, 0.10000000149011612 ) + " Hours";
+					timeleftstring = "" + Misc13.round( exp / 60, 0.10000000149011612 ) + " Hours";
 				} else {
 					timeleftstring = "" + exp + " Minutes";
 				}
@@ -5245,9 +5245,9 @@ namespace Game13 {
 				return 0;
 			} else {
 				if ( exp >= 1440 ) {
-					timeleftstring = "" + Math13.round( exp / 1440, 0.10000000149011612 ) + " Days";
+					timeleftstring = "" + Misc13.round( exp / 1440, 0.10000000149011612 ) + " Days";
 				} else if ( exp >= 60 ) {
-					timeleftstring = "" + Math13.round( exp / 60, 0.10000000149011612 ) + " Hours";
+					timeleftstring = "" + Misc13.round( exp / 60, 0.10000000149011612 ) + " Hours";
 				} else {
 					timeleftstring = "" + exp + " Minutes";
 				}
@@ -5840,7 +5840,7 @@ namespace Game13 {
 				H = M;
 				user.write( "<span class='info'>Species: " + H.dna.species.name + "</span>" );
 			}
-			user.write( "<span class='info'>Body temperature: " + Math13.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) + " &deg;C (" + Math13.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) + " &deg;F)</span>" );
+			user.write( "<span class='info'>Body temperature: " + Misc13.round( M.bodytemperature - 273.1499938964844, 0.10000000149011612 ) + " &deg;C (" + Misc13.round( M.bodytemperature * 1.7999999523162842 - 459.6700134277344, 0.10000000149011612 ) + " &deg;F)</span>" );
 			if ( Misc13.isValid( M.tod ) && ( M.stat == 2 || Misc13.isValid( ( M.status_flags & 8192 ) ) ) ) {
 				user.write( "<span class='info'>Time of Death:</span> " + M.tod );
 			}
@@ -5860,8 +5860,8 @@ namespace Game13 {
 					if ( Misc13.isValid( H.blood_max ) ) {
 						user.write( "<span class='danger'>Subject is bleeding!</span>" );
 					}
-					blood_volume = Math13.round( H.vessel.get_reagent_amount( "blood" ) );
-					blood_percent = Math13.round( blood_volume / 560, 0.009999999776482582 );
+					blood_volume = Misc13.round( H.vessel.get_reagent_amount( "blood" ) );
+					blood_percent = Misc13.round( blood_volume / 560, 0.009999999776482582 );
 					blood_type = H.dna.blood_type;
 					blood_percent *= 100;
 					if ( blood_volume <= 500 && blood_volume > 336 ) {
@@ -6157,7 +6157,7 @@ namespace Game13 {
 					b += m;
 				}
 				while (X1 != X2 || Y1 != Y2) {
-					if ( Misc13.isValid( Math13.round( m * X1 + b - Y1 ) ) ) {
+					if ( Misc13.isValid( Misc13.round( m * X1 + b - Y1 ) ) ) {
 						Y1 += signY;
 					} else {
 						X1 += signX;
@@ -6464,7 +6464,7 @@ namespace Game13 {
 
 		public static dynamic IsValidSrc( dynamic A = null ) {
 			dynamic B = null;
-			if ( A is BaseClass ) {
+			if ( A is Base13 ) {
 				B = A;
 				return !Misc13.isValid( B.gc_destroyed );
 			}
@@ -7313,7 +7313,7 @@ namespace Game13 {
 			dynamic progbar = null;
 			if ( Misc13.isValid( current_number ) && Misc13.isValid( goal_number ) && Misc13.isValid( target ) ) {
 				progbar = typeof(Image).BTNew( new ByTable().set( "icon_state", "prog_bar_0" ).set( "loc", target ).set( "icon", new ByRsc(15) ) );
-				progbar.icon_state = "prog_bar_" + Math13.round( current_number / goal_number * 100, 10 );
+				progbar.icon_state = "prog_bar_" + Misc13.round( current_number / goal_number * 100, 10 );
 				progbar.pixel_y = 32;
 				return progbar;
 			}
@@ -7726,10 +7726,10 @@ namespace Game13 {
 			return 1;
 		}
 
-		public static dynamic new_station_name(  ) {
+		public static string new_station_name(  ) {
 			int random = 0;
-			dynamic name = null;
-			dynamic new_station_name = null;
+			string name = null;
+			string new_station_name = null;
 			dynamic holiday_name = null;
 			dynamic holiday = null;
 			random = Rand.Int( 1, 5 );
@@ -7870,7 +7870,7 @@ namespace Game13 {
 			if ( !Misc13.isValid( Misc13.isNumber( num ) ) ) {
 				num = 0;
 			}
-			num = Math13.round( Math.abs( num ) );
+			num = Misc13.round( Math.abs( num ) );
 			_default = "";
 			i = 0;
 			while (1) {
@@ -7882,7 +7882,7 @@ namespace Game13 {
 					break;
 				}
 				remainder = num / 16;
-				num = Math13.round( remainder );
+				num = Misc13.round( remainder );
 				remainder = ( remainder - num ) * 16;
 				dynamic _ = remainder; // Was a switch-case, sorry for the mess.
 				if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
@@ -8021,7 +8021,7 @@ namespace Game13 {
 			if ( destroy == null ) {
 				destroy = 1;
 			}
-			if ( !( diver is BaseClass ) ) {
+			if ( !( diver is Base13 ) ) {
 				return;
 			}
 			if ( Misc13.isValid( GlobalVars.GlobalPool[diver.type].HasValue( diver ) ) ) {
@@ -8100,7 +8100,7 @@ namespace Game13 {
 
 		public static ByTable pollCandidates( string Question = null, dynamic jobbanType = null, dynamic gametypeCheck = null, int be_special_flag = 0, int poll_time = 0 ) {
 			ByTable candidates = null;
-			dynamic time_passed = null;
+			double time_passed = 0;
 			dynamic G = null;
 			if ( be_special_flag == null ) {
 				be_special_flag = 0;
@@ -8570,7 +8570,7 @@ namespace Game13 {
 			if ( !Misc13.isValid( A ) ) {
 				return;
 			}
-			if ( !( A is BaseClass ) ) {
+			if ( !( A is Base13 ) ) {
 				Misc13.del( A );
 				A = null;
 			} else if ( A.gc_destroyed == null ) {
@@ -8605,7 +8605,7 @@ namespace Game13 {
 		}
 
 		public static int qdeleted( dynamic A = null ) {
-			if ( !( A is BaseClass ) ) {
+			if ( !( A is Base13 ) ) {
 				return 0;
 			}
 			if ( Misc13.isValid( A.gc_destroyed ) ) {
@@ -8660,7 +8660,7 @@ namespace Game13 {
 			return 1;
 		}
 
-		public static dynamic ran_zone( string zone = null, int probability = 0 ) {
+		public static string ran_zone( string zone = null, int probability = 0 ) {
 			dynamic t = null;
 			if ( probability == null ) {
 				probability = 80;
@@ -8687,37 +8687,37 @@ namespace Game13 {
 			return zone;
 		}
 
-		public static dynamic randmut( dynamic M = null, dynamic candidates = null, int difficulty = 0 ) {
-			dynamic _default = null;
+		public static int randmut( dynamic M = null, dynamic candidates = null, int difficulty = 0 ) {
+			int _default = null;
 			dynamic num = null;
 			if ( difficulty == null ) {
 				difficulty = 2;
 			}
 			if ( !Misc13.isValid( M.has_dna() ) ) {
-				return null;
+				return 0;
 			}
 			num = Rand.pick( candidates );
 			_default = num.force_give( M );
-			return null;
+			return 0;
 			return _default;
 		}
 
-		public static dynamic randmutb( dynamic M = null ) {
-			dynamic _default = null;
+		public static int randmutb( dynamic M = null ) {
+			int _default = null;
 			dynamic HM = null;
 			if ( !Misc13.isValid( M.has_dna() ) ) {
-				return null;
+				return 0;
 			}
 			HM = Rand.pick( ( GlobalVars.bad_mutations | GlobalVars.not_good_mutations ) - GlobalVars.mutations_list["Monkified"] );
 			_default = HM.force_give( M );
 			return _default;
 		}
 
-		public static dynamic randmutg( dynamic M = null ) {
-			dynamic _default = null;
+		public static int randmutg( dynamic M = null ) {
+			int _default = null;
 			dynamic HM = null;
 			if ( !Misc13.isValid( M.has_dna() ) ) {
-				return null;
+				return 0;
 			}
 			HM = Rand.pick( GlobalVars.good_mutations );
 			_default = HM.force_give( M );
@@ -8726,7 +8726,7 @@ namespace Game13 {
 
 		public static void randmuti( dynamic M = null ) {
 			dynamic num = null;
-			dynamic newdna = null;
+			int newdna = 0;
 			if ( !Misc13.isValid( M.has_dna() ) ) {
 				return;
 			}
@@ -8748,7 +8748,7 @@ namespace Game13 {
 	<-REP->else  { _ = "AB+" };
 		}
 
-		public static dynamic random_eye_color(  ) {
+		public static string random_eye_color(  ) {
 			dynamic _ = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
 	<-REP->if ( _ < 14246 ) { _ = "brown" }
 	<-REP->else if ( _ < 28492 ) { _ = "hazel" }
@@ -8941,7 +8941,7 @@ namespace Game13 {
 			return _default;
 		}
 
-		public static dynamic randomColor( int mode = 0 ) {
+		public static string randomColor( int mode = 0 ) {
 			if ( mode == null ) {
 				mode = 0;
 			}
@@ -9071,7 +9071,7 @@ namespace Game13 {
 			int alpha = 0;
 			int usealpha = 0;
 			int digits = 0;
-			bool single = null;
+			bool single = false;
 			if ( !Misc13.isValid( rgb ) ) {
 				return null;
 			}
@@ -9659,7 +9659,7 @@ namespace Game13 {
 			return new ByTable(new object [] {hue,saturation,lightness});
 		}
 
-		public static dynamic RGBtoHSV( dynamic rgb = null ) {
+		public static string RGBtoHSV( dynamic rgb = null ) {
 			ByTable RGB = null;
 			dynamic r = null;
 			dynamic g = null;
@@ -9684,7 +9684,7 @@ namespace Game13 {
 			hi = Misc13.max( r, g, b );
 			lo = Misc13.min( r, g, b );
 			val = hi;
-			sat = Misc13.isValid( hi ) ? Math13.round( ( hi - lo ) * 255 / hi, 1 ) : 0;
+			sat = Misc13.isValid( hi ) ? Misc13.round( ( hi - lo ) * 255 / hi, 1 ) : 0;
 			hue = 0;
 			if ( Misc13.isValid( sat ) ) {
 				if ( hi == r ) {
@@ -9718,7 +9718,7 @@ namespace Game13 {
 						mid = g;
 					}
 				}
-				hue += dir * Math13.round( ( mid - lo ) * 255 / ( hi - lo ), 1 );
+				hue += dir * Misc13.round( ( mid - lo ) * 255 / ( hi - lo ), 1 );
 			}
 			return GlobalFuncs.hsv( hue, sat, val, RGB.len > 3 ? RGB[4] : null );
 		}
@@ -10038,7 +10038,7 @@ namespace Game13 {
 		}
 
 		public static dynamic sanitize_frequency( dynamic f = null ) {
-			f = Math13.round( f );
+			f = Misc13.round( f );
 			f = Misc13.max( 1441, f );
 			f = Misc13.min( 1489, f );
 			if ( f % 2 == 0 ) {
@@ -10079,10 +10079,10 @@ namespace Game13 {
 		public static string sanitize_hexcolor( string color = null, int desired_format = 0, int include_crunch = 0, dynamic __default = null ) {
 			string _default = null;
 			string crunch = null;
-			bool start = null;
+			bool start = false;
 			dynamic len = null;
-			bool step_size = null;
-			bool i = null;
+			bool step_size = false;
+			bool i = false;
 			dynamic ascii = null;
 			if ( desired_format == null ) {
 				desired_format = 3;
@@ -10147,7 +10147,7 @@ namespace Game13 {
 				__default = 0;
 			}
 			if ( Misc13.isValid( Misc13.isNumber( number ) ) ) {
-				number = Math13.round( number );
+				number = Misc13.round( number );
 				if ( min <= number && number <= max ) {
 					return number;
 				}
@@ -10343,7 +10343,7 @@ namespace Game13 {
 				d = null;
 				foreach (dynamic _ in location ) {
 					d = _;
-					if ( !( d is BaseClass ) ) {
+					if ( !( d is Base13 ) ) {
 						continue;
 					}
 					_out += d;
@@ -10401,7 +10401,7 @@ namespace Game13 {
 				d = null;
 				foreach (dynamic _ in location ) {
 					d = _;
-					if ( !( d is BaseClass ) ) {
+					if ( !( d is Base13 ) ) {
 						continue;
 					}
 					if ( Misc13.isValid( type.IsInstanceOfType( d ) ) ) {
@@ -10952,7 +10952,7 @@ namespace Game13 {
 			}
 		}
 
-		public static dynamic setblock( dynamic istring = null, dynamic blocknumber = null, dynamic replacement = null, int blocksize = 0 ) {
+		public static int setblock( dynamic istring = null, dynamic blocknumber = null, dynamic replacement = null, int blocksize = 0 ) {
 			if ( blocksize == null ) {
 				blocksize = 3;
 			}
@@ -10962,8 +10962,8 @@ namespace Game13 {
 			return GlobalFuncs.getleftblocks( istring, blocknumber, blocksize ) + replacement + GlobalFuncs.getrightblocks( istring, blocknumber, blocksize );
 		}
 
-		public static dynamic setup_database_connection(  ) {
-			dynamic _default = null;
+		public static int setup_database_connection(  ) {
+			int _default = null;
 			string user = null;
 			string pass = null;
 			string db = null;
@@ -10982,7 +10982,7 @@ namespace Game13 {
 			port = GlobalVars.sqlport;
 			GlobalVars.dbcon.Connect( "dbi:mysql:" + db + ":" + address + ":" + port, "" + user, "" + pass );
 			_default = GlobalVars.dbcon.IsConnected();
-			if ( Misc13.isValid( _default ) ) {
+			if ( _default != 0 ) {
 				GlobalVars.failed_db_connections = 0;
 			} else {
 				GlobalVars.failed_db_connections++;
@@ -11932,7 +11932,7 @@ namespace Game13 {
 			return GlobalFuncs.sanitize( t );
 		}
 
-		public static dynamic station_name(  ) {
+		public static string station_name(  ) {
 			if ( Misc13.isValid( GlobalVars.station_name ) ) {
 				return GlobalVars.station_name;
 			}
@@ -12501,7 +12501,7 @@ namespace Game13 {
 			dayInSeconds = 86400;
 			daysInYear = 365;
 			daysInLYear = daysInYear + 1;
-			days = Math13.round( timestamp / dayInSeconds );
+			days = Misc13.round( timestamp / dayInSeconds );
 			tmpDays = days + 1;
 			monthsInDays = new ByTable();
 			month = 1;
@@ -12794,7 +12794,7 @@ namespace Game13 {
 			dynamic d = null;
 			dynamic t = null;
 			d = max - min;
-			t = Math13.round( ( val - min ) / d );
+			t = Misc13.round( ( val - min ) / d );
 			return val - t * d;
 		}
 
