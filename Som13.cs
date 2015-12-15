@@ -9,11 +9,15 @@ namespace Som13 {
 		}
 	}
 
-	static class Ext13 {
+	/*static class Ext13 {
 		public static object BTNew(this Type t,ByTable args) {
 			return null;
 		}
-	}
+
+		public static object BTCall(this System.Reflection.MethodInfo t, ByTable args) {
+			return null;
+		}
+	}*/
 
 	static class Misc13 {
 		public static dynamic thread_user;
@@ -55,16 +59,32 @@ namespace Som13 {
 			return 0;
 		}
 
+		public static double min(params double[] nums) {
+			return 0;
+		}
+
 		public static double round(double a, double b) {
 			return 0;
 		}
 
-		public static String str_sub(string s, int a, int b) {
+		public static double round(double a) {
+			return 0;
+		}
+
+		public static String str_sub(string s, int a, int? b) {
 			return "";
 		}
 
 		public static String str_find(string s, string t, int a, int? b) {
 			return "";
+		}
+
+		public static int str_getCharCode(string a, int n) {
+			return 0;
+		}
+
+		public static int string_order(string a, string b) {
+			return 0;
 		}
 
 		public static String html_encode(string s) {
@@ -73,6 +93,22 @@ namespace Som13 {
 
 		public static String html_decode(string s) {
 			return "";
+		}
+
+		public static void del(dynamic d) {
+			
+		}
+
+		public static void browse(dynamic a, dynamic b, dynamic c) {
+			
+		}
+
+		public static dynamic get_step_towards(dynamic a, dynamic b) {
+			return null;
+		}
+
+		public static dynamic get_step(dynamic a, dynamic b) {
+			return null;
 		}
 
 		public static void flick(object a, object b) {
@@ -86,6 +122,30 @@ namespace Som13 {
 		public static string conv_num2text(double a, double b = 6) {
 			return "";
 		}
+
+		public static ByTable conv_params2list(dynamic a) {
+			return null;
+		}
+
+		public static object locate_in(object a, object b) {
+			return null;
+		}
+
+		public static dynamic initial(dynamic d) {
+			return null;
+		}
+
+		public static System.Collections.IEnumerator iter_range(int a, int b) {
+			return null;
+		}
+
+		public static object call(Type t, params object[] objs) {
+			return null;
+		}
+
+		public static object call(System.Reflection.MethodInfo t, params object[] objs) {
+			return null;
+		}
 	}
 
 	static class Thread13 {
@@ -93,10 +153,16 @@ namespace Som13 {
 			// oh christ this is going to be ugly
 		}
 
-		private delegate void sheduled_closure();
+		public delegate void Closure();
 
-		public static void schedule(double t, sheduled_closure d) {
+		public static void schedule(double t, Closure f) {
 			// this will hopefully be less ugly
+		}
+	}
+
+	static class File13 {
+		public static void write(string filename, string data) {
+
 		}
 	}
 
@@ -137,6 +203,10 @@ namespace Som13 {
 
 		}
 
+		public ByTable Copy(int start = 1, int end = 0) {
+			return null;
+		}
+
 		public int Find(object o) {
 			return 0;
 		}
@@ -155,6 +225,14 @@ namespace Som13 {
 
 		public bool HasValue(object v) {
 			return false;
+		}
+
+		public object apply(System.Reflection.MethodInfo f) {
+			return null;
+		}
+
+		public object applyCtor(Type t) {
+			return null;
 		}
 	}
 
@@ -191,6 +269,14 @@ namespace Som13 {
 	class Txt {
 		public Txt(string s="") {
 
+		}
+
+		public dynamic item(dynamic d) {
+			return null;
+		}
+
+		public dynamic icon(dynamic d) {
+			return null;
 		}
 	}
 

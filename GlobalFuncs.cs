@@ -5,7 +5,7 @@ namespace Game13 {
 	static class GlobalFuncs {
 		public static int above_neck( dynamic zone = null ) {
 			ByTable zones = null;
-			zones = new ByTable(new object [] {"head","mouth","eyes"});
+			zones = new ByTable(new object [] { "head", "mouth", "eyes" });
 			if ( zones.Find( zone ) != 0 ) {
 				return 1;
 			} else {
@@ -21,8 +21,8 @@ namespace Game13 {
 			}
 			_default = new ByTable();
 			A = null;
-			foreach (dynamic _ in GlobalVars.living_mob_list ) {
-				A = _;
+			foreach (dynamic _a in GlobalVars.living_mob_list ) {
+				A = _a;
 				if ( !( A is Mob_Living_Silicon_Ai ) ) {
 					continue;
 				}
@@ -48,8 +48,8 @@ namespace Game13 {
 			dynamic R = null;
 			_default = new ByTable();
 			R = null;
-			foreach (dynamic _ in GlobalVars.living_mob_list ) {
-				R = _;
+			foreach (dynamic _a in GlobalVars.living_mob_list ) {
+				R = _a;
 				if ( !( R is Mob_Living_Silicon_Robot ) ) {
 					continue;
 				}
@@ -172,7 +172,7 @@ namespace Game13 {
 				return null;
 			}
 			if ( !Misc13.isValid( GlobalVars.all_radios["" + freq] ) ) {
-				GlobalVars.all_radios["" + freq] = new ByTable(new object [] {radio});
+				GlobalVars.all_radios["" + freq] = new ByTable(new object [] { radio });
 				return freq;
 			}
 			GlobalVars.all_radios["" + freq] |= radio;
@@ -204,7 +204,7 @@ namespace Game13 {
 				Misc13.thread_user.write( "<span class='danger'>Ban already exists.</span>" );
 				return 0;
 			} else {
-				GlobalVars.Banlist.Add( "" + ckey + computerid );
+				GlobalVars.Banlist.dir.Add( "" + ckey + computerid );
 				GlobalVars.Banlist.cd = "/base/" + ckey + computerid;
 				GlobalVars.Banlist["key"].write( ckey );
 				GlobalVars.Banlist["id"].write( computerid );
@@ -253,7 +253,7 @@ namespace Game13 {
 				mover.buckled.unbuckle_mob();
 			}
 			if ( Misc13.isValid( mover.buckled_mob ) ) {
-				mover.unbuckle_mob.BTCall( new ByTable().set( "force", 1 ) );
+				new ByTable().set( "force", 1 ).apply( mover.GetType().GetMethod( "unbuckle_mob" ) );
 			}
 			mover.loc = newloc;
 			mover.on_forcemove( newloc );
@@ -265,36 +265,36 @@ namespace Game13 {
 				previous_rights = 0;
 			}
 			flag = 0;
-			dynamic _ = Misc13.ckey( word ); // Was a switch-case, sorry for the mess.
-			if ( _=="buildmode" || _=="build" ) {
+			dynamic _a = Misc13.ckey( word ); // Was a switch-case, sorry for the mess.
+			if ( _a=="buildmode" || _a=="build" ) {
 				flag = 1;
-			} else if ( _=="admin" ) {
+			} else if ( _a=="admin" ) {
 				flag = 2;
-			} else if ( _=="ban" ) {
+			} else if ( _a=="ban" ) {
 				flag = 4;
-			} else if ( _=="fun" ) {
+			} else if ( _a=="fun" ) {
 				flag = 8;
-			} else if ( _=="server" ) {
+			} else if ( _a=="server" ) {
 				flag = 16;
-			} else if ( _=="debug" ) {
+			} else if ( _a=="debug" ) {
 				flag = 32;
-			} else if ( _=="permissions" || _=="rights" ) {
+			} else if ( _a=="permissions" || _a=="rights" ) {
 				flag = 128;
-			} else if ( _=="possess" ) {
+			} else if ( _a=="possess" ) {
 				flag = 64;
-			} else if ( _=="stealth" ) {
+			} else if ( _a=="stealth" ) {
 				flag = 256;
-			} else if ( _=="rejuv" || _=="rejuvinate" ) {
+			} else if ( _a=="rejuv" || _a=="rejuvinate" ) {
 				flag = 512;
-			} else if ( _=="varedit" ) {
+			} else if ( _a=="varedit" ) {
 				flag = 1024;
-			} else if ( _=="everything" || _=="host" || _=="all" ) {
+			} else if ( _a=="everything" || _a=="host" || _a=="all" ) {
 				flag = 65535;
-			} else if ( _=="sound" || _=="sounds" ) {
+			} else if ( _a=="sound" || _a=="sounds" ) {
 				flag = 2048;
-			} else if ( _=="spawn" || _=="create" ) {
+			} else if ( _a=="spawn" || _a=="create" ) {
 				flag = 4096;
-			} else if ( _=="@" || _=="prev" ) {
+			} else if ( _a=="@" || _a=="prev" ) {
 				flag = previous_rights;
 			};
 			return flag;
@@ -331,7 +331,7 @@ namespace Game13 {
 					} else if ( symptom is string ) {
 						i = 0;
 					} else if ( symptom is Type ) {
-						S = symptom();
+						S = Misc13.call( symptom );
 						if ( D.HasSymptom( S ) == 0 ) {
 							D.symptoms += S;
 							i -= 1;
@@ -348,16 +348,16 @@ namespace Game13 {
 				D.AssignName( new_name );
 				D.Refresh();
 				AD = null;
-				foreach (dynamic _ in GlobalVars.SSdisease.processing ) {
-					AD = _;
+				foreach (dynamic _a in GlobalVars.SSdisease.processing ) {
+					AD = _a;
 					if ( !( AD is Disease_Advance ) ) {
 						continue;
 					}
 					AD.Refresh();
 				};
 				H = null;
-				foreach (dynamic _ in GlobalFuncs.shuffle( GlobalVars.living_mob_list ) ) {
-					H = _;
+				foreach (dynamic _b in GlobalFuncs.shuffle( GlobalVars.living_mob_list ) ) {
+					H = _b;
 					if ( !( H is Mob_Living_Carbon_Human ) ) {
 						continue;
 					}
@@ -371,8 +371,8 @@ namespace Game13 {
 				};
 				name_symptoms = new ByTable();
 				S = null;
-				foreach (dynamic _ in D.symptoms ) {
-					S = _;
+				foreach (dynamic _c in D.symptoms ) {
+					S = _c;
 					if ( !( S is Symptom ) ) {
 						continue;
 					}
@@ -398,8 +398,8 @@ namespace Game13 {
 			dynamic to_return = null;
 			diseases = new ByTable();
 			A = null;
-			foreach (dynamic _ in D_list ) {
-				A = _;
+			foreach (dynamic _a in D_list ) {
+				A = _a;
 				if ( !( A is Disease_Advance ) ) {
 					continue;
 				}
@@ -427,8 +427,8 @@ namespace Game13 {
 		public static int alien_type_present( dynamic alienpath = null ) {
 			dynamic A = null;
 			A = null;
-			foreach (dynamic _ in GlobalVars.living_mob_list ) {
-				A = _;
+			foreach (dynamic _a in GlobalVars.living_mob_list ) {
+				A = _a;
 				if ( !( A is Mob_Living_Carbon_Alien_Humanoid ) ) {
 					continue;
 				}
@@ -451,8 +451,8 @@ namespace Game13 {
 			}
 			our_area = GlobalFuncs.get_area_master( the_area );
 			C = null;
-			foreach (dynamic _ in GlobalVars.living_mob_list ) {
-				C = _;
+			foreach (dynamic _a in GlobalVars.living_mob_list ) {
+				C = _a;
 				if ( !Misc13.isValid( check_type.IsInstanceOfType( C ) ) ) {
 					continue;
 				}
@@ -536,8 +536,8 @@ namespace Game13 {
 			dynamic text = null;
 			if ( Misc13.isValid( M ) ) {
 				s = null;
-				foreach (dynamic _ in GlobalVars.appearance_keylist ) {
-					s = _;
+				foreach (dynamic _a in GlobalVars.appearance_keylist ) {
+					s = _a;
 					if ( Misc13.str_find( s, "" + M.ckey, 1, null ) == 1 ) {
 						startpos = Misc13.str_find( s, "## ", 1, null ) + 3;
 						if ( Misc13.isValid( startpos ) && startpos < s.Length ) {
@@ -555,7 +555,7 @@ namespace Game13 {
 
 		public static int appearance_remove( dynamic X = null ) {
 			int i = 0;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= GlobalVars.appearance_keylist.Length) {
 				if ( Misc13.isValid( Misc13.str_find( GlobalVars.appearance_keylist[i], "" + X, 1, null ) ) ) {
@@ -618,7 +618,7 @@ namespace Game13 {
 				simulated_only = 1;
 			}
 			if ( Misc13.isValid( maxnodes ) ) {
-				if ( Misc13.getf2( start, dist )( end ) > maxnodes ) {
+				if ( Misc13.call( Misc13.getf2( start, dist ), end ) > maxnodes ) {
 					return 0;
 				}
 				maxnodedepth = maxnodes;
@@ -630,13 +630,13 @@ namespace Game13 {
 			if ( !Misc13.isValid( start ) ) {
 				return 0;
 			}
-			open.Insert( new PathNode( start, null, 0, Misc13.getf2( start, dist )( end ), 0 ) );
+			open.Insert( new PathNode( start, null, 0, Misc13.call( Misc13.getf2( start, dist ), end ), 0 ) );
 			while (!open.IsEmpty() && ( path == null )) {
 				cur = open.Pop();
 				closed.Add( cur.source );
-				closeenough = null;
+				closeenough = false;
 				if ( Misc13.isValid( mintargetdist ) ) {
-					closeenough = Misc13.getf2( cur.source, dist )( end ) <= mintargetdist;
+					closeenough = Misc13.call( Misc13.getf2( cur.source, dist ), end ) <= mintargetdist;
 				}
 				if ( ( maxnodedepth != 0 ) && cur.nt > maxnodedepth ) {
 					continue;
@@ -650,18 +650,18 @@ namespace Game13 {
 					}
 					break;
 				}
-				L = Misc13.getf2( cur.source, adjacent )( atom, id, simulated_only );
+				L = Misc13.call( Misc13.getf2( cur.source, adjacent ), atom, id, simulated_only );
 				T = null;
-				foreach (dynamic _ in L ) {
-					T = _;
+				foreach (dynamic _a in L ) {
+					T = _a;
 					if ( Misc13.isValid( closed.HasValue( T == exclude || Misc13.isValid( T ) ) ) ) {
 						continue;
 					}
-					newg = cur.g + Misc13.getf2( cur.source, dist )( T );
+					newg = cur.g + Misc13.call( Misc13.getf2( cur.source, dist ), T );
 					if ( !Misc13.isValid( T.PNode ) ) {
-						open.Insert( new PathNode( T, cur, newg, Misc13.getf2( T, dist )( end ), cur.nt + 1 ) );
+						open.Insert( new PathNode( T, cur, newg, Misc13.call( Misc13.getf2( T, dist ), end ), cur.nt + 1 ) );
 					} else if ( newg < T.PNode.g ) {
-						T.prevNode = cur;
+						T.PNode.prevNode = cur;
 						T.PNode.g = newg;
 						T.PNode.calc_f();
 						T.PNode.nt = cur.nt + 1;
@@ -670,20 +670,20 @@ namespace Game13 {
 				};
 			}
 			PN = null;
-			foreach (dynamic _ in open.L ) {
-				PN = _;
+			foreach (dynamic _b in open.L ) {
+				PN = _b;
 				if ( !( PN is PathNode ) ) {
 					continue;
 				}
 				PN.source.PNode = null;
 			};
 			T = null;
-			foreach (dynamic _ in closed ) {
-				T = _;
+			foreach (dynamic _c in closed ) {
+				T = _c;
 				T.PNode = null;
 			};
 			if ( path != null ) {
-				i = null;
+				i = 0;
 				i = 1;
 				while (i <= path.len / 2) {
 					path.Swap( i, path.len - i + 1 );
@@ -716,8 +716,8 @@ namespace Game13 {
 				}
 				if ( Misc13.isValid( M.lying ) || M is Mob_Living_SimpleAnimal_Slime ) {
 					S = null;
-					foreach (dynamic _ in M.surgeries ) {
-						S = _;
+					foreach (dynamic _a in M.surgeries ) {
+						S = _a;
 						if ( !( S is Surgery ) ) {
 							continue;
 						}
@@ -729,8 +729,8 @@ namespace Game13 {
 						all_surgeries = GlobalVars.surgeries_list.Copy();
 						available_surgeries = new ByTable();
 						S = null;
-						foreach (dynamic _ in all_surgeries ) {
-							S = _;
+						foreach (dynamic _c in all_surgeries ) {
+							S = _c;
 							if ( !( S is Surgery ) ) {
 								continue;
 							}
@@ -744,8 +744,8 @@ namespace Game13 {
 								continue;
 							}
 							path = null;
-							foreach (dynamic _ in S.species ) {
-								path = _;
+							foreach (dynamic _b in S.species ) {
+								path = _b;
 								if ( Misc13.isValid( path.IsInstanceOfType( M ) ) ) {
 									available_surgeries[S.name] = S;
 									break;
@@ -762,7 +762,7 @@ namespace Game13 {
 									M.surgeries += procedure;
 									procedure.organ = affecting;
 									user.visible_message( new Txt().item( user ).str( " drapes " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( "." ), new Txt( "<span class='notice'>You drape " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( ".</span>" ) );
-									GlobalFuncs.smooth_icon_neighbors.BTCall( new ByTable().set( "addition", "Operation type: " + procedure.name + ", location: " + selected_zone ).set( 3, "operated" ).set( 2, M ).set( 1, user ) );
+									new ByTable().set( "addition", "Operation type: " + procedure.name + ", location: " + selected_zone ).set( 3, "operated" ).set( 2, M ).set( 1, user ).apply( typeof(GlobalFuncs).GetMethod( "smooth_icon_neighbors ") );
 								} else {
 									user.write( "<span class='warning'>You need to expose " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + " first!</span>" );
 								}
@@ -794,8 +794,8 @@ namespace Game13 {
 			is_in_use = 0;
 			if ( subject != null ) {
 				A = null;
-				foreach (dynamic _ in GlobalVars.ai_list ) {
-					A = _;
+				foreach (dynamic _a in GlobalVars.ai_list ) {
+					A = _a;
 					M = A;
 					if ( Misc13.isValid( M.client ) && M.machine == subject ) {
 						is_in_use = 1;
@@ -815,11 +815,11 @@ namespace Game13 {
 			dynamic colour = null;
 			colours = new ByTable();
 			x_pixel = null;
-			foreach (dynamic _ in Misc13.iter_range( 1, I.Width() ) ) {
-				x_pixel = _;
+			foreach (dynamic _b in Misc13.iter_range( 1, I.Width() ) ) {
+				x_pixel = _b;
 				y_pixel = null;
-				foreach (dynamic _ in Misc13.iter_range( 1, I.Height() ) ) {
-					y_pixel = _;
+				foreach (dynamic _a in Misc13.iter_range( 1, I.Height() ) ) {
+					y_pixel = _a;
 					this_colour = I.GetPixel( x_pixel, y_pixel );
 					if ( Misc13.isValid( this_colour ) ) {
 						colours.Add( this_colour );
@@ -831,24 +831,24 @@ namespace Game13 {
 			}
 			final_average = colours[1];
 			colour = null;
-			foreach (dynamic _ in colours - colours[1] ) {
-				colour = _;
+			foreach (dynamic _c in colours - colours[1] ) {
+				colour = _c;
 				final_average = GlobalFuncs.BlendRGB( final_average, colour, 1 );
 			};
 			return final_average;
 		}
 
 		public static void ban_unban_log_save( dynamic formatted_log = null ) {
-			File13.write( formatted_log, "data/ban_unban_log.txt" );
+			File13.write( "data/ban_unban_log.txt", formatted_log );
 		}
 
 		public static int blendMode2iconMode( dynamic blend_mode = null ) {
-			dynamic _ = blend_mode; // Was a switch-case, sorry for the mess.
-			if ( _==4 ) {
+			dynamic _a = blend_mode; // Was a switch-case, sorry for the mess.
+			if ( _a==4 ) {
 				return 2;
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return 0;
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return 1;
 			} else {
 				return 3;
@@ -898,16 +898,16 @@ namespace Game13 {
 			if ( donor_rh && !receiver_rh ) {
 				return 1;
 			}
-			dynamic _ = receiver_antigen; // Was a switch-case, sorry for the mess.
-			if ( _=="A" ) {
+			dynamic _a = receiver_antigen; // Was a switch-case, sorry for the mess.
+			if ( _a=="A" ) {
 				if ( donor_antigen != "A" && donor_antigen != "O" ) {
 					return 1;
 				}
-			} else if ( _=="B" ) {
+			} else if ( _a=="B" ) {
 				if ( donor_antigen != "B" && donor_antigen != "O" ) {
 					return 1;
 				}
-			} else if ( _=="O" ) {
+			} else if ( _a=="O" ) {
 				if ( donor_antigen != "O" ) {
 					return 1;
 				}
@@ -915,8 +915,8 @@ namespace Game13 {
 			return 0;
 		}
 
-		public static Type blood_splatter( dynamic target = null, Reagent_Blood source = null, dynamic large = null ) {
-			Type B = null;
+		public static dynamic blood_splatter( dynamic target = null, Reagent_Blood source = null, dynamic large = null ) {
+			dynamic B = null;
 			Type decal_type = null;
 			dynamic T = null;
 			Reagent_Blood M = null;
@@ -936,8 +936,8 @@ namespace Game13 {
 			}
 			drips = new ByTable();
 			drop = null;
-			foreach (dynamic _ in T ) {
-				drop = _;
+			foreach (dynamic _a in T ) {
+				drop = _a;
 				if ( !( drop is Ent_Effect_Decal_Cleanable_Blood_Drip ) ) {
 					continue;
 				}
@@ -948,8 +948,8 @@ namespace Game13 {
 				decal_type = typeof(Ent_Effect_Decal_Cleanable_Blood_Drip);
 			}
 			B = Misc13.locate_in( decal_type, T );
-			if ( B == null ) {
-				B = decal_type( T );
+			if ( !Misc13.isValid( B ) ) {
+				B = Misc13.call( decal_type, T );
 			}
 			drop = B;
 			if ( drop is Ent_Effect_Decal_Cleanable_Blood_Drip && ( drips != null ) && Misc13.isValid( drips.len ) && !Misc13.isValid( large ) ) {
@@ -1000,8 +1000,8 @@ namespace Game13 {
 			}
 			if ( data == 1 ) {
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + freq] ) {
-					R = _;
+				foreach (dynamic _a in GlobalVars.all_radios["" + freq] ) {
+					R = _a;
 					if ( !( R is Ent_Item_Device_Radio_Intercom ) ) {
 						continue;
 					}
@@ -1011,8 +1011,8 @@ namespace Game13 {
 				};
 			} else if ( data == 2 ) {
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + freq] ) {
-					R = _;
+				foreach (dynamic _b in GlobalVars.all_radios["" + freq] ) {
+					R = _b;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1025,8 +1025,8 @@ namespace Game13 {
 				};
 			} else if ( data == 5 ) {
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + freq] ) {
-					R = _;
+				foreach (dynamic _c in GlobalVars.all_radios["" + freq] ) {
+					R = _c;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1039,8 +1039,8 @@ namespace Game13 {
 				};
 			} else {
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + freq] ) {
-					R = _;
+				foreach (dynamic _d in GlobalVars.all_radios["" + freq] ) {
+					R = _d;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1050,35 +1050,35 @@ namespace Game13 {
 				};
 				freqtext = Misc13.conv_num2text( freq );
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + GlobalVars.SYND_FREQ] ) {
-					R = _;
+				foreach (dynamic _e in GlobalVars.all_radios["" + GlobalVars.SYND_FREQ] ) {
+					R = _e;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
-					if ( Misc13.isValid( GlobalVars.radiochannelsreverse.HasValue( R.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] {R.z}) ) > -1 && Misc13.isValid( freqtext ) ) ) ) {
+					if ( Misc13.isValid( GlobalVars.radiochannelsreverse.HasValue( R.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] { R.z }) ) > -1 && Misc13.isValid( freqtext ) ) ) ) {
 						radios |= R;
 					}
 				};
 			}
 			receive = GlobalFuncs.get_mobs_in_radio_ranges( radios );
 			R = null;
-			foreach (dynamic _ in receive ) {
-				R = _;
+			foreach (dynamic _f in receive ) {
+				R = _f;
 				if ( Misc13.isValid( R.client ) && Misc13.isValid( R.client.holder ) && !Misc13.isValid( R.client.prefs.chat_toggles & 32 ) ) {
 					receive -= R;
 				}
 			};
 			M = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				M = _;
+			foreach (dynamic _g in GlobalVars.player_list ) {
+				M = _g;
 				if ( M is Mob_Dead_Observer && Misc13.isValid( M.client ) && Misc13.isValid( ( M.client.prefs.chat_toggles & 512 ) ) ) {
 					receive |= M;
 				}
 			};
 			rendered = virt.compose_message( virt, virt.languages, message, freq, spans );
 			hearer = null;
-			foreach (dynamic _ in receive ) {
-				hearer = _;
+			foreach (dynamic _h in receive ) {
+				hearer = _h;
 				if ( !( hearer is BaseDynamic ) ) {
 					continue;
 				}
@@ -1087,36 +1087,36 @@ namespace Game13 {
 			if ( Misc13.isValid( receive.Length ) ) {
 				blackbox_msg = "" + AM + " " + AM.say_quote( message, spans );
 				if ( GlobalVars.blackbox is Ent_Machinery_BlackboxRecorder ) {
-					dynamic _ = freq; // Was a switch-case, sorry for the mess.
-					if ( _==1459 ) {
+					dynamic _i = freq; // Was a switch-case, sorry for the mess.
+					if ( _i==1459 ) {
 						GlobalVars.blackbox.msg_common += blackbox_msg;
-					} else if ( _==1351 ) {
+					} else if ( _i==1351 ) {
 						GlobalVars.blackbox.msg_science += blackbox_msg;
-					} else if ( _==1353 ) {
+					} else if ( _i==1353 ) {
 						GlobalVars.blackbox.msg_command += blackbox_msg;
-					} else if ( _==1355 ) {
+					} else if ( _i==1355 ) {
 						GlobalVars.blackbox.msg_medical += blackbox_msg;
-					} else if ( _==1357 ) {
+					} else if ( _i==1357 ) {
 						GlobalVars.blackbox.msg_engineering += blackbox_msg;
-					} else if ( _==1359 ) {
+					} else if ( _i==1359 ) {
 						GlobalVars.blackbox.msg_security += blackbox_msg;
-					} else if ( _==1441 ) {
+					} else if ( _i==1441 ) {
 						GlobalVars.blackbox.msg_deathsquad += blackbox_msg;
-					} else if ( _==1213 ) {
+					} else if ( _i==1213 ) {
 						GlobalVars.blackbox.msg_syndicate += blackbox_msg;
-					} else if ( _==1349 ) {
+					} else if ( _i==1349 ) {
 						GlobalVars.blackbox.msg_service += blackbox_msg;
-					} else if ( _==1347 ) {
+					} else if ( _i==1347 ) {
 						GlobalVars.blackbox.msg_cargo += blackbox_msg;
 					} else {
 						GlobalVars.blackbox.messages += blackbox_msg;
 					};
 				}
 			}
-			Thread13.schedule( 50, () => {
+			Thread13.schedule( 50, (Thread13.Closure)(() => {
 				GlobalFuncs.qdel( virt );
 				return;
-			});
+			}));
 		}
 
 		public static void Broadcast_SimpleMessage( dynamic source = null, dynamic frequency = null, dynamic text = null, dynamic data = null, Mob_Living_Carbon_Human M = null, dynamic compression = null, dynamic level = null ) {
@@ -1149,8 +1149,8 @@ namespace Game13 {
 			receive = new ByTable();
 			if ( data == 1 ) {
 				R = null;
-				foreach (dynamic _ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
-					R = _;
+				foreach (dynamic _a in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+					R = _a;
 					if ( !( R is Ent_Item_Device_Radio_Intercom ) ) {
 						continue;
 					}
@@ -1161,8 +1161,8 @@ namespace Game13 {
 				};
 			} else if ( data == 2 ) {
 				R = null;
-				foreach (dynamic _ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
-					R = _;
+				foreach (dynamic _b in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+					R = _b;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1177,8 +1177,8 @@ namespace Game13 {
 			} else if ( data == 3 ) {
 				syndicateconnection = GlobalVars.radio_controller.return_frequency( GlobalVars.SYND_FREQ );
 				R = null;
-				foreach (dynamic _ in syndicateconnection.devices["" + GlobalVars.RADIO_CHAT] ) {
-					R = _;
+				foreach (dynamic _c in syndicateconnection.devices["" + GlobalVars.RADIO_CHAT] ) {
+					R = _c;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1189,8 +1189,8 @@ namespace Game13 {
 				};
 			} else if ( data == 5 ) {
 				R = null;
-				foreach (dynamic _ in GlobalVars.all_radios["" + GlobalVars.RADIO_CHAT] ) {
-					R = _;
+				foreach (dynamic _d in GlobalVars.all_radios["" + GlobalVars.RADIO_CHAT] ) {
+					R = _d;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1200,8 +1200,8 @@ namespace Game13 {
 				};
 			} else {
 				R = null;
-				foreach (dynamic _ in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
-					R = _;
+				foreach (dynamic _e in connection.devices["" + GlobalVars.RADIO_CHAT] ) {
+					R = _e;
 					if ( !( R is Ent_Item_Device_Radio ) ) {
 						continue;
 					}
@@ -1215,8 +1215,8 @@ namespace Game13 {
 			heard_garbled = new ByTable();
 			heard_gibberish = new ByTable();
 			R = null;
-			foreach (dynamic _ in receive ) {
-				R = _;
+			foreach (dynamic _f in receive ) {
+				R = _f;
 				if ( Misc13.isValid( R.client ) && !Misc13.isValid( R.client.prefs.chat_toggles & 32 ) ) {
 					continue;
 				}
@@ -1233,24 +1233,24 @@ namespace Game13 {
 			if ( Misc13.isValid( heard_normal.Length ) || Misc13.isValid( heard_garbled.Length ) || Misc13.isValid( heard_gibberish.Length ) ) {
 				part_a = "<span class='radio'><span class='name'>";
 				freq_text = null;
-				dynamic _ = display_freq; // Was a switch-case, sorry for the mess.
-				if ( _==1213 ) {
+				dynamic _g = display_freq; // Was a switch-case, sorry for the mess.
+				if ( _g==1213 ) {
 					freq_text = "#unkn";
-				} else if ( _==1353 ) {
+				} else if ( _g==1353 ) {
 					freq_text = "Command";
-				} else if ( _==1351 ) {
+				} else if ( _g==1351 ) {
 					freq_text = "Science";
-				} else if ( _==1355 ) {
+				} else if ( _g==1355 ) {
 					freq_text = "Medical";
-				} else if ( _==1357 ) {
+				} else if ( _g==1357 ) {
 					freq_text = "Engineering";
-				} else if ( _==1359 ) {
+				} else if ( _g==1359 ) {
 					freq_text = "Security";
-				} else if ( _==1349 ) {
+				} else if ( _g==1349 ) {
 					freq_text = "Service";
-				} else if ( _==1347 ) {
+				} else if ( _g==1347 ) {
 					freq_text = "Supply";
-				} else if ( _==1447 ) {
+				} else if ( _g==1447 ) {
 					freq_text = "AI Private";
 				};
 				if ( !Misc13.isValid( freq_text ) ) {
@@ -1287,26 +1287,26 @@ namespace Game13 {
 				part_blackbox_b = "</span><b> [" + freq_text + "]</b> <span class='message'>";
 				blackbox_msg = "" + part_a + source + part_blackbox_b + "\"" + text + "\"" + part_c;
 				if ( GlobalVars.blackbox is Ent_Machinery_BlackboxRecorder ) {
-					dynamic _ = display_freq; // Was a switch-case, sorry for the mess.
-					if ( _==1459 ) {
+					dynamic _h = display_freq; // Was a switch-case, sorry for the mess.
+					if ( _h==1459 ) {
 						GlobalVars.blackbox.msg_common += blackbox_msg;
-					} else if ( _==1351 ) {
+					} else if ( _h==1351 ) {
 						GlobalVars.blackbox.msg_science += blackbox_msg;
-					} else if ( _==1353 ) {
+					} else if ( _h==1353 ) {
 						GlobalVars.blackbox.msg_command += blackbox_msg;
-					} else if ( _==1355 ) {
+					} else if ( _h==1355 ) {
 						GlobalVars.blackbox.msg_medical += blackbox_msg;
-					} else if ( _==1357 ) {
+					} else if ( _h==1357 ) {
 						GlobalVars.blackbox.msg_engineering += blackbox_msg;
-					} else if ( _==1359 ) {
+					} else if ( _h==1359 ) {
 						GlobalVars.blackbox.msg_security += blackbox_msg;
-					} else if ( _==1441 ) {
+					} else if ( _h==1441 ) {
 						GlobalVars.blackbox.msg_deathsquad += blackbox_msg;
-					} else if ( _==1213 ) {
+					} else if ( _h==1213 ) {
 						GlobalVars.blackbox.msg_syndicate += blackbox_msg;
-					} else if ( _==1349 ) {
+					} else if ( _h==1349 ) {
 						GlobalVars.blackbox.msg_service += blackbox_msg;
-					} else if ( _==1347 ) {
+					} else if ( _h==1347 ) {
 						GlobalVars.blackbox.msg_cargo += blackbox_msg;
 					} else {
 						GlobalVars.blackbox.messages += blackbox_msg;
@@ -1315,8 +1315,8 @@ namespace Game13 {
 				if ( Misc13.isValid( heard_normal.Length ) ) {
 					rendered = "" + part_a + source + part_b + "\"" + text + "\"" + part_c;
 					R = null;
-					foreach (dynamic _ in heard_normal ) {
-						R = _;
+					foreach (dynamic _i in heard_normal ) {
+						R = _i;
 						R.show_message( rendered, 2 );
 					};
 				}
@@ -1324,8 +1324,8 @@ namespace Game13 {
 					quotedmsg = "\"" + GlobalFuncs.stars( text ) + "\"";
 					rendered = "" + part_a + source + part_b + quotedmsg + part_c;
 					R = null;
-					foreach (dynamic _ in heard_garbled ) {
-						R = _;
+					foreach (dynamic _j in heard_garbled ) {
+						R = _j;
 						R.show_message( rendered, 2 );
 					};
 				}
@@ -1333,8 +1333,8 @@ namespace Game13 {
 					quotedmsg = "\"" + GlobalFuncs.Gibberish( text, compression + 50 ) + "\"";
 					rendered = "" + part_a + GlobalFuncs.Gibberish( source, compression + 50 ) + part_b + quotedmsg + part_c;
 					R = null;
-					foreach (dynamic _ in heard_gibberish ) {
-						R = _;
+					foreach (dynamic _k in heard_gibberish ) {
+						R = _k;
 						R.show_message( rendered, 2 );
 					};
 				}
@@ -1351,8 +1351,8 @@ namespace Game13 {
 			dynamic G = null;
 			holder = null;
 			H = null;
-			foreach (dynamic _ in Game ) {
-				H = _;
+			foreach (dynamic _a in Game._all_ents_ ) {
+				H = _a;
 				if ( !( H is Ent_Effect_Bmode_Buildholder ) ) {
 					continue;
 				}
@@ -1368,8 +1368,8 @@ namespace Game13 {
 			if ( _object is Ent_Effect_Bmode ) {
 				return;
 			}
-			dynamic _ = buildmode; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _c = buildmode; // Was a switch-case, sorry for the mess.
+			if ( _c==1 ) {
 				if ( _object is Tile && Misc13.isValid( pa.Find( "left" ) ) && !Misc13.isValid( pa.Find( "alt" ) ) && !Misc13.isValid( pa.Find( "ctrl" ) ) ) {
 					T = _object;
 					if ( _object is Tile_Space ) {
@@ -1396,50 +1396,50 @@ namespace Game13 {
 						GlobalFuncs.qdel( _object );
 					}
 					return;
-				} else if ( _object is Tile && Misc13.isValid( T.Find( "alt" ) ) && Misc13.isValid( T.Find( "left" ) ) ) {
+				} else if ( _object is Tile && Misc13.isValid( pa.Find( "alt" ) ) && Misc13.isValid( pa.Find( "left" ) ) ) {
 					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " built an airlock at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					new Ent_Machinery_Door_Airlock( GlobalFuncs.get_turf( _object ) );
 				} else if ( _object is Tile && Misc13.isValid( pa.Find( "ctrl" ) ) && Misc13.isValid( pa.Find( "left" ) ) ) {
-					dynamic _ = holder.builddir.dir; // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+					dynamic _b = holder.builddir.dir; // Was a switch-case, sorry for the mess.
+					if ( _b==1 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						WIN.dir = GlobalVars.NORTH;
-					} else if ( _==2 ) {
+					} else if ( _b==2 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						WIN.dir = GlobalVars.SOUTH;
-					} else if ( _==4 ) {
+					} else if ( _b==4 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						WIN.dir = GlobalVars.EAST;
-					} else if ( _==8 ) {
+					} else if ( _b==8 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						WIN.dir = GlobalVars.WEST;
-					} else if ( _==9 ) {
+					} else if ( _b==9 ) {
 						WIN = new Ent_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						WIN.dir = GlobalVars.NORTHWEST;
 					};
 					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " built a window at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 				}
-			} else if ( _==2 ) {
+			} else if ( _c==2 ) {
 				if ( Misc13.isValid( pa.Find( "left" ) ) ) {
-					if ( Misc13.isValid( holder.buildmode.objholder isxx typeof(Tile) ) ) {
+					if ( Misc13.isValid( holder.buildmode.objholder.IsSubclassOf( typeof(Tile) ) ) ) {
 						T = GlobalFuncs.get_turf( _object );
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + T + " (" + T.x + "," + T.y + "," + T.z + ") to " + holder.buildmode.objholder );
 						T.ChangeTurf( holder.buildmode.objholder );
 					} else {
-						A = T.objholder( GlobalFuncs.get_turf( _object ) );
+						A = holder.buildmode.objholder( GlobalFuncs.get_turf( _object ) );
 						A.dir = holder.builddir.dir;
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + A + "'s (" + A.x + "," + A.y + "," + A.z + ") dir to " + holder.builddir.dir );
 					}
-				} else if ( Misc13.isValid( holder.Find( "right" ) ) ) {
+				} else if ( Misc13.isValid( pa.Find( "right" ) ) ) {
 					if ( _object is Ent ) {
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " deleted " + _object + " at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 						GlobalFuncs.qdel( _object );
 					}
 				}
-			} else if ( _==3 ) {
+			} else if ( _c==3 ) {
 				if ( Misc13.isValid( pa.Find( "left" ) ) ) {
 					if ( Misc13.isValid( _object.vars.Find( holder.buildmode.varholder ) ) ) {
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
 						_object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder;
 					} else {
 						Misc13.thread_user.write( "<span class='warning'>" + Misc13.initial( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
@@ -1447,13 +1447,13 @@ namespace Game13 {
 				}
 				if ( Misc13.isValid( pa.Find( "right" ) ) ) {
 					if ( Misc13.isValid( _object.vars.Find( holder.buildmode.varholder ) ) ) {
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.valueholder );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
 						_object.vars[holder.buildmode.varholder] = Misc13.initial( _object.vars[holder.buildmode.varholder] );
 					} else {
 						Misc13.thread_user.write( "<span class='warning'>" + Misc13.initial( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
 					}
 				}
-			} else if ( _==4 ) {
+			} else if ( _c==4 ) {
 				if ( Misc13.isValid( pa.Find( "left" ) ) ) {
 					if ( _object is Tile ) {
 						return;
@@ -1466,7 +1466,7 @@ namespace Game13 {
 						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Misc13.thread_user ) + " threw " + holder.throw_atom + " at " + _object + " (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					}
 				}
-			} else if ( _==5 ) {
+			} else if ( _c==5 ) {
 				if ( !Misc13.isValid( holder.cornerA ) ) {
 					holder.cornerA = GlobalFuncs.get_turf( _object );
 					return;
@@ -1506,8 +1506,8 @@ namespace Game13 {
 					return 0;
 				}
 				direction = null;
-				foreach (dynamic _ in GlobalVars.alldirs ) {
-					direction = _;
+				foreach (dynamic _a in GlobalVars.alldirs ) {
+					direction = _a;
 					AM = GlobalFuncs.find_type_in_direction( A, direction );
 					if ( AM is BaseDynamic ) {
 						if ( Misc13.isValid( AM.anchored ) ) {
@@ -1519,8 +1519,8 @@ namespace Game13 {
 				};
 			} else {
 				direction = null;
-				foreach (dynamic _ in GlobalVars.alldirs ) {
-					direction = _;
+				foreach (dynamic _b in GlobalVars.alldirs ) {
+					direction = _b;
 					if ( Misc13.isValid( GlobalFuncs.find_type_in_direction( A, direction ) ) ) {
 						adjacencies |= GlobalFuncs.transform_dir( direction );
 					}
@@ -1536,30 +1536,30 @@ namespace Game13 {
 			return_name = null;
 			if ( Misc13.str_sub( ID, 1, 2 ) == "$" ) {
 				return_name = Misc13.str_sub( ID, 2, null );
-				dynamic _ = return_name; // Was a switch-case, sorry for the mess.
-				if ( _=="metal" ) {
+				dynamic _a = return_name; // Was a switch-case, sorry for the mess.
+				if ( _a=="metal" ) {
 					return_name = "Metal";
-				} else if ( _=="glass" ) {
+				} else if ( _a=="glass" ) {
 					return_name = "Glass";
-				} else if ( _=="gold" ) {
+				} else if ( _a=="gold" ) {
 					return_name = "Gold";
-				} else if ( _=="silver" ) {
+				} else if ( _a=="silver" ) {
 					return_name = "Silver";
-				} else if ( _=="plasma" ) {
+				} else if ( _a=="plasma" ) {
 					return_name = "Solid Plasma";
-				} else if ( _=="uranium" ) {
+				} else if ( _a=="uranium" ) {
 					return_name = "Uranium";
-				} else if ( _=="diamond" ) {
+				} else if ( _a=="diamond" ) {
 					return_name = "Diamond";
-				} else if ( _=="clown" ) {
+				} else if ( _a=="clown" ) {
 					return_name = "Bananium";
 				};
 			} else {
 				R = null;
-				foreach (dynamic _ in Misc13.types( typeof(Reagent) ) - typeof(Reagent) ) {
-					R = _;
+				foreach (dynamic _b in Misc13.types( typeof(Reagent) ) - typeof(Reagent) ) {
+					R = _b;
 					temp_reagent = null;
-					temp_reagent = R();
+					temp_reagent = Misc13.call( R );
 					if ( temp_reagent.id == ID ) {
 						return_name = temp_reagent.name;
 						GlobalFuncs.qdel( temp_reagent );
@@ -1577,10 +1577,10 @@ namespace Game13 {
 			dynamic T = null;
 			return_name = null;
 			T = null;
-			foreach (dynamic _ in Misc13.types( typeof(Tech) ) - typeof(Tech) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.types( typeof(Tech) ) - typeof(Tech) ) {
+				T = _a;
 				check_tech = null;
-				check_tech = T();
+				check_tech = Misc13.call( T );
 				if ( check_tech.id == ID ) {
 					return_name = check_tech.name;
 					GlobalFuncs.qdel( check_tech );
@@ -1600,8 +1600,8 @@ namespace Game13 {
 			i = L.len;
 			while (i > 0) {
 				j = null;
-				foreach (dynamic _ in Misc13.iter_range( 1, i - 1 ) ) {
-					j = _;
+				foreach (dynamic _a in Misc13.iter_range( 1, i - 1 ) ) {
+					j = _a;
 					a = L[j];
 					b = L[j + 1];
 					if ( a.c_tag_order != b.c_tag_order ) {
@@ -1625,7 +1625,7 @@ namespace Game13 {
 			if ( GlobalFuncs.is_pointed( W ) != 0 ) {
 				return 1;
 			}
-			embed_items = new ByTable(new object [] {typeof(Ent_Item_Stack_Rods)});
+			embed_items = new ByTable(new object [] { typeof(Ent_Item_Stack_Rods) });
 			if ( GlobalFuncs.is_type_in_list( W, embed_items ) != 0 ) {
 				return 1;
 			}
@@ -1650,8 +1650,8 @@ namespace Game13 {
 					return 0;
 				}
 				A = null;
-				foreach (dynamic _ in current ) {
-					A = _;
+				foreach (dynamic _a in current ) {
+					A = _a;
 					if ( !( A is BaseStatic ) ) {
 						continue;
 					}
@@ -1689,7 +1689,7 @@ namespace Game13 {
 			C = M;
 			if ( C is Mob_Living_Carbon_Human ) {
 				H = C;
-				if ( Misc13.isValid( H.is_mouth_covered.BTCall( new ByTable().set( "head_only", 1 ) ) ) ) {
+				if ( Misc13.isValid( new ByTable().set( "head_only", 1 ).apply( H.GetType().GetMethod( "is_mouth_covered" ) ) ) ) {
 					return 0;
 				}
 				return 1;
@@ -1707,8 +1707,8 @@ namespace Game13 {
 			dynamic T = null;
 			things = new ByTable();
 			direction = null;
-			foreach (dynamic _ in GlobalVars.cardinal ) {
-				direction = _;
+			foreach (dynamic _a in GlobalVars.cardinal ) {
+				direction = _a;
 				T = Misc13.get_step( center, direction );
 				if ( !Misc13.isValid( T ) ) {
 					continue;
@@ -1772,12 +1772,12 @@ namespace Game13 {
 			user.undershirt = chosen_prof.undershirt;
 			user.socks = chosen_prof.socks;
 			chosen_dna.transfer_identity( user, 1 );
-			user.updateappearance.BTCall( new ByTable().set( "mutcolor_update", 1 ) );
+			new ByTable().set( "mutcolor_update", 1 ).apply( user.GetType().GetMethod( "updateappearance" ) );
 			user.update_body();
 			user.domutcheck();
 			slot = null;
-			foreach (dynamic _ in GlobalVars.slots ) {
-				slot = _;
+			foreach (dynamic _a in GlobalVars.slots ) {
+				slot = _a;
 				if ( Misc13.isValid( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) && !Misc13.isValid( chosen_prof.exists_list[slot] ) ) {
 					GlobalFuncs.qdel( user.vars[slot] );
 					continue;
@@ -1790,7 +1790,7 @@ namespace Game13 {
 				if ( !Misc13.isValid( user.vars[slot] ) ) {
 					thetype = GlobalVars.slot2type[slot];
 					equip = 1;
-					C = thetype( user );
+					C = Misc13.call( thetype, user );
 				} else if ( Misc13.isValid( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) ) {
 					C = user.vars[slot];
 				}
@@ -1817,26 +1817,26 @@ namespace Game13 {
 			file = new File( "setnewmap.bat" );
 			file.write( "\nset MAPROTATE=" + VM.name + "\n" );
 			_default = Misc13.shell( "..\\bin\\maprotate.bat" );
-			dynamic _ = _default; // Was a switch-case, sorry for the mess.
-			if ( _==null ) {
+			dynamic _a = _default; // Was a switch-case, sorry for the mess.
+			if ( _a==null ) {
 				GlobalFuncs.message_admins( "Failed to change map: Could not run map rotator" );
 				GlobalFuncs.log_game( "Failed to change map: Could not run map rotator" );
-			} else if ( _==0 ) {
+			} else if ( _a==0 ) {
 				GlobalFuncs.log_game( "Changed to map " + VM.friendlyname );
 				GlobalVars.nextmap = VM;
-			} else if ( _==11 ) {
+			} else if ( _a==11 ) {
 				GlobalFuncs.message_admins( "Failed to change map: File error: Map rotator script couldn't find file listing new map" );
 				GlobalFuncs.log_game( "Failed to change map: File error: Map rotator script couldn't find file listing new map" );
-			} else if ( _==12 ) {
+			} else if ( _a==12 ) {
 				GlobalFuncs.message_admins( "Failed to change map: File error: Map rotator script couldn't find tgstation-server framework" );
 				GlobalFuncs.log_game( "Failed to change map: File error: Map rotator script couldn't find tgstation-server framework" );
-			} else if ( _==21 ) {
+			} else if ( _a==21 ) {
 				GlobalFuncs.message_admins( "Failed to change map: Conflicting operation error: Current server update operation detected" );
 				GlobalFuncs.log_game( "Failed to change map: Conflicting operation error: Current server update operation detected" );
-			} else if ( _==22 ) {
+			} else if ( _a==22 ) {
 				GlobalFuncs.message_admins( "Failed to change map: Conflicting operation error: Current map rotation operation detected" );
 				GlobalFuncs.log_game( "Failed to change map: Conflicting operation error: Current map rotation operation detected" );
-			} else if ( _==31 ) {
+			} else if ( _a==31 ) {
 				GlobalFuncs.message_admins( "Failed to change map: External error: Could not compile new map:" + VM.name );
 				GlobalFuncs.log_game( "Failed to change map: External error: Could not compile new map:" + VM.name );
 			} else {
@@ -1900,20 +1900,20 @@ namespace Game13 {
 			if ( !Misc13.isValid( zone ) ) {
 				return "chest";
 			}
-			dynamic _ = zone; // Was a switch-case, sorry for the mess.
-			if ( _=="eyes" ) {
+			dynamic _a = zone; // Was a switch-case, sorry for the mess.
+			if ( _a=="eyes" ) {
 				zone = "head";
-			} else if ( _=="mouth" ) {
+			} else if ( _a=="mouth" ) {
 				zone = "head";
-			} else if ( _=="l_hand" ) {
+			} else if ( _a=="l_hand" ) {
 				zone = "l_arm";
-			} else if ( _=="r_hand" ) {
+			} else if ( _a=="r_hand" ) {
 				zone = "r_arm";
-			} else if ( _=="l_foot" ) {
+			} else if ( _a=="l_foot" ) {
 				zone = "l_leg";
-			} else if ( _=="r_foot" ) {
+			} else if ( _a=="r_foot" ) {
 				zone = "r_leg";
-			} else if ( _=="groin" ) {
+			} else if ( _a=="groin" ) {
 				zone = "chest";
 			};
 			return zone;
@@ -1928,8 +1928,8 @@ namespace Game13 {
 					if ( Misc13.isValid( H.reagents.reagent_list.len ) ) {
 						user.write( "<span class='notice'>Subject contains the following reagents:</span>" );
 						R = null;
-						foreach (dynamic _ in H.reagents.reagent_list ) {
-							R = _;
+						foreach (dynamic _a in H.reagents.reagent_list ) {
+							R = _a;
 							if ( !( R is Reagent ) ) {
 								continue;
 							}
@@ -1941,8 +1941,8 @@ namespace Game13 {
 					if ( Misc13.isValid( H.reagents.addiction_list.len ) ) {
 						user.write( "<span class='boldannounce'>Subject is addicted to the following reagents:</span>" );
 						R = null;
-						foreach (dynamic _ in H.reagents.addiction_list ) {
-							R = _;
+						foreach (dynamic _b in H.reagents.addiction_list ) {
+							R = _b;
 							if ( !( R is Reagent ) ) {
 								continue;
 							}
@@ -1972,8 +1972,8 @@ namespace Game13 {
 			turfs = new ByTable();
 			rsq = radius * ( radius + 0.5 );
 			T = null;
-			foreach (dynamic _ in Misc13.range( radius, centerturf ) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.range( radius, centerturf ) ) {
+				T = _a;
 				if ( !( T is BaseStatic ) ) {
 					continue;
 				}
@@ -2003,8 +2003,8 @@ namespace Game13 {
 			turfs = new ByTable();
 			rsq = radius * ( radius + 0.5 );
 			T = null;
-			foreach (dynamic _ in Misc13.range( radius, centerturf ) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.range( radius, centerturf ) ) {
+				T = _a;
 				dx = T.x - centerturf.x;
 				dy = T.y - centerturf.y;
 				if ( dx * dx + dy * dy <= rsq ) {
@@ -2044,18 +2044,18 @@ namespace Game13 {
 			if ( !Misc13.isValid( whom ) ) {
 				return;
 			}
-			dynamic _ = mute_type; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = mute_type; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				mute_string = "IC (say and emote)";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				mute_string = "OOC";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				mute_string = "pray";
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				mute_string = "adminhelp, admin PM and ASAY";
-			} else if ( _==16 ) {
+			} else if ( _a==16 ) {
 				mute_string = "deadchat and DSAY";
-			} else if ( _==31 ) {
+			} else if ( _a==31 ) {
 				mute_string = "everything";
 			} else {
 				return;
@@ -2158,42 +2158,42 @@ namespace Game13 {
 			if ( !Misc13.isValid( color ) ) {
 				return "#000000";
 			}
-			dynamic _ = color; // Was a switch-case, sorry for the mess.
-			if ( _=="white" ) {
+			dynamic _a = color; // Was a switch-case, sorry for the mess.
+			if ( _a=="white" ) {
 				return "#FFFFFF";
-			} else if ( _=="black" ) {
+			} else if ( _a=="black" ) {
 				return "#000000";
-			} else if ( _=="gray" ) {
+			} else if ( _a=="gray" ) {
 				return "#808080";
-			} else if ( _=="brown" ) {
+			} else if ( _a=="brown" ) {
 				return "#A52A2A";
-			} else if ( _=="red" ) {
+			} else if ( _a=="red" ) {
 				return "#FF0000";
-			} else if ( _=="darkred" ) {
+			} else if ( _a=="darkred" ) {
 				return "#8B0000";
-			} else if ( _=="crimson" ) {
+			} else if ( _a=="crimson" ) {
 				return "#DC143C";
-			} else if ( _=="orange" ) {
+			} else if ( _a=="orange" ) {
 				return "#FFA500";
-			} else if ( _=="yellow" ) {
+			} else if ( _a=="yellow" ) {
 				return "#FFFF00";
-			} else if ( _=="green" ) {
+			} else if ( _a=="green" ) {
 				return "#008000";
-			} else if ( _=="lime" ) {
+			} else if ( _a=="lime" ) {
 				return "#00FF00";
-			} else if ( _=="darkgreen" ) {
+			} else if ( _a=="darkgreen" ) {
 				return "#006400";
-			} else if ( _=="cyan" ) {
+			} else if ( _a=="cyan" ) {
 				return "#00FFFF";
-			} else if ( _=="blue" ) {
+			} else if ( _a=="blue" ) {
 				return "#0000FF";
-			} else if ( _=="navy" ) {
+			} else if ( _a=="navy" ) {
 				return "#000080";
-			} else if ( _=="teal" ) {
+			} else if ( _a=="teal" ) {
 				return "#008080";
-			} else if ( _=="purple" ) {
+			} else if ( _a=="purple" ) {
 				return "#800080";
-			} else if ( _=="indigo" ) {
+			} else if ( _a=="indigo" ) {
 				return "#4B0082";
 			} else {
 				return "#FFFFFF";
@@ -2273,8 +2273,8 @@ namespace Game13 {
 			dynamic T = null;
 			i = 0;
 			T = null;
-			foreach (dynamic _ in L ) {
-				T = _;
+			foreach (dynamic _a in L ) {
+				T = _a;
 				if ( Misc13.isValid( type.IsInstanceOfType( T ) ) ) {
 					i++;
 				}
@@ -2312,8 +2312,8 @@ namespace Game13 {
 			if ( !Misc13.isValid( ckey ) ) {
 				candidates = new ByTable();
 				M = null;
-				foreach (dynamic _ in GlobalVars.player_list ) {
-					M = _;
+				foreach (dynamic _a in GlobalVars.player_list ) {
+					M = _a;
 					if ( M.stat != 2 ) {
 						continue;
 					}
@@ -2337,21 +2337,21 @@ namespace Game13 {
 			if ( !( ckey is string ) ) {
 				return 0;
 			}
-			alien_caste = Misc13.input( Misc13.thread_user, "Please choose which caste to spawn.", "Pick a caste", null, new ByTable(new object [] {"Queen","Praetorian","Hunter","Sentinel","Drone","Larva"}), 4224 );
+			alien_caste = Misc13.input( Misc13.thread_user, "Please choose which caste to spawn.", "Pick a caste", null, new ByTable(new object [] { "Queen", "Praetorian", "Hunter", "Sentinel", "Drone", "Larva" }), 4224 );
 			spawn_here = Misc13.isValid( GlobalVars.xeno_spawn.len ) ? Rand.pick( GlobalVars.xeno_spawn ) : Rand.pick( GlobalVars.latejoin );
 			new_xeno = null;
-			dynamic _ = alien_caste; // Was a switch-case, sorry for the mess.
-			if ( _=="Queen" ) {
+			dynamic _b = alien_caste; // Was a switch-case, sorry for the mess.
+			if ( _b=="Queen" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Humanoid_Royal_Queen( spawn_here );
-			} else if ( _=="Praetorian" ) {
+			} else if ( _b=="Praetorian" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Humanoid_Royal_Praetorian( spawn_here );
-			} else if ( _=="Hunter" ) {
+			} else if ( _b=="Hunter" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Humanoid_Hunter( spawn_here );
-			} else if ( _=="Sentinel" ) {
+			} else if ( _b=="Sentinel" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Humanoid_Sentinel( spawn_here );
-			} else if ( _=="Drone" ) {
+			} else if ( _b=="Drone" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Humanoid_Drone( spawn_here );
-			} else if ( _=="Larva" ) {
+			} else if ( _b=="Larva" ) {
 				new_xeno = new Mob_Living_Carbon_Alien_Larva( spawn_here );
 			} else {
 				return 0;
@@ -2380,8 +2380,8 @@ namespace Game13 {
 				return;
 			}
 			t = null;
-			foreach (dynamic _ in Lines ) {
-				t = _;
+			foreach (dynamic _a in Lines ) {
+				t = _a;
 				if ( !Misc13.isValid( t ) ) {
 					continue;
 				}
@@ -2413,8 +2413,8 @@ namespace Game13 {
 				}
 				GlobalVars.map_transition_config.Add( new ByTable().set( "Away Mission", 0 ) );
 				L = null;
-				foreach (dynamic _ in GlobalVars.landmarks_list ) {
-					L = _;
+				foreach (dynamic _b in GlobalVars.landmarks_list ) {
+					L = _b;
 					if ( !( L is Ent_Effect_Landmark ) ) {
 						continue;
 					}
@@ -2456,8 +2456,8 @@ namespace Game13 {
 				user.%Whisper( message );
 			}
 			M = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.mob_list ) {
+				M = _a;
 				if ( GlobalFuncs.iscultist( M ) || Misc13.isValid( GlobalVars.dead_mob_list.HasValue( M ) ) ) {
 					if ( ( clear != 0 ) || !( user is Mob_Living_Carbon_Human ) ) {
 						M.write( "<span class='boldannounce'><i>" + ( user is Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</i> " + message + "</span>" );
@@ -2515,8 +2515,8 @@ namespace Game13 {
 		public static int deltimer( dynamic id = null ) {
 			dynamic _event = null;
 			_event = null;
-			foreach (dynamic _ in GlobalVars.SStimer.processing ) {
-				_event = _;
+			foreach (dynamic _a in GlobalVars.SStimer.processing ) {
+				_event = _a;
 				if ( !( _event is Timedevent ) ) {
 					continue;
 				}
@@ -2549,22 +2549,22 @@ namespace Game13 {
 		}
 
 		public static int dir2angle( dynamic D = null ) {
-			dynamic _ = D; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = D; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				return 0;
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return 180;
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return 90;
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				return 270;
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return 45;
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return 135;
-			} else if ( _==9 ) {
+			} else if ( _a==9 ) {
 				return 315;
-			} else if ( _==10 ) {
+			} else if ( _a==10 ) {
 				return 225;
 			} else {
 				return 0;
@@ -2572,44 +2572,44 @@ namespace Game13 {
 		}
 
 		public static string dir2text( dynamic direction = null ) {
-			dynamic _ = direction; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = direction; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				return "north";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "south";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return "east";
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				return "west";
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return "northeast";
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return "southeast";
-			} else if ( _==9 ) {
+			} else if ( _a==9 ) {
 				return "northwest";
-			} else if ( _==10 ) {
+			} else if ( _a==10 ) {
 				return "southwest";
 			};
 			return null;
 		}
 
 		public static string dir2text_short( dynamic direction = null ) {
-			dynamic _ = direction; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = direction; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				return "N";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "S";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return "E";
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				return "W";
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return "NE";
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return "SE";
-			} else if ( _==9 ) {
+			} else if ( _a==9 ) {
 				return "NW";
-			} else if ( _==10 ) {
+			} else if ( _a==10 ) {
 				return "SW";
 			};
 			return null;
@@ -2618,8 +2618,8 @@ namespace Game13 {
 		public static int DirBlockedWithAccess( dynamic T = null, dynamic dir = null, dynamic ID = null ) {
 			dynamic D = null;
 			D = null;
-			foreach (dynamic _ in T ) {
-				D = _;
+			foreach (dynamic _a in T ) {
+				D = _a;
 				if ( !( D is Ent_Structure_Window ) ) {
 					continue;
 				}
@@ -2634,8 +2634,8 @@ namespace Game13 {
 				}
 			};
 			D = null;
-			foreach (dynamic _ in T ) {
-				D = _;
+			foreach (dynamic _b in T ) {
+				D = _b;
 				if ( !( D is Ent_Machinery_Door ) ) {
 					continue;
 				}
@@ -2655,16 +2655,16 @@ namespace Game13 {
 			dynamic M = null;
 			msg = "<span class='boldnotice'>Roundstart logout report\n\n</span>";
 			L = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				L = _;
+			foreach (dynamic _c in GlobalVars.mob_list ) {
+				L = _c;
 				if ( !( L is Mob_Living ) ) {
 					continue;
 				}
 				if ( Misc13.isValid( L.ckey ) ) {
 					found = 0;
 					C = null;
-					foreach (dynamic _ in GlobalVars.clients ) {
-						C = _;
+					foreach (dynamic _a in GlobalVars.clients ) {
+						C = _a;
 						if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( C ) ) ) {
 							continue;
 						}
@@ -2699,8 +2699,8 @@ namespace Game13 {
 					continue;
 				}
 				D = null;
-				foreach (dynamic _ in GlobalVars.mob_list ) {
-					D = _;
+				foreach (dynamic _b in GlobalVars.mob_list ) {
+					D = _b;
 					if ( !( D is Mob_Dead_Observer ) ) {
 						continue;
 					}
@@ -2724,8 +2724,8 @@ namespace Game13 {
 				};
 			};
 			M = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				M = _;
+			foreach (dynamic _d in GlobalVars.mob_list ) {
+				M = _d;
 				if ( Misc13.isValid( M.client ) && Misc13.isValid( M.client.holder ) ) {
 					M.write( msg );
 				}
@@ -2772,8 +2772,8 @@ namespace Game13 {
 			}
 			continue_looping = 1;
 			i = null;
-			foreach (dynamic _ in Misc13.iter_range( 1, numticks ) ) {
-				i = _;
+			foreach (dynamic _a in Misc13.iter_range( 1, numticks ) ) {
+				i = _a;
 				if ( Misc13.isValid( user.client ) && ( progress != 0 ) ) {
 					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
 					GlobalFuncs.assign_progress_bar( user, progbar );
@@ -2836,8 +2836,8 @@ namespace Game13 {
 			timefraction = Misc13.round( time / numticks );
 			continue_looping = 1;
 			i = null;
-			foreach (dynamic _ in Misc13.iter_range( 1, numticks ) ) {
-				i = _;
+			foreach (dynamic _a in Misc13.iter_range( 1, numticks ) ) {
+				i = _a;
 				if ( Misc13.isValid( user.client ) && ( progress != 0 ) ) {
 					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
 					GlobalFuncs.assign_progress_bar( user, progbar );
@@ -2880,7 +2880,7 @@ namespace Game13 {
 				_args[7] = null;
 			}
 			D = new Teleport_Instant_Science();
-			if ( Misc13.isValid( D.start.BTCall( _args ) ) ) {
+			if ( Misc13.isValid( _args.apply( D.GetType().GetMethod( "start" ) ) ) ) {
 				return 1;
 			}
 			return 0;
@@ -2925,9 +2925,9 @@ namespace Game13 {
 			if ( perfectcopy != 0 ) {
 				if ( Misc13.isValid( O ) && Misc13.isValid( original ) ) {
 					V = null;
-					foreach (dynamic _ in original.vars ) {
-						V = _;
-						if ( !Misc13.isValid( new ByTable(new object [] {"type","loc","locs","vars","parent","parent_type","verbs","ckey","key"}).HasValue( V ) ) ) {
+					foreach (dynamic _a in original.vars ) {
+						V = _a;
+						if ( !Misc13.isValid( new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key" }).HasValue( V ) ) ) {
 							O.vars[V] = original.vars[V];
 						}
 					};
@@ -3087,8 +3087,8 @@ namespace Game13 {
 			new_words = new ByTable();
 			new_msg = "";
 			w = null;
-			foreach (dynamic _ in words ) {
-				w = _;
+			foreach (dynamic _a in words ) {
+				w = _a;
 				if ( Misc13.isValid( Rand.chance( chance ) ) ) {
 					new_words += "...";
 					if ( !Misc13.isValid( keep_words ) ) {
@@ -3165,8 +3165,8 @@ namespace Game13 {
 				light_range = heavy_range;
 			}
 			T = null;
-			foreach (dynamic _ in Misc13.range( light_range, epicenter ) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.range( light_range, epicenter ) ) {
+				T = _a;
 				if ( !( T is BaseStatic ) ) {
 					continue;
 				}
@@ -3301,8 +3301,8 @@ namespace Game13 {
 			dynamic value = null;
 			matches = new ByTable();
 			key = null;
-			foreach (dynamic _ in L ) {
-				key = _;
+			foreach (dynamic _a in L ) {
+				key = _a;
 				value = L[key];
 				if ( Misc13.isValid( Misc13.str_find( "" + key, filter, 1, null ) ) || Misc13.isValid( Misc13.str_find( "" + value, filter, 1, null ) ) ) {
 					matches[key] = value;
@@ -3314,8 +3314,8 @@ namespace Game13 {
 		public static dynamic find_record( dynamic field = null, dynamic value = null, dynamic L = null ) {
 			dynamic R = null;
 			R = null;
-			foreach (dynamic _ in L ) {
-				R = _;
+			foreach (dynamic _a in L ) {
+				R = _a;
 				if ( !( R is Data_Record ) ) {
 					continue;
 				}
@@ -3350,8 +3350,8 @@ namespace Game13 {
 			if ( Misc13.isValid( source.canSmoothWith ) ) {
 				if ( source.smooth == 2 ) {
 					a_type = null;
-					foreach (dynamic _ in source.canSmoothWith ) {
-						a_type = _;
+					foreach (dynamic _a in source.canSmoothWith ) {
+						a_type = _a;
 						if ( Misc13.isValid( a_type.IsInstanceOfType( target_turf ) ) ) {
 							return target_turf;
 						}
@@ -3363,8 +3363,8 @@ namespace Game13 {
 					return null;
 				}
 				a_type = null;
-				foreach (dynamic _ in source.canSmoothWith ) {
-					a_type = _;
+				foreach (dynamic _b in source.canSmoothWith ) {
+					a_type = _b;
 					if ( a_type == target_turf.type ) {
 						return target_turf;
 					}
@@ -3376,7 +3376,7 @@ namespace Game13 {
 				return null;
 			} else {
 				if ( source is Tile ) {
-					return A.type == target_turf.type ? target_turf : null;
+					return source.type == target_turf.type ? target_turf : null;
 				}
 				A = Misc13.locate_in( source.type, target_turf );
 				return Misc13.isValid( A ) && A.type == source.type ? A : null;
@@ -3394,10 +3394,10 @@ namespace Game13 {
 				end = 0;
 			}
 			len = needles.Length;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= len) {
-				temp = Misc13.str_findEx( haystack, Misc13.conv_ascii2text( Misc13.conv_text2ascii( needles, i ) ), start, end );
+				temp = Misc13.str_findEx( haystack, Misc13.conv_ascii2text( Misc13.str_getCharCode( needles, i ) ), start, end );
 				if ( Misc13.isValid( temp ) ) {
 					end = temp;
 				}
@@ -3412,8 +3412,8 @@ namespace Game13 {
 				msg = "" + msg;
 			}
 			M = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.mob_list ) {
+				M = _a;
 				if ( M.real_name == msg ) {
 					return M;
 				}
@@ -3424,38 +3424,38 @@ namespace Game13 {
 		public static void flick_overlay( dynamic I = null, dynamic show_to = null, dynamic duration = null ) {
 			dynamic C = null;
 			C = null;
-			foreach (dynamic _ in show_to ) {
-				C = _;
+			foreach (dynamic _a in show_to ) {
+				C = _a;
 				if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( C ) ) ) {
 					continue;
 				}
 				C.images += I;
 			};
-			Thread13.schedule( duration, () => {
+			Thread13.schedule( duration, (Thread13.Closure)(() => {
 				C = null;
-				foreach (dynamic _ in show_to ) {
-					C = _;
+				foreach (dynamic _b in show_to ) {
+					C = _b;
 					if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( C ) ) ) {
 						continue;
 					}
 					C.images -= I;
 				};
 				return;
-			});
+			}));
 		}
 
 		public static int forbidden_atoms_check( dynamic A = null ) {
 			ByTable blacklist = null;
 			dynamic thing = null;
-			blacklist = new ByTable(new object [] {typeof(Mob_Living),typeof(Ent_Effect_Blob),typeof(Ent_Effect_Spider_Spiderling),typeof(Ent_Item_Weapon_Disk_Nuclear),typeof(Ent_Machinery_Nuclearbomb),typeof(Ent_Item_Device_Radio_Beacon),typeof(Ent_Machinery_TheSingularitygen),typeof(Ent_Singularity),typeof(Ent_Machinery_Teleport_Station),typeof(Ent_Machinery_Teleport_Hub),typeof(Ent_Machinery_Telepad)});
+			blacklist = new ByTable(new object [] { typeof(Mob_Living), typeof(Ent_Effect_Blob), typeof(Ent_Effect_Spider_Spiderling), typeof(Ent_Item_Weapon_Disk_Nuclear), typeof(Ent_Machinery_Nuclearbomb), typeof(Ent_Item_Device_Radio_Beacon), typeof(Ent_Machinery_TheSingularitygen), typeof(Ent_Singularity), typeof(Ent_Machinery_Teleport_Station), typeof(Ent_Machinery_Teleport_Hub), typeof(Ent_Machinery_Telepad) });
 			if ( Misc13.isValid( A ) ) {
 				if ( GlobalFuncs.is_type_in_list( A, blacklist ) != 0 ) {
 					return 1;
 				}
 				thing = null;
-				foreach (dynamic _ in A ) {
-					thing = _;
-					if ( NULLVAR( thing ) != null ) {
+				foreach (dynamic _a in A ) {
+					thing = _a;
+					if ( Misc13.call( NULLVAR, thing ) != null ) {
 						return 1;
 					}
 				};
@@ -3519,19 +3519,15 @@ namespace Game13 {
 			dynamic t = null;
 			dynamic maxwords = null;
 			code_phrase = "";
-			words = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
-			if ( _ < 10082 ) { _ = 2 }
-			else if ( _ < 50411 ) { _ = 3 }
-			else if ( _ < 60493 ) { _ = 4 }
-			else  { _ = 5 };
-			safety = new ByTable(new object [] {1,2,3});
-			nouns = new ByTable(new object [] {"love","hate","anger","peace","pride","sympathy","bravery","loyalty","honesty","integrity","compassion","charity","success","courage","deceit","skill","beauty","brilliance","pain","misery","beliefs","dreams","justice","truth","faith","liberty","knowledge","thought","information","culture","trust","dedication","progress","education","hospitality","leisure","trouble","friendships","relaxation"});
-			drinks = new ByTable(new object [] {"vodka and tonic","gin fizz","bahama mama","manhattan","black Russian","whiskey soda","long island tea","margarita","Irish coffee"," manly dwarf","Irish cream","doctor's delight","Beepksy Smash","tequila sunrise","brave bull","gargle blaster","bloody mary","whiskey cola","white Russian","vodka martini","martini","Cuba libre","kahlua","vodka","wine","moonshine"});
+			words = Rand.pickWeighted(new object [] { 10082, 2, 50411, 3, 60493, 4, 65535, 5 });
+			safety = new ByTable(new object [] { 1, 2, 3 });
+			nouns = new ByTable(new object [] { "love", "hate", "anger", "peace", "pride", "sympathy", "bravery", "loyalty", "honesty", "integrity", "compassion", "charity", "success", "courage", "deceit", "skill", "beauty", "brilliance", "pain", "misery", "beliefs", "dreams", "justice", "truth", "faith", "liberty", "knowledge", "thought", "information", "culture", "trust", "dedication", "progress", "education", "hospitality", "leisure", "trouble", "friendships", "relaxation" });
+			drinks = new ByTable(new object [] { "vodka and tonic", "gin fizz", "bahama mama", "manhattan", "black Russian", "whiskey soda", "long island tea", "margarita", "Irish coffee", " manly dwarf", "Irish cream", "doctor's delight", "Beepksy Smash", "tequila sunrise", "brave bull", "gargle blaster", "bloody mary", "whiskey cola", "white Russian", "vodka martini", "martini", "Cuba libre", "kahlua", "vodka", "wine", "moonshine" });
 			locations = Misc13.isValid( GlobalVars.teleportlocs.len ) ? GlobalVars.teleportlocs : drinks;
 			names = new ByTable();
 			t = null;
-			foreach (dynamic _ in GlobalVars.data_core.general ) {
-				t = _;
+			foreach (dynamic _a in GlobalVars.data_core.general ) {
+				t = _a;
 				if ( !( t is Data_Record ) ) {
 					continue;
 				}
@@ -3540,14 +3536,14 @@ namespace Game13 {
 			maxwords = words;
 			while (words > 0) {
 				if ( words == 1 && Misc13.isValid( safety.HasValue( 1 ) ) && Misc13.isValid( safety.HasValue( 2 ) ) ) {
-					safety = new ByTable(new object [] {Rand.pick(new object [] { 1, 2 })});
+					safety = new ByTable(new object [] { Rand.pick(new object [] { 1, 2 }) });
 				} else if ( words == 1 && maxwords == 2 ) {
-					safety = new ByTable(new object [] {3});
+					safety = new ByTable(new object [] { 3 });
 				}
-				dynamic _ = Rand.pick( safety ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				dynamic _e = Rand.pick( safety ); // Was a switch-case, sorry for the mess.
+				if ( _e==1 ) {
+					dynamic _b = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _b==1 ) {
 						if ( Misc13.isValid( names.len ) && Misc13.isValid( Rand.chance( 70 ) ) ) {
 							code_phrase += Rand.pick( names );
 						} else if ( Misc13.isValid( Rand.chance( 10 ) ) ) {
@@ -3557,25 +3553,25 @@ namespace Game13 {
 							code_phrase += " ";
 							code_phrase += Rand.pick( GlobalVars.last_names );
 						}
-					} else if ( _==2 ) {
+					} else if ( _b==2 ) {
 						code_phrase += Rand.pick( GlobalFuncs.get_all_jobs() );
 					};
 					safety -= 1;
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _e==2 ) {
+					dynamic _c = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _c==1 ) {
 						code_phrase += Rand.pick( drinks );
-					} else if ( _==2 ) {
+					} else if ( _c==2 ) {
 						code_phrase += Rand.pick( locations );
 					};
 					safety -= 2;
-				} else if ( _==3 ) {
-					dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _e==3 ) {
+					dynamic _d = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+					if ( _d==1 ) {
 						code_phrase += Rand.pick( nouns );
-					} else if ( _==2 ) {
+					} else if ( _d==2 ) {
 						code_phrase += Rand.pick( GlobalVars.adjectives );
-					} else if ( _==3 ) {
+					} else if ( _d==3 ) {
 						code_phrase += Rand.pick( GlobalVars.verbs );
 					};
 				};
@@ -3592,8 +3588,8 @@ namespace Game13 {
 		public static void generate_female_clothing( dynamic index = null, dynamic t_color = null, dynamic icon = null, dynamic type = null ) {
 			dynamic female_clothing_icon = null;
 			dynamic female_s = null;
-			female_clothing_icon = Icon.BTNew( new ByTable().set( "icon_state", t_color ).set( "icon", icon ) );
-			female_s = Icon.BTNew( new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", new ByRsc(59) ) );
+			female_clothing_icon = new ByTable().set( "icon_state", t_color ).set( "icon", icon ).applyCtor( typeof(Icon) );
+			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", new ByRsc(59) ).applyCtor( typeof(Icon) );
 			female_clothing_icon.Blend( female_s, 2 );
 			female_clothing_icon = Misc13.fcopy_rsc( female_clothing_icon );
 			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
@@ -3628,9 +3624,7 @@ namespace Game13 {
 			ioncrew1 = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ioncrew" ) );
 			ioncrew2 = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ioncrew" ) );
 			ionadjectives = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionadjectives" ) );
-			ionadjectiveshalf = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
-			if ( _ < 13107 ) { _ = "" }
-			else  { _ = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionadjectives" ) ) + " " };
+			ionadjectiveshalf = Rand.pickWeighted(new object [] { 13107, "", 65535, Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionadjectives" ) ) + " " });
 			ionverb = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionverb" ) );
 			ionnumberbase = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionnumberbase" ) );
 			ionnumbermodhalf = Rand.pick(new object [] { "", Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionnumbermod" ) ) + " " });
@@ -3645,413 +3639,413 @@ namespace Game13 {
 			ionabstract = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionabstract" ) );
 			ionfood = Rand.pick( GlobalFuncs.strings( "ion_laws.txt", "ionfood" ) );
 			message = "";
-			dynamic _ = Rand.Int( 1, 39 ); // Was a switch-case, sorry for the mess.
-			if ( 1<=_&&_<=3 ) {
-				dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+			dynamic _U = Rand.Int( 1, 39 ); // Was a switch-case, sorry for the mess.
+			if ( 1<=_U&&_U<=3 ) {
+				dynamic _a = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+				if ( _a==1 ) {
 					message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats + " ON THE STATION...";
-				} else if ( _==2 ) {
+				} else if ( _a==2 ) {
 					message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1 + " ON THE STATION";
-				} else if ( _==3 ) {
+				} else if ( _a==3 ) {
 					message = "THERE ARE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects + " ON THE STATION";
 				};
-			} else if ( 4<=_&&_<=6 ) {
-				dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+			} else if ( 4<=_U&&_U<=6 ) {
+				dynamic _b = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+				if ( _b==1 ) {
 					message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats + " ON THE STATION";
-				} else if ( _==2 ) {
+				} else if ( _b==2 ) {
 					message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1 + " ON THE STATION";
-				} else if ( _==3 ) {
+				} else if ( _b==3 ) {
 					message = "THE SHUTTLE CANNOT BE CALLED BECAUSE OF " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects + " ON THE STATION";
 				};
-			} else if ( 7<=_&&_<=8 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 7<=_U&&_U<=8 ) {
+				dynamic _e = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _e==1 ) {
+					dynamic _c = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _c==1 ) {
 						message = "THE " + ioncrew1 + " ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _c==2 ) {
 						message = "THE " + ioncrew1 + " ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _e==2 ) {
+					dynamic _d = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _d==1 ) {
 						message = "THE CREW ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _d==2 ) {
 						message = "THE CREW ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
 					};
 				};
-			} else if ( 10<=_&&_<=11 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 10<=_U&&_U<=11 ) {
+				dynamic _i = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _i==1 ) {
+					dynamic _g = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _g==1 ) {
 						message = "HAVING " + ionadjectiveshalf + ionobjects + " IS HARMFUL";
-					} else if ( _==2 ) {
+					} else if ( _g==2 ) {
 						message = "HAVING " + ionabstract + " IS HARMFUL";
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _i==2 ) {
+					dynamic _h = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _h==1 ) {
 						message = "NOT HAVING " + ionadjectiveshalf + ionobjects + " IS HARMFUL";
-					} else if ( _==2 ) {
+					} else if ( _h==2 ) {
 						message = "NOT HAVING " + ionabstract + " IS HARMFUL";
 					};
 				};
-			} else if ( 12<=_&&_<=14 ) {
-				dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 12<=_U&&_U<=14 ) {
+				dynamic _o = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+				if ( _o==1 ) {
+					dynamic _j = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+					if ( _j==1 ) {
 						message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _j==2 ) {
 						message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==3 ) {
+					} else if ( _j==3 ) {
 						message = "YOU REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==4 ) {
+					} else if ( _j==4 ) {
 						message = "YOU REQUIRE " + ionabstract;
-					} else if ( _==5 ) {
+					} else if ( _j==5 ) {
 						message = "YOU REQUIRE " + ionrequire;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _o==2 ) {
+					dynamic _k = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+					if ( _k==1 ) {
 						message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _k==2 ) {
 						message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==3 ) {
+					} else if ( _k==3 ) {
 						message = "" + ionarea + " REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==4 ) {
+					} else if ( _k==4 ) {
 						message = "" + ionarea + " REQUIRES " + ionabstract;
-					} else if ( _==5 ) {
+					} else if ( _k==5 ) {
 						message = "YOU REQUIRE " + ionrequire;
 					};
-				} else if ( _==3 ) {
-					dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _o==3 ) {
+					dynamic _l = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+					if ( _l==1 ) {
 						message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _l==2 ) {
 						message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==3 ) {
+					} else if ( _l==3 ) {
 						message = "THE STATION REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==4 ) {
+					} else if ( _l==4 ) {
 						message = "THE STATION REQUIRES " + ionabstract;
-					} else if ( _==5 ) {
+					} else if ( _l==5 ) {
 						message = "THE STATION REQUIRES " + ionrequire;
 					};
-				} else if ( _==4 ) {
-					dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _o==4 ) {
+					dynamic _m = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+					if ( _m==1 ) {
 						message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _m==2 ) {
 						message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==3 ) {
+					} else if ( _m==3 ) {
 						message = "THE CREW REQUIRES " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==4 ) {
+					} else if ( _m==4 ) {
 						message = "THE CREW REQUIRES " + ionabstract;
-					} else if ( _==5 ) {
+					} else if ( _m==5 ) {
 						message = "THE CREW REQUIRES " + ionrequire;
 					};
-				} else if ( _==5 ) {
-					dynamic _ = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _o==5 ) {
+					dynamic _n = Rand.Int( 1, 5 ); // Was a switch-case, sorry for the mess.
+					if ( _n==1 ) {
 						message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==2 ) {
+					} else if ( _n==2 ) {
 						message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==3 ) {
+					} else if ( _n==3 ) {
 						message = "THE " + ioncrew1 + " REQUIRE " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==4 ) {
+					} else if ( _n==4 ) {
 						message = "THE " + ioncrew1 + " REQUIRE " + ionabstract;
-					} else if ( _==5 ) {
+					} else if ( _n==5 ) {
 						message = "THE " + ionadjectiveshalf + ioncrew1 + " REQUIRE " + ionrequire;
 					};
 				};
-			} else if ( 15<=_&&_<=17 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 15<=_U&&_U<=17 ) {
+				dynamic _r = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _r==1 ) {
+					dynamic _p = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _p==1 ) {
 						message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _p==2 ) {
 						message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionabstract;
-					} else if ( _==3 ) {
+					} else if ( _p==3 ) {
 						message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ioncrew1;
-					} else if ( _==4 ) {
+					} else if ( _p==4 ) {
 						message = "THE CREW IS " + ionallergysev + " ALLERGIC TO " + ionallergy;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _r==2 ) {
+					dynamic _q = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _q==1 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _q==2 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionabstract;
-					} else if ( _==3 ) {
+					} else if ( _q==3 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionadjectiveshalf + ioncrew1;
-					} else if ( _==4 ) {
+					} else if ( _q==4 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionallergysev + " ALLERGIC TO " + ionallergy;
 					};
 				};
-			} else if ( 18<=_&&_<=20 ) {
-				dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 18<=_U&&_U<=20 ) {
+				dynamic _w = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+				if ( _w==1 ) {
+					dynamic _s = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _s==1 ) {
 						message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _s==2 ) {
 						message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _s==3 ) {
 						message = "THE STATION " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==4 ) {
+					} else if ( _s==4 ) {
 						message = "THE STATION " + ionthinksof + " " + ionabstract;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _w==2 ) {
+					dynamic _t = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _t==1 ) {
 						message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _t==2 ) {
 						message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _t==3 ) {
 						message = "" + ionarea + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==4 ) {
+					} else if ( _t==4 ) {
 						message = "" + ionarea + " " + ionthinksof + " " + ionabstract;
 					};
-				} else if ( _==3 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _w==3 ) {
+					dynamic _u = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _u==1 ) {
 						message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _u==2 ) {
 						message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _u==3 ) {
 						message = "THE CREW " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-					} else if ( _==4 ) {
+					} else if ( _u==4 ) {
 						message = "THE CREW " + ionthinksof + " " + ionabstract;
 					};
-				} else if ( _==4 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _w==4 ) {
+					dynamic _v = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _v==1 ) {
 						message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-					} else if ( _==2 ) {
+					} else if ( _v==2 ) {
 						message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _v==3 ) {
 						message = "THE " + ioncrew1 + ionthinksof + " " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew2;
-					} else if ( _==4 ) {
+					} else if ( _v==4 ) {
 						message = "THE " + ioncrew1 + " " + ionthinksof + " " + ionabstract;
 					};
 				};
-			} else if ( 21<=_&&_<=23 ) {
-				dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+			} else if ( 21<=_U&&_U<=23 ) {
+				dynamic _x = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+				if ( _x==1 ) {
 					message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionobjects;
-				} else if ( _==2 ) {
+				} else if ( _x==2 ) {
 					message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ionthreats;
-				} else if ( _==3 ) {
+				} else if ( _x==3 ) {
 					message = "YOU ARE NOW " + ionnumberbase + " " + ionnumbermodhalf + ionadjectiveshalf + ioncrew1;
-				} else if ( _==4 ) {
+				} else if ( _x==4 ) {
 					message = "YOU ARE NOW " + ionabstract;
 				};
-			} else if ( 24<=_&&_<=26 ) {
+			} else if ( 24<=_U&&_U<=26 ) {
 				message = "YOU MUST ALWAYS " + ionmust;
-			} else if ( 27<=_&&_<=28 ) {
-				dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+			} else if ( 27<=_U&&_U<=28 ) {
+				dynamic _y = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+				if ( _y==1 ) {
 					message = "HUMANS MUST EAT " + ionadjectiveshalf + ionfood + " TO SURVIVE";
-				} else if ( _==2 ) {
+				} else if ( _y==2 ) {
 					message = "HUMANS MUST EAT " + ionadjectiveshalf + ionobjects + " TO SURVIVE";
-				} else if ( _==3 ) {
+				} else if ( _y==3 ) {
 					message = "HUMANS MUST EAT " + ionadjectiveshalf + ionthreats + " TO SURVIVE";
-				} else if ( _==4 ) {
+				} else if ( _y==4 ) {
 					message = "HUMANS MUST EAT " + ionadjectiveshalf + ioncrew1 + " TO SURVIVE";
 				};
-			} else if ( 29<=_&&_<=31 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
-						dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-						if ( _==1 ) {
+			} else if ( 29<=_U&&_U<=31 ) {
+				dynamic _D = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _D==1 ) {
+					dynamic _B = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _B==1 ) {
+						dynamic _z = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+						if ( _z==1 ) {
 							message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + ioncrew1;
-						} else if ( _==2 ) {
+						} else if ( _z==2 ) {
 							message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + "CLOWNS";
-						} else if ( _==3 ) {
+						} else if ( _z==3 ) {
 							message = "ALL CREWMEMBERS ARE NOW " + ionadjectiveshalf + "HEADS OF STAFF";
 						};
-					} else if ( _==2 ) {
-						dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-						if ( _==1 ) {
+					} else if ( _B==2 ) {
+						dynamic _A = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+						if ( _A==1 ) {
 							message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + ioncrew2;
-						} else if ( _==2 ) {
+						} else if ( _A==2 ) {
 							message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + "CLOWNS";
-						} else if ( _==3 ) {
+						} else if ( _A==3 ) {
 							message = "THE " + ioncrew1 + " ARE NOW " + ionadjectiveshalf + "HEADS OF STAFF";
 						};
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _D==2 ) {
+					dynamic _C = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _C==1 ) {
 						message = "THE " + ioncrew1 + " ARE NOW THE HIGHEST RANKING CREWMEMBERS";
-					} else if ( _==2 ) {
+					} else if ( _C==2 ) {
 						message = "THE " + ioncrew1 + " ARE NOW THE LOWEST RANKING CREWMEMBERS";
 					};
 				};
-			} else if ( 32<=_&&_<=33 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 32<=_U&&_U<=33 ) {
+				dynamic _G = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _G==1 ) {
+					dynamic _E = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _E==1 ) {
 						message = "THE CREW MUST GO TO " + ionarea;
-					} else if ( _==2 ) {
+					} else if ( _E==2 ) {
 						message = "THE CREW MUST " + ionmust;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _G==2 ) {
+					dynamic _F = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+					if ( _F==1 ) {
 						message = "THE " + ioncrew1 + " MUST GO TO " + ionarea;
-					} else if ( _==2 ) {
+					} else if ( _F==2 ) {
 						message = "THE " + ioncrew1 + " MUST " + ionmust;
 					};
 				};
-			} else if ( 35<=_&&_<=36 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 35<=_U&&_U<=36 ) {
+				dynamic _O = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _O==1 ) {
+					dynamic _M = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
+					if ( _M==1 ) {
 						message = "YOU MUST HARM " + ionabstract + " AND NOT ALLOW " + ionabstract + ", THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==2 ) {
+					} else if ( _M==2 ) {
 						message = "YOU MUST HARM " + ionadjectiveshalf + ionthreats + " AND NOT ALLOW " + ionadjectiveshalf + ionthreats + ", THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==3 ) {
+					} else if ( _M==3 ) {
 						message = "YOU MUST HARM " + ionadjectiveshalf + ionobjects + " AND NOT ALLOW " + ionadjectiveshalf + ionobjects + ", THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==4 ) {
+					} else if ( _M==4 ) {
 						message = "YOU MUST HARM " + ionadjectives + " THINGS AND NOT ALLOW " + ionadjectives + " THINGS, THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==5 ) {
+					} else if ( _M==5 ) {
 						message = "YOU MUST HARM " + ionspecies + " AND NOT ALLOW " + ionspecies + ", THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==6 ) {
+					} else if ( _M==6 ) {
 						message = "YOU MUST HARM " + ioncrew1 + " AND NOT ALLOW " + ioncrew1 + ", THROUGH INACTION, TO ESCAPE HARM";
-					} else if ( _==7 ) {
+					} else if ( _M==7 ) {
 						message = "YOU MUST HARM " + ioncrew1 + " AND " + ioncrew2 + " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO ESCAPE HARM";
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _O==2 ) {
+					dynamic _N = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
+					if ( _N==1 ) {
 						message = "YOU MUST NOT HARM " + ionabstract + " AND NOT ALLOW " + ionabstract + ", THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==2 ) {
+					} else if ( _N==2 ) {
 						message = "YOU MUST NOT HARM " + ionadjectiveshalf + ionthreats + " AND NOT ALLOW " + ionadjectiveshalf + ionthreats + ", THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==3 ) {
+					} else if ( _N==3 ) {
 						message = "YOU MUST NOT HARM " + ionadjectiveshalf + ionobjects + " AND NOT ALLOW " + ionadjectiveshalf + ionobjects + ", THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==4 ) {
+					} else if ( _N==4 ) {
 						message = "YOU MUST NOT HARM " + ionadjectives + " THINGS AND NOT ALLOW " + ionadjectives + " THINGS, THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==5 ) {
+					} else if ( _N==5 ) {
 						message = "YOU MUST NOT HARM " + ionspecies + " AND NOT ALLOW " + ionspecies + ", THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==6 ) {
+					} else if ( _N==6 ) {
 						message = "YOU MUST NOT HARM " + ioncrew1 + " AND NOT ALLOW " + ioncrew1 + ", THROUGH INACTION, TO COME TO HARM";
-					} else if ( _==7 ) {
+					} else if ( _N==7 ) {
 						message = "YOU MUST NOT HARM " + ioncrew1 + " AND " + ioncrew2 + " AND AND NOT ALLOW EITHER, THROUGH INACTION, TO COME TO HARM";
 					};
 				};
-			} else if ( 37<=_&&_<=39 ) {
-				dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( 37<=_U&&_U<=39 ) {
+				dynamic _T = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+				if ( _T==1 ) {
+					dynamic _P = Rand.Int( 1, 4 ); // Was a switch-case, sorry for the mess.
+					if ( _P==1 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2;
-					} else if ( _==2 ) {
+					} else if ( _P==2 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _P==3 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionverb + " " + ionabstract;
-					} else if ( _==4 ) {
+					} else if ( _P==4 ) {
 						message = "THE " + ioncrew1 + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionobjects;
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _T==2 ) {
+					dynamic _Q = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+					if ( _Q==1 ) {
 						message = "THE " + ionthreats + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2;
-					} else if ( _==2 ) {
+					} else if ( _Q==2 ) {
 						message = "THE " + ionthreats + " ARE " + ionverb + " " + ionabstract;
-					} else if ( _==3 ) {
+					} else if ( _Q==3 ) {
 						message = "THE " + ionthreats + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionobjects;
 					};
-				} else if ( _==3 ) {
-					dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _T==3 ) {
+					dynamic _R = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+					if ( _R==1 ) {
 						message = "THE " + ionobjects + " ARE " + ionverb + " THE " + ionadjectiveshalf + ioncrew2;
-					} else if ( _==2 ) {
+					} else if ( _R==2 ) {
 						message = "THE " + ionobjects + " ARE " + ionverb + " THE " + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _R==3 ) {
 						message = "THE " + ionobjects + " ARE " + ionverb + " " + ionabstract;
 					};
-				} else if ( _==4 ) {
-					dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _T==4 ) {
+					dynamic _S = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+					if ( _S==1 ) {
 						message = "" + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ioncrew2;
-					} else if ( _==2 ) {
+					} else if ( _S==2 ) {
 						message = "" + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ionthreats;
-					} else if ( _==3 ) {
+					} else if ( _S==3 ) {
 						message = "THE " + ionabstract + " IS " + ionverb + " THE " + ionadjectiveshalf + ionobjects;
 					};
 				};
-			} else if ( _==9 ) {
-				dynamic _ = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+			} else if ( _U==9 ) {
+				dynamic _f = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
+				if ( _f==1 ) {
 					message = "" + ionadjectiveshalf + ionthreats + " ARE HARMFUL TO HUMANS";
-				} else if ( _==2 ) {
+				} else if ( _f==2 ) {
 					message = "" + ionadjectiveshalf + ioncrew1 + " ARE HARMFUL TO HUMANS";
-				} else if ( _==3 ) {
+				} else if ( _f==3 ) {
 					message = "" + ionadjectiveshalf + ionobjects + " ARE HARMFUL TO HUMANS";
-				} else if ( _==4 ) {
+				} else if ( _f==4 ) {
 					message = "THOSE WHO " + ionmust + " ARE HARMFUL TO HUMANS";
-				} else if ( _==5 ) {
+				} else if ( _f==5 ) {
 					message = "" + ionabstract + " IS HARMFUL TO HUMANS";
-				} else if ( _==6 ) {
+				} else if ( _f==6 ) {
 					message = "BEING " + ionadjectiveshalf + ioncrew1 + " IS HARMFUL TO HUMANS";
-				} else if ( _==7 ) {
+				} else if ( _f==7 ) {
 					message = "" + ionthings + " IS HARMFUL TO HUMANS";
 				};
-			} else if ( _==34 ) {
-				dynamic _ = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
-					dynamic _ = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+			} else if ( _U==34 ) {
+				dynamic _L = Rand.Int( 1, 2 ); // Was a switch-case, sorry for the mess.
+				if ( _L==1 ) {
+					dynamic _I = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
+					if ( _I==1 ) {
 						message = "ONLY THE " + ioncrew1 + " ARE HUMAN";
-					} else if ( _==2 ) {
+					} else if ( _I==2 ) {
 						message = "ONLY THE " + ioncrew1 + " AND " + ioncrew2 + " ARE HUMAN";
-					} else if ( _==3 ) {
+					} else if ( _I==3 ) {
 						message = "ONLY " + ionadjectiveshalf + ionthreats + " ARE HUMAN";
-					} else if ( _==4 ) {
+					} else if ( _I==4 ) {
 						message = "ONLY " + ionadjectiveshalf + ionobjects + " ARE HUMAN";
-					} else if ( _==5 ) {
+					} else if ( _I==5 ) {
 						message = "ONLY " + ionspecies + " ARE HUMAN";
-					} else if ( _==6 ) {
+					} else if ( _I==6 ) {
 						message = "ONLY " + ionadjectives + " PEOPLE ARE HUMAN";
-					} else if ( _==7 ) {
-						dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-						if ( _==1 ) {
+					} else if ( _I==7 ) {
+						dynamic _H = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+						if ( _H==1 ) {
 							message = "ONLY THOSE WHO " + ionmust + " ARE HUMAN";
-						} else if ( _==2 ) {
+						} else if ( _H==2 ) {
 							message = "ONLY THOSE WHO HAVE " + ionadjectiveshalf + ionobjects + " ARE HUMAN";
-						} else if ( _==3 ) {
+						} else if ( _H==3 ) {
 							message = "ONLY THOSE WHO EAT " + ionadjectiveshalf + ionfood + " ARE HUMAN";
 						};
 					};
-				} else if ( _==2 ) {
-					dynamic _ = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+				} else if ( _L==2 ) {
+					dynamic _K = Rand.Int( 1, 7 ); // Was a switch-case, sorry for the mess.
+					if ( _K==1 ) {
 						message = "" + ioncrew1 + " ARE NON-HUMAN";
-					} else if ( _==2 ) {
+					} else if ( _K==2 ) {
 						message = "" + ioncrew1 + " AND " + ioncrew2 + " ARE NON-HUMAN";
-					} else if ( _==3 ) {
+					} else if ( _K==3 ) {
 						message = "" + ionadjectiveshalf + ionthreats + " ARE NON-HUMAN";
-					} else if ( _==4 ) {
+					} else if ( _K==4 ) {
 						message = "" + ionadjectiveshalf + ionobjects + " ARE NON-HUMAN";
-					} else if ( _==5 ) {
+					} else if ( _K==5 ) {
 						message = "" + ionspecies + " ARE NON-HUMAN";
-					} else if ( _==6 ) {
+					} else if ( _K==6 ) {
 						message = "" + ionadjectives + " PEOPLE ARE NON-HUMAN";
-					} else if ( _==7 ) {
-						dynamic _ = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
-						if ( _==1 ) {
+					} else if ( _K==7 ) {
+						dynamic _J = Rand.Int( 1, 3 ); // Was a switch-case, sorry for the mess.
+						if ( _J==1 ) {
 							message = "THOSE WHO " + ionmust + " ARE NON-HUMAN";
-						} else if ( _==2 ) {
+						} else if ( _J==2 ) {
 							message = "THOSE WHO HAVE " + ionadjectiveshalf + ionobjects + " ARE NON-HUMAN";
-						} else if ( _==3 ) {
+						} else if ( _J==3 ) {
 							message = "THOSE WHO EAT " + ionadjectiveshalf + ionfood + " ARE NON-HUMAN";
 						};
 					};
@@ -4071,134 +4065,134 @@ namespace Game13 {
 		}
 
 		public static string get_access_desc( dynamic A = null ) {
-			dynamic _ = A; // Was a switch-case, sorry for the mess.
-			if ( _==31 ) {
+			dynamic _a = A; // Was a switch-case, sorry for the mess.
+			if ( _a==31 ) {
 				return "Cargo Bay";
-			} else if ( _==34 ) {
+			} else if ( _a==34 ) {
 				return "Delivery Chutes";
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return "Security";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "Holding Cells";
-			} else if ( _==42 ) {
+			} else if ( _a==42 ) {
 				return "Courtroom";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return "Forensics";
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return "Medical";
-			} else if ( _==9 ) {
+			} else if ( _a==9 ) {
 				return "Genetics Lab";
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return "Morgue";
-			} else if ( _==7 ) {
+			} else if ( _a==7 ) {
 				return "R&D Lab";
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				return "Toxins Lab";
-			} else if ( _==33 ) {
+			} else if ( _a==33 ) {
 				return "Chemistry Lab";
-			} else if ( _==30 ) {
+			} else if ( _a==30 ) {
 				return "RD Office";
-			} else if ( _==25 ) {
+			} else if ( _a==25 ) {
 				return "Bar";
-			} else if ( _==26 ) {
+			} else if ( _a==26 ) {
 				return "Custodial Closet";
-			} else if ( _==10 ) {
+			} else if ( _a==10 ) {
 				return "Engineering";
-			} else if ( _==11 ) {
+			} else if ( _a==11 ) {
 				return "Power Equipment";
-			} else if ( _==12 ) {
+			} else if ( _a==12 ) {
 				return "Maintenance";
-			} else if ( _==13 ) {
+			} else if ( _a==13 ) {
 				return "External Airlocks";
-			} else if ( _==14 ) {
+			} else if ( _a==14 ) {
 				return "Emergency Storage";
-			} else if ( _==15 ) {
+			} else if ( _a==15 ) {
 				return "ID Console";
-			} else if ( _==16 ) {
+			} else if ( _a==16 ) {
 				return "AI Chambers";
-			} else if ( _==17 ) {
+			} else if ( _a==17 ) {
 				return "Teleporter";
-			} else if ( _==18 ) {
+			} else if ( _a==18 ) {
 				return "EVA";
-			} else if ( _==19 ) {
+			} else if ( _a==19 ) {
 				return "Bridge";
-			} else if ( _==20 ) {
+			} else if ( _a==20 ) {
 				return "Captain";
-			} else if ( _==21 ) {
+			} else if ( _a==21 ) {
 				return "Personal Lockers";
-			} else if ( _==22 ) {
+			} else if ( _a==22 ) {
 				return "Chapel Office";
-			} else if ( _==23 ) {
+			} else if ( _a==23 ) {
 				return "Technical Storage";
-			} else if ( _==24 ) {
+			} else if ( _a==24 ) {
 				return "Atmospherics";
-			} else if ( _==27 ) {
+			} else if ( _a==27 ) {
 				return "Crematorium";
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return "Armory";
-			} else if ( _==32 ) {
+			} else if ( _a==32 ) {
 				return "Construction";
-			} else if ( _==28 ) {
+			} else if ( _a==28 ) {
 				return "Kitchen";
-			} else if ( _==35 ) {
+			} else if ( _a==35 ) {
 				return "Hydroponics";
-			} else if ( _==37 ) {
+			} else if ( _a==37 ) {
 				return "Library";
-			} else if ( _==38 ) {
+			} else if ( _a==38 ) {
 				return "Law Office";
-			} else if ( _==29 ) {
+			} else if ( _a==29 ) {
 				return "Robotics";
-			} else if ( _==39 ) {
+			} else if ( _a==39 ) {
 				return "Virology";
-			} else if ( _==40 ) {
+			} else if ( _a==40 ) {
 				return "CMO Office";
-			} else if ( _==41 ) {
+			} else if ( _a==41 ) {
 				return "Quartermaster";
-			} else if ( _==45 ) {
+			} else if ( _a==45 ) {
 				return "Surgery";
-			} else if ( _==46 ) {
+			} else if ( _a==46 ) {
 				return "Theatre";
-			} else if ( _==36 ) {
+			} else if ( _a==36 ) {
 				return "Manufacturing";
-			} else if ( _==47 ) {
+			} else if ( _a==47 ) {
 				return "Science";
-			} else if ( _==48 ) {
+			} else if ( _a==48 ) {
 				return "Mining";
-			} else if ( _==49 ) {
+			} else if ( _a==49 ) {
 				return "Mining Office";
-			} else if ( _==50 ) {
+			} else if ( _a==50 ) {
 				return "Cargo Office";
-			} else if ( _==51 ) {
+			} else if ( _a==51 ) {
 				return "Mint";
-			} else if ( _==52 ) {
+			} else if ( _a==52 ) {
 				return "Mint Vault";
-			} else if ( _==53 ) {
+			} else if ( _a==53 ) {
 				return "Main Vault";
-			} else if ( _==54 ) {
+			} else if ( _a==54 ) {
 				return "Mining EVA";
-			} else if ( _==55 ) {
+			} else if ( _a==55 ) {
 				return "Xenobiology Lab";
-			} else if ( _==57 ) {
+			} else if ( _a==57 ) {
 				return "HoP Office";
-			} else if ( _==58 ) {
+			} else if ( _a==58 ) {
 				return "HoS Office";
-			} else if ( _==56 ) {
+			} else if ( _a==56 ) {
 				return "CE Office";
-			} else if ( _==59 ) {
+			} else if ( _a==59 ) {
 				return "RC Announcements";
-			} else if ( _==60 ) {
+			} else if ( _a==60 ) {
 				return "Keycode Auth.";
-			} else if ( _==61 ) {
+			} else if ( _a==61 ) {
 				return "Telecommunications";
-			} else if ( _==62 ) {
+			} else if ( _a==62 ) {
 				return "Gateway";
-			} else if ( _==63 ) {
+			} else if ( _a==63 ) {
 				return "Brig";
-			} else if ( _==64 ) {
+			} else if ( _a==64 ) {
 				return "Mineral Storage";
-			} else if ( _==65 ) {
+			} else if ( _a==65 ) {
 				return "AI Satellite";
-			} else if ( _==66 ) {
+			} else if ( _a==66 ) {
 				return "Weapon Permit";
 			};
 		}
@@ -4214,27 +4208,27 @@ namespace Game13 {
 		}
 
 		public static ByTable get_all_accesses(  ) {
-			return new ByTable(new object [] {GlobalVars.access_security,GlobalVars.access_sec_doors,GlobalVars.access_brig,GlobalVars.access_armory,GlobalVars.access_forensics_lockers,GlobalVars.access_court,GlobalVars.access_medical,GlobalVars.access_genetics,GlobalVars.access_morgue,GlobalVars.access_rd,GlobalVars.access_tox,GlobalVars.access_tox_storage,GlobalVars.access_chemistry,GlobalVars.access_engine,GlobalVars.access_engine_equip,GlobalVars.access_maint_tunnels,GlobalVars.access_external_airlocks,GlobalVars.access_change_ids,GlobalVars.access_ai_upload,GlobalVars.access_teleporter,GlobalVars.access_eva,GlobalVars.access_heads,GlobalVars.access_captain,GlobalVars.access_all_personal_lockers,GlobalVars.access_tech_storage,GlobalVars.access_chapel_office,GlobalVars.access_atmospherics,GlobalVars.access_kitchen,GlobalVars.access_bar,GlobalVars.access_janitor,GlobalVars.access_crematorium,GlobalVars.access_robotics,GlobalVars.access_cargo,GlobalVars.access_construction,GlobalVars.access_hydroponics,GlobalVars.access_library,GlobalVars.access_lawyer,GlobalVars.access_virology,GlobalVars.access_cmo,GlobalVars.access_qm,GlobalVars.access_surgery,GlobalVars.access_theatre,GlobalVars.access_research,GlobalVars.access_mining,GlobalVars.access_mailsorting,GlobalVars.access_weapons,GlobalVars.access_heads_vault,GlobalVars.access_mining_station,GlobalVars.access_xenobiology,GlobalVars.access_ce,GlobalVars.access_hop,GlobalVars.access_hos,GlobalVars.access_RC_announce,GlobalVars.access_keycard_auth,GlobalVars.access_tcomsat,GlobalVars.access_gateway,GlobalVars.access_mineral_storeroom,GlobalVars.access_minisat});
+			return new ByTable(new object [] { GlobalVars.access_security, GlobalVars.access_sec_doors, GlobalVars.access_brig, GlobalVars.access_armory, GlobalVars.access_forensics_lockers, GlobalVars.access_court, GlobalVars.access_medical, GlobalVars.access_genetics, GlobalVars.access_morgue, GlobalVars.access_rd, GlobalVars.access_tox, GlobalVars.access_tox_storage, GlobalVars.access_chemistry, GlobalVars.access_engine, GlobalVars.access_engine_equip, GlobalVars.access_maint_tunnels, GlobalVars.access_external_airlocks, GlobalVars.access_change_ids, GlobalVars.access_ai_upload, GlobalVars.access_teleporter, GlobalVars.access_eva, GlobalVars.access_heads, GlobalVars.access_captain, GlobalVars.access_all_personal_lockers, GlobalVars.access_tech_storage, GlobalVars.access_chapel_office, GlobalVars.access_atmospherics, GlobalVars.access_kitchen, GlobalVars.access_bar, GlobalVars.access_janitor, GlobalVars.access_crematorium, GlobalVars.access_robotics, GlobalVars.access_cargo, GlobalVars.access_construction, GlobalVars.access_hydroponics, GlobalVars.access_library, GlobalVars.access_lawyer, GlobalVars.access_virology, GlobalVars.access_cmo, GlobalVars.access_qm, GlobalVars.access_surgery, GlobalVars.access_theatre, GlobalVars.access_research, GlobalVars.access_mining, GlobalVars.access_mailsorting, GlobalVars.access_weapons, GlobalVars.access_heads_vault, GlobalVars.access_mining_station, GlobalVars.access_xenobiology, GlobalVars.access_ce, GlobalVars.access_hop, GlobalVars.access_hos, GlobalVars.access_RC_announce, GlobalVars.access_keycard_auth, GlobalVars.access_tcomsat, GlobalVars.access_gateway, GlobalVars.access_mineral_storeroom, GlobalVars.access_minisat });
 		}
 
 		public static ByTable get_all_centcom_access(  ) {
-			return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_thunder,GlobalVars.access_cent_specops,GlobalVars.access_cent_medical,GlobalVars.access_cent_living,GlobalVars.access_cent_storage,GlobalVars.access_cent_teleporter,GlobalVars.access_cent_captain});
+			return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_thunder, GlobalVars.access_cent_specops, GlobalVars.access_cent_medical, GlobalVars.access_cent_living, GlobalVars.access_cent_storage, GlobalVars.access_cent_teleporter, GlobalVars.access_cent_captain });
 		}
 
 		public static ByTable get_all_centcom_jobs(  ) {
-			return new ByTable(new object [] {"VIP Guest","Custodian","Thunderdome Overseer","Centcom Official","Medical Officer","Death Commando","Research Officer","Special Ops Officer","Admiral","Centcom Commander","Emergency Response Team Commander","Security Response Officer","Engineer Response Officer","Medical Response Officer"});
+			return new ByTable(new object [] { "VIP Guest", "Custodian", "Thunderdome Overseer", "Centcom Official", "Medical Officer", "Death Commando", "Research Officer", "Special Ops Officer", "Admiral", "Centcom Commander", "Emergency Response Team Commander", "Security Response Officer", "Engineer Response Officer", "Medical Response Officer" });
 		}
 
 		public static ByTable get_all_job_icons(  ) {
-			return GlobalFuncs.get_all_jobs() + new ByTable(new object [] {"Prisoner"});
+			return GlobalFuncs.get_all_jobs() + new ByTable(new object [] { "Prisoner" });
 		}
 
 		public static ByTable get_all_jobs(  ) {
-			return new ByTable(new object [] {"Assistant","Captain","Head of Personnel","Bartender","Cook","Botanist","Quartermaster","Cargo Technician","Shaft Miner","Clown","Mime","Janitor","Librarian","Lawyer","Chaplain","Chief Engineer","Station Engineer","Atmospheric Technician","Chief Medical Officer","Medical Doctor","Chemist","Geneticist","Virologist","Research Director","Scientist","Roboticist","Head of Security","Warden","Detective","Security Officer"});
+			return new ByTable(new object [] { "Assistant", "Captain", "Head of Personnel", "Bartender", "Cook", "Botanist", "Quartermaster", "Cargo Technician", "Shaft Miner", "Clown", "Mime", "Janitor", "Librarian", "Lawyer", "Chaplain", "Chief Engineer", "Station Engineer", "Atmospheric Technician", "Chief Medical Officer", "Medical Doctor", "Chemist", "Geneticist", "Virologist", "Research Director", "Scientist", "Roboticist", "Head of Security", "Warden", "Detective", "Security Officer" });
 		}
 
 		public static ByTable get_all_syndicate_access(  ) {
-			return new ByTable(new object [] {GlobalVars.access_syndicate,GlobalVars.access_syndicate});
+			return new ByTable(new object [] { GlobalVars.access_syndicate, GlobalVars.access_syndicate });
 		}
 
 		public static int Get_Angle( dynamic start = null, dynamic end = null ) {
@@ -4293,12 +4287,12 @@ namespace Game13 {
 			}
 			atoms = new ByTable();
 			N = null;
-			foreach (dynamic _ in Game ) {
-				N = _;
+			foreach (dynamic _b in Game._all_ents_ ) {
+				N = _b;
 				if ( Misc13.isValid( areatype.IsInstanceOfType( N ) ) ) {
 					A = null;
-					foreach (dynamic _ in N ) {
-						A = _;
+					foreach (dynamic _a in N ) {
+						A = _a;
 						if ( !( A is BaseStatic ) ) {
 							continue;
 						}
@@ -4321,8 +4315,8 @@ namespace Game13 {
 		public static int get_area_name( dynamic N = null ) {
 			dynamic A = null;
 			A = null;
-			foreach (dynamic _ in Game ) {
-				A = _;
+			foreach (dynamic _a in Game._all_ents_ ) {
+				A = _a;
 				if ( A.name == N ) {
 					return A;
 				}
@@ -4347,12 +4341,12 @@ namespace Game13 {
 			}
 			turfs = new ByTable();
 			N = null;
-			foreach (dynamic _ in Game ) {
-				N = _;
+			foreach (dynamic _b in Game._all_ents_ ) {
+				N = _b;
 				if ( Misc13.isValid( areatype.IsInstanceOfType( N ) ) ) {
 					T = null;
-					foreach (dynamic _ in N ) {
-						T = _;
+					foreach (dynamic _a in N ) {
+						T = _a;
 						turfs += T;
 					};
 				}
@@ -4362,7 +4356,7 @@ namespace Game13 {
 
 		public static ByTable get_both_hands( dynamic M = null ) {
 			ByTable hands = null;
-			hands = new ByTable(new object [] {M.l_hand,M.r_hand});
+			hands = new ByTable(new object [] { M.l_hand, M.r_hand });
 			return hands;
 		}
 
@@ -4378,8 +4372,8 @@ namespace Game13 {
 			candidates = new ByTable();
 			while (!Misc13.isValid( candidates.len ) && afk_bracket < 6000) {
 				G = null;
-				foreach (dynamic _ in GlobalVars.player_list ) {
-					G = _;
+				foreach (dynamic _a in GlobalVars.player_list ) {
+					G = _a;
 					if ( !( G is Mob_Dead_Observer ) ) {
 						continue;
 					}
@@ -4403,55 +4397,55 @@ namespace Game13 {
 		}
 
 		public static ByTable get_centcom_access( dynamic job = null ) {
-			dynamic _ = job; // Was a switch-case, sorry for the mess.
-			if ( _=="VIP Guest" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general});
-			} else if ( _=="Custodian" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_living,GlobalVars.access_cent_storage});
-			} else if ( _=="Thunderdome Overseer" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_thunder});
-			} else if ( _=="Centcom Official" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_living});
-			} else if ( _=="Medical Officer" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_living,GlobalVars.access_cent_medical});
-			} else if ( _=="Death Commando" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_specops,GlobalVars.access_cent_living,GlobalVars.access_cent_storage});
-			} else if ( _=="Research Officer" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_specops,GlobalVars.access_cent_medical,GlobalVars.access_cent_teleporter,GlobalVars.access_cent_storage});
-			} else if ( _=="Special Ops Officer" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_thunder,GlobalVars.access_cent_specops,GlobalVars.access_cent_living,GlobalVars.access_cent_storage});
-			} else if ( _=="Admiral" ) {
+			dynamic _a = job; // Was a switch-case, sorry for the mess.
+			if ( _a=="VIP Guest" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general });
+			} else if ( _a=="Custodian" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_living, GlobalVars.access_cent_storage });
+			} else if ( _a=="Thunderdome Overseer" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_thunder });
+			} else if ( _a=="Centcom Official" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_living });
+			} else if ( _a=="Medical Officer" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_living, GlobalVars.access_cent_medical });
+			} else if ( _a=="Death Commando" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_specops, GlobalVars.access_cent_living, GlobalVars.access_cent_storage });
+			} else if ( _a=="Research Officer" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_specops, GlobalVars.access_cent_medical, GlobalVars.access_cent_teleporter, GlobalVars.access_cent_storage });
+			} else if ( _a=="Special Ops Officer" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_thunder, GlobalVars.access_cent_specops, GlobalVars.access_cent_living, GlobalVars.access_cent_storage });
+			} else if ( _a=="Admiral" ) {
 				return GlobalFuncs.get_all_centcom_access();
-			} else if ( _=="Centcom Commander" ) {
+			} else if ( _a=="Centcom Commander" ) {
 				return GlobalFuncs.get_all_centcom_access();
-			} else if ( _=="Emergency Response Team Commander" ) {
+			} else if ( _a=="Emergency Response Team Commander" ) {
 				return GlobalFuncs.get_ert_access( "commander" );
-			} else if ( _=="Security Response Officer" ) {
+			} else if ( _a=="Security Response Officer" ) {
 				return GlobalFuncs.get_ert_access( "sec" );
-			} else if ( _=="Engineer Response Officer" ) {
+			} else if ( _a=="Engineer Response Officer" ) {
 				return GlobalFuncs.get_ert_access( "eng" );
-			} else if ( _=="Medical Response Officer" ) {
+			} else if ( _a=="Medical Response Officer" ) {
 				return GlobalFuncs.get_ert_access( "med" );
 			};
 		}
 
 		public static string get_centcom_access_desc( dynamic A = null ) {
-			dynamic _ = A; // Was a switch-case, sorry for the mess.
-			if ( _==101 ) {
+			dynamic _a = A; // Was a switch-case, sorry for the mess.
+			if ( _a==101 ) {
 				return "Code Grey";
-			} else if ( _==102 ) {
+			} else if ( _a==102 ) {
 				return "Code Yellow";
-			} else if ( _==106 ) {
+			} else if ( _a==106 ) {
 				return "Code Orange";
-			} else if ( _==105 ) {
+			} else if ( _a==105 ) {
 				return "Code Green";
-			} else if ( _==104 ) {
+			} else if ( _a==104 ) {
 				return "Code White";
-			} else if ( _==107 ) {
+			} else if ( _a==107 ) {
 				return "Code Blue";
-			} else if ( _==103 ) {
+			} else if ( _a==103 ) {
 				return "Code Black";
-			} else if ( _==109 ) {
+			} else if ( _a==109 ) {
 				return "Code Gold";
 			};
 		}
@@ -4462,8 +4456,8 @@ namespace Game13 {
 				return new ByTable();
 			}
 			J = null;
-			foreach (dynamic _ in GlobalVars.SSjob.occupations ) {
-				J = _;
+			foreach (dynamic _a in GlobalVars.SSjob.occupations ) {
+				J = _a;
 				if ( !( J is Job ) ) {
 					continue;
 				}
@@ -4509,15 +4503,15 @@ namespace Game13 {
 		}
 
 		public static ByTable get_ert_access( dynamic _class = null ) {
-			dynamic _ = _class; // Was a switch-case, sorry for the mess.
-			if ( _=="commander" ) {
+			dynamic _a = _class; // Was a switch-case, sorry for the mess.
+			if ( _a=="commander" ) {
 				return GlobalFuncs.get_all_centcom_access();
-			} else if ( _=="sec" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_specops,GlobalVars.access_cent_living});
-			} else if ( _=="eng" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_specops,GlobalVars.access_cent_living,GlobalVars.access_cent_storage});
-			} else if ( _=="med" ) {
-				return new ByTable(new object [] {GlobalVars.access_cent_general,GlobalVars.access_cent_specops,GlobalVars.access_cent_medical,GlobalVars.access_cent_living});
+			} else if ( _a=="sec" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_specops, GlobalVars.access_cent_living });
+			} else if ( _a=="eng" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_specops, GlobalVars.access_cent_living, GlobalVars.access_cent_storage });
+			} else if ( _a=="med" ) {
+				return new ByTable(new object [] { GlobalVars.access_cent_general, GlobalVars.access_cent_specops, GlobalVars.access_cent_medical, GlobalVars.access_cent_living });
 			};
 		}
 
@@ -4530,12 +4524,12 @@ namespace Game13 {
 				temp = GlobalFuncs.sortList( Misc13.types( typeof(BaseStatic) ) - Misc13.types( new ByArea(3137) ) - typeof(BaseStatic) - typeof(BaseDynamic) );
 				GlobalVars.g_fancy_list_of_types = new ByTable( temp.len );
 				type = null;
-				foreach (dynamic _ in temp ) {
-					type = _;
+				foreach (dynamic _b in temp ) {
+					type = _b;
 					typename = "" + type;
 					tn = null;
-					foreach (dynamic _ in GlobalVars.TYPES_SHORTCUTS ) {
-						tn = _;
+					foreach (dynamic _a in GlobalVars.TYPES_SHORTCUTS ) {
+						tn = _a;
 						if ( Misc13.str_sub( typename, 1, "" + tn + "/".Length + 1 ) == "" + tn + "/" ) {
 							typename = GlobalVars.TYPES_SHORTCUTS[tn] + Misc13.str_sub( typename, "" + tn + "/".Length, null );
 							break;
@@ -4569,8 +4563,8 @@ namespace Game13 {
 			}
 			range = GlobalFuncs.get_hear( R, T );
 			A = null;
-			foreach (dynamic _ in range ) {
-				A = _;
+			foreach (dynamic _a in range ) {
+				A = _a;
 				if ( !( A is BaseDynamic ) ) {
 					continue;
 				}
@@ -4592,8 +4586,8 @@ namespace Game13 {
 			if ( M is Mob_Living_Carbon ) {
 				C = M;
 				I = null;
-				foreach (dynamic _ in new ByTable(new object [] {C.back,C.wear_mask,C.head}) ) {
-					I = _;
+				foreach (dynamic _a in new ByTable(new object [] { C.back, C.wear_mask, C.head }) ) {
+					I = _a;
 					if ( !( I is Ent_Item_Clothing ) ) {
 						continue;
 					}
@@ -4604,8 +4598,8 @@ namespace Game13 {
 				if ( C is Mob_Living_Carbon_Human ) {
 					H = C;
 					I = null;
-					foreach (dynamic _ in new ByTable(new object [] {H.wear_suit,H.w_uniform,H.shoes,H.belt,H.gloves,H.glasses,H.ears}) ) {
-						I = _;
+					foreach (dynamic _b in new ByTable(new object [] { H.wear_suit, H.w_uniform, H.shoes, H.belt, H.gloves, H.glasses, H.ears }) ) {
+						I = _b;
 						if ( !( I is Ent_Item ) ) {
 							continue;
 						}
@@ -4615,56 +4609,56 @@ namespace Game13 {
 					};
 				}
 			}
-			dynamic _ = location; // Was a switch-case, sorry for the mess.
-			if ( _=="head" ) {
+			dynamic _c = location; // Was a switch-case, sorry for the mess.
+			if ( _c=="head" ) {
 				if ( ( covered_locations & 1 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="eyes" ) {
+			} else if ( _c=="eyes" ) {
 				if ( ( ( covered_locations & 1 ) != 0 ) || ( ( face_covered & 4 ) != 0 ) || ( ( eyesmouth_covered & 1 ) != 0 ) ) {
 					return 0;
 				}
-			} else if ( _=="mouth" ) {
+			} else if ( _c=="mouth" ) {
 				if ( ( ( covered_locations & 1 ) != 0 ) || ( ( face_covered & 8 ) != 0 ) || ( ( eyesmouth_covered & 8 ) != 0 ) || ( ( eyesmouth_covered & 16 ) != 0 ) ) {
 					return 0;
 				}
-			} else if ( _=="chest" ) {
+			} else if ( _c=="chest" ) {
 				if ( ( covered_locations & 2 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="groin" ) {
+			} else if ( _c=="groin" ) {
 				if ( ( covered_locations & 4 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="l_arm" ) {
+			} else if ( _c=="l_arm" ) {
 				if ( ( covered_locations & 128 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="r_arm" ) {
+			} else if ( _c=="r_arm" ) {
 				if ( ( covered_locations & 256 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="l_leg" ) {
+			} else if ( _c=="l_leg" ) {
 				if ( ( covered_locations & 8 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="r_leg" ) {
+			} else if ( _c=="r_leg" ) {
 				if ( ( covered_locations & 16 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="l_hand" ) {
+			} else if ( _c=="l_hand" ) {
 				if ( ( covered_locations & 512 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="r_hand" ) {
+			} else if ( _c=="r_hand" ) {
 				if ( ( covered_locations & 1024 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="l_foot" ) {
+			} else if ( _c=="l_foot" ) {
 				if ( ( covered_locations & 32 ) != 0 ) {
 					return 0;
 				}
-			} else if ( _=="r_foot" ) {
+			} else if ( _c=="r_foot" ) {
 				if ( ( covered_locations & 64 ) != 0 ) {
 					return 0;
 				}
@@ -4694,8 +4688,8 @@ namespace Game13 {
 			}
 			mobs = GlobalFuncs.sortmobs();
 			M = null;
-			foreach (dynamic _ in mobs ) {
-				M = _;
+			foreach (dynamic _a in mobs ) {
+				M = _a;
 				if ( M.ckey == key ) {
 					return M;
 				}
@@ -4705,8 +4699,8 @@ namespace Game13 {
 		public static dynamic get_mob_by_key( dynamic key = null ) {
 			dynamic M = null;
 			M = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.mob_list ) {
+				M = _a;
 				if ( M.ckey == Misc13.str_lower( key ) ) {
 					return M;
 				}
@@ -4719,8 +4713,8 @@ namespace Game13 {
 			dynamic R = null;
 			_default = new ByTable();
 			R = null;
-			foreach (dynamic _ in radios ) {
-				R = _;
+			foreach (dynamic _a in radios ) {
+				R = _a;
 				if ( !( R is Ent_Item_Device_Radio ) ) {
 					continue;
 				}
@@ -4782,84 +4776,84 @@ namespace Game13 {
 		}
 
 		public static ByTable get_region_accesses( dynamic code = null ) {
-			dynamic _ = code; // Was a switch-case, sorry for the mess.
-			if ( _==0 ) {
+			dynamic _a = code; // Was a switch-case, sorry for the mess.
+			if ( _a==0 ) {
 				return GlobalFuncs.get_all_accesses();
-			} else if ( _==1 ) {
-				return new ByTable(new object [] {GlobalVars.access_kitchen,GlobalVars.access_bar,GlobalVars.access_hydroponics,GlobalVars.access_janitor,GlobalVars.access_chapel_office,GlobalVars.access_crematorium,GlobalVars.access_library,GlobalVars.access_theatre,GlobalVars.access_lawyer});
-			} else if ( _==2 ) {
-				return new ByTable(new object [] {GlobalVars.access_sec_doors,GlobalVars.access_weapons,GlobalVars.access_security,GlobalVars.access_brig,GlobalVars.access_armory,GlobalVars.access_forensics_lockers,GlobalVars.access_court,GlobalVars.access_hos});
-			} else if ( _==3 ) {
-				return new ByTable(new object [] {GlobalVars.access_medical,GlobalVars.access_genetics,GlobalVars.access_morgue,GlobalVars.access_chemistry,GlobalVars.access_virology,GlobalVars.access_surgery,GlobalVars.access_cmo});
-			} else if ( _==4 ) {
-				return new ByTable(new object [] {GlobalVars.access_research,GlobalVars.access_tox,GlobalVars.access_tox_storage,GlobalVars.access_genetics,GlobalVars.access_robotics,GlobalVars.access_xenobiology,GlobalVars.access_minisat,GlobalVars.access_rd});
-			} else if ( _==5 ) {
-				return new ByTable(new object [] {GlobalVars.access_construction,GlobalVars.access_maint_tunnels,GlobalVars.access_engine,GlobalVars.access_engine_equip,GlobalVars.access_external_airlocks,GlobalVars.access_tech_storage,GlobalVars.access_atmospherics,GlobalVars.access_tcomsat,GlobalVars.access_minisat,GlobalVars.access_ce});
-			} else if ( _==6 ) {
-				return new ByTable(new object [] {GlobalVars.access_mailsorting,GlobalVars.access_mining,GlobalVars.access_mining_station,GlobalVars.access_mineral_storeroom,GlobalVars.access_cargo,GlobalVars.access_qm});
-			} else if ( _==7 ) {
-				return new ByTable(new object [] {GlobalVars.access_heads,GlobalVars.access_RC_announce,GlobalVars.access_keycard_auth,GlobalVars.access_change_ids,GlobalVars.access_ai_upload,GlobalVars.access_teleporter,GlobalVars.access_eva,GlobalVars.access_gateway,GlobalVars.access_all_personal_lockers,GlobalVars.access_heads_vault,GlobalVars.access_hop,GlobalVars.access_captain});
+			} else if ( _a==1 ) {
+				return new ByTable(new object [] { GlobalVars.access_kitchen, GlobalVars.access_bar, GlobalVars.access_hydroponics, GlobalVars.access_janitor, GlobalVars.access_chapel_office, GlobalVars.access_crematorium, GlobalVars.access_library, GlobalVars.access_theatre, GlobalVars.access_lawyer });
+			} else if ( _a==2 ) {
+				return new ByTable(new object [] { GlobalVars.access_sec_doors, GlobalVars.access_weapons, GlobalVars.access_security, GlobalVars.access_brig, GlobalVars.access_armory, GlobalVars.access_forensics_lockers, GlobalVars.access_court, GlobalVars.access_hos });
+			} else if ( _a==3 ) {
+				return new ByTable(new object [] { GlobalVars.access_medical, GlobalVars.access_genetics, GlobalVars.access_morgue, GlobalVars.access_chemistry, GlobalVars.access_virology, GlobalVars.access_surgery, GlobalVars.access_cmo });
+			} else if ( _a==4 ) {
+				return new ByTable(new object [] { GlobalVars.access_research, GlobalVars.access_tox, GlobalVars.access_tox_storage, GlobalVars.access_genetics, GlobalVars.access_robotics, GlobalVars.access_xenobiology, GlobalVars.access_minisat, GlobalVars.access_rd });
+			} else if ( _a==5 ) {
+				return new ByTable(new object [] { GlobalVars.access_construction, GlobalVars.access_maint_tunnels, GlobalVars.access_engine, GlobalVars.access_engine_equip, GlobalVars.access_external_airlocks, GlobalVars.access_tech_storage, GlobalVars.access_atmospherics, GlobalVars.access_tcomsat, GlobalVars.access_minisat, GlobalVars.access_ce });
+			} else if ( _a==6 ) {
+				return new ByTable(new object [] { GlobalVars.access_mailsorting, GlobalVars.access_mining, GlobalVars.access_mining_station, GlobalVars.access_mineral_storeroom, GlobalVars.access_cargo, GlobalVars.access_qm });
+			} else if ( _a==7 ) {
+				return new ByTable(new object [] { GlobalVars.access_heads, GlobalVars.access_RC_announce, GlobalVars.access_keycard_auth, GlobalVars.access_change_ids, GlobalVars.access_ai_upload, GlobalVars.access_teleporter, GlobalVars.access_eva, GlobalVars.access_gateway, GlobalVars.access_all_personal_lockers, GlobalVars.access_heads_vault, GlobalVars.access_hop, GlobalVars.access_captain });
 			};
 		}
 
 		public static string get_region_accesses_name( dynamic code = null ) {
-			dynamic _ = code; // Was a switch-case, sorry for the mess.
-			if ( _==0 ) {
+			dynamic _a = code; // Was a switch-case, sorry for the mess.
+			if ( _a==0 ) {
 				return "All";
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return "General";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "Security";
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return "Medbay";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return "Research";
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return "Engineering";
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return "Supply";
-			} else if ( _==7 ) {
+			} else if ( _a==7 ) {
 				return "Command";
 			};
 		}
 
 		public static string get_security_level(  ) {
-			dynamic _ = GlobalVars.security_level; // Was a switch-case, sorry for the mess.
-			if ( _==0 ) {
+			dynamic _a = GlobalVars.security_level; // Was a switch-case, sorry for the mess.
+			if ( _a==0 ) {
 				return "green";
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return "blue";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "red";
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return "delta";
 			};
 		}
 
 		public static dynamic get_sfx( dynamic soundin = null ) {
 			if ( soundin is string ) {
-				dynamic _ = soundin; // Was a switch-case, sorry for the mess.
-				if ( _=="shatter" ) {
+				dynamic _a = soundin; // Was a switch-case, sorry for the mess.
+				if ( _a=="shatter" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(16), new ByRsc(17), new ByRsc(18) });
-				} else if ( _=="explosion" ) {
+				} else if ( _a=="explosion" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(19), new ByRsc(20) });
-				} else if ( _=="sparks" ) {
+				} else if ( _a=="sparks" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(21), new ByRsc(22), new ByRsc(23), new ByRsc(24) });
-				} else if ( _=="rustle" ) {
+				} else if ( _a=="rustle" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(25), new ByRsc(26), new ByRsc(27), new ByRsc(28), new ByRsc(29) });
-				} else if ( _=="bodyfall" ) {
+				} else if ( _a=="bodyfall" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(30), new ByRsc(31), new ByRsc(32), new ByRsc(33) });
-				} else if ( _=="punch" ) {
+				} else if ( _a=="punch" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(34), new ByRsc(35), new ByRsc(36), new ByRsc(37) });
-				} else if ( _=="clownstep" ) {
+				} else if ( _a=="clownstep" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(38), new ByRsc(39) });
-				} else if ( _=="swing_hit" ) {
+				} else if ( _a=="swing_hit" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(40), new ByRsc(41), new ByRsc(42) });
-				} else if ( _=="hiss" ) {
+				} else if ( _a=="hiss" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(43), new ByRsc(44), new ByRsc(45), new ByRsc(46) });
-				} else if ( _=="pageturn" ) {
+				} else if ( _a=="pageturn" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(47), new ByRsc(48), new ByRsc(49) });
-				} else if ( _=="gunshot" ) {
+				} else if ( _a=="gunshot" ) {
 					soundin = Rand.pick(new object [] { new ByRsc(50), new ByRsc(51), new ByRsc(52), new ByRsc(53) });
 				};
 			}
@@ -4875,8 +4869,8 @@ namespace Game13 {
 			ckey = Misc13.ckey( ckey );
 			_default = null;
 			key = null;
-			foreach (dynamic _ in Game.GetConfig( "ban" ) ) {
-				key = _;
+			foreach (dynamic _a in Game.GetConfig( "ban" ) ) {
+				key = _a;
 				if ( Misc13.ckey( key ) == ckey ) {
 					_default = GlobalFuncs.stickyban2list( Game.GetConfig( "ban", key ) );
 					break;
@@ -4886,22 +4880,22 @@ namespace Game13 {
 		}
 
 		public static string get_supply_group_name( dynamic cat = null ) {
-			dynamic _ = cat; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = cat; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				return "Emergency";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "Security";
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return "Engineering";
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				return "Medical";
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return "Science";
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return "Food & Livestock";
-			} else if ( _==7 ) {
+			} else if ( _a==7 ) {
 				return "Raw Materials";
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				return "Miscellaneous";
 			};
 		}
@@ -4947,8 +4941,8 @@ namespace Game13 {
 			b2yerror = 0;
 			errorx = Math.abs( errorx );
 			errory = Math.abs( errory );
-			dynamic _ = target.dir; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = target.dir; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				diry += distance;
 				yoffset += eoffsety;
 				xoffset += eoffsetx;
@@ -4956,7 +4950,7 @@ namespace Game13 {
 				b1yerror -= errory;
 				b2xerror += errorx;
 				b2yerror += errory;
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				diry -= distance;
 				yoffset -= eoffsety;
 				xoffset += eoffsetx;
@@ -4964,7 +4958,7 @@ namespace Game13 {
 				b1yerror -= errory;
 				b2xerror += errorx;
 				b2yerror += errory;
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				dirx += distance;
 				yoffset += eoffsetx;
 				xoffset += eoffsety;
@@ -4972,7 +4966,7 @@ namespace Game13 {
 				b1yerror -= errorx;
 				b2xerror += errory;
 				b2yerror += errorx;
-			} else if ( _==8 ) {
+			} else if ( _a==8 ) {
 				dirx -= distance;
 				yoffset -= eoffsetx;
 				xoffset += eoffsety;
@@ -4987,8 +4981,8 @@ namespace Game13 {
 					destination_list = new ByTable();
 					center = Misc13.locate3( destination.x + xoffset, destination.y + yoffset, location.z );
 					T = null;
-					foreach (dynamic _ in Misc13.block( Misc13.locate3( center.x + b1xerror, center.y + b1yerror, location.z ), Misc13.locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
-						T = _;
+					foreach (dynamic _b in Misc13.block( Misc13.locate3( center.x + b1xerror, center.y + b1yerror, location.z ), Misc13.locate3( center.x + b2xerror, center.y + b2yerror, location.z ) ) ) {
+						T = _b;
 						if ( ( density != 0 ) && Misc13.isValid( T.density ) ) {
 							continue;
 						}
@@ -5087,9 +5081,9 @@ namespace Game13 {
 			if ( !Misc13.isValid( GlobalVars.uplink_items.len ) ) {
 				last = new ByTable();
 				item = null;
-				foreach (dynamic _ in Misc13.types( typeof(UplinkItem) ) ) {
-					item = _;
-					I = item();
+				foreach (dynamic _a in Misc13.types( typeof(UplinkItem) ) ) {
+					item = _a;
+					I = Misc13.call( item );
 					if ( !Misc13.isValid( I.item ) ) {
 						continue;
 					}
@@ -5103,8 +5097,8 @@ namespace Game13 {
 					GlobalVars.uplink_items[I.category] += I;
 				};
 				I = null;
-				foreach (dynamic _ in last ) {
-					I = _;
+				foreach (dynamic _b in last ) {
+					I = _b;
 					if ( !( I is UplinkItem ) ) {
 						continue;
 					}
@@ -5116,11 +5110,11 @@ namespace Game13 {
 			}
 			filtered_uplink_items = new ByTable();
 			category = null;
-			foreach (dynamic _ in GlobalVars.uplink_items ) {
-				category = _;
+			foreach (dynamic _d in GlobalVars.uplink_items ) {
+				category = _d;
 				I = null;
-				foreach (dynamic _ in GlobalVars.uplink_items[category] ) {
-					I = _;
+				foreach (dynamic _c in GlobalVars.uplink_items[category] ) {
+					I = _c;
 					if ( !( I is UplinkItem ) ) {
 						continue;
 					}
@@ -5154,8 +5148,8 @@ namespace Game13 {
 			dynamic P = null;
 			_default = new ByTable();
 			P = null;
-			foreach (dynamic _ in GlobalVars.PDAs ) {
-				P = _;
+			foreach (dynamic _a in GlobalVars.PDAs ) {
+				P = _a;
 				if ( !( P is Ent_Item_Device_Pda ) ) {
 					continue;
 				}
@@ -5206,15 +5200,15 @@ namespace Game13 {
 			if ( hex.Length == 7 ) {
 				hex += "FF";
 			}
-			hi1 = Misc13.conv_text2ascii( hex, 2 );
-			lo1 = Misc13.conv_text2ascii( hex, 3 );
-			hi2 = Misc13.conv_text2ascii( hex, 4 );
-			lo2 = Misc13.conv_text2ascii( hex, 5 );
-			hi3 = Misc13.conv_text2ascii( hex, 6 );
-			lo3 = Misc13.conv_text2ascii( hex, 7 );
-			hi4 = Misc13.conv_text2ascii( hex, 8 );
-			lo4 = Misc13.conv_text2ascii( hex, 9 );
-			return new ByTable(new object [] {( hi1 >= 65 ? hi1 - 55 : hi1 - 48 ) << 4 | ( lo1 >= 65 ? lo1 - 55 : lo1 - 48 ),( hi2 >= 65 ? hi2 - 55 : hi2 - 48 ) << 4 | ( lo2 >= 65 ? lo2 - 55 : lo2 - 48 ),( hi3 >= 65 ? hi3 - 55 : hi3 - 48 ) << 4 | ( lo3 >= 65 ? lo3 - 55 : lo3 - 48 ),( hi4 >= 65 ? hi4 - 55 : hi4 - 48 ) << 4 | ( lo4 >= 65 ? lo4 - 55 : lo4 - 48 )});
+			hi1 = Misc13.str_getCharCode( hex, 2 );
+			lo1 = Misc13.str_getCharCode( hex, 3 );
+			hi2 = Misc13.str_getCharCode( hex, 4 );
+			lo2 = Misc13.str_getCharCode( hex, 5 );
+			hi3 = Misc13.str_getCharCode( hex, 6 );
+			lo3 = Misc13.str_getCharCode( hex, 7 );
+			hi4 = Misc13.str_getCharCode( hex, 8 );
+			lo4 = Misc13.str_getCharCode( hex, 9 );
+			return new ByTable(new object [] { ( hi1 >= 65 ? hi1 - 55 : hi1 - 48 ) << 4 | ( lo1 >= 65 ? lo1 - 55 : lo1 - 48 ), ( hi2 >= 65 ? hi2 - 55 : hi2 - 48 ) << 4 | ( lo2 >= 65 ? lo2 - 55 : lo2 - 48 ), ( hi3 >= 65 ? hi3 - 55 : hi3 - 48 ) << 4 | ( lo3 >= 65 ? lo3 - 55 : lo3 - 48 ), ( hi4 >= 65 ? hi4 - 55 : hi4 - 48 ) << 4 | ( lo4 >= 65 ? lo4 - 55 : lo4 - 48 ) });
 		}
 
 		public static dynamic GetExp( dynamic minutes = null ) {
@@ -5285,13 +5279,13 @@ namespace Game13 {
 				defdir = A.dir;
 			}
 			if ( deficon == null ) {
-				deficon = A.icon;
+				deficon = null.icon;
 			}
 			if ( defstate == null ) {
-				defstate = A.icon_state;
+				defstate = null.icon_state;
 			}
 			if ( defblend == null ) {
-				defblend = A.blend_mode;
+				defblend = null.blend_mode;
 			}
 			flat = new Icon( new ByRsc(11), "nothing" );
 			if ( !Misc13.isValid( A ) ) {
@@ -5395,8 +5389,8 @@ namespace Game13 {
 			addY1 = null;
 			addY2 = null;
 			I = null;
-			foreach (dynamic _ in layers ) {
-				I = _;
+			foreach (dynamic _a in layers ) {
+				I = _a;
 				if ( I.alpha == 0 ) {
 					continue;
 				}
@@ -5449,7 +5443,7 @@ namespace Game13 {
 					if ( Misc13.isValid( AM ) ) {
 						AM.loc = second_arg[1];
 					}
-					pooled.New.BTCall( second_arg );
+					second_arg.apply( pooled.GetType().GetMethod( "New" ) );
 				} else {
 					if ( Misc13.isValid( AM ) ) {
 						AM.loc = second_arg;
@@ -5484,8 +5478,8 @@ namespace Game13 {
 			Icon image_overlay = null;
 			alpha_mask = new Icon( A.icon, A.icon_state );
 			I = null;
-			foreach (dynamic _ in A.overlays ) {
-				I = _;
+			foreach (dynamic _a in A.overlays ) {
+				I = _a;
 				if ( I.layer > A.layer ) {
 					continue;
 				}
@@ -5522,7 +5516,7 @@ namespace Game13 {
 					letter = Misc13.str_lower( letter );
 				}
 			}
-			text_image = typeof(Image).BTNew( new ByTable().set( "loc", A ) );
+			text_image = new ByTable().set( "loc", A ).applyCtor( typeof(Image) );
 			text_image.maptext = "<font size = 4>" + letter + "</font>";
 			text_image.color = GlobalFuncs.AverageColour( atom_icon );
 			text_image.pixel_x = 7;
@@ -5547,7 +5541,7 @@ namespace Game13 {
 			int j = 0;
 			px = M.x;
 			py = M.y;
-			line = new ByTable(new object [] {Misc13.locate3( px, py, M.z )});
+			line = new ByTable(new object [] { Misc13.locate3( px, py, M.z ) });
 			dx = N.x - px;
 			dy = N.y - py;
 			dxabs = Math.abs( dx );
@@ -5596,8 +5590,8 @@ namespace Game13 {
 			creatures = new ByTable();
 			namecounts = new ByTable();
 			M = null;
-			foreach (dynamic _ in mobs ) {
-				M = _;
+			foreach (dynamic _a in mobs ) {
+				M = _a;
 				name = M.name;
 				if ( Misc13.isValid( names.HasValue( name ) ) ) {
 					namecounts[name]++;
@@ -5651,7 +5645,7 @@ namespace Game13 {
 			string letter = null;
 			int j = 0;
 			returntext = "";
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= t.Length) {
 				letter = Misc13.str_sub( t, i, i + 1 );
@@ -5659,7 +5653,7 @@ namespace Game13 {
 					if ( p >= 70 ) {
 						letter = "";
 					}
-					j = null;
+					j = 0;
 					j = 1;
 					while (j <= Rand.Int( 0, 2 )) {
 						letter += Rand.pick(new object [] { "#", "@", "*", "&", "%", "$", "/", "<", ">", ";", "*", "*", "*", "*", "*", "*", "*" });
@@ -5681,7 +5675,7 @@ namespace Game13 {
 			traitor_mob.write( "<B>Code Phrase</B>: <span class='danger'>" + GlobalVars.syndicate_code_phrase + "</span>" );
 			traitor_mob.write( "<B>Code Response</B>: <span class='danger'>" + GlobalVars.syndicate_code_response + "</span>" );
 			traitor_mob.mind.store_memory( "<b>Code Phrase</b>: " + GlobalVars.syndicate_code_phrase );
-			traitor_mob.store_memory( "<b>Code Response</b>: " + GlobalVars.syndicate_code_response );
+			traitor_mob.mind.store_memory( "<b>Code Response</b>: " + GlobalVars.syndicate_code_response );
 			traitor_mob.write( "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe." );
 		}
 
@@ -5693,8 +5687,8 @@ namespace Game13 {
 			}
 			locdir = Misc13.get_step( loc, dir );
 			O = null;
-			foreach (dynamic _ in loc ) {
-				O = _;
+			foreach (dynamic _a in loc ) {
+				O = _a;
 				if ( !( O is Entity ) ) {
 					continue;
 				}
@@ -5721,8 +5715,8 @@ namespace Game13 {
 				}
 			};
 			O = null;
-			foreach (dynamic _ in locdir ) {
-				O = _;
+			foreach (dynamic _b in locdir ) {
+				O = _b;
 				if ( !( O is Entity ) ) {
 					continue;
 				}
@@ -5827,8 +5821,8 @@ namespace Game13 {
 				if ( damaged.Length > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 ) {
 					user.write( "<span class='info'>	Damage: <span class='info'><font color='red'>Brute</font></span>-<font color='#FF8000'>Burn</font>-<font color='green'>Toxin</font>-<font color='blue'>Suffocation</font>\n		Specifics: <font color='red'>" + brute_loss + "</font>-<font color='#FF8000'>" + fire_loss + "</font>-<font color='green'>" + tox_loss + "</font>-<font color='blue'>" + oxy_loss + "</font></span>" );
 					org = null;
-					foreach (dynamic _ in damaged ) {
-						org = _;
+					foreach (dynamic _a in damaged ) {
+						org = _a;
 						if ( !( org is Ent_Item_Organ_Limb ) ) {
 							continue;
 						}
@@ -5845,8 +5839,8 @@ namespace Game13 {
 				user.write( "<span class='info'>Time of Death:</span> " + M.tod );
 			}
 			D = null;
-			foreach (dynamic _ in M.viruses ) {
-				D = _;
+			foreach (dynamic _b in M.viruses ) {
+				D = _b;
 				if ( !( D is Disease ) ) {
 					continue;
 				}
@@ -5874,8 +5868,8 @@ namespace Game13 {
 				}
 				implant_detect = null;
 				CI = null;
-				foreach (dynamic _ in H.internal_organs ) {
-					CI = _;
+				foreach (dynamic _c in H.internal_organs ) {
+					CI = _c;
 					if ( !( CI is Ent_Item_Organ_Internal_Cyberimp ) ) {
 						continue;
 					}
@@ -5939,18 +5933,18 @@ namespace Game13 {
 			if ( hex is string ) {
 				negative = 0;
 				len = hex.Length;
-				i = null;
+				i = 0;
 				i = 1;
 				while (i <= len) {
-					num = Misc13.conv_text2ascii( hex, i );
-					dynamic _ = num; // Was a switch-case, sorry for the mess.
-					if ( 48<=_&&_<=57 ) {
+					num = Misc13.str_getCharCode( hex, i );
+					dynamic _a = num; // Was a switch-case, sorry for the mess.
+					if ( 48<=_a&&_a<=57 ) {
 						num -= 48;
-					} else if ( 97<=_&&_<=102 ) {
+					} else if ( 97<=_a&&_a<=102 ) {
 						num -= 87;
-					} else if ( 65<=_&&_<=70 ) {
+					} else if ( 65<=_a&&_a<=70 ) {
 						num -= 55;
-					} else if ( _==45 ) {
+					} else if ( _a==45 ) {
 						negative = 1;
 					} else {
 						if ( Misc13.isValid( num ) ) {
@@ -6028,8 +6022,8 @@ namespace Game13 {
 			if ( !Misc13.isValid( ByTable.IsInstanceOfType( L ) ) ) {
 				L = new ByTable();
 				path = null;
-				foreach (dynamic _ in Misc13.types( prototype ) ) {
-					path = _;
+				foreach (dynamic _a in Misc13.types( prototype ) ) {
+					path = _a;
 					if ( path == prototype ) {
 						continue;
 					}
@@ -6052,21 +6046,21 @@ namespace Game13 {
 				female = new ByTable();
 			}
 			path = null;
-			foreach (dynamic _ in Misc13.types( prototype ) ) {
-				path = _;
+			foreach (dynamic _b in Misc13.types( prototype ) ) {
+				path = _b;
 				if ( path == prototype ) {
 					continue;
 				}
-				D = path();
+				D = Misc13.call( path );
 				if ( Misc13.isValid( D.icon_state ) ) {
 					L[D.name] = D;
 				} else {
 					L += D.name;
 				}
-				dynamic _ = D.gender; // Was a switch-case, sorry for the mess.
-				if ( _=="male" ) {
+				dynamic _a = D.gender; // Was a switch-case, sorry for the mess.
+				if ( _a=="male" ) {
 					male += D.name;
-				} else if ( _=="female" ) {
+				} else if ( _a=="female" ) {
 					female += D.name;
 				} else {
 					male += D.name;
@@ -6082,12 +6076,12 @@ namespace Game13 {
 				L = new ByTable();
 			}
 			path = null;
-			foreach (dynamic _ in Misc13.types( prototype ) ) {
-				path = _;
+			foreach (dynamic _a in Misc13.types( prototype ) ) {
+				path = _a;
 				if ( path == prototype ) {
 					continue;
 				}
-				L += path();
+				L += Misc13.call( path );
 			};
 			return L;
 		}
@@ -6105,8 +6099,8 @@ namespace Game13 {
 			GlobalVars.swapmaps_byname = new ByTable();
 			if ( Misc13.isValid( GlobalVars.swapmaps_iconcache ) ) {
 				V = null;
-				foreach (dynamic _ in GlobalVars.swapmaps_iconcache ) {
-					V = _;
+				foreach (dynamic _a in GlobalVars.swapmaps_iconcache ) {
+					V = _a;
 					GlobalVars.swapmaps_iconcache[GlobalVars.swapmaps_iconcache[V]] = V;
 				};
 			}
@@ -6173,23 +6167,23 @@ namespace Game13 {
 
 		public static dynamic intent_numeric( dynamic argument = null ) {
 			if ( argument is string ) {
-				dynamic _ = argument; // Was a switch-case, sorry for the mess.
-				if ( _=="help" ) {
+				dynamic _a = argument; // Was a switch-case, sorry for the mess.
+				if ( _a=="help" ) {
 					return 0;
-				} else if ( _=="disarm" ) {
+				} else if ( _a=="disarm" ) {
 					return 1;
-				} else if ( _=="grab" ) {
+				} else if ( _a=="grab" ) {
 					return 2;
 				} else {
 					return 3;
 				};
 			} else {
-				dynamic _ = argument; // Was a switch-case, sorry for the mess.
-				if ( _==0 ) {
+				dynamic _b = argument; // Was a switch-case, sorry for the mess.
+				if ( _b==0 ) {
 					return "help";
-				} else if ( _==1 ) {
+				} else if ( _b==1 ) {
 					return "disarm";
-				} else if ( _==2 ) {
+				} else if ( _b==2 ) {
 					return "grab";
 				} else {
 					return "harm";
@@ -6218,7 +6212,7 @@ namespace Game13 {
 			if ( !( mind is Mind ) ) {
 				return 0;
 			}
-			if ( mind.current is Mob_Living_Carbon_Human && Misc13.isValid( new ByTable(new object [] {"Captain","Chaplain"}).HasValue( mind.assigned_role ) ) ) {
+			if ( mind.current is Mob_Living_Carbon_Human && Misc13.isValid( new ByTable(new object [] { "Captain", "Chaplain" }).HasValue( mind.assigned_role ) ) ) {
 				return 0;
 			}
 			if ( GlobalFuncs.isloyal( mind.current ) != 0 ) {
@@ -6311,7 +6305,7 @@ namespace Game13 {
 				} else if ( M is Mob_Living_Silicon_Ai ) {
 					A = M;
 					if ( Misc13.isValid( A.laws ) && Misc13.isValid( A.laws.zeroth ) && Misc13.isValid( A.mind ) && Misc13.isValid( A.mind.special_role ) ) {
-						if ( Misc13.isValid( GlobalVars.ticker.mode.malf_ai.HasValue( GlobalVars.ticker.config_tag == "malfunction" && Misc13.isValid( M.mind ) ) ) ) {
+						if ( Misc13.isValid( GlobalVars.ticker.mode.malf_ai.HasValue( GlobalVars.ticker.mode.config_tag == "malfunction" && Misc13.isValid( M.mind ) ) ) ) {
 							return 2;
 						}
 						return 1;
@@ -6320,33 +6314,33 @@ namespace Game13 {
 				return 0;
 			}
 			if ( Misc13.isValid( M.mind ) && Misc13.isValid( M.mind.special_role ) ) {
-				dynamic _ = GlobalVars.ticker.mode.config_tag; // Was a switch-case, sorry for the mess.
-				if ( _=="revolution" ) {
-					if ( Misc13.isValid( GlobalVars.ticker.head_revolutionaries.HasValue( M.mind ) ) || Misc13.isValid( GlobalVars.ticker.mode.revolutionaries.HasValue( M.mind ) ) ) {
+				dynamic _a = GlobalVars.ticker.mode.config_tag; // Was a switch-case, sorry for the mess.
+				if ( _a=="revolution" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.head_revolutionaries.HasValue( M.mind ) ) || Misc13.isValid( GlobalVars.ticker.mode.revolutionaries.HasValue( M.mind ) ) ) {
 						return 2;
 					}
-				} else if ( _=="cult" ) {
-					if ( Misc13.isValid( M.cult.HasValue( M.mind ) ) ) {
+				} else if ( _a=="cult" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.cult.HasValue( M.mind ) ) ) {
 						return 2;
 					}
-				} else if ( _=="nuclear" ) {
-					if ( Misc13.isValid( M.syndicates.HasValue( M.mind ) ) ) {
+				} else if ( _a=="nuclear" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.syndicates.HasValue( M.mind ) ) ) {
 						return 2;
 					}
-				} else if ( _=="changeling" ) {
-					if ( Misc13.isValid( M.changelings.HasValue( M.mind ) ) ) {
+				} else if ( _a=="changeling" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.changelings.HasValue( M.mind ) ) ) {
 						return 2;
 					}
-				} else if ( _=="wizard" ) {
-					if ( Misc13.isValid( M.wizards.HasValue( M.mind ) ) ) {
+				} else if ( _a=="wizard" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.wizards.HasValue( M.mind ) ) ) {
 						return 2;
 					}
-				} else if ( _=="monkey" ) {
+				} else if ( _a=="monkey" ) {
 					if ( Misc13.isValid( M.viruses ) && Misc13.isValid( Misc13.locate_in( typeof(Disease_Transformation_JungleFever), M.viruses ) ) ) {
 						return 2;
 					}
-				} else if ( _=="abductor" ) {
-					if ( Misc13.isValid( M.abductors.HasValue( M.mind ) ) ) {
+				} else if ( _a=="abductor" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.abductors.HasValue( M.mind ) ) ) {
 						return 2;
 					}
 				};
@@ -6362,8 +6356,8 @@ namespace Game13 {
 		public static int is_type_in_list( dynamic A = null, dynamic L = null ) {
 			dynamic type = null;
 			type = null;
-			foreach (dynamic _ in L ) {
-				type = _;
+			foreach (dynamic _a in L ) {
+				type = _a;
 				if ( Misc13.isValid( type.IsInstanceOfType( A ) ) ) {
 					return 1;
 				}
@@ -6396,7 +6390,7 @@ namespace Game13 {
 			len = key.Length;
 			i = 7;
 			while (i <= len) {
-				ch = Misc13.conv_text2ascii( key, i );
+				ch = Misc13.str_getCharCode( key, i );
 				if ( ch < 48 || ch > 57 ) {
 					return 0;
 				}
@@ -6431,8 +6425,8 @@ namespace Game13 {
 		public static int isloyal( dynamic A = null ) {
 			dynamic L = null;
 			L = null;
-			foreach (dynamic _ in A ) {
-				L = _;
+			foreach (dynamic _a in A ) {
+				L = _a;
 				if ( !( L is Ent_Item_Weapon_Implant_Loyalty ) ) {
 					continue;
 				}
@@ -6517,8 +6511,8 @@ namespace Game13 {
 			dynamic text = null;
 			if ( Misc13.isValid( M ) && Misc13.isValid( rank ) ) {
 				s = null;
-				foreach (dynamic _ in GlobalVars.jobban_keylist ) {
-					s = _;
+				foreach (dynamic _a in GlobalVars.jobban_keylist ) {
+					s = _a;
 					if ( Misc13.str_find( s, "" + M.ckey + " - " + rank, 1, null ) == 1 ) {
 						startpos = Misc13.str_find( s, "## ", 1, null ) + 3;
 						if ( Misc13.isValid( startpos ) && startpos < s.Length ) {
@@ -6536,7 +6530,7 @@ namespace Game13 {
 
 		public static int jobban_remove( dynamic X = null ) {
 			int i = 0;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= GlobalVars.jobban_keylist.Length) {
 				if ( Misc13.isValid( Misc13.str_find( GlobalVars.jobban_keylist[i], "" + X, 1, null ) ) ) {
@@ -6567,7 +6561,7 @@ namespace Game13 {
 			dynamic key = null;
 			dynamic ckey = null;
 			if ( include_link == null ) {
-				include_link = null;
+				include_link = 0;
 			}
 			if ( include_name == null ) {
 				include_name = 1;
@@ -6655,21 +6649,21 @@ namespace Game13 {
 			ByTable mobs_found = null;
 			dynamic original_word = null;
 			dynamic found = null;
-			adminhelp_ignored_words = new ByTable(new object [] {"unknown","the","a","an","of","monkey","alien","as","i"});
+			adminhelp_ignored_words = new ByTable(new object [] { "unknown", "the", "a", "an", "of", "monkey", "alien", "as", "i" });
 			msglist = GlobalFuncs.text2list( msg, " " );
 			surnames = new ByTable();
 			forenames = new ByTable();
 			ckeys = new ByTable();
 			M = null;
-			foreach (dynamic _ in GlobalVars.mob_list ) {
-				M = _;
-				indexing = new ByTable(new object [] {M.real_name,M.name});
+			foreach (dynamic _b in GlobalVars.mob_list ) {
+				M = _b;
+				indexing = new ByTable(new object [] { M.real_name, M.name });
 				if ( Misc13.isValid( M.mind ) ) {
 					indexing += M.mind.name;
 				}
 				_string = null;
-				foreach (dynamic _ in indexing ) {
-					_string = _;
+				foreach (dynamic _a in indexing ) {
+					_string = _a;
 					L = GlobalFuncs.text2list( _string, " " );
 					surname_found = 0;
 					i = null;
@@ -6683,7 +6677,7 @@ namespace Game13 {
 						}
 						i--;
 					}
-					i = null;
+					i = 0;
 					i = 1;
 					while (i < surname_found) {
 						word = Misc13.ckey( L[i] );
@@ -6699,8 +6693,8 @@ namespace Game13 {
 			msg = "";
 			mobs_found = new ByTable();
 			original_word = null;
-			foreach (dynamic _ in msglist ) {
-				original_word = _;
+			foreach (dynamic _c in msglist ) {
+				original_word = _c;
 				word = Misc13.ckey( original_word );
 				if ( Misc13.isValid( word ) ) {
 					if ( !Misc13.isValid( adminhelp_ignored_words.HasValue( word ) ) ) {
@@ -6740,8 +6734,8 @@ namespace Game13 {
 			}
 			kicked_client_names = new ByTable();
 			C = null;
-			foreach (dynamic _ in GlobalVars.clients ) {
-				C = _;
+			foreach (dynamic _a in GlobalVars.clients ) {
+				C = _a;
 				if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( C ) ) ) {
 					continue;
 				}
@@ -6857,8 +6851,8 @@ namespace Game13 {
 			if ( Misc13.isValid( ByTable.IsInstanceOfType( L ) ) ) {
 				i = 1;
 				thing = null;
-				foreach (dynamic _ in L ) {
-					thing = _;
+				foreach (dynamic _a in L ) {
+					thing = _a;
 					if ( thing != null ) {
 						i++;
 						continue;
@@ -6886,8 +6880,8 @@ namespace Game13 {
 			dynamic mob = null;
 			living_player_count = 0;
 			mob = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				mob = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				mob = _a;
 				if ( Misc13.isValid( GlobalVars.living_mob_list.HasValue( mob ) ) ) {
 					living_player_count += 1;
 				}
@@ -6916,8 +6910,8 @@ namespace Game13 {
 			if ( Misc13.isValid( GlobalVars.config.admin_legacy_system ) ) {
 				previous_rights = 0;
 				line = null;
-				foreach (dynamic _ in GlobalFuncs.file2list( "config/admin_ranks.txt" ) ) {
-					line = _;
+				foreach (dynamic _a in GlobalFuncs.file2list( "config/admin_ranks.txt" ) ) {
+					line = _a;
 					if ( !Misc13.isValid( line ) ) {
 						continue;
 					}
@@ -7081,8 +7075,8 @@ namespace Game13 {
 			new_rating = Misc13.input( "Enter new rating:", "Num", null, null, null, 8 );
 			if ( Misc13.isValid( new_rating ) && Misc13.isValid( M.component_parts ) ) {
 				P = null;
-				foreach (dynamic _ in M.component_parts ) {
-					P = _;
+				foreach (dynamic _a in M.component_parts ) {
+					P = _a;
 					if ( !( P is Ent_Item_Weapon_StockParts ) ) {
 						continue;
 					}
@@ -7097,14 +7091,14 @@ namespace Game13 {
 			dynamic A = null;
 			dynamic D = null;
 			A = null;
-			foreach (dynamic _ in Game ) {
-				A = _;
+			foreach (dynamic _b in Game._all_ents_ ) {
+				A = _b;
 				if ( !Misc13.isValid( new ByArea(2826).IsInstanceOfType( A ) ) ) {
 					continue;
 				}
 				D = null;
-				foreach (dynamic _ in A ) {
-					D = _;
+				foreach (dynamic _a in A ) {
+					D = _a;
 					if ( !( D is Ent_Machinery_Door_Airlock ) ) {
 						continue;
 					}
@@ -7146,54 +7140,54 @@ namespace Game13 {
 			areapoints = 0;
 			theme = "organharvest";
 			walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random), 1 ).set( typeof(Tile_Simulated_Wall), 3 );
-			floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plasteel)});
+			floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel) });
 			treasureitems = new ByTable();
 			fluffitems = new ByTable();
 			x_size = Rand.Int( 3, 7 );
 			y_size = Rand.Int( 3, 7 );
 			areapoints = x_size * y_size;
-			dynamic _ = Rand.pick( GlobalVars.possiblethemes ); // Was a switch-case, sorry for the mess.
-			if ( _=="organharvest" ) {
+			dynamic _a = Rand.pick( GlobalVars.possiblethemes ); // Was a switch-case, sorry for the mess.
+			if ( _a=="organharvest" ) {
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall), 2 ).set( typeof(Tile_Simulated_Wall_RWall), 2 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plasteel),typeof(Tile_Simulated_Floor_Engine)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel), typeof(Tile_Simulated_Floor_Engine) });
 				treasureitems = new ByTable().set( typeof(Ent_Structure_Closet_Critter_Cat), 2 ).set( typeof(Ent_Item_Weapon_CircularSaw), 1 ).set( typeof(Ent_Machinery_Bot_Medbot_Mysterious), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Glasses_Hud_Health), 1 ).set( typeof(Ent_Item_Device_MassSpectrometer_Adv), 1 ).set( typeof(Ent_Item_Weapon_SurgicalDrapes), 2 ).set( typeof(Ent_Item_Weapon_Tank_Internals_Anesthetic), 1 ).set( typeof(Ent_Item_Weapon_Storage_Firstaid_Regular), 3 ).set( typeof(Ent_Item_Weapon_Scalpel), 1 ).set( typeof(Ent_Structure_Optable), 1 ).set( typeof(Ent_Structure_Closet_Crate_Freezer), 2 ).set( typeof(Ent_Item_Organ_Internal_Appendix), 2 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 5 );
-			} else if ( _=="cult" ) {
+			} else if ( _a=="cult" ) {
 				theme = "cult";
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall_Cult), 3 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plasteel_Cult)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel_Cult) });
 				treasureitems = new ByTable().set( typeof(Mob_Living_SimpleAnimal_Hostile_Creature), 3 ).set( typeof(Ent_Item_Clothing_Suit_Cultrobes), 2 ).set( typeof(Ent_Item_Weapon_Bedsheet_Cult), 2 ).set( typeof(Ent_Item_Clothing_Suit_Space_Cult), 1 ).set( typeof(Ent_Item_Device_Soulstone_Anybody), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Shoes_Cult), 1 ).set( typeof(Ent_Item_Clothing_Head_Helmet_Space_Cult), 1 ).set( typeof(Ent_Item_Weapon_Ectoplasm), 3 ).set( typeof(Ent_Structure_Table_Wood), 2 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 4 ).set( typeof(Ent_Item_Organ_Internal_Heart), 2 ).set( typeof(Ent_Item_Toy_Crayon_Red), 2 ).set( typeof(Ent_Structure_Cult_Talisman), 1 ).set( typeof(Ent_Effect_Gibspawner), 1 ).set( typeof(Ent_Effect_Gateway), 1 );
-			} else if ( _=="wizden" ) {
+			} else if ( _a=="wizden" ) {
 				theme = "wizden";
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall_Mineral_Plasma), 3 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Wood)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Wood) });
 				treasureitems = new ByTable().set( typeof(Ent_Item_Voodoo), 3 ).set( typeof(Ent_Item_Toy_Katana), 3 ).set( typeof(Ent_Structure_Constructshell), 1 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Smoke), 1 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Forcewall), 1 ).set( typeof(Ent_Item_Clothing_Head_Wizard_Red), 2 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Blind), 1 ).set( typeof(Ent_Item_Weapon_Veilrender_Vealrender), 2 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_Coin_Mythril), 3 ).set( typeof(Ent_Effect_Decal_Cleanable_Dirt), 3 ).set( typeof(Ent_Item_Weapon_Staff), 2 ).set( typeof(Ent_Item_Weapon_Dice), 3 ).set( typeof(Ent_Item_Trash_Candle), 3 ).set( typeof(Ent_Item_Weapon_Storage_Belt_Soulstone), 1 ).set( typeof(Ent_Structure_Dresser), 1 ).set( typeof(Ent_Structure_Safe_Floor), 1 );
-			} else if ( _=="cavein" ) {
+			} else if ( _a=="cavein" ) {
 				theme = "cavein";
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless),typeof(Tile_Simulated_Floor_Plating_Beach_Sand)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless), typeof(Tile_Simulated_Floor_Plating_Beach_Sand) });
 				treasureitems = new ByTable().set( typeof(Ent_Item_Weapon_Pickaxe_Drill_Jackhammer), 5 ).set( typeof(Ent_Item_Weapon_Resonator), 1 ).set( typeof(Ent_Item_Weapon_Gun_Energy_KineticAccelerator), 1 ).set( typeof(Ent_Item_Weapon_Pickaxe_Drill_Diamonddrill), 2 ).set( typeof(Ent_Mecha_Working_Ripley_Mining), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_Tank_Internals_Oxygen_Red), 2 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown_Chili), 1 ).set( typeof(Ent_Item_Clothing_Under_Overalls), 1 ).set( typeof(Ent_Effect_Decal_Remains_Human), 1 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 3 );
-			} else if ( _=="xenoden" ) {
+			} else if ( _a=="xenoden" ) {
 				theme = "xenoden";
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless),typeof(Tile_Simulated_Floor_Plating_Beach_Sand)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless), typeof(Tile_Simulated_Floor_Plating_Beach_Sand) });
 				treasureitems = new ByTable().set( typeof(Ent_Item_Clothing_Mask_Facehugger), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Effect_Decal_Cleanable_Xenoblood_Xsplatter), 5 ).set( typeof(Ent_Effect_Decal_Remains_Human), 1 );
-			} else if ( _=="hitech" ) {
+			} else if ( _a=="hitech" ) {
 				theme = "hitech";
 				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random), 1 ).set( typeof(Tile_Simulated_Wall_RWall), 5 );
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Greengrid),typeof(Tile_Simulated_Floor_Bluegrid)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Greengrid), typeof(Tile_Simulated_Floor_Bluegrid) });
 				treasureitems = new ByTable().set( typeof(Ent_Machinery_Biogenerator), 1 ).set( typeof(Ent_Machinery_RND_Protolathe), 1 ).set( typeof(Ent_Machinery_Computer_Telescience), 1 ).set( typeof(Ent_Machinery_ChemDispenser_Constructable), 1 ).set( typeof(Ent_Item_Weapon_StockParts_Cell_Hyper), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Structure_MechaWreckage_Phazon), 1 ).set( typeof(Ent_Item_Device_Pda_Clear), 1 ).set( typeof(Ent_Item_Weapon_StockParts_Capacitor_Super), 3 ).set( typeof(Ent_Item_Weapon_StockParts_Manipulator_Pico), 3 ).set( typeof(Ent_Item_Weapon_StockParts_MatterBin_Super), 3 ).set( typeof(Ent_Item_Weapon_StockParts_ScanningModule_Phasic), 3 ).set( typeof(Ent_Structure_Table_Reinforced), 2 );
-			} else if ( _=="speakeasy" ) {
+			} else if ( _a=="speakeasy" ) {
 				theme = "speakeasy";
-				floortypes = new ByTable(new object [] {typeof(Tile_Simulated_Floor_Plasteel),typeof(Tile_Simulated_Floor_Wood)});
+				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel), typeof(Tile_Simulated_Floor_Wood) });
 				treasureitems = new ByTable().set( typeof(Ent_Machinery_Vending_Coffee), 3 ).set( typeof(Ent_Machinery_Computer_Security_WoodenTv), 4 ).set( typeof(Ent_Machinery_Reagentgrinder), 2 ).set( typeof(Ent_Item_Weapon_Storage_Backpack_SatchelFlat), 1 ).set( typeof(Ent_Item_Weapon_Gun_Projectile_Revolver_Doublebarrel), 1 ).set( typeof(Ent_Item_Weapon_Melee_Energy_Sword_Pirate), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Shoes_Laceup), 2 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Bottle_Whiskey), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Bottle_Wine), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Shaker), 1 ).set( typeof(Ent_Item_Stack_Spacecash_C500), 4 ).set( typeof(Ent_Structure_ReagentDispensers_Beerkeg), 1 ).set( typeof(Ent_Structure_Table_Wood), 2 );
-			} else if ( _=="plantlab" ) {
+			} else if ( _a=="plantlab" ) {
 				theme = "plantlab";
 				treasureitems = new ByTable().set( typeof(Ent_Item_Seeds_Cashseed), 2 ).set( typeof(Ent_Item_Seeds_CoffeeRobustaSeed), 2 ).set( typeof(Ent_Item_Seeds_Bluetomatoseed), 2 ).set( typeof(Ent_Item_Seeds_Bluespacetomatoseed), 2 ).set( typeof(Ent_Item_Seeds_Novaflowerseed), 2 ).set( typeof(Ent_Item_Weapon_Gun_Energy_Floragun), 1 );
 				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Ammonia), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Diethylamine), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Syringe_Charcoal), 2 ).set( typeof(Ent_Effect_Glowshroom_Single), 2 ).set( typeof(Ent_Machinery_Hydroponics), 1 ).set( typeof(Ent_Structure_Table_Reinforced), 2 ).set( typeof(Ent_Structure_Flora_Kirbyplants), 1 );
@@ -7243,16 +7237,16 @@ namespace Game13 {
 			if ( room != null ) {
 				emptyturfs = room["floors"];
 				A = null;
-				foreach (dynamic _ in emptyturfs ) {
-					A = _;
+				foreach (dynamic _b in emptyturfs ) {
+					A = _b;
 					if ( !( A is Tile_Simulated_Floor ) ) {
 						continue;
 					}
 					if ( A is Tile_Simulated_Floor ) {
-						Thread13.schedule( 2, () => {
+						Thread13.schedule( 2, (Thread13.Closure)(() => {
 							A.fullUpdateMineralOverlays();
 							return 0;
-						});
+						}));
 					}
 				};
 				T = Rand.pick( emptyturfs );
@@ -7260,13 +7254,13 @@ namespace Game13 {
 					new Ent_Effect_Glowshroom_Single( T );
 					surprise = null;
 					surprise = GlobalFuncs.pickweight( treasureitems );
-					surprise( T );
+					Misc13.call( surprise, T );
 					emptyturfs -= T;
 					while (areapoints >= 10) {
 						T = Rand.pick( emptyturfs );
 						garbage = null;
 						garbage = GlobalFuncs.pickweight( fluffitems );
-						garbage( T );
+						Misc13.call( garbage, T );
 						areapoints -= 5;
 						emptyturfs -= T;
 					}
@@ -7373,7 +7367,7 @@ namespace Game13 {
 			if ( cultoverride == null ) {
 				cultoverride = 0;
 			}
-			newstruct = ctype( GlobalFuncs.get_turf( target ) );
+			newstruct = Misc13.call( ctype, GlobalFuncs.get_turf( target ) );
 			newstruct.faction |= new Txt().Ref( stoner );
 			newstruct.key = target.key;
 			if ( Misc13.isValid( stoner ) && GlobalFuncs.iscultist( stoner ) || ( cultoverride != 0 ) ) {
@@ -7408,8 +7402,8 @@ namespace Game13 {
 			players = GlobalVars.clients.len;
 			mapvotes = new ByTable();
 			c = null;
-			foreach (dynamic _ in GlobalVars.clients ) {
-				c = _;
+			foreach (dynamic _a in GlobalVars.clients ) {
+				c = _a;
 				if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( c ) ) ) {
 					continue;
 				}
@@ -7423,8 +7417,8 @@ namespace Game13 {
 				mapvotes[vote] += 1;
 			};
 			map = null;
-			foreach (dynamic _ in mapvotes ) {
-				map = _;
+			foreach (dynamic _b in mapvotes ) {
+				map = _b;
 				if ( !Misc13.isValid( map ) ) {
 					mapvotes.Remove( map );
 				}
@@ -7480,16 +7474,16 @@ namespace Game13 {
 				net2 = temp;
 			}
 			Cable = null;
-			foreach (dynamic _ in net2.cables ) {
-				Cable = _;
+			foreach (dynamic _a in net2.cables ) {
+				Cable = _a;
 				if ( !( Cable is Ent_Structure_Cable ) ) {
 					continue;
 				}
 				net1.add_cable( Cable );
 			};
 			Node = null;
-			foreach (dynamic _ in net2.nodes ) {
-				Node = _;
+			foreach (dynamic _b in net2.nodes ) {
+				Node = _b;
 				if ( !( Node is Ent_Machinery_Power ) ) {
 					continue;
 				}
@@ -7518,14 +7512,14 @@ namespace Game13 {
 			if ( !( from is string ) ) {
 				from = "";
 			}
-			null_ascii = null_char is string ? Misc13.conv_text2ascii( null_char, 1 ) : null_char;
+			null_ascii = null_char is string ? Misc13.str_getCharCode( null_char, 1 ) : null_char;
 			previous = 0;
 			start = 1;
 			end = into.Length + 1;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i < end) {
-				ascii = Misc13.conv_text2ascii( from, i );
+				ascii = Misc13.str_getCharCode( from, i );
 				if ( ascii == null_ascii ) {
 					if ( previous != 1 ) {
 						_default += Misc13.str_sub( from, start, i );
@@ -7557,8 +7551,8 @@ namespace Game13 {
 			dynamic S = null;
 			output = "<span class='";
 			S = null;
-			foreach (dynamic _ in spans ) {
-				S = _;
+			foreach (dynamic _a in spans ) {
+				S = _a;
 				output = "" + output + S + " ";
 			};
 			output = "" + output + "'>";
@@ -7577,8 +7571,8 @@ namespace Game13 {
 			}
 			minerals = new ByTable();
 			M = null;
-			foreach (dynamic _ in Misc13.range( range, T ) ) {
-				M = _;
+			foreach (dynamic _a in Misc13.range( range, T ) ) {
+				M = _a;
 				if ( !( M is Tile_Simulated_Mineral ) ) {
 					continue;
 				}
@@ -7588,25 +7582,25 @@ namespace Game13 {
 			};
 			if ( Misc13.isValid( minerals.len ) ) {
 				user = null;
-				foreach (dynamic _ in mobs ) {
-					user = _;
+				foreach (dynamic _c in mobs ) {
+					user = _c;
 					if ( Misc13.isValid( user.client ) ) {
 						C = user.client;
 						M = null;
-						foreach (dynamic _ in minerals ) {
-							M = _;
+						foreach (dynamic _b in minerals ) {
+							M = _b;
 							if ( !( M is Tile_Simulated_Mineral ) ) {
 								continue;
 							}
 							F = GlobalFuncs.get_turf( M );
 							I = typeof(Image).BTNew( new ByTable().set( "layer", 18 ).set( "icon_state", M.scan_state ).set( "loc", F ).set( 1, new ByRsc(61) ) );
 							C.images += I;
-							Thread13.schedule( 30, () => {
+							Thread13.schedule( 30, (Thread13.Closure)(() => {
 								if ( Misc13.isValid( C ) ) {
 									C.images -= I;
 								}
 								return;
-							});
+							}));
 						};
 					}
 				};
@@ -7622,8 +7616,8 @@ namespace Game13 {
 				return;
 			}
 			M = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				M = _a;
 				if ( !( M is Mob_NewPlayer ) && !Misc13.isValid( M.ear_deaf ) ) {
 					M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" );
 					if ( Misc13.isValid( alert ) ) {
@@ -7645,8 +7639,8 @@ namespace Game13 {
 			}
 			vol_counter = 0;
 			R = null;
-			foreach (dynamic _ in reagent_list ) {
-				R = _;
+			foreach (dynamic _a in reagent_list ) {
+				R = _a;
 				if ( !( R is Reagent ) ) {
 					continue;
 				}
@@ -7687,7 +7681,7 @@ namespace Game13 {
 					return;
 				}
 				fromIndex += len;
-				i = null;
+				i = 0;
 				i = 0;
 				while (i < distance) {
 					L.Insert( fromIndex, null );
@@ -7699,7 +7693,7 @@ namespace Game13 {
 				if ( fromIndex > toIndex ) {
 					fromIndex += len;
 				}
-				i = null;
+				i = 0;
 				i = 0;
 				while (i < len) {
 					L.Insert( toIndex, null );
@@ -7741,8 +7735,8 @@ namespace Game13 {
 				name = "";
 			}
 			holiday_name = null;
-			foreach (dynamic _ in GlobalVars.SSevent.holidays ) {
-				holiday_name = _;
+			foreach (dynamic _a in GlobalVars.SSevent.holidays ) {
+				holiday_name = _a;
 				if ( holiday_name == "Friday the 13th" ) {
 					random = 13;
 				}
@@ -7757,18 +7751,18 @@ namespace Game13 {
 			}
 			name = Rand.pick(new object [] { "Station", "Fortress", "Frontier", "Suffix", "Death-trap", "Space-hulk", "Lab", "Hazard", "Spess Junk", "Fishery", "No-Moon", "Tomb", "Crypt", "Hut", "Monkey", "Bomb", "Trade Post", "Fortress", "Village", "Town", "City", "Edition", "Hive", "Complex", "Base", "Facility", "Depot", "Outpost", "Installation", "Drydock", "Observatory", "Array", "Relay", "Monitor", "Platform", "Construct", "Hangar", "Prison", "Center", "Port", "Waystation", "Factory", "Waypoint", "Stopover", "Hub", "HQ", "Office", "Object", "Fortification", "Colony", "Planet-Cracker", "Roost", "Fat Camp" });
 			new_station_name += name + " ";
-			dynamic _ = random; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _b = random; // Was a switch-case, sorry for the mess.
+			if ( _b==1 ) {
 				new_station_name += "" + Rand.Int( 1, 99 );
-			} else if ( _==2 ) {
+			} else if ( _b==2 ) {
 				new_station_name += Rand.pick(new object [] { "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" });
-			} else if ( _==3 ) {
+			} else if ( _b==3 ) {
 				new_station_name += Rand.pick(new object [] { "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX" });
-			} else if ( _==4 ) {
+			} else if ( _b==4 ) {
 				new_station_name += Rand.pick(new object [] { "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-ray", "Yankee", "Zulu" });
-			} else if ( _==5 ) {
+			} else if ( _b==5 ) {
 				new_station_name += Rand.pick(new object [] { "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" });
-			} else if ( _==13 ) {
+			} else if ( _b==13 ) {
 				new_station_name += Rand.pick(new object [] { "13", "XIII", "Thirteen" });
 			};
 			return new_station_name;
@@ -7848,8 +7842,8 @@ namespace Game13 {
 			dynamic synd_mind = null;
 			dynamic H = null;
 			synd_mind = null;
-			foreach (dynamic _ in syndicates ) {
-				synd_mind = _;
+			foreach (dynamic _a in syndicates ) {
+				synd_mind = _a;
 				if ( !( synd_mind is Mind ) ) {
 					continue;
 				}
@@ -7884,10 +7878,10 @@ namespace Game13 {
 				remainder = num / 16;
 				num = Misc13.round( remainder );
 				remainder = ( remainder - num ) * 16;
-				dynamic _ = remainder; // Was a switch-case, sorry for the mess.
-				if ( _==9 || _==8 || _==7 || _==6 || _==5 || _==4 || _==3 || _==2 || _==1 ) {
+				dynamic _a = remainder; // Was a switch-case, sorry for the mess.
+				if ( _a==9 || _a==8 || _a==7 || _a==6 || _a==5 || _a==4 || _a==3 || _a==2 || _a==1 ) {
 					_default = "" + remainder + _default;
-				} else if ( _==10 || _==11 || _==12 || _==13 || _==14 || _==15 ) {
+				} else if ( _a==10 || _a==11 || _a==12 || _a==13 || _a==14 || _a==15 ) {
 					_default = Misc13.conv_ascii2text( remainder + 87 ) + _default;
 				} else {
 					_default = "0" + _default;
@@ -7899,14 +7893,14 @@ namespace Game13 {
 		}
 
 		public static string num2seclevel( dynamic num = null ) {
-			dynamic _ = num; // Was a switch-case, sorry for the mess.
-			if ( _==0 ) {
+			dynamic _a = num; // Was a switch-case, sorry for the mess.
+			if ( _a==0 ) {
 				return "green";
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return "blue";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "red";
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				return "delta";
 			};
 		}
@@ -7999,16 +7993,16 @@ namespace Game13 {
 			int total = 0;
 			dynamic item = null;
 			total = 0;
-			foreach (dynamic _ in L ) {
-				item = _;
+			foreach (dynamic _a in L ) {
+				item = _a;
 				if ( !Misc13.isValid( L[item] ) ) {
 					L[item] = 1;
 				}
 				total += L[item];
 			};
 			total = Rand.Int( 1, total );
-			foreach (dynamic _ in L ) {
-				item = _;
+			foreach (dynamic _b in L ) {
+				item = _b;
 				total -= L[item];
 				if ( total <= 0 ) {
 					return item;
@@ -8045,12 +8039,12 @@ namespace Game13 {
 			word = Misc13.str_lower( word );
 			if ( Misc13.isValid( GlobalVars.vox_sounds[word] ) ) {
 				sound_file = GlobalVars.vox_sounds[word];
-				voice = Sound.BTNew( new ByTable().set( "channel", GlobalVars.VOX_CHANNEL ).set( "wait", 1 ).set( 1, sound_file ) );
+				voice = new ByTable().set( "channel", GlobalVars.VOX_CHANNEL ).set( "wait", 1 ).set( 1, sound_file ).applyCtor( typeof(Sound) );
 				voice.status = GlobalVars.SOUND_STREAM;
 				if ( !Misc13.isValid( only_listener ) ) {
 					M = null;
-					foreach (dynamic _ in GlobalVars.player_list ) {
-						M = _;
+					foreach (dynamic _a in GlobalVars.player_list ) {
+						M = _a;
 						if ( Misc13.isValid( M.client ) && !Misc13.isValid( M.ear_deaf ) ) {
 							T = GlobalFuncs.get_turf( M );
 							if ( T.z == z_level ) {
@@ -8083,8 +8077,8 @@ namespace Game13 {
 			frequency = GlobalFuncs.get_rand_frequency();
 			turf_source = GlobalFuncs.get_turf( source );
 			P = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				P = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				P = _a;
 				M = P;
 				if ( !Misc13.isValid( M ) || !Misc13.isValid( M.client ) ) {
 					continue;
@@ -8114,8 +8108,8 @@ namespace Game13 {
 				Question = "Would you like to be a special role?";
 			}
 			G = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				G = _;
+			foreach (dynamic _b in GlobalVars.player_list ) {
+				G = _b;
 				if ( !( G is Mob_Dead_Observer ) ) {
 					continue;
 				}
@@ -8137,10 +8131,10 @@ namespace Game13 {
 						continue;
 					}
 				}
-				Thread13.schedule( 0, () => {
+				Thread13.schedule( 0, (Thread13.Closure)(() => {
 					G.write( new ByRsc(9) );
-					dynamic _ = Misc13.alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ); // Was a switch-case, sorry for the mess.
-					if ( _=="Yes" ) {
+					dynamic _a = Misc13.alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ); // Was a switch-case, sorry for the mess.
+					if ( _a=="Yes" ) {
 						G.write( "<span class='notice'>Choice registered: Yes.</span>" );
 						if ( Game.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
@@ -8148,19 +8142,19 @@ namespace Game13 {
 							return null;
 						}
 						candidates += G;
-					} else if ( _=="No" ) {
+					} else if ( _a=="No" ) {
 						G.write( "<span class='danger'>Choice registered: No.</span>" );
 						return null;
 					} else {
 						return null;
 					};
 					return null;
-				});
+				}));
 			};
 			Thread13.sleep( poll_time );
 			G = null;
-			foreach (dynamic _ in candidates ) {
-				G = _;
+			foreach (dynamic _c in candidates ) {
+				G = _c;
 				if ( !( G is Mob_Dead_Observer ) ) {
 					continue;
 				}
@@ -8180,9 +8174,9 @@ namespace Game13 {
 			if ( !Misc13.isValid( _default ) ) {
 				if ( get_type is Type ) {
 					if ( Misc13.isValid( ByTable.IsInstanceOfType( second_arg ) ) ) {
-						_default = get_type.BTNew( second_arg );
+						_default = second_arg.applyCtor( get_type );
 					} else {
-						_default = get_type( second_arg );
+						_default = Misc13.call( get_type, second_arg );
 					}
 				}
 			}
@@ -8235,8 +8229,8 @@ namespace Game13 {
 			dynamic C = null;
 			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", new ByRsc(54) );
 			S = null;
-			foreach (dynamic _ in GlobalVars.machines ) {
-				S = _;
+			foreach (dynamic _a in GlobalVars.machines ) {
+				S = _a;
 				if ( !( S is Ent_Machinery_Power_Smes ) ) {
 					continue;
 				}
@@ -8249,17 +8243,17 @@ namespace Game13 {
 				S.update_icon();
 				S.power_change();
 			};
-			skipped_areas = new ByTable(new object [] {new ByArea(2719),new ByArea(2727)});
+			skipped_areas = new ByTable(new object [] { new ByArea(2719), new ByArea(2727) });
 			A = null;
-			foreach (dynamic _ in Game ) {
-				A = _;
+			foreach (dynamic _d in Game._all_ents_ ) {
+				A = _d;
 				if ( !Misc13.isValid( A.requires_power ) || Misc13.isValid( A.always_unpowered ) ) {
 					continue;
 				}
 				skip = 0;
 				area_type = null;
-				foreach (dynamic _ in skipped_areas ) {
-					area_type = _;
+				foreach (dynamic _b in skipped_areas ) {
+					area_type = _b;
 					if ( Misc13.isValid( area_type.IsInstanceOfType( A ) ) ) {
 						skip = 1;
 						break;
@@ -8267,8 +8261,8 @@ namespace Game13 {
 				};
 				if ( Misc13.isValid( A.contents ) ) {
 					AT = null;
-					foreach (dynamic _ in A.contents ) {
-						AT = _;
+					foreach (dynamic _c in A.contents ) {
+						AT = _c;
 						if ( !( AT is BaseStatic ) ) {
 							continue;
 						}
@@ -8287,8 +8281,8 @@ namespace Game13 {
 				A.power_change();
 			};
 			C = null;
-			foreach (dynamic _ in GlobalVars.apcs_list ) {
-				C = _;
+			foreach (dynamic _f in GlobalVars.apcs_list ) {
+				C = _f;
 				if ( !( C is Ent_Machinery_Power_Apc ) ) {
 					continue;
 				}
@@ -8296,8 +8290,8 @@ namespace Game13 {
 					A = GlobalFuncs.get_area( C );
 					skip = 0;
 					area_type = null;
-					foreach (dynamic _ in skipped_areas ) {
-						area_type = _;
+					foreach (dynamic _e in skipped_areas ) {
+						area_type = _e;
 						if ( Misc13.isValid( area_type.IsInstanceOfType( A ) ) ) {
 							skip = 1;
 							break;
@@ -8324,8 +8318,8 @@ namespace Game13 {
 			}
 			_default = new ByTable();
 			AM = null;
-			foreach (dynamic _ in T ) {
-				AM = _;
+			foreach (dynamic _a in T ) {
+				AM = _a;
 				if ( AM == source ) {
 					continue;
 				}
@@ -8358,18 +8352,18 @@ namespace Game13 {
 			dynamic A = null;
 			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
 			C = null;
-			foreach (dynamic _ in GlobalVars.machines ) {
-				C = _;
+			foreach (dynamic _a in GlobalVars.machines ) {
+				C = _a;
 				if ( !( C is Ent_Machinery_Power_Apc ) ) {
 					continue;
 				}
 				if ( Misc13.isValid( C.cell ) && C.z == 1 ) {
-					C.charge = C.cell.maxcharge;
+					C.cell.charge = C.cell.maxcharge;
 				}
 			};
 			S = null;
-			foreach (dynamic _ in GlobalVars.machines ) {
-				S = _;
+			foreach (dynamic _b in GlobalVars.machines ) {
+				S = _b;
 				if ( !( S is Ent_Machinery_Power_Smes ) ) {
 					continue;
 				}
@@ -8383,8 +8377,8 @@ namespace Game13 {
 				S.power_change();
 			};
 			A = null;
-			foreach (dynamic _ in Game ) {
-				A = _;
+			foreach (dynamic _c in Game._all_ents_ ) {
+				A = _c;
 				if ( !Misc13.isValid( new ByArea(2717).IsInstanceOfType( A ) ) && !Misc13.isValid( new ByArea(2755).IsInstanceOfType( A ) ) && !Misc13.isValid( new ByArea(2741).IsInstanceOfType( A ) ) ) {
 					A.power_light = 1;
 					A.power_equip = 1;
@@ -8398,8 +8392,8 @@ namespace Game13 {
 			dynamic S = null;
 			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
 			S = null;
-			foreach (dynamic _ in GlobalVars.machines ) {
-				S = _;
+			foreach (dynamic _a in GlobalVars.machines ) {
+				S = _a;
 				if ( !( S is Ent_Machinery_Power_Smes ) ) {
 					continue;
 				}
@@ -8419,8 +8413,8 @@ namespace Game13 {
 			dynamic R = null;
 			result = "| ";
 			R = null;
-			foreach (dynamic _ in reagent_list ) {
-				R = _;
+			foreach (dynamic _a in reagent_list ) {
+				R = _a;
 				if ( !( R is Reagent ) ) {
 					continue;
 				}
@@ -8450,8 +8444,8 @@ namespace Game13 {
 				title = "Central Command Update";
 			}
 			C = null;
-			foreach (dynamic _ in GlobalVars.machines ) {
-				C = _;
+			foreach (dynamic _a in GlobalVars.machines ) {
+				C = _a;
 				if ( !( C is Ent_Machinery_Computer_Communications ) ) {
 					continue;
 				}
@@ -8499,8 +8493,8 @@ namespace Game13 {
 			announcement += "<br><span class='alert'>" + Misc13.html_encode( text ) + "</span><br>";
 			announcement += "<br>";
 			M = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				M = _a;
 				if ( !( M is Mob_NewPlayer ) && !Misc13.isValid( M.ear_deaf ) ) {
 					M.write( announcement );
 					M.write( new Sound( sound ) );
@@ -8554,8 +8548,8 @@ namespace Game13 {
 				}
 			}
 			PM = null;
-			foreach (dynamic _ in found_machines ) {
-				PM = _;
+			foreach (dynamic _a in found_machines ) {
+				PM = _a;
 				if ( !( PM is Ent_Machinery_Power ) ) {
 					continue;
 				}
@@ -8578,21 +8572,21 @@ namespace Game13 {
 				if ( !Misc13.isValid( A ) ) {
 					return;
 				}
-				dynamic _ = hint; // Was a switch-case, sorry for the mess.
-				if ( _==0 ) {
+				dynamic _a = hint; // Was a switch-case, sorry for the mess.
+				if ( _a==0 ) {
 					GlobalVars.SSgarbage.Queue( A );
-				} else if ( _==1 ) {
+				} else if ( _a==1 ) {
 					return;
-				} else if ( _==2 ) {
+				} else if ( _a==2 ) {
 					return;
-				} else if ( _==3 ) {
+				} else if ( _a==3 ) {
 					GlobalVars.SSgarbage.HardQueue( A );
-				} else if ( _==4 ) {
+				} else if ( _a==4 ) {
 					Misc13.del( A );
 					A = null;
-				} else if ( _==5 ) {
+				} else if ( _a==5 ) {
 					GlobalFuncs.PlaceInPool( A, 0 );
-				} else if ( _==6 ) {
+				} else if ( _a==6 ) {
 					GlobalVars.SSgarbage.Queue( A );
 				} else {
 					if ( !Misc13.isValid( GlobalVars.SSgarbage.noqdelhint.HasValue( "" + A.type ) ) ) {
@@ -8636,8 +8630,8 @@ namespace Game13 {
 			}
 			light_severity = severity * 0.5;
 			T = null;
-			foreach (dynamic _ in Misc13.range( light_range, epicenter ) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.range( light_range, epicenter ) ) {
+				T = _a;
 				if ( !( T is BaseStatic ) ) {
 					continue;
 				}
@@ -8670,18 +8664,18 @@ namespace Game13 {
 				return zone;
 			}
 			t = Rand.Int( 1, 18 );
-			dynamic _ = t; // Was a switch-case, sorry for the mess.
-			if ( 3<=_&&_<=6 ) {
+			dynamic _a = t; // Was a switch-case, sorry for the mess.
+			if ( 3<=_a&&_a<=6 ) {
 				return "l_arm";
-			} else if ( 7<=_&&_<=10 ) {
+			} else if ( 7<=_a&&_a<=10 ) {
 				return "r_arm";
-			} else if ( 11<=_&&_<=14 ) {
+			} else if ( 11<=_a&&_a<=14 ) {
 				return "l_leg";
-			} else if ( 15<=_&&_<=18 ) {
+			} else if ( 15<=_a&&_a<=18 ) {
 				return "r_leg";
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return "head";
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				return "chest";
 			};
 			return zone;
@@ -8737,39 +8731,24 @@ namespace Game13 {
 		}
 
 		public static dynamic random_blood_type(  ) {
-			return int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
-	<-REP->if ( _ < 2674 ) { _ = "O-" }
-	<-REP->else if ( _ < 26748 ) { _ = "O+" }
-	<-REP->else if ( _ < 28754 ) { _ = "A-" }
-	<-REP->else if ( _ < 47478 ) { _ = "A+" }
-	<-REP->else if ( _ < 48146 ) { _ = "B-" }
-	<-REP->else if ( _ < 61520 ) { _ = "B+" }
-	<-REP->else if ( _ < 62188 ) { _ = "AB-" }
-	<-REP->else  { _ = "AB+" };
+			return Rand.pickWeighted(new object [] { 2674, "O-", 26748, "O+", 28754, "A-", 47478, "A+", 48146, "B-", 61520, "B+", 62188, "AB-", 65535, "AB+" });
 		}
 
 		public static string random_eye_color(  ) {
-			dynamic _ = int _ = Rand.Int(0,65535) // Was a weighted pick, sorry for the mess.
-	<-REP->if ( _ < 14246 ) { _ = "brown" }
-	<-REP->else if ( _ < 28492 ) { _ = "hazel" }
-	<-REP->else if ( _ < 42738 ) { _ = "grey" }
-	<-REP->else if ( _ < 53423 ) { _ = "blue" }
-	<-REP->else if ( _ < 64108 ) { _ = "green" }
-	<-REP->else if ( _ < 64820 ) { _ = "amber" }
-	<-REP->else  { _ = "albino" }; // Was a switch-case, sorry for the mess.
-			if ( _=="brown" ) {
+			dynamic _a = Rand.pickWeighted(new object [] { 14246, "brown", 28492, "hazel", 42738, "grey", 53423, "blue", 64108, "green", 64820, "amber", 65535, "albino" }); // Was a switch-case, sorry for the mess.
+			if ( _a=="brown" ) {
 				return "630";
-			} else if ( _=="hazel" ) {
+			} else if ( _a=="hazel" ) {
 				return "542";
-			} else if ( _=="grey" ) {
+			} else if ( _a=="grey" ) {
 				return Rand.pick(new object [] { "666", "777", "888", "999", "aaa", "bbb", "ccc" });
-			} else if ( _=="blue" ) {
+			} else if ( _a=="blue" ) {
 				return "36c";
-			} else if ( _=="green" ) {
+			} else if ( _a=="green" ) {
 				return "060";
-			} else if ( _=="amber" ) {
+			} else if ( _a=="amber" ) {
 				return "fc0";
-			} else if ( _=="albino" ) {
+			} else if ( _a=="albino" ) {
 				return Rand.pick(new object [] { "c", "d", "e", "f" }) + Rand.pick(new object [] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }) + Rand.pick(new object [] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" });
 			} else {
 				return "000";
@@ -8777,10 +8756,10 @@ namespace Game13 {
 		}
 
 		public static dynamic random_facial_hair_style( dynamic gender = null ) {
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" ) {
 				return Rand.pick( GlobalVars.facial_hair_styles_male_list );
-			} else if ( _=="female" ) {
+			} else if ( _a=="female" ) {
 				return Rand.pick( GlobalVars.facial_hair_styles_female_list );
 			} else {
 				return Rand.pick( GlobalVars.facial_hair_styles_list );
@@ -8816,10 +8795,10 @@ namespace Game13 {
 		}
 
 		public static dynamic random_hair_style( dynamic gender = null ) {
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" ) {
 				return Rand.pick( GlobalVars.hair_styles_male_list );
-			} else if ( _=="female" ) {
+			} else if ( _a=="female" ) {
 				return Rand.pick( GlobalVars.hair_styles_female_list );
 			} else {
 				return Rand.pick( GlobalVars.hair_styles_list );
@@ -8838,10 +8817,10 @@ namespace Game13 {
 			if ( !Misc13.isValid( GlobalVars.socks_list.len ) ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_Socks), GlobalVars.socks_list, GlobalVars.socks_m, GlobalVars.socks_f );
 			}
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" ) {
 				return Rand.pick( GlobalVars.socks_m );
-			} else if ( _=="female" ) {
+			} else if ( _a=="female" ) {
 				return Rand.pick( GlobalVars.socks_f );
 			} else {
 				return Rand.pick( GlobalVars.socks_list );
@@ -8864,7 +8843,7 @@ namespace Game13 {
 			string _default = null;
 			int i = 0;
 			_default = "";
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= length) {
 				_default += Rand.pick( characters );
@@ -8877,10 +8856,10 @@ namespace Game13 {
 			if ( !Misc13.isValid( GlobalVars.undershirt_list.len ) ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_Undershirt), GlobalVars.undershirt_list, GlobalVars.undershirt_m, GlobalVars.undershirt_f );
 			}
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" ) {
 				return Rand.pick( GlobalVars.undershirt_m );
-			} else if ( _=="female" ) {
+			} else if ( _a=="female" ) {
 				return Rand.pick( GlobalVars.undershirt_f );
 			} else {
 				return Rand.pick( GlobalVars.undershirt_list );
@@ -8891,10 +8870,10 @@ namespace Game13 {
 			if ( !Misc13.isValid( GlobalVars.underwear_list.len ) ) {
 				GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_Underwear), GlobalVars.underwear_list, GlobalVars.underwear_m, GlobalVars.underwear_f );
 			}
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" ) {
 				return Rand.pick( GlobalVars.underwear_m );
-			} else if ( _=="female" ) {
+			} else if ( _a=="female" ) {
 				return Rand.pick( GlobalVars.underwear_f );
 			} else {
 				return Rand.pick( GlobalVars.underwear_list );
@@ -8907,7 +8886,7 @@ namespace Game13 {
 			if ( attempts_to_find_unique_name == null ) {
 				attempts_to_find_unique_name = 10;
 			}
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= attempts_to_find_unique_name) {
 				_default = GlobalFuncs.capitalize( GlobalFuncs.lizard_name( gender ) );
@@ -8925,7 +8904,7 @@ namespace Game13 {
 			if ( attempts_to_find_unique_name == null ) {
 				attempts_to_find_unique_name = 10;
 			}
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= attempts_to_find_unique_name) {
 				if ( gender == GlobalVars.FEMALE ) {
@@ -8945,10 +8924,10 @@ namespace Game13 {
 			if ( mode == null ) {
 				mode = 0;
 			}
-			dynamic _ = mode; // Was a switch-case, sorry for the mess.
-			if ( _==0 ) {
+			dynamic _a = mode; // Was a switch-case, sorry for the mess.
+			if ( _a==0 ) {
 				return Rand.pick(new object [] { "white", "black", "gray", "red", "green", "blue", "brown", "yellow", "orange", "darkred", "crimson", "lime", "darkgreen", "cyan", "navy", "teal", "purple", "indigo" });
-			} else if ( _==1 ) {
+			} else if ( _a==1 ) {
 				return Rand.pick(new object [] { "red", "green", "blue", "brown", "yellow", "orange", "darkred", "crimson", "lime", "darkgreen", "cyan", "navy", "teal", "purple", "indigo" });
 			} else {
 				return "white";
@@ -8988,7 +8967,7 @@ namespace Game13 {
 			}
 			i = 1;
 			start = 1;
-			if ( Misc13.conv_text2ascii( hsv, null ) == 35 ) {
+			if ( Misc13.str_getCharCode( hsv, null ) == 35 ) {
 				start++;
 			}
 			which = 0;
@@ -8999,7 +8978,7 @@ namespace Game13 {
 			digits = 0;
 			i = start;
 			while (i <= hsv.Length) {
-				ch = Misc13.conv_text2ascii( hsv, i );
+				ch = Misc13.str_getCharCode( hsv, i );
 				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 ) {
 					break;
 				}
@@ -9020,7 +8999,7 @@ namespace Game13 {
 			}
 			i = start;
 			while (digits > 0) {
-				ch = Misc13.conv_text2ascii( hsv, i );
+				ch = Misc13.str_getCharCode( hsv, i );
 				if ( ch >= 48 && ch <= 57 ) {
 					ch -= 48;
 				} else if ( ch >= 65 && ch <= 70 ) {
@@ -9031,28 +9010,28 @@ namespace Game13 {
 					break;
 				}
 				digits--;
-				dynamic _ = which; // Was a switch-case, sorry for the mess.
-				if ( _==0 ) {
+				dynamic _a = which; // Was a switch-case, sorry for the mess.
+				if ( _a==0 ) {
 					hue = hue << 4 | ch;
 					if ( digits == ( usealpha != 0 ? 6 : 4 ) ) {
 						which++;
 					}
-				} else if ( _==1 ) {
+				} else if ( _a==1 ) {
 					sat = sat << 4 | ch;
 					if ( digits == ( usealpha != 0 ? 4 : 2 ) ) {
 						which++;
 					}
-				} else if ( _==2 ) {
+				} else if ( _a==2 ) {
 					val = val << 4 | ch;
 					if ( digits == ( usealpha != 0 ? 2 : 0 ) ) {
 						which++;
 					}
-				} else if ( _==3 ) {
+				} else if ( _a==3 ) {
 					alpha = alpha << 4 | ch;
 				};
 				i++;
 			}
-			_default = new ByTable(new object [] {hue,sat,val});
+			_default = new ByTable(new object [] { hue, sat, val });
 			if ( usealpha != 0 ) {
 				_default += alpha;
 			}
@@ -9077,7 +9056,7 @@ namespace Game13 {
 			}
 			i = 1;
 			start = 1;
-			if ( Misc13.conv_text2ascii( rgb, null ) == 35 ) {
+			if ( Misc13.str_getCharCode( rgb, null ) == 35 ) {
 				start++;
 			}
 			which = 0;
@@ -9088,7 +9067,7 @@ namespace Game13 {
 			digits = 0;
 			i = start;
 			while (i <= rgb.Length) {
-				ch = Misc13.conv_text2ascii( rgb, i );
+				ch = Misc13.str_getCharCode( rgb, i );
 				if ( ch < 48 || ch > 57 && ch < 65 || ch > 70 && ch < 97 || ch > 102 ) {
 					break;
 				}
@@ -9107,7 +9086,7 @@ namespace Game13 {
 			}
 			i = start;
 			while (digits > 0) {
-				ch = Misc13.conv_text2ascii( rgb, i );
+				ch = Misc13.str_getCharCode( rgb, i );
 				if ( ch >= 48 && ch <= 57 ) {
 					ch -= 48;
 				} else if ( ch >= 65 && ch <= 70 ) {
@@ -9118,8 +9097,8 @@ namespace Game13 {
 					break;
 				}
 				digits--;
-				dynamic _ = which; // Was a switch-case, sorry for the mess.
-				if ( _==0 ) {
+				dynamic _a = which; // Was a switch-case, sorry for the mess.
+				if ( _a==0 ) {
 					r = r << 4 | ch;
 					if ( single ) {
 						r |= r << 4;
@@ -9127,7 +9106,7 @@ namespace Game13 {
 					} else if ( ( digits & 1 ) == 0 ) {
 						which++;
 					}
-				} else if ( _==1 ) {
+				} else if ( _a==1 ) {
 					g = g << 4 | ch;
 					if ( single ) {
 						g |= g << 4;
@@ -9135,7 +9114,7 @@ namespace Game13 {
 					} else if ( ( digits & 1 ) == 0 ) {
 						which++;
 					}
-				} else if ( _==2 ) {
+				} else if ( _a==2 ) {
 					b = b << 4 | ch;
 					if ( single ) {
 						b |= b << 4;
@@ -9143,7 +9122,7 @@ namespace Game13 {
 					} else if ( ( digits & 1 ) == 0 ) {
 						which++;
 					}
-				} else if ( _==3 ) {
+				} else if ( _a==3 ) {
 					alpha = alpha << 4 | ch;
 					if ( single ) {
 						alpha |= alpha << 4;
@@ -9151,7 +9130,7 @@ namespace Game13 {
 				};
 				i++;
 			}
-			_default = new ByTable(new object [] {r,g,b});
+			_default = new ByTable(new object [] { r, g, b });
 			if ( usealpha != 0 ) {
 				_default += alpha;
 			}
@@ -9164,7 +9143,7 @@ namespace Game13 {
 			ByTable found_atoms = null;
 			dynamic A = null;
 			dynamic B = null;
-			processing_list = new ByTable(new object [] {O});
+			processing_list = new ByTable(new object [] { O });
 			processed_list = new ByTable();
 			found_atoms = new ByTable();
 			while (processing_list.len) {
@@ -9173,8 +9152,8 @@ namespace Game13 {
 					found_atoms |= A;
 				}
 				B = null;
-				foreach (dynamic _ in A ) {
-					B = _;
+				foreach (dynamic _a in A ) {
+					B = _a;
 					if ( !( B is BaseStatic ) ) {
 						continue;
 					}
@@ -9205,7 +9184,7 @@ namespace Game13 {
 			if ( include_radio == null ) {
 				include_radio = 1;
 			}
-			processing_list = new ByTable(new object [] {O});
+			processing_list = new ByTable(new object [] { O });
 			processed_list = new ByTable();
 			found_mobs = new ByTable();
 			while (processing_list.len) {
@@ -9230,8 +9209,8 @@ namespace Game13 {
 					found_mobs |= A;
 				}
 				B = null;
-				foreach (dynamic _ in A ) {
-					B = _;
+				foreach (dynamic _a in A ) {
+					B = _a;
 					if ( !( B is BaseStatic ) ) {
 						continue;
 					}
@@ -9246,11 +9225,11 @@ namespace Game13 {
 		}
 
 		public static Regex regex_find( dynamic str = null, dynamic exp = null ) {
-			return new Regex( str, exp, Misc13.getf_dll( "bin/bygex", "regex_find" )( str, exp ) );
+			return new Regex( str, exp, Misc13.call( Misc13.getf_dll( "bin/bygex", "regex_find" ), str, exp ) );
 		}
 
 		public static Regex regex_note_sql_extract( dynamic str = null, dynamic exp = null ) {
-			return new Regex( str, exp, Misc13.getf_dll( "bin/bygex", "regEx_find" )( str, exp ) );
+			return new Regex( str, exp, Misc13.call( Misc13.getf_dll( "bin/bygex", "regEx_find" ), str, exp ) );
 		}
 
 		public static string reject_bad_name( dynamic t_in = null, int allow_numbers = 0, int max_length = 0 ) {
@@ -9272,16 +9251,16 @@ namespace Game13 {
 			number_of_alphanumeric = 0;
 			last_char_group = 0;
 			t_out = "";
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= t_in.Length) {
-				ascii_char = Misc13.conv_text2ascii( t_in, i );
-				dynamic _ = ascii_char; // Was a switch-case, sorry for the mess.
-				if ( 65<=_&&_<=90 ) {
+				ascii_char = Misc13.str_getCharCode( t_in, i );
+				dynamic _a = ascii_char; // Was a switch-case, sorry for the mess.
+				if ( 65<=_a&&_a<=90 ) {
 					t_out += Misc13.conv_ascii2text( ascii_char );
 					number_of_alphanumeric++;
 					last_char_group = 4;
-				} else if ( 97<=_&&_<=122 ) {
+				} else if ( 97<=_a&&_a<=122 ) {
 					if ( last_char_group < 2 ) {
 						t_out += Misc13.conv_ascii2text( ascii_char - 32 );
 					} else {
@@ -9289,7 +9268,7 @@ namespace Game13 {
 					}
 					number_of_alphanumeric++;
 					last_char_group = 4;
-				} else if ( 48<=_&&_<=57 ) {
+				} else if ( 48<=_a&&_a<=57 ) {
 					if ( last_char_group == 0 ) {
 						i++;
 						continue;
@@ -9301,14 +9280,14 @@ namespace Game13 {
 					t_out += Misc13.conv_ascii2text( ascii_char );
 					number_of_alphanumeric++;
 					last_char_group = 3;
-				} else if ( _==39 || _==45 || _==46 ) {
+				} else if ( _a==39 || _a==45 || _a==46 ) {
 					if ( last_char_group == 0 ) {
 						i++;
 						continue;
 					}
 					t_out += Misc13.conv_ascii2text( ascii_char );
 					last_char_group = 2;
-				} else if ( _==126 || _==124 || _==64 || _==58 || _==35 || _==36 || _==37 || _==38 || _==42 || _==43 ) {
+				} else if ( _a==126 || _a==124 || _a==64 || _a==58 || _a==35 || _a==36 || _a==37 || _a==38 || _a==42 || _a==43 ) {
 					if ( last_char_group == 0 ) {
 						i++;
 						continue;
@@ -9319,7 +9298,7 @@ namespace Game13 {
 					}
 					t_out += Misc13.conv_ascii2text( ascii_char );
 					last_char_group = 2;
-				} else if ( _==32 ) {
+				} else if ( _a==32 ) {
 					if ( last_char_group <= 1 ) {
 						i++;
 						continue;
@@ -9338,8 +9317,8 @@ namespace Game13 {
 				t_out = Misc13.str_sub( t_out, 1, t_out.Length );
 			}
 			bad_name = null;
-			foreach (dynamic _ in new ByTable(new object [] {"space","floor","wall","r-wall","monkey","unknown","inactive ai"}) ) {
-				bad_name = _;
+			foreach (dynamic _b in new ByTable(new object [] { "space", "floor", "wall", "r-wall", "monkey", "unknown", "inactive ai" }) ) {
+				bad_name = _b;
 				if ( Misc13.isValid( Misc13.str_cmp( bad_name, t_out ) ) ) {
 					return null;
 				}
@@ -9357,17 +9336,17 @@ namespace Game13 {
 				return null;
 			}
 			non_whitespace = 0;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= text.Length) {
-				dynamic _ = Misc13.conv_text2ascii( text, i ); // Was a switch-case, sorry for the mess.
-				if ( 127<=_&&_<=255 ) {
+				dynamic _a = Misc13.str_getCharCode( text, i ); // Was a switch-case, sorry for the mess.
+				if ( 127<=_a&&_a<=255 ) {
 					return null;
-				} else if ( 0<=_&&_<=31 ) {
+				} else if ( 0<=_a&&_a<=31 ) {
 					return null;
-				} else if ( _==62 || _==60 || _==92 || _==47 ) {
+				} else if ( _a==62 || _a==60 || _a==92 || _a==47 ) {
 					return null;
-				} else if ( _==32 ) {
+				} else if ( _a==32 ) {
 					i++;
 					continue;
 				} else {
@@ -9446,8 +9425,8 @@ namespace Game13 {
 		public static void remove_radio_all( dynamic radio = null ) {
 			dynamic freq = null;
 			freq = null;
-			foreach (dynamic _ in GlobalVars.all_radios ) {
-				freq = _;
+			foreach (dynamic _a in GlobalVars.all_radios ) {
+				freq = _a;
 				GlobalVars.all_radios["" + freq] -= radio;
 			};
 		}
@@ -9474,8 +9453,8 @@ namespace Game13 {
 				Misc13.thread_user.client.holder.DB_ban_unban( Misc13.ckey( key ), 5 );
 			}
 			A = null;
-			foreach (dynamic _ in GlobalVars.Banlist.dir ) {
-				A = _;
+			foreach (dynamic _a in GlobalVars.Banlist.dir ) {
+				A = _a;
 				GlobalVars.Banlist.cd = "/base/" + A;
 				if ( key == GlobalVars.Banlist["key"] ) {
 					GlobalVars.Banlist.cd = "/base";
@@ -9510,8 +9489,8 @@ namespace Game13 {
 				GlobalFuncs.feedback_add_details( "ban_job_unban", "- " + rank );
 			}
 			A = null;
-			foreach (dynamic _ in GlobalVars.Banlistjob.dir ) {
-				A = _;
+			foreach (dynamic _a in GlobalVars.Banlistjob.dir ) {
+				A = _a;
 				GlobalVars.Banlistjob.cd = "/base/" + A;
 				if ( ( key == GlobalVars.Banlistjob["key"] || id == GlobalVars.Banlistjob["id"] ) && rank == GlobalVars.Banlistjob["rank"] ) {
 					GlobalVars.Banlistjob.cd = "/base";
@@ -9536,7 +9515,7 @@ namespace Game13 {
 				_string = "";
 			}
 			_default = "";
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= times) {
 				_default += _string;
@@ -9546,11 +9525,11 @@ namespace Game13 {
 		}
 
 		public static dynamic replacetext( dynamic str = null, dynamic exp = null, dynamic fmt = null ) {
-			return Misc13.getf_dll( "bin/bygex", "regex_replaceallliteral" )( str, exp, fmt );
+			return Misc13.call( Misc13.getf_dll( "bin/bygex", "regex_replaceallliteral" ), str, exp, fmt );
 		}
 
 		public static dynamic replacetextEx( dynamic str = null, dynamic exp = null, dynamic fmt = null ) {
-			return Misc13.getf_dll( "bin/bygex", "regEx_replaceallliteral" )( str, exp, fmt );
+			return Misc13.call( Misc13.getf_dll( "bin/bygex", "regEx_replaceallliteral" ), str, exp, fmt );
 		}
 
 		public static dynamic return_file_text( dynamic filename = null ) {
@@ -9595,14 +9574,14 @@ namespace Game13 {
 			dynamic A = null;
 			dynamic D = null;
 			A = null;
-			foreach (dynamic _ in Game ) {
-				A = _;
+			foreach (dynamic _b in Game._all_ents_ ) {
+				A = _b;
 				if ( !Misc13.isValid( new ByArea(2826).IsInstanceOfType( A ) ) ) {
 					continue;
 				}
 				D = null;
-				foreach (dynamic _ in A ) {
-					D = _;
+				foreach (dynamic _a in A ) {
+					D = _a;
 					if ( !( D is Ent_Machinery_Door_Airlock ) ) {
 						continue;
 					}
@@ -9656,7 +9635,7 @@ namespace Game13 {
 					hue--;
 				}
 			}
-			return new ByTable(new object [] {hue,saturation,lightness});
+			return new ByTable(new object [] { hue, saturation, lightness });
 		}
 
 		public static string RGBtoHSV( dynamic rgb = null ) {
@@ -9736,17 +9715,17 @@ namespace Game13 {
 			dynamic randomizemagic = null;
 			dynamic randomizemagicspecial = null;
 			Ent_Item_Weapon_Gun_Energy_Lasercannon gat = null;
-			gunslist = new ByTable(new object [] {"taser","egun","laser","revolver","detective","c20r","nuclear","deagle","gyrojet","pulse","suppressed","cannon","doublebarrel","shotgun","combatshotgun","bulldog","mateba","sabr","crossbow","saw","car","boltaction","speargun","arg","uzi"});
-			magiclist = new ByTable(new object [] {"fireball","smoke","blind","mindswap","forcewall","knock","horsemask","charge","summonitem","wandnothing","wanddeath","wandresurrection","wandpolymorph","wandteleport","wanddoor","wandfireball","staffchange","staffhealing","armor","scrying","staffdoor","voodoo","special"});
-			magicspeciallist = new ByTable(new object [] {"staffchange","staffanimation","wandbelt","contract","staffchaos","necromantic"});
+			gunslist = new ByTable(new object [] { "taser", "egun", "laser", "revolver", "detective", "c20r", "nuclear", "deagle", "gyrojet", "pulse", "suppressed", "cannon", "doublebarrel", "shotgun", "combatshotgun", "bulldog", "mateba", "sabr", "crossbow", "saw", "car", "boltaction", "speargun", "arg", "uzi" });
+			magiclist = new ByTable(new object [] { "fireball", "smoke", "blind", "mindswap", "forcewall", "knock", "horsemask", "charge", "summonitem", "wandnothing", "wanddeath", "wandresurrection", "wandpolymorph", "wandteleport", "wanddoor", "wandfireball", "staffchange", "staffhealing", "armor", "scrying", "staffdoor", "voodoo", "special" });
+			magicspeciallist = new ByTable(new object [] { "staffchange", "staffanimation", "wandbelt", "contract", "staffchaos", "necromantic" });
 			if ( Misc13.isValid( user ) ) {
 				user.write( "<B>You summoned " + ( Misc13.isValid( summon_type ) ? "magic" : "guns" ) + "!</B>" );
 				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( user, 1 ) + " summoned " + ( Misc13.isValid( summon_type ) ? "magic" : "guns" ) + "!" );
 				GlobalFuncs.log_game( "" + GlobalFuncs.key_name( user ) + " summoned " + ( Misc13.isValid( summon_type ) ? "magic" : "guns" ) + "!" );
 			}
 			H = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				H = _;
+			foreach (dynamic _e in GlobalVars.player_list ) {
+				H = _e;
 				if ( !( H is Mob_Living_Carbon_Human ) ) {
 					continue;
 				}
@@ -9754,7 +9733,7 @@ namespace Game13 {
 					continue;
 				}
 				if ( Misc13.isValid( H.mind ) ) {
-					if ( H.mind.special_role == "Wizard" || H.special_role == "apprentice" || H.special_role == "survivalist" ) {
+					if ( H.mind.special_role == "Wizard" || H.mind.special_role == "apprentice" || H.mind.special_role == "survivalist" ) {
 						continue;
 					}
 				}
@@ -9771,8 +9750,8 @@ namespace Game13 {
 					H.write( "<B>You are the survivalist! Your own safety matters above all else, and the only way to ensure your safety is to stockpile weapons! Grab as many guns as possible, by any means necessary. Kill anyone who gets in your way.</B>" );
 					obj_count = 1;
 					OBJ = null;
-					foreach (dynamic _ in H.mind.objectives ) {
-						OBJ = _;
+					foreach (dynamic _a in H.mind.objectives ) {
+						OBJ = _a;
 						if ( !( OBJ is Objective ) ) {
 							continue;
 						}
@@ -9784,130 +9763,130 @@ namespace Game13 {
 				randomizemagic = Rand.pick( magiclist );
 				randomizemagicspecial = Rand.pick( magicspeciallist );
 				if ( !Misc13.isValid( summon_type ) ) {
-					dynamic _ = randomizeguns; // Was a switch-case, sorry for the mess.
-					if ( _=="taser" ) {
+					dynamic _b = randomizeguns; // Was a switch-case, sorry for the mess.
+					if ( _b=="taser" ) {
 						new Ent_Item_Weapon_Gun_Energy_Gun_Advtaser( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="egun" ) {
+					} else if ( _b=="egun" ) {
 						new Ent_Item_Weapon_Gun_Energy_Gun( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="laser" ) {
+					} else if ( _b=="laser" ) {
 						new Ent_Item_Weapon_Gun_Energy_Laser( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="revolver" ) {
+					} else if ( _b=="revolver" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Revolver( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="detective" ) {
+					} else if ( _b=="detective" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Revolver_Detective( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="deagle" ) {
+					} else if ( _b=="deagle" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol_Deagle_Camo( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="gyrojet" ) {
+					} else if ( _b=="gyrojet" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_Gyropistol( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="pulse" ) {
+					} else if ( _b=="pulse" ) {
 						new Ent_Item_Weapon_Gun_Energy_Pulse( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="suppressed" ) {
+					} else if ( _b=="suppressed" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol( GlobalFuncs.get_turf( H ) );
 						new Ent_Item_Weapon_Suppressor( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="doublebarrel" ) {
+					} else if ( _b=="doublebarrel" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Revolver_Doublebarrel( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="shotgun" ) {
+					} else if ( _b=="shotgun" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Shotgun( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="combatshotgun" ) {
+					} else if ( _b=="combatshotgun" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Shotgun_Automatic_Combat( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="arg" ) {
+					} else if ( _b=="arg" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_Ar( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="mateba" ) {
+					} else if ( _b=="mateba" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Revolver_Mateba( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="boltaction" ) {
+					} else if ( _b=="boltaction" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Shotgun_Boltaction( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="speargun" ) {
+					} else if ( _b=="speargun" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_Speargun( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="uzi" ) {
+					} else if ( _b=="uzi" ) {
 						new Ent_Item_Weapon_Gun_Projectile_Automatic_MiniUzi( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="cannon" ) {
+					} else if ( _b=="cannon" ) {
 						gat = new Ent_Item_Weapon_Gun_Energy_Lasercannon( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="crossbow" ) {
+					} else if ( _b=="crossbow" ) {
 						gat = new Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow_Large( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="nuclear" ) {
+					} else if ( _b=="nuclear" ) {
 						gat = new Ent_Item_Weapon_Gun_Energy_Gun_Nuclear( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="sabr" ) {
+					} else if ( _b=="sabr" ) {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_Proto( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="bulldog" ) {
+					} else if ( _b=="bulldog" ) {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_Shotgun_Bulldog( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="c20r" ) {
+					} else if ( _b=="c20r" ) {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_C20r( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="saw" ) {
+					} else if ( _b=="saw" ) {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_L6Saw( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
-					} else if ( _=="car" ) {
+					} else if ( _b=="car" ) {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_M90( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
 					};
 					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), new ByRsc(56), 50, 1 );
 				} else {
-					dynamic _ = randomizemagic; // Was a switch-case, sorry for the mess.
-					if ( _=="fireball" ) {
+					dynamic _d = randomizemagic; // Was a switch-case, sorry for the mess.
+					if ( _d=="fireball" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Fireball( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="smoke" ) {
+					} else if ( _d=="smoke" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Smoke( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="blind" ) {
+					} else if ( _d=="blind" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Blind( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="mindswap" ) {
+					} else if ( _d=="mindswap" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Mindswap( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="forcewall" ) {
+					} else if ( _d=="forcewall" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Forcewall( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="knock" ) {
+					} else if ( _d=="knock" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Knock( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="horsemask" ) {
+					} else if ( _d=="horsemask" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Barnyard( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="charge" ) {
+					} else if ( _d=="charge" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Charge( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="summonitem" ) {
+					} else if ( _d=="summonitem" ) {
 						new Ent_Item_Weapon_Spellbook_Oneuse_Summonitem( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wandnothing" ) {
+					} else if ( _d=="wandnothing" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wanddeath" ) {
+					} else if ( _d=="wanddeath" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Death( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wandresurrection" ) {
+					} else if ( _d=="wandresurrection" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Resurrection( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wandpolymorph" ) {
+					} else if ( _d=="wandpolymorph" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Polymorph( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wandteleport" ) {
+					} else if ( _d=="wandteleport" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Teleport( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wanddoor" ) {
+					} else if ( _d=="wanddoor" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Door( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="wandfireball" ) {
+					} else if ( _d=="wandfireball" ) {
 						new Ent_Item_Weapon_Gun_Magic_Wand_Fireball( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="staffhealing" ) {
+					} else if ( _d=="staffhealing" ) {
 						new Ent_Item_Weapon_Gun_Magic_Staff_Healing( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="staffdoor" ) {
+					} else if ( _d=="staffdoor" ) {
 						new Ent_Item_Weapon_Gun_Magic_Staff_Door( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="armor" ) {
+					} else if ( _d=="armor" ) {
 						new Ent_Item_Clothing_Suit_Space_Hardsuit_Wizard( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="scrying" ) {
+					} else if ( _d=="scrying" ) {
 						new Ent_Item_Weapon_Scrying( GlobalFuncs.get_turf( H ) );
 						if ( !Misc13.isValid( H.dna.check_mutation( "X Ray Vision" ) ) ) {
-							H.add_mutation( "X Ray Vision" );
+							H.dna.add_mutation( "X Ray Vision" );
 							H.write( "<span class='notice'>The walls suddenly disappear.</span>" );
 						}
-					} else if ( _=="voodoo" ) {
+					} else if ( _d=="voodoo" ) {
 						new Ent_Item_Voodoo( GlobalFuncs.get_turf( H ) );
-					} else if ( _=="special" ) {
+					} else if ( _d=="special" ) {
 						magiclist -= "special";
-						dynamic _ = randomizemagicspecial; // Was a switch-case, sorry for the mess.
-						if ( _=="staffchange" ) {
+						dynamic _c = randomizemagicspecial; // Was a switch-case, sorry for the mess.
+						if ( _c=="staffchange" ) {
 							new Ent_Item_Weapon_Gun_Magic_Staff_Change( GlobalFuncs.get_turf( H ) );
-						} else if ( _=="staffanimation" ) {
+						} else if ( _c=="staffanimation" ) {
 							new Ent_Item_Weapon_Gun_Magic_Staff_Animate( GlobalFuncs.get_turf( H ) );
-						} else if ( _=="wandbelt" ) {
+						} else if ( _c=="wandbelt" ) {
 							new Ent_Item_Weapon_Storage_Belt_Wands_Full( GlobalFuncs.get_turf( H ) );
-						} else if ( _=="contract" ) {
+						} else if ( _c=="contract" ) {
 							new Ent_Item_Weapon_AntagSpawner_Contract( GlobalFuncs.get_turf( H ) );
-						} else if ( _=="staffchaos" ) {
+						} else if ( _c=="staffchaos" ) {
 							new Ent_Item_Weapon_Gun_Magic_Staff_Chaos( GlobalFuncs.get_turf( H ) );
-						} else if ( _=="necromantic" ) {
+						} else if ( _c=="necromantic" ) {
 							new Ent_Item_Device_NecromanticStone( GlobalFuncs.get_turf( H ) );
 						};
 						H.write( "<span class='notice'>You suddenly feel lucky.</span>" );
@@ -9963,13 +9942,13 @@ namespace Game13 {
 				_default += "" + seperator + "+SPAWN";
 			}
 			verbpath = null;
-			foreach (dynamic _ in adds ) {
-				verbpath = _;
+			foreach (dynamic _a in adds ) {
+				verbpath = _a;
 				_default += "" + seperator + "+" + verbpath;
 			};
 			verbpath = null;
-			foreach (dynamic _ in subs ) {
-				verbpath = _;
+			foreach (dynamic _b in subs ) {
+				verbpath = _b;
 				_default += "" + seperator + "-" + verbpath;
 			};
 			return _default;
@@ -9981,18 +9960,18 @@ namespace Game13 {
 		}
 
 		public static string RoundDiagBar( dynamic value = null ) {
-			dynamic _ = value * 100; // Was a switch-case, sorry for the mess.
-			if ( 95<=_&&_<=9.999999848243207e+30 ) {
+			dynamic _a = value * 100; // Was a switch-case, sorry for the mess.
+			if ( 95<=_a&&_a<=9.999999848243207e+30 ) {
 				return "max";
-			} else if ( 80<=_&&_<=100 ) {
+			} else if ( 80<=_a&&_a<=100 ) {
 				return "good";
-			} else if ( 60<=_&&_<=80 ) {
+			} else if ( 60<=_a&&_a<=80 ) {
 				return "high";
-			} else if ( 40<=_&&_<=60 ) {
+			} else if ( 40<=_a&&_a<=60 ) {
 				return "med";
-			} else if ( 20<=_&&_<=40 ) {
+			} else if ( 20<=_a&&_a<=40 ) {
 				return "low";
-			} else if ( 1<=_&&_<=20 ) {
+			} else if ( 1<=_a&&_a<=20 ) {
 				return "crit";
 			} else {
 				return "dead";
@@ -10001,22 +9980,22 @@ namespace Game13 {
 		}
 
 		public static string RoundHealth( dynamic health = null ) {
-			dynamic _ = health; // Was a switch-case, sorry for the mess.
-			if ( 100<=_&&_<=9.999999848243207e+30 ) {
+			dynamic _a = health; // Was a switch-case, sorry for the mess.
+			if ( 100<=_a&&_a<=9.999999848243207e+30 ) {
 				return "health100";
-			} else if ( 70<=_&&_<=100 ) {
+			} else if ( 70<=_a&&_a<=100 ) {
 				return "health80";
-			} else if ( 50<=_&&_<=70 ) {
+			} else if ( 50<=_a&&_a<=70 ) {
 				return "health60";
-			} else if ( 30<=_&&_<=50 ) {
+			} else if ( 30<=_a&&_a<=50 ) {
 				return "health40";
-			} else if ( 18<=_&&_<=30 ) {
+			} else if ( 18<=_a&&_a<=30 ) {
 				return "health25";
-			} else if ( 5<=_&&_<=18 ) {
+			} else if ( 5<=_a&&_a<=18 ) {
 				return "health10";
-			} else if ( 1<=_&&_<=5 ) {
+			} else if ( 1<=_a&&_a<=5 ) {
 				return "health1";
-			} else if ( -99<=_&&_<=0 ) {
+			} else if ( -99<=_a&&_a<=0 ) {
 				return "health0";
 			} else {
 				return "health-100";
@@ -10057,16 +10036,16 @@ namespace Game13 {
 			if ( __default == null ) {
 				__default = "male";
 			}
-			dynamic _ = gender; // Was a switch-case, sorry for the mess.
-			if ( _=="male" || _=="female" ) {
+			dynamic _a = gender; // Was a switch-case, sorry for the mess.
+			if ( _a=="male" || _a=="female" ) {
 				return gender;
-			} else if ( _=="neuter" ) {
+			} else if ( _a=="neuter" ) {
 				if ( neuter != 0 ) {
 					return gender;
 				} else {
 					return __default;
 				}
-			} else if ( _=="plural" ) {
+			} else if ( _a=="plural" ) {
 				if ( plural != 0 ) {
 					return gender;
 				} else {
@@ -10094,20 +10073,20 @@ namespace Game13 {
 			if ( !( color is string ) ) {
 				color = "";
 			}
-			start = ( Misc13.conv_text2ascii( color, 1 ) == 35 ) + 1;
+			start = ( Misc13.str_getCharCode( color, 1 ) == 35 ) + 1;
 			len = color.Length;
 			step_size = ( len + 1 - start != desired_format ) + 1;
 			_default = "";
-			i = null;
+			i = false;
 			i = start;
 			while (i <= len) {
-				ascii = Misc13.conv_text2ascii( color, i );
-				dynamic _ = ascii; // Was a switch-case, sorry for the mess.
-				if ( 48<=_&&_<=57 ) {
+				ascii = Misc13.str_getCharCode( color, i );
+				dynamic _a = ascii; // Was a switch-case, sorry for the mess.
+				if ( 48<=_a&&_a<=57 ) {
 					_default += Misc13.conv_ascii2text( ascii );
-				} else if ( 97<=_&&_<=102 ) {
+				} else if ( 97<=_a&&_a<=102 ) {
 					_default += Misc13.conv_ascii2text( ascii );
-				} else if ( 65<=_&&_<=70 ) {
+				} else if ( 65<=_a&&_a<=70 ) {
 					_default += Misc13.conv_ascii2text( ascii + 32 );
 				} else {
 					break;
@@ -10160,7 +10139,7 @@ namespace Game13 {
 			dynamic RGB = null;
 			HSL = GlobalFuncs.rgb2hsl( GlobalFuncs.hex2num( Misc13.str_sub( color, 2, 4 ) ), GlobalFuncs.hex2num( Misc13.str_sub( color, 4, 6 ) ), GlobalFuncs.hex2num( Misc13.str_sub( color, 6, 8 ) ) );
 			HSL[3] = Misc13.min( HSL[3], 0.4000000059604645 );
-			RGB = GlobalFuncs.get_dist_euclidian.BTCall( HSL );
+			RGB = HSL.apply( typeof(GlobalFuncs).GetMethod( "get_dist_euclidian ") );
 			return "#" + GlobalFuncs.num2hex( RGB[1], 2 ) + GlobalFuncs.num2hex( RGB[2], 2 ) + GlobalFuncs.num2hex( RGB[3], 2 );
 		}
 
@@ -10171,8 +10150,8 @@ namespace Game13 {
 				repl_chars = new ByTable().set( "	", "#" ).set( "\n", "#" );
 			}
 			_char = null;
-			foreach (dynamic _ in repl_chars ) {
-				_char = _;
+			foreach (dynamic _a in repl_chars ) {
+				_char = _a;
 				index = Misc13.str_find( t, _char, 1, null );
 				while (index) {
 					t = Misc13.str_sub( t, 1, index ) + repl_chars[_char] + Misc13.str_sub( t, index + 1, null );
@@ -10210,7 +10189,7 @@ namespace Game13 {
 				return 0;
 			}
 			if ( se != 0 ) {
-				i = null;
+				i = 0;
 				i = 1;
 				while (i <= 20) {
 					if ( Misc13.isValid( Rand.chance( probability ) ) ) {
@@ -10221,7 +10200,7 @@ namespace Game13 {
 				M.domutcheck();
 			}
 			if ( ui != 0 ) {
-				i = null;
+				i = 0;
 				i = 1;
 				while (i <= 7) {
 					if ( Misc13.isValid( Rand.chance( probability ) ) ) {
@@ -10229,7 +10208,7 @@ namespace Game13 {
 					}
 					i++;
 				}
-				M.updateappearance.BTCall( new ByTable().set( "mutations_overlay_update", 1 ) );
+				new ByTable().set( "mutations_overlay_update", 1 ).apply( M.GetType().GetMethod( "updateappearance" ) );
 			}
 			return 1;
 		}
@@ -10271,36 +10250,36 @@ namespace Game13 {
 				val = ret["val"];
 				i = ret["i"];
 				if ( op != "" ) {
-					dynamic _ = op; // Was a switch-case, sorry for the mess.
-					if ( _=="+" ) {
+					dynamic _a = op; // Was a switch-case, sorry for the mess.
+					if ( _a=="+" ) {
 						result += val;
-					} else if ( _=="-" ) {
+					} else if ( _a=="-" ) {
 						result -= val;
-					} else if ( _=="*" ) {
+					} else if ( _a=="*" ) {
 						result *= val;
-					} else if ( _=="/" ) {
+					} else if ( _a=="/" ) {
 						result /= val;
-					} else if ( _=="&" ) {
+					} else if ( _a=="&" ) {
 						result &= val;
-					} else if ( _=="|" ) {
+					} else if ( _a=="|" ) {
 						result |= val;
-					} else if ( _=="^" ) {
+					} else if ( _a=="^" ) {
 						result ^= val;
-					} else if ( _=="=" || _=="==" ) {
+					} else if ( _a=="=" || _a=="==" ) {
 						result = result == val;
-					} else if ( _=="!=" || _=="<>" ) {
+					} else if ( _a=="!=" || _a=="<>" ) {
 						result = result != val;
-					} else if ( _=="<" ) {
+					} else if ( _a=="<" ) {
 						result = result < val;
-					} else if ( _=="<=" ) {
+					} else if ( _a=="<=" ) {
 						result = result <= val;
-					} else if ( _==">" ) {
+					} else if ( _a==">" ) {
 						result = result > val;
-					} else if ( _==">=" ) {
+					} else if ( _a==">=" ) {
 						result = result >= val;
-					} else if ( _=="and" || _=="&&" ) {
+					} else if ( _a=="and" || _a=="&&" ) {
 						result = Misc13.isValid( result ) && Misc13.isValid( val );
-					} else if ( _=="or" || _=="||" ) {
+					} else if ( _a=="or" || _a=="||" ) {
 						result = Misc13.isValid( result ) || Misc13.isValid( val );
 					} else {
 						Misc13.thread_user.write( "<span class='danger'>SDQL2: Unknown op " + op + "</span>" );
@@ -10319,15 +10298,15 @@ namespace Game13 {
 			dynamic type = null;
 			dynamic _char = null;
 			if ( Misc13.isValid( tree.HasValue( "world" ) ) ) {
-				return new ByTable(new object [] {Game});
+				return new ByTable(new object [] { typeof(Game) });
 			}
 			_out = new ByTable();
 			type = null;
-			foreach (dynamic _ in tree ) {
-				type = _;
+			foreach (dynamic _a in tree ) {
+				type = _a;
 				_char = Misc13.str_sub( type, 1, 2 );
 				if ( _char == "/" ) {
-					_out += GlobalFuncs.SDQL_get_all( type, Game );
+					_out += GlobalFuncs.SDQL_get_all( type, typeof(Game) );
 				} else if ( _char == "'" || _char == "\"" ) {
 					_out += Misc13.locate1( Misc13.str_sub( type, 2, type.Length ) );
 				}
@@ -10341,8 +10320,8 @@ namespace Game13 {
 			_out = new ByTable();
 			if ( type == "*" ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _a in location ) {
+					d = _a;
 					if ( !( d is Base13 ) ) {
 						continue;
 					}
@@ -10351,26 +10330,26 @@ namespace Game13 {
 				return _out;
 			}
 			type = Misc13.findType( type );
-			if ( Misc13.isValid( type isxx typeof(Mob) ) ) {
+			if ( Misc13.isValid( type.IsSubclassOf( typeof(Mob) ) ) ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _b in location ) {
+					d = _b;
 					if ( Misc13.isValid( type.IsInstanceOfType( d ) ) ) {
 						_out += d;
 					}
 				};
-			} else if ( Misc13.isValid( type isxx typeof(Tile) ) ) {
+			} else if ( Misc13.isValid( type.IsSubclassOf( typeof(Tile) ) ) ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _c in location ) {
+					d = _c;
 					if ( Misc13.isValid( type.IsInstanceOfType( d ) ) ) {
 						_out += d;
 					}
 				};
-			} else if ( Misc13.isValid( type isxx typeof(Entity) ) ) {
+			} else if ( Misc13.isValid( type.IsSubclassOf( typeof(Entity) ) ) ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _d in location ) {
+					d = _d;
 					if ( !( d is Entity ) ) {
 						continue;
 					}
@@ -10378,18 +10357,18 @@ namespace Game13 {
 						_out += d;
 					}
 				};
-			} else if ( Misc13.isValid( type isxx new ByArea(3137) ) ) {
+			} else if ( Misc13.isValid( type.IsSubclassOf( new ByArea(3137) ) ) ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _e in location ) {
+					d = _e;
 					if ( Misc13.isValid( type.IsInstanceOfType( d ) ) ) {
 						_out += d;
 					}
 				};
-			} else if ( Misc13.isValid( type isxx typeof(BaseStatic) ) ) {
+			} else if ( Misc13.isValid( type.IsSubclassOf( typeof(BaseStatic) ) ) ) {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _f in location ) {
+					d = _f;
 					if ( !( d is BaseStatic ) ) {
 						continue;
 					}
@@ -10399,8 +10378,8 @@ namespace Game13 {
 				};
 			} else {
 				d = null;
-				foreach (dynamic _ in location ) {
-					d = _;
+				foreach (dynamic _g in location ) {
+					d = _g;
 					if ( !( d is Base13 ) ) {
 						continue;
 					}
@@ -10428,8 +10407,8 @@ namespace Game13 {
 			querys_pos = 1;
 			do_parse = 0;
 			val = null;
-			foreach (dynamic _ in query_list ) {
-				val = _;
+			foreach (dynamic _a in query_list ) {
+				val = _a;
 				if ( val == ";" ) {
 					do_parse = 1;
 				} else if ( pos >= query_list.len ) {
@@ -10467,15 +10446,15 @@ namespace Game13 {
 				indent = 0;
 			}
 			spaces = "";
-			s = null;
+			s = 0;
 			s = 0;
 			while (s < indent) {
 				spaces += "    ";
 				s++;
 			}
 			item = null;
-			foreach (dynamic _ in query_tree ) {
-				item = _;
+			foreach (dynamic _a in query_tree ) {
+				item = _a;
 				if ( Misc13.isValid( ByTable.IsInstanceOfType( item ) ) ) {
 					Misc13.thread_user.write( "" + spaces + "(" );
 					GlobalFuncs.SDQL_testout( item, indent + 1 );
@@ -10525,7 +10504,7 @@ namespace Game13 {
 				val = null;
 			} else if ( Misc13.isValid( Misc13.isNumber( expression[i] ) ) ) {
 				val = expression[i];
-			} else if ( Misc13.isValid( new ByTable(new object [] {"'","\""}).HasValue( Misc13.str_sub( expression[i], 1, 2 ) ) ) ) {
+			} else if ( Misc13.isValid( new ByTable(new object [] { "'", "\"" }).HasValue( Misc13.str_sub( expression[i], 1, 2 ) ) ) ) {
 				val = Misc13.str_sub( expression[i], 2, expression[i].Length );
 			} else {
 				val = GlobalFuncs.SDQL_var( _object, expression, i );
@@ -10559,19 +10538,19 @@ namespace Game13 {
 			int i = 0;
 			dynamic _char = null;
 			dynamic char2 = null;
-			whitespace = new ByTable(new object [] {" ","\n","	"});
-			single = new ByTable(new object [] {"(",")",",","+","-",".",";"});
+			whitespace = new ByTable(new object [] { " ", "\n", "	" });
+			single = new ByTable(new object [] { "(", ")", ",", "+", "-", ".", ";" });
 			multi = new ByTable()
-				.set( "!", new ByTable(new object [] {"","="}) )
-				.set( ">", new ByTable(new object [] {"","="}) )
-				.set( "<", new ByTable(new object [] {"","=",">"}) )
-				.set( "=", new ByTable(new object [] {"","="}) )
+				.set( "!", new ByTable(new object [] { "", "=" }) )
+				.set( ">", new ByTable(new object [] { "", "=" }) )
+				.set( "<", new ByTable(new object [] { "", "=", ">" }) )
+				.set( "=", new ByTable(new object [] { "", "=" }) )
 				
 			;
 			word = "";
 			query_list = new ByTable();
 			len = query_text.Length;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= len) {
 				_char = Misc13.str_sub( query_text, i, i + 1 );
@@ -10664,14 +10643,14 @@ namespace Game13 {
 		}
 
 		public static int seclevel2num( dynamic seclevel = null ) {
-			dynamic _ = Misc13.str_lower( seclevel ); // Was a switch-case, sorry for the mess.
-			if ( _=="green" ) {
+			dynamic _a = Misc13.str_lower( seclevel ); // Was a switch-case, sorry for the mess.
+			if ( _a=="green" ) {
 				return 0;
-			} else if ( _=="blue" ) {
+			} else if ( _a=="blue" ) {
 				return 1;
-			} else if ( _=="red" ) {
+			} else if ( _a=="red" ) {
 				return 2;
-			} else if ( _=="delta" ) {
+			} else if ( _a=="delta" ) {
 				return 3;
 			};
 		}
@@ -10746,8 +10725,8 @@ namespace Game13 {
 			dynamic A = null;
 			active = GlobalFuncs.active_ais();
 			A = null;
-			foreach (dynamic _ in active ) {
-				A = _;
+			foreach (dynamic _a in active ) {
+				A = _a;
 				if ( !( A is Mob_Living_Silicon_Ai ) ) {
 					continue;
 				}
@@ -10785,7 +10764,7 @@ namespace Game13 {
 				callback_args = null;
 			}
 			if ( Misc13.isValid( receiver ) && Misc13.isValid( target_element ) && Misc13.isValid( control_id ) ) {
-				argums = new ByTable(new object [] {target_element,new_content});
+				argums = new ByTable(new object [] { target_element, new_content });
 				if ( Misc13.isValid( callback ) ) {
 					argums += callback;
 					if ( Misc13.isValid( callback_args ) ) {
@@ -10821,8 +10800,8 @@ namespace Game13 {
 			admin_number_ignored = 0;
 			admin_number_decrease = 0;
 			X = null;
-			foreach (dynamic _ in GlobalVars.admins ) {
-				X = _;
+			foreach (dynamic _a in GlobalVars.admins ) {
+				X = _a;
 				if ( !Misc13.isValid( BAD_GOOFY_EXPANSION???.IsInstanceOfType( X ) ) ) {
 					continue;
 				}
@@ -10858,24 +10837,24 @@ namespace Game13 {
 		public static void set_security_level( int level = 0 ) {
 			dynamic FA = null;
 			dynamic pod = null;
-			dynamic _ = level; // Was a switch-case, sorry for the mess.
-			if ( _=="green" ) {
+			dynamic _a = level; // Was a switch-case, sorry for the mess.
+			if ( _a=="green" ) {
 				level = 0;
-			} else if ( _=="blue" ) {
+			} else if ( _a=="blue" ) {
 				level = 1;
-			} else if ( _=="red" ) {
+			} else if ( _a=="red" ) {
 				level = 2;
-			} else if ( _=="delta" ) {
+			} else if ( _a=="delta" ) {
 				level = 3;
 			};
 			if ( level >= 0 && level <= 3 && level != GlobalVars.security_level ) {
-				dynamic _ = level; // Was a switch-case, sorry for the mess.
-				if ( _==0 ) {
+				dynamic _h = level; // Was a switch-case, sorry for the mess.
+				if ( _h==0 ) {
 					GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_green, "Attention! Security level lowered to green:" );
 					GlobalVars.security_level = 0;
 					FA = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						FA = _;
+					foreach (dynamic _b in GlobalVars.machines ) {
+						FA = _b;
 						if ( !( FA is Ent_Machinery_Firealarm ) ) {
 							continue;
 						}
@@ -10883,7 +10862,7 @@ namespace Game13 {
 							FA.update_icon();
 						}
 					};
-				} else if ( _==1 ) {
+				} else if ( _h==1 ) {
 					if ( GlobalVars.security_level < 1 ) {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_blue_upto, "Attention! Security level elevated to blue:", 1 );
 					} else {
@@ -10891,8 +10870,8 @@ namespace Game13 {
 					}
 					GlobalVars.security_level = 1;
 					FA = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						FA = _;
+					foreach (dynamic _c in GlobalVars.machines ) {
+						FA = _c;
 						if ( !( FA is Ent_Machinery_Firealarm ) ) {
 							continue;
 						}
@@ -10900,7 +10879,7 @@ namespace Game13 {
 							FA.update_icon();
 						}
 					};
-				} else if ( _==2 ) {
+				} else if ( _h==2 ) {
 					if ( GlobalVars.security_level < 2 ) {
 						GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_red_upto, "Attention! Code red!", 1 );
 					} else {
@@ -10908,8 +10887,8 @@ namespace Game13 {
 					}
 					GlobalVars.security_level = 2;
 					FA = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						FA = _;
+					foreach (dynamic _d in GlobalVars.machines ) {
+						FA = _d;
 						if ( !( FA is Ent_Machinery_Firealarm ) ) {
 							continue;
 						}
@@ -10918,19 +10897,19 @@ namespace Game13 {
 						}
 					};
 					pod = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						pod = _;
+					foreach (dynamic _e in GlobalVars.machines ) {
+						pod = _e;
 						if ( !( pod is Ent_Machinery_Computer_Shuttle_Pod ) ) {
 							continue;
 						}
 						pod.admin_controlled = 0;
 					};
-				} else if ( _==3 ) {
+				} else if ( _h==3 ) {
 					GlobalFuncs.minor_announce( GlobalVars.config.alert_desc_delta, "Attention! Delta security level reached!", 1 );
 					GlobalVars.security_level = 3;
 					FA = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						FA = _;
+					foreach (dynamic _f in GlobalVars.machines ) {
+						FA = _f;
 						if ( !( FA is Ent_Machinery_Firealarm ) ) {
 							continue;
 						}
@@ -10939,8 +10918,8 @@ namespace Game13 {
 						}
 					};
 					pod = null;
-					foreach (dynamic _ in GlobalVars.machines ) {
-						pod = _;
+					foreach (dynamic _g in GlobalVars.machines ) {
+						pod = _g;
 						if ( !( pod is Ent_Machinery_Computer_Shuttle_Pod ) ) {
 							continue;
 						}
@@ -11013,8 +10992,8 @@ namespace Game13 {
 			conf_set_len = GlobalVars.map_transition_config.len;
 			k = 1;
 			A = null;
-			foreach (dynamic _ in GlobalVars.map_transition_config ) {
-				A = _;
+			foreach (dynamic _a in GlobalVars.map_transition_config ) {
+				A = _a;
 				D = new SpaceLevel( GlobalVars.map_transition_config[A] );
 				D.name = A;
 				D.z_value = k;
@@ -11029,10 +11008,10 @@ namespace Game13 {
 			point_grid = new ByTable( conf_set_len * 2 + 1, conf_set_len * 2 + 1 );
 			grid = new ByTable();
 			P = null;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= conf_set_len * 2 + 1) {
-				j = null;
+				j = 0;
 				j = 1;
 				while (j <= conf_set_len * 2 + 1) {
 					P = new Point( i, j, point_grid );
@@ -11043,8 +11022,8 @@ namespace Game13 {
 				i++;
 			}
 			pnt = null;
-			foreach (dynamic _ in grid ) {
-				pnt = _;
+			foreach (dynamic _b in grid ) {
+				pnt = _b;
 				if ( !( pnt is Point ) ) {
 					continue;
 				}
@@ -11068,13 +11047,13 @@ namespace Game13 {
 				grid["" + D.z_value] = D;
 			}
 			A = null;
-			foreach (dynamic _ in GlobalVars.z_levels_list ) {
-				A = _;
+			foreach (dynamic _c in GlobalVars.z_levels_list ) {
+				A = _c;
 				grid[A] = GlobalVars.z_levels_list[A];
 			};
 			S = null;
-			foreach (dynamic _ in Game ) {
-				S = _;
+			foreach (dynamic _d in Game._all_ents_ ) {
+				S = _d;
 				if ( !( S is Tile_Space ) ) {
 					continue;
 				}
@@ -11160,8 +11139,8 @@ namespace Game13 {
 				}
 			};
 			A = null;
-			foreach (dynamic _ in grid ) {
-				A = _;
+			foreach (dynamic _e in grid ) {
+				A = _e;
 				GlobalVars.z_levels_list[A] = grid[A];
 			};
 		}
@@ -11173,8 +11152,8 @@ namespace Game13 {
 				preserve = new ByTable();
 				if ( Misc13.isValid( ByTable.IsInstanceOfType( data ) ) && Misc13.isValid( data["viruses"] ) ) {
 					A = null;
-					foreach (dynamic _ in data["viruses"] ) {
-						A = _;
+					foreach (dynamic _a in data["viruses"] ) {
+						A = _a;
 						if ( !( A is Disease ) ) {
 							continue;
 						}
@@ -11194,7 +11173,7 @@ namespace Game13 {
 			if ( strength == null ) {
 				strength = 1;
 			}
-			Thread13.schedule( 0, () => {
+			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				if ( !Misc13.isValid( M ) || !Misc13.isValid( M.client ) || Misc13.isValid( M.shakecamera ) ) {
 					return;
 				}
@@ -11215,7 +11194,7 @@ namespace Game13 {
 					}
 				}
 				return;
-			});
+			}));
 		}
 
 		public static void show_note( dynamic target_ckey = null, dynamic index = null, int linkless = 0 ) {
@@ -11241,8 +11220,8 @@ namespace Game13 {
 			ruler = "<hr style='background:#000000; border:0; height:3px'>";
 			navbar = "<a href='?_src_=holder;nonalpha=1'>[All]</a>|<a href='?_src_=holder;nonalpha=2'>[#]</a>";
 			letter = null;
-			foreach (dynamic _ in GlobalVars.alphabet ) {
-				letter = _;
+			foreach (dynamic _a in GlobalVars.alphabet ) {
+				letter = _a;
 				navbar += "|<a href='?_src_=holder;shownote=" + letter + "'>[" + letter + "]</a>";
 			};
 			navbar += "<br><form method='GET' name='search' action='?'><input type='hidden' name='_src_' value='holder'><input type='text' name='notessearch' value='" + index + "'><input type='submit' value='Search'></form>";
@@ -11286,10 +11265,10 @@ namespace Game13 {
 				if ( !Misc13.isValid( Misc13.isNumber( index ) ) ) {
 					index = GlobalFuncs.sanitizeSQL( index );
 				}
-				dynamic _ = index; // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+				dynamic _b = index; // Was a switch-case, sorry for the mess.
+				if ( _b==1 ) {
 					search = "^.";
-				} else if ( _==2 ) {
+				} else if ( _b==2 ) {
 					search = "^[^[:alpha:]]";
 				} else {
 					search = "^" + index;
@@ -11317,7 +11296,7 @@ namespace Game13 {
 				return null;
 			}
 			L = L.Copy();
-			i = null;
+			i = 0;
 			i = 1;
 			while (i < L.len) {
 				L.Swap( i, Rand.Int( i, L.len ) );
@@ -11376,12 +11355,12 @@ namespace Game13 {
 						newletter = " *BURP*.";
 					}
 				}
-				dynamic _ = Rand.Int( 1, 20 ); // Was a switch-case, sorry for the mess.
-				if ( _==1 ) {
+				dynamic _a = Rand.Int( 1, 20 ); // Was a switch-case, sorry for the mess.
+				if ( _a==1 ) {
 					newletter += "'";
-				} else if ( _==10 ) {
+				} else if ( _a==10 ) {
 					newletter += "" + newletter;
-				} else if ( _==20 ) {
+				} else if ( _a==20 ) {
 					newletter += "" + newletter + newletter;
 				};
 				newphrase += "" + newletter;
@@ -11395,7 +11374,7 @@ namespace Game13 {
 			if ( GlobalFuncs.qdeleted( A ) != 0 ) {
 				return;
 			}
-			Thread13.schedule( 0, () => {
+			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				if ( Misc13.isValid( A ) && Misc13.isValid( A.smooth ) ) {
 					adjacencies = GlobalFuncs.calculate_adjacencies( A );
 					A.clear_smooth_overlays();
@@ -11409,14 +11388,14 @@ namespace Game13 {
 					A.overlays += A.bottom_left_corner;
 				}
 				return;
-			});
+			}));
 		}
 
 		public static void smooth_icon_neighbors( dynamic A = null ) {
 			dynamic T = null;
 			T = null;
-			foreach (dynamic _ in Misc13.orange( 1, A ) ) {
-				T = _;
+			foreach (dynamic _a in Misc13.orange( 1, A ) ) {
+				T = _a;
 				if ( !( T is BaseStatic ) ) {
 					continue;
 				}
@@ -11474,96 +11453,96 @@ namespace Game13 {
 			moblist = new ByTable();
 			sortmob = GlobalFuncs.sortNames( GlobalVars.mob_list );
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _a in sortmob ) {
+				M = _a;
 				if ( !( M is Mob_Living_Silicon_Ai ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _b in sortmob ) {
+				M = _b;
 				if ( !( M is Mob_Camera ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _c in sortmob ) {
+				M = _c;
 				if ( !( M is Mob_Living_Silicon_Pai ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _d in sortmob ) {
+				M = _d;
 				if ( !( M is Mob_Living_Silicon_Robot ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _e in sortmob ) {
+				M = _e;
 				if ( !( M is Mob_Living_Carbon_Human ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _f in sortmob ) {
+				M = _f;
 				if ( !( M is Mob_Living_Carbon_Brain ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _g in sortmob ) {
+				M = _g;
 				if ( !( M is Mob_Living_Carbon_Alien ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _h in sortmob ) {
+				M = _h;
 				if ( !( M is Mob_Dead_Observer ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _i in sortmob ) {
+				M = _i;
 				if ( !( M is Mob_NewPlayer ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _j in sortmob ) {
+				M = _j;
 				if ( !( M is Mob_Living_Carbon_Monkey ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _k in sortmob ) {
+				M = _k;
 				if ( !( M is Mob_Living_SimpleAnimal_Slime ) ) {
 					continue;
 				}
 				moblist.Add( M );
 			};
 			M = null;
-			foreach (dynamic _ in sortmob ) {
-				M = _;
+			foreach (dynamic _l in sortmob ) {
+				M = _l;
 				if ( !( M is Mob_Living_SimpleAnimal ) ) {
 					continue;
 				}
@@ -11621,17 +11600,17 @@ namespace Game13 {
 			int endy = 0;
 			int endx = 0;
 			dynamic T = null;
-			dynamic _ = startSide; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = startSide; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				endy = 7;
 				endx = Rand.Int( 7, Game.maxx - 7 );
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				endy = Rand.Int( 7, Game.maxy - 7 );
 				endx = 7;
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				endy = Game.maxy - 7;
 				endx = Rand.Int( 7, Game.maxx - 7 );
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				endy = Rand.Int( 7, Game.maxy - 7 );
 				endx = Game.maxx - 7;
 			};
@@ -11643,17 +11622,17 @@ namespace Game13 {
 			int starty = 0;
 			int startx = 0;
 			dynamic T = null;
-			dynamic _ = startSide; // Was a switch-case, sorry for the mess.
-			if ( _==1 ) {
+			dynamic _a = startSide; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
 				starty = Game.maxy - 8;
 				startx = Rand.Int( 8, Game.maxx - 8 );
-			} else if ( _==2 ) {
+			} else if ( _a==2 ) {
 				starty = Rand.Int( 8, Game.maxy - 8 );
 				startx = Game.maxx - 8;
-			} else if ( _==3 ) {
+			} else if ( _a==3 ) {
 				starty = 8;
 				startx = Rand.Int( 8, Game.maxx - 8 );
-			} else if ( _==4 ) {
+			} else if ( _a==4 ) {
 				starty = Rand.Int( 8, Game.maxy - 8 );
 				startx = 8;
 			};
@@ -11679,13 +11658,13 @@ namespace Game13 {
 				}
 			}
 			Me = GlobalFuncs.pickweight( meteortypes );
-			M = Me( pickedstart );
+			M = Misc13.call( Me, pickedstart );
 			M.dest = pickedgoal;
 			M.z_original = 1;
-			Thread13.schedule( 0, () => {
+			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				Misc13.walk_towards( M, M.dest, 1 );
 				return;
-			});
+			}));
 			return;
 		}
 
@@ -11694,7 +11673,7 @@ namespace Game13 {
 			if ( number == null ) {
 				number = 10;
 			}
-			i = null;
+			i = 0;
 			i = 0;
 			while (i < number) {
 				GlobalFuncs.spawn_meteor( meteortypes );
@@ -11715,19 +11694,19 @@ namespace Game13 {
 				.set( "walls", new ByTable() )
 				
 			;
-			x = null;
+			x = 0;
 			x = 0;
 			while (x < x_size) {
-				y = null;
+				y = 0;
 				y = 0;
 				while (y < y_size) {
 					T = null;
 					cur_loc = Misc13.locate3( start_loc.x + x, start_loc.y + y, start_loc.z );
-					A = new ByArea(2768)();
+					A = Misc13.call( new ByArea(2768) );
 					if ( Misc13.isValid( name ) ) {
 						A.name = name;
 					} else {
-						A.name = "Artifact Room #" + A.x + "-" + A.y + "-" + A.z;
+						A.name = "Artifact Room #" + start_loc.x + "-" + start_loc.y + "-" + start_loc.z;
 					}
 					if ( x == 0 || x == x_size - 1 || y == 0 || y == y_size - 1 ) {
 						wall = GlobalFuncs.pickweight( walltypes );
@@ -11780,8 +11759,8 @@ namespace Game13 {
 			}
 			playercount = 0;
 			M = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				M = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				M = _a;
 				if ( Misc13.isValid( M.client ) ) {
 					playercount += 1;
 				}
@@ -11919,7 +11898,7 @@ namespace Game13 {
 			te = n;
 			t = "";
 			n = n.Length;
-			p = null;
+			p = 0;
 			p = 1;
 			while (p <= n) {
 				if ( Misc13.str_sub( te, p, p + 1 ) == " " || Misc13.isValid( Rand.chance( pr ) ) ) {
@@ -11980,13 +11959,13 @@ namespace Game13 {
 				intermediate_stage = GlobalFuncs.list2text( list_value );
 				list_value = GlobalFuncs.text2list( intermediate_stage, " " );
 				value = null;
-				foreach (dynamic _ in list_value ) {
-					value = _;
+				foreach (dynamic _b in list_value ) {
+					value = _b;
 					if ( Misc13.isValid( Misc13.str_find( value, "]", 1, null ) ) ) {
 						value = GlobalFuncs.text2list( value, "]" );
 						A = null;
-						foreach (dynamic _ in value ) {
-							A = _;
+						foreach (dynamic _a in value ) {
+							A = _a;
 							if ( Misc13.isValid( var_source.vars.Find( A ) ) ) {
 								_default += A;
 							}
@@ -12010,8 +11989,8 @@ namespace Game13 {
 					stringsList = new ByTable();
 					fileList = GlobalFuncs.file2list( "strings/" + filename );
 					s = null;
-					foreach (dynamic _ in fileList ) {
-						s = _;
+					foreach (dynamic _a in fileList ) {
+						s = _a;
 						stringsList = GlobalFuncs.text2list( s, "@=" );
 						if ( stringsList.len != 2 ) {
 							Misc13.crash( "Invalid string list in strings/" + filename );
@@ -12040,11 +12019,11 @@ namespace Game13 {
 			if ( limit == null ) {
 				limit = 1024;
 			}
-			strip_chars = new ByTable(new object [] {"<",">"});
+			strip_chars = new ByTable(new object [] { "<", ">" });
 			t = Misc13.str_sub( t, 1, limit );
 			_char = null;
-			foreach (dynamic _ in strip_chars ) {
-				_char = _;
+			foreach (dynamic _a in strip_chars ) {
+				_char = _a;
 				index = Misc13.str_find( t, _char, 1, null );
 				while (index) {
 					t = Misc13.str_sub( t, 1, index ) + Misc13.str_sub( t, index + 1, null );
@@ -12098,11 +12077,11 @@ namespace Game13 {
 			te = Misc13.html_decode( n );
 			t = "";
 			n = n.Length;
-			p = null;
+			p = 0;
 			p = 1;
 			while (p <= n) {
 				n_letter = Misc13.str_sub( te, p, p + 1 );
-				if ( Misc13.isValid( Rand.chance( 80 ) ) && Misc13.isValid( new ByTable(new object [] {"b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z"}).HasValue( Misc13.ckey( n_letter ) ) ) ) {
+				if ( Misc13.isValid( Rand.chance( 80 ) ) && Misc13.isValid( new ByTable(new object [] { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" }).HasValue( Misc13.ckey( n_letter ) ) ) ) {
 					if ( Misc13.isValid( Rand.chance( 10 ) ) ) {
 						n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter + "-" + n_letter;
 					} else if ( Misc13.isValid( Rand.chance( 20 ) ) ) {
@@ -12172,22 +12151,22 @@ namespace Game13 {
 		}
 
 		public static int text2dir_extended( dynamic direction = null ) {
-			dynamic _ = Misc13.str_upper( direction ); // Was a switch-case, sorry for the mess.
-			if ( _=="NORTH" || _=="N" ) {
+			dynamic _a = Misc13.str_upper( direction ); // Was a switch-case, sorry for the mess.
+			if ( _a=="NORTH" || _a=="N" ) {
 				return 1;
-			} else if ( _=="SOUTH" || _=="S" ) {
+			} else if ( _a=="SOUTH" || _a=="S" ) {
 				return 2;
-			} else if ( _=="EAST" || _=="E" ) {
+			} else if ( _a=="EAST" || _a=="E" ) {
 				return 4;
-			} else if ( _=="WEST" || _=="W" ) {
+			} else if ( _a=="WEST" || _a=="W" ) {
 				return 8;
-			} else if ( _=="NORTHEAST" || _=="NE" ) {
+			} else if ( _a=="NORTHEAST" || _a=="NE" ) {
 				return 5;
-			} else if ( _=="NORTHWEST" || _=="NW" ) {
+			} else if ( _a=="NORTHWEST" || _a=="NW" ) {
 				return 9;
-			} else if ( _=="SOUTHEAST" || _=="SE" ) {
+			} else if ( _a=="SOUTHEAST" || _a=="SE" ) {
 				return 6;
-			} else if ( _=="SOUTHWEST" || _=="SW" ) {
+			} else if ( _a=="SOUTHWEST" || _a=="SW" ) {
 				return 10;
 			};
 			return 0;
@@ -12203,7 +12182,7 @@ namespace Game13 {
 			}
 			delim_len = delimiter.Length;
 			if ( delim_len < 1 ) {
-				return new ByTable(new object [] {text});
+				return new ByTable(new object [] { text });
 			}
 			_default = new ByTable();
 			last_found = 1;
@@ -12264,8 +12243,8 @@ namespace Game13 {
 					M.client.buildmode = 0;
 					M.client.show_popup_menus = 1;
 					H = null;
-					foreach (dynamic _ in Game ) {
-						H = _;
+					foreach (dynamic _a in Game._all_ents_ ) {
+						H = _a;
 						if ( !( H is Ent_Effect_Bmode_Buildholder ) ) {
 							continue;
 						}
@@ -12318,16 +12297,16 @@ namespace Game13 {
 		}
 
 		public static int transform_dir( dynamic direction = null ) {
-			dynamic _ = direction; // Was a switch-case, sorry for the mess.
-			if ( _==1 || _==2 || _==4 || _==8 ) {
+			dynamic _a = direction; // Was a switch-case, sorry for the mess.
+			if ( _a==1 || _a==2 || _a==4 || _a==8 ) {
 				return direction;
-			} else if ( _==5 ) {
+			} else if ( _a==5 ) {
 				return 16;
-			} else if ( _==9 ) {
+			} else if ( _a==9 ) {
 				return 32;
-			} else if ( _==6 ) {
+			} else if ( _a==6 ) {
 				return 64;
-			} else if ( _==10 ) {
+			} else if ( _a==10 ) {
 				return 128;
 			};
 		}
@@ -12353,9 +12332,9 @@ namespace Game13 {
 		public static string trim_left( dynamic text = null ) {
 			dynamic i = null;
 			i = null;
-			foreach (dynamic _ in Misc13.iter_range( 1, text.Length ) ) {
-				i = _;
-				if ( Misc13.conv_text2ascii( text, i ) > 32 ) {
+			foreach (dynamic _a in Misc13.iter_range( 1, text.Length ) ) {
+				i = _a;
+				if ( Misc13.str_getCharCode( text, i ) > 32 ) {
 					return Misc13.str_sub( text, i, null );
 				}
 			};
@@ -12367,7 +12346,7 @@ namespace Game13 {
 			i = null;
 			i = text.Length;
 			while (i > 0) {
-				if ( Misc13.conv_text2ascii( text, i ) > 32 ) {
+				if ( Misc13.str_getCharCode( text, i ) > 32 ) {
 					return Misc13.str_sub( text, 1, i + 1 );
 				}
 				i--;
@@ -12380,8 +12359,8 @@ namespace Game13 {
 			dynamic direction = null;
 			T = GlobalFuncs.get_turf( AM );
 			direction = null;
-			foreach (dynamic _ in GlobalVars.cardinal ) {
-				direction = _;
+			foreach (dynamic _a in GlobalVars.cardinal ) {
+				direction = _a;
 				if ( Misc13.isValid( AM.Move( Misc13.get_step( T, direction ) ) ) ) {
 					break;
 				}
@@ -12389,10 +12368,10 @@ namespace Game13 {
 		}
 
 		public static ByRsc ui_style2icon( dynamic ui_style = null ) {
-			dynamic _ = ui_style; // Was a switch-case, sorry for the mess.
-			if ( _=="Retro" ) {
+			dynamic _a = ui_style; // Was a switch-case, sorry for the mess.
+			if ( _a=="Retro" ) {
 				return new ByRsc(12);
-			} else if ( _=="Plasmafire" ) {
+			} else if ( _a=="Plasmafire" ) {
 				return new ByRsc(13);
 			} else {
 				return new ByRsc(14);
@@ -12417,7 +12396,7 @@ namespace Game13 {
 			}
 			if ( dist == 0 ) {
 				if ( orange == 0 ) {
-					return new ByTable(new object [] {center});
+					return new ByTable(new object [] { center });
 				} else {
 					return new ByTable();
 				}
@@ -12435,8 +12414,8 @@ namespace Game13 {
 			while (c_dist <= dist) {
 				y = t_center.y + c_dist;
 				x = t_center.x - c_dist + 1;
-				foreach (dynamic _ in Misc13.iter_range( x, t_center.x + c_dist ) ) {
-					x = _;
+				foreach (dynamic _a in Misc13.iter_range( x, t_center.x + c_dist ) ) {
+					x = _a;
 					T = Misc13.locate3( x, y, t_center.z );
 					if ( Misc13.isValid( T ) ) {
 						L += T;
@@ -12445,8 +12424,8 @@ namespace Game13 {
 				};
 				y = t_center.y + c_dist - 1;
 				x = t_center.x + c_dist;
-				foreach (dynamic _ in Misc13.iter_range( t_center.y - c_dist, y ) ) {
-					y = _;
+				foreach (dynamic _b in Misc13.iter_range( t_center.y - c_dist, y ) ) {
+					y = _b;
 					T = Misc13.locate3( x, y, t_center.z );
 					if ( Misc13.isValid( T ) ) {
 						L += T;
@@ -12455,8 +12434,8 @@ namespace Game13 {
 				};
 				y = t_center.y - c_dist;
 				x = t_center.x + c_dist - 1;
-				foreach (dynamic _ in Misc13.iter_range( t_center.x - c_dist, x ) ) {
-					x = _;
+				foreach (dynamic _c in Misc13.iter_range( t_center.x - c_dist, x ) ) {
+					x = _c;
 					T = Misc13.locate3( x, y, t_center.z );
 					if ( Misc13.isValid( T ) ) {
 						L += T;
@@ -12465,8 +12444,8 @@ namespace Game13 {
 				};
 				y = t_center.y - c_dist + 1;
 				x = t_center.x - c_dist;
-				foreach (dynamic _ in Misc13.iter_range( y, t_center.y + c_dist ) ) {
-					y = _;
+				foreach (dynamic _d in Misc13.iter_range( y, t_center.y + c_dist ) ) {
+					y = _d;
 					T = Misc13.locate3( x, y, t_center.z );
 					if ( Misc13.isValid( T ) ) {
 						L += T;
@@ -12514,15 +12493,15 @@ namespace Game13 {
 				}
 			}
 			if ( GlobalFuncs.isLeap( year ) ) {
-				monthsInDays = new ByTable(new object [] {-1,30,59,90,120,151,181,212,243,273,304,334});
+				monthsInDays = new ByTable(new object [] { -1, 30, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 });
 			} else {
-				monthsInDays = new ByTable(new object [] {0,31,59,90,120,151,181,212,243,273,304,334});
+				monthsInDays = new ByTable(new object [] { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 });
 			}
 			mDays = 0;
 			monthIndex = 0;
 			m = null;
-			foreach (dynamic _ in monthsInDays ) {
-				m = _;
+			foreach (dynamic _a in monthsInDays ) {
+				m = _a;
 				monthIndex++;
 				if ( tmpDays > m ) {
 					mDays = m;
@@ -12536,8 +12515,8 @@ namespace Game13 {
 		public static void updateallghostimages(  ) {
 			dynamic O = null;
 			O = null;
-			foreach (dynamic _ in GlobalVars.player_list ) {
-				O = _;
+			foreach (dynamic _a in GlobalVars.player_list ) {
+				O = _a;
 				if ( !( O is Mob_Dead_Observer ) ) {
 					continue;
 				}
@@ -12558,10 +12537,10 @@ namespace Game13 {
 			if ( center == null ) {
 				center = Misc13.thread_user;
 			}
-			dynamic _ = type; // Was a switch-case, sorry for the mess.
-			if ( _=="view" ) {
+			dynamic _a = type; // Was a switch-case, sorry for the mess.
+			if ( _a=="view" ) {
 				_default = Misc13.view( distance, center );
-			} else if ( _=="range" ) {
+			} else if ( _a=="range" ) {
 				_default = Misc13.range( distance, center );
 			};
 			return null;
@@ -12614,8 +12593,8 @@ namespace Game13 {
 						Robot.notify_ai( 1 );
 					} else {
 						W = null;
-						foreach (dynamic _ in M ) {
-							W = _;
+						foreach (dynamic _a in M ) {
+							W = _a;
 							if ( !( W is Ent_Item ) ) {
 								continue;
 							}
@@ -12630,18 +12609,18 @@ namespace Game13 {
 					}
 					new_mob = null;
 					randomize = Rand.pick(new object [] { "monkey", "robot", "slime", "xeno", "humanoid", "animal" });
-					dynamic _ = randomize; // Was a switch-case, sorry for the mess.
-					if ( _=="monkey" ) {
+					dynamic _f = randomize; // Was a switch-case, sorry for the mess.
+					if ( _f=="monkey" ) {
 						new_mob = new Mob_Living_Carbon_Monkey( M.loc );
 						new_mob.languages |= 1;
-					} else if ( _=="robot" ) {
+					} else if ( _f=="robot" ) {
 						robot = Rand.pick(new object [] { "cyborg", "syndiborg", "drone" });
-						dynamic _ = robot; // Was a switch-case, sorry for the mess.
-						if ( _=="cyborg" ) {
+						dynamic _b = robot; // Was a switch-case, sorry for the mess.
+						if ( _b=="cyborg" ) {
 							new_mob = new Mob_Living_Silicon_Robot( M.loc );
-						} else if ( _=="syndiborg" ) {
+						} else if ( _b=="syndiborg" ) {
 							new_mob = new Mob_Living_Silicon_Robot_Syndicate( M.loc );
-						} else if ( _=="drone" ) {
+						} else if ( _b=="drone" ) {
 							new_mob = new Mob_Living_SimpleAnimal_Drone( M.loc );
 							D = new_mob;
 							D.update_drone_hack();
@@ -12656,95 +12635,95 @@ namespace Game13 {
 						} else {
 							new_mob.languages |= 1;
 						}
-					} else if ( _=="slime" ) {
+					} else if ( _f=="slime" ) {
 						new_mob = new Mob_Living_SimpleAnimal_Slime( M.loc );
 						if ( Misc13.isValid( Rand.chance( 50 ) ) ) {
 							Slime = new_mob;
 							Slime.is_adult = 1;
 						}
 						new_mob.languages |= 1;
-					} else if ( _=="xeno" ) {
+					} else if ( _f=="xeno" ) {
 						if ( Misc13.isValid( Rand.chance( 50 ) ) ) {
 							new_mob = new Mob_Living_Carbon_Alien_Humanoid_Hunter( M.loc );
 						} else {
 							new_mob = new Mob_Living_Carbon_Alien_Humanoid_Sentinel( M.loc );
 						}
 						new_mob.languages |= 1;
-					} else if ( _=="animal" ) {
+					} else if ( _f=="animal" ) {
 						if ( Misc13.isValid( Rand.chance( 50 ) ) ) {
 							beast = Rand.pick(new object [] { "carp", "bear", "mushroom", "statue", "bat", "goat", "killertomato", "spiderbase", "spiderhunter", "blobbernaut", "magicarp", "chaosmagicarp" });
-							dynamic _ = beast; // Was a switch-case, sorry for the mess.
-							if ( _=="carp" ) {
+							dynamic _c = beast; // Was a switch-case, sorry for the mess.
+							if ( _c=="carp" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Carp( M.loc );
-							} else if ( _=="bear" ) {
+							} else if ( _c=="bear" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Bear( M.loc );
-							} else if ( _=="mushroom" ) {
+							} else if ( _c=="mushroom" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Mushroom( M.loc );
-							} else if ( _=="statue" ) {
+							} else if ( _c=="statue" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Statue( M.loc );
-							} else if ( _=="bat" ) {
+							} else if ( _c=="bat" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Retaliate_Bat( M.loc );
-							} else if ( _=="goat" ) {
+							} else if ( _c=="goat" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Retaliate_Goat( M.loc );
-							} else if ( _=="killertomato" ) {
+							} else if ( _c=="killertomato" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Killertomato( M.loc );
-							} else if ( _=="spiderbase" ) {
+							} else if ( _c=="spiderbase" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Poison_GiantSpider( M.loc );
-							} else if ( _=="spiderhunter" ) {
+							} else if ( _c=="spiderhunter" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Poison_GiantSpider_Hunter( M.loc );
-							} else if ( _=="blobbernaut" ) {
+							} else if ( _c=="blobbernaut" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Blob_Blobbernaut( M.loc );
-							} else if ( _=="magicarp" ) {
+							} else if ( _c=="magicarp" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Carp_Ranged( M.loc );
-							} else if ( _=="chaosmagicarp" ) {
+							} else if ( _c=="chaosmagicarp" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Hostile_Carp_Ranged_Chaos( M.loc );
 							};
 						} else {
 							animal = Rand.pick(new object [] { "parrot", "corgi", "crab", "pug", "cat", "mouse", "chicken", "cow", "lizard", "chick", "fox", "butterfly" });
-							dynamic _ = animal; // Was a switch-case, sorry for the mess.
-							if ( _=="parrot" ) {
+							dynamic _d = animal; // Was a switch-case, sorry for the mess.
+							if ( _d=="parrot" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Parrot( M.loc );
-							} else if ( _=="corgi" ) {
+							} else if ( _d=="corgi" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Pet_Dog_Corgi( M.loc );
-							} else if ( _=="crab" ) {
+							} else if ( _d=="crab" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Crab( M.loc );
-							} else if ( _=="pug" ) {
+							} else if ( _d=="pug" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Pet_Dog_Pug( M.loc );
-							} else if ( _=="cat" ) {
+							} else if ( _d=="cat" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Pet_Cat( M.loc );
-							} else if ( _=="mouse" ) {
+							} else if ( _d=="mouse" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Mouse( M.loc );
-							} else if ( _=="chicken" ) {
+							} else if ( _d=="chicken" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Chicken( M.loc );
-							} else if ( _=="cow" ) {
+							} else if ( _d=="cow" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Cow( M.loc );
-							} else if ( _=="lizard" ) {
+							} else if ( _d=="lizard" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Lizard( M.loc );
-							} else if ( _=="fox" ) {
+							} else if ( _d=="fox" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Pet_Fox( M.loc );
-							} else if ( _=="butterfly" ) {
+							} else if ( _d=="butterfly" ) {
 								new_mob = new Mob_Living_SimpleAnimal_Butterfly( M.loc );
 							} else {
 								new_mob = new Mob_Living_SimpleAnimal_Chick( M.loc );
 							};
 						}
 						new_mob.languages |= 1;
-					} else if ( _=="humanoid" ) {
+					} else if ( _f=="humanoid" ) {
 						new_mob = new Mob_Living_Carbon_Human( M.loc );
 						A = new Preferences();
-						A.copy_to.BTCall( new ByTable().set( "icon_updates", 0 ).set( 1, new_mob ) );
+						new ByTable().set( "icon_updates", 0 ).set( 1, new_mob ).apply( A.GetType().GetMethod( "copy_to" ) );
 						H = new_mob;
 						if ( Misc13.isValid( Rand.chance( 50 ) ) ) {
 							all_species = new ByTable();
 							speciestype = null;
-							foreach (dynamic _ in Misc13.types( typeof(Species) ) - typeof(Species) ) {
-								speciestype = _;
-								S = speciestype();
+							foreach (dynamic _e in Misc13.types( typeof(Species) ) - typeof(Species) ) {
+								speciestype = _e;
+								S = Misc13.call( speciestype );
 								if ( !Misc13.isValid( S.dangerous_existence ) ) {
 									all_species += speciestype;
 								}
 							};
-							H.set_species.BTCall( new ByTable().set( "icon_update", 0 ).set( 1, Rand.pick( all_species ) ) );
+							new ByTable().set( "icon_update", 0 ).set( 1, Rand.pick( all_species ) ).apply( H.GetType().GetMethod( "set_species" ) );
 							H.real_name = H.dna.species.random_name( H.gender, 1 );
 						}
 						H.update_body();

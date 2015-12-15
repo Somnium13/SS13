@@ -55,9 +55,9 @@ namespace Som13 {
 			dynamic M = null;
 			dynamic l = null;
 			V = null;
-			foreach (dynamic _ in this.vars - "x" - "y" - "z" - "contents" - "icon" - "overlays" - "underlays" ) {
-				V = _;
-				if ( Misc13.isValid( GlobalVars.undefined( this.vars[V] ) ) ) {
+			foreach (dynamic _a in this.vars - "x" - "y" - "z" - "contents" - "icon" - "overlays" - "underlays" ) {
+				V = _a;
+				if ( Misc13.isValid( Misc13.call( GlobalVars.undefined, this.vars[V] ) ) ) {
 					if ( this.vars[V] != Misc13.initial( this.vars[V] ) ) {
 						S[V].write( this.vars[V] );
 					} else {
@@ -73,8 +73,8 @@ namespace Som13 {
 				}
 			}
 			M = null;
-			foreach (dynamic _ in this ) {
-				M = _;
+			foreach (dynamic _b in this ) {
+				M = _b;
 				if ( Misc13.isValid( M.key ) ) {
 					break;
 				}
@@ -89,8 +89,8 @@ namespace Som13 {
 				l = this.contents;
 				if ( Misc13.isValid( M ) ) {
 					l = l.Copy();
-					foreach (dynamic _ in this ) {
-						M = _;
+					foreach (dynamic _c in this ) {
+						M = _c;
 						if ( Misc13.isValid( M.key ) ) {
 							l -= M;
 						}
@@ -202,8 +202,8 @@ namespace Som13 {
 				range = hearing_distance;
 			}
 			M = null;
-			foreach (dynamic _ in GlobalFuncs.get_hearers_in_view( range, this ) ) {
-				M = _;
+			foreach (dynamic _a in GlobalFuncs.get_hearers_in_view( range, this ) ) {
+				M = _a;
 				M.show_message( message, 2, deaf_message, 1 );
 			};
 		}
@@ -224,16 +224,16 @@ namespace Som13 {
 			mob_viewers |= Misc13.viewers( this, null );
 			heard = GlobalFuncs.get_hear( 7, this );
 			A = null;
-			foreach (dynamic _ in heard ) {
-				A = _;
+			foreach (dynamic _a in heard ) {
+				A = _a;
 				if ( !( A is BaseDynamic ) ) {
 					continue;
 				}
 				possible_viewers |= GlobalFuncs.recursive_hear_check( A );
 			};
 			B = null;
-			foreach (dynamic _ in possible_viewers ) {
-				B = _;
+			foreach (dynamic _b in possible_viewers ) {
+				B = _b;
 				if ( Misc13.isValid( mob_viewers.HasValue( B ) ) ) {
 					continue;
 				}
@@ -246,23 +246,23 @@ namespace Som13 {
 				}
 			};
 			M = null;
-			foreach (dynamic _ in mob_viewers ) {
-				M = _;
+			foreach (dynamic _c in mob_viewers ) {
+				M = _c;
 				M.show_message( message, 1 );
 			};
 			if ( Misc13.isValid( blind_message ) ) {
 				mob_hearers = new ByTable();
 				C = null;
-				foreach (dynamic _ in GlobalFuncs.get_hearers_in_view( 7, this ) ) {
-					C = _;
+				foreach (dynamic _d in GlobalFuncs.get_hearers_in_view( 7, this ) ) {
+					C = _d;
 					if ( Misc13.isValid( mob_viewers.HasValue( C ) ) ) {
 						continue;
 					}
 					mob_hearers |= C;
 				};
 				MOB = null;
-				foreach (dynamic _ in mob_hearers ) {
-					MOB = _;
+				foreach (dynamic _e in mob_hearers ) {
+					MOB = _e;
 					MOB.show_message( blind_message, 2 );
 				};
 			}
@@ -271,8 +271,8 @@ namespace Som13 {
 		public void prepare_huds(  ) {
 			dynamic hud = null;
 			hud = null;
-			foreach (dynamic _ in this.hud_possible ) {
-				hud = _;
+			foreach (dynamic _a in this.hud_possible ) {
+				hud = _a;
 				this.hud_list[hud] = new Image( new ByRsc(229), this, "" );
 			};
 		}
@@ -385,7 +385,7 @@ namespace Som13 {
 				if ( this.fingerprints == null ) {
 					this.fingerprints = new ByTable();
 				}
-				full_print = GlobalVars.undefined( H.dna.uni_identity );
+				full_print = Misc13.call( GlobalVars.undefined, H.dna.uni_identity );
 				this.fingerprints[full_print] = full_print;
 				return 1;
 			} else if ( this.fingerprintslast != M.ckey ) {
@@ -467,8 +467,8 @@ namespace Som13 {
 						}
 					}
 				}
-			} else if ( Misc13.isValid( this.w_uniform ) ) {
-				fibertext = new Txt( "Fibers from " ).a( this.w_uniform ).item().str( "." );
+			} else if ( Misc13.isValid( M.w_uniform ) ) {
+				fibertext = new Txt( "Fibers from " ).a( M.w_uniform ).item().str( "." );
 				if ( Misc13.isValid( Rand.chance( item_multiplier * 15 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
 					this.suit_fibers += fibertext;
 				}
@@ -478,7 +478,7 @@ namespace Som13 {
 						this.suit_fibers += "Material from a pair of " + M.gloves.name + ".";
 					}
 				}
-			} else if ( Misc13.isValid( this.gloves ) ) {
+			} else if ( Misc13.isValid( M.gloves ) ) {
 				fibertext = "Material from a pair of " + M.gloves.name + ".";
 				if ( Misc13.isValid( Rand.chance( item_multiplier * 20 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
 					this.suit_fibers += "Material from a pair of " + M.gloves.name + ".";
@@ -537,8 +537,8 @@ namespace Som13 {
 			signal.data = new ByTable().set( "level", pos.z ).set( "done", 0 ).set( "reject", 0 ).set( "type", 4 ).set( "traffic", 0 ).set( "compression", Rand.Int( 45, 50 ) ).set( "message", "TEST" ).set( "slow", 0 );
 			signal.frequency = 1459;
 			R = null;
-			foreach (dynamic _ in GlobalVars.telecomms_list ) {
-				R = _;
+			foreach (dynamic _a in GlobalVars.telecomms_list ) {
+				R = _a;
 				if ( !( R is Ent_Machinery_Telecomms_Receiver ) ) {
 					continue;
 				}
@@ -560,19 +560,19 @@ namespace Som13 {
 			dynamic T = null;
 			int i = 0;
 			T = null;
-			i = null;
+			i = 0;
 			i = 1;
 			while (i <= 8) {
 				T = GlobalFuncs.get_ranged_target_turf( this, i, 1 );
 				if ( T is Tile_Simulated_Wall ) {
-					dynamic _ = i; // Was a switch-case, sorry for the mess.
-					if ( _==1 ) {
+					dynamic _a = i; // Was a switch-case, sorry for the mess.
+					if ( _a==1 ) {
 						this.dir = GlobalVars.SOUTH;
-					} else if ( _==2 ) {
+					} else if ( _a==2 ) {
 						this.dir = GlobalVars.NORTH;
-					} else if ( _==8 ) {
+					} else if ( _a==8 ) {
 						this.dir = GlobalVars.EAST;
-					} else if ( _==4 ) {
+					} else if ( _a==4 ) {
 						this.dir = GlobalVars.WEST;
 					};
 					break;
@@ -642,8 +642,8 @@ namespace Som13 {
 		public void remove_from_all_data_huds(  ) {
 			dynamic hud = null;
 			hud = null;
-			foreach (dynamic _ in GlobalVars.huds ) {
-				hud = _;
+			foreach (dynamic _a in GlobalVars.huds ) {
+				hud = _a;
 				if ( !( hud is AtomHud_Data ) ) {
 					continue;
 				}
@@ -654,8 +654,8 @@ namespace Som13 {
 		public void add_to_all_human_data_huds(  ) {
 			dynamic hud = null;
 			hud = null;
-			foreach (dynamic _ in GlobalVars.huds ) {
-				hud = _;
+			foreach (dynamic _a in GlobalVars.huds ) {
+				hud = _a;
 				if ( !( hud is AtomHud_Data_Human ) ) {
 					continue;
 				}
@@ -714,7 +714,7 @@ namespace Som13 {
 			if ( !Misc13.isValid( ByTable.IsInstanceOfType( GlobalVars.global_map ) ) || ( GlobalFuncs.isemptylist( GlobalVars.global_map ) != 0 ) ) {
 				return null;
 			}
-			cur_x = null;
+			cur_x = 0;
 			cur_y = null;
 			y_arr = null;
 			cur_x = 1;
@@ -773,7 +773,7 @@ namespace Som13 {
 			if ( this is Tile_Simulated ) {
 				_this = new Ent_Effect_Decal_Cleanable_Vomit( this );
 				if ( Misc13.isValid( M.reagents ) ) {
-					M.trans_to( _this, M.reagents.total_volume / 10 );
+					M.reagents.trans_to( _this, M.reagents.total_volume / 10 );
 				}
 				if ( toxvomit != 0 ) {
 					_this.icon_state = "vomittox_" + Rand.pick(new object [] { 1, 4 });
@@ -816,10 +816,10 @@ namespace Som13 {
 
 		public int hitby( dynamic AM = null, dynamic skipcatch = null, dynamic hitpush = null, dynamic blocked = null ) {
 			if ( Misc13.isValid( this.density ) && ( GlobalFuncs.has_gravity( AM ) == 0 ) ) {
-				Thread13.schedule( 2, () => {
+				Thread13.schedule( 2, (Thread13.Closure)(() => {
 					Misc13.step( AM, Misc13.turn( AM.dir, 180 ) );
 					return 0;
-				});
+				}));
 			}
 		}
 
@@ -838,8 +838,8 @@ namespace Som13 {
 		public void contents_explosion( dynamic severity = null, dynamic target = null ) {
 			dynamic A = null;
 			A = null;
-			foreach (dynamic _ in this.contents ) {
-				A = _;
+			foreach (dynamic _a in this.contents ) {
+				A = _a;
 				if ( !( A is BaseStatic ) ) {
 					continue;
 				}
@@ -871,8 +871,8 @@ namespace Som13 {
 				user.write( "It contains:" );
 				if ( Misc13.isValid( this.reagents.reagent_list.len ) ) {
 					R = null;
-					foreach (dynamic _ in this.reagents.reagent_list ) {
-						R = _;
+					foreach (dynamic _a in this.reagents.reagent_list ) {
+						R = _a;
 						if ( !( R is Reagent ) ) {
 							continue;
 						}
@@ -902,10 +902,10 @@ namespace Som13 {
 				beam_type = typeof(Ent_Effect_Ebeam);
 			}
 			newbeam = new Beam( this, BeamTarget, icon, icon_state, time, maxdistance, beam_type );
-			Thread13.schedule( 0, () => {
+			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				newbeam.Start();
 				return null;
-			});
+			}));
 			return newbeam;
 		}
 
@@ -919,8 +919,8 @@ namespace Som13 {
 			}
 			found = new ByTable();
 			A = null;
-			foreach (dynamic _ in this ) {
-				A = _;
+			foreach (dynamic _b in this ) {
+				A = _b;
 				if ( !( A is BaseStatic ) ) {
 					continue;
 				}
@@ -930,8 +930,8 @@ namespace Som13 {
 				if ( Misc13.isValid( filter_path ) ) {
 					pass = 0;
 					type = null;
-					foreach (dynamic _ in filter_path ) {
-						type = _;
+					foreach (dynamic _a in filter_path ) {
+						type = _a;
 						pass |= type.IsInstanceOfType( A );
 					};
 					if ( pass == 0 ) {
@@ -1057,8 +1057,8 @@ namespace Som13 {
 				return 0;
 			}
 			centcom_shuttle = null;
-			foreach (dynamic _ in new ByTable(new object [] {"emergency","pod1","pod2","pod3","pod4","ferry"}) ) {
-				centcom_shuttle = _;
+			foreach (dynamic _a in new ByTable(new object [] { "emergency", "pod1", "pod2", "pod3", "pod4", "ferry" }) ) {
+				centcom_shuttle = _a;
 				M = GlobalVars.SSshuttle.getShuttle( centcom_shuttle );
 				if ( Misc13.isValid( M.areaInstance.HasValue( T ) ) ) {
 					return 1;
@@ -1201,7 +1201,7 @@ namespace Som13 {
 			dynamic found = null;
 			dynamic A = null;
 			dynamic a = null;
-			processing_list = new ByTable(new object [] {this});
+			processing_list = new ByTable(new object [] { this });
 			processed = new ByTable();
 			found = null;
 			while (Misc13.isValid( processing_list.len ) && found == null) {
@@ -1211,8 +1211,8 @@ namespace Som13 {
 				}
 				processing_list -= A;
 				a = null;
-				foreach (dynamic _ in A ) {
-					a = _;
+				foreach (dynamic _a in A ) {
+					a = _a;
 					if ( !( a is BaseStatic ) ) {
 						continue;
 					}
@@ -1230,14 +1230,14 @@ namespace Som13 {
 			ByTable assembled = null;
 			dynamic A = null;
 			dynamic a = null;
-			processing_list = new ByTable(new object [] {this});
+			processing_list = new ByTable(new object [] { this });
 			assembled = new ByTable();
 			while (processing_list.len) {
 				A = processing_list[1];
 				processing_list -= A;
 				a = null;
-				foreach (dynamic _ in A ) {
-					a = _;
+				foreach (dynamic _a in A ) {
+					a = _a;
 					if ( !( a is BaseStatic ) ) {
 						continue;
 					}
@@ -1260,15 +1260,15 @@ namespace Som13 {
 			if ( loops == null ) {
 				loops = -1;
 			}
-			m120 = GlobalVars.undefined( this.transform );
+			m120 = Misc13.call( GlobalVars.undefined, this.transform );
 			m120.Turn( 120 );
-			m240 = GlobalVars.undefined( this.transform );
+			m240 = Misc13.call( GlobalVars.undefined, this.transform );
 			m240.Turn( 240 );
-			m360 = GlobalVars.undefined( this.transform );
+			m360 = Misc13.call( GlobalVars.undefined, this.transform );
 			speed /= 3;
-			GlobalVars.undefined( new ByTable().set( 4, loops ).set( "time", speed ).set( "transform", m120 ).set( 1, this ) );
-			GlobalVars.undefined( new ByTable().set( "time", speed ).set( "transform", m240 ) );
-			GlobalVars.undefined( new ByTable().set( "time", speed ).set( "transform", m360 ) );
+			Misc13.call( GlobalVars.undefined, new ByTable().set( 4, loops ).set( "time", speed ).set( "transform", m120 ).set( 1, this ) );
+			Misc13.call( GlobalVars.undefined, new ByTable().set( "time", speed ).set( "transform", m240 ) );
+			Misc13.call( GlobalVars.undefined, new ByTable().set( "time", speed ).set( "transform", m360 ) );
 		}
 
 		public int DrawPixelOn( dynamic colour = null, dynamic drawX = null, dynamic drawY = null ) {
