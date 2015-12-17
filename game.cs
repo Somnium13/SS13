@@ -8,7 +8,9 @@ namespace Game13 {
 		public static string name;
 		public static double time;
 		public static double realtime;
-		public static System.Collections.IEnumerator _all_ents_;
+		public static System.Collections.IEnumerable _all_ents_() {return null;}
 		public static dynamic view;
+		public static void write(string s) {}
+		public static File log;
 	}
 }

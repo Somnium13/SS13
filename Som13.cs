@@ -22,6 +22,10 @@ namespace Som13 {
 	static class Misc13 {
 		public static dynamic thread_user;
 
+		public static dynamic execute(string cmd) {
+			return null;
+		}
+
 		public static dynamic ckey(dynamic d) {
 			return null;
 		}
@@ -71,16 +75,28 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static String str_sub(string s, int a, int? b) {
+		public static string str_sub(string s, int a, int? b) {
 			return "";
 		}
 
-		public static String str_find(string s, string t, int a, int? b) {
+		public static string str_find(string s, string t, int a, int? b) {
+			return "";
+		}
+
+		public static string str_find_exact_case(string s, string t, int a, int? b) {
 			return "";
 		}
 
 		public static int str_getCharCode(string a, int n) {
 			return 0;
+		}
+
+		public static string str_upper(string a) {
+			return a;
+		}
+
+		public static string str_lower(string a) {
+			return a;
 		}
 
 		public static int string_order(string a, string b) {
@@ -131,11 +147,19 @@ namespace Som13 {
 			return null;
 		}
 
+		public static object get_turf_at(int x, int y, int z) {
+			return null;
+		}
+
+		public static ByTable range(object a, object b) {
+			return null;
+		}
+
 		public static dynamic initial(dynamic d) {
 			return null;
 		}
 
-		public static System.Collections.IEnumerator iter_range(int a, int b) {
+		public static System.Collections.IEnumerable iter_range(int a, int b) {
 			return null;
 		}
 
@@ -162,6 +186,16 @@ namespace Som13 {
 
 	static class File13 {
 		public static void write(string filename, string data) {
+
+		}
+	}
+
+	class File {
+		public File(string name) {
+
+		}
+
+		public void write(string data) {
 
 		}
 	}
@@ -197,6 +231,10 @@ namespace Som13 {
 
 		public static ByTable operator +(ByTable a, dynamic b) {
 			return new ByTable();
+		}
+
+		public void write(string s) {
+
 		}
 
 		public void Add(params object[] items) {
@@ -278,16 +316,20 @@ namespace Som13 {
 		public dynamic icon(dynamic d) {
 			return null;
 		}
+
+		public dynamic Ref(dynamic n) {
+			return null;
+		}
 	}
 
 	class UNKNOWN { }
 
-	static class Rand {
-		public static object pick(object[] a) {
+	static class Rand13 {
+		public static dynamic pick(object[] a) {
 			return null;
 		}
 
-		public static object pick(ByTable a) {
+		public static dynamic pick(ByTable a) {
 			return null;
 		}
 
@@ -313,6 +355,15 @@ namespace Som13 {
 
 			}
 		}
+
+		public string cd;
+		public bool eof;
+		
+		public string read() {
+			return "";
+		}
+
+		public dynamic dir;
 	}
 
 	partial class Image {
@@ -322,10 +373,15 @@ namespace Som13 {
 		public int pixel_y;
 	}
 
-	partial class BaseStatic : Game13.Base13 {
+	partial class BaseData {
+		public ByTable vars;
+	}
+
+	partial class BaseStatic : BaseData {
 		public int dir;
 		public Game13.Icon icon;
 		public string icon_state;
 		public int layer;
+		public dynamic loc;
 	}
 }

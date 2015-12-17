@@ -34,6 +34,8 @@ Project started early October. It took about a month to start generating coheran
 - Dec 12: God damn it constructors are hard.
 - Dec 13: 737 Errors (I do not trust this number, VS is dumb. On the bright side, most constructor insanity has been dealt with.)
 - Dec 14: No longer using error count as things are too broken for it to be a good indicator.
+- Dec 15: 746 Errors (VS now correctly parses the entire file. This should be accurate!)
+- Dec 16: 731 Errors.
 
 **Current:** Burning hard for LTG #2. Trying to hit it by Dec 18. Prospects not looking good.
 
