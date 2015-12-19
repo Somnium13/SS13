@@ -877,7 +877,7 @@ namespace Som13 {
 			if ( Misc13.isValid( this.density ) && !Misc13.isValid( GlobalFuncs.has_gravity( AM ) ) ) {
 				Thread13.schedule( 2, (Thread13.Closure)(() => {
 					Misc13.step( AM, Misc13.turn( AM.dir, 180 ) );
-					return 0;
+					return;
 				}));
 			}
 			return 0;
@@ -967,7 +967,7 @@ namespace Som13 {
 			newbeam = new Beam( this, BeamTarget, icon, icon_state, time, maxdistance, beam_type );
 			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				newbeam.Start();
-				return null;
+				return;
 			}));
 			return newbeam;
 		}

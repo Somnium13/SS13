@@ -6,7 +6,7 @@ WIP/Test output of the Somnium transdecompiler on tgstation.
 
 *Note: Due to the discovery algorithem, more global functions will be found as more code is decompiled!*
 
-Project started early October. It took about a month to start generating coherant code.
+Project started early October (~8th?). It took about a month to start generating coherant code.
 
 - Nov 1: 102 / 234 global functions decompiled.
 - Nov 2: 242 / 366
@@ -22,7 +22,7 @@ Project started early October. It took about a month to start generating coheran
 - Nov 12: 12953 / 13407
 - Nov 13: 13148 / 13432
 - Nov 14: 13223 / 13438
-- Nov 15: 13443 / 13443 **(100% -- 1st LTG complete!)**
+- Nov 15: 13443 / 13443 **(100% -- LTG1 complete!)**
 - Hiatus
 - Dec 5: Began conversion to C#... Global vars looking good, functions not so much!
 - Dec 6: Started on Global func conversion. Type inference is hard.
@@ -36,8 +36,10 @@ Project started early October. It took about a month to start generating coheran
 - Dec 14: No longer using error count as things are too broken for it to be a good indicator.
 - Dec 15: 746 Errors (VS now correctly parses the entire file. This should be accurate!)
 - Dec 16: 731 Errors.
+- Dec 17: I AM BUSY.
+- Dec 18: I HAVE TO GET OUT OF THIS DAMN DORM.
 
-**Current:** Burning hard for LTG #2. Trying to hit it by Dec 18. Prospects not looking good.
+**Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year?
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.

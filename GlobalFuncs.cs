@@ -7347,7 +7347,7 @@ namespace Game13 {
 					if ( A is Tile_Simulated_Floor ) {
 						Thread13.schedule( 2, (Thread13.Closure)(() => {
 							A.fullUpdateMineralOverlays();
-							return 0;
+							return;
 						}));
 					}
 				};
@@ -8258,16 +8258,16 @@ namespace Game13 {
 						if ( Game.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
 							G.write( new ByRsc(10) );
-							return null;
+							return;
 						}
 						candidates += G;
 					} else if ( _a=="No" ) {
 						G.write( "<span class='danger'>Choice registered: No.</span>" );
-						return null;
+						return;
 					} else {
-						return null;
+						return;
 					};
-					return null;
+					return;
 				}));
 			};
 			Thread13.sleep( poll_time );
