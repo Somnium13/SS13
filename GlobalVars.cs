@@ -78,7 +78,7 @@ namespace Game13 {
 		public const int access_weapons = 66;
 		public const int access_xenobiology = 55;
 		public const ByTable accessable_z_levels = new ByTable(new object [] { 1, 3, 4, 5, 6, 7 });
-		public static ByTable active_turfs_startlist = new ByTable();
+		public static dynamic active_turfs_startlist = new ByTable();
 		public const dynamic adjectives = GlobalFuncs.file2list( "config/names/adjectives.txt" );
 		public static ByTable admin_datums = new ByTable();
 		public const ByTable admin_log = new ByTable();
@@ -165,7 +165,7 @@ namespace Game13 {
 		public const ByTable bloody_footprints_cache = new ByTable();
 		public const ByTable body_markings_list = new ByTable();
 		public static int bomb_set = 0;
-		public static ByTable bombers = new ByTable();
+		public static dynamic bombers = new ByTable();
 		public const int BORDER_2NDTILE = 3;
 		public const int BORDER_BETWEEN = 2;
 		public const int BORDER_NONE = 1;
@@ -203,7 +203,7 @@ namespace Game13 {
 		public static dynamic cmp_field = "name";
 		public const ByTable combatlog = new ByTable();
 		public const int COMM_FREQ = 1353;
-		public static string command_name = null;
+		public static string command_name = "";
 		public const ByTable command_positions = new ByTable(new object [] { "Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer" });
 		public const dynamic commando_names = GlobalFuncs.file2list( "config/names/death_commando.txt" );
 		public const ByTable common_tools = new ByTable(new object [] { typeof(Ent_Item_Stack_CableCoil), typeof(Ent_Item_Weapon_Wrench), typeof(Ent_Item_Weapon_Weldingtool), typeof(Ent_Item_Weapon_Screwdriver), typeof(Ent_Item_Weapon_Wirecutters), typeof(Ent_Item_Device_Multitool), typeof(Ent_Item_Weapon_Crowbar) });
@@ -268,7 +268,7 @@ namespace Game13 {
 		public const Chatroom default_ntrc_chatroom = new Chatroom();
 		public const ByTable defaults = new ByTable(new object [] { "No", "Yes" });
 		public static ByTable deliverybeacons = new ByTable();
-		public static ByTable deliverybeacontags = new ByTable();
+		public static dynamic deliverybeacontags = new ByTable();
 		public const ByTable department_radio_keys = new ByTable().set( ".ï", "changeling" ).set( "#ï", "changeling" ).set( ":ï", "changeling" ).set( ".é", "Supply" ).set( "#é", "Supply" ).set( ":é", "Supply" ).set( ".å", "Syndicate" ).set( "#å", "Syndicate" ).set( ":å", "Syndicate" ).set( ".ô", "alientalk" ).set( "#ô", "alientalk" ).set( ":ô", "alientalk" ).set( ".è", "binary" ).set( "#è", "binary" ).set( ":è", "binary" ).set( ".ö", "whisper" ).set( "#ö", "whisper" ).set( ":ö", "whisper" ).set( ".û", "Security" ).set( "#û", "Security" ).set( ":û", "Security" ).set( ".ó", "Engineering" ).set( "#ó", "Engineering" ).set( ":ó", "Engineering" ).set( ".ü", "Medical" ).set( "#ü", "Medical" ).set( ":ü", "Medical" ).set( ".ò", "Science" ).set( "#ò", "Science" ).set( ":ò", "Science" ).set( ".ñ", "Command" ).set( "#ñ", "Command" ).set( ":ñ", "Command" ).set( ".ð", "department" ).set( "#ð", "department" ).set( ":ð", "department" ).set( ".ø", "intercom" ).set( "#ø", "intercom" ).set( ":ø", "intercom" ).set( ".ä", "left hand" ).set( "#ä", "left hand" ).set( ":ä", "left hand" ).set( ".ê", "right hand" ).set( "#ê", "right hand" ).set( ":ê", "right hand" ).set( ".Y", "Centcom" ).set( "#Y", "Centcom" ).set( ":Y", "Centcom" ).set( ".G", "changeling" ).set( "#G", "changeling" ).set( ":G", "changeling" ).set( ".O", "AI Private" ).set( "#O", "AI Private" ).set( ":O", "AI Private" ).set( ".V", "Service" ).set( "#V", "Service" ).set( ":V", "Service" ).set( ".U", "Supply" ).set( "#U", "Supply" ).set( ":U", "Supply" ).set( ".T", "Syndicate" ).set( "#T", "Syndicate" ).set( ":T", "Syndicate" ).set( ".A", "alientalk" ).set( "#A", "alientalk" ).set( ":A", "alientalk" ).set( ".B", "binary" ).set( "#B", "binary" ).set( ":B", "binary" ).set( ".W", "whisper" ).set( "#W", "whisper" ).set( ":W", "whisper" ).set( ".S", "Security" ).set( "#S", "Security" ).set( ":S", "Security" ).set( ".E", "Engineering" ).set( "#E", "Engineering" ).set( ":E", "Engineering" ).set( ".M", "Medical" ).set( "#M", "Medical" ).set( ":M", "Medical" ).set( ".N", "Science" ).set( "#N", "Science" ).set( ":N", "Science" ).set( ".C", "Command" ).set( "#C", "Command" ).set( ":C", "Command" ).set( ".H", "department" ).set( "#H", "department" ).set( ":H", "department" ).set( ".I", "intercom" ).set( "#I", "intercom" ).set( ":I", "intercom" ).set( ".L", "left hand" ).set( "#L", "left hand" ).set( ":L", "left hand" ).set( ".R", "right hand" ).set( "#R", "right hand" ).set( ":R", "right hand" ).set( ".y", "Centcom" ).set( "#y", "Centcom" ).set( ":y", "Centcom" ).set( ".g", "changeling" ).set( "#g", "changeling" ).set( ":g", "changeling" ).set( ".o", "AI Private" ).set( "#o", "AI Private" ).set( ":o", "AI Private" ).set( ".v", "Service" ).set( "#v", "Service" ).set( ":v", "Service" ).set( ".u", "Supply" ).set( "#u", "Supply" ).set( ":u", "Supply" ).set( ".t", "Syndicate" ).set( "#t", "Syndicate" ).set( ":t", "Syndicate" ).set( ".a", "alientalk" ).set( "#a", "alientalk" ).set( ":a", "alientalk" ).set( ".b", "binary" ).set( "#b", "binary" ).set( ":b", "binary" ).set( ".w", "whisper" ).set( "#w", "whisper" ).set( ":w", "whisper" ).set( ".s", "Security" ).set( "#s", "Security" ).set( ":s", "Security" ).set( ".e", "Engineering" ).set( "#e", "Engineering" ).set( ":e", "Engineering" ).set( ".m", "Medical" ).set( "#m", "Medical" ).set( ":m", "Medical" ).set( ".n", "Science" ).set( "#n", "Science" ).set( ":n", "Science" ).set( ".c", "Command" ).set( "#c", "Command" ).set( ":c", "Command" ).set( ".h", "department" ).set( "#h", "department" ).set( ":h", "department" ).set( ".i", "intercom" ).set( "#i", "intercom" ).set( ":i", "intercom" ).set( ".l", "left hand" ).set( "#l", "left hand" ).set( ":l", "left hand" ).set( ".r", "right hand" ).set( "#r", "right hand" ).set( ":r", "right hand" );
 		public static ByTable department_security_spawns = new ByTable();
 		public const ByTable diagonals = new ByTable(new object [] { GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
@@ -305,7 +305,7 @@ namespace Game13 {
 		public const string FEMALE = "female";
 		public const ByTable female_clothing_icons = new ByTable();
 		public static double fileaccess_timer = 0;
-		public const dynamic fire_overlay = typeof(Image).BTNew( new ByTable().set( "icon_state", "fire" ).set( "icon", new ByRsc(292) ) );
+		public const dynamic fire_overlay = new ByTable().set( "icon_state", "fire" ).set( "icon", new ByRsc(292) ).applyCtor( typeof(Image) );
 		public const dynamic first_names_female = GlobalFuncs.file2list( "config/names/first_female.txt" );
 		public const dynamic first_names_male = GlobalFuncs.file2list( "config/names/first_male.txt" );
 		public const int FLOAT_LAYER = -1;
@@ -486,7 +486,7 @@ namespace Game13 {
 		public static int pipenetwarnings = 10;
 		public const int PIZZA_WIRE_DISARM = 1;
 		public const ByTable plasma_recipes = new ByTable(new object [] { new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 10 ).set( 2, typeof(Ent_Structure_MineralDoor_Transparent_Plasma) ).set( 1, "plasma door" ).applyCtor( typeof(StackRecipe) ), new StackRecipe( "plasma tile", typeof(Ent_Item_Stack_Tile_Mineral_Plasma), 1, 4, 20 ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 5 ).set( 2, typeof(Ent_Structure_Statue_Plasma_Scientist) ).set( 1, "Scientist Statue" ).applyCtor( typeof(StackRecipe) ) });
-		public const dynamic plasmaman_on_fire = typeof(Image).BTNew( new ByTable().set( "icon_state", "plasmaman" ).set( "icon", new ByRsc(234) ) );
+		public const dynamic plasmaman_on_fire = new ByTable().set( "icon_state", "plasmaman" ).set( "icon", new ByRsc(234) ).applyCtor( typeof(Image) );
 		public const ByTable plasteel_recipes = new ByTable(new object [] { new ByTable().set( "one_per_turf", 1 ).set( "time", 50 ).set( 3, 4 ).set( 2, typeof(Ent_Structure_AIcore) ).set( 1, "AI core" ).applyCtor( typeof(StackRecipe) ) });
 		public static ByTable player_list = new ByTable();
 		public const string PLURAL = "plural";
@@ -523,9 +523,9 @@ namespace Game13 {
 		public static ByTable rcd_list = new ByTable();
 		public const ByTable recentmessages = new ByTable();
 		public const int record_id_num = 1001;
-		public static ByTable req_console_assistance = new ByTable();
-		public static ByTable req_console_information = new ByTable();
-		public static ByTable req_console_supplies = new ByTable();
+		public static dynamic req_console_assistance = new ByTable();
+		public static dynamic req_console_information = new ByTable();
+		public static dynamic req_console_supplies = new ByTable();
 		public const Getrev revdata = new Getrev();
 		public static ByTable rockTurfEdgeCache = null;
 		public const ByTable rod_recipes = new ByTable(new object [] { new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( "time", 10 ).set( 3, 2 ).set( 2, typeof(Ent_Structure_Grille) ).set( 1, "grille" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( "time", 10 ).set( 3, 2 ).set( 2, typeof(Ent_Structure_TableFrame) ).set( 1, "table frame" ).applyCtor( typeof(StackRecipe) ) });
@@ -546,11 +546,11 @@ namespace Game13 {
 		public const ByTable same_wires = new ByTable();
 		public const ByTable sandstone_recipes = new ByTable(new object [] { new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( "time", 10 ).set( 3, 3 ).set( 2, typeof(Ent_Machinery_Hydroponics_Soil) ).set( 1, "pile of dirt" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 10 ).set( 2, typeof(Ent_Structure_MineralDoor_Sandstone) ).set( 1, "sandstone door" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 5 ).set( 2, typeof(Ent_Structure_Statue_Sandstone_Assistant) ).set( 1, "Assistant Statue" ).applyCtor( typeof(StackRecipe) ) });
 		public static dynamic say_disabled = 0;
-		public const string sc_safecode1 = "" + Rand13.Int( 0, 9 );
-		public const string sc_safecode2 = "" + Rand13.Int( 0, 9 );
-		public const string sc_safecode3 = "" + Rand13.Int( 0, 9 );
-		public const string sc_safecode4 = "" + Rand13.Int( 0, 9 );
-		public const string sc_safecode5 = "" + Rand13.Int( 0, 9 );
+		public const string sc_safecode1 = "";
+		public const string sc_safecode2 = "";
+		public const string sc_safecode3 = "";
+		public const string sc_safecode4 = "";
+		public const string sc_safecode5 = "";
 		public const ByTable scarySounds = new ByTable(new object [] { new ByRsc(108), new ByRsc(261), new ByRsc(419), new ByRsc(43), new ByRsc(44), new ByRsc(45), new ByRsc(46), new ByRsc(254), new ByRsc(253), new ByRsc(16), new ByRsc(17), new ByRsc(18), new ByRsc(244), new ByRsc(110), new ByRsc(258), new ByRsc(38), new ByRsc(39) });
 		public const int SCI_FREQ = 1351;
 		public const ByTable science_positions = new ByTable(new object [] { "Research Director", "Scientist", "Roboticist" });
@@ -660,7 +660,7 @@ namespace Game13 {
 		public const int SYND_FREQ = 1213;
 		public static dynamic syndicate_code_phrase = null;
 		public static dynamic syndicate_code_response = null;
-		public static string syndicate_name = null;
+		public static string syndicate_name = "";
 		public const string TAB = "&nbsp;&nbsp;&nbsp;&nbsp;";
 		public const ByTable table_recipes = new ByTable();
 		public const ByTable TAGGERLOCATIONS = new ByTable(new object [] { "Disposals", "Cargo Bay", "QM Office", "Engineering", "CE Office", "Atmospherics", "Security", "HoS Office", "Medbay", "CMO Office", "Chemistry", "Research", "RD Office", "Robotics", "HoP Office", "Library", "Chapel", "Theatre", "Bar", "Kitchen", "Hydroponics", "Janitor Closet", "Genetics" });

@@ -42,6 +42,10 @@ namespace Som13 {
 			return !(v == null || v == "" || v == 0);
 		}
 
+		public static void animate_listcall(ByTable args) {
+			
+		}
+
 		public static string formatTime(double t, string fmt) {
 			return "time";
 		}
@@ -49,6 +53,10 @@ namespace Som13 {
 		// Thought about using a builtin parsing method but not sure how well it will conform. Also, https://facepunch.com/showthread.php?t=1478507
 		public static double parseNumber(string n) {
 			return 0;
+		}
+
+		public static object view(object a, object b) {
+			return null;
 		}
 
 		public static Type findType(string s) {
@@ -101,6 +109,18 @@ namespace Som13 {
 
 		public static int string_order(string a, string b) {
 			return 0;
+		}
+
+		public static dynamic turn(dynamic a, int b) {
+			return null;
+		}
+
+		public static dynamic icon_states(dynamic a, dynamic b) {
+			return null;
+		}
+
+		public static ByTable rect_contents(dynamic a, dynamic b) {
+			return null;
 		}
 
 		public static String html_encode(string s) {
@@ -245,8 +265,16 @@ namespace Som13 {
 			return null;
 		}
 
+		public void Cut(int start = 1, int end = 0) {
+
+		}
+
 		public int Find(object o) {
 			return 0;
+		}
+
+		public int Insert(int i, params object[] items) {
+			return 33;
 		}
 
 		public bool Remove(params object[] items) {
@@ -295,7 +323,41 @@ namespace Som13 {
 	}
 
 	class Client {
-		
+		public string address;
+		public bool authenticate;
+		public int byond_version = 666;
+		public string ckey;
+		public dynamic color;
+		public string command_text;
+		public string computer_id;
+		public string connection;
+		public int control_freak;
+		public string default_verb_category;
+		public int dir;
+		public string edge_limit;
+		public dynamic eye;
+		public string gender;
+		public ByTable images;
+		public int inactivity;
+		public string key;
+		public int lazy_eye;
+		public Mob mob;
+		public dynamic mouse_pointer_icon;
+		public int perspective;
+		public int pixel_x;
+		public int pixel_y;
+		public int pixel_z;
+		public int pixel_step_size; //dep?
+		public dynamic preload_rsc;
+		public ByTable screen;
+		public string script;
+		public bool show_map;
+		public bool show_popup_menus;
+		public bool show_verb_panel;
+		public Game13.BaseDynamic statobj;
+		public ByTable verbs;
+		public int view;
+		public BaseStatic virtual_eye;
 	}
 
 	class Color {
@@ -366,22 +428,56 @@ namespace Som13 {
 		public dynamic dir;
 	}
 
+	partial class BaseData {
+		public string tag;
+		public static Type type;
+		public ByTable vars;
+
+		public void Del() { }
+		public void Read(SaveFile f) { }
+		public void Write(SaveFile f) { }
+		public void Topic(dynamic a, dynamic b) { }
+	}
+
+	partial class BaseStatic : BaseData , System.Collections.IEnumerable {
+		public System.Collections.IEnumerator GetEnumerator() {
+			return new ByEnum();
+		}
+
+		public bool density;
+		public int dir;
+		
+		public Game13.Icon icon;
+		public string icon_state;
+		
+		public int layer;
+		public dynamic loc;
+
+		public string name;
+
+		public ByTable overlays;
+
+		public Game13.Matrix transform;
+
+		public int x;
+		public int y;
+		public int z;
+	}
+
 	partial class Image {
 		public Image(params object[] v) { }
 
+		public dynamic loc;
 		public int pixel_x;
 		public int pixel_y;
 	}
 
-	partial class BaseData {
-		public ByTable vars;
-	}
+	partial class Mob : Game13.BaseDynamic {
+		public string ckey;
+		public Client client;
+		
+		public void write(string s) {
 
-	partial class BaseStatic : BaseData {
-		public int dir;
-		public Game13.Icon icon;
-		public string icon_state;
-		public int layer;
-		public dynamic loc;
+		}
 	}
 }
