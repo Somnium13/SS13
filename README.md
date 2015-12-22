@@ -40,8 +40,9 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 18: I HAVE TO GET OUT OF THIS DAMN DORM.
 - Dec 19: I AM OUT OF THE DAMN DORM.
 - Dec 20: 674 Errors.
+- Dec 21: 246 Errors.
 
-**Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year?
+**Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.
