@@ -33,6 +33,917 @@ namespace Som13 {
 
 	}
 
+	partial class BaseDynamic : BaseStatic {
+
+		public dynamic glide_size = 8;
+
+		public dynamic orbiting = null;
+		public int orbitid = 0;
+		public int pressure_resistance = 5;
+		public int last_move = 0;
+		public dynamic anchored = 0;
+		public int throwing = 0;
+		public int throw_speed = 2;
+		public int throw_range = 7;
+		public Mob pulledby = null;
+		public int languages = 0;
+		public string verb_say = "says";
+		public string verb_ask = "asks";
+		public string verb_exclaim = "exclaims";
+		public string verb_yell = "yells";
+		public int inertia_dir = 0;
+		public int pass_flags = 0;
+		public int can_buckle = 0;
+		public int buckle_lying = -1;
+		public int buckle_requires_restraints = 0;
+		public dynamic buckled_mob = null;
+
+		public BaseDynamic ( dynamic _loc = null ) : base( _loc ) {
+			if ( Misc13.isValid( this.opacity ) ) {
+				this.UpdateAffectingLights();
+			}
+			if ( Misc13.isValid( this.luminosity ) ) {
+				this.light = new LightSource( this );
+			}
+			return;
+		}
+
+		public dynamic get_light_range( dynamic radius = null ) {
+			return Misc13.min( radius, 5 );
+		}
+
+		public void UpdateAffectingLights(  ) {
+			if ( this.loc is Tile ) {
+				this.loc.UpdateAffectingLights();
+			}
+			return;
+		}
+
+		public dynamic Moved( dynamic OldLoc = null, dynamic Dir = null ) {
+			if ( this.loc is Tile ) {
+				if ( Misc13.isValid( this.opacity ) ) {
+					OldLoc.UpdateAffectingLights();
+				} else if ( this.light != null ) {
+					this.light.f_changed();
+				}
+			}
+			return base.Moved();
+		}
+
+		public int Destroy(  ) {
+			int _default = 0;
+			dynamic AM = null;
+			_default = base.Destroy();
+			if ( Misc13.isValid( this.loc ) ) {
+				this.loc.handle_atom_del( this );
+			}
+			if ( this.reagents != null ) {
+				GlobalFuncs.qdel( this.reagents );
+			}
+			AM = null;
+			foreach (dynamic _a in this.contents ) {
+				AM = _a;
+				if ( !( AM is BaseDynamic ) ) {
+					continue;
+				}
+				GlobalFuncs.qdel( AM );
+			};
+			this.loc = null;
+			this.invisibility = 101;
+			if ( this.pulledby != null ) {
+				if ( this.pulledby.pulling == this ) {
+					this.pulledby.pulling = null;
+				}
+				this.pulledby = null;
+			}
+			return 0;
+			return _default;
+		}
+
+		public void ResetVars(  ) {
+			base.ResetVars();
+			this.loc = null;
+			this.contents = Misc13.initial( this.contents );
+			return;
+		}
+
+		public int MouseDrop_T( dynamic M = null, dynamic user = null ) {
+			int _default = 0;
+			_default = base.MouseDrop_T();
+			if ( ( this.can_buckle != 0 ) && M is Mob_Living ) {
+				if ( Misc13.isValid( this.user_buckle_mob( M, user ) ) ) {
+					return 1;
+				}
+			}
+			return 0;
+			return _default;
+		}
+
+		public int attack_hand( dynamic user = null ) {
+			int _default = 0;
+			_default = base.attack_hand();
+			if ( ( this.can_buckle != 0 ) && Misc13.isValid( this.buckled_mob ) ) {
+				if ( Misc13.isValid( this.user_unbuckle_mob( user ) ) ) {
+					return 1;
+				}
+			}
+			return 0;
+			return _default;
+		}
+
+		public dynamic CanPass( dynamic mover = null, dynamic target = null, double height = 0 ) {
+			if ( height == null ) {
+				height = 1.5;
+			}
+			if ( this.buckled_mob == mover ) {
+				return 1;
+			}
+			return base.CanPass();
+		}
+
+		public int hitby( dynamic AM = null, dynamic skipcatch = null, int hitpush = 0, dynamic blocked = null ) {
+			if ( hitpush == null ) {
+				hitpush = 1;
+			}
+			if ( !Misc13.isValid( this.anchored ) && ( hitpush != 0 ) ) {
+				Misc13.step( this, AM.dir );
+			}
+			base.hitby();
+			return 0;
+		}
+
+		public int Bump( dynamic A = null, dynamic yes = null ) {
+			int _default = 0;
+			if ( Misc13.isValid( A ) && Misc13.isValid( yes ) ) {
+				if ( this.throwing != 0 ) {
+					this.throwing = 0;
+					this.throw_impact( A );
+					_default = 1;
+					if ( !Misc13.isValid( A ) || Misc13.isValid( GlobalFuncs.qdeleted( A ) ) ) {
+						return 0;
+					}
+				}
+				A.Bumped( this );
+			}
+			return 0;
+			return _default;
+		}
+
+		public int Crossed( dynamic AM = null ) {
+			return 0;
+		}
+
+		public void Del(  ) {
+			if ( this.gc_destroyed == null && Misc13.isValid( this.loc ) ) {
+				GlobalFuncs.testing( "GC: -- " + this.type + " was deleted via del() rather than qdel() --" );
+			}
+			base.Del();
+			return;
+		}
+
+		public int Move( dynamic newloc = null, int direct = 0 ) {
+			int _default = 0;
+			dynamic oldloc = null;
+			if ( direct == null ) {
+				direct = 0;
+			}
+			if ( !Misc13.isValid( this.loc ) || !Misc13.isValid( newloc ) ) {
+				return 0;
+			}
+			oldloc = this.loc;
+			if ( this.loc != newloc ) {
+				if ( ( direct & direct - 1 ) == 0 ) {
+					_default = base.Move();
+				} else if ( ( direct & 1 ) != 0 ) {
+					if ( ( direct & 4 ) != 0 ) {
+						Misc13.step( this, GlobalVars.NORTH );
+						if ( Misc13.isValid( null ) ) {
+							Misc13.step( this, GlobalVars.EAST );
+							_default = 0;
+						} else {
+							Misc13.step( this, GlobalVars.EAST );
+							if ( Misc13.isValid( null ) ) {
+								Misc13.step( this, GlobalVars.NORTH );
+								_default = 0;
+							}
+						}
+					} else if ( ( direct & 8 ) != 0 ) {
+						Misc13.step( this, GlobalVars.NORTH );
+						if ( Misc13.isValid( null ) ) {
+							Misc13.step( this, GlobalVars.WEST );
+							_default = 0;
+						} else {
+							Misc13.step( this, GlobalVars.WEST );
+							if ( Misc13.isValid( null ) ) {
+								Misc13.step( this, GlobalVars.NORTH );
+								_default = 0;
+							}
+						}
+					}
+				} else if ( ( direct & 2 ) != 0 ) {
+					if ( ( direct & 4 ) != 0 ) {
+						Misc13.step( this, GlobalVars.SOUTH );
+						if ( Misc13.isValid( null ) ) {
+							Misc13.step( this, GlobalVars.EAST );
+							_default = 0;
+						} else {
+							Misc13.step( this, GlobalVars.EAST );
+							if ( Misc13.isValid( null ) ) {
+								Misc13.step( this, GlobalVars.SOUTH );
+								_default = 0;
+							}
+						}
+					} else if ( ( direct & 8 ) != 0 ) {
+						Misc13.step( this, GlobalVars.SOUTH );
+						if ( Misc13.isValid( null ) ) {
+							Misc13.step( this, GlobalVars.WEST );
+							_default = 0;
+						} else {
+							Misc13.step( this, GlobalVars.WEST );
+							if ( Misc13.isValid( null ) ) {
+								Misc13.step( this, GlobalVars.SOUTH );
+								_default = 0;
+							}
+						}
+					}
+				}
+			}
+			if ( !Misc13.isValid( this.loc ) || this.loc == oldloc && oldloc != newloc ) {
+				this.last_move = 0;
+				return 0;
+			}
+			if ( _default != 0 ) {
+				this.f_Moved( oldloc, direct );
+			}
+			this.last_move = direct;
+			Thread13.schedule( 5, (Thread13.Closure)(() => {
+				if ( Misc13.isValid( this.loc ) && ( direct != 0 ) && this.last_move == direct ) {
+					if ( this.loc == newloc ) {
+						this.newtonian_move( this.last_move );
+					}
+				}
+				return;
+			}));
+			if ( ( _default != 0 ) && Misc13.isValid( this.buckled_mob ) && !Misc13.isValid( this.handle_buckled_mob_movement( this.loc, direct ) ) ) {
+				_default = 0;
+			}
+			return 0;
+			return _default;
+		}
+
+		public int attackby( dynamic W = null, dynamic user = null, dynamic _params = null ) {
+			user.do_attack_animation( this );
+			if ( Misc13.isValid( W ) && !Misc13.isValid( W.flags & 4 ) ) {
+				this.visible_message( "<span class='danger'>" + user + " has hit " + this + " with " + W + "!</span>" );
+			}
+			return 0;
+		}
+
+		public void CtrlClick( dynamic user = null ) {
+			if ( Misc13.isValid( this.Adjacent( user ) ) ) {
+				user.start_pulling( this );
+			}
+			return;
+		}
+
+		public dynamic Adjacent( dynamic neighbor = null ) {
+			if ( neighbor == this.loc ) {
+				return 1;
+			}
+			if ( !( this.loc is Tile ) ) {
+				return 0;
+			}
+			if ( Misc13.isValid( this.loc.Adjacent( neighbor, this ) ) ) {
+				return 1;
+			}
+			return 0;
+		}
+
+		public int disposalEnterTry(  ) {
+			return 1;
+		}
+
+		public void pipe_eject( dynamic direction = null ) {
+			return;
+		}
+
+		public ByTable get_ui_data( dynamic user = null ) {
+			return new ByTable();
+		}
+
+		public void ui_interact( dynamic user = null, string ui_key = "", dynamic ui = null ) {
+			if ( ui_key == null ) {
+				ui_key = "main";
+			}
+			if ( ui == null ) {
+				ui = null;
+			}
+			return;
+		}
+
+		public void do_attack_animation( BaseStatic A = null, dynamic end_pixel_y = null ) {
+			int pixel_x_diff = 0;
+			int pixel_y_diff = 0;
+			dynamic final_pixel_y = null;
+			dynamic direction = null;
+			pixel_x_diff = 0;
+			pixel_y_diff = 0;
+			final_pixel_y = Misc13.initial( this.pixel_y );
+			if ( Misc13.isValid( end_pixel_y ) ) {
+				final_pixel_y = end_pixel_y;
+			}
+			direction = Misc13.get_dist( this, A );
+			dynamic _a = direction; // Was a switch-case, sorry for the mess.
+			if ( _a==1 ) {
+				pixel_y_diff = 8;
+			} else if ( _a==2 ) {
+				pixel_y_diff = -8;
+			} else if ( _a==4 ) {
+				pixel_x_diff = 8;
+			} else if ( _a==8 ) {
+				pixel_x_diff = -8;
+			} else if ( _a==5 ) {
+				pixel_x_diff = 8;
+				pixel_y_diff = 8;
+			} else if ( _a==9 ) {
+				pixel_x_diff = -8;
+				pixel_y_diff = 8;
+			} else if ( _a==6 ) {
+				pixel_x_diff = 8;
+				pixel_y_diff = -8;
+			} else if ( _a==10 ) {
+				pixel_x_diff = -8;
+				pixel_y_diff = -8;
+			};
+			Misc13.animate_listcall( new ByTable().set( "time", 2 ).set( "pixel_y", this.pixel_y + pixel_y_diff ).set( "pixel_x", this.pixel_x + pixel_x_diff ).set( 1, this ) );
+			Misc13.animate_listcall( new ByTable().set( "time", 2 ).set( "pixel_y", final_pixel_y ).set( "pixel_x", Misc13.initial( this.pixel_x ) ) );
+			return;
+		}
+
+		public int experience_pressure_difference( int pressure_difference = 0, int direction = 0 ) {
+			if ( !Misc13.isValid( this.anchored ) && ( this.pulledby == null ) ) {
+				if ( pressure_difference > this.pressure_resistance ) {
+					Thread13.schedule( 0, (Thread13.Closure)(() => {
+						Misc13.step( this, direction );
+						return;
+					}));
+				}
+				return 1;
+			}
+			return 0;
+		}
+
+		public void atmos_spawn_air( int text = 0, dynamic amount = null ) {
+			dynamic T = null;
+			T = GlobalFuncs.get_turf( this );
+			if ( !( T is Tile_Simulated ) ) {
+				return;
+			}
+			T.atmos_spawn_air( text, amount );
+			return;
+		}
+
+		public void move_update_air( dynamic T = null ) {
+			if ( T is Tile ) {
+				T.air_update_turf( 1 );
+			}
+			this.air_update_turf( 1 );
+			return;
+		}
+
+		public void air_update_turf( int command = 0 ) {
+			dynamic T = null;
+			if ( command == null ) {
+				command = 0;
+			}
+			if ( !( this.loc is Tile ) && ( command != 0 ) ) {
+				return;
+			}
+			T = GlobalFuncs.get_turf( this.loc );
+			T.air_update_turf( command );
+			return;
+		}
+
+		public int BlockSuperconductivity(  ) {
+			return 0;
+		}
+
+		public dynamic CanAtmosPass(  ) {
+			return 1;
+		}
+
+		public void initialize(  ) {
+			return;
+		}
+
+		public dynamic user_unbuckle_mob( dynamic user = null ) {
+			dynamic M = null;
+			M = this.unbuckle_mob();
+			if ( Misc13.isValid( M ) ) {
+				if ( M != user ) {
+					M.visible_message( "<span class='notice'>" + user + " unbuckles " + M + " from " + this + ".</span>", "<span class='notice'>" + user + " unbuckles you from " + this + ".</span>", "<span class='italics'>You hear metal clanking.</span>" );
+				} else {
+					M.visible_message( "<span class='notice'>" + M + " unbuckles themselves from " + this + ".</span>", "<span class='notice'>You unbuckle yourself from " + this + ".</span>", "<span class='italics'>You hear metal clanking.</span>" );
+				}
+				this.add_fingerprint( user );
+			}
+			return M;
+		}
+
+		public int user_buckle_mob( dynamic M = null, dynamic user = null ) {
+			if ( !( Misc13.get_dist( user, this ) <= 1 ) || Misc13.isValid( user.stat ) || Misc13.isValid( user.restrained() ) ) {
+				return 0;
+			}
+			this.add_fingerprint( user );
+			if ( Misc13.isValid( this.buckle_mob( M ) ) ) {
+				if ( M == user ) {
+					M.visible_message( "<span class='notice'>" + M + " buckles themself to " + this + ".</span>", "<span class='notice'>You buckle yourself to " + this + ".</span>", "<span class='italics'>You hear metal clanking.</span>" );
+				} else {
+					M.visible_message( "<span class='warning'>" + user + " buckles " + M + " to " + this + "!</span>", "<span class='warning'>" + user + " buckles you to " + this + "!</span>", "<span class='italics'>You hear metal clanking.</span>" );
+				}
+				return 1;
+			}
+			return 0;
+		}
+
+		public void post_buckle_mob( dynamic M = null ) {
+			return;
+		}
+
+		public dynamic unbuckle_mob( int force = 0 ) {
+			dynamic _default = null;
+			if ( force == null ) {
+				force = 0;
+			}
+			if ( Misc13.isValid( this.buckled_mob ) && this.buckled_mob.buckled == this && ( Misc13.isValid( this.buckled_mob.can_unbuckle() ) || ( force != 0 ) ) ) {
+				_default = this.buckled_mob;
+				this.buckled_mob.buckled = null;
+				this.buckled_mob.anchored = Misc13.initial( this.buckled_mob.anchored );
+				this.buckled_mob.update_canmove();
+				this.buckled_mob.clear_alert( "buckled" );
+				this.buckled_mob = null;
+				this.post_buckle_mob( _default );
+			}
+			return null;
+			return _default;
+		}
+
+		public int buckle_mob( dynamic M = null, int force = 0 ) {
+			if ( force == null ) {
+				force = 0;
+			}
+			if ( ( this.can_buckle == 0 ) && ( force == 0 ) || !( M is Mob_Living ) || M.loc != this.loc || Misc13.isValid( M.buckled ) || Misc13.isValid( M.buckled_mob ) || ( this.buckle_requires_restraints != 0 ) && !Misc13.isValid( M.restrained() ) || M == this ) {
+				return 0;
+			}
+			if ( !Misc13.isValid( M.can_buckle() ) && ( force == 0 ) ) {
+				if ( M == Misc13.thread_user ) {
+					M.write( "<span class='warning'>You are unable to buckle yourself to the " + this + "!</span>" );
+				} else {
+					Misc13.thread_user.write( "<span class='warning'>You are unable to buckle " + M + " to the " + this + "!</span>" );
+				}
+				return 0;
+			}
+			M.buckled = this;
+			M.dir = this.dir;
+			this.buckled_mob = M;
+			M.update_canmove();
+			this.post_buckle_mob( M );
+			new ByTable().set( "new_master", this ).set( 2, typeof(Ent_Screen_Alert_Buckled) ).set( 1, "buckled" ).apply( M.GetType().GetMethod( "throw_alert" ) );
+			return 1;
+		}
+
+		public dynamic GetRadio(  ) {
+			return null;
+		}
+
+		public dynamic GetSource(  ) {
+			return null;
+		}
+
+		public dynamic GetJob(  ) {
+			return null;
+		}
+
+		public string get_alt_name(  ) {
+			return null;
+		}
+
+		public dynamic IsVocal(  ) {
+			return 1;
+		}
+
+		public dynamic GetVoice(  ) {
+			return this.name;
+		}
+
+		public string lang_treat( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic spans = null ) {
+			dynamic AM = null;
+			if ( ( this.languages & message_langs ) != 0 ) {
+				AM = speaker.GetSource();
+				if ( Misc13.isValid( AM ) ) {
+					if ( AM.verb_say != speaker.verb_say || AM.verb_ask != speaker.verb_ask || AM.verb_exclaim != speaker.verb_exclaim || AM.verb_yell != speaker.verb_yell ) {
+						return speaker.say_quote( raw_message, spans );
+					}
+					return AM.say_quote( raw_message, spans );
+				} else {
+					return speaker.say_quote( raw_message, spans );
+				}
+			} else if ( ( message_langs & 1 ) != 0 ) {
+				AM = speaker.GetSource();
+				if ( Misc13.isValid( AM ) ) {
+					return AM.say_quote( GlobalFuncs.stars( raw_message ), spans );
+				} else {
+					return speaker.say_quote( GlobalFuncs.stars( raw_message ), spans );
+				}
+			} else if ( ( message_langs & 2 ) != 0 ) {
+				return "chimpers.";
+			} else if ( ( message_langs & 4 ) != 0 ) {
+				return "hisses.";
+			} else if ( ( message_langs & 8 ) != 0 ) {
+				return "beeps rapidly.";
+			} else if ( ( message_langs & 32 ) != 0 ) {
+				return "chitters.";
+			} else {
+				return "makes a strange sound.";
+			}
+			return null;
+		}
+
+		public string say_quote( dynamic input = null, dynamic spans = null ) {
+			dynamic ending = null;
+			if ( spans == null ) {
+				spans = new ByTable();
+			}
+			if ( !Misc13.isValid( input ) ) {
+				return "says, \"...\"";
+			}
+			ending = Misc13.str_sub( input, input.Length, null );
+			if ( Misc13.str_sub( input, input.Length - 1, null ) == "!!" ) {
+				spans |= "yell";
+				return "" + this.verb_yell + ", \"" + GlobalFuncs.attach_spans( input, spans ) + "\"";
+			}
+			input = GlobalFuncs.attach_spans( input, spans );
+			if ( ending == "?" ) {
+				return "" + this.verb_ask + ", \"" + input + "\"";
+			}
+			if ( ending == "!" ) {
+				return "" + this.verb_exclaim + ", \"" + input + "\"";
+			}
+			return "" + this.verb_say + ", \"" + input + "\"";
+		}
+
+		public string compose_job( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic radio_freq = null ) {
+			return "";
+		}
+
+		public string compose_track_href( BaseDynamic speaker = null, string message_langs = "", dynamic raw_message = null, dynamic radio_freq = null ) {
+			return "";
+		}
+
+		public string compose_message( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic radio_freq = null, dynamic spans = null ) {
+			string spanpart1 = "";
+			string spanpart2 = "";
+			string freqpart = "";
+			string namepart = "";
+			string endspanpart = "";
+			string messagepart = "";
+			spanpart1 = "<span class='" + ( Misc13.isValid( radio_freq ) ? GlobalFuncs.get_radio_span( radio_freq ) : "game say" ) + "'>";
+			spanpart2 = "<span class='name'>";
+			freqpart = Misc13.isValid( radio_freq ) ? "[" + GlobalFuncs.get_radio_name( radio_freq ) + "] " : "";
+			namepart = "" + speaker.GetVoice() + speaker.get_alt_name();
+			endspanpart = "</span>";
+			messagepart = " <span class='message'>" + this.lang_treat( speaker, message_langs, raw_message, spans ) + "</span></span>";
+			return "" + spanpart1 + spanpart2 + freqpart + this.compose_track_href( speaker, namepart ) + namepart + this.compose_job( speaker, message_langs, raw_message, radio_freq ) + endspanpart + messagepart;
+		}
+
+		public ByTable get_spans(  ) {
+			return new ByTable();
+		}
+
+		public void send_speech( string message = "", int range = 0, BaseDynamic source = null, dynamic bubble_type = null, dynamic spans = null ) {
+			dynamic rendered = null;
+			dynamic AM = null;
+			if ( range == null ) {
+				range = 7;
+			}
+			if ( source == null ) {
+				source = this;
+			}
+			rendered = this.compose_message( this, this.languages, message, null, spans );
+			AM = null;
+			foreach (dynamic _a in GlobalFuncs.get_hearers_in_view( range, this ) ) {
+				AM = _a;
+				if ( !( AM is BaseDynamic ) ) {
+					continue;
+				}
+				AM.Hear( rendered, this, this.languages, message, null, spans );
+			};
+			return;
+		}
+
+		public int can_speak(  ) {
+			return 1;
+		}
+
+		public dynamic Hear( dynamic message = null, dynamic speaker = null, dynamic message_langs = null, dynamic raw_message = null, dynamic radio_freq = null, dynamic spans = null ) {
+			return null;
+		}
+
+		public int say( string message = "" ) {
+			dynamic spans = null;
+			if ( !Misc13.isValid( this.can_speak() ) ) {
+				return 0;
+			}
+			if ( message == "" || !Misc13.isValid( message ) ) {
+				return 0;
+			}
+			spans = this.get_spans();
+			this.send_speech( message, 7, this, null, spans );
+			return 0;
+		}
+
+		public int handle_buckled_mob_movement( dynamic newloc = null, int direct = 0 ) {
+			if ( !Misc13.isValid( this.buckled_mob.Move( newloc, direct ) ) ) {
+				this.loc = this.buckled_mob.loc;
+				this.last_move = this.buckled_mob.last_move;
+				this.inertia_dir = this.last_move;
+				this.buckled_mob.inertia_dir = this.last_move;
+				return 0;
+			}
+			return 1;
+		}
+
+		public int hitcheck(  ) {
+			dynamic AM = null;
+			AM = null;
+			foreach (dynamic _a in GlobalFuncs.get_turf( this ) ) {
+				AM = _a;
+				if ( !( AM is BaseDynamic ) ) {
+					continue;
+				}
+				if ( AM == this ) {
+					continue;
+				}
+				if ( Misc13.isValid( AM.density ) && !Misc13.isValid( AM.pass_flags & 32 ) && !Misc13.isValid( AM.flags & 512 ) ) {
+					this.throwing = 0;
+					this.throw_impact( AM );
+					return 1;
+				}
+			};
+			return 0;
+		}
+
+		public int throw_at( dynamic target = null, int range = 0, int speed = 0, dynamic thrower = null, int spin = 0, int diagonals_first = 0 ) {
+			int dist_travelled = 0;
+			int dist_since_sleep = 0;
+			dynamic dist_x = null;
+			dynamic dist_y = null;
+			int dx = 0;
+			int dy = 0;
+			int pure_diagonal = 0;
+			dynamic olddist_x = null;
+			int olddx = 0;
+			dynamic error = null;
+			dynamic finalturf = null;
+			int hit = 0;
+			dynamic init_dir = null;
+			dynamic step = null;
+			dynamic A = null;
+			if ( spin == null ) {
+				spin = 1;
+			}
+			if ( diagonals_first == null ) {
+				diagonals_first = 0;
+			}
+			if ( !Misc13.isValid( target ) || ( this == null ) || ( ( this.flags & 2 ) != 0 ) ) {
+				return 0;
+			}
+			this.throwing = 1;
+			if ( spin != 0 ) {
+				this.SpinAnimation( 5, 1 );
+			}
+			dist_travelled = 0;
+			dist_since_sleep = 0;
+			dist_x = Math.Abs( target.x - this.x );
+			dist_y = Math.Abs( target.y - this.y );
+			dx = target.x > this.x ? GlobalVars.EAST : GlobalVars.WEST;
+			dy = target.y > this.y ? GlobalVars.NORTH : GlobalVars.SOUTH;
+			pure_diagonal = 0;
+			if ( dist_x == dist_y ) {
+				pure_diagonal = 1;
+			}
+			if ( dist_x <= dist_y ) {
+				olddist_x = dist_x;
+				olddx = dx;
+				dist_x = dist_y;
+				dist_y = olddist_x;
+				dx = dy;
+				dy = olddx;
+			}
+			error = dist_x / 2 - dist_y;
+			finalturf = GlobalFuncs.get_turf( target );
+			hit = 0;
+			init_dir = Misc13.get_dist( this, target );
+			while (Misc13.isValid( target ) && ( dist_travelled < range && this.loc != finalturf || !Misc13.isValid( GlobalFuncs.has_gravity( this ) ) )) {
+				if ( !( this.loc is Tile ) ) {
+					hit = 1;
+					break;
+				}
+				step = null;
+				if ( dist_travelled < Misc13.max( dist_x, dist_y ) ) {
+					step = Misc13.get_step( this, Misc13.get_dist( this, finalturf ) );
+				} else {
+					step = Misc13.get_step( this, init_dir );
+				}
+				if ( ( pure_diagonal == 0 ) && ( diagonals_first == 0 ) ) {
+					if ( error >= 0 && Misc13.max( dist_x, dist_y ) - dist_travelled != 1 ) {
+						step = Misc13.get_step( this, dx );
+					}
+					error += error < 0 ? dist_x / 2 : -dist_y;
+				}
+				if ( !Misc13.isValid( step ) ) {
+					break;
+				}
+				this.Move( step, Misc13.get_dist( this.loc, step ) );
+				if ( this.throwing == 0 ) {
+					hit = 1;
+					break;
+				}
+				dist_travelled++;
+				dist_since_sleep++;
+				if ( dist_travelled > 600 ) {
+					break;
+				}
+				if ( dist_since_sleep >= speed ) {
+					dist_since_sleep = 0;
+					Thread13.sleep( 1 );
+				}
+				if ( ( dist_since_sleep == 0 ) && Misc13.isValid( this.hitcheck() ) ) {
+					hit = 1;
+					break;
+				}
+			}
+			this.throwing = 0;
+			if ( hit == 0 ) {
+				A = null;
+				foreach (dynamic _a in GlobalFuncs.get_turf( this ) ) {
+					A = _a;
+					if ( !( A is BaseStatic ) ) {
+						continue;
+					}
+					if ( A == target ) {
+						hit = 1;
+						this.throw_impact( A );
+						return 1;
+					}
+				};
+				this.throw_impact( GlobalFuncs.get_turf( this ) );
+			}
+			return 1;
+		}
+
+		public dynamic throw_impact( dynamic hit_atom = null ) {
+			return hit_atom.hitby( this );
+		}
+
+		public int checkpass( int passflag = 0 ) {
+			return this.pass_flags & passflag;
+		}
+
+		public dynamic newtonian_move( dynamic direction = null ) {
+			dynamic _default = null;
+			int old_dir = 0;
+			if ( !Misc13.isValid( this.loc ) || Misc13.isValid( this.Process_Spacemove( 0 ) ) ) {
+				this.inertia_dir = 0;
+				return 0;
+			}
+			this.inertia_dir = direction;
+			if ( !Misc13.isValid( direction ) ) {
+				return 1;
+			}
+			old_dir = this.dir;
+			Misc13.step( this, direction );
+			_default = !Misc13.isValid( direction );
+			this.dir = old_dir;
+			return null;
+			return _default;
+		}
+
+		public int Process_Spacemove( int movement_dir = 0 ) {
+			if ( movement_dir == null ) {
+				movement_dir = 0;
+			}
+			if ( Misc13.isValid( GlobalFuncs.has_gravity( this ) ) ) {
+				return 1;
+			}
+			if ( this.pulledby != null ) {
+				return 1;
+			}
+			if ( Misc13.isValid( Misc13.get_in( typeof(Ent_Structure_Lattice), Misc13.range( GlobalFuncs.get_turf( this ), 1 ) ) ) ) {
+				return 1;
+			}
+			return 0;
+		}
+
+		public int forceMove( dynamic destination = null ) {
+			dynamic oldloc = null;
+			dynamic AM = null;
+			if ( Misc13.isValid( destination ) ) {
+				oldloc = this.loc;
+				if ( Misc13.isValid( oldloc ) ) {
+					oldloc.Exited( this, destination );
+				}
+				this.loc = destination;
+				destination.Entered( this, oldloc );
+				AM = null;
+				foreach (dynamic _a in destination ) {
+					AM = _a;
+					if ( !( AM is BaseDynamic ) ) {
+						continue;
+					}
+					if ( AM == this ) {
+						continue;
+					}
+					AM.Crossed( this );
+				};
+				this.f_Moved( oldloc, 0 );
+				return 1;
+			}
+			return 0;
+		}
+
+		public int f_Moved( dynamic OldLoc = null, int Dir = 0 ) {
+			return 1;
+		}
+
+		public void stop_orbit(  ) {
+			if ( Misc13.isValid( this.orbiting ) ) {
+				this.loc = GlobalFuncs.get_turf( this.orbiting );
+				this.orbiting = null;
+			}
+			return;
+		}
+
+		public void orbit( dynamic A = null, int radius = 0, int clockwise = 0, int angle_increment = 0, int lockinorbit = 0 ) {
+			int myid = 0;
+			dynamic lastloc = null;
+			int angle = 0;
+			Matrix initial_transform = null;
+			dynamic targetloc = null;
+			Matrix shift = null;
+			if ( radius == null ) {
+				radius = 10;
+			}
+			if ( clockwise == null ) {
+				clockwise = 1;
+			}
+			if ( angle_increment == null ) {
+				angle_increment = 15;
+			}
+			if ( lockinorbit == null ) {
+				lockinorbit = 0;
+			}
+			if ( !( A is BaseStatic ) ) {
+				return;
+			}
+			this.orbitid++;
+			myid = this.orbitid;
+			if ( Misc13.isValid( this.orbiting ) ) {
+				this.stop_orbit();
+				Thread13.sleep( Game.tick_lag + 2.5999999046325684 );
+				if ( Misc13.isValid( this.orbiting ) || !( A is BaseStatic ) || this.orbitid != myid ) {
+					return;
+				}
+			}
+			this.orbiting = A;
+			lastloc = this.loc;
+			angle = 0;
+			initial_transform = new Matrix( this.transform );
+			while (Misc13.isValid( this.orbiting ) && Misc13.isValid( this.orbiting.loc ) && this.orbitid == myid) {
+				targetloc = GlobalFuncs.get_turf( this.orbiting );
+				if ( ( lockinorbit == 0 ) && this.loc != lastloc && this.loc != targetloc ) {
+					break;
+				}
+				this.loc = targetloc;
+				lastloc = this.loc;
+				angle += angle_increment;
+				shift = new Matrix( initial_transform );
+				shift.Translate( radius, 0 );
+				if ( clockwise != 0 ) {
+					shift.Turn( angle );
+				} else {
+					shift.Turn( -angle );
+				}
+				Misc13.animate_listcall( new ByTable().set( 3, 2 ).set( "transform", shift ).set( 1, this ) );
+				Thread13.sleep( 0.6000000238418579 );
+			}
+			Misc13.animate_listcall( new ByTable().set( 3, 2 ).set( "transform", initial_transform ).set( 1, this ) );
+			this.orbiting = null;
+			return;
+		}
+
+	}
+
 	partial class BaseStatic : BaseData {
 
 		public int smooth = 0;
@@ -801,20 +1712,20 @@ namespace Som13 {
 			dynamic B = null;
 			if ( this is Tile_Simulated ) {
 				if ( Misc13.isValid( M.has_dna() ) ) {
-					B = Misc13.locate_in( typeof(Ent_Effect_Decal_Cleanable_Blood), this.contents );
+					B = Misc13.get_in( typeof(Ent_Effect_Decal_Cleanable_Blood), this.contents );
 					if ( !Misc13.isValid( B ) ) {
 						GlobalFuncs.blood_splatter( this, M, 1 );
-						B = Misc13.locate_in( typeof(Ent_Effect_Decal_Cleanable_Blood), this.contents );
+						B = Misc13.get_in( typeof(Ent_Effect_Decal_Cleanable_Blood), this.contents );
 					}
 					B.blood_DNA[M.dna.unique_enzymes] = M.dna.blood_type;
 				} else if ( M is Mob_Living_Carbon_Alien ) {
-					B = Misc13.locate_in( typeof(Ent_Effect_Decal_Cleanable_Xenoblood), this.contents );
+					B = Misc13.get_in( typeof(Ent_Effect_Decal_Cleanable_Xenoblood), this.contents );
 					if ( B == null ) {
 						B = new Ent_Effect_Decal_Cleanable_Xenoblood( this );
 					}
 					B.blood_DNA["UNKNOWN BLOOD"] = "X*";
 				} else if ( M is Mob_Living_Silicon_Robot ) {
-					B = Misc13.locate_in( typeof(Ent_Effect_Decal_Cleanable_Oil), this.contents );
+					B = Misc13.get_in( typeof(Ent_Effect_Decal_Cleanable_Oil), this.contents );
 					if ( B == null ) {
 						B = new Ent_Effect_Decal_Cleanable_Oil( this );
 					}
@@ -1489,7 +2400,8 @@ namespace Som13 {
 		public int resize = 1;
 
 		public int flags = 16;
-		public dynamic hud_possible = "UNKNOWABLE: EEEEE 62 5372 3942 42 16640 0 undefined undefined";
+		public dynamic hud_possible = null;
+		public int pressure_resistance = 8;
 
 		public Mob ( dynamic _loc = null ) : base( _loc ) {
 			this.tag = "mob_" + GlobalVars.next_mob_id++;
@@ -1523,7 +2435,7 @@ namespace Som13 {
 				return 1;
 			}
 			A = null;
-			foreach (dynamic _a in Misc13.orange( 1, GlobalFuncs.get_turf( this ) ) ) {
+			foreach (dynamic _a in Misc13.range_nocenter( GlobalFuncs.get_turf( this ), 1 ) ) {
 				A = _a;
 				if ( !( A is BaseStatic ) ) {
 					continue;
@@ -2112,7 +3024,7 @@ namespace Som13 {
 				if ( sloc.name != "AI" ) {
 					continue;
 				}
-				if ( Misc13.isValid( Misc13.locate_in( typeof(Mob_Living), sloc.loc ) ) ) {
+				if ( Misc13.isValid( Misc13.get_in( typeof(Mob_Living), sloc.loc ) ) ) {
 					continue;
 				}
 				loc_landmark = sloc;
@@ -2125,7 +3037,7 @@ namespace Som13 {
 						continue;
 					}
 					if ( tripai.name == "tripai" ) {
-						if ( Misc13.isValid( Misc13.locate_in( typeof(Mob_Living), tripai.loc ) ) ) {
+						if ( Misc13.isValid( Misc13.get_in( typeof(Mob_Living), tripai.loc ) ) ) {
 							continue;
 						}
 						loc_landmark = tripai;
@@ -2322,19 +3234,19 @@ namespace Som13 {
 			if ( A == this.loc && Misc13.isValid( this.pulling.density ) ) {
 				return;
 			}
-			if ( !Misc13.isValid( this.Process_Spacemove( Misc13.get_dist2( this.pulling.loc, A ) ) ) ) {
+			if ( !Misc13.isValid( this.Process_Spacemove( Misc13.get_dist( this.pulling.loc, A ) ) ) ) {
 				return;
 			}
 			if ( this.pulling is Mob ) {
 				M = this.pulling;
 				t = M.pulling;
 				M.stop_pulling();
-				Misc13.step( this.pulling, Misc13.get_dist2( this.pulling.loc, A ) );
+				Misc13.step( this.pulling, Misc13.get_dist( this.pulling.loc, A ) );
 				if ( M != null ) {
 					M.start_pulling( t );
 				}
 			} else {
-				Misc13.step( this.pulling, Misc13.get_dist2( this.pulling.loc, A ) );
+				Misc13.step( this.pulling, Misc13.get_dist( this.pulling.loc, A ) );
 			}
 			return;
 		}
@@ -3012,18 +3924,18 @@ namespace Som13 {
 		}
 
 		public void update_normal_mode(  ) {
-			Misc13.winset( this, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5" );
+			Misc13.window_set( this, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5" );
 			return;
 		}
 
 		public void update_hotkey_mode(  ) {
-			Misc13.winset( this, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0" );
+			Misc13.window_set( this, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0" );
 			return;
 		}
 
 		public void update_interface(  ) {
 			if ( Misc13.isValid( this.client ) ) {
-				if ( Misc13.winget( this, "mainwindow.hotkey_toggle", "is-checked" ) == "true" ) {
+				if ( Misc13.window_get( this, "mainwindow.hotkey_toggle", "is-checked" ) == "true" ) {
 					this.update_hotkey_mode();
 				} else {
 					this.update_normal_mode();
@@ -3433,7 +4345,7 @@ namespace Som13 {
 
 		public int null_rod_check(  ) {
 			dynamic N = null;
-			N = Misc13.locate_in( typeof(Ent_Item_Weapon_Nullrod), this );
+			N = Misc13.get_in( typeof(Ent_Item_Weapon_Nullrod), this );
 			if ( Misc13.isValid( N ) ) {
 				return 1;
 			}
@@ -3842,7 +4754,7 @@ namespace Som13 {
 				GlobalFuncs.build_click( this, this.client.buildmode, _params, A );
 				return null;
 			}
-			modifiers = Misc13.conv_params2list( _params );
+			modifiers = Misc13.conv_urlParams2list( _params );
 			if ( Misc13.isValid( modifiers["shift"] ) && Misc13.isValid( modifiers["ctrl"] ) ) {
 				this.CtrlShiftClickOn( A );
 				return null;

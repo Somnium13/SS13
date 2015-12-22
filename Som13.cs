@@ -26,6 +26,10 @@ namespace Som13 {
 			return null;
 		}
 
+		public static void ftp(dynamic a, dynamic b, dynamic c) {
+
+		}
+
 		public static dynamic ckey(dynamic d) {
 			return null;
 		}
@@ -42,6 +46,10 @@ namespace Som13 {
 			return !(v == null || v == "" || v == 0);
 		}
 
+		public static bool isNumber(dynamic v) {
+			return (v is int || v is double);
+		}
+
 		public static void animate_listcall(ByTable args) {
 			
 		}
@@ -56,6 +64,10 @@ namespace Som13 {
 		}
 
 		public static object view(object a, object b) {
+			return null;
+		}
+
+		public static ByTable viewers(object a, object b) {
 			return null;
 		}
 
@@ -83,20 +95,28 @@ namespace Som13 {
 			return 0;
 		}
 
+		public static bool str_cmp(params string[] strs) {
+			return false;
+		}
+
 		public static string str_sub(string s, int a, int? b) {
 			return "";
 		}
 
-		public static string str_find(string s, string t, int a, int? b) {
-			return "";
+		public static int str_find(string s, string t, int a, int? b) {
+			return 0;
 		}
 
-		public static string str_find_exact_case(string s, string t, int a, int? b) {
-			return "";
+		public static int str_find_exact_case(string s, string t, int a, int? b) {
+			return 0;
 		}
 
 		public static int str_getCharCode(string a, int n) {
 			return 0;
+		}
+
+		public static string str_getCharFromCode(int c) {
+			return "a";
 		}
 
 		public static string str_upper(string a) {
@@ -139,6 +159,14 @@ namespace Som13 {
 			
 		}
 
+		public static void step(dynamic a, dynamic b) {
+
+		}
+
+		public static void step_towards(dynamic a, dynamic b) {
+		
+		}
+
 		public static dynamic get_step_towards(dynamic a, dynamic b) {
 			return null;
 		}
@@ -151,6 +179,10 @@ namespace Som13 {
 
 		}
 
+		public static int get_dist(object a, object b) {
+			return 0;
+		}
+
 		public static System.Reflection.MethodInfo getf2(object a,object b) {
 			return null;
 		}
@@ -159,11 +191,15 @@ namespace Som13 {
 			return "";
 		}
 
-		public static ByTable conv_params2list(dynamic a) {
+		public static ByTable conv_urlParams2list(string a) {
 			return null;
 		}
 
-		public static object locate_in(object a, object b) {
+		public static string conv_list2urlParams(ByTable t) {
+			return "";
+		}
+
+		public static object get_in(object a, object b) {
 			return null;
 		}
 
@@ -171,7 +207,19 @@ namespace Som13 {
 			return null;
 		}
 
-		public static ByTable range(object a, object b) {
+		public static object get_obj(string id) {
+			return null;
+		}
+
+		public static void window_set(dynamic a, dynamic b, dynamic c) {
+
+		}
+
+		public static ByTable range(object a, int range) {
+			return null;
+		}
+
+		public static ByTable range_nocenter(object a, int range) {
 			return null;
 		}
 
@@ -207,6 +255,14 @@ namespace Som13 {
 	static class File13 {
 		public static void write(string filename, string data) {
 
+		}
+
+		public static bool exists(string filename) {
+			return false;
+		}
+
+		public static dynamic cache(dynamic a) {
+			return null;
 		}
 	}
 
@@ -354,10 +410,12 @@ namespace Som13 {
 		public bool show_map;
 		public bool show_popup_menus;
 		public bool show_verb_panel;
-		public Game13.BaseDynamic statobj;
+		public BaseDynamic statobj;
 		public ByTable verbs;
 		public int view;
 		public BaseStatic virtual_eye;
+
+
 	}
 
 	class Color {
@@ -395,7 +453,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public static bool chance(int n) {
+		public static bool chance(double n) { // should really be an int param, but sometimes was used with a double.
 			return true;
 		}
 
@@ -436,7 +494,7 @@ namespace Som13 {
 		public void Del() { }
 		public void Read(SaveFile f) { }
 		public void Write(SaveFile f) { }
-		public void Topic(dynamic a, dynamic b) { }
+		public void Topic(dynamic a = null, dynamic b = null) { }
 	}
 
 	partial class BaseStatic : BaseData , System.Collections.IEnumerable {
@@ -444,24 +502,113 @@ namespace Som13 {
 			return new ByEnum();
 		}
 
+		public int alpha;
+		public dynamic appearance;
+		public int appearance_flags;
+		public int blend_mode;
+		public dynamic color;
+		public ByTable contents;
 		public bool density;
+		public string desc;
 		public int dir;
-		
+		public string gender;
 		public Game13.Icon icon;
 		public string icon_state;
-		
+		public int infra_luminosity;
+		public int invisibility;
 		public int layer;
 		public dynamic loc;
-
+		public int luminosity;
+		public string maptext;
+		public int maptext_width;
+		public int maptext_height;
+		public int maptext_x;
+		public int maptext_y;
+		public int mouse_drag_pointer;
+		public int mouse_drop_pointer;
+		public int mouse_drop_zone;
+		public int mouse_opacity;
+		public int mouse_over_pointer;
 		public string name;
-
+		public bool opacity;
 		public ByTable overlays;
-
+		//override wat?
+		public int pixel_x;
+		public int pixel_y;
+		public int pixel_z;
+		public int plane;
+		public string suffix;
+		public string text;
 		public Game13.Matrix transform;
-
+		public ByTable underlays;
+		public ByTable verbs;
 		public int x;
 		public int y;
 		public int z;
+
+		public void Click(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void DblClick(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public bool Enter(BaseDynamic O, dynamic old_loc) {
+			return false;
+		}
+
+		public void Entered(BaseDynamic O, dynamic old_loc) {
+			
+		}
+
+		public bool Exit(BaseDynamic O, dynamic old_loc) {
+			return false;
+		}
+
+		public void Exited(BaseDynamic O, dynamic old_loc) {
+
+		}
+
+		public void MouseDown(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void MouseDrag(dynamic over_obj, dynamic src_loc, dynamic over_loc, dynamic src_control, dynamic over_control, dynamic _params) {
+
+		}
+
+		public void MouseDrop(dynamic over_obj, dynamic src_loc, dynamic over_loc, dynamic src_control, dynamic over_control, dynamic _params) {
+
+		}
+
+		public void MouseEntered(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void MouseExited(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void MouseMove(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void MouseUp(dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void MouseWheel(double delta_x, double delta_y ,dynamic location, dynamic control, dynamic _params) {
+
+		}
+
+		public void Stat() {
+
+		}
+	}
+
+	partial class BaseDynamic : BaseStatic {
+
 	}
 
 	partial class Image {
@@ -472,7 +619,7 @@ namespace Som13 {
 		public int pixel_y;
 	}
 
-	partial class Mob : Game13.BaseDynamic {
+	partial class Mob : BaseDynamic {
 		public string ckey;
 		public Client client;
 		
