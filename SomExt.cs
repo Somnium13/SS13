@@ -4,16 +4,16 @@ using Game13;
 namespace Som13 {
 	partial class BaseData {
 
-		public dynamic gc_destroyed = null;
+		public double gc_destroyed = 0;
 
-		public void ResetVars(  ) {
+		public virtual void ResetVars(  ) {
 			ByTable excluded = null;
 			dynamic V = null;
 			excluded = new ByTable(new object [] { "animate_movement", "contents", "loc", "locs", "parent_type", "vars", "verbs", "type" });
 			V = null;
 			foreach (dynamic _a in this.vars ) {
 				V = _a;
-				if ( Misc13.isValid( excluded.HasValue( V ) ) ) {
+				if ( excluded.contains( V ) ) {
 					continue;
 				}
 				this.vars[V] = Misc13.initial( this.vars[V] );
@@ -21,12 +21,12 @@ namespace Som13 {
 			return;
 		}
 
-		public int process(  ) {
+		public virtual int process(  ) {
 			GlobalVars.SSobj.processing.Remove( this );
 			return 0;
 		}
 
-		public int Destroy(  ) {
+		public virtual int Destroy(  ) {
 			this.tag = null;
 			return 0;
 		}
@@ -37,7 +37,7 @@ namespace Som13 {
 
 		public dynamic glide_size = 8;
 
-		public dynamic orbiting = null;
+		public BaseStatic orbiting = null;
 		public int orbitid = 0;
 		public int pressure_resistance = 5;
 		public int last_move = 0;
@@ -58,7 +58,7 @@ namespace Som13 {
 		public int buckle_requires_restraints = 0;
 		public dynamic buckled_mob = null;
 
-		public BaseDynamic ( dynamic _loc = null ) : base( _loc ) {
+		public BaseDynamic ( BaseStatic _loc = null ) : base( _loc ) {
 			if ( Misc13.isValid( this.opacity ) ) {
 				this.UpdateAffectingLights();
 			}
@@ -68,18 +68,18 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic get_light_range( dynamic radius = null ) {
+		public override dynamic get_light_range( dynamic radius = null ) {
 			return Misc13.min( radius, 5 );
 		}
 
-		public void UpdateAffectingLights(  ) {
+		public override void UpdateAffectingLights(  ) {
 			if ( this.loc is Tile ) {
 				this.loc.UpdateAffectingLights();
 			}
 			return;
 		}
 
-		public dynamic Moved( dynamic OldLoc = null, dynamic Dir = null ) {
+		public virtual dynamic Moved( dynamic OldLoc = null, dynamic Dir = null ) {
 			if ( this.loc is Tile ) {
 				if ( Misc13.isValid( this.opacity ) ) {
 					OldLoc.UpdateAffectingLights();
@@ -90,9 +90,9 @@ namespace Som13 {
 			return base.Moved();
 		}
 
-		public int Destroy(  ) {
+		public override int Destroy(  ) {
 			int _default = 0;
-			dynamic AM = null;
+			BaseDynamic AM = null;
 			_default = base.Destroy();
 			if ( Misc13.isValid( this.loc ) ) {
 				this.loc.handle_atom_del( this );
@@ -120,14 +120,14 @@ namespace Som13 {
 			return _default;
 		}
 
-		public void ResetVars(  ) {
+		public override void ResetVars(  ) {
 			base.ResetVars();
 			this.loc = null;
 			this.contents = Misc13.initial( this.contents );
 			return;
 		}
 
-		public int MouseDrop_T( dynamic M = null, dynamic user = null ) {
+		public override int MouseDrop_T( Mob_Living M = null, dynamic user = null ) {
 			int _default = 0;
 			_default = base.MouseDrop_T();
 			if ( ( this.can_buckle != 0 ) && M is Mob_Living ) {
@@ -139,7 +139,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int attack_hand( dynamic user = null ) {
+		public override int attack_hand( dynamic user = null ) {
 			int _default = 0;
 			_default = base.attack_hand();
 			if ( ( this.can_buckle != 0 ) && Misc13.isValid( this.buckled_mob ) ) {
@@ -151,7 +151,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public dynamic CanPass( dynamic mover = null, dynamic target = null, double height = 0 ) {
+		public override dynamic CanPass( dynamic mover = null, dynamic target = null, double height = 0 ) {
 			if ( height == null ) {
 				height = 1.5;
 			}
@@ -161,7 +161,7 @@ namespace Som13 {
 			return base.CanPass();
 		}
 
-		public int hitby( dynamic AM = null, dynamic skipcatch = null, int hitpush = 0, dynamic blocked = null ) {
+		public override int hitby( dynamic AM = null, dynamic skipcatch = null, int hitpush = 0, dynamic blocked = null ) {
 			if ( hitpush == null ) {
 				hitpush = 1;
 			}
@@ -172,7 +172,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int Bump( dynamic A = null, dynamic yes = null ) {
+		public virtual int Bump( dynamic A = null, dynamic yes = null ) {
 			int _default = 0;
 			if ( Misc13.isValid( A ) && Misc13.isValid( yes ) ) {
 				if ( this.throwing != 0 ) {
@@ -189,7 +189,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int Crossed( dynamic AM = null ) {
+		public virtual int Crossed( BaseDynamic AM = null ) {
 			return 0;
 		}
 
@@ -201,7 +201,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int Move( dynamic newloc = null, int direct = 0 ) {
+		public virtual int Move( dynamic newloc = null, int direct = 0 ) {
 			int _default = 0;
 			dynamic oldloc = null;
 			if ( direct == null ) {
@@ -291,7 +291,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int attackby( dynamic W = null, dynamic user = null, dynamic _params = null ) {
+		public override int attackby( dynamic W = null, dynamic user = null, dynamic _params = null ) {
 			user.do_attack_animation( this );
 			if ( Misc13.isValid( W ) && !Misc13.isValid( W.flags & 4 ) ) {
 				this.visible_message( "<span class='danger'>" + user + " has hit " + this + " with " + W + "!</span>" );
@@ -299,14 +299,14 @@ namespace Som13 {
 			return 0;
 		}
 
-		public void CtrlClick( dynamic user = null ) {
+		public override void CtrlClick( dynamic user = null ) {
 			if ( Misc13.isValid( this.Adjacent( user ) ) ) {
 				user.start_pulling( this );
 			}
 			return;
 		}
 
-		public dynamic Adjacent( dynamic neighbor = null ) {
+		public override dynamic Adjacent( dynamic neighbor = null ) {
 			if ( neighbor == this.loc ) {
 				return 1;
 			}
@@ -319,19 +319,19 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int disposalEnterTry(  ) {
+		public virtual int disposalEnterTry(  ) {
 			return 1;
 		}
 
-		public void pipe_eject( dynamic direction = null ) {
+		public virtual void pipe_eject( int direction = 0 ) {
 			return;
 		}
 
-		public ByTable get_ui_data( dynamic user = null ) {
+		public virtual ByTable get_ui_data( dynamic user = null ) {
 			return new ByTable();
 		}
 
-		public void ui_interact( dynamic user = null, string ui_key = "", dynamic ui = null ) {
+		public virtual void ui_interact( dynamic user = null, string ui_key = "", dynamic ui = null ) {
 			if ( ui_key == null ) {
 				ui_key = "main";
 			}
@@ -341,7 +341,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void do_attack_animation( BaseStatic A = null, dynamic end_pixel_y = null ) {
+		public virtual void do_attack_animation( BaseStatic A = null, dynamic end_pixel_y = null ) {
 			int pixel_x_diff = 0;
 			int pixel_y_diff = 0;
 			dynamic final_pixel_y = null;
@@ -380,7 +380,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int experience_pressure_difference( int pressure_difference = 0, int direction = 0 ) {
+		public virtual int experience_pressure_difference( int pressure_difference = 0, int direction = 0 ) {
 			if ( !Misc13.isValid( this.anchored ) && ( this.pulledby == null ) ) {
 				if ( pressure_difference > this.pressure_resistance ) {
 					Thread13.schedule( 0, (Thread13.Closure)(() => {
@@ -394,7 +394,7 @@ namespace Som13 {
 		}
 
 		public void atmos_spawn_air( int text = 0, dynamic amount = null ) {
-			dynamic T = null;
+			Tile_Simulated T = null;
 			T = GlobalFuncs.get_turf( this );
 			if ( !( T is Tile_Simulated ) ) {
 				return;
@@ -403,7 +403,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void move_update_air( dynamic T = null ) {
+		public void move_update_air( Tile T = null ) {
 			if ( T is Tile ) {
 				T.air_update_turf( 1 );
 			}
@@ -424,19 +424,19 @@ namespace Som13 {
 			return;
 		}
 
-		public int BlockSuperconductivity(  ) {
+		public virtual int BlockSuperconductivity(  ) {
 			return 0;
 		}
 
-		public dynamic CanAtmosPass(  ) {
+		public virtual dynamic CanAtmosPass(  ) {
 			return 1;
 		}
 
-		public void initialize(  ) {
+		public virtual void initialize(  ) {
 			return;
 		}
 
-		public dynamic user_unbuckle_mob( dynamic user = null ) {
+		public virtual dynamic user_unbuckle_mob( dynamic user = null ) {
 			dynamic M = null;
 			M = this.unbuckle_mob();
 			if ( Misc13.isValid( M ) ) {
@@ -450,7 +450,7 @@ namespace Som13 {
 			return M;
 		}
 
-		public int user_buckle_mob( dynamic M = null, dynamic user = null ) {
+		public virtual int user_buckle_mob( Mob_Living M = null, dynamic user = null ) {
 			if ( !( Misc13.get_dist( user, this ) <= 1 ) || Misc13.isValid( user.stat ) || Misc13.isValid( user.restrained() ) ) {
 				return 0;
 			}
@@ -466,11 +466,11 @@ namespace Som13 {
 			return 0;
 		}
 
-		public void post_buckle_mob( dynamic M = null ) {
+		public virtual void post_buckle_mob( dynamic M = null ) {
 			return;
 		}
 
-		public dynamic unbuckle_mob( int force = 0 ) {
+		public virtual dynamic unbuckle_mob( int force = 0 ) {
 			dynamic _default = null;
 			if ( force == null ) {
 				force = 0;
@@ -488,7 +488,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int buckle_mob( dynamic M = null, int force = 0 ) {
+		public virtual int buckle_mob( dynamic M = null, int force = 0 ) {
 			if ( force == null ) {
 				force = 0;
 			}
@@ -512,31 +512,31 @@ namespace Som13 {
 			return 1;
 		}
 
-		public dynamic GetRadio(  ) {
+		public virtual dynamic GetRadio(  ) {
 			return null;
 		}
 
-		public dynamic GetSource(  ) {
+		public virtual dynamic GetSource(  ) {
 			return null;
 		}
 
-		public dynamic GetJob(  ) {
+		public virtual dynamic GetJob(  ) {
 			return null;
 		}
 
-		public string get_alt_name(  ) {
+		public virtual string get_alt_name(  ) {
 			return null;
 		}
 
-		public dynamic IsVocal(  ) {
+		public virtual dynamic IsVocal(  ) {
 			return 1;
 		}
 
-		public dynamic GetVoice(  ) {
+		public virtual dynamic GetVoice(  ) {
 			return this.name;
 		}
 
-		public string lang_treat( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic spans = null ) {
+		public virtual string lang_treat( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic spans = null ) {
 			dynamic AM = null;
 			if ( ( this.languages & message_langs ) != 0 ) {
 				AM = speaker.GetSource();
@@ -569,7 +569,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public string say_quote( dynamic input = null, dynamic spans = null ) {
+		public virtual string say_quote( dynamic input = null, dynamic spans = null ) {
 			dynamic ending = null;
 			if ( spans == null ) {
 				spans = new ByTable();
@@ -592,11 +592,11 @@ namespace Som13 {
 			return "" + this.verb_say + ", \"" + input + "\"";
 		}
 
-		public string compose_job( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic radio_freq = null ) {
+		public virtual string compose_job( BaseDynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic radio_freq = null ) {
 			return "";
 		}
 
-		public string compose_track_href( BaseDynamic speaker = null, string message_langs = "", dynamic raw_message = null, dynamic radio_freq = null ) {
+		public virtual string compose_track_href( BaseDynamic speaker = null, string message_langs = "", dynamic raw_message = null, dynamic radio_freq = null ) {
 			return "";
 		}
 
@@ -616,13 +616,13 @@ namespace Som13 {
 			return "" + spanpart1 + spanpart2 + freqpart + this.compose_track_href( speaker, namepart ) + namepart + this.compose_job( speaker, message_langs, raw_message, radio_freq ) + endspanpart + messagepart;
 		}
 
-		public ByTable get_spans(  ) {
+		public virtual ByTable get_spans(  ) {
 			return new ByTable();
 		}
 
-		public void send_speech( string message = "", int range = 0, BaseDynamic source = null, dynamic bubble_type = null, dynamic spans = null ) {
+		public virtual void send_speech( string message = "", int range = 0, BaseDynamic source = null, dynamic bubble_type = null, dynamic spans = null ) {
 			dynamic rendered = null;
-			dynamic AM = null;
+			BaseDynamic AM = null;
 			if ( range == null ) {
 				range = 7;
 			}
@@ -641,15 +641,15 @@ namespace Som13 {
 			return;
 		}
 
-		public int can_speak(  ) {
+		public virtual int can_speak(  ) {
 			return 1;
 		}
 
-		public dynamic Hear( dynamic message = null, dynamic speaker = null, dynamic message_langs = null, dynamic raw_message = null, dynamic radio_freq = null, dynamic spans = null ) {
+		public virtual dynamic Hear( dynamic message = null, dynamic speaker = null, int message_langs = 0, dynamic raw_message = null, dynamic radio_freq = null, dynamic spans = null ) {
 			return null;
 		}
 
-		public int say( string message = "" ) {
+		public virtual int say( string message = "" ) {
 			dynamic spans = null;
 			if ( !Misc13.isValid( this.can_speak() ) ) {
 				return 0;
@@ -674,7 +674,7 @@ namespace Som13 {
 		}
 
 		public int hitcheck(  ) {
-			dynamic AM = null;
+			BaseDynamic AM = null;
 			AM = null;
 			foreach (dynamic _a in GlobalFuncs.get_turf( this ) ) {
 				AM = _a;
@@ -684,7 +684,7 @@ namespace Som13 {
 				if ( AM == this ) {
 					continue;
 				}
-				if ( Misc13.isValid( AM.density ) && !Misc13.isValid( AM.pass_flags & 32 ) && !Misc13.isValid( AM.flags & 512 ) ) {
+				if ( Misc13.isValid( AM.density ) && ( ( AM.pass_flags & 32 ) == 0 ) && !Misc13.isValid( AM.flags & 512 ) ) {
 					this.throwing = 0;
 					this.throw_impact( AM );
 					return 1;
@@ -693,7 +693,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int throw_at( dynamic target = null, int range = 0, int speed = 0, dynamic thrower = null, int spin = 0, int diagonals_first = 0 ) {
+		public virtual int throw_at( dynamic target = null, int range = 0, double speed = 0, dynamic thrower = null, int spin = 0, int diagonals_first = 0 ) {
 			int dist_travelled = 0;
 			int dist_since_sleep = 0;
 			dynamic dist_x = null;
@@ -708,14 +708,14 @@ namespace Som13 {
 			int hit = 0;
 			dynamic init_dir = null;
 			dynamic step = null;
-			dynamic A = null;
+			BaseStatic A = null;
 			if ( spin == null ) {
 				spin = 1;
 			}
 			if ( diagonals_first == null ) {
 				diagonals_first = 0;
 			}
-			if ( !Misc13.isValid( target ) || ( this == null ) || ( ( this.flags & 2 ) != 0 ) ) {
+			if ( !Misc13.isValid( target ) || ( this == null ) || Misc13.isValid( ( this.flags & 2 ) ) ) {
 				return 0;
 			}
 			this.throwing = 1;
@@ -802,7 +802,7 @@ namespace Som13 {
 			return 1;
 		}
 
-		public dynamic throw_impact( dynamic hit_atom = null ) {
+		public virtual dynamic throw_impact( dynamic hit_atom = null ) {
 			return hit_atom.hitby( this );
 		}
 
@@ -810,7 +810,7 @@ namespace Som13 {
 			return this.pass_flags & passflag;
 		}
 
-		public dynamic newtonian_move( dynamic direction = null ) {
+		public dynamic newtonian_move( int direction = 0 ) {
 			dynamic _default = null;
 			int old_dir = 0;
 			if ( !Misc13.isValid( this.loc ) || Misc13.isValid( this.Process_Spacemove( 0 ) ) ) {
@@ -818,18 +818,18 @@ namespace Som13 {
 				return 0;
 			}
 			this.inertia_dir = direction;
-			if ( !Misc13.isValid( direction ) ) {
+			if ( direction == 0 ) {
 				return 1;
 			}
 			old_dir = this.dir;
 			Misc13.step( this, direction );
-			_default = !Misc13.isValid( direction );
+			_default = ( direction == 0 );
 			this.dir = old_dir;
 			return null;
 			return _default;
 		}
 
-		public int Process_Spacemove( int movement_dir = 0 ) {
+		public virtual int Process_Spacemove( int movement_dir = 0 ) {
 			if ( movement_dir == null ) {
 				movement_dir = 0;
 			}
@@ -847,7 +847,7 @@ namespace Som13 {
 
 		public int forceMove( dynamic destination = null ) {
 			dynamic oldloc = null;
-			dynamic AM = null;
+			BaseDynamic AM = null;
 			if ( Misc13.isValid( destination ) ) {
 				oldloc = this.loc;
 				if ( Misc13.isValid( oldloc ) ) {
@@ -872,19 +872,19 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int f_Moved( dynamic OldLoc = null, int Dir = 0 ) {
+		public virtual int f_Moved( dynamic OldLoc = null, int Dir = 0 ) {
 			return 1;
 		}
 
 		public void stop_orbit(  ) {
-			if ( Misc13.isValid( this.orbiting ) ) {
+			if ( this.orbiting != null ) {
 				this.loc = GlobalFuncs.get_turf( this.orbiting );
 				this.orbiting = null;
 			}
 			return;
 		}
 
-		public void orbit( dynamic A = null, int radius = 0, int clockwise = 0, int angle_increment = 0, int lockinorbit = 0 ) {
+		public virtual void orbit( BaseStatic A = null, int radius = 0, int clockwise = 0, int angle_increment = 0, int lockinorbit = 0 ) {
 			int myid = 0;
 			dynamic lastloc = null;
 			int angle = 0;
@@ -908,10 +908,10 @@ namespace Som13 {
 			}
 			this.orbitid++;
 			myid = this.orbitid;
-			if ( Misc13.isValid( this.orbiting ) ) {
+			if ( this.orbiting != null ) {
 				this.stop_orbit();
 				Thread13.sleep( Game.tick_lag + 2.5999999046325684 );
-				if ( Misc13.isValid( this.orbiting ) || !( A is BaseStatic ) || this.orbitid != myid ) {
+				if ( ( this.orbiting != null ) || !( A is BaseStatic ) || this.orbitid != myid ) {
 					return;
 				}
 			}
@@ -919,7 +919,7 @@ namespace Som13 {
 			lastloc = this.loc;
 			angle = 0;
 			initial_transform = new Matrix( this.transform );
-			while (Misc13.isValid( this.orbiting ) && Misc13.isValid( this.orbiting.loc ) && this.orbitid == myid) {
+			while (( this.orbiting != null ) && Misc13.isValid( this.orbiting.loc ) && this.orbitid == myid) {
 				targetloc = GlobalFuncs.get_turf( this.orbiting );
 				if ( ( lockinorbit == 0 ) && this.loc != lastloc && this.loc != targetloc ) {
 					break;
@@ -955,10 +955,10 @@ namespace Som13 {
 		public dynamic canSmoothWith = null;
 		public dynamic suit_fibers = null;
 		public int level = 2;
-		public int flags = 0;
+		public dynamic flags = 0;
 		public ByTable fingerprints = null;
 		public dynamic fingerprintshidden = null;
-		public dynamic fingerprintslast = null;
+		public string fingerprintslast = "";
 		public ByTable blood_DNA = null;
 		public Reagents reagents = null;
 		public dynamic hud_list = null;
@@ -966,7 +966,7 @@ namespace Som13 {
 		public int explosion_block = 0;
 		public LightSource light = null;
 
-		public BaseStatic ( dynamic _loc = null ) {
+		public BaseStatic ( BaseStatic _loc = null ) {
 			this.loc = _loc;
 			if ( ( GlobalVars._preloader != null ) && this.type == GlobalVars._preloader.target_path ) {
 				GlobalVars._preloader.load( this );
@@ -977,12 +977,12 @@ namespace Som13 {
 
 		public void Read( dynamic S = null ) {
 			dynamic l = null;
-			dynamic ic = null;
+			string ic = "";
 			if ( Misc13.isValid( this.contents.len ) ) {
 				l = this.contents;
 			}
 			base.Read();
-			if ( !Misc13.isValid( this.icon ) && Misc13.isValid( S.dir.HasValue( "icon" ) ) ) {
+			if ( !Misc13.isValid( this.icon ) && S.dir.contains( "icon" ) ) {
 				ic = S["icon"].read();
 				if ( ic is string ) {
 					this.icon = GlobalVars.swapmaps_iconcache[ic];
@@ -1051,7 +1051,7 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic Stat(  ) {
+		public virtual dynamic Stat(  ) {
 			dynamic _default = null;
 			_default = base.Stat();
 			Thread13.sleep( 1 );
@@ -1059,7 +1059,7 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int MouseDrop( dynamic over = null, dynamic src_location = null, dynamic over_location = null, dynamic src_control = null, dynamic over_control = null, dynamic _params = null ) {
+		public virtual int MouseDrop( dynamic over = null, dynamic src_location = null, dynamic over_location = null, dynamic src_control = null, dynamic over_control = null, dynamic _params = null ) {
 			if ( !Misc13.isValid( Misc13.thread_user ) || !Misc13.isValid( over ) ) {
 				return 0;
 			}
@@ -1078,12 +1078,12 @@ namespace Som13 {
 			return;
 		}
 
-		public int Click( dynamic location = null, dynamic control = null, dynamic _params = null ) {
+		public virtual int Click( dynamic location = null, dynamic control = null, dynamic _params = null ) {
 			Misc13.thread_user.ClickOn( this, _params );
 			return 0;
 		}
 
-		public void shuttleRotate( dynamic rotation = null ) {
+		public virtual void shuttleRotate( dynamic rotation = null ) {
 			dynamic turntimes = null;
 			dynamic oldPX = null;
 			dynamic oldPY = null;
@@ -1117,11 +1117,11 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic ninjadrain_act(  ) {
+		public virtual dynamic ninjadrain_act(  ) {
 			return "INVALID";
 		}
 
-		public void swarmer_act( dynamic S = null ) {
+		public virtual void swarmer_act( dynamic S = null ) {
 			S.DisIntegrate( this );
 			return;
 		}
@@ -1140,14 +1140,14 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic update_pipe_vision( dynamic new_loc = null ) {
+		public virtual dynamic update_pipe_vision( dynamic new_loc = null ) {
 			if ( new_loc == null ) {
 				new_loc = null;
 			}
 			return null;
 		}
 
-		public void audible_message( string message = "", string deaf_message = "", dynamic hearing_distance = null ) {
+		public virtual void audible_message( string message = "", string deaf_message = "", dynamic hearing_distance = null ) {
 			int range = 0;
 			dynamic M = null;
 			range = 7;
@@ -1162,11 +1162,11 @@ namespace Som13 {
 			return;
 		}
 
-		public void visible_message( string message = "", string blind_message = "" ) {
+		public virtual void visible_message( string message = "", string blind_message = "" ) {
 			ByTable mob_viewers = null;
 			ByTable possible_viewers = null;
 			dynamic heard = null;
-			dynamic A = null;
+			BaseDynamic A = null;
 			dynamic B = null;
 			dynamic T = null;
 			dynamic M = null;
@@ -1188,14 +1188,14 @@ namespace Som13 {
 			B = null;
 			foreach (dynamic _b in possible_viewers ) {
 				B = _b;
-				if ( Misc13.isValid( mob_viewers.HasValue( B ) ) ) {
+				if ( mob_viewers.contains( B ) ) {
 					continue;
 				}
 				if ( B.loc is Tile ) {
 					continue;
 				}
 				T = GlobalFuncs.get_turf( B );
-				if ( Misc13.isValid( Misc13.view( T, null ).HasValue( this ) ) ) {
+				if ( Misc13.view( T, null ).contains( this ) ) {
 					mob_viewers |= B;
 				}
 			};
@@ -1209,7 +1209,7 @@ namespace Som13 {
 				C = null;
 				foreach (dynamic _d in GlobalFuncs.get_hearers_in_view( 7, this ) ) {
 					C = _d;
-					if ( Misc13.isValid( mob_viewers.HasValue( C ) ) ) {
+					if ( mob_viewers.contains( C ) ) {
 						continue;
 					}
 					mob_hearers |= C;
@@ -1223,7 +1223,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void prepare_huds(  ) {
+		public virtual void prepare_huds(  ) {
 			dynamic hud = null;
 			hud = null;
 			foreach (dynamic _a in this.hud_possible ) {
@@ -1233,11 +1233,11 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic get_light_range( dynamic radius = null ) {
+		public virtual dynamic get_light_range( int radius = 0 ) {
 			return Misc13.min( radius, 8 );
 		}
 
-		public void UpdateAffectingLights(  ) {
+		public virtual void UpdateAffectingLights(  ) {
 			return;
 		}
 
@@ -1261,7 +1261,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void SetLuminosity( int new_luminosity = 0 ) {
+		public virtual void SetLuminosity( int new_luminosity = 0 ) {
 			if ( new_luminosity < 0 ) {
 				new_luminosity = 0;
 			}
@@ -1280,16 +1280,16 @@ namespace Som13 {
 		}
 
 		public void transfer_fingerprints_to( Ent_Item_Stack_Rods A = null ) {
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( A.fingerprints ) ) ) {
+			if ( !( A.fingerprints is ByTable ) ) {
 				A.fingerprints = new ByTable();
 			}
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( A.fingerprintshidden ) ) ) {
+			if ( !( A.fingerprintshidden is ByTable ) ) {
 				A.fingerprintshidden = new ByTable();
 			}
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( this.fingerprints ) ) ) {
+			if ( !( this.fingerprints is ByTable ) ) {
 				this.fingerprints = new ByTable();
 			}
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( this.fingerprintshidden ) ) ) {
+			if ( !( this.fingerprintshidden is ByTable ) ) {
 				this.fingerprintshidden = new ByTable();
 			}
 			if ( this.fingerprints != null ) {
@@ -1354,8 +1354,8 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int add_hiddenprint( Mob_Living_Silicon_Ai M = null ) {
-			Mob_Living_Silicon_Ai H = null;
+		public int add_hiddenprint( dynamic M = null ) {
+			dynamic H = null;
 			if ( M == null ) {
 				return 0;
 			}
@@ -1407,13 +1407,13 @@ namespace Som13 {
 			item_multiplier = this is Ent_Item ? 1.2000000476837158 : 1;
 			if ( Misc13.isValid( M.wear_suit ) ) {
 				fibertext = new Txt( "Material from " ).a( M.wear_suit ).item().str( "." );
-				if ( Misc13.isValid( Rand13.chance( item_multiplier * 10 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+				if ( Misc13.isValid( Rand13.chance( item_multiplier * 10 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 					this.suit_fibers += fibertext;
 				}
 				if ( !Misc13.isValid( M.wear_suit.body_parts_covered & 2 ) ) {
 					if ( Misc13.isValid( M.w_uniform ) ) {
 						fibertext = new Txt( "Fibers from " ).a( M.w_uniform ).item().str( "." );
-						if ( Misc13.isValid( Rand13.chance( item_multiplier * 12 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+						if ( Misc13.isValid( Rand13.chance( item_multiplier * 12 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 							this.suit_fibers += fibertext;
 						}
 					}
@@ -1421,25 +1421,25 @@ namespace Som13 {
 				if ( !Misc13.isValid( M.wear_suit.body_parts_covered & 1536 ) ) {
 					if ( Misc13.isValid( M.gloves ) ) {
 						fibertext = "Material from a pair of " + M.gloves.name + ".";
-						if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+						if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 							this.suit_fibers += fibertext;
 						}
 					}
 				}
 			} else if ( Misc13.isValid( M.w_uniform ) ) {
 				fibertext = new Txt( "Fibers from " ).a( M.w_uniform ).item().str( "." );
-				if ( Misc13.isValid( Rand13.chance( item_multiplier * 15 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+				if ( Misc13.isValid( Rand13.chance( item_multiplier * 15 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 					this.suit_fibers += fibertext;
 				}
 				if ( Misc13.isValid( M.gloves ) ) {
 					fibertext = "Material from a pair of " + M.gloves.name + ".";
-					if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+					if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 						this.suit_fibers += "Material from a pair of " + M.gloves.name + ".";
 					}
 				}
 			} else if ( Misc13.isValid( M.gloves ) ) {
 				fibertext = "Material from a pair of " + M.gloves.name + ".";
-				if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !Misc13.isValid( this.suit_fibers.HasValue( fibertext ) ) ) {
+				if ( Misc13.isValid( Rand13.chance( item_multiplier * 20 ) ) && !this.suit_fibers.contains( fibertext ) ) {
 					this.suit_fibers += "Material from a pair of " + M.gloves.name + ".";
 				}
 			}
@@ -1459,20 +1459,20 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic CanPass( dynamic mover = null, dynamic target = null, double height = 0 ) {
+		public virtual dynamic CanPass( dynamic mover = null, dynamic target = null, double height = 0 ) {
 			if ( height == null ) {
 				height = 1.5;
 			}
 			return !Misc13.isValid( this.density ) || ( height == 0 );
 		}
 
-		public void temperature_expose( dynamic air = null, dynamic exposed_temperature = null, dynamic exposed_volume = null ) {
+		public virtual void temperature_expose( dynamic air = null, dynamic exposed_temperature = null, dynamic exposed_volume = null ) {
 			return;
 		}
 
-		public int transfer_ai( dynamic interaction = null, dynamic user = null, dynamic AI = null, dynamic card = null ) {
+		public virtual int transfer_ai( dynamic interaction = null, dynamic user = null, dynamic AI = null, Ent_Item_Device_Aicard card = null ) {
 			if ( card is Ent_Item_Device_Aicard ) {
-				if ( Misc13.isValid( card.flush ) ) {
+				if ( card.flush != 0 ) {
 					user.write( "<span class='boldannounce'>ERROR</span>: AI flush is in progress, cannot execute transfer protocol." );
 					return 0;
 				}
@@ -1480,18 +1480,18 @@ namespace Som13 {
 			return 1;
 		}
 
-		public int rad_act( dynamic severity = null ) {
+		public virtual int rad_act( double severity = 0 ) {
 			return 1;
 		}
 
-		public int mech_melee_attack( Ent_Mecha M = null ) {
+		public virtual int mech_melee_attack( Ent_Mecha M = null ) {
 			return 0;
 		}
 
 		public Signal telecomms_process(  ) {
 			Signal signal = null;
 			dynamic pos = null;
-			dynamic R = null;
+			Ent_Machinery_Telecomms_Receiver R = null;
 			signal = new Signal();
 			signal.transmission_method = 2;
 			pos = GlobalFuncs.get_turf( this );
@@ -1509,16 +1509,16 @@ namespace Som13 {
 			return signal;
 		}
 
-		public dynamic test_telecomms(  ) {
+		public bool test_telecomms(  ) {
 			dynamic signal = null;
 			dynamic position = null;
 			signal = this.telecomms_process();
 			position = GlobalFuncs.get_turf( this );
-			return Misc13.isValid( signal.data["level"] ) && Misc13.isValid( signal.data["done"] ).HasValue( position.z );
+			return Misc13.isValid( signal.data["level"] ) && Misc13.isValid( signal.data["done"] ).contains( position.z );
 		}
 
 		public void auto_turn(  ) {
-			dynamic T = null;
+			Tile_Simulated_Wall T = null;
 			int i = 0;
 			T = null;
 			i = 0;
@@ -1543,7 +1543,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void playsound_local( dynamic turf_source = null, dynamic soundin = null, int vol = 0, int vary = 0, dynamic frequency = null, dynamic falloff = null, int surround = 0 ) {
+		public virtual void playsound_local( Tile turf_source = null, dynamic soundin = null, int vol = 0, int vary = 0, dynamic frequency = null, dynamic falloff = null, int surround = 0 ) {
 			Sound S = null;
 			dynamic T = null;
 			int pressure_factor = 0;
@@ -1603,7 +1603,7 @@ namespace Som13 {
 		}
 
 		public void remove_from_all_data_huds(  ) {
-			dynamic hud = null;
+			AtomHud_Data hud = null;
 			hud = null;
 			foreach (dynamic _a in GlobalVars.huds ) {
 				hud = _a;
@@ -1616,7 +1616,7 @@ namespace Som13 {
 		}
 
 		public void add_to_all_human_data_huds(  ) {
-			dynamic hud = null;
+			AtomHud_Data_Human hud = null;
 			hud = null;
 			foreach (dynamic _a in GlobalVars.huds ) {
 				hud = _a;
@@ -1628,39 +1628,39 @@ namespace Som13 {
 			return;
 		}
 
-		public void handle_atom_del( dynamic A = null ) {
+		public virtual void handle_atom_del( dynamic A = null ) {
 			return;
 		}
 
-		public int storage_contents_dump_act( dynamic src_object = null, dynamic user = null ) {
+		public virtual int storage_contents_dump_act( dynamic src_object = null, dynamic user = null ) {
 			return 0;
 		}
 
-		public void narsie_act(  ) {
+		public virtual void narsie_act(  ) {
 			return;
 		}
 
-		public int emag_act(  ) {
+		public virtual int emag_act(  ) {
 			return 0;
 		}
 
-		public int acid_act( dynamic acidpwr = null, dynamic toxpwr = null, dynamic acid_volume = null ) {
+		public virtual int acid_act( dynamic acidpwr = null, dynamic toxpwr = null, dynamic acid_volume = null ) {
 			return 0;
 		}
 
-		public void singularity_pull(  ) {
+		public virtual void singularity_pull(  ) {
 			return;
 		}
 
-		public int singularity_act(  ) {
+		public virtual int singularity_act(  ) {
 			return 0;
 		}
 
-		public int handle_slip(  ) {
+		public virtual int handle_slip(  ) {
 			return 0;
 		}
 
-		public void handle_fall(  ) {
+		public virtual void handle_fall(  ) {
 			return;
 		}
 
@@ -1677,7 +1677,7 @@ namespace Som13 {
 			int cur_x = 0;
 			dynamic cur_y = null;
 			dynamic y_arr = null;
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( GlobalVars.global_map ) ) || Misc13.isValid( GlobalFuncs.isemptylist( GlobalVars.global_map ) ) ) {
+			if ( !( GlobalVars.global_map is ByTable ) || Misc13.isValid( GlobalFuncs.isemptylist( GlobalVars.global_map ) ) ) {
 				return null;
 			}
 			cur_x = 0;
@@ -1700,8 +1700,8 @@ namespace Som13 {
 			return null;
 		}
 
-		public int clean_blood(  ) {
-			if ( Misc13.isValid( typeof(ByTable).IsInstanceOfType( this.blood_DNA ) ) ) {
+		public virtual int clean_blood(  ) {
+			if ( this.blood_DNA is ByTable ) {
 				this.blood_DNA = null;
 				return 1;
 			}
@@ -1751,18 +1751,18 @@ namespace Som13 {
 			return;
 		}
 
-		public int rejects_blood(  ) {
+		public virtual int rejects_blood(  ) {
 			return 0;
 		}
 
-		public int add_blood( dynamic M = null ) {
-			dynamic H = null;
-			if ( !Misc13.isValid( M ) || !Misc13.isValid( M.has_dna() ) || Misc13.isValid( this.rejects_blood() ) ) {
+		public virtual int add_blood( Mob_Living_Carbon_Human M = null ) {
+			Mob_Living_Carbon_Human H = null;
+			if ( ( M == null ) || !Misc13.isValid( M.has_dna() ) || Misc13.isValid( this.rejects_blood() ) ) {
 				return 0;
 			}
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				if ( Misc13.isValid( H.dna.species.specflags.HasValue( 1024 ) ) ) {
+				if ( H.dna.species.specflags.contains( 1024 ) ) {
 					return 0;
 				}
 			}
@@ -1770,7 +1770,7 @@ namespace Som13 {
 		}
 
 		public int add_blood_list( dynamic M = null ) {
-			if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( this.blood_DNA ) ) ) {
+			if ( !( this.blood_DNA is ByTable ) ) {
 				this.blood_DNA = new ByTable();
 			}
 			if ( Misc13.isValid( this.blood_DNA[M.dna.unique_enzymes] ) ) {
@@ -1784,7 +1784,7 @@ namespace Som13 {
 			return new Txt().Ref( Misc13.initial( this.icon ) ).str( "-" ).item( Misc13.initial( this.icon_state ) );
 		}
 
-		public int hitby( dynamic AM = null, dynamic skipcatch = null, dynamic hitpush = null, dynamic blocked = null ) {
+		public virtual int hitby( dynamic AM = null, dynamic skipcatch = null, dynamic hitpush = null, dynamic blocked = null ) {
 			if ( Misc13.isValid( this.density ) && !Misc13.isValid( GlobalFuncs.has_gravity( AM ) ) ) {
 				Thread13.schedule( 2, (Thread13.Closure)(() => {
 					Misc13.step( AM, Misc13.turn( AM.dir, 180 ) );
@@ -1794,21 +1794,21 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int fire_act(  ) {
+		public virtual int fire_act(  ) {
 			return 0;
 		}
 
-		public int blob_act(  ) {
+		public virtual int blob_act(  ) {
 			return 0;
 		}
 
-		public int ex_act( int severity = 0, dynamic target = null ) {
+		public virtual int ex_act( int severity = 0, dynamic target = null ) {
 			this.contents_explosion( severity, target );
 			return 0;
 		}
 
-		public void contents_explosion( int severity = 0, dynamic target = null ) {
-			dynamic A = null;
+		public virtual void contents_explosion( int severity = 0, dynamic target = null ) {
+			BaseStatic A = null;
 			A = null;
 			foreach (dynamic _a in this.contents ) {
 				A = _a;
@@ -1820,13 +1820,13 @@ namespace Som13 {
 			return;
 		}
 
-		public int relaymove(  ) {
+		public virtual int relaymove(  ) {
 			return 0;
 		}
 
-		public dynamic examine( Mob user = null ) {
+		public virtual dynamic examine( Mob user = null ) {
 			string f_name = "";
-			dynamic R = null;
+			Reagent R = null;
 			f_name = new Txt().a( this ).item().str( "." );
 			if ( ( this.blood_DNA != null ) && !( this is Ent_Effect_Decal ) ) {
 				if ( this.gender == GlobalVars.PLURAL ) {
@@ -1885,7 +1885,7 @@ namespace Som13 {
 
 		public ByTable search_contents_for( Type path = null, dynamic filter_path = null ) {
 			ByTable found = null;
-			dynamic A = null;
+			BaseStatic A = null;
 			int pass = 0;
 			dynamic type = null;
 			if ( filter_path == null ) {
@@ -1924,55 +1924,55 @@ namespace Som13 {
 				if ( Misc13.isValid( container.IsInstanceOfType( this.loc ) ) ) {
 					return 1;
 				}
-			} else if ( Misc13.isValid( container.HasValue( this ) ) ) {
+			} else if ( container.contains( this ) ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public int bullet_act( dynamic P = null, dynamic def_zone = null ) {
+		public virtual int bullet_act( dynamic P = null, dynamic def_zone = null ) {
 			int _default = 0;
 			_default = P.on_hit( this, 0, def_zone );
 			return 0;
 			return _default;
 		}
 
-		public int emp_act( dynamic severity = null ) {
+		public virtual int emp_act( int severity = 0 ) {
 			return 0;
 		}
 
-		public int HasProximity( dynamic AM = null ) {
+		public virtual int HasProximity( dynamic AM = null ) {
 			return 0;
 		}
 
-		public dynamic CheckExit(  ) {
+		public virtual dynamic CheckExit(  ) {
 			return 1;
 		}
 
-		public int allow_drop(  ) {
+		public virtual int allow_drop(  ) {
 			return 1;
 		}
 
-		public int is_open_container(  ) {
+		public dynamic is_open_container(  ) {
 			return this.flags & 4096;
 		}
 
-		public int Bumped( dynamic AM = null ) {
+		public virtual int Bumped( dynamic AM = null ) {
 			return 0;
 		}
 
-		public void on_reagent_change(  ) {
+		public virtual void on_reagent_change(  ) {
 			return;
 		}
 
-		public dynamic check_eye( dynamic user = null ) {
+		public virtual dynamic check_eye( Mob_Living_Silicon_Ai user = null ) {
 			if ( user is Mob_Living_Silicon_Ai ) {
 				return 1;
 			}
 			return null;
 		}
 
-		public GasMixture return_air(  ) {
+		public virtual GasMixture return_air(  ) {
 			if ( Misc13.isValid( this.loc ) ) {
 				return this.loc.return_air();
 			} else {
@@ -1981,20 +1981,20 @@ namespace Som13 {
 			return null;
 		}
 
-		public GasMixture remove_air( dynamic amount = null ) {
+		public virtual GasMixture remove_air( dynamic amount = null ) {
 			return null;
 		}
 
-		public int assume_air( dynamic giver = null ) {
+		public virtual int assume_air( dynamic giver = null ) {
 			GlobalFuncs.qdel( giver );
 			return 0;
 		}
 
-		public void CheckParts(  ) {
+		public virtual void CheckParts(  ) {
 			return;
 		}
 
-		public int attack_hulk( dynamic hulk = null, int do_attack_animation = 0 ) {
+		public virtual int attack_hulk( dynamic hulk = null, int do_attack_animation = 0 ) {
 			if ( do_attack_animation == null ) {
 				do_attack_animation = 0;
 			}
@@ -2015,13 +2015,13 @@ namespace Som13 {
 			if ( T.z != 2 ) {
 				return 0;
 			}
-			if ( Misc13.isValid( new ByArea(2753).IsInstanceOfType( T.loc ) ) || Misc13.isValid( new ByArea(2766).IsInstanceOfType( T.loc ) ) ) {
+			if ( T.loc is Zone_Shuttle_Syndicate || T.loc is Zone_SyndicateMothership ) {
 				return 1;
 			}
 			return 0;
 		}
 
-		public int onCentcom(  ) {
+		public dynamic onCentcom(  ) {
 			dynamic T = null;
 			dynamic centcom_shuttle = null;
 			dynamic M = null;
@@ -2036,18 +2036,18 @@ namespace Som13 {
 			foreach (dynamic _a in new ByTable(new object [] { "emergency", "pod1", "pod2", "pod3", "pod4", "ferry" }) ) {
 				centcom_shuttle = _a;
 				M = GlobalVars.SSshuttle.getShuttle( centcom_shuttle );
-				if ( Misc13.isValid( M.areaInstance.HasValue( T ) ) ) {
+				if ( M.areaInstance.contains( T ) ) {
 					return 1;
 				}
 			};
-			return new ByArea(2763).IsInstanceOfType( T.loc );
+			return T.loc is Zone_Centcom;
 		}
 
-		public dynamic attack_self_tk( dynamic user = null ) {
+		public virtual dynamic attack_self_tk( dynamic user = null ) {
 			return null;
 		}
 
-		public dynamic attack_tk( dynamic user = null ) {
+		public virtual dynamic attack_tk( dynamic user = null ) {
 			if ( Misc13.isValid( user.stat ) ) {
 				return null;
 			}
@@ -2055,67 +2055,67 @@ namespace Som13 {
 			return null;
 		}
 
-		public int attack_slime( dynamic user = null ) {
+		public virtual int attack_slime( dynamic user = null ) {
 			return 0;
 		}
 
-		public int attack_larva( dynamic user = null ) {
+		public virtual int attack_larva( dynamic user = null ) {
 			return 0;
 		}
 
-		public int attack_alien( dynamic user = null ) {
+		public virtual int attack_alien( dynamic user = null ) {
 			this.attack_paw( user );
 			return 0;
 		}
 
-		public int attack_paw( dynamic user = null ) {
+		public virtual int attack_paw( dynamic user = null ) {
 			return 0;
 		}
 
-		public int attack_animal( dynamic user = null ) {
+		public virtual int attack_animal( dynamic user = null ) {
 			return 0;
 		}
 
-		public int attack_hand( dynamic user = null ) {
+		public virtual int attack_hand( dynamic user = null ) {
 			return 0;
 		}
 
-		public void attack_ghost( dynamic user = null ) {
+		public virtual void attack_ghost( Mob_Dead_Observer user = null ) {
 			if ( Misc13.isValid( user.client ) && Misc13.isValid( user.client.inquisitive_ghost ) ) {
 				user.examinate( this );
 			}
 			return;
 		}
 
-		public int attackby( dynamic W = null, Mob user = null, dynamic _params = null ) {
+		public virtual int attackby( dynamic W = null, dynamic user = null, dynamic _params = null ) {
 			return 0;
 		}
 
-		public int MouseDrop_T( dynamic dropping = null, dynamic user = null ) {
+		public virtual int MouseDrop_T( dynamic dropping = null, dynamic user = null ) {
 			return 0;
 		}
 
-		public dynamic attack_robot( dynamic user = null ) {
+		public virtual dynamic attack_robot( dynamic user = null ) {
 			this.attack_ai( user );
 			return null;
 		}
 
-		public void BorgAltClick( dynamic user = null ) {
+		public virtual void BorgAltClick( dynamic user = null ) {
 			this.AltClick( user );
 			return;
 		}
 
-		public void BorgCtrlClick( dynamic user = null ) {
+		public virtual void BorgCtrlClick( dynamic user = null ) {
 			this.CtrlClick( user );
 			return;
 		}
 
-		public void BorgShiftClick( dynamic user = null ) {
+		public virtual void BorgShiftClick( dynamic user = null ) {
 			this.ShiftClick( user );
 			return;
 		}
 
-		public void BorgCtrlShiftClick( dynamic user = null ) {
+		public virtual void BorgCtrlShiftClick( dynamic user = null ) {
 			this.CtrlShiftClick( user );
 			return;
 		}
@@ -2124,7 +2124,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int AltClick( Mob user = null ) {
+		public virtual int AltClick( Mob user = null ) {
 			dynamic T = null;
 			T = GlobalFuncs.get_turf( this );
 			if ( Misc13.isValid( T ) && Misc13.isValid( user.TurfAdjacent( T ) ) ) {
@@ -2138,7 +2138,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public void CtrlClick( Mob user = null ) {
+		public virtual void CtrlClick( Mob user = null ) {
 			return;
 		}
 
@@ -2149,28 +2149,28 @@ namespace Som13 {
 			return;
 		}
 
-		public void AICtrlShiftClick(  ) {
+		public virtual void AICtrlShiftClick(  ) {
 			return;
 		}
 
-		public void AIShiftClick(  ) {
+		public virtual void AIShiftClick(  ) {
 			return;
 		}
 
-		public void AIAltClick( dynamic user = null ) {
+		public virtual void AIAltClick( dynamic user = null ) {
 			this.AltClick( user );
 			return;
 		}
 
-		public void AICtrlClick(  ) {
+		public virtual void AICtrlClick(  ) {
 			return;
 		}
 
-		public int attack_ai( dynamic user = null ) {
+		public virtual int attack_ai( dynamic user = null ) {
 			return 0;
 		}
 
-		public dynamic Adjacent( dynamic neighbor = null ) {
+		public virtual dynamic Adjacent( dynamic neighbor = null ) {
 			return 0;
 		}
 
@@ -2179,7 +2179,7 @@ namespace Som13 {
 			ByTable processed = null;
 			dynamic found = null;
 			dynamic A = null;
-			dynamic a = null;
+			BaseStatic a = null;
 			processing_list = new ByTable(new object [] { this });
 			processed = new ByTable();
 			found = null;
@@ -2195,7 +2195,7 @@ namespace Som13 {
 					if ( !( a is BaseStatic ) ) {
 						continue;
 					}
-					if ( !Misc13.isValid( processed.HasValue( a ) ) ) {
+					if ( !processed.contains( a ) ) {
 						processing_list |= a;
 					}
 				};
@@ -2208,7 +2208,7 @@ namespace Som13 {
 			ByTable processing_list = null;
 			ByTable assembled = null;
 			dynamic A = null;
-			dynamic a = null;
+			BaseStatic a = null;
 			processing_list = new ByTable(new object [] { this });
 			assembled = new ByTable();
 			while (Misc13.isValid( processing_list.len )) {
@@ -2220,7 +2220,7 @@ namespace Som13 {
 					if ( !( a is BaseStatic ) ) {
 						continue;
 					}
-					if ( !Misc13.isValid( assembled.HasValue( a ) ) ) {
+					if ( !assembled.contains( a ) ) {
 						processing_list |= a;
 					}
 				};
@@ -2275,7 +2275,7 @@ namespace Som13 {
 
 	partial class Image : BaseData {
 
-		public void ResetVars(  ) {
+		public override void ResetVars(  ) {
 			base.ResetVars();
 			this.loc = null;
 			return;
@@ -2293,7 +2293,7 @@ namespace Som13 {
 		public int next_move_modifier = 1;
 		public dynamic skincmds = null;
 		public int suiciding = 0;
-		public dynamic open_uis = null;
+		public ByTable open_uis = null;
 		public dynamic alerts = null;
 		public HSB sandbox = null;
 		public int bloody_hands = 0;
@@ -2310,8 +2310,8 @@ namespace Som13 {
 		public Ent_Screen healths = null;
 		public dynamic throw_icon = null;
 		public Ent_Screen damageoverlay = null;
-		public dynamic zone_sel = null;
-		public Ent_Screen_Alien_Leap leap_icon = null;
+		public Ent_Screen_ZoneSel zone_sel = null;
+		public dynamic leap_icon = null;
 		public Ent_Screen healthdoll = null;
 		public int damageoverlaytemp = 0;
 		public dynamic computer_id = null;
@@ -2321,8 +2321,8 @@ namespace Som13 {
 		public dynamic machine = null;
 		public dynamic other_mobs = null;
 		public string memory = "";
-		public int disabilities = 0;
-		public BaseDynamic pulling = null;
+		public dynamic disabilities = 0;
+		public dynamic pulling = null;
 		public double next_move = 0;
 		public int notransform = 0;
 		public dynamic hand = null;
@@ -2363,7 +2363,7 @@ namespace Som13 {
 		public dynamic buckled = null;
 		public dynamic l_hand = null;
 		public dynamic r_hand = null;
-		public dynamic s_active = null;
+		public Ent_Item_Weapon_Storage s_active = null;
 		public int seer = 0;
 		public int see_override = 0;
 		public Hud hud_used = null;
@@ -2374,15 +2374,15 @@ namespace Som13 {
 		public dynamic mapobjs = null;
 		public int in_throw_mode = 0;
 		public string music_lastplayed = "null";
-		public dynamic job = null;
+		public string job = "";
 		public int radiation = 0;
 		public string voice_name = "unidentifiable voice";
 		public ByTable faction = null;
 		public int move_on_shuttle = 1;
 		public dynamic LAssailant = null;
-		public dynamic mob_spell_list = null;
+		public ByTable mob_spell_list = null;
 		public ByTable viruses = null;
-		public dynamic resistances = null;
+		public ByTable resistances = null;
 		public dynamic virus = null;
 		public int status_flags = 15;
 		public dynamic lastarea = null;
@@ -2399,11 +2399,11 @@ namespace Som13 {
 		public int permanent_sight_flags = 0;
 		public int resize = 1;
 
-		public int flags = 16;
+		public dynamic flags = 16;
 		public dynamic hud_possible = null;
 		public int pressure_resistance = 8;
 
-		public Mob ( dynamic _loc = null ) : base( _loc ) {
+		public Mob ( BaseStatic _loc = null ) : base( _loc ) {
 			this.tag = "mob_" + GlobalVars.next_mob_id++;
 			GlobalVars.mob_list += this;
 			if ( this.stat == 2 ) {
@@ -2415,7 +2415,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void pipe_eject( dynamic direction = null ) {
+		public override void pipe_eject( dynamic direction = null ) {
 			if ( Misc13.isValid( this.client ) ) {
 				this.client.perspective = GlobalVars.MOB_PERSPECTIVE;
 				this.client.eye = this;
@@ -2423,7 +2423,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int Process_Spacemove( int movement_dir = 0 ) {
+		public override int Process_Spacemove( int movement_dir = 0 ) {
 			dynamic dense_object_backup = null;
 			dynamic A = null;
 			dynamic turf = null;
@@ -2476,7 +2476,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public dynamic CanPass( dynamic mover = null, dynamic target = null, int height = 0 ) {
+		public override dynamic CanPass( dynamic mover = null, dynamic target = null, int height = 0 ) {
 			dynamic moving_mob = null;
 			if ( height == null ) {
 				height = 0;
@@ -2505,7 +2505,7 @@ namespace Som13 {
 			return !Misc13.isValid( mover.density ) || !Misc13.isValid( this.density ) || Misc13.isValid( this.lying );
 		}
 
-		public void post_buckle_mob( dynamic M = null ) {
+		public override void post_buckle_mob( dynamic M = null ) {
 			dynamic height = null;
 			if ( M == this.buckled_mob ) {
 				height = M.get_mob_buckling_height( this );
@@ -2520,7 +2520,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int buckle_mob( dynamic M = null, int force = 0 ) {
+		public override int buckle_mob( dynamic M = null, int force = 0 ) {
 			dynamic T = null;
 			dynamic old_density = null;
 			dynamic can_step = null;
@@ -2544,7 +2544,7 @@ namespace Som13 {
 			return base.buckle_mob();
 		}
 
-		public void shuttleRotate( dynamic rotation = null ) {
+		public override void shuttleRotate( dynamic rotation = null ) {
 			this.dir = GlobalFuncs.angle2dir( rotation + GlobalFuncs.dir2angle( this.dir ) );
 			return;
 		}
@@ -2552,7 +2552,7 @@ namespace Som13 {
 
 //FAILURE
 
-		public int MouseDrop( dynamic M = null ) {
+		public override int MouseDrop( Mob_Living_Silicon_Ai M = null ) {
 			base.MouseDrop();
 			if ( M != Misc13.thread_user ) {
 				return 0;
@@ -2570,7 +2570,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int Topic( dynamic href = null, dynamic href_list = null ) {
+		public virtual int Topic( dynamic href = null, dynamic href_list = null ) {
 			string t1 = "";
 			dynamic slot = null;
 			dynamic what = null;
@@ -2605,7 +2605,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public void audible_message( dynamic message = null, dynamic deaf_message = null, dynamic hearing_distance = null, dynamic self_message = null ) {
+		public override void audible_message( dynamic message = null, dynamic deaf_message = null, dynamic hearing_distance = null, dynamic self_message = null ) {
 			int range = 0;
 			dynamic M = null;
 			dynamic msg = null;
@@ -2625,11 +2625,11 @@ namespace Som13 {
 			return;
 		}
 
-		public void visible_message( dynamic message = null, dynamic self_message = null, dynamic blind_message = null ) {
+		public override void visible_message( dynamic message = null, dynamic self_message = null, dynamic blind_message = null ) {
 			ByTable mob_viewers = null;
 			ByTable possible_viewers = null;
 			dynamic heard = null;
-			dynamic A = null;
+			BaseDynamic A = null;
 			dynamic B = null;
 			dynamic T = null;
 			dynamic M = null;
@@ -2653,14 +2653,14 @@ namespace Som13 {
 			B = null;
 			foreach (dynamic _b in possible_viewers ) {
 				B = _b;
-				if ( Misc13.isValid( mob_viewers.HasValue( B ) ) ) {
+				if ( mob_viewers.contains( B ) ) {
 					continue;
 				}
 				if ( B.loc is Tile ) {
 					continue;
 				}
 				T = GlobalFuncs.get_turf( B );
-				if ( Misc13.isValid( Misc13.view( T, null ).HasValue( this ) ) ) {
+				if ( Misc13.view( T, null ).contains( this ) ) {
 					mob_viewers |= B;
 				}
 			};
@@ -2681,7 +2681,7 @@ namespace Som13 {
 				C = null;
 				foreach (dynamic _d in GlobalFuncs.get_hearers_in_view( 7, this ) ) {
 					C = _d;
-					if ( Misc13.isValid( mob_viewers.HasValue( C ) ) ) {
+					if ( mob_viewers.contains( C ) ) {
 						continue;
 					}
 					mob_hearers |= C;
@@ -2695,7 +2695,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int Destroy(  ) {
+		public override int Destroy(  ) {
 			dynamic infection = null;
 			GlobalVars.mob_list -= this;
 			GlobalVars.dead_mob_list -= this;
@@ -2713,7 +2713,7 @@ namespace Som13 {
 			return base.Destroy();
 		}
 
-		public int Logout(  ) {
+		public virtual int Logout(  ) {
 			dynamic admins_number = null;
 			string cheesy_message = "";
 			dynamic Loc = null;
@@ -2740,7 +2740,7 @@ namespace Som13 {
 			return 1;
 		}
 
-		public dynamic Login(  ) {
+		public virtual dynamic Login(  ) {
 			dynamic Loc = null;
 			GlobalVars.player_list |= this;
 			this.update_Login_details();
@@ -2766,18 +2766,18 @@ namespace Som13 {
 				Loc.on_log();
 			}
 			this.reload_huds();
-			if ( Misc13.isValid( GlobalVars.deadmins.HasValue( this.ckey ) ) ) {
+			if ( GlobalVars.deadmins.contains( this.ckey ) ) {
 				this.verbs += typeof(Client).GetMethod( "readmin" );
 			}
 			this.client.screen += GlobalVars._void;
 			return null;
 		}
 
-		public dynamic get_light_range( dynamic radius = null ) {
+		public override dynamic get_light_range( dynamic radius = null ) {
 			return Misc13.min( radius, 5 );
 		}
 
-		public void playsound_local( dynamic turf_source = null, dynamic soundin = null, dynamic vol = null, dynamic vary = null, dynamic frequency = null, dynamic falloff = null, int surround = 0 ) {
+		public override void playsound_local( dynamic turf_source = null, dynamic soundin = null, dynamic vol = null, dynamic vary = null, dynamic frequency = null, dynamic falloff = null, int surround = 0 ) {
 			if ( surround == null ) {
 				surround = 1;
 			}
@@ -2788,11 +2788,11 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic attack_tk( dynamic user = null ) {
+		public override dynamic attack_tk( dynamic user = null ) {
 			return null;
 		}
 
-		public void hotkey_help(  ) {
+		public virtual void hotkey_help(  ) {
 			string hotkey_mode = "";
 			string other = "";
 			hotkey_mode = "<font color='purple'>\nHotkey-Mode: (hotkey-mode must be on)\n	TAB = toggle hotkey-mode\n	a = left\n	s = down\n	d = right\n	w = up\n	q = drop\n	e = equip\n	r = throw\n	m = me\n	t = say\n	o = OOC\n	b = resist\n	x = swap-hand\n	z = activate held object (or y)\n	f = cycle-intents-left\n	g = cycle-intents-right\n	1 = help-intent\n	2 = disarm-intent\n	3 = grab-intent\n	4 = harm-intent\n</font>";
@@ -2802,31 +2802,31 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic getlimb(  ) {
+		public virtual dynamic getlimb(  ) {
 			return null;
 		}
 
-		public dynamic getorganslot( dynamic slot = null ) {
+		public virtual Ent_Item_Organ_Internal getorganslot( dynamic slot = null ) {
 			return null;
 		}
 
-		public ByTable getorganszone( dynamic zone = null ) {
+		public virtual ByTable getorganszone( dynamic zone = null ) {
 			return null;
 		}
 
-		public dynamic getorgan( dynamic typepath = null ) {
+		public virtual dynamic getorgan( Type typepath = null ) {
 			return null;
 		}
 
-		public void throw_item( BaseStatic target = null ) {
+		public virtual void throw_item( dynamic target = null ) {
 			return;
 		}
 
-		public int binarycheck(  ) {
+		public virtual int binarycheck(  ) {
 			return 0;
 		}
 
-		public ByTable get_contents(  ) {
+		public virtual ByTable get_contents(  ) {
 			return null;
 		}
 
@@ -2846,91 +2846,91 @@ namespace Som13 {
 			return null;
 		}
 
-		public void update_inv_ears(  ) {
+		public virtual void update_inv_ears(  ) {
 			return;
 		}
 
-		public void update_inv_pockets(  ) {
+		public virtual void update_inv_pockets(  ) {
 			return;
 		}
 
-		public void update_inv_s_store(  ) {
+		public virtual void update_inv_s_store(  ) {
 			return;
 		}
 
-		public void update_inv_glasses(  ) {
+		public virtual void update_inv_glasses(  ) {
 			return;
 		}
 
-		public void update_inv_shoes(  ) {
+		public virtual void update_inv_shoes(  ) {
 			return;
 		}
 
-		public void update_inv_wear_id(  ) {
+		public virtual void update_inv_wear_id(  ) {
 			return;
 		}
 
-		public void update_inv_gloves(  ) {
+		public virtual void update_inv_gloves(  ) {
 			return;
 		}
 
-		public void update_hair(  ) {
+		public virtual void update_hair(  ) {
 			return;
 		}
 
-		public dynamic update_inv_head(  ) {
+		public virtual dynamic update_inv_head(  ) {
 			return null;
 		}
 
-		public void update_inv_belt(  ) {
+		public virtual void update_inv_belt(  ) {
 			return;
 		}
 
-		public void update_inv_w_uniform(  ) {
+		public virtual void update_inv_w_uniform(  ) {
 			return;
 		}
 
-		public void update_inv_wear_suit(  ) {
+		public virtual void update_inv_wear_suit(  ) {
 			return;
 		}
 
-		public dynamic update_inv_wear_mask(  ) {
+		public virtual dynamic update_inv_wear_mask(  ) {
 			return null;
 		}
 
-		public void update_inv_r_hand(  ) {
+		public virtual void update_inv_r_hand(  ) {
 			return;
 		}
 
-		public void update_inv_l_hand(  ) {
+		public virtual void update_inv_l_hand(  ) {
 			return;
 		}
 
-		public dynamic update_inv_back(  ) {
+		public virtual dynamic update_inv_back(  ) {
 			return null;
 		}
 
-		public void update_inv_legcuffed(  ) {
+		public virtual void update_inv_legcuffed(  ) {
 			return;
 		}
 
-		public int update_inv_handcuffed(  ) {
+		public virtual int update_inv_handcuffed(  ) {
 			return 0;
 		}
 
-		public dynamic update_transform(  ) {
+		public virtual dynamic update_transform(  ) {
 			return null;
 		}
 
-		public int update_hud(  ) {
+		public virtual int update_hud(  ) {
 			return 0;
 		}
 
-		public void update_icons(  ) {
+		public virtual void update_icons(  ) {
 			return;
 		}
 
-		public int regenerate_icons(  ) {
+		public virtual int regenerate_icons(  ) {
 			return 0;
 		}
 
@@ -2974,7 +2974,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public dynamic Animalize(  ) {
+		public virtual dynamic Animalize(  ) {
 			dynamic _default = null;
 			dynamic mobtypes = null;
 			dynamic mobpath = null;
@@ -2996,13 +2996,13 @@ namespace Som13 {
 			return _default;
 		}
 
-		public Mob_Living_Silicon_Ai AIize(  ) {
+		public virtual Mob_Living_Silicon_Ai AIize(  ) {
 			Mob_Living_Silicon_Ai _default = null;
 			Mob_Living_Silicon_Ai O = null;
 			dynamic loc_landmark = null;
-			dynamic sloc = null;
-			dynamic tripai = null;
-			dynamic comm = null;
+			Ent_Effect_Landmark_Start sloc = null;
+			Ent_Effect_Landmark tripai = null;
+			Ent_Item_Device_Radio_Intercom comm = null;
 			if ( Misc13.isValid( this.client ) ) {
 				this.stopLobbySound();
 			}
@@ -3073,7 +3073,7 @@ namespace Som13 {
 			O.write( "Use say \":b to speak to your cyborgs through binary." );
 			O.write( "For department channels, use the following say commands:" );
 			O.write( ":o - AI Private, :c - Command, :s - Security, :e - Engineering, :u - Supply, :v - Service, :m - Medical, :n - Science." );
-			if ( !( ( GlobalVars.ticker != null ) && Misc13.isValid( GlobalVars.ticker.mode ) && Misc13.isValid( GlobalVars.ticker.mode.malf_ai.HasValue( O.mind ) ) ) ) {
+			if ( !( ( GlobalVars.ticker != null ) && Misc13.isValid( GlobalVars.ticker.mode ) && GlobalVars.ticker.mode.malf_ai.contains( O.mind ) ) ) {
 				O.show_laws();
 				O.write( "<b>These laws may be changed by other players, or by you being the traitor.</b>" );
 			}
@@ -3087,15 +3087,15 @@ namespace Som13 {
 			return _default;
 		}
 
-		public int lingcheck(  ) {
+		public virtual int lingcheck(  ) {
 			return 0;
 		}
 
-		public int hivecheck(  ) {
+		public virtual int hivecheck(  ) {
 			return 0;
 		}
 
-		public void emote( dynamic act = null ) {
+		public virtual void emote( dynamic act = null ) {
 			return;
 		}
 
@@ -3103,7 +3103,7 @@ namespace Som13 {
 			dynamic name = null;
 			string alt_name = "";
 			string rendered = "";
-			dynamic M = null;
+			Mob_NewPlayer M = null;
 			name = this.real_name;
 			alt_name = "";
 			if ( Misc13.isValid( GlobalVars.say_disabled ) ) {
@@ -3135,7 +3135,7 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic change_mob_type( dynamic new_type = null, dynamic location = null, dynamic new_name = null, int delete_old_mob = 0 ) {
+		public dynamic change_mob_type( dynamic new_type = null, Tile location = null, string new_name = "", int delete_old_mob = 0 ) {
 			dynamic M = null;
 			Mob C = null;
 			dynamic D = null;
@@ -3211,18 +3211,18 @@ namespace Som13 {
 			return M;
 		}
 
-		public void update_gravity(  ) {
+		public virtual void update_gravity(  ) {
 			return;
 		}
 
-		public int slip( dynamic s_amount = null, dynamic w_amount = null, dynamic O = null, dynamic lube = null ) {
+		public virtual int slip( dynamic s_amount = null, dynamic w_amount = null, dynamic O = null, dynamic lube = null ) {
 			return 0;
 		}
 
 		public void Move_Pulled( dynamic A = null ) {
-			BaseDynamic M = null;
+			dynamic M = null;
 			dynamic t = null;
-			if ( !Misc13.isValid( this.canmove ) || Misc13.isValid( this.restrained() ) || ( this.pulling == null ) ) {
+			if ( !Misc13.isValid( this.canmove ) || Misc13.isValid( this.restrained() ) || !Misc13.isValid( this.pulling ) ) {
 				return;
 			}
 			if ( Misc13.isValid( this.pulling.anchored ) ) {
@@ -3242,7 +3242,7 @@ namespace Som13 {
 				t = M.pulling;
 				M.stop_pulling();
 				Misc13.step( this.pulling, Misc13.get_dist( this.pulling.loc, A ) );
-				if ( M != null ) {
+				if ( Misc13.isValid( M ) ) {
 					M.start_pulling( t );
 				}
 			} else {
@@ -3251,19 +3251,19 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic mob_negates_gravity(  ) {
+		public virtual dynamic mob_negates_gravity(  ) {
 			return 0;
 		}
 
-		public dynamic mob_has_gravity( dynamic T = null ) {
+		public virtual dynamic mob_has_gravity( dynamic T = null ) {
 			return GlobalFuncs.has_gravity( this, T );
 		}
 
-		public int reagent_check( dynamic R = null ) {
+		public virtual int reagent_check( dynamic R = null ) {
 			return 1;
 		}
 
-		public int abiotic( int full_body = 0 ) {
+		public virtual int abiotic( int full_body = 0 ) {
 			if ( full_body == null ) {
 				full_body = 0;
 			}
@@ -3273,16 +3273,16 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int can_unbuckle(  ) {
+		public virtual int can_unbuckle(  ) {
 			return 1;
 		}
 
-		public int f_can_buckle(  ) {
+		public virtual int f_can_buckle(  ) {
 			return 1;
 		}
 
-		public int get_mob_buckling_height( dynamic seat = null ) {
-			dynamic L = null;
+		public virtual int get_mob_buckling_height( Mob_Living seat = null ) {
+			Mob_Living L = null;
 			if ( seat is Mob_Living ) {
 				L = seat;
 				if ( L.mob_size <= 1 ) {
@@ -3308,11 +3308,11 @@ namespace Som13 {
 			return;
 		}
 
-		public void setEarDamage(  ) {
+		public virtual void setEarDamage(  ) {
 			return;
 		}
 
-		public void adjustEarDamage(  ) {
+		public virtual void adjustEarDamage(  ) {
 			return;
 		}
 
@@ -3335,8 +3335,8 @@ namespace Som13 {
 			return null;
 		}
 
-		public dynamic get_ghost( int even_if_they_cant_reenter = 0 ) {
-			dynamic G = null;
+		public Mob_Dead_Observer get_ghost( int even_if_they_cant_reenter = 0 ) {
+			Mob_Dead_Observer G = null;
 			if ( even_if_they_cant_reenter == null ) {
 				even_if_they_cant_reenter = 0;
 			}
@@ -3348,7 +3348,7 @@ namespace Som13 {
 						continue;
 					}
 					if ( G.mind == this.mind ) {
-						if ( Misc13.isValid( G.can_reenter_corpse ) || ( even_if_they_cant_reenter != 0 ) ) {
+						if ( ( G.can_reenter_corpse != 0 ) || ( even_if_they_cant_reenter != 0 ) ) {
 							return G;
 						}
 						break;
@@ -3358,7 +3358,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public int assess_threat(  ) {
+		public virtual int assess_threat(  ) {
 			return 0;
 		}
 
@@ -3465,7 +3465,7 @@ namespace Som13 {
 			return;
 		}
 
-		public void Stun( int amount = 0 ) {
+		public virtual void Stun( int amount = 0 ) {
 			if ( ( this.status_flags & 1 ) != 0 ) {
 				this.stunned = Misc13.max( Misc13.max( this.stunned, amount ), 0 );
 				this.update_canmove();
@@ -3483,25 +3483,25 @@ namespace Som13 {
 			return;
 		}
 
-		public void activate_hand( dynamic selhand = null ) {
+		public virtual void activate_hand( dynamic selhand = null ) {
 			return;
 		}
 
-		public void swap_hand(  ) {
+		public virtual void swap_hand(  ) {
 			return;
 		}
 
-		public int IsAdvancedToolUser(  ) {
+		public virtual int IsAdvancedToolUser(  ) {
 			return 0;
 		}
 
-		public void fall( bool forced = false ) {
+		public virtual void fall( bool forced = false ) {
 			this.drop_l_hand();
 			this.drop_r_hand();
 			return;
 		}
 
-		public dynamic update_canmove(  ) {
+		public virtual dynamic update_canmove(  ) {
 			bool ko = false;
 			bool buckle_lying = false;
 			ko = ( this.weakened != 0 ) || ( this.paralysis != 0 ) || ( this.stat != 0 ) || ( ( this.status_flags & 8192 ) != 0 );
@@ -3558,7 +3558,7 @@ namespace Som13 {
 		}
 
 		public void add_stings_to_statpanel( dynamic stings = null ) {
-			dynamic S = null;
+			Ent_Effect_ProcHolder_Changeling S = null;
 			S = null;
 			foreach (dynamic _a in stings ) {
 				S = _a;
@@ -3573,7 +3573,7 @@ namespace Som13 {
 		}
 
 		public void add_spells_to_statpanel( dynamic spells = null ) {
-			dynamic S = null;
+			Ent_Effect_ProcHolder_Spell S = null;
 			S = null;
 			foreach (dynamic _b in spells ) {
 				S = _b;
@@ -3612,23 +3612,23 @@ namespace Som13 {
 			return 1;
 		}
 
-		public dynamic is_muzzled(  ) {
+		public virtual dynamic is_muzzled(  ) {
 			return 0;
 		}
 
-		public dynamic is_active(  ) {
+		public virtual dynamic is_active(  ) {
 			return 0 >= Misc13.thread_user.stat;
 		}
 
-		public int can_use_hands(  ) {
+		public virtual int can_use_hands(  ) {
 			return 0;
 		}
 
-		public int stripPanelEquip( dynamic what = null, dynamic who = null ) {
+		public virtual int stripPanelEquip( dynamic what = null, dynamic who = null ) {
 			return 0;
 		}
 
-		public void stripPanelUnequip( dynamic what = null, dynamic who = null ) {
+		public virtual void stripPanelUnequip( dynamic what = null, dynamic who = null ) {
 			return;
 		}
 
@@ -3651,14 +3651,14 @@ namespace Som13 {
 			return;
 		}
 
-		public void start_pulling( BaseDynamic AM = null ) {
-			BaseDynamic M = null;
-			if ( ( AM == null ) || ( this == null ) || this == AM || !( AM.loc is Tile ) ) {
+		public virtual void start_pulling( dynamic AM = null ) {
+			dynamic M = null;
+			if ( !Misc13.isValid( AM ) || ( this == null ) || this == AM || !( AM.loc is Tile ) ) {
 				return;
 			}
 			if ( !Misc13.isValid( AM.anchored ) ) {
 				AM.add_fingerprint( this );
-				if ( this.pulling != null ) {
+				if ( Misc13.isValid( this.pulling ) ) {
 					if ( AM == this.pulling ) {
 						return;
 					}
@@ -3681,11 +3681,11 @@ namespace Som13 {
 			return;
 		}
 
-		public void show_inv( dynamic user = null ) {
+		public virtual void show_inv( dynamic user = null ) {
 			return;
 		}
 
-		public void reset_view( dynamic A = null ) {
+		public virtual void reset_view( BaseDynamic A = null ) {
 			if ( Misc13.isValid( this.client ) ) {
 				if ( A is BaseDynamic ) {
 					this.client.perspective = GlobalVars.EYE_PERSPECTIVE;
@@ -3701,7 +3701,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int equip_to_appropriate_slot( dynamic W = null ) {
+		public int equip_to_appropriate_slot( Ent_Item W = null ) {
 			dynamic slot = null;
 			if ( !( W is Ent_Item ) ) {
 				return 0;
@@ -3721,7 +3721,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int equip_to_slot( dynamic W = null, dynamic slot = null ) {
+		public virtual int equip_to_slot( dynamic W = null, dynamic slot = null ) {
 			return 0;
 		}
 
@@ -3768,16 +3768,16 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int attack_ui( dynamic slot = null ) {
-			dynamic W = null;
-			dynamic I = null;
+		public virtual int attack_ui( dynamic slot = null ) {
+			Ent_Item W = null;
+			Ent_Item I = null;
 			W = this.get_active_hand();
 			if ( W is Ent_Item ) {
 				if ( Misc13.isValid( this.equip_to_slot_if_possible( W, slot, 0, 0, 0 ) ) ) {
 					return 1;
 				}
 			}
-			if ( !Misc13.isValid( W ) ) {
+			if ( W == null ) {
 				I = this.get_item_by_slot( slot );
 				if ( I is Ent_Item ) {
 					I.attack_hand( this );
@@ -3786,11 +3786,11 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int incapacitated(  ) {
+		public virtual int incapacitated(  ) {
 			return 0;
 		}
 
-		public int restrained(  ) {
+		public virtual int restrained(  ) {
 			return 0;
 		}
 
@@ -3841,7 +3841,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public dynamic get_item_by_slot( int slot_id = 0 ) {
+		public virtual dynamic get_item_by_slot( int slot_id = 0 ) {
 			dynamic _a = slot_id; // Was a switch-case, sorry for the mess.
 			if ( _a==4 ) {
 				return this.l_hand;
@@ -3851,11 +3851,11 @@ namespace Som13 {
 			return null;
 		}
 
-		public int Life(  ) {
+		public virtual int Life(  ) {
 			return 0;
 		}
 
-		public int movement_delay(  ) {
+		public virtual int movement_delay(  ) {
 			return 0;
 		}
 
@@ -3865,7 +3865,7 @@ namespace Som13 {
 			}
 			msg = Misc13.str_sub( msg, 1, 1024 );
 			if ( type != 0 ) {
-				if ( ( ( type & 1 ) != 0 ) && ( ( ( this.disabilities & 1 ) != 0 ) || ( this.paralysis != 0 ) ) ) {
+				if ( ( ( type & 1 ) != 0 ) && ( Misc13.isValid( ( this.disabilities & 1 ) ) || ( this.paralysis != 0 ) ) ) {
 					if ( !Misc13.isValid( alt ) ) {
 						return;
 					} else {
@@ -3879,7 +3879,7 @@ namespace Som13 {
 					} else {
 						msg = alt;
 						type = alt_type;
-						if ( ( ( type & 1 ) != 0 ) && ( ( this.disabilities & 1 ) != 0 ) ) {
+						if ( ( ( type & 1 ) != 0 ) && Misc13.isValid( ( this.disabilities & 1 ) ) ) {
 							return;
 						}
 					}
@@ -3896,7 +3896,7 @@ namespace Som13 {
 		public int Cell(  ) {
 			dynamic environment = null;
 			string t = "";
-			dynamic trace_gas = null;
+			Gas trace_gas = null;
 			if ( !Misc13.isValid( this.loc ) ) {
 				return 0;
 			}
@@ -3923,12 +3923,12 @@ namespace Som13 {
 			return;
 		}
 
-		public void update_normal_mode(  ) {
+		public virtual void update_normal_mode(  ) {
 			Misc13.window_set( this, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5" );
 			return;
 		}
 
-		public void update_hotkey_mode(  ) {
+		public virtual void update_hotkey_mode(  ) {
 			Misc13.window_set( this, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0" );
 			return;
 		}
@@ -3987,8 +3987,8 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic get_equipped_items(  ) {
-			dynamic items = null;
+		public ByTable get_equipped_items(  ) {
+			ByTable items = null;
 			items = new ByTable();
 			if ( Misc13.isValid( GlobalFuncs.hasvar( this, "back" ) ) ) {
 				if ( Misc13.isValid( this.back ) ) {
@@ -4054,7 +4054,7 @@ namespace Som13 {
 			return 1;
 		}
 
-		public int unEquip( dynamic I = null, int force = 0 ) {
+		public virtual int unEquip( dynamic I = null, int force = 0 ) {
 			if ( !Misc13.isValid( I ) ) {
 				return 1;
 			}
@@ -4091,7 +4091,7 @@ namespace Som13 {
 			return 1;
 		}
 
-		public dynamic drop_item(  ) {
+		public virtual dynamic drop_item(  ) {
 			if ( Misc13.isValid( this.hand ) ) {
 				return this.drop_l_hand();
 			} else {
@@ -4121,8 +4121,8 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int put_in_hands( Ent_Item_Weapon_Melee_ArmBlade_False W = null ) {
-			if ( W == null ) {
+		public int put_in_hands( dynamic W = null ) {
+			if ( !Misc13.isValid( W ) ) {
 				return 0;
 			}
 			if ( Misc13.isValid( this.put_in_active_hand( W ) ) ) {
@@ -4138,7 +4138,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public dynamic put_in_inactive_hand( Ent_Item_Weapon_Melee_ArmBlade_False W = null ) {
+		public dynamic put_in_inactive_hand( dynamic W = null ) {
 			if ( Misc13.isValid( this.hand ) ) {
 				return this.put_in_r_hand( W );
 			} else {
@@ -4156,7 +4156,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public int put_in_hand_check( dynamic W = null ) {
+		public virtual int put_in_hand_check( dynamic W = null ) {
 			if ( Misc13.isValid( this.lying ) && !Misc13.isValid( W.flags & 128 ) ) {
 				return 0;
 			}
@@ -4212,7 +4212,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int can_equip( Ent_Item I = null, dynamic slot = null, int disable_warning = 0 ) {
+		public virtual int can_equip( Ent_Item I = null, dynamic slot = null, int disable_warning = 0 ) {
 			if ( disable_warning == null ) {
 				disable_warning = 0;
 			}
@@ -4228,7 +4228,7 @@ namespace Som13 {
 			return null;
 		}
 
-		public dynamic get_active_hand(  ) {
+		public virtual dynamic get_active_hand(  ) {
 			if ( Misc13.isValid( this.hand ) ) {
 				return this.l_hand;
 			} else {
@@ -4237,19 +4237,19 @@ namespace Som13 {
 			return null;
 		}
 
-		public int death( dynamic gibbed = null ) {
+		public virtual int death( int gibbed = 0 ) {
 			return 0;
 		}
 
-		public void dust(  ) {
+		public virtual void dust(  ) {
 			return;
 		}
 
-		public dynamic gib(  ) {
+		public virtual dynamic gib(  ) {
 			return null;
 		}
 
-		public void on_forcemove( dynamic newloc = null ) {
+		public virtual void on_forcemove( dynamic newloc = null ) {
 			return;
 		}
 
@@ -4270,7 +4270,7 @@ namespace Som13 {
 		}
 
 		public void clearmap(  ) {
-			dynamic O = null;
+			Ent_Screen O = null;
 			this.client.screen -= this.mapobjs;
 			O = null;
 			foreach (dynamic _a in this.mapobjs ) {
@@ -4285,7 +4285,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int canUseTopic(  ) {
+		public virtual int canUseTopic(  ) {
 			return 0;
 		}
 
@@ -4308,7 +4308,7 @@ namespace Som13 {
 		}
 
 		public void spellremove( dynamic M = null ) {
-			dynamic spell_to_remove = null;
+			Ent_Effect_ProcHolder_Spell spell_to_remove = null;
 			if ( this.mind == null ) {
 				return;
 			}
@@ -4338,7 +4338,7 @@ namespace Som13 {
 				if ( Misc13.isValid( this.client.holder ) ) {
 					this.sandbox.admin = 1;
 				}
-				this.verbs += Misc13.call( typeof(Mob).GetMethod( "sandbox_panel" ) );
+				this.verbs += typeof(Mob).GetMethod( "sandbox_panel" );
 			}
 			return;
 		}
@@ -4358,7 +4358,7 @@ namespace Som13 {
 		}
 
 		public void remove_changeling_powers( int keep_free_powers = 0 ) {
-			dynamic p = null;
+			Ent_Effect_ProcHolder_Changeling p = null;
 			if ( keep_free_powers == null ) {
 				keep_free_powers = 0;
 			}
@@ -4390,7 +4390,7 @@ namespace Som13 {
 		public int make_changeling(  ) {
 			dynamic path = null;
 			dynamic S = null;
-			Mob C = null;
+			dynamic C = null;
 			dynamic prof = null;
 			if ( this.mind == null ) {
 				return 0;
@@ -4431,15 +4431,15 @@ namespace Som13 {
 			return;
 		}
 
-		public void domutcheck(  ) {
+		public virtual void domutcheck(  ) {
 			return;
 		}
 
-		public Dna has_dna(  ) {
+		public virtual Dna has_dna(  ) {
 			return null;
 		}
 
-		public void set_species( dynamic mrace = null, int icon_update = 0 ) {
+		public virtual void set_species( dynamic mrace = null, int icon_update = 0 ) {
 			if ( icon_update == null ) {
 				icon_update = 1;
 			}
@@ -4467,10 +4467,10 @@ namespace Som13 {
 			V = null;
 			foreach (dynamic _a in DD.vars ) {
 				V = _a;
-				if ( Misc13.isValid( skipped.HasValue( V ) ) ) {
+				if ( skipped.contains( V ) ) {
 					continue;
 				}
-				if ( Misc13.isValid( typeof(ByTable).IsInstanceOfType( DD.vars[V] ) ) ) {
+				if ( DD.vars[V] is ByTable ) {
 					L = D.vars[V];
 					DD.vars[V] = L.Copy();
 				} else {
@@ -4481,7 +4481,7 @@ namespace Som13 {
 			return;
 		}
 
-		public int ContractDisease( dynamic D = null ) {
+		public virtual int ContractDisease( dynamic D = null ) {
 			if ( !Misc13.isValid( this.CanContractDisease( D ) ) ) {
 				return 0;
 			}
@@ -4489,17 +4489,17 @@ namespace Som13 {
 			return 0;
 		}
 
-		public int CanContractDisease( dynamic D = null ) {
+		public virtual int CanContractDisease( dynamic D = null ) {
 			if ( this.stat == 2 ) {
 				return 0;
 			}
-			if ( Misc13.isValid( this.resistances.HasValue( D.GetDiseaseID() ) ) ) {
+			if ( this.resistances.contains( D.GetDiseaseID() ) ) {
 				return 0;
 			}
 			if ( Misc13.isValid( this.HasDisease( D ) ) ) {
 				return 0;
 			}
-			if ( !Misc13.isValid( D.viable_mobtypes.HasValue( this.type ) ) ) {
+			if ( !D.viable_mobtypes.contains( this.type ) ) {
 				return 0;
 			}
 			if ( GlobalFuncs.count_by_type( this.viruses, typeof(Disease_Advance) ) >= 3 ) {
@@ -4509,7 +4509,7 @@ namespace Som13 {
 		}
 
 		public int HasDisease( dynamic D = null ) {
-			dynamic DD = null;
+			Disease DD = null;
 			DD = null;
 			foreach (dynamic _a in this.viruses ) {
 				DD = _a;
@@ -4523,7 +4523,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public void mind_initialize(  ) {
+		public virtual void mind_initialize(  ) {
 			if ( this.mind != null ) {
 				this.mind.key = this.key;
 			} else {
@@ -4552,8 +4552,8 @@ namespace Som13 {
 
 		public void reload_huds(  ) {
 			ByTable gang_huds = null;
-			dynamic G = null;
-			dynamic hud = null;
+			Gang G = null;
+			AtomHud hud = null;
 			gang_huds = new ByTable();
 			if ( Misc13.isValid( GlobalVars.ticker.mode ) ) {
 				G = null;
@@ -4571,7 +4571,7 @@ namespace Som13 {
 				if ( !( hud is AtomHud ) ) {
 					continue;
 				}
-				if ( Misc13.isValid( hud.hudusers.HasValue( this ) ) ) {
+				if ( hud.hudusers.contains( this ) ) {
 					hud.add_hud_to( this );
 				}
 			};
@@ -4652,14 +4652,14 @@ namespace Som13 {
 			return alert;
 		}
 
-		public void update_action_buttons(  ) {
+		public virtual void update_action_buttons(  ) {
 			return;
 		}
 
-		public void face_atom( BaseStatic A = null ) {
+		public virtual void face_atom( dynamic A = null ) {
 			dynamic dx = null;
 			dynamic dy = null;
-			if ( Misc13.isValid( this.buckled ) || this.stat != 0 || ( A == null ) || !Misc13.isValid( this.x ) || !Misc13.isValid( this.y ) || !Misc13.isValid( A.x ) || !Misc13.isValid( A.y ) ) {
+			if ( Misc13.isValid( this.buckled ) || this.stat != 0 || !Misc13.isValid( A ) || !Misc13.isValid( this.x ) || !Misc13.isValid( this.y ) || !Misc13.isValid( A.x ) || !Misc13.isValid( A.y ) ) {
 				return;
 			}
 			dx = A.x - this.x;
@@ -4690,58 +4690,58 @@ namespace Som13 {
 			return;
 		}
 
-		public void LaserEyes( dynamic A = null ) {
+		public virtual void LaserEyes( dynamic A = null ) {
 			return;
 		}
 
-		public void CtrlShiftClickOn( BaseStatic A = null ) {
+		public virtual void CtrlShiftClickOn( dynamic A = null ) {
 			A.CtrlShiftClick( this );
 			return;
 		}
 
-		public bool TurfAdjacent( dynamic T = null ) {
+		public virtual bool TurfAdjacent( dynamic T = null ) {
 			return T.Adjacent( this );
 		}
 
-		public void AltClickOn( BaseStatic A = null ) {
+		public virtual void AltClickOn( dynamic A = null ) {
 			A.AltClick( this );
 			return;
 		}
 
-		public void CtrlClickOn( BaseStatic A = null ) {
+		public virtual void CtrlClickOn( dynamic A = null ) {
 			A.CtrlClick( this );
 			return;
 		}
 
-		public void ShiftClickOn( BaseStatic A = null ) {
+		public virtual void ShiftClickOn( dynamic A = null ) {
 			A.ShiftClick( this );
 			return;
 		}
 
-		public void MiddleClickOn( BaseStatic A = null ) {
+		public virtual void MiddleClickOn( dynamic A = null ) {
 			return;
 		}
 
-		public int RestrainedClickOn( BaseStatic A = null ) {
+		public virtual int RestrainedClickOn( dynamic A = null ) {
 			return 0;
 		}
 
-		public void RangedAttack( BaseStatic A = null, dynamic _params = null ) {
+		public virtual void RangedAttack( dynamic A = null, dynamic _params = null ) {
 			return;
 		}
 
-		public void UnarmedAttack( BaseStatic A = null, int proximity_flag = 0 ) {
+		public virtual void UnarmedAttack( dynamic A = null, int proximity_flag = 0 ) {
 			if ( A is Mob ) {
 				this.changeNext_move( 8 );
 			}
 			return;
 		}
 
-		public void DblClickOn( dynamic A = null, dynamic _params = null ) {
+		public virtual void DblClickOn( dynamic A = null, dynamic _params = null ) {
 			return;
 		}
 
-		public dynamic ClickOn( BaseStatic A = null, dynamic _params = null ) {
+		public virtual dynamic ClickOn( dynamic A = null, dynamic _params = null ) {
 			dynamic modifiers = null;
 			dynamic M = null;
 			dynamic W = null;
@@ -4805,10 +4805,10 @@ namespace Som13 {
 				}
 				return null;
 			}
-			if ( !( A is Tile ) && A == this.loc || Misc13.isValid( this.contents.HasValue( A ) ) || Misc13.isValid( this.contents.HasValue( A.loc ) ) || Misc13.isValid( A.loc ) && Misc13.isValid( this.contents.HasValue( A.loc.loc ) ) ) {
+			if ( !( A is Tile ) && A == this.loc || this.contents.contains( A ) || this.contents.contains( A.loc ) || Misc13.isValid( A.loc ) && this.contents.contains( A.loc.loc ) ) {
 				if ( Misc13.isValid( W ) ) {
 					resolved = A.attackby( W, this );
-					if ( !Misc13.isValid( resolved ) && ( A != null ) && Misc13.isValid( W ) ) {
+					if ( !Misc13.isValid( resolved ) && Misc13.isValid( A ) && Misc13.isValid( W ) ) {
 						W.afterattack( A, this, 1, _params );
 					}
 				} else {
@@ -4826,7 +4826,7 @@ namespace Som13 {
 				if ( Misc13.isValid( A.Adjacent( this ) ) ) {
 					if ( Misc13.isValid( W ) ) {
 						resolved = A.attackby( W, this, _params );
-						if ( !Misc13.isValid( resolved ) && ( A != null ) && Misc13.isValid( W ) ) {
+						if ( !Misc13.isValid( resolved ) && Misc13.isValid( A ) && Misc13.isValid( W ) ) {
 							W.afterattack( A, this, 1, _params );
 						}
 					} else {
@@ -4855,7 +4855,7 @@ namespace Som13 {
 			dynamic newname = null;
 			int loop = 0;
 			int safety = 0;
-			dynamic M = null;
+			Mob_Living M = null;
 			Mob A = null;
 			if ( allow_numbers == null ) {
 				allow_numbers = 0;
@@ -4912,17 +4912,17 @@ namespace Som13 {
 		public int fully_replace_character_name( dynamic oldname = null, dynamic newname = null ) {
 			Mob C = null;
 			Mob AI = null;
-			dynamic Slave = null;
+			Mob_Living_Silicon_Robot Slave = null;
 			Mob R = null;
-			dynamic L = null;
+			ByTable L = null;
 			dynamic searching = null;
 			int search_id = 0;
 			int search_pda = 0;
 			dynamic A = null;
 			dynamic ID = null;
 			dynamic PDA = null;
-			dynamic T = null;
-			dynamic obj = null;
+			Mind T = null;
+			Objective obj = null;
 			if ( !Misc13.isValid( newname ) ) {
 				return 0;
 			}
@@ -4970,7 +4970,7 @@ namespace Som13 {
 				L = null;
 				foreach (dynamic _b in new ByTable(new object [] { GlobalVars.data_core.general, GlobalVars.data_core.medical, GlobalVars.data_core.security, GlobalVars.data_core.locked }) ) {
 					L = _b;
-					if ( !Misc13.isValid( typeof(ByTable).IsInstanceOfType( L ) ) ) {
+					if ( !( L is ByTable ) ) {
 						continue;
 					}
 					R = GlobalFuncs.find_record( "name", oldname, L );
@@ -5052,6 +5052,407 @@ namespace Som13 {
 				};
 				this.overlays += I;
 				i++;
+			}
+			return;
+		}
+
+		public void me_verb( dynamic message = null ) {
+			if ( Misc13.isValid( GlobalVars.say_disabled ) ) {
+				Misc13.thread_user.write( "<span class='danger'>Speech is currently admin-disabled.</span>" );
+				return;
+			}
+			message = GlobalFuncs.trim( Misc13.str_sub( GlobalFuncs.sanitize( message ), 1, 1024 ) );
+			Misc13.thread_user.emote( "me", 1, message );
+			return;
+		}
+
+		public virtual void whisper( dynamic message = null ) {
+			return;
+		}
+
+		public void say_verb( dynamic message = null ) {
+			if ( Misc13.isValid( GlobalVars.say_disabled ) ) {
+				Misc13.thread_user.write( "<span class='danger'>Speech is currently admin-disabled.</span>" );
+				return;
+			}
+			Misc13.thread_user.say( message );
+			return;
+		}
+
+		public void a_intent_change( string input = "" ) {
+			if ( this is Mob_Living_Carbon_Human || this is Mob_Living_Carbon_Alien_Humanoid || this is Mob_Living_Carbon_Brain ) {
+				dynamic _a = input; // Was a switch-case, sorry for the mess.
+				if ( _a=="help" || _a=="disarm" || _a=="grab" || _a=="harm" ) {
+					this.a_intent = input;
+				} else if ( _a=="right" ) {
+					this.a_intent = GlobalFuncs.intent_numeric( ( GlobalFuncs.intent_numeric( this.a_intent ) + 1 ) % 4 );
+				} else if ( _a=="left" ) {
+					this.a_intent = GlobalFuncs.intent_numeric( ( GlobalFuncs.intent_numeric( this.a_intent ) + 3 ) % 4 );
+				};
+				if ( ( this.hud_used != null ) && Misc13.isValid( this.hud_used.action_intent ) ) {
+					this.hud_used.action_intent.icon_state = "" + this.a_intent;
+				}
+			} else if ( this is Mob_Living_Silicon_Robot || this is Mob_Living_Carbon_Monkey || this is Mob_Living_Carbon_Alien_Larva ) {
+				dynamic _b = input; // Was a switch-case, sorry for the mess.
+				if ( _b=="help" ) {
+					this.a_intent = "help";
+				} else if ( _b=="harm" ) {
+					this.a_intent = "harm";
+				} else if ( _b=="right" || _b=="left" ) {
+					this.a_intent = GlobalFuncs.intent_numeric( GlobalFuncs.intent_numeric( this.a_intent ) - 3 );
+				};
+				if ( ( this.hud_used != null ) && Misc13.isValid( this.hud_used.action_intent ) ) {
+					if ( this.a_intent == "harm" ) {
+						this.hud_used.action_intent.icon_state = "harm";
+					} else {
+						this.hud_used.action_intent.icon_state = "help";
+					}
+				}
+			}
+			return;
+		}
+
+		public int southface(  ) {
+			if ( !Misc13.isValid( this.canface() ) ) {
+				return 0;
+			}
+			this.dir = GlobalVars.SOUTH;
+			this.client.move_delay += this.movement_delay();
+			return 1;
+		}
+
+		public int northface(  ) {
+			if ( !Misc13.isValid( this.canface() ) ) {
+				return 0;
+			}
+			this.dir = GlobalVars.NORTH;
+			this.client.move_delay += this.movement_delay();
+			return 1;
+		}
+
+		public int westface(  ) {
+			if ( !Misc13.isValid( this.canface() ) ) {
+				return 0;
+			}
+			this.dir = GlobalVars.WEST;
+			this.client.move_delay += this.movement_delay();
+			return 1;
+		}
+
+		public int eastface(  ) {
+			if ( !Misc13.isValid( this.canface() ) ) {
+				return 0;
+			}
+			this.dir = GlobalVars.EAST;
+			this.client.move_delay += this.movement_delay();
+			return 1;
+		}
+
+		public virtual void cancel_camera(  ) {
+			this.reset_view( null );
+			this.unset_machine();
+			return;
+		}
+
+		public void observe(  ) {
+			int is_admin = 0;
+			ByTable names = null;
+			ByTable namecounts = null;
+			ByTable creatures = null;
+			dynamic O = null;
+			string name = "";
+			dynamic M = null;
+			dynamic eye_name = null;
+			string ok = "";
+			dynamic mob_eye = null;
+			is_admin = 0;
+			if ( Misc13.isValid( GlobalFuncs.check_rights_for( this.client, 2 ) ) ) {
+				is_admin = 1;
+			} else if ( this.stat != 2 || this is Mob_NewPlayer ) {
+				Misc13.thread_user.write( "<span class='notice'>You must be observing to use this!</span>" );
+				return;
+			}
+			if ( ( is_admin != 0 ) && this.stat == 2 ) {
+				is_admin = 0;
+			}
+			names = new ByTable();
+			namecounts = new ByTable();
+			creatures = new ByTable();
+			O = null;
+			foreach (dynamic _a in Game.contents ) {
+				O = _a;
+				if ( !( O is Entity ) ) {
+					continue;
+				}
+				if ( !Misc13.isValid( O.loc ) ) {
+					continue;
+				}
+				if ( O is Ent_Item_Weapon_Disk_Nuclear ) {
+					name = "Nuclear Disk";
+					if ( Misc13.isValid( names.Find( name ) ) ) {
+						namecounts[name]++;
+						name = "" + name + " (" + namecounts[name] + ")";
+					} else {
+						names.Add( name );
+						namecounts[name] = 1;
+					}
+					creatures[name] = O;
+				}
+				if ( O is Ent_Singularity ) {
+					name = "Singularity";
+					if ( Misc13.isValid( names.Find( name ) ) ) {
+						namecounts[name]++;
+						name = "" + name + " (" + namecounts[name] + ")";
+					} else {
+						names.Add( name );
+						namecounts[name] = 1;
+					}
+					creatures[name] = O;
+				}
+				if ( O is Ent_Machinery_Bot ) {
+					name = "BOT: " + O.name;
+					if ( Misc13.isValid( names.Find( name ) ) ) {
+						namecounts[name]++;
+						name = "" + name + " (" + namecounts[name] + ")";
+					} else {
+						names.Add( name );
+						namecounts[name] = 1;
+					}
+					creatures[name] = O;
+				}
+			};
+			M = null;
+			foreach (dynamic _b in GlobalFuncs.sortNames( GlobalVars.mob_list ) ) {
+				M = _b;
+				name = M.name;
+				if ( Misc13.isValid( names.Find( name ) ) ) {
+					namecounts[name]++;
+					name = "" + name + " (" + namecounts[name] + ")";
+				} else {
+					names.Add( name );
+					namecounts[name] = 1;
+				}
+				creatures[name] = M;
+			};
+			this.client.perspective = GlobalVars.EYE_PERSPECTIVE;
+			eye_name = null;
+			ok = "" + ( is_admin != 0 ? "Admin Observe" : "Observe" );
+			eye_name = Misc13.input( "Please, select a player!", ok, null, null, creatures, 4224 );
+			if ( !Misc13.isValid( eye_name ) ) {
+				return;
+			}
+			mob_eye = creatures[eye_name];
+			if ( Misc13.isValid( this.client ) && Misc13.isValid( mob_eye ) ) {
+				this.client.eye = mob_eye;
+				if ( is_admin != 0 ) {
+					this.client.adminobs = 1;
+					if ( mob_eye == this.client.mob || this.client.eye == this.client.mob ) {
+						this.client.adminobs = 0;
+					}
+				}
+			}
+			return;
+		}
+
+		public void abandon_mob(  ) {
+			Mob_NewPlayer M = null;
+			if ( !Misc13.isValid( GlobalVars.abandon_allowed ) ) {
+				return;
+			}
+			if ( this.stat != 2 || ( GlobalVars.ticker == null ) ) {
+				Misc13.thread_user.write( "<span class='boldnotice'>You must be dead to use this!</span>" );
+				return;
+			}
+			GlobalFuncs.log_game( "" + Misc13.thread_user.name + "/" + Misc13.thread_user.key + " used abandon mob." );
+			Misc13.thread_user.write( "<span class='boldnotice'>Please roleplay correctly!</span>" );
+			if ( !Misc13.isValid( this.client ) ) {
+				GlobalFuncs.log_game( "" + Misc13.thread_user.key + " AM failed due to disconnect." );
+				return;
+			}
+			this.client.screen.Cut();
+			this.client.screen += GlobalVars._void;
+			if ( !Misc13.isValid( this.client ) ) {
+				GlobalFuncs.log_game( "" + Misc13.thread_user.key + " AM failed due to disconnect." );
+				return;
+			}
+			M = new Mob_NewPlayer();
+			if ( !Misc13.isValid( this.client ) ) {
+				GlobalFuncs.log_game( "" + Misc13.thread_user.key + " AM failed due to disconnect." );
+				GlobalFuncs.qdel( M );
+				return;
+			}
+			M.key = this.key;
+			return;
+		}
+
+		public virtual void add_memory( dynamic msg = null ) {
+			msg = Misc13.str_sub( msg, 1, 1024 );
+			msg = GlobalFuncs.sanitize( msg );
+			if ( this.mind != null ) {
+				this.mind.store_memory( msg );
+			} else {
+				this.write( "The game appears to have misplaced your mind datum, so we can't show you your notes." );
+			}
+			return;
+		}
+
+		public virtual void f_memory(  ) {
+			if ( this.mind != null ) {
+				this.mind.show_memory( this );
+			} else {
+				this.write( "The game appears to have misplaced your mind datum, so we can't show you your notes." );
+			}
+			return;
+		}
+
+		public virtual void mode(  ) {
+			dynamic W = null;
+			if ( this.loc is Ent_Mecha ) {
+				return;
+			}
+			if ( Misc13.isValid( this.hand ) ) {
+				W = this.l_hand;
+				if ( Misc13.isValid( W ) ) {
+					W.attack_self( this );
+					this.update_inv_l_hand();
+				}
+			} else {
+				W = this.r_hand;
+				if ( Misc13.isValid( W ) ) {
+					W.attack_self( this );
+					this.update_inv_r_hand();
+				}
+			}
+			return;
+		}
+
+		public void stop_pulling(  ) {
+			if ( Misc13.isValid( this.pulling ) ) {
+				this.pulling.pulledby = null;
+				this.pulling = null;
+				if ( this.pullin != null ) {
+					this.pullin.update_icon( this );
+				}
+			}
+			return;
+		}
+
+		public virtual int pointed( Ent_Effect_Decal_Point A = null ) {
+			dynamic tile = null;
+			Ent_Effect_Decal_Point P = null;
+			if ( ( this == null ) || !( this.loc is Tile ) || !Misc13.view( this.loc, null ).contains( A ) ) {
+				return 0;
+			}
+			if ( A is Ent_Effect_Decal_Point ) {
+				return 0;
+			}
+			tile = GlobalFuncs.get_turf( A );
+			if ( !Misc13.isValid( tile ) ) {
+				return 0;
+			}
+			P = new Ent_Effect_Decal_Point( tile );
+			P.invisibility = this.invisibility;
+			Thread13.schedule( 20, (Thread13.Closure)(() => {
+				if ( P != null ) {
+					GlobalFuncs.qdel( P );
+				}
+				return;
+			}));
+			return 1;
+		}
+
+		public void examinate( BaseStatic A = null ) {
+			if ( Misc13.isValid( GlobalFuncs.is_blind( this ) ) ) {
+				this.write( "<span class='notice'>Something is there but you can't see it.</span>" );
+				return;
+			}
+			this.face_atom( A );
+			A.examine( this );
+			return;
+		}
+
+		public void pray( dynamic msg = null ) {
+			Image cross = null;
+			dynamic C = null;
+			if ( Misc13.isValid( GlobalVars.say_disabled ) ) {
+				Misc13.thread_user.write( "<span class='danger'>Speech is currently admin-disabled.</span>" );
+				return;
+			}
+			msg = Misc13.str_sub( GlobalFuncs.sanitize( msg ), 1, 1024 );
+			if ( !Misc13.isValid( msg ) ) {
+				return;
+			}
+			GlobalFuncs.log_prayer( "" + this.key + "/(" + this.name + "): " + msg );
+			if ( Misc13.isValid( Misc13.thread_user.client ) ) {
+				if ( Misc13.isValid( ( Misc13.thread_user.client.prefs.muted & 4 ) ) ) {
+					Misc13.thread_user.write( "<span class='danger'>You cannot pray (muted).</span>" );
+					return;
+				}
+				if ( Misc13.isValid( this.client.handle_spam_prevention( msg, 4 ) ) ) {
+					return;
+				}
+			}
+			cross = new Image( new ByRsc(331), "bible" );
+			if ( Misc13.thread_user.job == "Chaplain" ) {
+				cross = new Image( new ByRsc(331), "kingyellow" );
+				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=blue>CHAPLAIN PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
+			} else if ( Misc13.isValid( GlobalFuncs.iscultist( Misc13.thread_user ) ) ) {
+				cross = new Image( new ByRsc(331), "tome" );
+				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=red>CULTIST PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
+			} else {
+				cross = new Image( new ByRsc(331), "bible" );
+				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=purple>PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
+			}
+			C = null;
+			foreach (dynamic _a in GlobalVars.admins ) {
+				C = _a;
+				if ( !Misc13.isValid( typeof(Client).IsInstanceOfType( C ) ) ) {
+					continue;
+				}
+				if ( Misc13.isValid( ( C.prefs.chat_toggles & 16 ) ) ) {
+					C.write( msg );
+					if ( Misc13.isValid( ( C.prefs.toggles & 512 ) ) ) {
+						if ( Misc13.thread_user.job == "Chaplain" ) {
+							C.write( new ByRsc(332) );
+						}
+					}
+				}
+			};
+			Misc13.thread_user.write( "Your prayers have been received by the gods." );
+			GlobalFuncs.feedback_add_details( "admin_verb", "PR" );
+			return;
+		}
+
+		public void skincmd( dynamic data = null ) {
+			dynamic _ref = null;
+			dynamic a = null;
+			_ref = Misc13.str_sub( data, 1, Misc13.str_find( data, ";", 1, null ) );
+			if ( this.skincmds[_ref] != null ) {
+				a = this.skincmds[_ref];
+				a.SkinCmd( this, Misc13.str_sub( data, Misc13.str_find( data, ";", 1, null ) + 1, null ) );
+			}
+			return;
+		}
+
+		public void vote(  ) {
+			Browser popup = null;
+			popup = new Browser( this, "vote", "Voting Panel" );
+			popup.set_window_options( "can_close=0" );
+			popup.set_content( GlobalVars.SSvote.f_interface( this.client ) );
+			popup.open( 0 );
+			return;
+		}
+
+		public void button_pressed_F12(  ) {
+			if ( ( this.hud_used != null ) && Misc13.isValid( this.client ) ) {
+				if ( this is Mob_Living_Carbon_Human ) {
+					this.hud_used.show_hud();
+					Misc13.thread_user.write( "<span class ='info'>Switched HUD mode. Press F12 to toggle.</span>" );
+				} else {
+					Misc13.thread_user.write( "<span class ='warning'>Inventory hiding is currently only supported for human mobs, sorry.</span>" );
+				}
+			} else {
+				Misc13.thread_user.write( "<span class ='warning'>This mob type does not use a HUD.</span>" );
 			}
 			return;
 		}

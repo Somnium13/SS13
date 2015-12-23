@@ -253,7 +253,7 @@ namespace Game13 {
 		public const ByTable create_object_forms = new ByTable(new object [] { typeof(Entity), typeof(Ent_Structure), typeof(Ent_Machinery), typeof(Ent_Effect), typeof(Ent_Item), typeof(Ent_Item_Clothing), typeof(Ent_Item_Stack), typeof(Ent_Item_Device), typeof(Ent_Item_Weapon), typeof(Ent_Item_Weapon_ReagentContainers), typeof(Ent_Item_Weapon_Gun) });
 		public static dynamic create_object_html = null;
 		public static dynamic create_turf_html = null;
-		public const dynamic crematoriums = new ByTable();
+		public const ByTable crematoriums = new ByTable();
 		public const Crewmonitor crewmonitor = new Crewmonitor();
 		public const ByTable crit_allowed_modes = new ByTable(new object [] { "whisper", "changeling", "alientalk" });
 		public const ByTable custom_outfits = new ByTable();
@@ -279,7 +279,7 @@ namespace Game13 {
 		public const ByTable direction_table = new ByTable();
 		public static ByTable directory = new ByTable();
 		public const int DISCONNECTED = 0;
-		public const dynamic diseases = Misc13.types( typeof(Disease) ) - typeof(Disease);
+		public const ByTable diseases = Misc13.types( typeof(Disease) ) - typeof(Disease);
 		public const ByTable disposalpipeID2State = new ByTable(new object [] { "pipe-s", "pipe-c", "pipe-j1", "pipe-j2", "pipe-y", "pipe-t", "disposal", "outlet", "intake", "pipe-j1s", "pipe-j2s" });
 		public static dynamic dooc_allowed = 1;
 		public static ByTable doppler_arrays = new ByTable();
@@ -290,7 +290,7 @@ namespace Game13 {
 		public const int EFFECTS_LAYER = 5000;
 		public static int emergency_access = 0;
 		public static ByTable emergencyresponseteamspawn = new ByTable();
-		public static dynamic emojis = null;
+		public static ByTable emojis = null;
 		public const int ENG_FREQ = 1357;
 		public const ByTable engineering_positions = new ByTable(new object [] { "Chief Engineer", "Station Engineer", "Atmospheric Technician" });
 		public const int ENGSEC = 1;
@@ -315,7 +315,7 @@ namespace Game13 {
 		public const int FREQ_LISTENING = 1;
 		public const ByTable freqtospan = new ByTable().set( "1337", "centcomradio" ).set( "1213", "syndradio" ).set( "1447", "aiprivradio" ).set( "1353", "comradio" ).set( "1359", "secradio" ).set( "1349", "servradio" ).set( "1347", "suppradio" ).set( "1357", "engradio" ).set( "1355", "medradio" ).set( "1351", "sciradio" );
 		public const ByTable frills_list = new ByTable();
-		public static dynamic g_fancy_list_of_types = null;
+		public static ByTable g_fancy_list_of_types = null;
 		public static ByTable gang_colors_pool = new ByTable(new object [] { "red", "orange", "yellow", "green", "blue", "purple" });
 		public static ByTable gang_name_pool = new ByTable(new object [] { "Clandestine", "Prima", "Zero-G", "Max", "Blasto", "Waffle", "North", "Omni", "Newton", "Cyber", "Donk", "Gene", "Gib", "Tunnel", "Diablo", "Psyke", "Osiron", "Sirius", "Sleeping Carp" });
 		public static dynamic gaussian_next = null;
@@ -324,7 +324,7 @@ namespace Game13 {
 		public static int gid = 1;
 		public static int gl_uid = 1;
 		public const GlobalHud global_hud = new GlobalHud();
-		public const dynamic global_map = null;
+		public const ByTable global_map = null;
 		public const ByTable global_mutations = new ByTable();
 		public static int global_uid = 0;
 		public const ByTable globalBlankCanvases = new ByTable( 4 );
@@ -347,7 +347,7 @@ namespace Game13 {
 		public const dynamic href_logfile = null;
 		public const ByTable hrefs = new ByTable().set( "Spawn Air Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Air) ).set( "Spawn O2 Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Oxygen) ).set( 31, "Canisters" ).set( "Spawn Medbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Medbot) ).set( "Spawn Floorbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Floorbot) ).set( "Spawn Cleanbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Cleanbot) ).set( 27, "Bots" ).set( "Spawn Water Tank", "hsbspawn&path=" + typeof(Ent_Structure_ReagentDispensers_Watertank) ).set( "Spawn Welding Fuel Tank", "hsbspawn&path=" + typeof(Ent_Structure_ReagentDispensers_Fueltank) ).set( "Spawn Air Scrubber", "hsbscrubber" ).set( 23, "Miscellaneous" ).set( "Spawn Airlock", "hsbairlock" ).set( "Spawn RCD Ammo", "hsb_safespawn&path=" + typeof(Ent_Item_Weapon_RcdAmmo) ).set( "Spawn Rapid Construction Device", "hsbrcd" ).set( "Spawn Inf. Capacity Power Cell", "hsbspawn&path=" + typeof(Ent_Item_Weapon_StockParts_Cell_Infinite) ).set( "Spawn Hyper Capacity Power Cell", "hsbspawn&path=" + typeof(Ent_Item_Weapon_StockParts_Cell_Hyper) ).set( "Spawn Full Cable Coil", "hsbspawn&path=" + typeof(Ent_Item_Stack_CableCoil) ).set( "Spawn 50 Glass", "hsbglass" ).set( "Spawn 50 Reinforced Glass", "hsbrglass" ).set( "Spawn 50 Plasteel", "hsbplasteel" ).set( "Spawn 50 Metal", "hsbmetal" ).set( "Spawn 50 Wood", "hsbwood" ).set( 11, "Building Supplies" ).set( "Spawn All-Access ID", "hsbaaid" ).set( "Spawn Medical Kit", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Storage_Firstaid_Regular) ).set( "Spawn Light Replacer", "hsbspawn&path=" + typeof(Ent_Item_Device_Lightreplacer) ).set( "Spawn Toolbox", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Storage_Toolbox_Mechanical) ).set( "Spawn Flashlight", "hsbspawn&path=" + typeof(Ent_Item_Device_Flashlight) ).set( 5, "Standard Tools" ).set( "Spawn Emergency Air Tank", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Tank_Internals_EmergencyOxygen_Double) ).set( "Spawn Gas Mask", "hsbspawn&path=" + typeof(Ent_Item_Clothing_Mask_Gas) ).set( "Suit Up (Space Travel Gear)", "hsbsuit" ).set( 1, "Space Gear" );
 		public static int hsboxspawn = 1;
-		public const dynamic html_interfaces = new ByTable();
+		public const ByTable html_interfaces = new ByTable();
 		public const ByTable huds = new ByTable().set( 10, new AtomHud_Antag() ).set( 9, new AtomHud_Antag() ).set( 8, new AtomHud_Antag() ).set( 7, new AtomHud_Antag() ).set( 6, new AtomHud_Antag() ).set( 5, new AtomHud_Data_Diagnostic() ).set( 4, new AtomHud_Data_Human_Medical_Advanced() ).set( 3, new AtomHud_Data_Human_Medical_Basic() ).set( 2, new AtomHud_Data_Human_Security_Advanced() ).set( 1, new AtomHud_Data_Human_Security_Basic() );
 		public const ByTable IClog = new ByTable();
 		public const int ICON_SIZE = 4;
@@ -449,7 +449,7 @@ namespace Game13 {
 		public static ByTable modules = new ByTable().set( "/obj/machinery/power/apc", "card_reader,power_control,id_auth,cell_power,cell_charge" );
 		public const ByTable monkey_recipes = new ByTable(new object [] { new ByTable().set( "on_floor", 1 ).set( 3, 1 ).set( 2, typeof(Ent_Item_Clothing_Mask_Gas_Monkeymask) ).set( 1, "monkey mask" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( 3, 2 ).set( 2, typeof(Ent_Item_Clothing_Suit_Monkeysuit) ).set( 1, "monkey suit" ).applyCtor( typeof(StackRecipe) ) });
 		public static ByTable monkeystart = new ByTable();
-		public const int mulebot_count = 0;
+		public static int mulebot_count = 0;
 		public static ByTable multiverse = new ByTable();
 		public const ByTable mutations_list = new ByTable();
 		public static ByTable navbeacons = new ByTable();
@@ -521,7 +521,7 @@ namespace Game13 {
 		public const ByTable radiochannels = new ByTable().set( "AI Private", 1447 ).set( "Service", 1349 ).set( "Supply", 1347 ).set( "Syndicate", 1213 ).set( "Centcom", 1337 ).set( "Security", 1359 ).set( "Engineering", 1357 ).set( "Medical", 1355 ).set( "Command", 1353 ).set( "Science", 1351 ).set( "Common", 1459 );
 		public const ByTable radiochannelsreverse = new ByTable().set( "1447", "AI Private" ).set( "1349", "Service" ).set( "1347", "Supply" ).set( "1213", "Syndicate" ).set( "1337", "Centcom" ).set( "1359", "Security" ).set( "1357", "Engineering" ).set( "1355", "Medical" ).set( "1353", "Command" ).set( "1351", "Science" ).set( "1459", "Common" );
 		public static ByTable rcd_list = new ByTable();
-		public const ByTable recentmessages = new ByTable();
+		public static ByTable recentmessages = new ByTable();
 		public const int record_id_num = 1001;
 		public static dynamic req_console_assistance = new ByTable();
 		public static dynamic req_console_information = new ByTable();
@@ -629,14 +629,14 @@ namespace Game13 {
 		public const int STATE_VIEWMESSAGE = 5;
 		public static dynamic station_name = null;
 		public static int status_overlays = 0;
-		public static dynamic status_overlays_charging = null;
-		public static dynamic status_overlays_environ = null;
-		public static dynamic status_overlays_equipment = null;
-		public static dynamic status_overlays_lighting = null;
-		public static dynamic status_overlays_lock = null;
+		public static ByTable status_overlays_charging = null;
+		public static ByTable status_overlays_environ = null;
+		public static ByTable status_overlays_equipment = null;
+		public static ByTable status_overlays_lighting = null;
+		public static ByTable status_overlays_lock = null;
 		public const ByTable stealthminID = new ByTable();
 		public static dynamic sting_paths = null;
-		public static dynamic string_cache = null;
+		public static ByTable string_cache = null;
 		public const int SUPP_FREQ = 1347;
 		public const int supply_emergency = 1;
 		public const int supply_engineer = 3;
@@ -675,7 +675,7 @@ namespace Game13 {
 		public const ByTable teleport_runes = new ByTable();
 		public const ByTable teleportlocs = new ByTable();
 		public static Ent_Machinery_Gateway_Centerstation the_gateway = null;
-		public const ByTable the_station_areas = new ByTable(new object [] { new ByArea(2804), new ByArea(2826), new ByArea(2837), new ByArea(2839), new ByArea(2858), new ByArea(2876), new ByArea(2862), new ByArea(2865), new ByArea(2866), new ByArea(2724), new ByArea(2885), new ByArea(2890), new ByArea(2891), new ByArea(2910), new ByArea(2929), new ByArea(2937), new ByArea(2938), new ByArea(2939), new ByArea(2949), new ByArea(2961), new ByArea(2996), new ByArea(2711), new ByArea(2725), new ByArea(2726), new ByArea(2727) });
+		public const ByTable the_station_areas = new ByTable(new object [] { typeof(Zone_Atmos), typeof(Zone_Maintenance), typeof(Zone_Hallway), typeof(Zone_Bridge), typeof(Zone_CrewQuarters), typeof(Zone_Holodeck), typeof(Zone_Library), typeof(Zone_Chapel), typeof(Zone_Lawoffice), typeof(Zone_Engine), typeof(Zone_Solar), typeof(Zone_Assembly), typeof(Zone_Teleporter), typeof(Zone_Medical), typeof(Zone_Security), typeof(Zone_Quartermaster), typeof(Zone_Janitor), typeof(Zone_Hydroponics), typeof(Zone_Toxins), typeof(Zone_Storage), typeof(Zone_Construction), typeof(Zone_AiMonitored_Storage_Eva), typeof(Zone_TurretProtected_AiUpload), typeof(Zone_TurretProtected_AiUploadFoyer), typeof(Zone_TurretProtected_Ai) });
 		public static Subsystem_Ticker ticker = null;
 		public static double time_last_changed_position = 0;
 		public const int timezoneOffset = 0;

@@ -41,6 +41,7 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 19: I AM OUT OF THE DAMN DORM.
 - Dec 20: 674 Errors.
 - Dec 21: 246 Errors.
+- Dec 22: 243 Errors.
 
 **Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 

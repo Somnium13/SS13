@@ -26,11 +26,19 @@ namespace Som13 {
 			return null;
 		}
 
+		public static void crash(string msg) {
+		
+		}
+
 		public static void ftp(dynamic a, dynamic b, dynamic c) {
 
 		}
 
-		public static dynamic ckey(dynamic d) {
+		public static string ckey(dynamic d) {
+			return null;
+		}
+
+		public static string ckey_preserve_case(dynamic d) {
 			return null;
 		}
 
@@ -91,7 +99,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public static double round(double a) {
+		public static int round(double a) {
 			return 0;
 		}
 
@@ -159,6 +167,10 @@ namespace Som13 {
 			
 		}
 
+		public static void browse_cache_rsc(dynamic a, dynamic b, dynamic c) {
+
+		}
+
 		public static void step(dynamic a, dynamic b) {
 
 		}
@@ -211,7 +223,15 @@ namespace Som13 {
 			return null;
 		}
 
+		public static object get_obj(Type zone_type) {
+			return null;
+		}
+
 		public static void window_set(dynamic a, dynamic b, dynamic c) {
+
+		}
+
+		public static void window_get(dynamic a, dynamic b) {
 
 		}
 
@@ -228,6 +248,10 @@ namespace Som13 {
 		}
 
 		public static System.Collections.IEnumerable iter_range(int a, int b) {
+			return null;
+		}
+
+		public static object call(string t, params object[] objs) { //oh hell
 			return null;
 		}
 
@@ -255,6 +279,10 @@ namespace Som13 {
 	static class File13 {
 		public static void write(string filename, string data) {
 
+		}
+
+		public static string read(string filename) {
+			return "";
 		}
 
 		public static bool exists(string filename) {
@@ -309,7 +337,11 @@ namespace Som13 {
 			return new ByTable();
 		}
 
-		public void write(string s) {
+		public static ByTable operator |(ByTable a, dynamic b) {
+			return new ByTable();
+		}
+
+		public void write(dynamic o) {
 
 		}
 
@@ -345,7 +377,7 @@ namespace Som13 {
 			return this;
 		}
 
-		public bool HasValue(object v) {
+		public bool contains(object v) {
 			return false;
 		}
 
@@ -429,16 +461,120 @@ namespace Som13 {
 
 		}
 
-		public dynamic item(dynamic d) {
-			return null;
+		static public implicit operator string(Txt t) {
+			return "7";
 		}
 
-		public dynamic icon(dynamic d) {
-			return null;
+		public Txt str(string s) {
+			return this;
 		}
 
-		public dynamic Ref(dynamic n) {
-			return null;
+		public Txt item() {
+			return this;
+		}
+
+		public Txt item(dynamic d) {
+			return this;
+		}
+
+		public Txt st_nd_rd(dynamic d) {
+			return this;
+		}
+
+		public Txt a(dynamic d) {
+			return this;
+		}
+
+		public Txt A(dynamic d) {
+			return this;
+		}
+
+		public Txt the(dynamic d) {
+			return this;
+		}
+
+		public Txt The(dynamic d) {
+			return this;
+		}
+
+		public Txt he_she_it_they() {
+			return this;
+		}
+
+		public Txt He_She_It_They() {
+			return this;
+		}
+
+		public Txt his_her_its_their() {
+			return this;
+		}
+
+		public Txt His_Her_Its_Their() {
+			return this;
+		}
+
+		public Txt his_hers_its_theirs() {
+			return this;
+		}
+
+		public Txt His_Hers_Its_Theirs() {
+			return this;
+		}
+
+		public Txt him_her_it_them() {
+			return this;
+		}
+
+		public Txt himself_herself_itself_themself() {
+			return this;
+		}
+
+		public Txt no_newline() {
+			return this;
+		}
+
+		public Txt s() {
+			return this;
+		}
+
+		public Txt proper() {
+			return this;
+		}
+
+		public Txt improper() {
+			return this;
+		}
+
+		public Txt red() {
+			return this;
+		}
+
+		public Txt green() {
+			return this;
+		}
+
+		public Txt blue() {
+			return this;
+		}
+
+		public Txt black() {
+			return this;
+		}
+
+		public Txt Ref(dynamic n) {
+			return this;
+		}
+
+		public Txt icon(dynamic d) {
+			return this;
+		}
+
+		public Txt roman(int n) {
+			return this;
+		}
+
+		public Txt Roman(int n) {
+			return this;
 		}
 	}
 
@@ -450,6 +586,10 @@ namespace Som13 {
 		}
 
 		public static dynamic pick(ByTable a) {
+			return null;
+		}
+
+		public static dynamic pickWeighted(object[] a) {
 			return null;
 		}
 
@@ -486,9 +626,33 @@ namespace Som13 {
 		public dynamic dir;
 	}
 
+	class BaseGame : System.Collections.IEnumerable {
+		public System.Collections.IEnumerator GetEnumerator() {return new ByEnum();}
+
+		public static double time;
+
+		public static double realtime;
+
+		public static int tick_lag;
+
+		public static dynamic view;
+
+		public static ByTable contents;
+
+		public static void write(dynamic o) {}
+
+		public static File log;
+
+		public static int maxx; // note that Som13 should be able to insert the correct values here! todo! (OR NOT, WE WANT DYNAMIC MAP LOADING BUILTIN!)
+		public static int maxy;
+		public static int maxz;
+
+		public static dynamic GetConfig(string s,string k=null) {return null;}
+	}
+
 	partial class BaseData {
 		public string tag;
-		public static Type type;
+		public Type type;
 		public ByTable vars;
 
 		public void Del() { }
@@ -620,11 +784,12 @@ namespace Som13 {
 	}
 
 	partial class Mob : BaseDynamic {
+		public string key;
 		public string ckey;
 		public Client client;
 		
-		public void write(string s) {
-
+		public void write(dynamic o) {
+			string s = "asdasfasfasd";
 		}
 	}
 }
