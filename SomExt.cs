@@ -952,17 +952,17 @@ namespace Som13 {
 		public dynamic bottom_left_corner = null;
 		public dynamic bottom_right_corner = null;
 		public int can_be_unanchored = 0;
-		public dynamic canSmoothWith = null;
+		public ByTable canSmoothWith = new ByTable(new object [] { typeof(Tile_Simulated_Wall), typeof(Tile_Simulated_Wall_RWall), typeof(Ent_Structure_Falsewall), typeof(Ent_Structure_Falsewall_Reinforced), typeof(Tile_Simulated_Wall_Rust), typeof(Tile_Simulated_Wall_RWall_Rust) });
 		public dynamic suit_fibers = null;
 		public int level = 2;
 		public dynamic flags = 0;
 		public ByTable fingerprints = null;
 		public dynamic fingerprintshidden = null;
 		public string fingerprintslast = "";
-		public ByTable blood_DNA = null;
-		public Reagents reagents = null;
+		public ByTable blood_DNA = new ByTable();
+		public Reagents reagents = new Reagents();
 		public dynamic hud_list = null;
-		public dynamic hud_possible = null;
+		public ByTable hud_possible = new ByTable(new object [] { "12" });
 		public int explosion_block = 0;
 		public LightSource light = null;
 
@@ -2377,7 +2377,7 @@ namespace Som13 {
 		public string job = "";
 		public int radiation = 0;
 		public string voice_name = "unidentifiable voice";
-		public ByTable faction = null;
+		public ByTable faction = new ByTable(new object [] { "slime" });
 		public int move_on_shuttle = 1;
 		public dynamic LAssailant = null;
 		public ByTable mob_spell_list = null;
@@ -2400,7 +2400,7 @@ namespace Som13 {
 		public int resize = 1;
 
 		public dynamic flags = 16;
-		public dynamic hud_possible = null;
+		public ByTable hud_possible = null;
 		public int pressure_resistance = 8;
 
 		public Mob ( BaseStatic _loc = null ) : base( _loc ) {
