@@ -953,15 +953,15 @@ namespace Som13 {
 		public dynamic bottom_right_corner = null;
 		public int can_be_unanchored = 0;
 		public ByTable canSmoothWith = new ByTable(new object [] { typeof(Tile_Simulated_Wall), typeof(Tile_Simulated_Wall_RWall), typeof(Ent_Structure_Falsewall), typeof(Ent_Structure_Falsewall_Reinforced), typeof(Tile_Simulated_Wall_Rust), typeof(Tile_Simulated_Wall_RWall_Rust) });
-		public dynamic suit_fibers = null;
+		public ByTable suit_fibers = null;
 		public int level = 2;
 		public dynamic flags = 0;
 		public ByTable fingerprints = null;
-		public dynamic fingerprintshidden = null;
+		public ByTable fingerprintshidden = null;
 		public string fingerprintslast = "";
 		public ByTable blood_DNA = new ByTable();
 		public Reagents reagents = new Reagents();
-		public dynamic hud_list = null;
+		public ByTable hud_list = new ByTable();
 		public ByTable hud_possible = new ByTable(new object [] { "12" });
 		public int explosion_block = 0;
 		public LightSource light = null;
@@ -971,7 +971,7 @@ namespace Som13 {
 			if ( ( GlobalVars._preloader != null ) && this.type == GlobalVars._preloader.target_path ) {
 				GlobalVars._preloader.load( this );
 			}
-			throw "Ctor fault.";
+			throw new Exception( "Ctor fault." );
 			return;
 		}
 
@@ -1228,7 +1228,7 @@ namespace Som13 {
 			hud = null;
 			foreach (dynamic _a in this.hud_possible ) {
 				hud = _a;
-				this.hud_list[hud] = new Image( new ByRsc(229), this, "" );
+				this.hud_list[hud] = new Image( "icons/mob/hud.dmi", this, "" );
 			};
 			return;
 		}
@@ -1295,7 +1295,7 @@ namespace Som13 {
 			if ( this.fingerprints != null ) {
 				A.fingerprints |= this.fingerprints.Copy();
 			}
-			if ( Misc13.isValid( this.fingerprintshidden ) ) {
+			if ( this.fingerprintshidden != null ) {
 				A.fingerprintshidden |= this.fingerprintshidden.Copy();
 			}
 			A.fingerprintslast = this.fingerprintslast;
@@ -1317,7 +1317,7 @@ namespace Som13 {
 			}
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				if ( !Misc13.isValid( this.fingerprintshidden ) ) {
+				if ( this.fingerprintshidden == null ) {
 					this.fingerprintshidden = new ByTable();
 				}
 				this.add_fibers( H );
@@ -1401,7 +1401,7 @@ namespace Som13 {
 					M.bloody_hands--;
 				}
 			}
-			if ( !Misc13.isValid( this.suit_fibers ) ) {
+			if ( this.suit_fibers == null ) {
 				this.suit_fibers = new ByTable();
 			}
 			item_multiplier = this is Ent_Item ? 1.2000000476837158 : 1;
@@ -1824,7 +1824,7 @@ namespace Som13 {
 			return 0;
 		}
 
-		public virtual dynamic examine( Mob user = null ) {
+		public virtual int examine( Mob user = null ) {
 			string f_name = "";
 			Reagent R = null;
 			f_name = new Txt().a( this ).item().str( "." );
@@ -1855,16 +1855,16 @@ namespace Som13 {
 					user.write( "Nothing." );
 				}
 			}
-			return null;
+			return 0;
 		}
 
-		public Beam Beam( dynamic BeamTarget = null, string icon_state = "", ByRsc icon = null, int time = 0, int maxdistance = 0, Type beam_type = null ) {
+		public Beam Beam( dynamic BeamTarget = null, string icon_state = "", string icon = "", int time = 0, int maxdistance = 0, Type beam_type = null ) {
 			Beam newbeam = null;
 			if ( icon_state == null ) {
 				icon_state = "b_beam";
 			}
 			if ( icon == null ) {
-				icon = new ByRsc(98);
+				icon = "icons/effects/beam.dmi";
 			}
 			if ( time == null ) {
 				time = 50;
@@ -2291,10 +2291,10 @@ namespace Som13 {
 		public double next_click = 0;
 		public int next_move_adjust = 0;
 		public int next_move_modifier = 1;
-		public dynamic skincmds = null;
+		public ByTable skincmds = new ByTable();
 		public int suiciding = 0;
-		public ByTable open_uis = null;
-		public dynamic alerts = null;
+		public ByTable open_uis = new ByTable();
+		public ByTable alerts = new ByTable();
 		public HSB sandbox = null;
 		public int bloody_hands = 0;
 		public dynamic bloody_hands_mob = null;
@@ -2317,7 +2317,7 @@ namespace Som13 {
 		public dynamic computer_id = null;
 		public dynamic lastattacker = null;
 		public dynamic lastattacked = null;
-		public string attack_log = "";
+		public ByTable attack_log = new ByTable();
 		public dynamic machine = null;
 		public dynamic other_mobs = null;
 		public string memory = "";
@@ -2368,21 +2368,21 @@ namespace Som13 {
 		public int see_override = 0;
 		public Hud hud_used = null;
 		public int research_scanner = 0;
-		public dynamic scanner = null;
-		public dynamic grabbed_by = null;
-		public dynamic requests = null;
-		public dynamic mapobjs = null;
+		public Action_Innate_ScanMode scanner = new Action_Innate_ScanMode();
+		public ByTable grabbed_by = new ByTable();
+		public ByTable requests = new ByTable();
+		public ByTable mapobjs = new ByTable();
 		public int in_throw_mode = 0;
 		public string music_lastplayed = "null";
 		public string job = "";
 		public int radiation = 0;
 		public string voice_name = "unidentifiable voice";
-		public ByTable faction = new ByTable(new object [] { "slime" });
+		public ByTable faction = new ByTable(new object [] { "neutral" });
 		public int move_on_shuttle = 1;
 		public dynamic LAssailant = null;
-		public ByTable mob_spell_list = null;
-		public ByTable viruses = null;
-		public ByTable resistances = null;
+		public ByTable mob_spell_list = new ByTable();
+		public ByTable viruses = new ByTable();
+		public ByTable resistances = new ByTable();
 		public dynamic virus = null;
 		public int status_flags = 15;
 		public dynamic lastarea = null;
@@ -2395,7 +2395,7 @@ namespace Som13 {
 		public dynamic control_object = null;
 		public dynamic remote_control = null;
 		public dynamic listed_turf = null;
-		public dynamic permanent_huds = null;
+		public ByTable permanent_huds = new ByTable();
 		public int permanent_sight_flags = 0;
 		public int resize = 1;
 
@@ -2715,7 +2715,7 @@ namespace Som13 {
 
 		public virtual int Logout(  ) {
 			dynamic admins_number = null;
-			string cheesy_message = "";
+			dynamic cheesy_message = null;
 			dynamic Loc = null;
 			GlobalVars.SSnano.user_logout( this );
 			GlobalVars.player_list -= this;
@@ -3316,13 +3316,13 @@ namespace Som13 {
 			return;
 		}
 
-		public dynamic notify_ghost_cloning( string message = "", ByRsc sound = null, dynamic source = null ) {
+		public dynamic notify_ghost_cloning( string message = "", string sound = "", dynamic source = null ) {
 			dynamic ghost = null;
 			if ( message == null ) {
 				message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!";
 			}
 			if ( sound == null ) {
-				sound = new ByRsc(231);
+				sound = "sound/effects/genetics.ogg";
 			}
 			if ( source == null ) {
 				source = null;
@@ -3946,7 +3946,7 @@ namespace Som13 {
 
 		public void update_Login_details(  ) {
 			dynamic M = null;
-			string matches = "";
+			dynamic matches = null;
 			this.lastKnownIP = this.client.address;
 			this.computer_id = this.client.computer_id;
 			GlobalFuncs.log_access( "Login: " + GlobalFuncs.key_name( this ) + " from " + ( Misc13.isValid( this.lastKnownIP ) ? this.lastKnownIP : "localhost" ) + "-" + this.computer_id + " || BYOND v" + this.client.byond_version );
@@ -4404,7 +4404,7 @@ namespace Som13 {
 			if ( !Misc13.isValid( GlobalVars.sting_paths ) ) {
 				GlobalVars.sting_paths = GlobalFuncs.init_paths( typeof(Ent_Effect_ProcHolder_Changeling) );
 			}
-			if ( Misc13.isValid( this.mind.changeling.purchasedpowers ) ) {
+			if ( this.mind.changeling.purchasedpowers != null ) {
 				this.remove_changeling_powers( 1 );
 			}
 			path = null;
@@ -4532,7 +4532,7 @@ namespace Som13 {
 					GlobalVars.ticker.minds += this.mind;
 				} else {
 					Thread13.schedule( 0, (Thread13.Closure)(() => {
-						throw new Exception( "mind_initialize(): No ticker ready", "code/datums/mind.dm", 1496 );
+						throw new Exception( "mind_initialize(): No ticker ready" );
 						return;
 					}));
 				}
@@ -5392,15 +5392,15 @@ namespace Som13 {
 					return;
 				}
 			}
-			cross = new Image( new ByRsc(331), "bible" );
+			cross = new Image( "icons/obj/storage.dmi", "bible" );
 			if ( Misc13.thread_user.job == "Chaplain" ) {
-				cross = new Image( new ByRsc(331), "kingyellow" );
+				cross = new Image( "icons/obj/storage.dmi", "kingyellow" );
 				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=blue>CHAPLAIN PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
 			} else if ( Misc13.isValid( GlobalFuncs.iscultist( Misc13.thread_user ) ) ) {
-				cross = new Image( new ByRsc(331), "tome" );
+				cross = new Image( "icons/obj/storage.dmi", "tome" );
 				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=red>CULTIST PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
 			} else {
-				cross = new Image( new ByRsc(331), "bible" );
+				cross = new Image( "icons/obj/storage.dmi", "bible" );
 				msg = new Txt( "<span class='adminnotice'>" ).icon( cross ).str( " <b><font color=purple>PRAYER: </font>" ).item( GlobalFuncs.key_name_admin( this ) ).str( " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( this ).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( this ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( this ).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( this ).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( this ).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( this ).str( "'>TP</A>) (<A HREF='?_src_=holder;adminspawncookie=" ).Ref( this ).str( "'>SC</a>):</b> " ).item( msg ).str( "</span>" );
 			}
 			C = null;
@@ -5413,7 +5413,7 @@ namespace Som13 {
 					C.write( msg );
 					if ( Misc13.isValid( ( C.prefs.toggles & 512 ) ) ) {
 						if ( Misc13.thread_user.job == "Chaplain" ) {
-							C.write( new ByRsc(332) );
+							C.write( "sound/effects/pray.ogg" );
 						}
 					}
 				}

@@ -312,13 +312,13 @@ namespace Game13 {
 		public static void AdminCreateVirus( dynamic user = null ) {
 			int i = 0;
 			Disease_Advance D = null;
-			dynamic symptoms = null;
+			ByTable symptoms = null;
 			dynamic symptom = null;
 			dynamic S = null;
 			dynamic new_name = null;
 			Disease_Advance AD = null;
 			Mob_Living_Carbon_Human H = null;
-			dynamic name_symptoms = null;
+			ByTable name_symptoms = null;
 			if ( !Misc13.isValid( user ) ) {
 				return;
 			}
@@ -502,7 +502,7 @@ namespace Game13 {
 			return GlobalFuncs.dir2text( GlobalFuncs.angle2dir( degree ) );
 		}
 
-		public static void anim( Tile location = null, dynamic target = null, ByRsc a_icon = null, dynamic a_icon_state = null, string flick_anim = "", int sleeptime = 0, int direction = 0 ) {
+		public static void anim( Tile location = null, dynamic target = null, string a_icon = "", dynamic a_icon_state = null, string flick_anim = "", int sleeptime = 0, int direction = 0 ) {
 			Dynamic_Overlay animation = null;
 			if ( sleeptime == null ) {
 				sleeptime = 0;
@@ -3103,7 +3103,7 @@ namespace Game13 {
 
 		public static string Ellipsis( string original_msg = "", int chance = 0, int keep_words = 0 ) {
 			dynamic words = null;
-			dynamic new_words = null;
+			ByTable new_words = null;
 			string new_msg = "";
 			dynamic w = null;
 			if ( chance == null ) {
@@ -3142,7 +3142,7 @@ namespace Game13 {
 				return text;
 			}
 			if ( GlobalVars.emojis == null ) {
-				GlobalVars.emojis = Misc13.icon_states( null, new Icon( new ByRsc(60) ) );
+				GlobalVars.emojis = Misc13.icon_states( null, new Icon( "icons/emoji.dmi" ) );
 			}
 			parsed = "";
 			pos = 1;
@@ -3157,7 +3157,7 @@ namespace Game13 {
 					if ( search != 0 ) {
 						emoji = Misc13.str_lower( Misc13.str_sub( text, pos + 1, search ) );
 						if ( GlobalVars.emojis.contains( emoji ) ) {
-							parsed += new Txt( "<img class=icon src=" ).Ref( new ByRsc(60) ).str( " iconstate='" ).item( emoji ).str( "'>" );
+							parsed += new Txt( "<img class=icon src=" ).Ref( "icons/emoji.dmi" ).str( " iconstate='" ).item( emoji ).str( "'>" );
 							pos = search + 1;
 						} else {
 							parsed += Misc13.str_sub( text, pos, search );
@@ -3221,7 +3221,7 @@ namespace Game13 {
 			return 1;
 		}
 
-		public static string english_list( dynamic input = null, string nothing_text = "", string and_text = "", string comma_text = "", string final_comma_text = "" ) {
+		public static string english_list( ByTable input = null, string nothing_text = "", string and_text = "", string comma_text = "", string final_comma_text = "" ) {
 			dynamic total = null;
 			string output = "";
 			int index = 0;
@@ -3630,7 +3630,7 @@ namespace Game13 {
 			dynamic female_clothing_icon = null;
 			dynamic female_s = null;
 			female_clothing_icon = new ByTable().set( "icon_state", t_color ).set( "icon", icon ).applyCtor( typeof(Icon) );
-			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", new ByRsc(59) ).applyCtor( typeof(Icon) );
+			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", "icons/mob/uniform.dmi" ).applyCtor( typeof(Icon) );
 			female_clothing_icon.Blend( female_s, 2 );
 			female_clothing_icon = File13.cache( female_clothing_icon );
 			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
@@ -4888,27 +4888,27 @@ namespace Game13 {
 			if ( soundin is string ) {
 				dynamic _a = soundin; // Was a switch-case, sorry for the mess.
 				if ( _a=="shatter" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(16), new ByRsc(17), new ByRsc(18) });
+					soundin = Rand13.pick(new object [] { "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg" });
 				} else if ( _a=="explosion" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(19), new ByRsc(20) });
+					soundin = Rand13.pick(new object [] { "sound/effects/Explosion1.ogg", "sound/effects/Explosion2.ogg" });
 				} else if ( _a=="sparks" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(21), new ByRsc(22), new ByRsc(23), new ByRsc(24) });
+					soundin = Rand13.pick(new object [] { "sound/effects/sparks1.ogg", "sound/effects/sparks2.ogg", "sound/effects/sparks3.ogg", "sound/effects/sparks4.ogg" });
 				} else if ( _a=="rustle" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(25), new ByRsc(26), new ByRsc(27), new ByRsc(28), new ByRsc(29) });
+					soundin = Rand13.pick(new object [] { "sound/effects/rustle1.ogg", "sound/effects/rustle2.ogg", "sound/effects/rustle3.ogg", "sound/effects/rustle4.ogg", "sound/effects/rustle5.ogg" });
 				} else if ( _a=="bodyfall" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(30), new ByRsc(31), new ByRsc(32), new ByRsc(33) });
+					soundin = Rand13.pick(new object [] { "sound/effects/bodyfall1.ogg", "sound/effects/bodyfall2.ogg", "sound/effects/bodyfall3.ogg", "sound/effects/bodyfall4.ogg" });
 				} else if ( _a=="punch" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(34), new ByRsc(35), new ByRsc(36), new ByRsc(37) });
+					soundin = Rand13.pick(new object [] { "sound/weapons/punch1.ogg", "sound/weapons/punch2.ogg", "sound/weapons/punch3.ogg", "sound/weapons/punch4.ogg" });
 				} else if ( _a=="clownstep" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(38), new ByRsc(39) });
+					soundin = Rand13.pick(new object [] { "sound/effects/clownstep1.ogg", "sound/effects/clownstep2.ogg" });
 				} else if ( _a=="swing_hit" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(40), new ByRsc(41), new ByRsc(42) });
+					soundin = Rand13.pick(new object [] { "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
 				} else if ( _a=="hiss" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(43), new ByRsc(44), new ByRsc(45), new ByRsc(46) });
+					soundin = Rand13.pick(new object [] { "sound/voice/hiss1.ogg", "sound/voice/hiss2.ogg", "sound/voice/hiss3.ogg", "sound/voice/hiss4.ogg" });
 				} else if ( _a=="pageturn" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(47), new ByRsc(48), new ByRsc(49) });
+					soundin = Rand13.pick(new object [] { "sound/effects/pageturn1.ogg", "sound/effects/pageturn2.ogg", "sound/effects/pageturn3.ogg" });
 				} else if ( _a=="gunshot" ) {
-					soundin = Rand13.pick(new object [] { new ByRsc(50), new ByRsc(51), new ByRsc(52), new ByRsc(53) });
+					soundin = Rand13.pick(new object [] { "sound/weapons/Gunshot.ogg", "sound/weapons/Gunshot2.ogg", "sound/weapons/Gunshot3.ogg", "sound/weapons/Gunshot4.ogg" });
 				};
 			}
 			return soundin;
@@ -5232,7 +5232,7 @@ namespace Game13 {
 			flat_icon = safety != 0 ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			blank_icon = new Icon( new ByRsc(11), "blank_base" );
+			blank_icon = new Icon( "icons/effects/effects.dmi", "blank_base" );
 			blank_icon.AddAlphaMask( flat_icon );
 			return blank_icon;
 		}
@@ -5346,7 +5346,7 @@ namespace Game13 {
 			if ( defblend == null ) {
 				defblend = null.blend_mode;
 			}
-			flat = new Icon( new ByRsc(11), "nothing" );
+			flat = new Icon( "icons/effects/effects.dmi", "nothing" );
 			if ( !Misc13.isValid( A ) ) {
 				return flat;
 			}
@@ -5527,7 +5527,7 @@ namespace Game13 {
 			flat_icon = safety != 0 ? A : new Icon( A );
 			flat_icon.ColorTone( "#7db4e1" );
 			flat_icon.ChangeOpacity( 0.5 );
-			alpha_mask = new Icon( new ByRsc(11), "scanline" );
+			alpha_mask = new Icon( "icons/effects/effects.dmi", "scanline" );
 			flat_icon.AddAlphaMask( alpha_mask );
 			return flat_icon;
 		}
@@ -5696,7 +5696,7 @@ namespace Game13 {
 			flat_icon = safety != 0 ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			static_icon = new Icon( new ByRsc(11), "static_base" );
+			static_icon = new Icon( "icons/effects/effects.dmi", "static_base" );
 			static_icon.AddAlphaMask( flat_icon );
 			return static_icon;
 		}
@@ -5831,7 +5831,7 @@ namespace Game13 {
 			dynamic blood_volume = null;
 			dynamic blood_percent = null;
 			dynamic blood_type = null;
-			string implant_detect = "";
+			dynamic implant_detect = null;
 			Ent_Item_Organ_Internal_Cyberimp CI = null;
 			if ( mode == null ) {
 				mode = 1;
@@ -7408,7 +7408,7 @@ namespace Game13 {
 		public static dynamic make_progress_bar( dynamic current_number = null, int goal_number = 0, dynamic target = null ) {
 			dynamic progbar = null;
 			if ( Misc13.isValid( current_number ) && ( goal_number != 0 ) && Misc13.isValid( target ) ) {
-				progbar = new ByTable().set( "icon_state", "prog_bar_0" ).set( "loc", target ).set( "icon", new ByRsc(15) ).applyCtor( typeof(Image) );
+				progbar = new ByTable().set( "icon_state", "prog_bar_0" ).set( "loc", target ).set( "icon", "icons/effects/doafter_icon.dmi" ).applyCtor( typeof(Image) );
 				progbar.icon_state = "prog_bar_" + Misc13.round( current_number / goal_number * 100, 10 );
 				progbar.pixel_y = 32;
 				return progbar;
@@ -7700,7 +7700,7 @@ namespace Game13 {
 								continue;
 							}
 							F = GlobalFuncs.get_turf( M );
-							I = new ByTable().set( "layer", 18 ).set( "icon_state", M.scan_state ).set( "loc", F ).set( 1, new ByRsc(61) ).applyCtor( typeof(Image) );
+							I = new ByTable().set( "layer", 18 ).set( "icon_state", M.scan_state ).set( "loc", F ).set( 1, "icons/turf/mining.dmi" ).applyCtor( typeof(Image) );
 							C.images += I;
 							Thread13.schedule( 30, (Thread13.Closure)(() => {
 								if ( Misc13.isValid( C ) ) {
@@ -7729,9 +7729,9 @@ namespace Game13 {
 				if ( !( M is Mob_NewPlayer ) && ( M.ear_deaf == 0 ) ) {
 					M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" );
 					if ( alert != 0 ) {
-						M.write( new Sound( new ByRsc(63) ) );
+						M.write( new Sound( "sound/misc/notice1.ogg" ) );
 					} else {
-						M.write( new Sound( new ByRsc(9) ) );
+						M.write( new Sound( "sound/misc/notice2.ogg" ) );
 					}
 				}
 			};
@@ -7951,7 +7951,7 @@ namespace Game13 {
 			return GlobalFuncs.capitalize( newname );
 		}
 
-		public static void NukeNameAssign( dynamic lastname = null, dynamic syndicates = null ) {
+		public static void NukeNameAssign( dynamic lastname = null, ByTable syndicates = null ) {
 			Mind synd_mind = null;
 			dynamic H = null;
 			synd_mind = null;
@@ -8189,7 +8189,7 @@ namespace Game13 {
 			}
 			soundin = GlobalFuncs.get_sfx( soundin );
 			if ( source is Zone ) {
-				throw new Exception( "playsound(): source is an area", "code/game/sound.dm", 6 );
+				throw new Exception( "playsound(): source is an area" );
 				return;
 			}
 			frequency = GlobalFuncs.get_rand_frequency();
@@ -8251,13 +8251,13 @@ namespace Game13 {
 					}
 				}
 				Thread13.schedule( 0, (Thread13.Closure)(() => {
-					G.write( new ByRsc(9) );
+					G.write( "sound/misc/notice2.ogg" );
 					dynamic _a = Misc13.alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ); // Was a switch-case, sorry for the mess.
 					if ( _a=="Yes" ) {
 						G.write( "<span class='notice'>Choice registered: Yes.</span>" );
 						if ( Game.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
-							G.write( new ByRsc(10) );
+							G.write( "sound/machines/buzz-sigh.ogg" );
 							return;
 						}
 						candidates += G;
@@ -8349,7 +8349,7 @@ namespace Game13 {
 			dynamic area_type = null;
 			BaseStatic AT = null;
 			Ent_Machinery_Power_Apc C = null;
-			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", new ByRsc(54) );
+			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", "sound/AI/poweroff.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a;
@@ -8473,7 +8473,7 @@ namespace Game13 {
 			Ent_Machinery_Power_Apc C = null;
 			Ent_Machinery_Power_Smes S = null;
 			dynamic A = null;
-			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
+			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
 			C = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				C = _a;
@@ -8514,7 +8514,7 @@ namespace Game13 {
 
 		public static void power_restore_quick(  ) {
 			Ent_Machinery_Power_Smes S = null;
-			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", new ByRsc(55) );
+			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a;
@@ -8585,14 +8585,14 @@ namespace Game13 {
 			return;
 		}
 
-		public static void priority_announce( string text = "", string title = "", ByRsc sound = null, string type = "" ) {
-			string announcement = "";
+		public static void priority_announce( string text = "", string title = "", string sound = "", string type = "" ) {
+			dynamic announcement = null;
 			Mob_NewPlayer M = null;
 			if ( title == null ) {
 				title = "";
 			}
 			if ( sound == null ) {
-				sound = new ByRsc(62);
+				sound = "sound/AI/attention.ogg";
 			}
 			if ( !Misc13.isValid( text ) ) {
 				return;
@@ -9651,7 +9651,7 @@ namespace Game13 {
 			return 1;
 		}
 
-		public static dynamic removeNullsFromList( dynamic L = null ) {
+		public static ByTable removeNullsFromList( ByTable L = null ) {
 			while (Misc13.isValid( L.Remove( null ) )) {
 				continue;
 			}
@@ -9686,12 +9686,12 @@ namespace Game13 {
 		public static dynamic return_file_text( string filename = "" ) {
 			dynamic text = null;
 			if ( File13.exists( filename ) == 0 ) {
-				throw new Exception( "return_file_text(): File not found", "code/__HELPERS/files.dm", 5 );
+				throw new Exception( "return_file_text(): File not found" );
 				return null;
 			}
 			text = File13.read( filename );
 			if ( !Misc13.isValid( text ) ) {
-				throw new Exception( "return_file_text(): File empty", "code/__HELPERS/files.dm", 10 );
+				throw new Exception( "return_file_text(): File empty" );
 				return null;
 			}
 			return text;
@@ -9976,7 +9976,7 @@ namespace Game13 {
 						gat = new Ent_Item_Weapon_Gun_Projectile_Automatic_M90( GlobalFuncs.get_turf( H ) );
 						gat.pin = new Ent_Item_Device_FiringPin();
 					};
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), new ByRsc(56), 50, 1 );
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_guns.ogg", 50, 1 );
 				} else {
 					dynamic _d = randomizemagic; // Was a switch-case, sorry for the mess.
 					if ( _d=="fireball" ) {
@@ -10043,7 +10043,7 @@ namespace Game13 {
 						};
 						H.write( "<span class='notice'>You suddenly feel lucky.</span>" );
 					};
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), new ByRsc(57), 50, 1 );
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_Magic.ogg", 50, 1 );
 				}
 			};
 			return;
@@ -10686,12 +10686,12 @@ namespace Game13 {
 			return null;
 		}
 
-		public static dynamic SDQL2_tokenize( dynamic query_text = null ) {
+		public static ByTable SDQL2_tokenize( dynamic query_text = null ) {
 			ByTable whitespace = null;
 			ByTable single = null;
 			ByTable multi = null;
 			string word = "";
-			dynamic query_list = null;
+			ByTable query_list = null;
 			dynamic len = null;
 			int i = 0;
 			dynamic _char = null;
@@ -10913,7 +10913,7 @@ namespace Game13 {
 		}
 
 		public static void send_byjax( dynamic receiver = null, string control_id = "", string target_element = "", string new_content = "", string callback = "", dynamic callback_args = null ) {
-			dynamic argums = null;
+			ByTable argums = null;
 			if ( new_content == null ) {
 				new_content = null;
 			}
@@ -11455,9 +11455,9 @@ namespace Game13 {
 			return;
 		}
 
-		public static dynamic shuffle( dynamic L = null ) {
+		public static ByTable shuffle( ByTable L = null ) {
 			int i = 0;
-			if ( !Misc13.isValid( L ) ) {
+			if ( L == null ) {
 				return null;
 			}
 			L = L.Copy();
@@ -11572,7 +11572,7 @@ namespace Game13 {
 			return;
 		}
 
-		public static dynamic sortInsert( dynamic L = null, System.Reflection.MethodInfo cmp = null, int associative = 0, int fromIndex = 0, int toIndex = 0 ) {
+		public static ByTable sortInsert( ByTable L = null, System.Reflection.MethodInfo cmp = null, int associative = 0, int fromIndex = 0, int toIndex = 0 ) {
 			if ( cmp == null ) {
 				cmp = typeof(GlobalFuncs).GetMethod( "cmp_numeric_asc" );
 			}
@@ -11582,7 +11582,7 @@ namespace Game13 {
 			if ( toIndex == null ) {
 				toIndex = 0;
 			}
-			if ( Misc13.isValid( L ) && L.len >= 2 ) {
+			if ( ( L != null ) && L.len >= 2 ) {
 				fromIndex = fromIndex % L.len;
 				toIndex = toIndex % ( L.len + 1 );
 				if ( fromIndex <= 0 ) {
@@ -12549,14 +12549,14 @@ namespace Game13 {
 			return;
 		}
 
-		public static ByRsc ui_style2icon( dynamic ui_style = null ) {
+		public static string ui_style2icon( dynamic ui_style = null ) {
 			dynamic _a = ui_style; // Was a switch-case, sorry for the mess.
 			if ( _a=="Retro" ) {
-				return new ByRsc(12);
+				return "icons/mob/screen_retro.dmi";
 			} else if ( _a=="Plasmafire" ) {
-				return new ByRsc(13);
+				return "icons/mob/screen_plasmafire.dmi";
 			} else {
-				return new ByRsc(14);
+				return "icons/mob/screen_midnight.dmi";
 			};
 			return null;
 		}
