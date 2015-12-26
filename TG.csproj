@@ -50,7 +50,6 @@
     <Compile Include="Engine\SomClasses.cs" />
     <Compile Include="Engine\SomCore.cs" />
     <Compile Include="Engine\SomLib.cs" />
-    <Compile Include="Game13.cs" />
     <Compile Include="GlobalFuncs.cs" />
     <Compile Include="GlobalVars.cs" />
   </ItemGroup>
