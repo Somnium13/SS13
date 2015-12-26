@@ -49,6 +49,7 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 22: 233 Errors.
 - Dec 23: 243 Errors. (We have resource names, though!)
 - Dec 24: 150 Errors. (Other counts are somewhere in the neighborhood of 500. Regardless, things are coming together very quickly.)
+- Dec 25: 131 Errors.
 
 **Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 

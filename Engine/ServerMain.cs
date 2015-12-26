@@ -1,7 +1,5 @@
-﻿namespace Som13 {
+﻿namespace SomEngine {
 	class Server {
-		static void Main(string[] args) {
 
-		}
 	}
 }

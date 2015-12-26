@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Som13 {
+namespace SomEngine {
 	class ByTable : System.Collections.IEnumerable {
 		public ByTable(int len = 0) {
 

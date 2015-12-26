@@ -1,16 +1,10 @@
-﻿namespace Som13 {
+﻿namespace SomEngine {
 	class File {
 		public File(string name) {
 
 		}
 
 		public void write(string data) {
-
-		}
-	}
-
-	class Color {
-		public Color(int r, int g, int b, int a = 255) {
 
 		}
 	}

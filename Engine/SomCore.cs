@@ -1,33 +1,7 @@
 ﻿using System;
 
-namespace Som13 {
+namespace SomEngine {
 
-
-
-
-	class CoreGame {
-		//public System.Collections.IEnumerator GetEnumerator() {return new ByEnum();}
-
-		public static double time;
-
-		public static double realtime;
-
-		public static int tick_lag;
-
-		public static dynamic view;
-
-		public static ByTable contents;
-
-		public static void write(dynamic o) { }
-
-		public static File log;
-
-		public static int maxx; // note that Som13 should be able to insert the correct values here! todo! (OR NOT, WE WANT DYNAMIC MAP LOADING BUILTIN!)
-		public static int maxy;
-		public static int maxz;
-
-		public static dynamic GetConfig(string s, string k = null) { return null; }
-	}
 
 	class CoreClient {
 		public string address;
@@ -48,7 +22,7 @@ namespace Som13 {
 		public int inactivity;
 		public string key;
 		public int lazy_eye;
-		public Game13.Mob mob;
+		public SomGame.Mob mob;
 		public dynamic mouse_pointer_icon;
 		public int perspective;
 		public int pixel_x;
@@ -61,10 +35,16 @@ namespace Som13 {
 		public bool show_map;
 		public bool show_popup_menus;
 		public bool show_verb_panel;
-		public Game13.BaseDynamic statobj;
+		public SomGame.BaseDynamic statobj;
 		public ByTable verbs;
 		public int view;
-		public Game13.BaseStatic virtual_eye;
+		public SomGame.BaseStatic virtual_eye;
+
+		public void write(dynamic o) { }
+
+		public dynamic call_verb(string n, params object[] o) {
+			return null;
+		}
 	}
 
 	class CoreData {
@@ -76,9 +56,17 @@ namespace Som13 {
 		public void Read(SaveFile f) { }
 		public void Write(SaveFile f) { }
 		public void Topic(dynamic a = null, dynamic b = null) { }
+
+		public dynamic call_verb(string n, params object[] o) {
+			return null;
+		}
 	}
 
-	class CoreStatic : Game13.BaseData, System.Collections.IEnumerable {
+	class CoreStatic : SomGame.BaseData, System.Collections.IEnumerable {
+		public CoreStatic(dynamic loc) {
+			this.loc = loc;
+		}
+		
 		public System.Collections.IEnumerator GetEnumerator() {
 			return new ByEnum();
 		}
@@ -93,7 +81,7 @@ namespace Som13 {
 		public string desc;
 		public int dir;
 		public string gender;
-		public Game13.Icon icon;
+		public string icon;
 		public string icon_state;
 		public int infra_luminosity;
 		public int invisibility;
@@ -120,7 +108,7 @@ namespace Som13 {
 		public int plane;
 		public string suffix;
 		public string text;
-		public Game13.Matrix transform;
+		public SomGame.Matrix transform;
 		public ByTable underlays;
 		public ByTable verbs;
 		public int x;
@@ -135,19 +123,19 @@ namespace Som13 {
 
 		}
 
-		public bool Enter(Game13.BaseDynamic O, dynamic old_loc) {
+		public bool Enter(SomGame.BaseDynamic O, dynamic old_loc) {
 			return false;
 		}
 
-		public void Entered(Game13.BaseDynamic O, dynamic old_loc) {
+		public void Entered(SomGame.BaseDynamic O, dynamic old_loc) {
 
 		}
 
-		public bool Exit(Game13.BaseDynamic O, dynamic old_loc) {
+		public bool Exit(SomGame.BaseDynamic O, dynamic old_loc) {
 			return false;
 		}
 
-		public void Exited(Game13.BaseDynamic O, dynamic old_loc) {
+		public void Exited(SomGame.BaseDynamic O, dynamic old_loc) {
 
 		}
 
@@ -188,25 +176,23 @@ namespace Som13 {
 		}
 	}
 
-	class CoreDynamic : Game13.BaseStatic {
-
+	class CoreDynamic : SomGame.BaseStatic {
+		public CoreDynamic(object loc) : base(loc) { }
 	}
 
 	partial class CoreImage {
 		public CoreImage(params object[] v) { }
 
-		public Game13.BaseStatic loc;
+		public SomGame.BaseStatic loc;
 		public int pixel_x;
 		public int pixel_y;
 	}
 
-	partial class CoreMob : Game13.Entity {
+	partial class CoreMob : SomGame.Entity {
 		public string key;
 		public string ckey;
-		public Game13.Client client;
+		public SomGame.Client client;
 
-		public void write(dynamic o) {
-			string s = "asdasfasfasd";
-		}
+		public void write(dynamic o) {}
 	}
 }
