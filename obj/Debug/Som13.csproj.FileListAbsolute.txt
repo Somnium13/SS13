@@ -1,5 +1,0 @@
-E:\somnium\somnium\workspace\som--tg-station\obj\Debug\Som13.csprojResolveAssemblyReference.cache
-E:\somnium\somnium\workspace\som--tg-station\bin\Debug\Som13-tg.exe
-E:\somnium\somnium\workspace\som--tg-station\bin\Debug\Som13-tg.pdb
-E:\somnium\somnium\workspace\som--tg-station\obj\Debug\Som13-tg.exe
-E:\somnium\somnium\workspace\som--tg-station\obj\Debug\Som13-tg.pdb
