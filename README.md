@@ -13,6 +13,8 @@ As this project starts generating usable code, there are a few points I'd like t
 ## Progress
 Project started early October (~8th?). It took about a month to start generating coherant code.
 
+**Note: I know that the error count isn't an incredibly accurate measurement of anything, but it's some kind of indication of progress. It helps me sleep at night.**
+
 - Nov 1: 102 / 234 global functions decompiled.
 - Nov 2: 242 / 366
 - Nov 3: 301 / 373
@@ -50,6 +52,7 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 23: 243 Errors. (We have resource names, though!)
 - Dec 24: 150 Errors. (Other counts are somewhere in the neighborhood of 500. Regardless, things are coming together very quickly.)
 - Dec 25: 131 Errors.
+- Dec 26: 141 Errors. (Gluing virtual methods together was hard. Next two days I'll make an honest effort to knock out a bunch of issues!)
 
 **Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 

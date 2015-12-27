@@ -229,6 +229,14 @@ namespace SomEngine {
 			return null;
 		}
 
+		public static dynamic get_step_away(dynamic a, dynamic b, dynamic c) {
+			return null;
+		}
+
+		public static void step_away(dynamic a, dynamic b, dynamic c) {
+			
+		}
+
 		public static void flick(object a, object b) {
 
 		}

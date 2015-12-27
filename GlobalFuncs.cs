@@ -1815,7 +1815,7 @@ namespace SomGame {
 			return I;
 		}
 
-		public static void changeling_transform( dynamic user = null, dynamic chosen_prof = null ) {
+		public static void changeling_transform( Mob_Living_Carbon user = null, dynamic chosen_prof = null ) {
 			dynamic chosen_dna = null;
 			dynamic slot = null;
 			dynamic C = null;
@@ -1954,7 +1954,7 @@ namespace SomGame {
 			return 0;
 		}
 
-		public static string check_zone( string zone = "" ) {
+		public static dynamic check_zone( dynamic zone = null ) {
 			if ( !Misc13.isValid( zone ) ) {
 				return "chest";
 			}
@@ -2594,7 +2594,7 @@ namespace SomGame {
 			return 0;
 		}
 
-		public static string derpspeech( string message = "", int stuttering = 0 ) {
+		public static dynamic derpspeech( dynamic message = null, int stuttering = 0 ) {
 			message = GlobalFuncs.replacetext( message, " am ", " " );
 			message = GlobalFuncs.replacetext( message, " is ", " " );
 			message = GlobalFuncs.replacetext( message, " are ", " " );
@@ -2801,7 +2801,7 @@ namespace SomGame {
 			return;
 		}
 
-		public static int do_after( Mob_Living_SimpleAnimal_Revenant user = null, int delay = 0, int numticks = 0, int needhand = 0, dynamic target = null, int progress = 0 ) {
+		public static int do_after( dynamic user = null, int delay = 0, int numticks = 0, int needhand = 0, BaseStatic target = null, int progress = 0 ) {
 			dynamic Tloc = null;
 			dynamic delayfraction = null;
 			dynamic Uloc = null;
@@ -2822,14 +2822,14 @@ namespace SomGame {
 			if ( progress == null ) {
 				progress = 1;
 			}
-			if ( user == null ) {
+			if ( !Misc13.isValid( user ) ) {
 				return 0;
 			}
 			if ( numticks == 0 ) {
 				return 0;
 			}
 			Tloc = null;
-			if ( Misc13.isValid( target ) ) {
+			if ( target != null ) {
 				Tloc = target.loc;
 			}
 			delayfraction = Misc13.round( delay / numticks );
@@ -2848,10 +2848,10 @@ namespace SomGame {
 					GlobalFuncs.assign_progress_bar( user, progbar );
 				}
 				Thread13.sleep( delayfraction );
-				if ( ( user == null ) || ( user.stat != 0 ) || ( user.weakened != 0 ) || ( user.stunned != 0 ) || !( user.loc == Uloc ) ) {
+				if ( !Misc13.isValid( user ) || Misc13.isValid( user.stat ) || Misc13.isValid( user.weakened ) || Misc13.isValid( user.stunned ) || !( user.loc == Uloc ) ) {
 					continue_looping = 0;
 				}
-				if ( ( continue_looping != 0 ) && Misc13.isValid( Tloc ) && ( !Misc13.isValid( target ) || Tloc != target.loc ) ) {
+				if ( ( continue_looping != 0 ) && Misc13.isValid( Tloc ) && ( ( target == null ) || Tloc != target.loc ) ) {
 					continue_looping = 0;
 				}
 				if ( ( continue_looping != 0 ) && ( needhand != 0 ) ) {
@@ -6322,8 +6322,8 @@ namespace SomGame {
 			return "" + Rand13.pick(new object [] { "!", "@", "#", "$", "%", "^", "&" }) + Rand13.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" }) + Rand13.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" }) + Rand13.pick(new object [] { "!", "@", "#", "$", "%", "^", "&", "*" });
 		}
 
-		public static int is_blind( Mob A = null ) {
-			Mob B = null;
+		public static int is_blind( dynamic A = null ) {
+			dynamic B = null;
 			if ( A is Mob ) {
 				B = A;
 				return B.eye_blind;
@@ -7024,7 +7024,7 @@ namespace SomGame {
 			return living_player_count;
 		}
 
-		public static string lizard_name( dynamic gender = null ) {
+		public static string lizard_name( string gender = "" ) {
 			if ( gender == GlobalVars.MALE ) {
 				return "" + Rand13.pick( GlobalVars.lizard_names_male ) + "-" + Rand13.pick( GlobalVars.lizard_names_male );
 			} else {
@@ -8843,7 +8843,7 @@ namespace SomGame {
 			return 1;
 		}
 
-		public static string ran_zone( string zone = "", int probability = 0 ) {
+		public static dynamic ran_zone( dynamic zone = null, int probability = 0 ) {
 			dynamic t = null;
 			if ( probability == null ) {
 				probability = 80;
@@ -8897,7 +8897,7 @@ namespace SomGame {
 			return _default;
 		}
 
-		public static dynamic randmutg( Mob_Living_Carbon_Human M = null ) {
+		public static dynamic randmutg( dynamic M = null ) {
 			dynamic _default = null;
 			dynamic HM = null;
 			if ( !Misc13.isValid( M.has_dna() ) ) {
@@ -9531,7 +9531,7 @@ namespace SomGame {
 			return t_out;
 		}
 
-		public static dynamic reject_bad_text( dynamic text = null, int max_length = 0 ) {
+		public static dynamic reject_bad_text( dynamic text = null, dynamic max_length = null ) {
 			int non_whitespace = 0;
 			int i = 0;
 			if ( max_length == null ) {
@@ -10540,7 +10540,7 @@ namespace SomGame {
 			return _out;
 		}
 
-		public static ByTable SDQL_get_all( dynamic type = null, INVALID location = null ) {
+		public static ByTable SDQL_get_all( dynamic type = null, Type location = null ) {
 			ByTable _out = null;
 			dynamic d = null;
 			dynamic d2 = null;
@@ -11569,7 +11569,7 @@ namespace SomGame {
 			return degrees;
 		}
 
-		public static string slur( string n = "" ) {
+		public static string slur( dynamic n = null ) {
 			dynamic phrase = null;
 			dynamic leng = null;
 			dynamic counter = null;
@@ -12342,7 +12342,7 @@ namespace SomGame {
 			return Misc13.html_encode( GlobalFuncs.trim( name, max_length ) );
 		}
 
-		public static dynamic stutter( string n = "" ) {
+		public static dynamic stutter( dynamic n = null ) {
 			dynamic te = null;
 			string t = "";
 			int p = 0;
@@ -12478,7 +12478,7 @@ namespace SomGame {
 			return Misc13.formatTime( Game13.timeofday, format );
 		}
 
-		public static int tkMaxRangeCheck( Mob_Living_Carbon_Human user = null, dynamic target = null, dynamic focus = null ) {
+		public static int tkMaxRangeCheck( dynamic user = null, dynamic target = null, dynamic focus = null ) {
 			dynamic d = null;
 			d = Misc13.get_dist( user, target );
 			if ( Misc13.isValid( focus ) ) {
@@ -12558,14 +12558,14 @@ namespace SomGame {
 			return;
 		}
 
-		public static dynamic trange( int Dist = 0, int Center = 0 ) {
+		public static dynamic trange( int Dist = 0, dynamic Center = null ) {
 			dynamic x1y1 = null;
 			dynamic x2y2 = null;
 			if ( Dist == null ) {
 				Dist = 0;
 			}
 			if ( Center == null ) {
-				Center = 0;
+				Center = null;
 			}
 			if ( Center == null ) {
 				return null;
