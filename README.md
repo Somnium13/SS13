@@ -53,6 +53,7 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 24: 150 Errors. (Other counts are somewhere in the neighborhood of 500. Regardless, things are coming together very quickly.)
 - Dec 25: 131 Errors.
 - Dec 26: 141 Errors. (Gluing virtual methods together was hard. Next two days I'll make an honest effort to knock out a bunch of issues!)
+- Dec 27: 196 Errors. (Type inference improvements really took a toll on it...)
 
 **Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 
