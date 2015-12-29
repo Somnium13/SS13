@@ -184,7 +184,7 @@ namespace SomGame {
 		public static readonly double CELLRATE = 0.0020000000949949026;
 		public static readonly int CENTCOM_FREQ = 1337;
 		public static readonly int changeling_amount = 4;
-		public static readonly string changelog_hash = "";
+		public static dynamic changelog_hash = "";
 		public static readonly double CHARGELEVEL = 0.0010000000474974513;
 		public static readonly ByTable chatchannels = new ByTable().set( GlobalVars.default_ntrc_chatroom.name, GlobalVars.default_ntrc_chatroom );
 		public static ByTable chemical_mob_spawn_meancritters = new ByTable();
@@ -212,7 +212,7 @@ namespace SomGame {
 		public static readonly ByTable common_tools = new ByTable(new object [] { typeof(Ent_Item_Stack_CableCoil), typeof(Ent_Item_Weapon_Wrench), typeof(Ent_Item_Weapon_Weldingtool), typeof(Ent_Item_Weapon_Screwdriver), typeof(Ent_Item_Weapon_Wirecutters), typeof(Ent_Item_Device_Multitool), typeof(Ent_Item_Weapon_Crowbar) });
 		public static bool comms_allowed = false;
 		public static dynamic comms_key = "default_pwd";
-		public static readonly dynamic config = null;
+		public static Configuration config = null;
 		public static readonly ByTable contrabandposters = new ByTable(new object [] { 
 			new ByTable().set( "desc", " A salvaged shred of a much larger flag, colors bled together and faded from age." ).set( "name", "- Free Tonto" ), 
 			new ByTable().set( "desc", " A relic of a failed rebellion." ).set( "name", "- Atmosia Declaration of Independence" ), 
@@ -260,7 +260,7 @@ namespace SomGame {
 		public static readonly Crewmonitor crewmonitor = new Crewmonitor();
 		public static readonly ByTable crit_allowed_modes = new ByTable(new object [] { "whisper", "changeling", "alientalk" });
 		public static readonly ByTable custom_outfits = new ByTable();
-		public static readonly dynamic data_core = null;
+		public static Datacore data_core = null;
 		public static readonly bool days_early = false;
 		public static DBConnection dbcon = new DBConnection();
 		public static ByTable dead_mob_list = new ByTable();
@@ -276,8 +276,8 @@ namespace SomGame {
 		public static ByTable department_security_spawns = new ByTable();
 		public static readonly ByTable diagonals = new ByTable(new object [] { GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
 		public static readonly ByTable diamond_recipes = new ByTable(new object [] { new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 10 ).set( 2, typeof(Ent_Structure_MineralDoor_Transparent_Diamond) ).set( 1, "diamond door" ).applyCtor( typeof(StackRecipe) ), new StackRecipe( "diamond tile", typeof(Ent_Item_Stack_Tile_Mineral_Diamond), true, 4 != 0, 20 != 0 ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 5 ).set( 2, typeof(Ent_Structure_Statue_Diamond_Captain) ).set( 1, "Captain Statue" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 5 ).set( 2, typeof(Ent_Structure_Statue_Diamond_Ai1) ).set( 1, "AI Hologram Statue" ).applyCtor( typeof(StackRecipe) ), new ByTable().set( "on_floor", 1 ).set( "one_per_turf", 1 ).set( 3, 5 ).set( 2, typeof(Ent_Structure_Statue_Diamond_Ai2) ).set( 1, "AI Core Statue" ).applyCtor( typeof(StackRecipe) ) });
-		public static readonly dynamic diary = null;
-		public static readonly dynamic diaryofmeanpeople = null;
+		public static File diary = null;
+		public static File diaryofmeanpeople = null;
 		public static readonly ByTable dictionary_symptoms = new ByTable();
 		public static readonly ByTable direction_table = new ByTable();
 		public static ByTable directory = new ByTable();
@@ -348,7 +348,7 @@ namespace SomGame {
 		public static readonly int HOLOPAD_MODE = 4;
 		public static readonly ByTable horns_list = new ByTable();
 		public static dynamic host = null;
-		public static readonly dynamic href_logfile = null;
+		public static File href_logfile = null;
 		public static readonly ByTable hrefs = new ByTable().set( "Spawn Air Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Air) ).set( "Spawn O2 Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Oxygen) ).set( 31, "Canisters" ).set( "Spawn Medbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Medbot) ).set( "Spawn Floorbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Floorbot) ).set( "Spawn Cleanbot", "hsbspawn&path=" + typeof(Ent_Machinery_Bot_Cleanbot) ).set( 27, "Bots" ).set( "Spawn Water Tank", "hsbspawn&path=" + typeof(Ent_Structure_ReagentDispensers_Watertank) ).set( "Spawn Welding Fuel Tank", "hsbspawn&path=" + typeof(Ent_Structure_ReagentDispensers_Fueltank) ).set( "Spawn Air Scrubber", "hsbscrubber" ).set( 23, "Miscellaneous" ).set( "Spawn Airlock", "hsbairlock" ).set( "Spawn RCD Ammo", "hsb_safespawn&path=" + typeof(Ent_Item_Weapon_RcdAmmo) ).set( "Spawn Rapid Construction Device", "hsbrcd" ).set( "Spawn Inf. Capacity Power Cell", "hsbspawn&path=" + typeof(Ent_Item_Weapon_StockParts_Cell_Infinite) ).set( "Spawn Hyper Capacity Power Cell", "hsbspawn&path=" + typeof(Ent_Item_Weapon_StockParts_Cell_Hyper) ).set( "Spawn Full Cable Coil", "hsbspawn&path=" + typeof(Ent_Item_Stack_CableCoil) ).set( "Spawn 50 Glass", "hsbglass" ).set( "Spawn 50 Reinforced Glass", "hsbrglass" ).set( "Spawn 50 Plasteel", "hsbplasteel" ).set( "Spawn 50 Metal", "hsbmetal" ).set( "Spawn 50 Wood", "hsbwood" ).set( 11, "Building Supplies" ).set( "Spawn All-Access ID", "hsbaaid" ).set( "Spawn Medical Kit", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Storage_Firstaid_Regular) ).set( "Spawn Light Replacer", "hsbspawn&path=" + typeof(Ent_Item_Device_Lightreplacer) ).set( "Spawn Toolbox", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Storage_Toolbox_Mechanical) ).set( "Spawn Flashlight", "hsbspawn&path=" + typeof(Ent_Item_Device_Flashlight) ).set( 5, "Standard Tools" ).set( "Spawn Emergency Air Tank", "hsbspawn&path=" + typeof(Ent_Item_Weapon_Tank_Internals_EmergencyOxygen_Double) ).set( "Spawn Gas Mask", "hsbspawn&path=" + typeof(Ent_Item_Clothing_Mask_Gas) ).set( "Suit Up (Space Travel Gear)", "hsbsuit" ).set( 1, "Space Gear" );
 		public static bool hsboxspawn = false;
 		public static readonly ByTable html_interfaces = new ByTable();
@@ -361,7 +361,7 @@ namespace SomGame {
 		public static bool intercom_range_display_status = false;
 		public static ByTable jobban_keylist = new ByTable( 0 );
 		public static int jobban_runonce = 0;
-		public static readonly dynamic join_motd = null;
+		public static dynamic join_motd = null;
 		public static ByTable joined_player_list = new ByTable();
 		public static readonly string js_byjax = "\n\nfunction replaceContent() {\n	var args = Array.prototype.slice.call(arguments);\n	var id = args[0];\n	var content = args[1];\n	var callback  = null;\n	if(args[2]){\n		callback = args[2];\n		if(args[3]){\n			args = args.slice(3);\n		}\n	}\n	var parent = document.getElementById(id);\n	if(typeof(parent)!=='undefined' && parent!=null){\n		parent.innerHTML = content?content:'';\n	}\n	if(callback && window[callback]){\n		window[callback].apply(null,args);\n	}\n}\n";
 		public static readonly string js_dropdowns = "\nfunction dropdowns() {\n    var divs = document.getElementsByTagName('div');\n    var headers = new Array();\n    var links = new Array();\n    for(var i=0;i<divs.length;i++){\n        if(divs[i].className=='header') {\n            divs[i].className='header closed';\n            divs[i].innerHTML = divs[i].innerHTML+' +';\n            headers.push(divs[i]);\n        }\n        if(divs[i].className=='links') {\n            divs[i].className='links hidden';\n            links.push(divs[i]);\n        }\n    }\n    for(var i=0;i<headers.length;i++){\n        if(typeof(links[i])!== 'undefined' && links[i]!=null) {\n            headers[i].onclick = (function(elem) {\n                return function() {\n                    if(elem.className.search('visible')>=0) {\n                        elem.className = elem.className.replace('visible','hidden');\n                        this.className = this.className.replace('open','closed');\n                        this.innerHTML = this.innerHTML.replace('-','+');\n                    }\n                    else {\n                        elem.className = elem.className.replace('hidden','visible');\n                        this.className = this.className.replace('closed','open');\n                        this.innerHTML = this.innerHTML.replace('+','-');\n                    }\n                return false;\n                }\n            })(links[i]);\n        }\n    }\n}\n";
@@ -414,8 +414,8 @@ namespace SomGame {
 		public static readonly ByTable lizard_names_male = GlobalFuncs.file2list( "config/names/lizard_male.txt" );
 		public static ByTable machines = new ByTable();
 		public static readonly string MALE = "male";
-		public static readonly string map_name = "Unknown";
-		public static readonly bool map_ready = false;
+		public static string map_name = "Unknown";
+		public static bool map_ready = false;
 		public static readonly ByTable map_transition_config = new ByTable().set( "Empty Area 2", 2 ).set( "Empty Area 1", 2 ).set( "Mining Asteroid", 2 ).set( "Derelicted Station", 2 ).set( "Abandoned Satellite", 2 ).set( "CentComm", 1 ).set( "Main Station", 2 );
 		public static readonly DmmSuite maploader = new DmmSuite();
 		public static Controller_GameController master_controller = new Controller_GameController();
@@ -515,7 +515,7 @@ namespace SomGame {
 		public static ByTable prisonwarp = new ByTable();
 		public static readonly ByTable prisonwarped = new ByTable();
 		public static Subsystem_Procqueue procqueue = null;
-		public static readonly dynamic protected_config = null;
+		public static ProtectedConfiguration protected_config = null;
 		public static readonly ByTable protected_objects = new ByTable(new object [] { typeof(Ent_Structure_Table), typeof(Ent_Structure_Cable), typeof(Ent_Structure_Window) });
 		public static ByTable rad_collectors = new ByTable();
 		public static readonly string RADIO_AIRLOCK = "6";
@@ -634,7 +634,7 @@ namespace SomGame {
 		public static readonly int STATE_STATUSDISPLAY = 7;
 		public static readonly int STATE_TOGGLE_EMERGENCY = 10;
 		public static readonly int STATE_VIEWMESSAGE = 5;
-		public static string station_name = "";
+		public static dynamic station_name = null;
 		public static bool status_overlays = false;
 		public static ByTable status_overlays_charging = null;
 		public static ByTable status_overlays_environ = null;
@@ -685,7 +685,7 @@ namespace SomGame {
 		public static readonly ByTable the_station_areas = new ByTable(new object [] { typeof(Zone_Atmos), typeof(Zone_Maintenance), typeof(Zone_Hallway), typeof(Zone_Bridge), typeof(Zone_CrewQuarters), typeof(Zone_Holodeck), typeof(Zone_Library), typeof(Zone_Chapel), typeof(Zone_Lawoffice), typeof(Zone_Engine), typeof(Zone_Solar), typeof(Zone_Assembly), typeof(Zone_Teleporter), typeof(Zone_Medical), typeof(Zone_Security), typeof(Zone_Quartermaster), typeof(Zone_Janitor), typeof(Zone_Hydroponics), typeof(Zone_Toxins), typeof(Zone_Storage), typeof(Zone_Construction), typeof(Zone_AiMonitored_Storage_Eva), typeof(Zone_TurretProtected_AiUpload), typeof(Zone_TurretProtected_AiUploadFoyer), typeof(Zone_TurretProtected_Ai) });
 		public static Subsystem_Ticker ticker = null;
 		public static double time_last_changed_position = 0;
-		public static readonly bool timezoneOffset = false;
+		public static bool timezoneOffset = false;
 		public static bool tinted_weldhelh = false;
 		public static readonly int tk_maxrange = 15;
 		public static readonly bool TOUCH = false;
