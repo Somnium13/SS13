@@ -73,6 +73,8 @@ namespace SomGame {
 
 		public static dynamic add_logs( dynamic user = null, dynamic target = null, string what_done = "", dynamic _object = null, string addition = "" ) {
 			string newhealthtxt = "";
+			dynamic attack_location = null;
+			string coordinates = "";
 			dynamic L = null;
 			if ( _object == null ) {
 				_object = null;
@@ -81,17 +83,19 @@ namespace SomGame {
 				addition = null;
 			}
 			newhealthtxt = "";
+			attack_location = GlobalFuncs.get_turf( target );
+			coordinates = "(" + attack_location.x + "," + attack_location.y + "," + attack_location.z + ")";
 			if ( Misc13.isValid( target ) && target is Mob_Living ) {
 				L = target;
 				newhealthtxt = " (NEWHP: " + L.health + ")";
 			}
 			if ( Misc13.isValid( user ) && user is Mob ) {
-				user.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='red'>Has " + what_done + " " + ( Misc13.isValid( target ) ? "" + target.name + ( target is Mob && Misc13.isValid( target.ckey ) ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
+				user.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='red'>Has " + what_done + " " + ( Misc13.isValid( target ) ? "" + target.name + ( target is Mob && Misc13.isValid( target.ckey ) ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt + coordinates + "</font>";
 			}
 			if ( Misc13.isValid( target ) && target is Mob ) {
-				target.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='orange'>Has been " + what_done + " by " + ( Misc13.isValid( user ) ? "" + user.name + ( user is Mob && Misc13.isValid( user.ckey ) ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt + "</font>";
+				target.attack_log += "[" + GlobalFuncs.time_stamp() + "] <font color='orange'>Has been " + what_done + " by " + ( Misc13.isValid( user ) ? "" + user.name + ( user is Mob && Misc13.isValid( user.ckey ) ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt + coordinates + "</font>";
 			}
-			GlobalFuncs.log_attack( "" + ( Misc13.isValid( user ) ? "" + user.name + ( user is Mob && Misc13.isValid( user.ckey ) ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( Misc13.isValid( target ) ? "" + target.name + ( target is Mob && Misc13.isValid( target.ckey ) ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt );
+			GlobalFuncs.log_attack( "" + ( Misc13.isValid( user ) ? "" + user.name + ( user is Mob && Misc13.isValid( user.ckey ) ? "(" + user.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + " " + what_done + " " + ( Misc13.isValid( target ) ? "" + target.name + ( target is Mob && Misc13.isValid( target.ckey ) ? "(" + target.ckey + ")" : "" ) : "NON-EXISTANT SUBJECT" ) + ( Misc13.isValid( _object ) ? " with " + _object : " " ) + addition + newhealthtxt + coordinates );
 			return null;
 		}
 
@@ -243,15 +247,16 @@ namespace SomGame {
 			return null;
 		}
 
-		public static int addtimer( Client thingToCall = null, string procToCall = "", int wait = 0, ByTable argList = null ) {
+		public static int addtimer( params object[] _ ) { // Arg Names: 0: thingToCall, 1: procToCall, 2: wait, 3: unique
+			ByTable _args = new ByTable(_);
 			Timedevent _event = null;
-			if ( argList == null ) {
-				argList = new ByTable();
+			if ( _args[3] == null ) {
+				_args[3] = GlobalVars.FALSE;
 			}
 			if ( GlobalVars.SStimer == null ) {
 				return 0;
 			}
-			if ( ( thingToCall == null ) || !Misc13.isValid( procToCall ) || wait <= 0 ) {
+			if ( !Misc13.isValid( _args[0] ) || !Misc13.isValid( _args[1] ) || _args[2] <= 0 ) {
 				return 0;
 			}
 			if ( !GlobalVars.SStimer.can_fire ) {
@@ -259,11 +264,20 @@ namespace SomGame {
 				GlobalVars.SStimer.next_fire = Game13.time + GlobalVars.SStimer.wait;
 			}
 			_event = new Timedevent();
-			_event.thingToCall = thingToCall;
-			_event.procToCall = procToCall;
-			_event.timeToRun = Game13.time + wait;
-			_event.argList = argList;
+			_event.thingToCall = _args[0];
+			_event.procToCall = _args[1];
+			_event.timeToRun = Game13.time + _args[2];
+			_event.hash = GlobalFuncs.list2text( _args );
+			if ( _args.len > 4 ) {
+				_event.argList = _args.Copy( 5 );
+			}
+			if ( Misc13.isValid( _args[3] ) ) {
+				if ( Misc13.isValid( GlobalVars.SStimer.hashes.contains( _event.hash ) ) ) {
+					return 0;
+				}
+			}
 			GlobalVars.SStimer.processing += _event;
+			GlobalVars.SStimer.hashes += _event.hash;
 			return _event.id;
 		}
 
@@ -648,13 +662,6 @@ namespace SomGame {
 			return y;
 		}
 
-		public static dynamic assign_progress_bar( dynamic user = null, dynamic progbar = null ) {
-			if ( Misc13.isValid( user ) && Misc13.isValid( user.client ) && Misc13.isValid( progbar ) ) {
-				user.client.images |= progbar;
-			}
-			return null;
-		}
-
 		public static dynamic AStar( dynamic start = null, dynamic end = null, Mob_Living_SimpleAnimal_Parrot atom = null, System.Reflection.MethodInfo dist = null, dynamic maxnodes = null, int maxnodedepth = 0, dynamic mintargetdist = null, System.Reflection.MethodInfo adjacent = null, dynamic id = null, dynamic exclude = null, bool simulated_only = false ) {
 			Heap open = null;
 			ByTable closed = null;
@@ -722,7 +729,7 @@ namespace SomGame {
 					if ( T == null ) {
 						continue;
 					}
-					if ( Misc13.isValid( closed.contains( T == exclude || Misc13.isValid( T ) ) ) ) {
+					if ( T == exclude || Misc13.isValid( closed.contains( T ) ) ) {
 						continue;
 					}
 					newg = cur.g + Misc13.call( Misc13.getf2( cur.source, dist ), T );
@@ -838,7 +845,7 @@ namespace SomGame {
 									M.surgeries += procedure;
 									procedure.organ = affecting;
 									user.visible_message( new Txt().item( user ).str( " drapes " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( "." ), new Txt( "<span class='notice'>You drape " ).item( I ).str( " over " ).item( M ).str( "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str( " to prepare for " ).a( procedure.name ).item().str( ".</span>" ) );
-									new ByTable().set( "addition", "Operation type: " + procedure.name + ", location: " + selected_zone ).set( 3, "operated" ).set( 2, M ).set( 1, user ).apply( typeof(GlobalFuncs).GetMethod( "smooth_icon_neighbors ") );
+									new ByTable().set( "addition", "Operation type: " + procedure.name + ", location: " + selected_zone ).set( 3, "operated" ).set( 2, M ).set( 1, user ).apply( typeof(GlobalFuncs).GetMethod( "ReadRGB ") );
 								} else {
 									user.write( "<span class='warning'>You need to expose " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + " first!</span>" );
 								}
@@ -1255,7 +1262,7 @@ namespace SomGame {
 				H = new Mob_Living_Carbon_Human();
 				M = H;
 			}
-			connection = GlobalVars.radio_controller.return_frequency( frequency );
+			connection = GlobalVars.SSradio.return_frequency( frequency );
 			display_freq = connection.frequency;
 			receive = new ByTable();
 			if ( data == 1 ) {
@@ -1286,7 +1293,7 @@ namespace SomGame {
 					}
 				};
 			} else if ( data == 3 ) {
-				syndicateconnection = GlobalVars.radio_controller.return_frequency( GlobalVars.SYND_FREQ );
+				syndicateconnection = GlobalVars.SSradio.return_frequency( GlobalVars.SYND_FREQ );
 				R3 = null;
 				foreach (dynamic _c in syndicateconnection.devices["" + GlobalVars.RADIO_CHAT] ) {
 					R3 = _c as Ent_Item_Device_Radio;
@@ -1625,6 +1632,32 @@ namespace SomGame {
 			return null;
 		}
 
+		public static dynamic build_hog_construction_lists(  ) {
+			dynamic types = null;
+			dynamic T = null;
+			dynamic D = null;
+			if ( Misc13.isValid( GlobalVars.global_handofgod_traptypes.len ) && Misc13.isValid( GlobalVars.global_handofgod_structuretypes.len ) ) {
+				return null;
+			}
+			types = Misc13.types( typeof(Ent_Structure_Divine) ) - typeof(Ent_Structure_Divine) - typeof(Ent_Structure_Divine_Trap);
+			T = null;
+			foreach (dynamic _a in types ) {
+				T = _a;
+				if ( T == null ) {
+					continue;
+				}
+				D = T;
+				if ( Misc13.isValid( Misc13.initial( D.constructable ) ) ) {
+					if ( Misc13.isValid( Misc13.initial( D.trap ) ) ) {
+						GlobalVars.global_handofgod_traptypes[Misc13.initial( D.name )] = T;
+					} else {
+						GlobalVars.global_handofgod_structuretypes[Misc13.initial( D.name )] = T;
+					}
+				}
+			};
+			return null;
+		}
+
 		public static bool calculate_adjacencies( BaseStatic A = null ) {
 			bool adjacencies = false;
 			BaseStatic AM = null;
@@ -1648,10 +1681,10 @@ namespace SomGame {
 					AM = GlobalFuncs.find_type_in_direction( A, direction );
 					if ( AM is BaseDynamic ) {
 						if ( Misc13.isValid( AM.anchored ) ) {
-							adjacencies |= GlobalFuncs.transform_dir( direction );
+							adjacencies |= 1 << direction;
 						}
 					} else if ( AM != null ) {
-						adjacencies |= GlobalFuncs.transform_dir( direction );
+						adjacencies |= 1 << direction;
 					}
 				};
 			} else {
@@ -1662,7 +1695,7 @@ namespace SomGame {
 						continue;
 					}
 					if ( Misc13.isValid( GlobalFuncs.find_type_in_direction( A, direction2 ) ) ) {
-						adjacencies |= GlobalFuncs.transform_dir( direction2 );
+						adjacencies |= 1 << direction2;
 					}
 				};
 			}
@@ -1812,13 +1845,6 @@ namespace SomGame {
 			return true;
 		}
 
-		public static dynamic cancel_progress_bar( dynamic user = null, dynamic progbar = null ) {
-			if ( Misc13.isValid( user ) && Misc13.isValid( user.client ) && Misc13.isValid( progbar ) ) {
-				user.client.images -= progbar;
-			}
-			return null;
-		}
-
 		public static bool CanHug( dynamic M = null ) {
 			dynamic C = null;
 			dynamic H = null;
@@ -1835,7 +1861,7 @@ namespace SomGame {
 				return true;
 			}
 			C = M;
-			if ( C is Mob_Living_Carbon_Human ) {
+			if ( C is Mob_Living_Carbon_Human && !Misc13.isValid( C.dna.species.no_equip.contains( 2 ) ) ) {
 				H = C;
 				if ( Misc13.isValid( new ByTable().set( "head_only", 1 ).apply( H.GetType().GetMethod( "is_mouth_covered" ) ) ) ) {
 					return false;
@@ -2003,7 +2029,7 @@ namespace SomGame {
 			return _default;
 		}
 
-		public static dynamic cheap_hypotenuse( dynamic Ax = null, dynamic Ay = null, dynamic Bx = null, dynamic By = null ) {
+		public static dynamic cheap_hypotenuse( dynamic Ax = null, dynamic Ay = null, bool Bx = false, bool By = false ) {
 			return Math.Sqrt( Math.Pow( Math.Abs( Ax - Bx ), 2 ) + Math.Pow( Math.Abs( Ay - By ), 2 ) );
 		}
 
@@ -2190,6 +2216,21 @@ namespace SomGame {
 			return null;
 		}
 
+		public static string church_name(  ) {
+			string name = "";
+			if ( Misc13.isValid( GlobalVars.church_name ) ) {
+				return GlobalVars.church_name;
+			}
+			name = "";
+			name += Rand13.pick(new object [] { "Holy", "United", "First", "Second", "Last" });
+			if ( Misc13.isValid( Rand13.chance( 20 ) ) ) {
+				name += " Space";
+			}
+			name += " " + Rand13.pick(new object [] { "Church", "Cathedral", "Body", "Worshippers", "Movement", "Witnesses" });
+			name += " of " + GlobalFuncs.religion_name();
+			return name;
+		}
+
 		public static ByTable circlerange( dynamic center = null, int radius = 0 ) {
 			dynamic centerturf = null;
 			ByTable turfs = null;
@@ -2252,8 +2293,35 @@ namespace SomGame {
 			return turfs;
 		}
 
-		public static dynamic Clamp( dynamic val = null, double min = 0, double max = 0 ) {
-			return Misc13.max( min, Misc13.min( val, max ) );
+		public static ByTable circleview( dynamic center = null, int radius = 0 ) {
+			dynamic centerturf = null;
+			ByTable atoms = null;
+			double rsq = 0;
+			BaseStatic A = null;
+			dynamic dx = null;
+			dynamic dy = null;
+			if ( center == null ) {
+				center = Misc13.thread_user;
+			}
+			if ( radius == null ) {
+				radius = 3;
+			}
+			centerturf = GlobalFuncs.get_turf( center );
+			atoms = new ByTable();
+			rsq = radius * ( radius + 0.5 );
+			A = null;
+			foreach (dynamic _a in Misc13.view( radius, centerturf ) ) {
+				A = _a as BaseStatic;
+				if ( A == null ) {
+					continue;
+				}
+				dx = A.x - centerturf.x;
+				dy = A.y - centerturf.y;
+				if ( dx * dx + dy * dy <= rsq ) {
+					atoms += A;
+				}
+			};
+			return atoms;
 		}
 
 		public static dynamic clearlist( ByTable list = null ) {
@@ -2285,27 +2353,6 @@ namespace SomGame {
 				}
 				if ( GlobalVars.CMinutes >= GlobalVars.Banlist["minutes"] ) {
 					GlobalFuncs.RemoveBan( A );
-				}
-			};
-			return true;
-		}
-
-		public static bool ClearTempbansjob(  ) {
-			dynamic A = null;
-			GlobalFuncs.UpdateTime();
-			GlobalVars.Banlistjob.cd = "/base";
-			A = null;
-			foreach (dynamic _a in GlobalVars.Banlistjob.dir ) {
-				A = _a;
-				if ( A == null ) {
-					continue;
-				}
-				GlobalVars.Banlistjob.cd = "/base/" + A;
-				if ( !Misc13.isValid( GlobalVars.Banlistjob["temp"] ) ) {
-					continue;
-				}
-				if ( GlobalVars.CMinutes >= GlobalVars.Banlistjob["minutes"] ) {
-					GlobalFuncs.RemoveBanjob( A );
 				}
 			};
 			return true;
@@ -2434,6 +2481,13 @@ namespace SomGame {
 			return B.rating - A.rating;
 		}
 
+		public static dynamic cmp_subsystem_display( dynamic a = null, dynamic b = null ) {
+			if ( a.display == b.display ) {
+				return Misc13.string_order( b.name, a.name );
+			}
+			return a.display - b.display;
+		}
+
 		public static dynamic cmp_subsystem_priority( dynamic a = null, dynamic b = null ) {
 			return b.priority - a.priority;
 		}
@@ -2444,6 +2498,19 @@ namespace SomGame {
 
 		public static dynamic cmp_text_dsc( dynamic a = null, dynamic b = null ) {
 			return Misc13.string_order( a, b );
+		}
+
+		public static int color_hex2num( string A = "" ) {
+			bool R = false;
+			bool G = false;
+			bool B = false;
+			if ( !Misc13.isValid( A ) ) {
+				return 0;
+			}
+			R = GlobalFuncs.hex2num( Misc13.str_sub( A, 2, 4 ) );
+			G = GlobalFuncs.hex2num( Misc13.str_sub( A, 4, 6 ) );
+			B = GlobalFuncs.hex2num( Misc13.str_sub( A, 6, 0 ) );
+			return R + G + B;
 		}
 
 		public static string color2hex( string color = "" ) {
@@ -2617,7 +2684,7 @@ namespace SomGame {
 					if ( M.stat != 2 ) {
 						continue;
 					}
-					if ( !Misc13.isValid( M.client.prefs.be_special ) & 64 ) {
+					if ( !Misc13.isValid( M.client.prefs.be_special.contains( "xenomorph" ) ) ) {
 						continue;
 					}
 					if ( Misc13.isValid( M.client.is_afk() ) ) {
@@ -2662,62 +2729,24 @@ namespace SomGame {
 		}
 
 		public static dynamic createRandomZlevel(  ) {
-			ByTable potentialRandomZlevels = null;
-			ByTable Lines = null;
-			string t = "";
-			dynamic pos = null;
-			dynamic name = null;
 			dynamic map = null;
 			File file = null;
 			Ent_Effect_Landmark L = null;
 			if ( Misc13.isValid( GlobalVars.awaydestinations.len ) ) {
 				return null;
 			}
-			potentialRandomZlevels = new ByTable();
-			Game13.write( "<span class='boldannounce'>Searching for away missions...</span>" );
-			Lines = GlobalFuncs.file2list( "_maps/RandomZLevels/fileList.txt" );
-			if ( !Misc13.isValid( Lines.len ) ) {
-				return null;
-			}
-			t = null;
-			foreach (dynamic _a in Lines ) {
-				t = _a;
-				if ( t == null ) {
-					continue;
-				}
-				if ( !Misc13.isValid( t ) ) {
-					continue;
-				}
-				t = GlobalFuncs.trim( t );
-				if ( t.Length == 0 ) {
-					continue;
-				} else if ( Misc13.str_sub( t, 1, 2 ) == "#" ) {
-					continue;
-				}
-				pos = Misc13.str_find( t, " ", 1, null );
-				name = null;
-				if ( Misc13.isValid( pos ) ) {
-					name = Misc13.str_lower( Misc13.str_sub( t, 1, pos ) );
-				} else {
-					name = Misc13.str_lower( t );
-				}
-				if ( !Misc13.isValid( name ) ) {
-					continue;
-				}
-				potentialRandomZlevels.Add( t );
-			};
-			if ( Misc13.isValid( potentialRandomZlevels.len ) ) {
+			if ( Misc13.isValid( GlobalVars.potentialRandomZlevels ) && Misc13.isValid( GlobalVars.potentialRandomZlevels.len ) ) {
 				Game13.write( "<span class='boldannounce'>Loading away mission...</span>" );
-				map = Rand13.pick( potentialRandomZlevels );
+				map = Rand13.pick( GlobalVars.potentialRandomZlevels );
 				file = new File( map );
 				if ( file is File ) {
 					GlobalVars.maploader.call_verb("load map", file );
 					Game13.log.write( "away mission loaded: " + map );
 				}
-				GlobalVars.map_transition_config.Add( new ByTable().set( "Away Mission", 0 ) );
+				GlobalVars.map_transition_config.Add( new ByTable().set( "Away Mission", 1 ) );
 				L = null;
-				foreach (dynamic _b in GlobalVars.landmarks_list ) {
-					L = _b as Ent_Effect_Landmark;
+				foreach (dynamic _a in GlobalVars.landmarks_list ) {
+					L = _a as Ent_Effect_Landmark;
 					if ( L == null ) {
 						continue;
 					}
@@ -2734,11 +2763,8 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic cultist_commune( dynamic user = null, bool clear = false, bool say = false, string message = "" ) {
+		public static dynamic cultist_commune( dynamic user = null, bool say = false, string message = "" ) {
 			dynamic M = null;
-			if ( clear == null ) {
-				clear = false;
-			}
 			if ( say == null ) {
 				say = false;
 			}
@@ -2766,11 +2792,7 @@ namespace SomGame {
 					continue;
 				}
 				if ( GlobalFuncs.iscultist( M ) || Misc13.isValid( GlobalVars.dead_mob_list.contains( M ) ) ) {
-					if ( clear || !( user is Mob_Living_Carbon_Human ) ) {
-						M.write( "<span class='boldannounce'><i>" + ( user is Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</i> " + message + "</span>" );
-					} else {
-						M.write( "<span class='ghostalert'><i>Acolyte ???:</i> " + message + "</span>" );
-					}
+					M.write( "<span class='cultitalic'><b>" + ( user is Mob_Living_Carbon_Human ? "Acolyte" : "Construct" ) + " " + user + ":</b> " + message + "</span>" );
 				}
 			};
 			GlobalFuncs.log_say( "" + user.real_name + "/" + user.key + " : " + message );
@@ -2803,7 +2825,7 @@ namespace SomGame {
 			return Misc13.str_sub( message, 1, length + 1 );
 		}
 
-		public static dynamic dd_range( int low = 0, int high = 0, int num = 0 ) {
+		public static dynamic dd_range( int low = 0, double high = 0, double num = 0 ) {
 			return Misc13.max( low, Misc13.min( high, num ) );
 		}
 
@@ -3049,18 +3071,15 @@ namespace SomGame {
 			return null;
 		}
 
-		public static bool do_after( dynamic user = null, int delay = 0, int numticks = 0, bool needhand = false, BaseStatic target = null, bool progress = false ) {
+		public static bool do_after( dynamic user = null, int delay = 0, bool needhand = false, BaseStatic target = null, bool progress = false ) {
+			bool _default = false;
 			dynamic Tloc = null;
-			dynamic delayfraction = null;
 			dynamic Uloc = null;
 			dynamic holding = null;
 			bool holdingnull = false;
-			dynamic progbar = null;
-			bool continue_looping = false;
-			dynamic i = null;
-			if ( numticks == null ) {
-				numticks = 5;
-			}
+			Progressbar progbar = null;
+			double endtime = 0;
+			double starttime = 0;
 			if ( needhand == null ) {
 				needhand = true;
 			}
@@ -3073,67 +3092,65 @@ namespace SomGame {
 			if ( !Misc13.isValid( user ) ) {
 				return false;
 			}
-			if ( numticks == 0 ) {
-				return false;
-			}
 			Tloc = null;
 			if ( target != null ) {
 				Tloc = target.loc;
 			}
-			delayfraction = Misc13.round( delay / numticks );
 			Uloc = user.loc;
 			holding = user.get_active_hand();
 			holdingnull = true;
 			if ( Misc13.isValid( holding ) ) {
 				holdingnull = false;
 			}
-			continue_looping = true;
-			i = null;
-			foreach (dynamic _a in Misc13.iter_range( 1, numticks ) ) {
-				i = _a;
-				if ( Misc13.isValid( user.client ) && progress ) {
-					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
-					GlobalFuncs.assign_progress_bar( user, progbar );
+			if ( progress ) {
+				progbar = new Progressbar( user, delay, target );
+			}
+			endtime = Game13.time + delay;
+			starttime = Game13.time;
+			_default = true;
+			while (Game13.time < endtime) {
+				Thread13.sleep( 1 );
+				if ( progress ) {
+					progbar.update( Game13.time - starttime );
 				}
-				Thread13.sleep( delayfraction );
-				if ( !Misc13.isValid( user ) || Misc13.isValid( user.stat ) || Misc13.isValid( user.weakened ) || Misc13.isValid( user.stunned ) || !( user.loc == Uloc ) ) {
-					continue_looping = false;
+				if ( !Misc13.isValid( user ) || Misc13.isValid( user.stat ) || Misc13.isValid( user.weakened ) || Misc13.isValid( user.stunned ) || user.loc != Uloc ) {
+					_default = false;
+					break;
 				}
-				if ( continue_looping && Misc13.isValid( Tloc ) && ( ( target == null ) || Tloc != target.loc ) ) {
-					continue_looping = false;
+				if ( Misc13.isValid( Tloc ) && ( ( target == null ) || Tloc != target.loc ) ) {
+					_default = false;
+					break;
 				}
-				if ( continue_looping && needhand ) {
+				if ( needhand ) {
 					if ( !holdingnull ) {
 						if ( !Misc13.isValid( holding ) ) {
-							continue_looping = false;
+							_default = false;
+							break;
 						}
 					}
-					if ( continue_looping && user.get_active_hand() != holding ) {
-						continue_looping = false;
+					if ( user.get_active_hand() != holding ) {
+						_default = false;
+						break;
 					}
 				}
-				GlobalFuncs.cancel_progress_bar( user, progbar );
-				if ( !continue_looping ) {
-					return false;
-				}
-			};
-			GlobalFuncs.cancel_progress_bar( user, progbar );
-			return true;
+			}
+			if ( progress ) {
+				GlobalFuncs.qdel( progbar );
+			}
+			return _default;
+			return _default;
 		}
 
-		public static bool do_mob( dynamic user = null, dynamic target = null, int time = 0, int numticks = 0, bool uninterruptible = false, bool progress = false ) {
+		public static bool do_mob( dynamic user = null, dynamic target = null, int time = 0, bool uninterruptible = false, bool progress = false ) {
+			bool _default = false;
 			dynamic user_loc = null;
 			dynamic target_loc = null;
 			dynamic holding = null;
-			dynamic timefraction = null;
-			dynamic progbar = null;
-			bool continue_looping = false;
-			dynamic i = null;
+			Progressbar progbar = null;
+			double endtime = 0;
+			double starttime = 0;
 			if ( time == null ) {
 				time = 30;
-			}
-			if ( numticks == null ) {
-				numticks = 5;
 			}
 			if ( uninterruptible == null ) {
 				uninterruptible = false;
@@ -3144,35 +3161,37 @@ namespace SomGame {
 			if ( !Misc13.isValid( user ) || !Misc13.isValid( target ) ) {
 				return false;
 			}
-			if ( numticks == 0 ) {
-				return false;
-			}
 			user_loc = user.loc;
 			target_loc = target.loc;
 			holding = user.get_active_hand();
-			timefraction = Misc13.round( time / numticks );
-			continue_looping = true;
-			i = null;
-			foreach (dynamic _a in Misc13.iter_range( 1, numticks ) ) {
-				i = _a;
-				if ( Misc13.isValid( user.client ) && progress ) {
-					progbar = GlobalFuncs.make_progress_bar( i, numticks, target );
-					GlobalFuncs.assign_progress_bar( user, progbar );
+			if ( progress ) {
+				progbar = new Progressbar( user, time, target );
+			}
+			endtime = Game13.time + time;
+			starttime = Game13.time;
+			_default = true;
+			while (Game13.time < endtime) {
+				Thread13.sleep( 1 );
+				if ( progress ) {
+					progbar.update( Game13.time - starttime );
 				}
-				Thread13.sleep( timefraction );
 				if ( !Misc13.isValid( user ) || !Misc13.isValid( target ) ) {
-					continue_looping = false;
+					_default = false;
+					break;
 				}
-				if ( continue_looping && !uninterruptible && ( user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding || Misc13.isValid( user.incapacitated() ) || Misc13.isValid( user.lying ) ) ) {
-					continue_looping = false;
+				if ( uninterruptible ) {
+					continue;
 				}
-				GlobalFuncs.cancel_progress_bar( user, progbar );
-				if ( !continue_looping ) {
-					return false;
+				if ( user.loc != user_loc || target.loc != target_loc || user.get_active_hand() != holding || Misc13.isValid( user.incapacitated() ) || Misc13.isValid( user.lying ) ) {
+					_default = false;
+					break;
 				}
-			};
-			GlobalFuncs.cancel_progress_bar( user, progbar );
-			return true;
+			}
+			if ( progress ) {
+				GlobalFuncs.qdel( progbar );
+			}
+			return _default;
+			return _default;
 		}
 
 		public static bool do_teleport( params object[] _ ) { // Arg Names: 0: ateleatom, 1: adestination, 2: aprecision, 3: afteleport, 4: aeffectin, 5: aeffectout, 6: asoundin, 7: asoundout
@@ -3217,43 +3236,8 @@ namespace SomGame {
 			if ( drawY > Iheight || drawY <= 0 ) {
 				return 0;
 			}
-			I.DrawBox( colour, Misc13.isValid( drawX ), drawY );
+			I.DrawBox( colour, drawX, drawY );
 			return I;
-		}
-
-		public static dynamic DuplicateObject( Entity original = null, bool perfectcopy = false, bool sameloc = false ) {
-			dynamic O = null;
-			dynamic V = null;
-			if ( perfectcopy == null ) {
-				perfectcopy = false;
-			}
-			if ( sameloc == null ) {
-				sameloc = false;
-			}
-			if ( original == null ) {
-				return null;
-			}
-			O = null;
-			if ( sameloc ) {
-				O = original.type( original.loc );
-			} else {
-				O = original.type( Misc13.get_turf_at( 0, 0, 0 ) );
-			}
-			if ( perfectcopy ) {
-				if ( Misc13.isValid( O ) && ( original != null ) ) {
-					V = null;
-					foreach (dynamic _a in original.vars ) {
-						V = _a;
-						if ( V == null ) {
-							continue;
-						}
-						if ( !Misc13.isValid( new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key" }).contains( V ) ) ) {
-							O.vars[V] = original.vars[V];
-						}
-					};
-				}
-			}
-			return O;
 		}
 
 		public static dynamic edit_note( dynamic note_id = null ) {
@@ -3435,7 +3419,7 @@ namespace SomGame {
 				return text;
 			}
 			if ( !Misc13.isValid( GlobalVars.emojis ) ) {
-				GlobalVars.emojis = Misc13.icon_states( null, new Icon( "icons/emoji.dmi" ) );
+				GlobalVars.emojis = Misc13.icon_states( null, new Icon( "sound/effects/pageturn3.ogg" ) );
 			}
 			parsed = "";
 			pos = 1;
@@ -3450,7 +3434,7 @@ namespace SomGame {
 					if ( search ) {
 						emoji = Misc13.str_lower( Misc13.str_sub( text, pos + 1, search ) );
 						if ( Misc13.isValid( GlobalVars.emojis.contains( emoji ) ) ) {
-							parsed += new Txt( "<img class=icon src=" ).Ref( "icons/emoji.dmi" ).str( " iconstate='" ).item( emoji ).str( "'>" );
+							parsed += new Txt( "<img class=icon src=" ).Ref( "sound/effects/pageturn3.ogg" ).str( " iconstate='" ).item( emoji ).str( "'>" );
 							pos = search + 1;
 						} else {
 							parsed += Misc13.str_sub( text, pos, search );
@@ -3484,7 +3468,7 @@ namespace SomGame {
 				GlobalFuncs.log_game( "EMP with size (" + heavy_range + ", " + light_range + ") in area " + epicenter.loc.name + " " );
 			}
 			if ( heavy_range > 1 ) {
-				new Ent_Effect_Overlay_Temp_Emp_Pulse( epicenter );
+				GlobalFuncs.PoolOrNew( typeof(Ent_Effect_Overlay_Temp_Emp_Pulse), epicenter );
 			}
 			if ( heavy_range > light_range ) {
 				light_range = heavy_range;
@@ -3810,7 +3794,7 @@ namespace SomGame {
 		public static bool forbidden_atoms_check( dynamic A = null ) {
 			ByTable blacklist = null;
 			dynamic thing = null;
-			blacklist = new ByTable(new object [] { typeof(Mob_Living), typeof(Ent_Effect_Blob), typeof(Ent_Effect_Spider_Spiderling), typeof(Ent_Item_Weapon_Disk_Nuclear), typeof(Ent_Machinery_Nuclearbomb), typeof(Ent_Item_Device_Radio_Beacon), typeof(Ent_Machinery_TheSingularitygen), typeof(Ent_Singularity), typeof(Ent_Machinery_Teleport_Station), typeof(Ent_Machinery_Teleport_Hub), typeof(Ent_Machinery_Telepad) });
+			blacklist = new ByTable(new object [] { typeof(Mob_Living), typeof(Ent_Effect_Blob), typeof(Ent_Effect_Spider_Spiderling), typeof(Ent_Item_Weapon_Disk_Nuclear), typeof(Ent_Machinery_Nuclearbomb), typeof(Ent_Item_Device_Radio_Beacon), typeof(Ent_Machinery_TheSingularitygen), typeof(Ent_Singularity), typeof(Ent_Machinery_Teleport_Station), typeof(Ent_Machinery_Teleport_Hub), typeof(Ent_Machinery_Telepad), typeof(Ent_Machinery_Clonepod) });
 			if ( Misc13.isValid( A ) ) {
 				if ( GlobalFuncs.is_type_in_list( A, blacklist ) ) {
 					return true;
@@ -3951,11 +3935,11 @@ namespace SomGame {
 			return code_phrase;
 		}
 
-		public static dynamic generate_female_clothing( string index = "", string t_color = "", dynamic icon = null, bool type = false ) {
+		public static dynamic generate_female_clothing( string index = "", string t_color = "", string icon = "", bool type = false ) {
 			dynamic female_clothing_icon = null;
 			dynamic female_s = null;
 			female_clothing_icon = new ByTable().set( "icon_state", t_color ).set( "icon", icon ).applyCtor( typeof(Icon) );
-			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", "icons/mob/uniform.dmi" ).applyCtor( typeof(Icon) );
+			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", "sound/effects/pageturn2.ogg" ).applyCtor( typeof(Icon) );
 			female_clothing_icon.Blend( female_s, 2 );
 			female_clothing_icon = File13.cache( female_clothing_icon );
 			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
@@ -4421,8 +4405,8 @@ namespace SomGame {
 			return message;
 		}
 
-		public static dynamic get( dynamic loc = null, Type type = null ) {
-			while (Misc13.isValid( loc )) {
+		public static Ent_Item get( Ent_Item loc = null, Type type = null ) {
+			while (loc != null) {
 				if ( Misc13.isValid( type.IsInstanceOfType( loc ) ) ) {
 					return loc;
 				}
@@ -4627,11 +4611,11 @@ namespace SomGame {
 			return new ByTable(new object [] { GlobalVars.access_syndicate, GlobalVars.access_syndicate });
 		}
 
-		public static int Get_Angle( BaseStatic start = null, dynamic end = null ) {
+		public static int Get_Angle( dynamic start = null, dynamic end = null ) {
 			int _default = 0;
 			dynamic dy = null;
 			dynamic dx = null;
-			if ( ( start == null ) || !Misc13.isValid( end ) ) {
+			if ( !Misc13.isValid( start ) || !Misc13.isValid( end ) ) {
 				return 0;
 			}
 			dy = end.y * 32 + end.pixel_y - ( start.y * 32 + start.pixel_y );
@@ -4727,12 +4711,15 @@ namespace SomGame {
 			return false;
 		}
 
-		public static ByTable get_area_turfs( Type areatype = null ) {
-			Type areatemp = null;
+		public static ByTable get_area_turfs( dynamic areatype = null, bool target_z = false ) {
+			dynamic areatemp = null;
 			ByTable turfs = null;
 			dynamic N = null;
 			dynamic T = null;
-			if ( areatype == null ) {
+			if ( target_z == null ) {
+				target_z = false;
+			}
+			if ( !Misc13.isValid( areatype ) ) {
 				return null;
 			}
 			if ( areatype is string ) {
@@ -4756,11 +4743,48 @@ namespace SomGame {
 						if ( T == null ) {
 							continue;
 						}
-						turfs += T;
+						if ( target_z == 0 || target_z == T.z ) {
+							turfs += T;
+						}
 					};
 				}
 			};
 			return turfs;
+		}
+
+		public static ByTable get_areas( Type areatype = null ) {
+			Type areatemp = null;
+			ByTable areas = null;
+			dynamic N = null;
+			if ( areatype == null ) {
+				return null;
+			}
+			if ( areatype is string ) {
+				areatype = Misc13.findType( areatype );
+			}
+			if ( areatype is Zone ) {
+				areatemp = areatype;
+				areatype = areatemp.type;
+			}
+			areas = new ByTable();
+			N = null;
+			foreach (dynamic _a in Game13.contents ) {
+				N = _a;
+				if ( N == null ) {
+					continue;
+				}
+				if ( Misc13.isValid( areatype.IsInstanceOfType( N ) ) ) {
+					areas += N;
+				}
+			};
+			return areas;
+		}
+
+		public static dynamic get_asset_datum( Type type = null ) {
+			if ( !Misc13.isValid( GlobalVars.asset_datums.contains( type ) ) ) {
+				return Misc13.call( type );
+			}
+			return GlobalVars.asset_datums[type];
 		}
 
 		public static ByTable get_both_hands( dynamic M = null ) {
@@ -4769,12 +4793,9 @@ namespace SomGame {
 			return hands;
 		}
 
-		public static ByTable get_candidates( int be_special_flag = 0, int afk_bracket = 0, string jobbanType = "" ) {
+		public static ByTable get_candidates( string be_special_type = "", int afk_bracket = 0, string jobbanType = "" ) {
 			ByTable candidates = null;
 			Mob_Dead_Observer G = null;
-			if ( be_special_flag == null ) {
-				be_special_flag = 0;
-			}
 			if ( afk_bracket == null ) {
 				afk_bracket = 3000;
 			}
@@ -4788,7 +4809,7 @@ namespace SomGame {
 					}
 					if ( G.client != null ) {
 						if ( !( ( G.mind != null ) && Misc13.isValid( G.mind.current ) && G.mind.current.stat != 2 ) ) {
-							if ( !Misc13.isValid( G.client.is_afk( afk_bracket ) ) && Misc13.isValid( ( G.client.prefs.be_special & be_special_flag ) ) ) {
+							if ( !Misc13.isValid( G.client.is_afk( afk_bracket ) ) && Misc13.isValid( G.client.prefs.be_special.contains( be_special_type ) ) ) {
 								if ( Misc13.isValid( jobbanType ) ) {
 									if ( !( Misc13.isValid( GlobalFuncs.jobban_isbanned( G, jobbanType ) ) || Misc13.isValid( GlobalFuncs.jobban_isbanned( G, "Syndicate" ) ) ) ) {
 										candidates += G.client;
@@ -4861,6 +4882,32 @@ namespace SomGame {
 			return null;
 		}
 
+		public static dynamic get_closest_atom( Type type = null, ByTable list = null, Entity source = null ) {
+			dynamic closest_atom = null;
+			dynamic closest_distance = null;
+			dynamic A = null;
+			dynamic distance = null;
+			A = null;
+			foreach (dynamic _a in list ) {
+				A = _a;
+				if ( A == null ) {
+					continue;
+				}
+				if ( !Misc13.isValid( type.IsInstanceOfType( A ) ) ) {
+					continue;
+				}
+				distance = Misc13.get_dist( source, A );
+				if ( !Misc13.isValid( closest_distance ) ) {
+					closest_distance = distance;
+					closest_atom = A;
+				} else if ( closest_distance > distance ) {
+					closest_distance = distance;
+					closest_atom = A;
+				}
+			};
+			return closest_atom;
+		}
+
 		public static ByTable get_department_heads( dynamic job_title = null ) {
 			Job J = null;
 			if ( !Misc13.isValid( job_title ) ) {
@@ -4877,16 +4924,6 @@ namespace SomGame {
 				}
 			};
 			return null;
-		}
-
-		public static dynamic get_dist_euclidian( dynamic Loc1 = null, dynamic Loc2 = null ) {
-			dynamic dx = null;
-			dynamic dy = null;
-			dynamic dist = null;
-			dx = Loc1.x - Loc2.x;
-			dy = Loc1.y - Loc2.y;
-			dist = Math.Sqrt( Math.Pow( dx, 2 ) + Math.Pow( dy, 2 ) );
-			return dist;
 		}
 
 		public static dynamic get_domination_time( Gang G = null ) {
@@ -4934,7 +4971,7 @@ namespace SomGame {
 			dynamic typename = null;
 			dynamic tn = null;
 			if ( GlobalVars.g_fancy_list_of_types == null ) {
-				temp = GlobalFuncs.sortList( Misc13.types( typeof(BaseStatic) ) - Misc13.types( typeof(Zone) ) - typeof(BaseStatic) - typeof(BaseDynamic) );
+				temp = GlobalFuncs.sortList( Misc13.types( typeof(BaseStatic) ) - typeof(BaseStatic) - Misc13.types( typeof(Zone) ) - typeof(BaseDynamic) );
 				GlobalVars.g_fancy_list_of_types = new ByTable( temp.len );
 				type = null;
 				foreach (dynamic _b in temp ) {
@@ -5089,7 +5126,7 @@ namespace SomGame {
 		public static double get_location_modifier( dynamic M = null ) {
 			dynamic T = null;
 			T = GlobalFuncs.get_turf( M );
-			if ( Misc13.isValid( Misc13.get_in( typeof(Ent_Structure_Optable), T ) ) ) {
+			if ( Misc13.isValid( Misc13.get_in( typeof(Ent_Structure_Table_Optable), T ) ) ) {
 				return 1;
 			} else if ( Misc13.isValid( Misc13.get_in( typeof(Ent_Structure_Table), T ) ) ) {
 				return 0.800000011920929;
@@ -5266,27 +5303,27 @@ namespace SomGame {
 			if ( soundin is string ) {
 				dynamic _a = soundin; // Was a switch-case, sorry for the mess.
 				if ( _a=="shatter" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/machines/buzz-sigh.ogg", "icons/mob/uniform.dmi", "icons/mob/hands.dmi" });
 				} else if ( _a=="explosion" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/Explosion1.ogg", "sound/effects/Explosion2.ogg" });
+					soundin = Rand13.pick(new object [] { "nano/assets/nanoui.css", "icons/effects/weather_effects.dmi" });
 				} else if ( _a=="sparks" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/sparks1.ogg", "sound/effects/sparks2.ogg", "sound/effects/sparks3.ogg", "sound/effects/sparks4.ogg" });
+					soundin = Rand13.pick(new object [] { "icons/mob/nest.dmi", "icons/obj/mining.dmi", "icons/mob/screen_retro.dmi", "icons/mob/screen_plasmafire.dmi" });
 				} else if ( _a=="rustle" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/rustle1.ogg", "sound/effects/rustle2.ogg", "sound/effects/rustle3.ogg", "sound/effects/rustle4.ogg", "sound/effects/rustle5.ogg" });
+					soundin = Rand13.pick(new object [] { "icons/mob/screen_midnight.dmi", "icons/effects/doafter_icon.dmi", "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg" });
 				} else if ( _a=="bodyfall" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/bodyfall1.ogg", "sound/effects/bodyfall2.ogg", "sound/effects/bodyfall3.ogg", "sound/effects/bodyfall4.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/Explosion1.ogg", "sound/effects/Explosion2.ogg", "sound/effects/sparks1.ogg", "sound/effects/sparks2.ogg" });
 				} else if ( _a=="punch" ) {
-					soundin = Rand13.pick(new object [] { "sound/weapons/punch1.ogg", "sound/weapons/punch2.ogg", "sound/weapons/punch3.ogg", "sound/weapons/punch4.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/sparks3.ogg", "sound/effects/sparks4.ogg", "sound/effects/rustle1.ogg", "sound/effects/rustle2.ogg" });
 				} else if ( _a=="clownstep" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/clownstep1.ogg", "sound/effects/clownstep2.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/rustle3.ogg", "sound/effects/rustle4.ogg" });
 				} else if ( _a=="swing_hit" ) {
-					soundin = Rand13.pick(new object [] { "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/rustle5.ogg", "sound/effects/bodyfall1.ogg", "sound/effects/bodyfall2.ogg" });
 				} else if ( _a=="hiss" ) {
-					soundin = Rand13.pick(new object [] { "sound/voice/hiss1.ogg", "sound/voice/hiss2.ogg", "sound/voice/hiss3.ogg", "sound/voice/hiss4.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/bodyfall3.ogg", "sound/effects/bodyfall4.ogg", "sound/weapons/punch1.ogg", "sound/weapons/punch2.ogg" });
 				} else if ( _a=="pageturn" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/pageturn1.ogg", "sound/effects/pageturn2.ogg", "sound/effects/pageturn3.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/weapons/punch3.ogg", "sound/weapons/punch4.ogg", "sound/effects/clownstep1.ogg" });
 				} else if ( _a=="gunshot" ) {
-					soundin = Rand13.pick(new object [] { "sound/weapons/Gunshot.ogg", "sound/weapons/Gunshot2.ogg", "sound/weapons/Gunshot3.ogg", "sound/weapons/Gunshot4.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/clownstep2.ogg", "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
 				};
 			}
 			return soundin;
@@ -5470,42 +5507,35 @@ namespace SomGame {
 			return A;
 		}
 
-		public static dynamic get_turf_pixel( Entity AM = null ) {
-			bool rough_x = false;
-			bool rough_y = false;
-			bool final_x = false;
-			bool final_y = false;
-			dynamic i_width = null;
-			dynamic i_height = null;
+		public static dynamic get_turf_pixel( BaseStatic AM = null ) {
+			Matrix M = null;
+			dynamic pixel_x_offset = null;
+			dynamic pixel_y_offset = null;
 			Icon AMicon = null;
-			dynamic n_width = null;
-			dynamic n_height = null;
-			if ( AM is BaseDynamic ) {
-				rough_x = false;
-				rough_y = false;
-				final_x = false;
-				final_y = false;
-				i_width = Game13.icon_size;
-				i_height = Game13.icon_size;
-				if ( AM.bound_height != Game13.icon_size || AM.bound_width != Game13.icon_size ) {
-					AMicon = new Icon( AM.icon, AM.icon_state );
-					i_width = AMicon.Width();
-					i_height = AMicon.Height();
-					GlobalFuncs.qdel( AMicon );
-				}
-				n_width = Game13.icon_size - i_width / 2;
-				n_height = Game13.icon_size - i_height / 2;
-				if ( Misc13.isValid( n_width ) ) {
-					rough_x = Misc13.isValid( Misc13.round( AM.pixel_x / n_width ) );
-				}
-				if ( Misc13.isValid( n_height ) ) {
-					rough_y = Misc13.isValid( Misc13.round( AM.pixel_y / n_height ) );
-				}
-				final_x = Misc13.isValid( ( AM.x + rough_x ) );
-				final_y = Misc13.isValid( ( AM.y + rough_y ) );
-				if ( final_x || final_y ) {
-					return Misc13.get_turf_at( final_x, final_y, AM.z );
-				}
+			dynamic rough_x = null;
+			dynamic rough_y = null;
+			dynamic T = null;
+			dynamic final_x = null;
+			dynamic final_y = null;
+			if ( !( AM is BaseDynamic ) ) {
+				return null;
+			}
+			M = new Matrix( AM.transform );
+			pixel_x_offset = AM.pixel_x + M.get_x_shift();
+			pixel_y_offset = AM.pixel_y + M.get_y_shift();
+			if ( AM.bound_height != Game13.icon_size || AM.bound_width != Game13.icon_size ) {
+				AMicon = new Icon( AM.icon, AM.icon_state );
+				pixel_x_offset += ( AMicon.Width() / Game13.icon_size - 1 ) * Game13.icon_size * 0.5;
+				pixel_y_offset += ( AMicon.Height() / Game13.icon_size - 1 ) * Game13.icon_size * 0.5;
+				GlobalFuncs.qdel( AMicon );
+			}
+			rough_x = Misc13.round( Misc13.round( pixel_x_offset, Game13.icon_size ) / Game13.icon_size );
+			rough_y = Misc13.round( Misc13.round( pixel_y_offset, Game13.icon_size ) / Game13.icon_size );
+			T = GlobalFuncs.get_turf( AM );
+			final_x = T.x + rough_x;
+			final_y = T.y + rough_y;
+			if ( Misc13.isValid( final_x ) || Misc13.isValid( final_y ) ) {
+				return Misc13.get_turf_at( final_x, final_y, T.z );
 			}
 			return null;
 		}
@@ -5524,7 +5554,7 @@ namespace SomGame {
 			if ( !Misc13.isValid( GlobalVars.uplink_items.len ) ) {
 				last = new ByTable();
 				item = null;
-				foreach (dynamic _a in Misc13.types( typeof(UplinkItem) ) ) {
+				foreach (dynamic _a in Misc13.types( typeof(UplinkItem) ) - typeof(UplinkItem) ) {
 					item = _a;
 					if ( item == null ) {
 						continue;
@@ -5624,7 +5654,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			blank_icon = new Icon( "icons/effects/effects.dmi", "blank_base" );
+			blank_icon = new Icon( "sound/misc/apcdestroyed.ogg", "blank_base" );
 			blank_icon.AddAlphaMask( flat_icon );
 			return blank_icon;
 		}
@@ -5680,23 +5710,26 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic GetExpjob( dynamic minutes = null ) {
-			dynamic exp = null;
-			string timeleftstring = "";
-			GlobalFuncs.UpdateTime();
-			exp = minutes - GlobalVars.CMinutes;
-			if ( exp <= 0 ) {
-				return 0;
-			} else {
-				if ( exp >= 1440 ) {
-					timeleftstring = "" + Misc13.round( exp / 1440, 0.10000000149011612 ) + " Days";
-				} else if ( exp >= 60 ) {
-					timeleftstring = "" + Misc13.round( exp / 60, 0.10000000149011612 ) + " Hours";
-				} else {
-					timeleftstring = "" + exp + " Minutes";
-				}
-				return timeleftstring;
+		public static dynamic getFilesSlow( dynamic client = null, ByTable files = null, bool register_asset = false ) {
+			dynamic file = null;
+			if ( register_asset == null ) {
+				register_asset = GlobalVars.TRUE;
 			}
+			file = null;
+			foreach (dynamic _a in files ) {
+				file = _a;
+				if ( file == null ) {
+					continue;
+				}
+				if ( !Misc13.isValid( client ) ) {
+					break;
+				}
+				if ( register_asset ) {
+					GlobalFuncs.register_asset( file, files[file] );
+				}
+				GlobalFuncs.send_asset( client, file );
+				Thread13.sleep( -1 );
+			};
 			return null;
 		}
 
@@ -5738,7 +5771,7 @@ namespace SomGame {
 			if ( defblend == null ) {
 				defblend = Misc13.isValid( null.blend_mode );
 			}
-			flat = new Icon( "icons/effects/effects.dmi", "nothing" );
+			flat = new Icon( "sound/misc/apcdestroyed.ogg", "nothing" );
 			if ( !Misc13.isValid( A ) ) {
 				return flat;
 			}
@@ -5922,7 +5955,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.ColorTone( "#7db4e1" );
 			flat_icon.ChangeOpacity( 0.5 );
-			alpha_mask = new Icon( "icons/effects/effects.dmi", "scanline" );
+			alpha_mask = new Icon( "sound/misc/apcdestroyed.ogg", "scanline" );
 			flat_icon.AddAlphaMask( alpha_mask );
 			return flat_icon;
 		}
@@ -6037,22 +6070,35 @@ namespace SomGame {
 			return line;
 		}
 
-		public static ByTable getmobs(  ) {
+		public static ByTable getpois( bool mobs_only = false, bool skip_mindless = false ) {
 			ByTable mobs = null;
 			ByTable names = null;
-			ByTable creatures = null;
+			ByTable pois = null;
 			ByTable namecounts = null;
 			dynamic M = null;
 			string name = "";
+			BaseStatic A = null;
+			string name2 = "";
+			if ( mobs_only == null ) {
+				mobs_only = false;
+			}
+			if ( skip_mindless == null ) {
+				skip_mindless = false;
+			}
 			mobs = GlobalFuncs.sortmobs();
 			names = new ByTable();
-			creatures = new ByTable();
+			pois = new ByTable();
 			namecounts = new ByTable();
 			M = null;
 			foreach (dynamic _a in mobs ) {
 				M = _a;
 				if ( M == null ) {
 					continue;
+				}
+				if ( skip_mindless && !Misc13.isValid( M.mind ) && !Misc13.isValid( M.ckey ) ) {
+					if ( !( M is Mob_Living_SimpleAnimal_Bot ) && !( M is Mob_Camera ) ) {
+						continue;
+					}
 				}
 				name = M.name;
 				if ( Misc13.isValid( names.contains( name ) ) ) {
@@ -6072,9 +6118,30 @@ namespace SomGame {
 						name += " [dead]";
 					}
 				}
-				creatures[name] = M;
+				pois[name] = M;
 			};
-			return creatures;
+			if ( !mobs_only ) {
+				A = null;
+				foreach (dynamic _b in GlobalVars.poi_list ) {
+					A = _b as BaseStatic;
+					if ( A == null ) {
+						continue;
+					}
+					if ( ( A == null ) || !Misc13.isValid( A.loc ) ) {
+						continue;
+					}
+					name2 = A.name;
+					if ( Misc13.isValid( names.Find( name2 ) ) ) {
+						namecounts[name2]++;
+						name2 = "" + name2 + " (" + namecounts[name2] + ")";
+					} else {
+						names.Add( name2 );
+						namecounts[name2] = 1;
+					}
+					pois[name2] = A;
+				};
+			}
+			return pois;
 		}
 
 		public static bool getr( string col = "" ) {
@@ -6097,7 +6164,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			static_icon = new Icon( "icons/effects/effects.dmi", "static_base" );
+			static_icon = new Icon( "sound/misc/apcdestroyed.ogg", "static_base" );
 			static_icon.AddAlphaMask( flat_icon );
 			return static_icon;
 		}
@@ -6498,12 +6565,9 @@ namespace SomGame {
 			if ( !( L is ByTable ) ) {
 				L = new ByTable();
 				path = null;
-				foreach (dynamic _a in Misc13.types( prototype ) ) {
+				foreach (dynamic _a in Misc13.types( prototype ) - prototype ) {
 					path = _a;
 					if ( path == null ) {
-						continue;
-					}
-					if ( path == prototype ) {
 						continue;
 					}
 					L += path;
@@ -6559,12 +6623,9 @@ namespace SomGame {
 				L = new ByTable();
 			}
 			path = null;
-			foreach (dynamic _a in Misc13.types( prototype ) ) {
+			foreach (dynamic _a in Misc13.types( prototype ) - prototype ) {
 				path = _a;
 				if ( path == null ) {
-					continue;
-				}
-				if ( path == prototype ) {
 					continue;
 				}
 				L += Misc13.call( path );
@@ -6706,26 +6767,110 @@ namespace SomGame {
 			return false;
 		}
 
-		public static bool is_convertable_to_cult( Mind mind = null ) {
-			if ( !( mind is Mind ) ) {
-				return false;
+		public static bool is_blocked_turf( dynamic T = null ) {
+			bool cant_pass = false;
+			BaseStatic A = null;
+			cant_pass = false;
+			if ( Misc13.isValid( T.density ) ) {
+				cant_pass = true;
 			}
-			if ( mind.current is Mob_Living_Carbon_Human && Misc13.isValid( new ByTable(new object [] { "Captain", "Chaplain" }).contains( mind.assigned_role ) ) ) {
-				return false;
-			}
-			if ( GlobalFuncs.isloyal( mind.current ) ) {
-				return false;
-			}
-			if ( GlobalVars.ticker.mode.name == "cult" ) {
-				if ( GlobalFuncs.is_sacrifice_target( mind ) ) {
-					return false;
+			A = null;
+			foreach (dynamic _a in T ) {
+				A = _a as BaseStatic;
+				if ( A == null ) {
+					continue;
 				}
-			}
-			return true;
+				if ( Misc13.isValid( A.density ) ) {
+					cant_pass = true;
+				}
+			};
+			return cant_pass;
 		}
 
 		public static bool is_gangster( dynamic M = null ) {
 			return M is Mob_Living && Misc13.isValid( M.mind ) && Misc13.isValid( M.mind.gang_datum );
+		}
+
+		public static bool is_handofgod_bluecultist( dynamic A = null ) {
+			dynamic H = null;
+			if ( A is Mob_Living_Carbon_Human ) {
+				H = A;
+				if ( Misc13.isValid( H.mind ) ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.blue_deity_followers | GlobalVars.ticker.mode.blue_deity_prophets.contains( H.mind ) ) ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_blueprophet( Mob_Living A = null ) {
+			Mob_Living H = null;
+			if ( A is Mob_Living_Carbon_Human ) {
+				H = A;
+				if ( H.mind != null ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.blue_deity_prophets.contains( H.mind ) ) ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_cultist( dynamic A = null ) {
+			if ( GlobalFuncs.is_handofgod_redcultist( A ) ) {
+				return true;
+			}
+			if ( GlobalFuncs.is_handofgod_bluecultist( A ) ) {
+				return true;
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_god( Mob A = null ) {
+			if ( A is Mob_Camera_God ) {
+				return true;
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_prophet( dynamic A = null ) {
+			dynamic H = null;
+			if ( A is Mob_Living_Carbon_Human ) {
+				H = A;
+				if ( Misc13.isValid( H.mind ) ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.blue_deity_prophets | GlobalVars.ticker.mode.red_deity_prophets.contains( H.mind ) ) ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_redcultist( dynamic A = null ) {
+			dynamic H = null;
+			if ( A is Mob_Living_Carbon_Human ) {
+				H = A;
+				if ( Misc13.isValid( H.mind ) ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.red_deity_followers | GlobalVars.ticker.mode.red_deity_prophets.contains( H.mind ) ) ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		public static bool is_handofgod_redprophet( Mob_Living A = null ) {
+			Mob_Living H = null;
+			if ( A is Mob_Living_Carbon_Human ) {
+				H = A;
+				if ( H.mind != null ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.red_deity_prophets.contains( H.mind ) ) ) {
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 
 		public static bool is_in_gang( dynamic M = null, string gang_type = "" ) {
@@ -6758,19 +6903,8 @@ namespace SomGame {
 			return false;
 		}
 
-		public static bool is_sacrifice_target( Mind mind = null ) {
-			dynamic cult_mode = null;
-			if ( GlobalVars.ticker.mode.name == "cult" ) {
-				cult_mode = GlobalVars.ticker.mode;
-				if ( mind == cult_mode.sacrifice_target ) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public static bool is_shadow( Mob_Living M = null ) {
-			return M is Mob_Living && ( M.mind != null ) && ( GlobalVars.ticker != null ) && Misc13.isValid( GlobalVars.ticker.mode ) && Misc13.isValid( GlobalVars.ticker.mode.shadows.contains( M.mind ) );
+		public static bool is_shadow( dynamic M = null ) {
+			return M is Mob_Living && Misc13.isValid( M.mind ) && ( GlobalVars.ticker != null ) && Misc13.isValid( GlobalVars.ticker.mode ) && Misc13.isValid( GlobalVars.ticker.mode.shadows.contains( M.mind ) );
 		}
 
 		public static bool is_shadow_or_thrall( dynamic M = null ) {
@@ -6804,9 +6938,6 @@ namespace SomGame {
 				} else if ( M is Mob_Living_Silicon_Ai ) {
 					A = M;
 					if ( Misc13.isValid( A.laws ) && Misc13.isValid( A.laws.zeroth ) && Misc13.isValid( A.mind ) && Misc13.isValid( A.mind.special_role ) ) {
-						if ( Misc13.isValid( GlobalVars.ticker.mode.malf_ai.contains( GlobalVars.ticker.mode.config_tag == "malfunction" && Misc13.isValid( M.mind ) ) ) ) {
-							return 2;
-						}
 						return 1;
 					}
 				}
@@ -6832,6 +6963,10 @@ namespace SomGame {
 					}
 				} else if ( _a=="wizard" ) {
 					if ( Misc13.isValid( GlobalVars.ticker.mode.wizards.contains( M.mind ) ) ) {
+						return 2;
+					}
+				} else if ( _a=="apprentice" ) {
+					if ( Misc13.isValid( GlobalVars.ticker.mode.apprentices.contains( M.mind ) ) ) {
 						return 2;
 					}
 				} else if ( _a=="monkey" ) {
@@ -6864,6 +6999,15 @@ namespace SomGame {
 					return true;
 				}
 			};
+			return false;
+		}
+
+		public static bool IsAdminGhost( dynamic user = null ) {
+			if ( GlobalFuncs.check_rights( 2, false ) && user is Mob_Dead_Observer && Misc13.isValid( user.client.AI_Interact ) ) {
+				return true;
+			} else {
+				return false;
+			}
 			return false;
 		}
 
@@ -7001,129 +7145,50 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic jobban_fullban( dynamic M = null, dynamic rank = null, string reason = "" ) {
-			if ( !Misc13.isValid( M ) || !Misc13.isValid( M.key ) ) {
-				return null;
+		public static dynamic jobban_buildcache( dynamic C = null ) {
+			DBQuery query = null;
+			if ( Misc13.isValid( C ) && Misc13.isValid( typeof(Client).IsInstanceOfType( C ) ) ) {
+				C.jobbancache = new ByTable();
+				query = GlobalVars.dbcon.NewQuery( "SELECT job, reason FROM " + GlobalFuncs.format_table_name( "ban" ) + " WHERE ckey = '" + GlobalFuncs.sanitizeSQL( C.ckey ) + "' AND (bantype = 'JOB_PERMABAN'  OR (bantype = 'JOB_TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)" );
+				if ( !Misc13.isValid( query.Execute() ) ) {
+					GlobalFuncs.log_game( "SQL ERROR obtaining jobbans. Error : [" + query.ErrorMsg() + "]\n" );
+					return null;
+				}
+				while (Misc13.isValid( query.NextRow() )) {
+					C.jobbancache[query.item[1]] = query.item[2];
+				}
 			}
-			GlobalVars.jobban_keylist.Add( "" + M.ckey + " - " + rank + " ## " + reason );
-			GlobalFuncs.jobban_savebanfile();
 			return null;
 		}
 
 		public static dynamic jobban_isbanned( dynamic M = null, dynamic rank = null ) {
-			dynamic s = null;
-			dynamic startpos = null;
-			dynamic text = null;
-			if ( Misc13.isValid( M ) && Misc13.isValid( rank ) ) {
-				s = null;
-				foreach (dynamic _a in GlobalVars.jobban_keylist ) {
-					s = _a;
-					if ( s == null ) {
-						continue;
-					}
-					if ( Misc13.str_find( s, "" + M.ckey + " - " + rank, 1, null ) == 1 ) {
-						startpos = Misc13.str_find( s, "## ", 1, null ) + 3;
-						if ( Misc13.isValid( startpos ) && startpos < s.Length ) {
-							text = Misc13.str_sub( s, startpos, 0 );
-							if ( Misc13.isValid( text ) ) {
-								return text;
-							}
-						}
-						return "Reason Unspecified";
-					}
-				};
-			}
-			return 0;
-		}
-
-		public static dynamic jobban_loadbanfile(  ) {
-			SaveFile S = null;
 			DBQuery query = null;
-			dynamic ckey = null;
-			dynamic job = null;
-			DBQuery query1 = null;
-			dynamic ckey2 = null;
-			dynamic job2 = null;
-			if ( GlobalVars.config.ban_legacy_system ) {
-				S = new SaveFile( "data/job_full.ban" );
-				GlobalVars.jobban_keylist = S["keys" + 0].read();
-				GlobalFuncs.log_admin( "Loading jobban_rank" );
-				GlobalVars.jobban_runonce = S["runonce"].read();
-				if ( !Misc13.isValid( GlobalVars.jobban_keylist.Length ) ) {
-					GlobalVars.jobban_keylist = new ByTable();
-					GlobalFuncs.log_admin( "jobban_keylist was empty" );
-				}
-			} else {
-				if ( !Misc13.isValid( GlobalFuncs.establish_db_connection() ) ) {
-					Game13.log.write( "Database connection failed. Reverting to the legacy ban system." );
-					GlobalVars.diary.write( "Database connection failed. Reverting to the legacy ban system." );
-					GlobalVars.config.ban_legacy_system = true;
-					GlobalFuncs.jobban_loadbanfile();
+			dynamic reason = null;
+			dynamic reason2 = null;
+			if ( !Misc13.isValid( M ) || !( M is Mob ) || !Misc13.isValid( M.ckey ) ) {
+				return 0;
+			}
+			if ( !Misc13.isValid( M.client ) ) {
+				query = GlobalVars.dbcon.NewQuery( "SELECT reason FROM " + GlobalFuncs.format_table_name( "ban" ) + " WHERE ckey = '" + GlobalFuncs.sanitizeSQL( M.ckey ) + "' AND job = '" + GlobalFuncs.sanitizeSQL( rank ) + "' AND (bantype = 'JOB_PERMABAN'  OR (bantype = 'JOB_TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)" );
+				if ( !Misc13.isValid( query.Execute() ) ) {
+					GlobalFuncs.log_game( "SQL ERROR obtaining jobbans. Error : [" + query.ErrorMsg() + "]\n" );
 					return null;
 				}
-				query = GlobalVars.dbcon.NewQuery( "SELECT ckey, job FROM " + GlobalFuncs.format_table_name( "ban" ) + " WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)" );
-				query.Execute();
-				while (Misc13.isValid( query.NextRow() )) {
-					ckey = query.item[1];
-					job = query.item[2];
-					GlobalVars.jobban_keylist.Add( "" + ckey + " - " + job );
-				}
-				query1 = GlobalVars.dbcon.NewQuery( "SELECT ckey, job FROM " + GlobalFuncs.format_table_name( "ban" ) + " WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()" );
-				query1.Execute();
-				while (Misc13.isValid( query1.NextRow() )) {
-					ckey2 = query1.item[1];
-					job2 = query1.item[2];
-					GlobalVars.jobban_keylist.Add( "" + ckey2 + " - " + job2 );
+				if ( Misc13.isValid( query.NextRow() ) ) {
+					reason = query.item[1];
+					return Misc13.isValid( reason ) ? reason : 1;
+				} else {
+					return 0;
 				}
 			}
-			return null;
-		}
-
-		public static bool jobban_remove( dynamic X = null ) {
-			int i = 0;
-			i = 0;
-			i = 1;
-			while (i <= GlobalVars.jobban_keylist.Length) {
-				if ( Misc13.isValid( Misc13.str_find( GlobalVars.jobban_keylist[i], "" + X, 1, null ) ) ) {
-					GlobalVars.jobban_keylist.Remove( GlobalVars.jobban_keylist[i] );
-					GlobalFuncs.jobban_savebanfile();
-					return true;
-				}
-				i++;
+			if ( !Misc13.isValid( M.client.jobbancache ) ) {
+				GlobalFuncs.jobban_buildcache( M.client );
 			}
-			return false;
-		}
-
-		public static dynamic jobban_savebanfile(  ) {
-			SaveFile S = null;
-			S = new SaveFile( "data/job_full.ban" );
-			S["keys" + 0].write( GlobalVars.jobban_keylist );
-			return null;
-		}
-
-		public static dynamic jobban_unban( dynamic M = null, dynamic rank = null ) {
-			GlobalFuncs.jobban_remove( "" + M.ckey + " - " + rank );
-			GlobalFuncs.jobban_savebanfile();
-			return null;
-		}
-
-		public static dynamic jobban_updatelegacybans(  ) {
-			dynamic T = null;
-			if ( GlobalVars.jobban_runonce == 0 ) {
-				GlobalFuncs.log_admin( "Updating jobbanfile!" );
-				T = null;
-				foreach (dynamic _a in GlobalVars.jobban_keylist ) {
-					T = _a;
-					if ( T == null ) {
-						continue;
-					}
-					if ( !Misc13.isValid( T ) ) {
-						continue;
-					}
-				};
-				GlobalVars.jobban_runonce++;
+			if ( Misc13.isValid( M.client.jobbancache.contains( rank ) ) ) {
+				reason2 = M.client.jobbancache[rank];
+				return Misc13.isValid( reason2 ) ? reason2 : 1;
 			}
-			return null;
+			return 0;
 		}
 
 		public static string key_name( dynamic whom = null, dynamic include_link = null, bool include_name = false ) {
@@ -7339,10 +7404,6 @@ namespace SomGame {
 				}
 			};
 			return kicked_client_names;
-		}
-
-		public static string list2json( ByTable L = null ) {
-			return GlobalVars._jsonw.WriteObject( L );
 		}
 
 		public static dynamic list2stickyban( ByTable ban = null ) {
@@ -7622,23 +7683,6 @@ namespace SomGame {
 			return true;
 		}
 
-		public static bool LoadBansjob(  ) {
-			GlobalVars.Banlistjob = new SaveFile( "data/job_fullnew.bdb" );
-			GlobalFuncs.log_admin( "Loading Banlistjob" );
-			if ( !Misc13.isValid( GlobalVars.Banlistjob.dir.Length ) ) {
-				GlobalFuncs.log_admin( "Banlistjob is empty." );
-			}
-			if ( !Misc13.isValid( GlobalVars.Banlistjob.dir.Find( "base" ) ) ) {
-				GlobalFuncs.log_admin( "Banlistjob missing base dir." );
-				GlobalVars.Banlistjob.dir.Add( "base" );
-				GlobalVars.Banlistjob.cd = "/base";
-			} else if ( Misc13.isValid( GlobalVars.Banlistjob.dir.Find( "base" ) ) ) {
-				GlobalVars.Banlistjob.cd = "/base";
-			}
-			GlobalFuncs.ClearTempbansjob();
-			return true;
-		}
-
 		public static dynamic log_access( string text = "" ) {
 			if ( GlobalVars.config.log_access ) {
 				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]ACCESS: " + text );
@@ -7654,6 +7698,13 @@ namespace SomGame {
 			return null;
 		}
 
+		public static dynamic log_adminsay( string text = "" ) {
+			if ( GlobalVars.config.log_adminchat ) {
+				GlobalFuncs.log_admin( "ASAY: " + text );
+			}
+			return null;
+		}
+
 		public static dynamic log_attack( string text = "" ) {
 			if ( GlobalVars.config.log_attack ) {
 				GlobalVars.diaryofmeanpeople.write( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + text );
@@ -7661,16 +7712,16 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic log_chat( string text = "" ) {
+		public static dynamic log_comment( string text = "" ) {
 			if ( GlobalVars.config.log_pda ) {
-				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]CHAT: " + text );
+				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]COMMENT: " + text );
 			}
 			return null;
 		}
 
-		public static dynamic log_comment( string text = "" ) {
-			if ( GlobalVars.config.log_pda ) {
-				GlobalVars.diary.write( "[" + GlobalFuncs.time_stamp() + "]COMMENT: " + text );
+		public static dynamic log_dsay( string text = "" ) {
+			if ( GlobalVars.config.log_adminchat ) {
+				GlobalFuncs.log_admin( "DSAY: " + text );
 			}
 			return null;
 		}
@@ -7778,17 +7829,14 @@ namespace SomGame {
 			GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_Spines), GlobalVars.spines_list );
 			GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_SpinesAnimated), GlobalVars.animated_spines_list );
 			spath = null;
-			foreach (dynamic _a in Misc13.types( typeof(Species) ) ) {
+			foreach (dynamic _a in Misc13.types( typeof(Species) ) - typeof(Species) ) {
 				spath = _a;
 				if ( spath == null ) {
 					continue;
 				}
-				if ( spath == typeof(Species) ) {
-					continue;
-				}
 				S = Misc13.call( spath );
 				if ( Misc13.isValid( S.roundstart ) ) {
-					GlobalVars.roundstart_species[S.name] = S.type;
+					GlobalVars.roundstart_species[S.id] = S.type;
 				}
 				GlobalVars.species_list[S.id] = S.type;
 			};
@@ -7828,242 +7876,8 @@ namespace SomGame {
 			return null;
 		}
 
-		public static bool make_mining_asteroid_secret(  ) {
-			bool valid = false;
-			dynamic T = null;
-			int sanity = 0;
-			ByTable room = null;
-			ByTable turfs = null;
-			int x_size = 0;
-			int y_size = 0;
-			int areapoints = 0;
-			string theme = "";
-			ByTable walltypes = null;
-			ByTable floortypes = null;
-			ByTable treasureitems = null;
-			ByTable fluffitems = null;
-			dynamic floor = null;
-			ByTable surroundings = null;
-			dynamic emptyturfs = null;
-			Tile_Simulated_Floor A = null;
-			dynamic surprise = null;
-			dynamic garbage = null;
-			valid = false;
-			T = null;
-			sanity = 0;
-			room = null;
-			turfs = null;
-			x_size = 5;
-			y_size = 5;
-			areapoints = 0;
-			theme = "organharvest";
-			walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random), 1 ).set( typeof(Tile_Simulated_Wall), 3 );
-			floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel) });
-			treasureitems = new ByTable();
-			fluffitems = new ByTable();
-			x_size = Rand13.Int( 3, 7 );
-			y_size = Rand13.Int( 3, 7 );
-			areapoints = x_size * y_size;
-			dynamic _a = Rand13.pick( GlobalVars.possiblethemes ); // Was a switch-case, sorry for the mess.
-			if ( _a=="organharvest" ) {
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall), 2 ).set( typeof(Tile_Simulated_Wall_RWall), 2 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel), typeof(Tile_Simulated_Floor_Engine) });
-				treasureitems = new ByTable().set( typeof(Ent_Structure_Closet_Critter_Cat), 2 ).set( typeof(Ent_Item_Weapon_CircularSaw), 1 ).set( typeof(Ent_Machinery_Bot_Medbot_Mysterious), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Glasses_Hud_Health), 1 ).set( typeof(Ent_Item_Device_MassSpectrometer_Adv), 1 ).set( typeof(Ent_Item_Weapon_SurgicalDrapes), 2 ).set( typeof(Ent_Item_Weapon_Tank_Internals_Anesthetic), 1 ).set( typeof(Ent_Item_Weapon_Storage_Firstaid_Regular), 3 ).set( typeof(Ent_Item_Weapon_Scalpel), 1 ).set( typeof(Ent_Structure_Optable), 1 ).set( typeof(Ent_Structure_Closet_Crate_Freezer), 2 ).set( typeof(Ent_Item_Organ_Internal_Appendix), 2 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 5 );
-			} else if ( _a=="cult" ) {
-				theme = "cult";
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall_Cult), 3 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel_Cult) });
-				treasureitems = new ByTable().set( typeof(Mob_Living_SimpleAnimal_Hostile_Creature), 3 ).set( typeof(Ent_Item_Clothing_Suit_Cultrobes), 2 ).set( typeof(Ent_Item_Weapon_Bedsheet_Cult), 2 ).set( typeof(Ent_Item_Clothing_Suit_Space_Cult), 1 ).set( typeof(Ent_Item_Device_Soulstone_Anybody), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Shoes_Cult), 1 ).set( typeof(Ent_Item_Clothing_Head_Helmet_Space_Cult), 1 ).set( typeof(Ent_Item_Weapon_Ectoplasm), 3 ).set( typeof(Ent_Structure_Table_Wood), 2 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 4 ).set( typeof(Ent_Item_Organ_Internal_Heart), 2 ).set( typeof(Ent_Item_Toy_Crayon_Red), 2 ).set( typeof(Ent_Structure_Cult_Talisman), 1 ).set( typeof(Ent_Effect_Gibspawner), 1 ).set( typeof(Ent_Effect_Gateway), 1 );
-			} else if ( _a=="wizden" ) {
-				theme = "wizden";
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 ).set( typeof(Tile_Simulated_Wall_Mineral_Plasma), 3 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Wood) });
-				treasureitems = new ByTable().set( typeof(Ent_Item_Voodoo), 3 ).set( typeof(Ent_Item_Toy_Katana), 3 ).set( typeof(Ent_Structure_Constructshell), 1 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Smoke), 1 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Forcewall), 1 ).set( typeof(Ent_Item_Clothing_Head_Wizard_Red), 2 ).set( typeof(Ent_Item_Weapon_Spellbook_Oneuse_Blind), 1 ).set( typeof(Ent_Item_Weapon_Veilrender_Vealrender), 2 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_Coin_Mythril), 3 ).set( typeof(Ent_Effect_Decal_Cleanable_Dirt), 3 ).set( typeof(Ent_Item_Weapon_Staff), 2 ).set( typeof(Ent_Item_Weapon_Dice), 3 ).set( typeof(Ent_Item_Trash_Candle), 3 ).set( typeof(Ent_Item_Weapon_Storage_Belt_Soulstone), 1 ).set( typeof(Ent_Structure_Dresser), 1 ).set( typeof(Ent_Structure_Safe_Floor), 1 );
-			} else if ( _a=="cavein" ) {
-				theme = "cavein";
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless), typeof(Tile_Simulated_Floor_Plating_Beach_Sand) });
-				treasureitems = new ByTable().set( typeof(Ent_Item_Weapon_Pickaxe_Drill_Jackhammer), 5 ).set( typeof(Ent_Item_Weapon_Resonator), 1 ).set( typeof(Ent_Item_Weapon_Gun_Energy_KineticAccelerator), 1 ).set( typeof(Ent_Item_Weapon_Pickaxe_Drill_Diamonddrill), 2 ).set( typeof(Ent_Mecha_Working_Ripley_Mining), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_Tank_Internals_Oxygen_Red), 2 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Snacks_Grown_Chili), 1 ).set( typeof(Ent_Item_Clothing_Under_Overalls), 1 ).set( typeof(Ent_Effect_Decal_Remains_Human), 1 ).set( typeof(Ent_Effect_Decal_Cleanable_Blood), 3 );
-			} else if ( _a=="xenoden" ) {
-				theme = "xenoden";
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random_HighChance), 1 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless), typeof(Tile_Simulated_Floor_Plating_Beach_Sand) });
-				treasureitems = new ByTable().set( typeof(Ent_Item_Clothing_Mask_Facehugger), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Effect_Decal_Cleanable_Xenoblood_Xsplatter), 5 ).set( typeof(Ent_Effect_Decal_Remains_Human), 1 );
-			} else if ( _a=="hitech" ) {
-				theme = "hitech";
-				walltypes = new ByTable().set( typeof(Tile_Simulated_Mineral_Random), 1 ).set( typeof(Tile_Simulated_Wall_RWall), 5 );
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Greengrid), typeof(Tile_Simulated_Floor_Bluegrid) });
-				treasureitems = new ByTable().set( typeof(Ent_Machinery_Biogenerator), 1 ).set( typeof(Ent_Machinery_RND_Protolathe), 1 ).set( typeof(Ent_Machinery_Computer_Telescience), 1 ).set( typeof(Ent_Machinery_ChemDispenser_Constructable), 1 ).set( typeof(Ent_Item_Weapon_StockParts_Cell_Hyper), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Structure_MechaWreckage_Phazon), 1 ).set( typeof(Ent_Item_Device_Pda_Clear), 1 ).set( typeof(Ent_Item_Weapon_StockParts_Capacitor_Super), 3 ).set( typeof(Ent_Item_Weapon_StockParts_Manipulator_Pico), 3 ).set( typeof(Ent_Item_Weapon_StockParts_MatterBin_Super), 3 ).set( typeof(Ent_Item_Weapon_StockParts_ScanningModule_Phasic), 3 ).set( typeof(Ent_Structure_Table_Reinforced), 2 );
-			} else if ( _a=="speakeasy" ) {
-				theme = "speakeasy";
-				floortypes = new ByTable(new object [] { typeof(Tile_Simulated_Floor_Plasteel), typeof(Tile_Simulated_Floor_Wood) });
-				treasureitems = new ByTable().set( typeof(Ent_Machinery_Vending_Coffee), 3 ).set( typeof(Ent_Machinery_Computer_Security_WoodenTv), 4 ).set( typeof(Ent_Machinery_Reagentgrinder), 2 ).set( typeof(Ent_Item_Weapon_Storage_Backpack_SatchelFlat), 1 ).set( typeof(Ent_Item_Weapon_Gun_Projectile_Revolver_Doublebarrel), 1 ).set( typeof(Ent_Item_Weapon_Melee_Energy_Sword_Pirate), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Clothing_Shoes_Laceup), 2 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Bottle_Whiskey), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Bottle_Wine), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Food_Drinks_Shaker), 1 ).set( typeof(Ent_Item_Stack_Spacecash_C500), 4 ).set( typeof(Ent_Structure_ReagentDispensers_Beerkeg), 1 ).set( typeof(Ent_Structure_Table_Wood), 2 );
-			} else if ( _a=="plantlab" ) {
-				theme = "plantlab";
-				treasureitems = new ByTable().set( typeof(Ent_Item_Seeds_Cashseed), 2 ).set( typeof(Ent_Item_Seeds_CoffeeRobustaSeed), 2 ).set( typeof(Ent_Item_Seeds_Bluetomatoseed), 2 ).set( typeof(Ent_Item_Seeds_Bluespacetomatoseed), 2 ).set( typeof(Ent_Item_Seeds_Novaflowerseed), 2 ).set( typeof(Ent_Item_Weapon_Gun_Energy_Floragun), 1 );
-				fluffitems = new ByTable().set( typeof(Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Ammonia), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Glass_Bottle_Diethylamine), 3 ).set( typeof(Ent_Item_Weapon_ReagentContainers_Syringe_Charcoal), 2 ).set( typeof(Ent_Effect_Glowshroom_Single), 2 ).set( typeof(Ent_Machinery_Hydroponics), 1 ).set( typeof(Ent_Structure_Table_Reinforced), 2 ).set( typeof(Ent_Structure_Flora_Kirbyplants), 1 );
-			};
-			GlobalVars.possiblethemes -= theme;
-			floor = Rand13.pick( floortypes );
-			turfs = GlobalFuncs.get_area_turfs( typeof(Zone_Mine_Unexplored) );
-			if ( !Misc13.isValid( turfs.len ) ) {
-				return false;
-			}
-			while (!valid) {
-				valid = true;
-				sanity++;
-				if ( sanity > 100 ) {
-					return false;
-				}
-				T = Rand13.pick( turfs );
-				if ( !Misc13.isValid( T ) ) {
-					return false;
-				}
-				surroundings = new ByTable();
-				surroundings += Misc13.range( Misc13.get_turf_at( T.x, T.y, T.z ), 7 );
-				surroundings += Misc13.range( Misc13.get_turf_at( T.x + x_size, T.y, T.z ), 7 );
-				surroundings += Misc13.range( Misc13.get_turf_at( T.x, T.y + y_size, T.z ), 7 );
-				surroundings += Misc13.range( Misc13.get_turf_at( T.x + x_size, T.y + y_size, T.z ), 7 );
-				if ( Misc13.isValid( Misc13.get_in( typeof(Zone_Mine_Explored), surroundings ) ) ) {
-					valid = false;
-					continue;
-				}
-				if ( Misc13.isValid( Misc13.get_in( typeof(Tile_Space), surroundings ) ) ) {
-					valid = false;
-					continue;
-				}
-				if ( Misc13.isValid( Misc13.get_in( typeof(Zone_Asteroid_Artifactroom), surroundings ) ) ) {
-					valid = false;
-					continue;
-				}
-				if ( Misc13.isValid( Misc13.get_in( typeof(Tile_Simulated_Floor_Plating_Asteroid_Airless), Misc13.range( T, 5 ) ) ) ) {
-					valid = false;
-					continue;
-				}
-			}
-			if ( !Misc13.isValid( T ) ) {
-				return false;
-			}
-			room = GlobalFuncs.spawn_room( T, x_size, y_size, walltypes, floor );
-			if ( room != null ) {
-				emptyturfs = room["floors"];
-				A = null;
-				foreach (dynamic _b in emptyturfs ) {
-					A = _b as Tile_Simulated_Floor;
-					if ( A == null ) {
-						continue;
-					}
-					if ( A is Tile_Simulated_Floor ) {
-						Thread13.schedule( 2, (Thread13.Closure)(() => {
-							A.fullUpdateMineralOverlays();
-							return;
-						}));
-					}
-				};
-				T = Rand13.pick( emptyturfs );
-				if ( Misc13.isValid( T ) ) {
-					new Ent_Effect_Glowshroom_Single( T );
-					surprise = null;
-					surprise = GlobalFuncs.pickweight( treasureitems );
-					Misc13.call( surprise, T );
-					emptyturfs -= T;
-					while (areapoints >= 10) {
-						T = Rand13.pick( emptyturfs );
-						garbage = null;
-						garbage = GlobalFuncs.pickweight( fluffitems );
-						Misc13.call( garbage, T );
-						areapoints -= 5;
-						emptyturfs -= T;
-					}
-				}
-			}
-			return true;
-		}
-
-		public static string make_ne_corner( bool adjacencies = false ) {
-			string sdir = "";
-			sdir = "i";
-			if ( adjacencies & 1 && adjacencies & 4 ) {
-				if ( adjacencies & 16 ) {
-					sdir = "f";
-				} else {
-					sdir = "ne";
-				}
-			} else if ( adjacencies & 1 ) {
-				sdir = "n";
-			} else if ( adjacencies & 4 ) {
-				sdir = "e";
-			}
-			return "2-" + sdir;
-		}
-
-		public static string make_nw_corner( bool adjacencies = false ) {
-			string sdir = "";
-			sdir = "i";
-			if ( adjacencies & 1 && adjacencies & 8 ) {
-				if ( adjacencies & 32 ) {
-					sdir = "f";
-				} else {
-					sdir = "nw";
-				}
-			} else if ( adjacencies & 1 ) {
-				sdir = "n";
-			} else if ( adjacencies & 8 ) {
-				sdir = "w";
-			}
-			return "1-" + sdir;
-		}
-
-		public static dynamic make_progress_bar( dynamic current_number = null, int goal_number = 0, dynamic target = null ) {
-			dynamic progbar = null;
-			if ( Misc13.isValid( current_number ) && ( goal_number != 0 ) && Misc13.isValid( target ) ) {
-				progbar = new ByTable().set( "icon_state", "prog_bar_0" ).set( "loc", target ).set( "icon", "icons/effects/doafter_icon.dmi" ).applyCtor( typeof(Image) );
-				progbar.icon_state = "prog_bar_" + Misc13.round( current_number / goal_number * 100, 10 );
-				progbar.pixel_y = 32;
-				return progbar;
-			}
+		public static dynamic make_mining_asteroid_secrets(  ) {
 			return null;
-		}
-
-		public static string make_se_corner( bool adjacencies = false ) {
-			string sdir = "";
-			sdir = "i";
-			if ( adjacencies & 2 && adjacencies & 4 ) {
-				if ( adjacencies & 64 ) {
-					sdir = "f";
-				} else {
-					sdir = "se";
-				}
-			} else if ( adjacencies & 2 ) {
-				sdir = "s";
-			} else if ( adjacencies & 4 ) {
-				sdir = "e";
-			}
-			return "4-" + sdir;
-		}
-
-		public static string make_sw_corner( bool adjacencies = false ) {
-			string sdir = "";
-			sdir = "i";
-			if ( adjacencies & 2 && adjacencies & 8 ) {
-				if ( adjacencies & 128 ) {
-					sdir = "f";
-				} else {
-					sdir = "sw";
-				}
-			} else if ( adjacencies & 2 ) {
-				sdir = "s";
-			} else if ( adjacencies & 8 ) {
-				sdir = "w";
-			}
-			return "3-" + sdir;
 		}
 
 		public static Mob_Living_Carbon_Human makeBody( Mind G_found = null ) {
@@ -8078,7 +7892,7 @@ namespace SomGame {
 			return new_character;
 		}
 
-		public static dynamic makeNewConstruct( Type ctype = null, Mob target = null, dynamic stoner = null, bool cultoverride = false ) {
+		public static dynamic makeNewConstruct( Type ctype = null, Mob_Living target = null, dynamic stoner = null, bool cultoverride = false, dynamic loc_override = null ) {
 			dynamic newstruct = null;
 			if ( stoner == null ) {
 				stoner = null;
@@ -8086,7 +7900,10 @@ namespace SomGame {
 			if ( cultoverride == null ) {
 				cultoverride = false;
 			}
-			newstruct = Misc13.call( ctype, GlobalFuncs.get_turf( target ) );
+			if ( loc_override == null ) {
+				loc_override = null;
+			}
+			newstruct = Misc13.call( ctype, Misc13.isValid( loc_override ) ? loc_override : GlobalFuncs.get_turf( target ) );
 			newstruct.faction |= new Txt().Ref( stoner );
 			newstruct.key = target.key;
 			if ( Misc13.isValid( stoner ) && GlobalFuncs.iscultist( stoner ) || cultoverride ) {
@@ -8101,7 +7918,7 @@ namespace SomGame {
 			if ( Misc13.isValid( stoner ) && GlobalFuncs.iswizard( stoner ) ) {
 				newstruct.write( "<B>You are still bound to serve your creator, follow their orders and help them complete their goals at all costs.</B>" );
 			} else if ( Misc13.isValid( stoner ) && GlobalFuncs.iscultist( stoner ) ) {
-				newstruct.write( "<B>You are still bound to serve the cult, follow their orders and help them complete their goals at all costs.</B>" );
+				newstruct.write( "<B>You are still bound to serve the cult, follow their orders and help them summon the Geometer at all costs.</B>" );
 			} else {
 				newstruct.write( "<B>You are still bound to serve your creator, follow their orders and help them complete their goals at all costs.</B>" );
 			}
@@ -8222,7 +8039,7 @@ namespace SomGame {
 			return net1;
 		}
 
-		public static string merge_text( string into = "", dynamic from = null, string null_char = "" ) {
+		public static string merge_text( dynamic into = null, dynamic from = null, string null_char = "" ) {
 			string _default = "";
 			dynamic null_ascii = null;
 			bool previous = false;
@@ -8330,7 +8147,7 @@ namespace SomGame {
 								continue;
 							}
 							F = GlobalFuncs.get_turf( M2 );
-							I = new ByTable().set( "layer", 18 ).set( "icon_state", M2.scan_state ).set( "loc", F ).set( 1, "icons/turf/mining.dmi" ).applyCtor( typeof(Image) );
+							I = new ByTable().set( "layer", 18 ).set( "icon_state", M2.scan_state ).set( "loc", F ).set( 1, "sound/weapons/Gunshot.ogg" ).applyCtor( typeof(Image) );
 							C.images += I;
 							Thread13.schedule( 30, (Thread13.Closure)(() => {
 								if ( Misc13.isValid( C ) ) {
@@ -8345,7 +8162,7 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic minor_announce( dynamic message = null, string title = "", bool alert = false ) {
+		public static dynamic minor_announce( dynamic message = null, dynamic title = null, bool alert = false ) {
 			dynamic M = null;
 			if ( title == null ) {
 				title = "Attention:";
@@ -8362,9 +8179,9 @@ namespace SomGame {
 				if ( !( M is Mob_NewPlayer ) && !Misc13.isValid( M.ear_deaf ) ) {
 					M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" );
 					if ( alert ) {
-						M.write( new Sound( "sound/misc/notice1.ogg" ) );
+						M.write( new Sound( "sound/weapons/Gunshot3.ogg" ) );
 					} else {
-						M.write( new Sound( "sound/misc/notice2.ogg" ) );
+						M.write( new Sound( "icons/mob/ties.dmi" ) );
 					}
 				}
 			};
@@ -8672,6 +8489,67 @@ namespace SomGame {
 			return null;
 		}
 
+		public static dynamic only_me(  ) {
+			Mob_Living_Carbon_Human H = null;
+			Objective_Hijackclone hijack_objective = null;
+			int obj_count = 0;
+			Objective OBJ = null;
+			dynamic slot_item_ID = null;
+			dynamic slot_item_hand = null;
+			Ent_Item_Weapon_Multisword multi = null;
+			Ent_Item_Weapon_Card_Id W = null;
+			if ( ( GlobalVars.ticker == null ) || !Misc13.isValid( GlobalVars.ticker.mode ) ) {
+				Misc13.alert( "The game hasn't started yet!", null, null, null, null, null );
+				return null;
+			}
+			H = null;
+			foreach (dynamic _b in GlobalVars.player_list ) {
+				H = _b as Mob_Living_Carbon_Human;
+				if ( H == null ) {
+					continue;
+				}
+				if ( H.stat == 2 || !Misc13.isValid( H.client ) ) {
+					continue;
+				}
+				if ( GlobalFuncs.is_special_character( H ) != 0 ) {
+					continue;
+				}
+				GlobalVars.ticker.mode.traitors += H.mind;
+				H.mind.special_role = "" + H.real_name + " Prime";
+				hijack_objective = new Objective_Hijackclone();
+				hijack_objective.owner = H.mind;
+				H.mind.objectives += hijack_objective;
+				H.write( "<B>You are the multiverse summoner. Activate your blade to summon copies of yourself from another universe to fight by your side.</B>" );
+				obj_count = 1;
+				OBJ = null;
+				foreach (dynamic _a in H.mind.objectives ) {
+					OBJ = _a as Objective;
+					if ( OBJ == null ) {
+						continue;
+					}
+					H.write( "<B>Objective #" + obj_count + "</B>: " + OBJ.explanation_text );
+					obj_count++;
+				};
+				slot_item_ID = H.get_item_by_slot( 7 );
+				GlobalFuncs.qdel( slot_item_ID );
+				slot_item_hand = H.get_item_by_slot( 5 );
+				H.unEquip( slot_item_hand );
+				multi = new Ent_Item_Weapon_Multisword( H );
+				H.equip_to_slot_or_del( multi, 5 );
+				W = new Ent_Item_Weapon_Card_Id( H );
+				W.icon_state = "centcom";
+				W.access = GlobalFuncs.get_all_accesses();
+				W.access += GlobalFuncs.get_all_centcom_access();
+				W.assignment = "Multiverse Summoner";
+				W.registered_name = H.real_name;
+				W.update_label( H.real_name );
+				H.equip_to_slot_or_del( W, 7 );
+			};
+			GlobalFuncs.message_admins( "<span class='adminnotice'>" + GlobalFuncs.key_name_admin( Misc13.thread_user ) + " used THERE CAN BE ONLY ME!</span>" );
+			GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Misc13.thread_user ) + " used there can be only me." );
+			return null;
+		}
+
 		public static dynamic parse_zone( dynamic zone = null ) {
 			if ( zone == "r_hand" ) {
 				return "right hand";
@@ -8860,7 +8738,7 @@ namespace SomGame {
 			return null;
 		}
 
-		public static ByTable pollCandidates( string Question = "", string jobbanType = "", GameMode_Nuclear gametypeCheck = null, int be_special_flag = 0, int poll_time = 0 ) {
+		public static ByTable pollCandidates( string Question = "", string jobbanType = "", GameMode_Nuclear gametypeCheck = null, dynamic be_special_flag = null, int poll_time = 0 ) {
 			ByTable candidates = null;
 			double time_passed = 0;
 			Mob_Dead_Observer G = null;
@@ -8885,7 +8763,7 @@ namespace SomGame {
 				if ( !Misc13.isValid( G.key ) || !Misc13.isValid( G.client ) ) {
 					continue;
 				}
-				if ( be_special_flag != 0 ) {
+				if ( Misc13.isValid( be_special_flag ) ) {
 					if ( !Misc13.isValid( G.client.prefs.be_special & be_special_flag ) ) {
 						continue;
 					}
@@ -8901,13 +8779,13 @@ namespace SomGame {
 					}
 				}
 				Thread13.schedule( 0, (Thread13.Closure)(() => {
-					G.write( "sound/misc/notice2.ogg" );
+					G.write( "icons/mob/ties.dmi" );
 					dynamic _a = Misc13.alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ); // Was a switch-case, sorry for the mess.
 					if ( _a=="Yes" ) {
 						G.write( "<span class='notice'>Choice registered: Yes.</span>" );
 						if ( Game13.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
-							G.write( "sound/machines/buzz-sigh.ogg" );
+							G.write( "sound/AI/newroundsexy.ogg" );
 							return;
 						}
 						candidates += G;
@@ -9002,7 +8880,7 @@ namespace SomGame {
 			dynamic A2 = null;
 			bool skip2 = false;
 			dynamic area_type2 = null;
-			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", "sound/AI/poweroff.ogg" );
+			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", "sound/voice/hiss1.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a as Ent_Machinery_Power_Smes;
@@ -9138,7 +9016,7 @@ namespace SomGame {
 			Ent_Machinery_Power_Apc C = null;
 			Ent_Machinery_Power_Smes S = null;
 			dynamic A = null;
-			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
+			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", "sound/voice/hiss2.ogg" );
 			C = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				C = _a as Ent_Machinery_Power_Apc;
@@ -9182,7 +9060,7 @@ namespace SomGame {
 
 		public static dynamic power_restore_quick(  ) {
 			Ent_Machinery_Power_Smes S = null;
-			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
+			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", "sound/voice/hiss2.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a as Ent_Machinery_Power_Smes;
@@ -9260,7 +9138,7 @@ namespace SomGame {
 				title = "";
 			}
 			if ( sound == null ) {
-				sound = "sound/AI/attention.ogg";
+				sound = "sound/weapons/Gunshot2.ogg";
 			}
 			if ( !Misc13.isValid( text ) ) {
 				return null;
@@ -9446,10 +9324,6 @@ namespace SomGame {
 			if ( !( epicenter is Tile ) ) {
 				epicenter = GlobalFuncs.get_turf( epicenter.loc );
 			}
-			if ( log ) {
-				GlobalFuncs.message_admins( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " );
-				GlobalFuncs.log_game( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " );
-			}
 			if ( heavy_range > light_range ) {
 				light_range = heavy_range;
 			}
@@ -9476,6 +9350,9 @@ namespace SomGame {
 					T.rad_act( light_severity );
 				}
 			};
+			if ( log ) {
+				GlobalFuncs.log_game( "Radiation pulse with size (" + heavy_range + ", " + light_range + ") and severity " + severity + " in area " + epicenter.loc.name + " " );
+			}
 			return true;
 		}
 
@@ -9979,33 +9856,21 @@ namespace SomGame {
 		}
 
 		public static ByTable recursive_hear_check( BaseDynamic O = null ) {
+			ByTable _default = null;
 			ByTable processing_list = null;
-			ByTable processed_list = null;
-			ByTable found_atoms = null;
 			dynamic A = null;
-			BaseStatic B = null;
 			processing_list = new ByTable(new object [] { O });
-			processed_list = new ByTable();
-			found_atoms = new ByTable();
+			_default = new ByTable();
 			while (Misc13.isValid( processing_list.len )) {
 				A = processing_list[1];
 				if ( Misc13.isValid( ( A.flags & 16 ) ) ) {
-					found_atoms |= A;
+					_default += A;
 				}
-				B = null;
-				foreach (dynamic _a in A ) {
-					B = _a as BaseStatic;
-					if ( B == null ) {
-						continue;
-					}
-					if ( !Misc13.isValid( processed_list[B] ) ) {
-						processing_list |= B;
-					}
-				};
 				processing_list.Cut( 1, 2 );
-				processed_list[A] = A;
+				processing_list += A.contents;
 			}
-			return found_atoms;
+			return _default;
+			return _default;
 		}
 
 		public static ByTable recursive_mob_check( dynamic O = null, bool client_check = false, bool sight_check = false, bool include_radio = false ) {
@@ -10071,6 +9936,15 @@ namespace SomGame {
 
 		public static Regex regex_note_sql_extract( dynamic str = null, string exp = "" ) {
 			return new Regex( str, exp, Misc13.call( Misc13.getf_dll( "bin/bygex", "regEx_find" ), str, exp ) );
+		}
+
+		public static dynamic regEx_replaceall( dynamic str = null, string exp = "", string fmt = "" ) {
+			return Misc13.call( Misc13.getf_dll( "bin/bygex", "regEx_replaceall" ), str, exp, fmt );
+		}
+
+		public static dynamic register_asset( string asset_name = "", dynamic asset = null ) {
+			GlobalVars.SSasset.cache[asset_name] = asset;
+			return null;
 		}
 
 		public static string reject_bad_name( dynamic t_in = null, bool allow_numbers = false, int max_length = 0 ) {
@@ -10221,6 +10095,17 @@ namespace SomGame {
 			return null;
 		}
 
+		public static dynamic religion_name(  ) {
+			string name = "";
+			if ( Misc13.isValid( GlobalVars.religion_name ) ) {
+				return GlobalVars.religion_name;
+			}
+			name = "";
+			name += Rand13.pick(new object [] { "bee", "science", "edu", "captain", "assistant", "monkey", "alien", "space", "unit", "sprocket", "gadget", "bomb", "revolution", "beyond", "station", "goon", "robot", "ivor", "hobnob" });
+			name += Rand13.pick(new object [] { "ism", "ia", "ology", "istism", "ites", "ick", "ian", "ity" });
+			return GlobalFuncs.capitalize( name );
+		}
+
 		public static dynamic remove_note( dynamic note_id = null ) {
 			dynamic ckey = null;
 			dynamic notetext = null;
@@ -10321,45 +10206,6 @@ namespace SomGame {
 			return true;
 		}
 
-		public static bool RemoveBanjob( dynamic foldername = null ) {
-			dynamic key = null;
-			dynamic id = null;
-			dynamic rank = null;
-			dynamic A = null;
-			GlobalVars.Banlistjob.cd = "/base/" + foldername;
-			key = GlobalVars.Banlistjob["key"].read();
-			id = GlobalVars.Banlistjob["id"].read();
-			rank = GlobalVars.Banlistjob["rank"].read();
-			GlobalVars.Banlistjob.cd = "/base";
-			if ( !Misc13.isValid( GlobalVars.Banlistjob.dir.Remove( foldername ) ) ) {
-				return false;
-			}
-			if ( !Misc13.isValid( Misc13.thread_user ) ) {
-				GlobalFuncs.log_admin( "Banjob Expired: " + key );
-				GlobalFuncs.message_admins( "Banjob Expired: " + key );
-			} else {
-				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Misc13.thread_user ) + " unjobbanned " + key + " from " + rank );
-				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Misc13.thread_user ) + " unjobbanned:" + key + " from " + rank );
-				GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Misc13.thread_user ) + " unjobbanned " + key + " from " + rank );
-				GlobalFuncs.feedback_inc( "ban_job_unban", true );
-				GlobalFuncs.feedback_add_details( "ban_job_unban", "- " + rank );
-			}
-			A = null;
-			foreach (dynamic _a in GlobalVars.Banlistjob.dir ) {
-				A = _a;
-				if ( A == null ) {
-					continue;
-				}
-				GlobalVars.Banlistjob.cd = "/base/" + A;
-				if ( ( key == GlobalVars.Banlistjob["key"] || id == GlobalVars.Banlistjob["id"] ) && rank == GlobalVars.Banlistjob["rank"] ) {
-					GlobalVars.Banlistjob.cd = "/base";
-					GlobalVars.Banlistjob.dir.Remove( A );
-					continue;
-				}
-			};
-			return true;
-		}
-
 		public static ByTable removeNullsFromList( ByTable L = null ) {
 			while (Misc13.isValid( L.Remove( null ) )) {
 				continue;
@@ -10388,7 +10234,7 @@ namespace SomGame {
 			return Misc13.call( Misc13.getf_dll( "bin/bygex", "regex_replaceallliteral" ), str, exp, fmt );
 		}
 
-		public static dynamic replacetextEx( dynamic str = null, string exp = "", string fmt = "" ) {
+		public static dynamic replacetextEx( dynamic str = null, string exp = "", dynamic fmt = null ) {
 			return Misc13.call( Misc13.getf_dll( "bin/bygex", "regEx_replaceallliteral" ), str, exp, fmt );
 		}
 
@@ -10575,15 +10421,8 @@ namespace SomGame {
 			dynamic randomizeguns = null;
 			dynamic randomizemagic = null;
 			dynamic randomizemagicspecial = null;
-			Ent_Item_Weapon_Gun_Energy_Lasercannon gat = null;
-			Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow_Large gat2 = null;
-			Ent_Item_Weapon_Gun_Energy_Gun_Nuclear gat3 = null;
-			Ent_Item_Weapon_Gun_Projectile_Automatic_Proto gat4 = null;
-			Ent_Item_Weapon_Gun_Projectile_Automatic_Shotgun_Bulldog gat5 = null;
-			Ent_Item_Weapon_Gun_Projectile_Automatic_C20r gat6 = null;
-			Ent_Item_Weapon_Gun_Projectile_Automatic_L6Saw gat7 = null;
-			Ent_Item_Weapon_Gun_Projectile_Automatic_M90 gat8 = null;
-			gunslist = new ByTable(new object [] { "taser", "egun", "laser", "revolver", "detective", "c20r", "nuclear", "deagle", "gyrojet", "pulse", "suppressed", "cannon", "doublebarrel", "shotgun", "combatshotgun", "bulldog", "mateba", "sabr", "crossbow", "saw", "car", "boltaction", "speargun", "arg", "uzi" });
+			Ent_Item_Weapon_Gun G = null;
+			gunslist = new ByTable(new object [] { "taser", "egun", "laser", "revolver", "detective", "c20r", "nuclear", "deagle", "gyrojet", "pulse", "suppressed", "cannon", "doublebarrel", "shotgun", "combatshotgun", "bulldog", "mateba", "sabr", "crossbow", "saw", "car", "boltaction", "speargun", "arg", "uzi", "alienpistol", "dragnet", "turret", "pulsecarbine", "decloner", "mindflayer", "hyperkinetic", "advplasmacutter", "wormhole", "wt550", "bulldog", "grenadelauncher", "goldenrevolver", "sniper", "medibeam", "scatterbeam" });
 			magiclist = new ByTable(new object [] { "fireball", "smoke", "blind", "mindswap", "forcewall", "knock", "horsemask", "charge", "summonitem", "wandnothing", "wanddeath", "wandresurrection", "wandpolymorph", "wandteleport", "wanddoor", "wandfireball", "staffchange", "staffhealing", "armor", "scrying", "staffdoor", "voodoo", "special" });
 			magicspeciallist = new ByTable(new object [] { "staffchange", "staffanimation", "wandbelt", "contract", "staffchaos", "necromantic" });
 			if ( Misc13.isValid( user ) ) {
@@ -10631,68 +10470,94 @@ namespace SomGame {
 				randomizemagic = Rand13.pick( magiclist );
 				randomizemagicspecial = Rand13.pick( magicspeciallist );
 				if ( !summon_type ) {
+					G = null;
 					dynamic _b = randomizeguns; // Was a switch-case, sorry for the mess.
 					if ( _b=="taser" ) {
-						new Ent_Item_Weapon_Gun_Energy_Gun_Advtaser( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Energy_Gun_Advtaser( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="egun" ) {
-						new Ent_Item_Weapon_Gun_Energy_Gun( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Energy_Gun( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="laser" ) {
-						new Ent_Item_Weapon_Gun_Energy_Laser( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Energy_Laser( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="revolver" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Revolver( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="detective" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Revolver_Detective( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver_Detective( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="deagle" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol_Deagle_Camo( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol_Deagle_Camo( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="gyrojet" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_Gyropistol( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Gyropistol( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="pulse" ) {
-						new Ent_Item_Weapon_Gun_Energy_Pulse( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Energy_Pulse( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="suppressed" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Pistol( GlobalFuncs.get_turf( H ) );
 						new Ent_Item_Weapon_Suppressor( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="doublebarrel" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Revolver_Doublebarrel( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver_Doublebarrel( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="shotgun" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Shotgun( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Shotgun( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="combatshotgun" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Shotgun_Automatic_Combat( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Shotgun_Automatic_Combat( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="arg" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_Ar( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Ar( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="mateba" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Revolver_Mateba( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver_Mateba( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="boltaction" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Shotgun_Boltaction( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Shotgun_Boltaction( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="speargun" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_Speargun( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Speargun( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="uzi" ) {
-						new Ent_Item_Weapon_Gun_Projectile_Automatic_MiniUzi( GlobalFuncs.get_turf( H ) );
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_MiniUzi( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="cannon" ) {
-						gat = new Ent_Item_Weapon_Gun_Energy_Lasercannon( GlobalFuncs.get_turf( H ) );
-						gat.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Energy_Lasercannon( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="crossbow" ) {
-						gat2 = new Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow_Large( GlobalFuncs.get_turf( H ) );
-						gat2.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow_Large( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="nuclear" ) {
-						gat3 = new Ent_Item_Weapon_Gun_Energy_Gun_Nuclear( GlobalFuncs.get_turf( H ) );
-						gat3.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Energy_Gun_Nuclear( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="sabr" ) {
-						gat4 = new Ent_Item_Weapon_Gun_Projectile_Automatic_Proto( GlobalFuncs.get_turf( H ) );
-						gat4.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Proto( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="bulldog" ) {
-						gat5 = new Ent_Item_Weapon_Gun_Projectile_Automatic_Shotgun_Bulldog( GlobalFuncs.get_turf( H ) );
-						gat5.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Shotgun_Bulldog( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="c20r" ) {
-						gat6 = new Ent_Item_Weapon_Gun_Projectile_Automatic_C20r( GlobalFuncs.get_turf( H ) );
-						gat6.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_C20r( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="saw" ) {
-						gat7 = new Ent_Item_Weapon_Gun_Projectile_Automatic_L6Saw( GlobalFuncs.get_turf( H ) );
-						gat7.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_L6Saw( GlobalFuncs.get_turf( H ) );
 					} else if ( _b=="car" ) {
-						gat8 = new Ent_Item_Weapon_Gun_Projectile_Automatic_M90( GlobalFuncs.get_turf( H ) );
-						gat8.pin = new Ent_Item_Device_FiringPin();
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_M90( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="alienpistol" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Alien( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="dragnet" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Gun_Dragnet( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="turret" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Gun_Turret( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="pulsecarbine" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Pulse_Carbine( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="decloner" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Decloner( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="mindflayer" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Mindflayer( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="hyperkinetic" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Hyper( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="advplasmacutter" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Plasmacutter_Adv( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="wormhole" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_WormholeProjector( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="wt550" ) {
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Wt550( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="bulldog" ) {
+						G = new Ent_Item_Weapon_Gun_Projectile_Automatic_Shotgun( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="grenadelauncher" ) {
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver_Grenadelauncher( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="goldenrevolver" ) {
+						G = new Ent_Item_Weapon_Gun_Projectile_Revolver_Golden( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="sniper" ) {
+						G = new Ent_Item_Weapon_Gun_Projectile_SniperRifle( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="medibeam" ) {
+						G = new Ent_Item_Weapon_Gun_Medbeam( GlobalFuncs.get_turf( H ) );
+					} else if ( _b=="scatterbeam" ) {
+						G = new Ent_Item_Weapon_Gun_Energy_Laser_Scatter( GlobalFuncs.get_turf( H ) );
 					};
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_guns.ogg", 50, 1 );
+					G.unlock();
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/voice/hiss3.ogg", 50, 1 );
 				} else {
 					dynamic _d = randomizemagic; // Was a switch-case, sorry for the mess.
 					if ( _d=="fireball" ) {
@@ -10759,7 +10624,7 @@ namespace SomGame {
 						};
 						H.write( "<span class='notice'>You suddenly feel lucky.</span>" );
 					};
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_Magic.ogg", 50, 1 );
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/voice/hiss4.ogg", 50, 1 );
 				}
 			};
 			return null;
@@ -11018,7 +10883,7 @@ namespace SomGame {
 			dynamic RGB = null;
 			HSL = GlobalFuncs.rgb2hsl( GlobalFuncs.hex2num( Misc13.str_sub( color, 2, 4 ) ), GlobalFuncs.hex2num( Misc13.str_sub( color, 4, 6 ) ), GlobalFuncs.hex2num( Misc13.str_sub( color, 6, 8 ) ) );
 			HSL[3] = Misc13.min( HSL[3], 0.4000000059604645 );
-			RGB = HSL.apply( typeof(GlobalFuncs).GetMethod( "get_dist_euclidian ") );
+			RGB = HSL.apply( typeof(GlobalFuncs).GetMethod( "circleview ") );
 			return "#" + GlobalFuncs.num2hex( RGB[1], 2 ) + GlobalFuncs.num2hex( RGB[2], 2 ) + GlobalFuncs.num2hex( RGB[3], 2 );
 		}
 
@@ -11059,6 +10924,17 @@ namespace SomGame {
 			return Misc13.str_sub( sqltext, 2, sqltext.Length );
 		}
 
+		public static string say_test( dynamic text = null ) {
+			dynamic ending = null;
+			ending = Misc13.str_sub( text, text.Length, null );
+			if ( ending == "?" ) {
+				return "1";
+			} else if ( ending == "!" ) {
+				return "2";
+			}
+			return "0";
+		}
+
 		public static bool scramble_dna( dynamic M = null, bool ui = false, bool se = false, dynamic probability = null ) {
 			int i = 0;
 			int i2 = 0;
@@ -11074,7 +10950,7 @@ namespace SomGame {
 			if ( se ) {
 				i = 0;
 				i = 1;
-				while (i <= 20) {
+				while (i <= 19) {
 					if ( Misc13.isValid( Rand13.chance( probability ) ) ) {
 						M.dna.struc_enzymes = GlobalFuncs.setblock( M.dna.struc_enzymes, i, GlobalFuncs.random_string( 3, GlobalVars.hex_characters ) );
 					}
@@ -11667,6 +11543,121 @@ namespace SomGame {
 			return _default;
 		}
 
+		public static bool send_asset( dynamic client = null, string asset_name = "", bool verify = false ) {
+			dynamic M = null;
+			dynamic job = null;
+			int t = 0;
+			dynamic timeout_time = null;
+			if ( verify == null ) {
+				verify = GlobalVars.TRUE;
+			}
+			if ( !Misc13.isValid( typeof(Client).IsInstanceOfType( client ) ) ) {
+				if ( client is Mob ) {
+					M = client;
+					if ( Misc13.isValid( M.client ) ) {
+						client = M.client;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+			if ( Misc13.isValid( client.cache.Find( asset_name ) ) || Misc13.isValid( client.sending.Find( asset_name ) ) ) {
+				return false;
+			}
+			Misc13.browse_cache_rsc( client, GlobalVars.SSasset.cache[asset_name], asset_name );
+			if ( !verify || !Misc13.isValid( Misc13.window_exists( client, "asset_cache_browser" ) ) ) {
+				if ( Misc13.isValid( client ) ) {
+					client.cache += asset_name;
+				}
+				return true;
+			}
+			if ( !Misc13.isValid( client ) ) {
+				return false;
+			}
+			client.sending |= asset_name;
+			job = ++client.last_asset_job;
+			Misc13.browse( client, "\n	<script>\n		window.location.href=\"?asset_cache_confirm_arrival=" + job + "\"\n	</script>\n	", "window=asset_cache_browser" );
+			t = 0;
+			timeout_time = client.sending.len * 7 + 7;
+			while (Misc13.isValid( client ) && !Misc13.isValid( client.completed_asset_jobs.Find( job ) ) && t < timeout_time) {
+				Thread13.sleep( 1 );
+				t++;
+			}
+			if ( Misc13.isValid( client ) ) {
+				client.sending -= asset_name;
+				client.cache |= asset_name;
+				client.completed_asset_jobs -= job;
+			}
+			return true;
+		}
+
+		public static bool send_asset_list( dynamic client = null, dynamic asset_list = null, bool verify = false ) {
+			dynamic M = null;
+			dynamic unreceived = null;
+			dynamic asset = null;
+			dynamic job = null;
+			int t = 0;
+			dynamic timeout_time = null;
+			if ( verify == null ) {
+				verify = GlobalVars.TRUE;
+			}
+			if ( !Misc13.isValid( typeof(Client).IsInstanceOfType( client ) ) ) {
+				if ( client is Mob ) {
+					M = client;
+					if ( Misc13.isValid( M.client ) ) {
+						client = M.client;
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			}
+			unreceived = asset_list - ( client.cache + client.sending );
+			if ( !Misc13.isValid( unreceived ) || !Misc13.isValid( unreceived.len ) ) {
+				return false;
+			}
+			if ( unreceived.len >= 8 ) {
+				client.write( "Sending Resources..." );
+			}
+			asset = null;
+			foreach (dynamic _a in unreceived ) {
+				asset = _a;
+				if ( asset == null ) {
+					continue;
+				}
+				if ( Misc13.isValid( GlobalVars.SSasset.cache.contains( asset ) ) ) {
+					Misc13.browse_cache_rsc( client, GlobalVars.SSasset.cache[asset], asset );
+				}
+			};
+			if ( !verify || !Misc13.isValid( Misc13.window_exists( client, "asset_cache_browser" ) ) ) {
+				if ( Misc13.isValid( client ) ) {
+					client.cache += unreceived;
+				}
+				return true;
+			}
+			if ( !Misc13.isValid( client ) ) {
+				return false;
+			}
+			client.sending |= unreceived;
+			job = ++client.last_asset_job;
+			Misc13.browse( client, "\n	<script>\n		window.location.href=\"?asset_cache_confirm_arrival=" + job + "\"\n	</script>\n	", "window=asset_cache_browser" );
+			t = 0;
+			timeout_time = client.sending.len * 7;
+			while (Misc13.isValid( client ) && !Misc13.isValid( client.completed_asset_jobs.Find( job ) ) && t < timeout_time) {
+				Thread13.sleep( 1 );
+				t++;
+			}
+			if ( Misc13.isValid( client ) ) {
+				client.sending -= unreceived;
+				client.cache |= unreceived;
+				client.completed_asset_jobs -= job;
+			}
+			return true;
+		}
+
 		public static dynamic send_byjax( dynamic receiver = null, string control_id = "", string target_element = "", dynamic new_content = null, string callback = "", dynamic callback_args = null ) {
 			ByTable argums = null;
 			if ( new_content == null ) {
@@ -11911,6 +11902,19 @@ namespace SomGame {
 			ByTable possible_points = null;
 			ByTable used_points = null;
 			dynamic A2 = null;
+			ByTable x_pos_beginning = null;
+			ByTable y_pos_beginning = null;
+			ByTable x_pos_ending = null;
+			ByTable y_pos_ending = null;
+			ByTable x_pos_transition = null;
+			ByTable y_pos_transition = null;
+			int zlevelnumber = 0;
+			int side = 0;
+			dynamic beginning = null;
+			dynamic ending = null;
+			dynamic turfblock = null;
+			dynamic dirside = null;
+			int zdestination = 0;
 			Tile_Space S = null;
 			dynamic A3 = null;
 			SLS = new ByTable();
@@ -11982,93 +11986,56 @@ namespace SomGame {
 				}
 				grid[A2] = GlobalVars.z_levels_list[A2];
 			};
-			S = null;
-			foreach (dynamic _d in Game13.contents ) {
-				S = _d as Tile_Space;
-				if ( S == null ) {
-					continue;
+			x_pos_beginning = new ByTable(new object [] { 1, 1, Game13.maxx - 7, 1 });
+			y_pos_beginning = new ByTable(new object [] { Game13.maxy - 7, 1, 7, 7 });
+			x_pos_ending = new ByTable(new object [] { Game13.maxx, Game13.maxx, Game13.maxx, 7 });
+			y_pos_ending = new ByTable(new object [] { Game13.maxy, 7, Game13.maxy - 7, Game13.maxy - 7 });
+			x_pos_transition = new ByTable(new object [] { 1, 1, 9, Game13.maxx - 7 - 2 });
+			y_pos_transition = new ByTable(new object [] { 9, Game13.maxy - 7 - 2, 1, 1 });
+			zlevelnumber = 0;
+			zlevelnumber = 1;
+			while (zlevelnumber <= grid.len) {
+				D = grid["" + zlevelnumber];
+				if ( !Misc13.isValid( D ) ) {
+					Misc13.crash( "" + zlevelnumber + " position has no space level datum." );
 				}
-				if ( S.x <= 7 ) {
-					D = grid["" + S.z];
-					if ( !Misc13.isValid( D ) ) {
-						Misc13.crash( "" + S.z + " position has no space level datum" );
-					}
-					if ( !Misc13.isValid( D.neigbours.len ) ) {
-						continue;
-					}
-					if ( Misc13.isValid( D.neigbours["8"] ) && D.neigbours["8"] != D ) {
-						D = D.neigbours["8"];
-						S.destination_z = D.z_value;
-					} else {
-						while (Misc13.isValid( D.neigbours["4"] ) && D.neigbours["4"] != D) {
-							D = D.neigbours["4"];
+				if ( !Misc13.isValid( D.neigbours.len ) ) {
+					
+				} else {
+					side = 0;
+					side = 1;
+					while (side < 5) {
+						beginning = Misc13.get_turf_at( x_pos_beginning[side], y_pos_beginning[side], zlevelnumber );
+						ending = Misc13.get_turf_at( x_pos_ending[side], y_pos_ending[side], zlevelnumber );
+						turfblock = Misc13.block( beginning, ending );
+						dirside = Math.Pow( 2, side - 1 );
+						zdestination = zlevelnumber;
+						if ( Misc13.isValid( D.neigbours["" + dirside] ) && D.neigbours["" + dirside] != D ) {
+							D = D.neigbours["" + dirside];
+							zdestination = D.z_value;
+						} else {
+							dirside = Misc13.turn( dirside, 180 );
+							while (Misc13.isValid( D.neigbours["" + dirside] ) && D.neigbours["" + dirside] != D) {
+								D = D.neigbours["" + dirside];
+							}
+							zdestination = D.z_value;
 						}
-						S.destination_z = D.z_value;
+						D = grid["" + zlevelnumber];
+						S = null;
+						foreach (dynamic _d in turfblock ) {
+							S = _d as Tile_Space;
+							if ( S == null ) {
+								continue;
+							}
+							S.destination_x = x_pos_transition[side] == 1 ? S.x : x_pos_transition[side];
+							S.destination_y = y_pos_transition[side] == 1 ? S.y : y_pos_transition[side];
+							S.destination_z = zdestination;
+						};
+						side++;
 					}
-					S.destination_x = Game13.maxx - 7 - 2;
-					S.destination_y = S.y;
 				}
-				if ( S.x >= Game13.maxx - 7 - 1 ) {
-					D = grid["" + S.z];
-					if ( !Misc13.isValid( D ) ) {
-						Misc13.crash( "" + S.z + " position has no space level datum" );
-					}
-					if ( !Misc13.isValid( D.neigbours.len ) ) {
-						continue;
-					}
-					if ( Misc13.isValid( D.neigbours["4"] ) && D.neigbours["4"] != D ) {
-						D = D.neigbours["4"];
-						S.destination_z = D.z_value;
-					} else {
-						while (Misc13.isValid( D.neigbours["8"] ) && D.neigbours["8"] != D) {
-							D = D.neigbours["8"];
-						}
-						S.destination_z = D.z_value;
-					}
-					S.destination_x = 9;
-					S.destination_y = S.y;
-				}
-				if ( S.y <= 7 ) {
-					D = grid["" + S.z];
-					if ( !Misc13.isValid( D ) ) {
-						Misc13.crash( "" + S.z + " position has no space level datum" );
-					}
-					if ( !Misc13.isValid( D.neigbours.len ) ) {
-						continue;
-					}
-					if ( Misc13.isValid( D.neigbours["2"] ) && D.neigbours["2"] != D ) {
-						D = D.neigbours["2"];
-						S.destination_z = D.z_value;
-					} else {
-						while (Misc13.isValid( D.neigbours["1"] ) && D.neigbours["1"] != D) {
-							D = D.neigbours["1"];
-						}
-						S.destination_z = D.z_value;
-					}
-					S.destination_x = S.x;
-					S.destination_y = Game13.maxy - 7 - 2;
-				}
-				if ( S.y >= Game13.maxy - 7 - 1 ) {
-					D = grid["" + S.z];
-					if ( !Misc13.isValid( D ) ) {
-						Misc13.crash( "" + S.z + " position has no space level datum" );
-					}
-					if ( !Misc13.isValid( D.neigbours.len ) ) {
-						continue;
-					}
-					if ( Misc13.isValid( D.neigbours["1"] ) && D.neigbours["1"] != D ) {
-						D = D.neigbours["1"];
-						S.destination_z = D.z_value;
-					} else {
-						while (Misc13.isValid( D.neigbours["2"] ) && D.neigbours["2"] != D) {
-							D = D.neigbours["2"];
-						}
-						S.destination_z = D.z_value;
-					}
-					S.destination_x = S.x;
-					S.destination_y = 9;
-				}
-			};
+				zlevelnumber++;
+			}
 			A3 = null;
 			foreach (dynamic _e in grid ) {
 				A3 = _e;
@@ -12104,33 +12071,33 @@ namespace SomGame {
 		}
 
 		public static dynamic shake_camera( dynamic M = null, int duration = 0, int strength = 0 ) {
-			dynamic oldeye = null;
-			int x = 0;
+			dynamic C = null;
+			dynamic oldx = null;
+			dynamic oldy = null;
+			int max = 0;
+			int min = 0;
+			dynamic i = null;
 			if ( strength == null ) {
 				strength = 1;
 			}
-			Thread13.schedule( 0, (Thread13.Closure)(() => {
-				if ( !Misc13.isValid( M ) || !Misc13.isValid( M.client ) || Misc13.isValid( M.shakecamera ) ) {
-					return;
+			if ( !Misc13.isValid( M ) || !Misc13.isValid( M.client ) || duration <= 0 ) {
+				return null;
+			}
+			C = M.client;
+			oldx = C.pixel_x;
+			oldy = C.pixel_y;
+			max = strength * Game13.icon_size;
+			min = -( strength * Game13.icon_size );
+			i = null;
+			foreach (dynamic _a in Misc13.iter_range( 0, duration - 1 ) ) {
+				i = _a;
+				if ( i == 0 ) {
+					Misc13.animate_listcall( new ByTable().set( "time", 1 ).set( "pixel_y", Rand13.Int( min, max ) ).set( "pixel_x", Rand13.Int( min, max ) ).set( 1, C ) );
+				} else {
+					Misc13.animate_listcall( new ByTable().set( "time", 1 ).set( "pixel_y", Rand13.Int( min, max ) ).set( "pixel_x", Rand13.Int( min, max ) ) );
 				}
-				oldeye = M.client.eye;
-				M.shakecamera = 1;
-				x = 0;
-				while (x < duration) {
-					if ( Misc13.isValid( M ) && Misc13.isValid( M.client ) ) {
-						M.client.eye = Misc13.get_turf_at( GlobalFuncs.dd_range( 1, M.loc.x + Rand13.Int( -strength, strength ), Game13.maxx ), GlobalFuncs.dd_range( 1, M.loc.y + Rand13.Int( -strength, strength ), Game13.maxy ), M.loc.z );
-						Thread13.sleep( 1 );
-					}
-					x++;
-				}
-				if ( Misc13.isValid( M ) ) {
-					M.shakecamera = 0;
-					if ( Misc13.isValid( M.client ) ) {
-						M.client.eye = oldeye;
-					}
-				}
-				return;
-			}));
+			};
+			Misc13.animate_listcall( new ByTable().set( "time", 1 ).set( "pixel_y", oldy ).set( "pixel_x", oldx ) );
 			return null;
 		}
 
@@ -12313,21 +12280,84 @@ namespace SomGame {
 
 		public static dynamic smooth_icon( BaseStatic A = null ) {
 			bool adjacencies = false;
+			string nw = "";
+			string ne = "";
+			string sw = "";
+			string se = "";
 			if ( GlobalFuncs.qdeleted( A ) ) {
 				return null;
 			}
 			Thread13.schedule( 0, (Thread13.Closure)(() => {
 				if ( ( A != null ) && ( A.smooth != 0 ) ) {
 					adjacencies = GlobalFuncs.calculate_adjacencies( A );
-					A.clear_smooth_overlays();
-					A.top_left_corner = GlobalFuncs.make_nw_corner( adjacencies );
-					A.top_right_corner = GlobalFuncs.make_ne_corner( adjacencies );
-					A.bottom_left_corner = GlobalFuncs.make_sw_corner( adjacencies );
-					A.bottom_right_corner = GlobalFuncs.make_se_corner( adjacencies );
-					A.overlays += A.top_left_corner;
-					A.overlays += A.top_right_corner;
-					A.overlays += A.bottom_right_corner;
-					A.overlays += A.bottom_left_corner;
+					nw = "1-i";
+					if ( adjacencies & 2 && adjacencies & 256 ) {
+						if ( adjacencies & 512 ) {
+							nw = "1-f";
+						} else {
+							nw = "1-nw";
+						}
+					} else if ( adjacencies & 2 ) {
+						nw = "1-n";
+					} else if ( adjacencies & 256 ) {
+						nw = "1-w";
+					}
+					ne = "2-i";
+					if ( adjacencies & 2 && adjacencies & 16 ) {
+						if ( adjacencies & 32 ) {
+							ne = "2-f";
+						} else {
+							ne = "2-ne";
+						}
+					} else if ( adjacencies & 2 ) {
+						ne = "2-n";
+					} else if ( adjacencies & 16 ) {
+						ne = "2-e";
+					}
+					sw = "3-i";
+					if ( adjacencies & 4 && adjacencies & 256 ) {
+						if ( adjacencies & 1024 ) {
+							sw = "3-f";
+						} else {
+							sw = "3-sw";
+						}
+					} else if ( adjacencies & 4 ) {
+						sw = "3-s";
+					} else if ( adjacencies & 256 ) {
+						sw = "3-w";
+					}
+					se = "4-i";
+					if ( adjacencies & 4 && adjacencies & 16 ) {
+						if ( adjacencies & 64 ) {
+							se = "4-f";
+						} else {
+							se = "4-se";
+						}
+					} else if ( adjacencies & 4 ) {
+						se = "4-s";
+					} else if ( adjacencies & 16 ) {
+						se = "4-e";
+					}
+					if ( A.top_left_corner != nw ) {
+						A.overlays -= A.top_left_corner;
+						A.top_left_corner = nw;
+						A.overlays += nw;
+					}
+					if ( A.top_right_corner != ne ) {
+						A.overlays -= A.top_right_corner;
+						A.top_right_corner = ne;
+						A.overlays += ne;
+					}
+					if ( A.bottom_right_corner != sw ) {
+						A.overlays -= A.bottom_right_corner;
+						A.bottom_right_corner = sw;
+						A.overlays += sw;
+					}
+					if ( A.bottom_left_corner != se ) {
+						A.overlays -= A.bottom_left_corner;
+						A.bottom_left_corner = se;
+						A.overlays += se;
+					}
 				}
 				return;
 			}));
@@ -12335,14 +12365,16 @@ namespace SomGame {
 		}
 
 		public static dynamic smooth_icon_neighbors( BaseStatic A = null ) {
-			BaseStatic T = null;
-			T = null;
+			dynamic V = null;
+			dynamic T = null;
+			V = null;
 			foreach (dynamic _a in Misc13.range_nocenter( A, 1 ) ) {
-				T = _a as BaseStatic;
-				if ( T == null ) {
+				V = _a;
+				if ( V == null ) {
 					continue;
 				}
-				if ( T.smooth != 0 ) {
+				T = V;
+				if ( Misc13.isValid( T.smooth ) ) {
 					GlobalFuncs.smooth_icon( T );
 				}
 			};
@@ -12785,7 +12817,7 @@ namespace SomGame {
 			sqlpod = GlobalFuncs.sanitizeSQL( podname );
 			sqlspecial = GlobalFuncs.sanitizeSQL( H.mind.special_role );
 			sqljob = GlobalFuncs.sanitizeSQL( H.mind.assigned_role );
-			if ( H.lastattacker != null ) {
+			if ( Misc13.isValid( H.lastattacker ) ) {
 				laname = GlobalFuncs.sanitizeSQL( H.lastattacker.real_name );
 				lakey = GlobalFuncs.sanitizeSQL( H.lastattacker.key );
 			}
@@ -12836,7 +12868,7 @@ namespace SomGame {
 			sqlpod = GlobalFuncs.sanitizeSQL( podname );
 			sqlspecial = GlobalFuncs.sanitizeSQL( H.mind.special_role );
 			sqljob = GlobalFuncs.sanitizeSQL( H.mind.assigned_role );
-			if ( H.lastattacker != null ) {
+			if ( Misc13.isValid( H.lastattacker ) ) {
 				laname = GlobalFuncs.sanitizeSQL( H.lastattacker.real_name );
 				lakey = GlobalFuncs.sanitizeSQL( H.lastattacker.key );
 			}
@@ -12859,7 +12891,7 @@ namespace SomGame {
 			return Misc13.formatTime( Game13.realtime, "YYYY-MM-DD hh:mm:ss" );
 		}
 
-		public static dynamic stars( dynamic n = null, double pr = 0 ) {
+		public static dynamic stars( dynamic n = null, int pr = 0 ) {
 			dynamic te = null;
 			string t = "";
 			int p = 0;
@@ -13140,6 +13172,153 @@ namespace SomGame {
 			return name;
 		}
 
+		public static dynamic tesla_zap( Entity source = null, int zap_range = 0, dynamic power = null ) {
+			ByTable tesla_coils = null;
+			ByTable grounding_rods = null;
+			ByTable potential_machine_zaps = null;
+			ByTable potential_mob_zaps = null;
+			ByTable potential_structure_zaps = null;
+			dynamic closest_atom = null;
+			BaseStatic A = null;
+			BaseStatic C = null;
+			BaseStatic R = null;
+			BaseStatic M = null;
+			BaseStatic M2 = null;
+			BaseStatic L = null;
+			dynamic C2 = null;
+			dynamic R2 = null;
+			dynamic L2 = null;
+			dynamic shock_damage = null;
+			dynamic S = null;
+			dynamic M3 = null;
+			dynamic S2 = null;
+			if ( zap_range == null ) {
+				zap_range = 3;
+			}
+			if ( power < 500 ) {
+				return null;
+			}
+			tesla_coils = new ByTable();
+			grounding_rods = new ByTable();
+			potential_machine_zaps = new ByTable();
+			potential_mob_zaps = new ByTable();
+			potential_structure_zaps = new ByTable();
+			A = null;
+			foreach (dynamic _a in Misc13.oview( source, zap_range ) ) {
+				A = _a as BaseStatic;
+				if ( A == null ) {
+					continue;
+				}
+				if ( A is Ent_Machinery_Power_TeslaCoil ) {
+					C = A;
+					if ( Misc13.isValid( C.being_shocked ) ) {
+						continue;
+					}
+					tesla_coils.Add( C );
+					continue;
+				}
+				if ( A is Ent_Machinery_Power_GroundingRod ) {
+					R = A;
+					grounding_rods.Add( R );
+					continue;
+				}
+				if ( A is Ent_Machinery ) {
+					M = A;
+					if ( GlobalFuncs.is_type_in_list( M, GlobalVars.blacklisted_tesla_types ) ) {
+						continue;
+					}
+					if ( Misc13.isValid( M.being_shocked ) ) {
+						continue;
+					}
+					potential_machine_zaps.Add( M );
+					continue;
+				}
+				if ( A is Ent_Structure ) {
+					M2 = A;
+					if ( GlobalFuncs.is_type_in_list( M2, GlobalVars.blacklisted_tesla_types ) ) {
+						continue;
+					}
+					if ( Misc13.isValid( M2.being_shocked ) ) {
+						continue;
+					}
+					potential_structure_zaps.Add( M2 );
+					continue;
+				}
+				if ( A is Mob_Living ) {
+					L = A;
+					if ( L.stat == 2 ) {
+						continue;
+					}
+					if ( GlobalFuncs.is_type_in_list( L, GlobalVars.blacklisted_tesla_types ) ) {
+						continue;
+					}
+					potential_mob_zaps.Add( L );
+					continue;
+				}
+			};
+			closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery_Power_TeslaCoil), tesla_coils, source );
+			if ( Misc13.isValid( closest_atom ) && closest_atom is Ent_Machinery_Power_TeslaCoil ) {
+				C2 = closest_atom;
+				new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, C2 ).apply( source.GetType().GetMethod( "Beam" ) );
+				C2.tesla_act( power );
+				return null;
+			}
+			if ( !Misc13.isValid( closest_atom ) ) {
+				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery_Power_GroundingRod), grounding_rods, source );
+				if ( Misc13.isValid( closest_atom ) && closest_atom is Ent_Machinery_Power_GroundingRod ) {
+					R2 = closest_atom;
+					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, R2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					R2.tesla_act( power );
+					return null;
+				}
+			}
+			if ( !Misc13.isValid( closest_atom ) ) {
+				closest_atom = GlobalFuncs.get_closest_atom( typeof(Mob_Living), potential_mob_zaps, source );
+				if ( Misc13.isValid( closest_atom ) && closest_atom is Mob_Living ) {
+					L2 = closest_atom;
+					shock_damage = Misc13.max( 10, Misc13.min( Misc13.round( power / 400 ), 90 ) ) + Rand13.Int( -5, 5 );
+					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, L2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					new ByTable().set( "tesla_shock", 1 ).set( 3, 1 ).set( 2, source ).set( 1, shock_damage ).apply( L2.GetType().GetMethod( "electrocute_act" ) );
+					if ( L2 is Mob_Living_Silicon ) {
+						S = L2;
+						S.emp_act( 2 );
+						GlobalFuncs.tesla_zap( S, 7, power / 1.5 );
+					} else {
+						GlobalFuncs.tesla_zap( L2, 5, power / 1.5 );
+					}
+					return null;
+				}
+			}
+			if ( !Misc13.isValid( closest_atom ) ) {
+				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery), potential_machine_zaps, source );
+				if ( Misc13.isValid( closest_atom ) ) {
+					M3 = closest_atom;
+					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, M3 ).apply( source.GetType().GetMethod( "Beam" ) );
+					M3.tesla_act( power );
+					if ( Misc13.isValid( Rand13.chance( 85 ) ) ) {
+						M3.emp_act( 2 );
+					} else if ( Misc13.isValid( Rand13.chance( 50 ) ) ) {
+						M3.ex_act( 3 );
+					} else if ( Misc13.isValid( Rand13.chance( 90 ) ) ) {
+						M3.ex_act( 2 );
+					} else {
+						M3.ex_act( 1 );
+					}
+					return null;
+				}
+			}
+			if ( !Misc13.isValid( closest_atom ) ) {
+				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Structure), potential_structure_zaps, source );
+				if ( Misc13.isValid( closest_atom ) ) {
+					S2 = closest_atom;
+					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, S2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					S2.tesla_act( power );
+					return null;
+				}
+			}
+			return null;
+		}
+
 		public static dynamic testing( string msg = "" ) {
 			return null;
 		}
@@ -13169,23 +13348,29 @@ namespace SomGame {
 		public static ByTable text2list( dynamic text = null, string delimiter = "" ) {
 			ByTable _default = null;
 			dynamic delim_len = null;
-			bool last_found = false;
-			dynamic found = null;
+			int last_found = 0;
+			int found = 0;
+			dynamic text_len = null;
 			if ( delimiter == null ) {
 				delimiter = "\n";
 			}
 			delim_len = delimiter.Length;
-			if ( delim_len < 1 ) {
-				return new ByTable(new object [] { text });
-			}
 			_default = new ByTable();
-			last_found = true;
-			while (true) { // Was a do-while, sorry for the mess.
-				found = Misc13.str_find( text, delimiter, last_found, 0 );
-				_default += Misc13.str_sub( text, last_found, found );
-				last_found = Misc13.isValid( ( found + delim_len ) );
-				if (!( Misc13.isValid( found ) )) break;
-			};
+			last_found = 1;
+			found = 1;
+			if ( delim_len < 1 ) {
+				text_len = text.Length;
+				while (found++ <= text_len) {
+					_default += Misc13.str_sub( text, found - 1, found );
+				}
+			} else {
+				while (true) { // Was a do-while, sorry for the mess.
+					found = Misc13.str_find( text, delimiter, last_found, 0 );
+					_default += Misc13.str_sub( text, last_found, found );
+					last_found = found + delim_len;
+					if (!( found != 0 )) break;
+				};
+			}
 			return _default;
 			return _default;
 		}
@@ -13294,22 +13479,6 @@ namespace SomGame {
 			return Misc13.block( x1y1, x2y2 );
 		}
 
-		public static int transform_dir( dynamic direction = null ) {
-			dynamic _a = direction; // Was a switch-case, sorry for the mess.
-			if ( _a==1 || _a==2 || _a==4 || _a==8 ) {
-				return direction;
-			} else if ( _a==5 ) {
-				return 16;
-			} else if ( _a==9 ) {
-				return 32;
-			} else if ( _a==6 ) {
-				return 64;
-			} else if ( _a==10 ) {
-				return 128;
-			};
-			return 0;
-		}
-
 		public static dynamic TransformUsingVariable( int input = 0, int inputmaximum = 0, double scaling_modifier = 0 ) {
 			int inputToDegrees = 0;
 			dynamic size_factor = null;
@@ -13363,7 +13532,7 @@ namespace SomGame {
 				if ( direction == null ) {
 					continue;
 				}
-				if ( AM.Move( Misc13.isValid( Misc13.get_step( T, direction ) ) ) ) {
+				if ( AM.Move( Misc13.get_step( T, direction ) ) ) {
 					break;
 				}
 			};
@@ -13373,11 +13542,11 @@ namespace SomGame {
 		public static string ui_style2icon( dynamic ui_style = null ) {
 			dynamic _a = ui_style; // Was a switch-case, sorry for the mess.
 			if ( _a=="Retro" ) {
-				return "icons/mob/screen_retro.dmi";
+				return "sound/misc/bangindonk.ogg";
 			} else if ( _a=="Plasmafire" ) {
-				return "icons/mob/screen_plasmafire.dmi";
+				return "sound/misc/leavingtg.ogg";
 			} else {
-				return "icons/mob/screen_midnight.dmi";
+				return "sound/misc/notice2.ogg";
 			};
 			return null;
 		}
@@ -13560,9 +13729,9 @@ namespace SomGame {
 				return false;
 			}
 			if ( Misc13.isValid( I.throwforce ) && Misc13.isValid( I.w_class ) ) {
-				return Misc13.isValid( GlobalFuncs.Clamp( ( I.throwforce + I.w_class ) * 5, 30, 100 ) );
+				return Misc13.isValid( Misc13.max( 30, Misc13.min( ( I.throwforce + I.w_class ) * 5, 100 ) ) );
 			} else if ( Misc13.isValid( I.w_class ) ) {
-				return Misc13.isValid( GlobalFuncs.Clamp( I.w_class * 8, 20, 100 ) );
+				return Misc13.isValid( Misc13.max( 20, Misc13.min( I.w_class * 8, 100 ) ) );
 			} else {
 				return false;
 			}
@@ -13767,7 +13936,7 @@ namespace SomGame {
 			return null;
 		}
 
-		public static dynamic wear_female_version( string t_color = "", dynamic icon = null, int layer = 0, bool type = false ) {
+		public static dynamic wear_female_version( string t_color = "", string icon = "", int layer = 0, bool type = false ) {
 			string index = "";
 			dynamic female_clothing_icon = null;
 			dynamic standing = null;

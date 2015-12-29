@@ -20,19 +20,16 @@ namespace SomEngine {
 			GlobalVars.diaryofmeanpeople = new File( "data/logs/" + date_string + " Attack.log" );
 			GlobalVars.diary.write( "\n\nStarting up. " + Misc13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
 			GlobalVars.diaryofmeanpeople.write( "\n\nStarting up. " + Misc13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
-			GlobalVars.changelog_hash = Misc13.call( GlobalVars.undefined, "html/changelog.html" );
+			GlobalVars.changelog_hash = Misc13.call( GlobalVars.undefined, "icons/ss13_64.png" );
 			GlobalFuncs.make_datum_references_lists();
 			Game13./world/proc/load_configuration();
 			Game13./world/proc/load_mode();
 			Game13./world/proc/load_motd();
 			GlobalFuncs.load_admins();
-			GlobalFuncs.LoadBansjob();
 			if ( GlobalVars.config.usewhitelist ) {
 				GlobalFuncs.load_whitelist();
 			}
-			GlobalFuncs.jobban_loadbanfile();
 			GlobalFuncs.appearance_loadbanfile();
-			GlobalFuncs.jobban_updatelegacybans();
 			GlobalFuncs.LoadBans();
 			GlobalFuncs.investigate_reset();
 			if ( ( GlobalVars.config != null ) && GlobalVars.config.server_name != null && GlobalVars.config.server_suffix && Game13.port > 0 ) {
@@ -48,7 +45,7 @@ namespace SomEngine {
 			}
 			GlobalVars.data_core = new Datacore();
 			Thread13.schedule( -1, (Thread13.Closure)(() => {
-				GlobalVars.master_controller.setup();
+				GlobalVars.Master.Setup();
 				return;
 			}));
 			GlobalFuncs.process_teleport_locs();
