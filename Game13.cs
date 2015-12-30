@@ -20,7 +20,7 @@ namespace SomEngine {
 			GlobalVars.diaryofmeanpeople = new File( "data/logs/" + date_string + " Attack.log" );
 			GlobalVars.diary.write( "\n\nStarting up. " + Misc13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
 			GlobalVars.diaryofmeanpeople.write( "\n\nStarting up. " + Misc13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
-			GlobalVars.changelog_hash = Misc13.call( GlobalVars.undefined, "icons/ss13_64.png" );
+			GlobalVars.changelog_hash = Misc13.call( GlobalVars.undefined, "html/changelog.html" );
 			GlobalFuncs.make_datum_references_lists();
 			Game13./world/proc/load_configuration();
 			Game13./world/proc/load_mode();
@@ -60,7 +60,7 @@ namespace SomEngine {
     at decomp_func (E:\somnium\somnium\somdecomp.js:3046:20)
     at decomp_func (E:\somnium\somnium\somstruct.js:95:12)
     at E:\somnium\somnium\somstruct.js:318:4
-    at E:\somnium\somnium\sompipe.js:1852:4
+    at E:\somnium\somnium\sompipe.js:1854:4
     at fs.js:334:14
     at FSReqWrap.oncomplete (fs.js:95:15) */
 
@@ -170,7 +170,7 @@ namespace SomEngine {
     at decomp_func (E:\somnium\somnium\somdecomp.js:3046:20)
     at decomp_func (E:\somnium\somnium\somstruct.js:95:12)
     at E:\somnium\somnium\somstruct.js:318:4
-    at E:\somnium\somnium\sompipe.js:1852:4
+    at E:\somnium\somnium\sompipe.js:1854:4
     at fs.js:334:14
     at FSReqWrap.oncomplete (fs.js:95:15) */
 

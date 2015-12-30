@@ -54,6 +54,8 @@ Project started early October (~8th?). It took about a month to start generating
 - Dec 25: 131 Errors.
 - Dec 26: 141 Errors. (Gluing virtual methods together was hard. Next two days I'll make an honest effort to knock out a bunch of issues!)
 - Dec 27: 196 Errors. (Type inference improvements really took a toll on it...)
+- Dec 28: Large scale clusterfuck.
+- Dec 29: Large scale clusterfuck mostly resolved. Resource names are always correct now.
 
 **Current:** Fixing issues with C# code generation. Going to try getting it compiling by the new year!
 

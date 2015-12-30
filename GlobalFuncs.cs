@@ -3419,7 +3419,7 @@ namespace SomGame {
 				return text;
 			}
 			if ( !Misc13.isValid( GlobalVars.emojis ) ) {
-				GlobalVars.emojis = Misc13.icon_states( null, new Icon( "sound/effects/pageturn3.ogg" ) );
+				GlobalVars.emojis = Misc13.icon_states( null, new Icon( "icons/emoji.dmi" ) );
 			}
 			parsed = "";
 			pos = 1;
@@ -3434,7 +3434,7 @@ namespace SomGame {
 					if ( search ) {
 						emoji = Misc13.str_lower( Misc13.str_sub( text, pos + 1, search ) );
 						if ( Misc13.isValid( GlobalVars.emojis.contains( emoji ) ) ) {
-							parsed += new Txt( "<img class=icon src=" ).Ref( "sound/effects/pageturn3.ogg" ).str( " iconstate='" ).item( emoji ).str( "'>" );
+							parsed += new Txt( "<img class=icon src=" ).Ref( "icons/emoji.dmi" ).str( " iconstate='" ).item( emoji ).str( "'>" );
 							pos = search + 1;
 						} else {
 							parsed += Misc13.str_sub( text, pos, search );
@@ -3555,7 +3555,7 @@ namespace SomGame {
     at decomp_func (E:\somnium\somnium\somdecomp.js:3046:20)
     at decomp_func (E:\somnium\somnium\somstruct.js:95:12)
     at E:\somnium\somnium\somstruct.js:323:4
-    at E:\somnium\somnium\sompipe.js:1852:4
+    at E:\somnium\somnium\sompipe.js:1854:4
     at fs.js:334:14
     at FSReqWrap.oncomplete (fs.js:95:15) */
 
@@ -3939,7 +3939,7 @@ namespace SomGame {
 			dynamic female_clothing_icon = null;
 			dynamic female_s = null;
 			female_clothing_icon = new ByTable().set( "icon_state", t_color ).set( "icon", icon ).applyCtor( typeof(Icon) );
-			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", "sound/effects/pageturn2.ogg" ).applyCtor( typeof(Icon) );
+			female_s = new ByTable().set( "icon_state", "" + ( type == 1 ? "female_full" : "female_top" ) ).set( "icon", "icons/mob/uniform.dmi" ).applyCtor( typeof(Icon) );
 			female_clothing_icon.Blend( female_s, 2 );
 			female_clothing_icon = File13.cache( female_clothing_icon );
 			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
@@ -5303,27 +5303,27 @@ namespace SomGame {
 			if ( soundin is string ) {
 				dynamic _a = soundin; // Was a switch-case, sorry for the mess.
 				if ( _a=="shatter" ) {
-					soundin = Rand13.pick(new object [] { "sound/machines/buzz-sigh.ogg", "icons/mob/uniform.dmi", "icons/mob/hands.dmi" });
+					soundin = Rand13.pick(new object [] { "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg" });
 				} else if ( _a=="explosion" ) {
-					soundin = Rand13.pick(new object [] { "nano/assets/nanoui.css", "icons/effects/weather_effects.dmi" });
+					soundin = Rand13.pick(new object [] { "sound/effects/Explosion1.ogg", "sound/effects/Explosion2.ogg" });
 				} else if ( _a=="sparks" ) {
-					soundin = Rand13.pick(new object [] { "icons/mob/nest.dmi", "icons/obj/mining.dmi", "icons/mob/screen_retro.dmi", "icons/mob/screen_plasmafire.dmi" });
+					soundin = Rand13.pick(new object [] { "sound/effects/sparks1.ogg", "sound/effects/sparks2.ogg", "sound/effects/sparks3.ogg", "sound/effects/sparks4.ogg" });
 				} else if ( _a=="rustle" ) {
-					soundin = Rand13.pick(new object [] { "icons/mob/screen_midnight.dmi", "icons/effects/doafter_icon.dmi", "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/rustle1.ogg", "sound/effects/rustle2.ogg", "sound/effects/rustle3.ogg", "sound/effects/rustle4.ogg", "sound/effects/rustle5.ogg" });
 				} else if ( _a=="bodyfall" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/Explosion1.ogg", "sound/effects/Explosion2.ogg", "sound/effects/sparks1.ogg", "sound/effects/sparks2.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/bodyfall1.ogg", "sound/effects/bodyfall2.ogg", "sound/effects/bodyfall3.ogg", "sound/effects/bodyfall4.ogg" });
 				} else if ( _a=="punch" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/sparks3.ogg", "sound/effects/sparks4.ogg", "sound/effects/rustle1.ogg", "sound/effects/rustle2.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/weapons/punch1.ogg", "sound/weapons/punch2.ogg", "sound/weapons/punch3.ogg", "sound/weapons/punch4.ogg" });
 				} else if ( _a=="clownstep" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/rustle3.ogg", "sound/effects/rustle4.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/clownstep1.ogg", "sound/effects/clownstep2.ogg" });
 				} else if ( _a=="swing_hit" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/rustle5.ogg", "sound/effects/bodyfall1.ogg", "sound/effects/bodyfall2.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
 				} else if ( _a=="hiss" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/bodyfall3.ogg", "sound/effects/bodyfall4.ogg", "sound/weapons/punch1.ogg", "sound/weapons/punch2.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/voice/hiss1.ogg", "sound/voice/hiss2.ogg", "sound/voice/hiss3.ogg", "sound/voice/hiss4.ogg" });
 				} else if ( _a=="pageturn" ) {
-					soundin = Rand13.pick(new object [] { "sound/weapons/punch3.ogg", "sound/weapons/punch4.ogg", "sound/effects/clownstep1.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/effects/pageturn1.ogg", "sound/effects/pageturn2.ogg", "sound/effects/pageturn3.ogg" });
 				} else if ( _a=="gunshot" ) {
-					soundin = Rand13.pick(new object [] { "sound/effects/clownstep2.ogg", "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
+					soundin = Rand13.pick(new object [] { "sound/weapons/gunshot.ogg", "sound/weapons/Gunshot2.ogg", "sound/weapons/Gunshot3.ogg", "sound/weapons/Gunshot4.ogg" });
 				};
 			}
 			return soundin;
@@ -5654,7 +5654,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			blank_icon = new Icon( "sound/misc/apcdestroyed.ogg", "blank_base" );
+			blank_icon = new Icon( "icons/effects/effects.dmi", "blank_base" );
 			blank_icon.AddAlphaMask( flat_icon );
 			return blank_icon;
 		}
@@ -5771,7 +5771,7 @@ namespace SomGame {
 			if ( defblend == null ) {
 				defblend = Misc13.isValid( null.blend_mode );
 			}
-			flat = new Icon( "sound/misc/apcdestroyed.ogg", "nothing" );
+			flat = new Icon( "icons/effects/effects.dmi", "nothing" );
 			if ( !Misc13.isValid( A ) ) {
 				return flat;
 			}
@@ -5955,7 +5955,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.ColorTone( "#7db4e1" );
 			flat_icon.ChangeOpacity( 0.5 );
-			alpha_mask = new Icon( "sound/misc/apcdestroyed.ogg", "scanline" );
+			alpha_mask = new Icon( "icons/effects/effects.dmi", "scanline" );
 			flat_icon.AddAlphaMask( alpha_mask );
 			return flat_icon;
 		}
@@ -6164,7 +6164,7 @@ namespace SomGame {
 			flat_icon = safety ? A : new Icon( A );
 			flat_icon.Blend( "#ffffff" );
 			flat_icon.BecomeAlphaMask();
-			static_icon = new Icon( "sound/misc/apcdestroyed.ogg", "static_base" );
+			static_icon = new Icon( "icons/effects/effects.dmi", "static_base" );
 			static_icon.AddAlphaMask( flat_icon );
 			return static_icon;
 		}
@@ -7630,7 +7630,7 @@ namespace SomGame {
     at decomp_func (E:\somnium\somnium\somdecomp.js:3046:20)
     at decomp_func (E:\somnium\somnium\somstruct.js:95:12)
     at E:\somnium\somnium\somstruct.js:323:4
-    at E:\somnium\somnium\sompipe.js:1852:4
+    at E:\somnium\somnium\sompipe.js:1854:4
     at fs.js:334:14
     at FSReqWrap.oncomplete (fs.js:95:15) */
 
@@ -8147,7 +8147,7 @@ namespace SomGame {
 								continue;
 							}
 							F = GlobalFuncs.get_turf( M2 );
-							I = new ByTable().set( "layer", 18 ).set( "icon_state", M2.scan_state ).set( "loc", F ).set( 1, "sound/weapons/Gunshot.ogg" ).applyCtor( typeof(Image) );
+							I = new ByTable().set( "layer", 18 ).set( "icon_state", M2.scan_state ).set( "loc", F ).set( 1, "icons/turf/mining.dmi" ).applyCtor( typeof(Image) );
 							C.images += I;
 							Thread13.schedule( 30, (Thread13.Closure)(() => {
 								if ( Misc13.isValid( C ) ) {
@@ -8179,9 +8179,9 @@ namespace SomGame {
 				if ( !( M is Mob_NewPlayer ) && !Misc13.isValid( M.ear_deaf ) ) {
 					M.write( "<b><font size = 3><font color = red>" + title + "</font color><BR>" + message + "</font size></b><BR>" );
 					if ( alert ) {
-						M.write( new Sound( "sound/weapons/Gunshot3.ogg" ) );
+						M.write( new Sound( "sound/misc/notice1.ogg" ) );
 					} else {
-						M.write( new Sound( "icons/mob/ties.dmi" ) );
+						M.write( new Sound( "sound/misc/notice2.ogg" ) );
 					}
 				}
 			};
@@ -8779,13 +8779,13 @@ namespace SomGame {
 					}
 				}
 				Thread13.schedule( 0, (Thread13.Closure)(() => {
-					G.write( "icons/mob/ties.dmi" );
+					G.write( "sound/misc/notice2.ogg" );
 					dynamic _a = Misc13.alert( G, Question, "Please answer in " + poll_time / 10 + " seconds!", "Yes", "No", null ); // Was a switch-case, sorry for the mess.
 					if ( _a=="Yes" ) {
 						G.write( "<span class='notice'>Choice registered: Yes.</span>" );
 						if ( Game13.time - time_passed > poll_time ) {
 							G.write( "<span class='danger'>Sorry, you were too late for the consideration!</span>" );
-							G.write( "sound/AI/newroundsexy.ogg" );
+							G.write( "sound/machines/buzz-sigh.ogg" );
 							return;
 						}
 						candidates += G;
@@ -8880,7 +8880,7 @@ namespace SomGame {
 			dynamic A2 = null;
 			bool skip2 = false;
 			dynamic area_type2 = null;
-			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", "sound/voice/hiss1.ogg" );
+			GlobalFuncs.priority_announce( "Abnormal activity detected in " + GlobalFuncs.station_name() + "'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure", "sound/AI/poweroff.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a as Ent_Machinery_Power_Smes;
@@ -9016,7 +9016,7 @@ namespace SomGame {
 			Ent_Machinery_Power_Apc C = null;
 			Ent_Machinery_Power_Smes S = null;
 			dynamic A = null;
-			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", "sound/voice/hiss2.ogg" );
+			GlobalFuncs.priority_announce( "Power has been restored to " + GlobalFuncs.station_name() + ". We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
 			C = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				C = _a as Ent_Machinery_Power_Apc;
@@ -9060,7 +9060,7 @@ namespace SomGame {
 
 		public static dynamic power_restore_quick(  ) {
 			Ent_Machinery_Power_Smes S = null;
-			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", "sound/voice/hiss2.ogg" );
+			GlobalFuncs.priority_announce( "All SMESs on " + GlobalFuncs.station_name() + " have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", "sound/AI/poweron.ogg" );
 			S = null;
 			foreach (dynamic _a in GlobalVars.machines ) {
 				S = _a as Ent_Machinery_Power_Smes;
@@ -9138,7 +9138,7 @@ namespace SomGame {
 				title = "";
 			}
 			if ( sound == null ) {
-				sound = "sound/weapons/Gunshot2.ogg";
+				sound = "sound/ai/attention.ogg";
 			}
 			if ( !Misc13.isValid( text ) ) {
 				return null;
@@ -10557,7 +10557,7 @@ namespace SomGame {
 						G = new Ent_Item_Weapon_Gun_Energy_Laser_Scatter( GlobalFuncs.get_turf( H ) );
 					};
 					G.unlock();
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/voice/hiss3.ogg", 50, 1 );
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_guns.ogg", 50, 1 );
 				} else {
 					dynamic _d = randomizemagic; // Was a switch-case, sorry for the mess.
 					if ( _d=="fireball" ) {
@@ -10624,7 +10624,7 @@ namespace SomGame {
 						};
 						H.write( "<span class='notice'>You suddenly feel lucky.</span>" );
 					};
-					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/voice/hiss4.ogg", 50, 1 );
+					GlobalFuncs.playsound( GlobalFuncs.get_turf( H ), "sound/magic/Summon_Magic.ogg", 50, 1 );
 				}
 			};
 			return null;
@@ -13259,7 +13259,7 @@ namespace SomGame {
 			closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery_Power_TeslaCoil), tesla_coils, source );
 			if ( Misc13.isValid( closest_atom ) && closest_atom is Ent_Machinery_Power_TeslaCoil ) {
 				C2 = closest_atom;
-				new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, C2 ).apply( source.GetType().GetMethod( "Beam" ) );
+				new ByTable().set( "time", 5 ).set( "icon", "icons/effects/effects.dmi" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, C2 ).apply( source.GetType().GetMethod( "Beam" ) );
 				C2.tesla_act( power );
 				return null;
 			}
@@ -13267,7 +13267,7 @@ namespace SomGame {
 				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery_Power_GroundingRod), grounding_rods, source );
 				if ( Misc13.isValid( closest_atom ) && closest_atom is Ent_Machinery_Power_GroundingRod ) {
 					R2 = closest_atom;
-					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, R2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					new ByTable().set( "time", 5 ).set( "icon", "icons/effects/effects.dmi" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, R2 ).apply( source.GetType().GetMethod( "Beam" ) );
 					R2.tesla_act( power );
 					return null;
 				}
@@ -13277,7 +13277,7 @@ namespace SomGame {
 				if ( Misc13.isValid( closest_atom ) && closest_atom is Mob_Living ) {
 					L2 = closest_atom;
 					shock_damage = Misc13.max( 10, Misc13.min( Misc13.round( power / 400 ), 90 ) ) + Rand13.Int( -5, 5 );
-					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, L2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					new ByTable().set( "time", 5 ).set( "icon", "icons/effects/effects.dmi" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, L2 ).apply( source.GetType().GetMethod( "Beam" ) );
 					new ByTable().set( "tesla_shock", 1 ).set( 3, 1 ).set( 2, source ).set( 1, shock_damage ).apply( L2.GetType().GetMethod( "electrocute_act" ) );
 					if ( L2 is Mob_Living_Silicon ) {
 						S = L2;
@@ -13293,7 +13293,7 @@ namespace SomGame {
 				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Machinery), potential_machine_zaps, source );
 				if ( Misc13.isValid( closest_atom ) ) {
 					M3 = closest_atom;
-					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, M3 ).apply( source.GetType().GetMethod( "Beam" ) );
+					new ByTable().set( "time", 5 ).set( "icon", "icons/effects/effects.dmi" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, M3 ).apply( source.GetType().GetMethod( "Beam" ) );
 					M3.tesla_act( power );
 					if ( Misc13.isValid( Rand13.chance( 85 ) ) ) {
 						M3.emp_act( 2 );
@@ -13311,7 +13311,7 @@ namespace SomGame {
 				closest_atom = GlobalFuncs.get_closest_atom( typeof(Ent_Structure), potential_structure_zaps, source );
 				if ( Misc13.isValid( closest_atom ) ) {
 					S2 = closest_atom;
-					new ByTable().set( "time", 5 ).set( "icon", "sound/misc/apcdestroyed.ogg" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, S2 ).apply( source.GetType().GetMethod( "Beam" ) );
+					new ByTable().set( "time", 5 ).set( "icon", "icons/effects/effects.dmi" ).set( "icon_state", "lightning" + Rand13.Int( 1, 12 ) ).set( 1, S2 ).apply( source.GetType().GetMethod( "Beam" ) );
 					S2.tesla_act( power );
 					return null;
 				}
@@ -13542,11 +13542,11 @@ namespace SomGame {
 		public static string ui_style2icon( dynamic ui_style = null ) {
 			dynamic _a = ui_style; // Was a switch-case, sorry for the mess.
 			if ( _a=="Retro" ) {
-				return "sound/misc/bangindonk.ogg";
+				return "icons/mob/screen_retro.dmi";
 			} else if ( _a=="Plasmafire" ) {
-				return "sound/misc/leavingtg.ogg";
+				return "icons/mob/screen_plasmafire.dmi";
 			} else {
-				return "sound/misc/notice2.ogg";
+				return "icons/mob/screen_midnight.dmi";
 			};
 			return null;
 		}
