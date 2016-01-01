@@ -45,11 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes.cs" />
-    <Compile Include="Engine\ByTable.cs" />
-    <Compile Include="Engine\ServerMain.cs" />
-    <Compile Include="Engine\SomClasses.cs" />
-    <Compile Include="Engine\SomCore.cs" />
-    <Compile Include="Engine\SomLib.cs" />
+    <Compile Include="engine\ByTable.cs" />
+    <Compile Include="engine\lib\Lang13.cs" />
+    <Compile Include="engine\lib\String13.cs" />
+    <Compile Include="engine\lib\File13.cs" />
+    <Compile Include="engine\lib\Icon13.cs" />
+    <Compile Include="engine\lib\Type13.cs" />
+    <Compile Include="engine\lib\Map13.cs" />
+    <Compile Include="engine\ServerMain.cs" />
+    <Compile Include="engine\SomClasses.cs" />
+    <Compile Include="engine\SomCore.cs" />
+    <Compile Include="engine\SomLib.cs" />
     <Compile Include="Game13.cs" />
     <Compile Include="GlobalFuncs.cs" />
     <Compile Include="GlobalVars.cs" />
