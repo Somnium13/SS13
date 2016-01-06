@@ -27,6 +27,7 @@ After watching many clones come and go (several of them my own), I decided that 
 7. We will have much more potential for cool shit once we can edit the engine the game runs on.
 
 Today I partially completed the first stage of that process. The translated codebase compiles. It's incredibly unlikely that anything will work very well, but that can be fixed over time. I hope I've managed to convince you that this is maybe not an entirely terrible idea. If you're interested in helping, please see below. If you think I'm an idiot, hit me up at bigboysauceboss@aol.com with your concerns, and I will try to answer them.
+
 -- melichior 1/5/16
 
 **TLDR: I decided we need to ditch BYOND so I transcompiled SS13 to C#. See the numbered list for reasons why this isn't as dumb as it sounds.**
