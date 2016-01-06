@@ -35,7 +35,7 @@ Today I partially completed the first stage of that process. The translated code
 
 I'll try to address your concerns here.
 
-#### How does this differ from OpenBYOND?
+##### How does this differ from OpenBYOND?
 The two projects are similar, but OpenBYOND still relies on BYOND's scripting language, whereas this project aims to abandon the damn thing. For what it's worth, OpenBYOND seems to be.
 
 ## Contributing
