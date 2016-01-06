@@ -23,8 +23,8 @@ This is the entirety of tgstation, translated from DM to C#. You're probably won
 - Current: Assembling the Meme Team.
 
 ## Credits
-melichior - Project Lead - Wrote the transcompiler
-YotaXP - Useful Information - Not actually affiliated with this project
+- melichior - Project Lead - Wrote the transcompiler
+- YotaXP - Useful Information - Not actually affiliated with this project
 
 ## License
 [Licenses of tgstation.](https://github.com/somnium13/-tg-station#license) I'm not really sure how these apply to this project.
