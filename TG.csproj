@@ -45,17 +45,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes.cs" />
-    <Compile Include="engine\ByTable.cs" />
-    <Compile Include="engine\lib\Lang13.cs" />
-    <Compile Include="engine\lib\String13.cs" />
-    <Compile Include="engine\lib\File13.cs" />
-    <Compile Include="engine\lib\Icon13.cs" />
-    <Compile Include="engine\lib\Type13.cs" />
-    <Compile Include="engine\lib\Map13.cs" />
-    <Compile Include="engine\ServerMain.cs" />
-    <Compile Include="engine\SomClasses.cs" />
-    <Compile Include="engine\SomCore.cs" />
-    <Compile Include="engine\SomLib.cs" />
+    <Compile Include="engine\base_classes\CoreMatrix.cs" />
+    <Compile Include="engine\Jake.cs" />
+    <Compile Include="engine\lib_classes\ByTable.cs" />
+    <Compile Include="engine\lib_static\Game13.cs" />
+    <Compile Include="engine\lib_static\Interface13.cs" />
+    <Compile Include="engine\lib_static\DB13.cs" />
+    <Compile Include="engine\lib_classes\SaveFile.cs" />
+    <Compile Include="engine\lib_static\Sys13.cs" />
+    <Compile Include="engine\lib_static\Rand13.cs" />
+    <Compile Include="engine\lib_static\Num13.cs" />
+    <Compile Include="engine\lib_static\Lang13.cs" />
+    <Compile Include="engine\lib_static\String13.cs" />
+    <Compile Include="engine\lib_static\File13.cs" />
+    <Compile Include="engine\lib_static\Icon13.cs" />
+    <Compile Include="engine\lib_static\Map13.cs" />
+    <Compile Include="engine\lib_classes\Txt.cs" />
+    <Compile Include="engine\base_classes\CoreImpl.cs" />
+    <Compile Include="engine\lib_static\Task13.cs" />
+    <Compile Include="engine\lib_static\Temp13.cs" />
     <Compile Include="Game13.cs" />
     <Compile Include="GlobalFuncs.cs" />
     <Compile Include="GlobalVars.cs" />
