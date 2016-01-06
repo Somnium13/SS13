@@ -18,6 +18,7 @@ Sadly, the prospects aren't much better for hobbyists. The several groups workin
 Almost all attempts are over-ambitous and include plans to remake all the assets or even make the game 3D. Creating 3D assets, complete with textures and animations, is considerably more difficult than small 2D sprites. It also limits the ability of a newbie or a coder with poor art skills to create assets.
 
 After watching many clones come and go (several of them my own), I decided that the best way to approach the problem would be the most backwards sounding. We needed to extract SS13 from BYOND, translate it into a modern language, and build a new engine around it. This is an ideal solution for the following reasons:
+
 1. Code does not need to be remade.
 2. Art assets do not need to be remade.
 3. C# is a modern OO language that is used for real software, has actual library support, is less error-prone, can be threaded, is more efficient... I could go on...
