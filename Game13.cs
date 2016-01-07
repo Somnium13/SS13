@@ -13,7 +13,7 @@ namespace SomEngine {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		public static dynamic New(  ) {
-			string date_string = "";
+			string date_string = null;
 			GlobalVars.map_ready = true;
 			date_string = String13.formatTime( Game13.realtime, "YYYY/MM-Month/DD-Day" );
 			GlobalVars.href_logfile = new File( "data/logs/" + date_string + " hrefs.htm" );
@@ -59,10 +59,10 @@ namespace SomEngine {
 		public static dynamic IsBanned( dynamic key = null, dynamic address = null, dynamic computer_id = null ) {
 			dynamic _default = null;
 			bool admin = false;
-			string ckey = "";
-			string ckeytext = "";
-			string ipquery = "";
-			string cidquery = "";
+			string ckey = null;
+			string ckeytext = null;
+			string ipquery = null;
+			string cidquery = null;
 			DBQuery query = null;
 			dynamic pckey = null;
 			dynamic ackey = null;
@@ -71,20 +71,20 @@ namespace SomEngine {
 			dynamic duration = null;
 			dynamic bantime = null;
 			dynamic bantype = null;
-			string expires = "";
-			string desc = "";
+			string expires = null;
+			string desc = null;
 			if ( !Lang13.isValid( key ) || !Lang13.isValid( address ) || !Lang13.isValid( computer_id ) ) {
 				GlobalFuncs.log_access( "Failed Login (invalid data): " + key + " " + address + "-" + computer_id );
 				return new ByTable()
-					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided invalid or blank information to the server on connection (byond username, IP, and Computer ID.) Provided information for reference: Username:'" + key + "' IP:'" + address + "' Computer ID:'" + computer_id + "'. (If you continue to get this error, please restart byond or contact byond support.)" )
 					.set( "reason", "invalid login data" )
+					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided invalid or blank information to the server on connection (byond username, IP, and Computer ID.) Provided information for reference: Username:'" + key + "' IP:'" + address + "' Computer ID:'" + computer_id + "'. (If you continue to get this error, please restart byond or contact byond support.)" )
 				;
 			}
 			if ( String13.parseNumber( computer_id ) == 2147483648 ) {
 				GlobalFuncs.log_access( "Failed Login (invalid cid): " + key + " " + address + "-" + computer_id );
 				return new ByTable()
-					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" )
 					.set( "reason", "invalid login data" )
+					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" )
 				;
 			}
 			admin = false;
@@ -96,23 +96,23 @@ namespace SomEngine {
 				if ( !GlobalVars.guests_allowed ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed" );
 					return new ByTable()
-						.set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." )
 						.set( "reason", "guest" )
+						.set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." )
 					;
 				}
 				if ( GlobalVars.config.panic_bunker && ( GlobalVars.dbcon != null ) && GlobalVars.dbcon.IsConnected() ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed during panic bunker" );
 					return new ByTable()
-						.set( "desc", "\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from." )
 						.set( "reason", "guest" )
+						.set( "desc", "\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from." )
 					;
 				}
 			}
 			if ( ( GlobalVars.config.extreme_popcap != 0 ) && GlobalFuncs.living_player_count() >= GlobalVars.config.extreme_popcap && !admin ) {
 				GlobalFuncs.log_access( "Failed Login: " + key + " - Population cap reached" );
 				return new ByTable()
-					.set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message )
 					.set( "reason", "popcap" )
+					.set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message )
 				;
 			}
 			if ( GlobalVars.config.ban_legacy_system ) {
@@ -176,8 +176,8 @@ namespace SomEngine {
 					}
 					desc = "\nReason: You, or another user of this computer or connection (" + pckey + ") is banned from playing here. The ban reason is:\n" + reason + "\nThis ban was applied by " + ackey + " on " + bantime + ", " + expires;
 					_default = new ByTable()
-						.set( "desc", "" + desc )
 						.set( "reason", "" + bantype )
+						.set( "desc", "" + desc )
 					;
 					GlobalFuncs.log_access( "Failed Login: " + key + " " + computer_id + " " + address + " - Banned " + _default["reason"] );
 					return _default;
@@ -200,7 +200,7 @@ namespace SomEngine {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		public static dynamic update_status(  ) {
-			string s = "";
+			string s = null;
 			ByTable features = null;
 			int n = 0;
 			dynamic M = null;
@@ -303,7 +303,7 @@ namespace SomEngine {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic Reboot( dynamic reason = null, string feedback_c = "", string feedback_r = "", int time = 0 ) {
+		public static dynamic Reboot( dynamic reason = null, string feedback_c = null, string feedback_r = null, int time = 0 ) {
 			double delay = 0;
 			dynamic C = null;
 			if ( reason == 1 ) {
@@ -361,7 +361,7 @@ namespace SomEngine {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic Topic( string T = "", dynamic addr = null, dynamic master = null, dynamic key = null ) {
+		public static dynamic Topic( string T = null, dynamic addr = null, dynamic master = null, dynamic key = null ) {
 			int x = 0;
 			dynamic C = null;
 			int n = 0;
