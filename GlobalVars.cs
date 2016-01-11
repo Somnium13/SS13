@@ -7,8 +7,8 @@ namespace SomGame {
 	static class GlobalVars {
 		public static DmmSuite_Preloader _preloader = null;
 		public static Ent_Screen_ClickCatcher _void = null;
-		public static readonly bool AALARM_WIRE_IDSCAN = false;
-		public static bool abandon_allowed = false;
+		public static readonly bool AALARM_WIRE_IDSCAN = true;
+		public static bool abandon_allowed = true;
 		public static readonly int access_ai_upload = 16;
 		public static readonly int access_all_personal_lockers = 21;
 		public static readonly int access_armory = 3;
@@ -64,7 +64,7 @@ namespace SomGame {
 		public static readonly int access_research = 47;
 		public static readonly int access_robotics = 29;
 		public static readonly int access_sec_doors = 63;
-		public static readonly bool access_security = false;
+		public static readonly bool access_security = true;
 		public static readonly int access_surgery = 45;
 		public static readonly int access_syndicate = 150;
 		public static readonly int access_syndicate_leader = 151;
@@ -78,14 +78,14 @@ namespace SomGame {
 		public static readonly int access_weapons = 66;
 		public static readonly int access_xenobiology = 55;
 		public static string admin_notice = "";
-		public static dynamic admin_sound = null;
+		public static Sound admin_sound = null;
 		public static readonly int agents_possible = 5;
-		public static readonly dynamic AIPRIV_FREQ = 1447;
+		public static readonly int AIPRIV_FREQ = 1447;
 		public static readonly int AIRLOCK_WIRE_BACKUP_POWER1 = 16;
 		public static readonly int AIRLOCK_WIRE_BACKUP_POWER2 = 32;
 		public static readonly int AIRLOCK_WIRE_DOOR_BOLTS = 8;
 		public static readonly int AIRLOCK_WIRE_ELECTRIFY = 256;
-		public static readonly bool AIRLOCK_WIRE_IDSCAN = false;
+		public static readonly bool AIRLOCK_WIRE_IDSCAN = true;
 		public static readonly int AIRLOCK_WIRE_LIGHT = 2048;
 		public static readonly int AIRLOCK_WIRE_MAIN_POWER1 = 2;
 		public static readonly int AIRLOCK_WIRE_MAIN_POWER2 = 4;
@@ -100,26 +100,26 @@ namespace SomGame {
 		public static dynamic appearanceban_runonce = null;
 		public static readonly int AREA_SPACE = 2;
 		public static readonly int AREA_SPECIAL = 3;
-		public static readonly int AREA_STATION = 1;
+		public static readonly bool AREA_STATION = true;
 		public static ByTable asset_list = null;
 		public static Image atvcover = null;
 		public static readonly dynamic bad_se_blocks = null;
 		public static SaveFile Banlist = null;
 		public static Ent_Machinery_BlackboxRecorder blackbox = null;
 		public static readonly int BLEND_ADD = 2;
-		public static readonly int BLEND_DEFAULT = 0;
+		public static readonly bool BLEND_DEFAULT = false;
 		public static readonly int BLEND_MULTIPLY = 4;
-		public static readonly bool BLEND_OVERLAY = false;
+		public static readonly bool BLEND_OVERLAY = true;
 		public static readonly int BLOOD_VOLUME_SAFE = 501;
 		public static bool bomb_set = false;
 		public static readonly int BORDER_2NDTILE = 3;
 		public static readonly int BORDER_BETWEEN = 2;
-		public static readonly bool BORDER_NONE = false;
+		public static readonly bool BORDER_NONE = true;
 		public static readonly int BORDER_SPACE = 4;
 		public static ByTable cachedbooks = null;
 		public static readonly int CALL_SHUTTLE_REASON_LENGTH = 12;
 		public static readonly double CELLRATE = 0.002;
-		public static readonly dynamic CENTCOM_FREQ = 1337;
+		public static readonly int CENTCOM_FREQ = 1337;
 		public static readonly int changeling_amount = 4;
 		public static string changelog_hash = "";
 		public static readonly double CHARGELEVEL = 0.001;
@@ -128,12 +128,12 @@ namespace SomGame {
 		public static int chicken_count = 0;
 		public static readonly int CHUNK_SIZE = 16;
 		public static readonly int CIVILIAN = 4;
-		public static readonly bool CLAMPED_OFF = false;
+		public static readonly bool CLAMPED_OFF = true;
 		public static readonly int CLOSE_DURATION = 6;
 		public static readonly int CLOSED = 2;
 		public static double CMinutes = 0;
 		public static dynamic cmp_field = "name";
-		public static readonly dynamic COMM_FREQ = 1353;
+		public static readonly int COMM_FREQ = 1353;
 		public static string command_name = null;
 		public static bool comms_allowed = false;
 		public static dynamic comms_key = "default_pwd";
@@ -142,43 +142,43 @@ namespace SomGame {
 		public static dynamic create_object_html = null;
 		public static dynamic create_turf_html = null;
 		public static Datacore data_core = null;
-		public static readonly int days_early = 1;
+		public static readonly bool days_early = true;
 		public static readonly bool Debug = false;
 		public static bool Debug2 = false;
 		public static File diary = null;
 		public static File diaryofmeanpeople = null;
-		public static readonly int DISCONNECTED = 0;
-		public static bool dooc_allowed = false;
+		public static readonly bool DISCONNECTED = false;
+		public static bool dooc_allowed = true;
 		public static readonly int DOWN = 32;
 		public static readonly int duration = 13;
 		public static readonly int EAST = 4;
 		public static readonly int EFFECTS_LAYER = 5000;
 		public static bool emergency_access = false;
 		public static ByTable emojis = null;
-		public static readonly dynamic ENG_FREQ = 1357;
-		public static readonly int ENGSEC = 1;
-		public static bool enter_allowed = false;
-		public static readonly bool EYE_PERSPECTIVE = false;
+		public static readonly int ENG_FREQ = 1357;
+		public static readonly bool ENGSEC = true;
+		public static bool enter_allowed = true;
+		public static readonly bool EYE_PERSPECTIVE = true;
 		public static int failed_db_connections = 0;
 		public static Controller_Failsafe Failsafe = null;
 		public static readonly bool FALSE = false;
-		public static readonly dynamic FEMALE = "female";
+		public static readonly string FEMALE = "female";
 		public static int fileaccess_timer = 0;
 		public static readonly int FLOAT_LAYER = -1;
 		public static readonly int FLY_LAYER = 5;
-		public static readonly int FREQ_LISTENING = 1;
+		public static readonly bool FREQ_LISTENING = true;
 		public static ByTable g_fancy_list_of_types = null;
 		public static readonly string game_version = "/tg/ Station 13";
-		public static double gaussian_next = 0;
+		public static double? gaussian_next = null;
 		public static int gid = 1;
 		public static int gl_uid = 1;
 		public static readonly ByTable global_map = null;
 		public static int global_uid = 0;
-		public static bool guests_allowed = false;
+		public static bool guests_allowed = true;
 		public static readonly int HOLOPAD_MODE = 4;
 		public static string host = null;
 		public static File href_logfile = null;
-		public static bool hsboxspawn = false;
+		public static bool hsboxspawn = true;
 		public static readonly int ICON_SIZE = 4;
 		public static readonly int INGEST = 2;
 		public static readonly int INJECT = 5;
@@ -186,7 +186,7 @@ namespace SomGame {
 		public static string join_motd = null;
 		public static readonly string js_byjax = "\n\nfunction replaceContent() {\n	var args = Array.prototype.slice.call(arguments);\n	var id = args[0];\n	var content = args[1];\n	var callback  = null;\n	if(args[2]){\n		callback = args[2];\n		if(args[3]){\n			args = args.slice(3);\n		}\n	}\n	var parent = document.getElementById(id);\n	if(typeof(parent)!=='undefined' && parent!=null){\n		parent.innerHTML = content?content:'';\n	}\n	if(callback && window[callback]){\n		window[callback].apply(null,args);\n	}\n}\n";
 		public static readonly string js_dropdowns = "\nfunction dropdowns() {\n    var divs = document.getElementsByTagName('div');\n    var headers = new Array();\n    var links = new Array();\n    for(var i=0;i<divs.length;i++){\n        if(divs[i].className=='header') {\n            divs[i].className='header closed';\n            divs[i].innerHTML = divs[i].innerHTML+' +';\n            headers.push(divs[i]);\n        }\n        if(divs[i].className=='links') {\n            divs[i].className='links hidden';\n            links.push(divs[i]);\n        }\n    }\n    for(var i=0;i<headers.length;i++){\n        if(typeof(links[i])!== 'undefined' && links[i]!=null) {\n            headers[i].onclick = (function(elem) {\n                return function() {\n                    if(elem.className.search('visible')>=0) {\n                        elem.className = elem.className.replace('visible','hidden');\n                        this.className = this.className.replace('open','closed');\n                        this.innerHTML = this.innerHTML.replace('-','+');\n                    }\n                    else {\n                        elem.className = elem.className.replace('hidden','visible');\n                        this.className = this.className.replace('closed','open');\n                        this.innerHTML = this.innerHTML.replace('+','-');\n                    }\n                return false;\n                }\n            })(links[i]);\n        }\n    }\n}\n";
-		public static readonly dynamic MALE = "male";
+		public static readonly string MALE = "male";
 		public static string map_name = "Unknown";
 		public static bool map_ready = false;
 		public static dynamic master_mode = "traitor";
@@ -201,7 +201,7 @@ namespace SomGame {
 		public static readonly int MAX_ICON_DIMENSION = 1024;
 		public static readonly int MAX_IMPREGNATION_TIME = 150;
 		public static readonly int max_signs = 4;
-		public static readonly dynamic MED_FREQ = 1355;
+		public static readonly int MED_FREQ = 1355;
 		public static readonly int MEDSCI = 2;
 		public static bool message_delay = false;
 		public static readonly int meteordelay = 2000;
@@ -213,26 +213,26 @@ namespace SomGame {
 		public static int next_mob_id = 0;
 		public static int nextid = 1;
 		public static dynamic nextmap = null;
-		public static readonly bool NO_SLIP_WHEN_WALKING = false;
+		public static readonly bool NO_SLIP_WHEN_WALKING = true;
 		public static string normal_ooc_colour = "#002eb8";
-		public static readonly int NORTH = 1;
+		public static readonly bool NORTH = true;
 		public static readonly int NORTHEAST = 5;
 		public static readonly int NORTHWEST = 9;
 		public static readonly int num_power_levels = 6;
 		public static readonly int OBJ_LAYER = 3;
-		public static bool ooc_allowed = false;
+		public static bool? ooc_allowed = true;
 		public static readonly int OPEN_DURATION = 6;
 		public static readonly int OPERATING = 2;
 		public static readonly int PARTICLE_STRENGTH_WIRE = 2;
-		public static readonly bool PARTICLE_TOGGLE_WIRE = false;
+		public static readonly bool PARTICLE_TOGGLE_WIRE = true;
 		public static readonly int PATCH = 4;
 		public static int pipenetwarnings = 10;
-		public static readonly bool PIZZA_WIRE_DISARM = false;
+		public static readonly bool PIZZA_WIRE_DISARM = true;
 		public static readonly string PLURAL = "plural";
 		public static bool posibrain_notif_cooldown = false;
 		public static readonly int POWER_DOWN = 2;
 		public static readonly bool POWER_IDLE = false;
-		public static readonly int POWER_UP = 1;
+		public static readonly bool POWER_UP = true;
 		public static ProtectedConfiguration protected_config = null;
 		public static readonly string RADIO_AIRLOCK = "6";
 		public static readonly string RADIO_ATMOSIA = "4";
@@ -247,22 +247,22 @@ namespace SomGame {
 		public static int round_start_time = 0;
 		public static readonly int SAFETY_COOLDOWN = 100;
 		public static bool say_disabled = false;
-		public static readonly dynamic SCI_FREQ = 1351;
-		public static readonly dynamic SEC_FREQ = 1359;
+		public static readonly int SCI_FREQ = 1351;
+		public static readonly int SEC_FREQ = 1359;
 		public static dynamic secret_force_mode = "secret";
 		public static int security_level = 0;
 		public static readonly int SEE_MOBS = 4;
 		public static readonly int SEE_OBJS = 8;
 		public static readonly int SEE_SELF = 32;
 		public static readonly int SEE_TURFS = 16;
-		public static readonly dynamic SERV_FREQ = 1349;
+		public static readonly int SERV_FREQ = 1349;
 		public static ByTable smesImageCache = null;
 		public static readonly int SOUND_PAUSED = 2;
 		public static readonly int SOUND_STREAM = 4;
 		public static readonly int SOUTH = 2;
 		public static readonly int SOUTHEAST = 6;
 		public static readonly int SOUTHWEST = 10;
-		public static readonly bool SPAWN_HEAT = false;
+		public static readonly bool SPAWN_HEAT = true;
 		public static readonly int SPAWN_OXYGEN = 8;
 		public static string sqladdress = "localhost";
 		public static string sqlfdbkdb = "test";
@@ -295,7 +295,7 @@ namespace SomGame {
 		public static readonly int STATE_CALLSHUTTLE = 2;
 		public static readonly int STATE_CANCELSHUTTLE = 3;
 		public static readonly int STATE_CONFIRM_LEVEL = 9;
-		public static readonly bool STATE_DEFAULT = false;
+		public static readonly bool STATE_DEFAULT = true;
 		public static readonly int STATE_DELMESSAGE = 6;
 		public static readonly int STATE_MESSAGELIST = 4;
 		public static readonly int STATE_STATUSDISPLAY = 7;
@@ -310,8 +310,8 @@ namespace SomGame {
 		public static ByTable status_overlays_lock = null;
 		public static ByTable sting_paths = null;
 		public static ByTable string_cache = null;
-		public static readonly dynamic SUPP_FREQ = 1347;
-		public static readonly bool supply_emergency = false;
+		public static readonly int SUPP_FREQ = 1347;
+		public static readonly bool supply_emergency = true;
 		public static readonly int supply_engineer = 3;
 		public static readonly int supply_materials = 7;
 		public static readonly int supply_medical = 4;
@@ -320,15 +320,15 @@ namespace SomGame {
 		public static readonly int supply_science = 5;
 		public static readonly int supply_security = 2;
 		public static ByTable swapmaps_byname = null;
-		public static double swapmaps_compiled_maxx = 0;
-		public static double swapmaps_compiled_maxy = 0;
-		public static double swapmaps_compiled_maxz = 0;
+		public static int swapmaps_compiled_maxx = 0;
+		public static int swapmaps_compiled_maxy = 0;
+		public static int swapmaps_compiled_maxz = 0;
 		public static readonly dynamic swapmaps_iconcache = null;
 		public static bool swapmaps_initialized = false;
 		public static ByTable swapmaps_loaded = null;
 		public static readonly bool swapmaps_mode = false;
 		public static readonly int SYMPTOM_ACTIVATION_PROB = 3;
-		public static readonly dynamic SYND_FREQ = 1213;
+		public static readonly int SYND_FREQ = 1213;
 		public static string syndicate_code_phrase = null;
 		public static string syndicate_code_response = null;
 		public static string syndicate_name = null;
@@ -337,10 +337,10 @@ namespace SomGame {
 		public static Subsystem_Ticker ticker = null;
 		public static double time_last_changed_position = 0;
 		public static double timezoneOffset = 0;
-		public static bool tinted_weldhelh = false;
+		public static bool tinted_weldhelh = true;
 		public static readonly int tk_maxrange = 15;
-		public static readonly int TOUCH = 1;
-		public static readonly bool TRUE = false;
+		public static readonly bool TOUCH = true;
+		public static readonly bool TRUE = true;
 		public static readonly int TURF_LAYER = 2;
 		public static readonly int VAPOR = 3;
 		public static readonly int VOX_CHANNEL = 200;
@@ -350,7 +350,7 @@ namespace SomGame {
 		public static readonly int WEST = 8;
 		public static ByTable whitelist = null;
 		public static readonly int WIRE_ACTIVATE = 16;
-		public static readonly bool WIRE_BOOM = false;
+		public static readonly bool WIRE_BOOM = true;
 		public static readonly int WIRE_DELAY = 4;
 		public static readonly int WIRE_PROCEED = 8;
 		public static readonly int WIRE_RECEIVE = 2;
@@ -361,15 +361,7 @@ namespace SomGame {
 
 		public static readonly ByTable mutations_list = new ByTable();
 		public static readonly ByTable asset_datums = new ByTable();
-		public static readonly ByTable map_transition_config = new ByTable()
-			.set( "Main Station", 2 )
-			.set( "CentComm", 1 )
-			.set( "Abandoned Satellite", 2 )
-			.set( "Derelicted Station", 2 )
-			.set( "Mining Asteroid", 2 )
-			.set( "Empty Area 1", 2 )
-			.set( "Empty Area 2", 2 )
-		;
+		public static readonly ByTable map_transition_config = new ByTable().set( "Main Station", 2 ).set( "CentComm", 1 ).set( "Abandoned Satellite", 2 ).set( "Derelicted Station", 2 ).set( "Mining Asteroid", 2 ).set( "Empty Area 1", 2 ).set( "Empty Area 2", 2 );
 		public static readonly ByTable forbidden_vars = new ByTable(new object [] { "type", "stat", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key", "x", "y", "z", "contents", "luminosity" });
 		public static readonly ByTable defaults = new ByTable(new object [] { "No", "Yes" });
 		public static readonly ByTable whitespace = new ByTable(new object [] { 9, 10, 11, 12, 13, 32, 160 });
@@ -395,7 +387,108 @@ namespace SomGame {
 			.set( "hand of god: cultist", typeof(GameMode_HandOfGod) )
 		;
 		public static readonly ByTable humanoid_icon_cache = new ByTable();
-		public static readonly ByTable sqrtTable = new ByTable(new object [] { 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10 });
+		public static readonly ByTable sqrtTable = new ByTable(new object [] { 
+			1, 
+			1, 
+			1, 
+			2, 
+			2, 
+			2, 
+			2, 
+			2, 
+			3, 
+			3, 
+			3, 
+			3, 
+			3, 
+			3, 
+			3, 
+			4, 
+			4, 
+			4, 
+			4, 
+			4, 
+			4, 
+			4, 
+			4, 
+			4, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			5, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			6, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			7, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			8, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			9, 
+			10
+		 });
 		public static readonly ByTable skin_tones = new ByTable(new object [] { "albino", "caucasian1", "caucasian2", "caucasian3", "latino", "mediterranean", "asian1", "asian2", "arab", "indian", "african1", "african2" });
 		public static readonly ByTable species_list = new ByTable( 0 );
 		public static ByTable roundstart_species = new ByTable( 0 );
@@ -404,74 +497,22 @@ namespace SomGame {
 		public static readonly ByTable alphabet = new ByTable(new object [] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" });
 		public static readonly ByTable binary = new ByTable(new object [] { "0", "1" });
 		public static readonly ByTable rotations = new ByTable()
-			.set( "" + GlobalVars.NORTH, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.EAST, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.SOUTH, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.SOUTH )
-			 )
-			.set( "" + GlobalVars.WEST, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.SOUTH )
-			 )
+			.set( "" + GlobalVars.NORTH, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.EAST, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.SOUTH, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.SOUTH ) )
+			.set( "" + GlobalVars.WEST, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.SOUTH ) )
 		;
 		public static readonly ByTable double_rotations = new ByTable()
-			.set( "" + GlobalVars.NORTH, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.SOUTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.EAST, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.SOUTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.SOUTH, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.SOUTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.WEST, new ByTable()
-				.set( "" + GlobalVars.NORTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.SOUTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.NORTH )
-			 )
+			.set( "" + GlobalVars.NORTH, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.SOUTH ).set( "" + GlobalVars.SOUTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.EAST, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.SOUTH ).set( "" + GlobalVars.SOUTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.SOUTH, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.SOUTH ).set( "" + GlobalVars.SOUTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.WEST, new ByTable().set( "" + GlobalVars.NORTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.SOUTH ).set( "" + GlobalVars.SOUTH, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.NORTH ) )
 		;
 		public static readonly ByTable box_rotations = new ByTable()
-			.set( "" + GlobalVars.NORTH, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.NORTH )
-				.set( "" + GlobalVars.EAST, GlobalVars.NORTH )
-				.set( "" + GlobalVars.WEST, GlobalVars.NORTH )
-				.set( "" + GlobalVars.NORTH, GlobalVars.NORTH )
-			 )
-			.set( "" + GlobalVars.EAST, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.EAST )
-				.set( "" + GlobalVars.EAST, GlobalVars.EAST )
-				.set( "" + GlobalVars.WEST, GlobalVars.EAST )
-				.set( "" + GlobalVars.NORTH, GlobalVars.EAST )
-			 )
-			.set( "" + GlobalVars.SOUTH, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.EAST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.WEST, GlobalVars.SOUTH )
-				.set( "" + GlobalVars.NORTH, GlobalVars.SOUTH )
-			 )
-			.set( "" + GlobalVars.WEST, new ByTable()
-				.set( "" + GlobalVars.SOUTH, GlobalVars.WEST )
-				.set( "" + GlobalVars.EAST, GlobalVars.WEST )
-				.set( "" + GlobalVars.WEST, GlobalVars.WEST )
-				.set( "" + GlobalVars.NORTH, GlobalVars.WEST )
-			 )
+			.set( "" + GlobalVars.NORTH, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.NORTH ).set( "" + GlobalVars.EAST, GlobalVars.NORTH ).set( "" + GlobalVars.WEST, GlobalVars.NORTH ).set( "" + GlobalVars.NORTH, GlobalVars.NORTH ) )
+			.set( "" + GlobalVars.EAST, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.EAST ).set( "" + GlobalVars.EAST, GlobalVars.EAST ).set( "" + GlobalVars.WEST, GlobalVars.EAST ).set( "" + GlobalVars.NORTH, GlobalVars.EAST ) )
+			.set( "" + GlobalVars.SOUTH, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.SOUTH ).set( "" + GlobalVars.EAST, GlobalVars.SOUTH ).set( "" + GlobalVars.WEST, GlobalVars.SOUTH ).set( "" + GlobalVars.NORTH, GlobalVars.SOUTH ) )
+			.set( "" + GlobalVars.WEST, new ByTable().set( "" + GlobalVars.SOUTH, GlobalVars.WEST ).set( "" + GlobalVars.EAST, GlobalVars.WEST ).set( "" + GlobalVars.WEST, GlobalVars.WEST ).set( "" + GlobalVars.NORTH, GlobalVars.WEST ) )
 		;
 		public static readonly ByTable tube_dir_list = new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST, GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
 		public static readonly ByTable direction_table = new ByTable();
@@ -536,10 +577,52 @@ namespace SomGame {
 		public static readonly ByTable backbaglist = new ByTable(new object [] { "Backpack", "Satchel" });
 		public static readonly ByTable female_clothing_icons = new ByTable();
 		public static readonly ByTable hit_appends = new ByTable(new object [] { "-OOF", "-ACK", "-UGH", "-HRNK", "-HURGH", "-GLORF" });
-		public static readonly ByTable scarySounds = new ByTable(new object [] { "sound/weapons/thudswoosh.ogg", "sound/weapons/taser.ogg", "sound/weapons/armbomb.ogg", "sound/voice/hiss1.ogg", "sound/voice/hiss2.ogg", "sound/voice/hiss3.ogg", "sound/voice/hiss4.ogg", "sound/voice/hiss5.ogg", "sound/voice/hiss6.ogg", "sound/effects/Glassbr1.ogg", "sound/effects/Glassbr2.ogg", "sound/effects/Glassbr3.ogg", "sound/items/welder.ogg", "sound/items/welder2.ogg", "sound/machines/airlock.ogg", "sound/effects/clownstep1.ogg", "sound/effects/clownstep2.ogg" });
-		public static readonly ByTable TAGGERLOCATIONS = new ByTable(new object [] { "Disposals", "Cargo Bay", "QM Office", "Engineering", "CE Office", "Atmospherics", "Security", "HoS Office", "Medbay", "CMO Office", "Chemistry", "Research", "RD Office", "Robotics", "HoP Office", "Library", "Chapel", "Theatre", "Bar", "Kitchen", "Hydroponics", "Janitor Closet", "Genetics" });
+		public static readonly ByTable scarySounds = new ByTable(new object [] { 
+			"sound/weapons/thudswoosh.ogg", 
+			"sound/weapons/taser.ogg", 
+			"sound/weapons/armbomb.ogg", 
+			"sound/voice/hiss1.ogg", 
+			"sound/voice/hiss2.ogg", 
+			"sound/voice/hiss3.ogg", 
+			"sound/voice/hiss4.ogg", 
+			"sound/voice/hiss5.ogg", 
+			"sound/voice/hiss6.ogg", 
+			"sound/effects/Glassbr1.ogg", 
+			"sound/effects/Glassbr2.ogg", 
+			"sound/effects/Glassbr3.ogg", 
+			"sound/items/welder.ogg", 
+			"sound/items/welder2.ogg", 
+			"sound/machines/airlock.ogg", 
+			"sound/effects/clownstep1.ogg", 
+			"sound/effects/clownstep2.ogg"
+		 });
+		public static readonly ByTable TAGGERLOCATIONS = new ByTable(new object [] { 
+			"Disposals", 
+			"Cargo Bay", 
+			"QM Office", 
+			"Engineering", 
+			"CE Office", 
+			"Atmospherics", 
+			"Security", 
+			"HoS Office", 
+			"Medbay", 
+			"CMO Office", 
+			"Chemistry", 
+			"Research", 
+			"RD Office", 
+			"Robotics", 
+			"HoP Office", 
+			"Library", 
+			"Chapel", 
+			"Theatre", 
+			"Bar", 
+			"Kitchen", 
+			"Hydroponics", 
+			"Janitor Closet", 
+			"Genetics"
+		 });
 		public static readonly ByTable cardinal = new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST });
-		public static readonly dynamic alldirs = new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST, GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
+		public static readonly ByTable alldirs = new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST, GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
 		public static readonly ByTable diagonals = new ByTable(new object [] { GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
 		public static readonly ByTable accessable_z_levels = new ByTable(new object [] { 1, 3, 4, 5, 6, 7 });
 		public static ByTable landmarks_list = new ByTable();
@@ -622,7 +705,16 @@ namespace SomGame {
 			.set( 12, new AtomHud_Antag() )
 		;
 		public static readonly ByTable spells = Lang13.get_all_types( typeof(Ent_Effect_ProcHolder_Spell) );
-		public static readonly ByTable all_supply_groups = new ByTable(new object [] { GlobalVars.supply_emergency, GlobalVars.supply_security, GlobalVars.supply_engineer, GlobalVars.supply_medical, GlobalVars.supply_science, GlobalVars.supply_organic, GlobalVars.supply_materials, GlobalVars.supply_misc });
+		public static readonly ByTable all_supply_groups = new ByTable(new object [] { 
+			GlobalVars.supply_emergency, 
+			GlobalVars.supply_security, 
+			GlobalVars.supply_engineer, 
+			GlobalVars.supply_medical, 
+			GlobalVars.supply_science, 
+			GlobalVars.supply_organic, 
+			GlobalVars.supply_materials, 
+			GlobalVars.supply_misc
+		 });
 		public static readonly ByTable uplink_items = new ByTable();
 		public static readonly ByTable diseases = Lang13.get_all_types( typeof(Disease) ) - typeof(Disease);
 		public static readonly ByTable archive_diseases = new ByTable();
@@ -675,14 +767,65 @@ namespace SomGame {
 			.set( "1337", "centcomradio" )
 		;
 		public static ByTable teleportlocs = new ByTable();
-		public static readonly ByTable the_station_areas = new ByTable(new object [] { typeof(Zone_Atmos), typeof(Zone_Maintenance), typeof(Zone_Hallway), typeof(Zone_Bridge), typeof(Zone_CrewQuarters), typeof(Zone_Holodeck), typeof(Zone_Library), typeof(Zone_Chapel), typeof(Zone_Lawoffice), typeof(Zone_Engine), typeof(Zone_Solar), typeof(Zone_Assembly), typeof(Zone_Teleporter), typeof(Zone_Medical), typeof(Zone_Security), typeof(Zone_Quartermaster), typeof(Zone_Janitor), typeof(Zone_Hydroponics), typeof(Zone_Toxins), typeof(Zone_Storage), typeof(Zone_Construction), typeof(Zone_AiMonitored_Storage_Eva), typeof(Zone_TurretProtected_AiUpload), typeof(Zone_TurretProtected_AiUploadFoyer), typeof(Zone_TurretProtected_Ai) });
+		public static readonly ByTable the_station_areas = new ByTable(new object [] { 
+			typeof(Zone_Atmos), 
+			typeof(Zone_Maintenance), 
+			typeof(Zone_Hallway), 
+			typeof(Zone_Bridge), 
+			typeof(Zone_CrewQuarters), 
+			typeof(Zone_Holodeck), 
+			typeof(Zone_Library), 
+			typeof(Zone_Chapel), 
+			typeof(Zone_Lawoffice), 
+			typeof(Zone_Engine), 
+			typeof(Zone_Solar), 
+			typeof(Zone_Assembly), 
+			typeof(Zone_Teleporter), 
+			typeof(Zone_Medical), 
+			typeof(Zone_Security), 
+			typeof(Zone_Quartermaster), 
+			typeof(Zone_Janitor), 
+			typeof(Zone_Hydroponics), 
+			typeof(Zone_Toxins), 
+			typeof(Zone_Storage), 
+			typeof(Zone_Construction), 
+			typeof(Zone_AiMonitored_Storage_Eva), 
+			typeof(Zone_TurretProtected_AiUpload), 
+			typeof(Zone_TurretProtected_AiUploadFoyer), 
+			typeof(Zone_TurretProtected_Ai)
+		 });
 		public static readonly ByTable possible_items = new ByTable();
 		public static readonly ByTable possible_items_special = new ByTable();
 		public static ByTable blobs = new ByTable();
 		public static ByTable blob_cores = new ByTable();
 		public static ByTable blob_nodes = new ByTable();
 		public static ByTable blobs_legit = new ByTable();
-		public static ByTable possible_changeling_IDs = new ByTable(new object [] { "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta", "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega" });
+		public static ByTable possible_changeling_IDs = new ByTable(new object [] { 
+			"Alpha", 
+			"Beta", 
+			"Gamma", 
+			"Delta", 
+			"Epsilon", 
+			"Zeta", 
+			"Eta", 
+			"Theta", 
+			"Iota", 
+			"Kappa", 
+			"Lambda", 
+			"Mu", 
+			"Nu", 
+			"Xi", 
+			"Omicron", 
+			"Pi", 
+			"Rho", 
+			"Sigma", 
+			"Tau", 
+			"Upsilon", 
+			"Phi", 
+			"Chi", 
+			"Psi", 
+			"Omega"
+		 });
 		public static readonly ByTable slots = new ByTable(new object [] { "head", "wear_mask", "back", "wear_suit", "w_uniform", "shoes", "belt", "gloves", "glasses", "ears", "wear_id", "s_store" });
 		public static readonly ByTable slot2slot = new ByTable()
 			.set( "head", 11 )
@@ -715,7 +858,27 @@ namespace SomGame {
 		public static ByTable hivemind_bank = new ByTable();
 		public static readonly ByTable teleport_runes = new ByTable();
 		public static readonly ByTable teleport_other_runes = new ByTable();
-		public static ByTable gang_name_pool = new ByTable(new object [] { "Clandestine", "Prima", "Zero-G", "Max", "Blasto", "Waffle", "North", "Omni", "Newton", "Cyber", "Donk", "Gene", "Gib", "Tunnel", "Diablo", "Psyke", "Osiron", "Sirius", "Sleeping Carp" });
+		public static ByTable gang_name_pool = new ByTable(new object [] { 
+			"Clandestine", 
+			"Prima", 
+			"Zero-G", 
+			"Max", 
+			"Blasto", 
+			"Waffle", 
+			"North", 
+			"Omni", 
+			"Newton", 
+			"Cyber", 
+			"Donk", 
+			"Gene", 
+			"Gib", 
+			"Tunnel", 
+			"Diablo", 
+			"Psyke", 
+			"Osiron", 
+			"Sirius", 
+			"Sleeping Carp"
+		 });
 		public static ByTable gang_colors_pool = new ByTable(new object [] { "red", "orange", "yellow", "green", "blue", "purple" });
 		public static readonly ByTable global_handofgod_traptypes = new ByTable();
 		public static readonly ByTable global_handofgod_structuretypes = new ByTable();
@@ -765,725 +928,222 @@ namespace SomGame {
 		public static ByTable telecomms_list = new ByTable();
 		public static ByTable recentmessages = new ByTable();
 		public static readonly string year = String13.formatTime( Game13.realtime, "YYYY" );
-		public static readonly double year_integer = 0;
+		public static readonly double year_integer = String13.parseNumber( GlobalVars.year );
 		public static ByTable BUMP_TELEPORTERS = new ByTable();
 		public static readonly ByTable contrabandposters = new ByTable(new object [] { 
-			new ByTable()
-				.set( "name", "- Free Tonto" )
-				.set( "desc", " A salvaged shred of a much larger flag, colors bled together and faded from age." )
-			, 
-			new ByTable()
-				.set( "name", "- Atmosia Declaration of Independence" )
-				.set( "desc", " A relic of a failed rebellion." )
-			, 
-			new ByTable()
-				.set( "name", "- Fun Police" )
-				.set( "desc", " A poster condemning the station's security forces." )
-			, 
-			new ByTable()
-				.set( "name", "- Lusty Xenomorph" )
-				.set( "desc", " A heretical poster depicting the titular star of an equally heretical book." )
-			, 
-			new ByTable()
-				.set( "name", "- Syndicate Recruitment" )
-				.set( "desc", " See the galaxy! Shatter corrupt megacorporations! Join today!" )
-			, 
-			new ByTable()
-				.set( "name", "- Clown" )
-				.set( "desc", " Honk." )
-			, 
-			new ByTable()
-				.set( "name", "- Smoke" )
-				.set( "desc", " A poster advertising a rival corporate brand of cigarettes." )
-			, 
-			new ByTable()
-				.set( "name", "- Grey Tide" )
-				.set( "desc", " A rebellious poster symbolizing assistant solidarity." )
-			, 
-			new ByTable()
-				.set( "name", "- Missing Gloves" )
-				.set( "desc", " This poster references the uproar that followed Nanotrasen's financial cuts toward insulated-glove purchases." )
-			, 
-			new ByTable()
-				.set( "name", "- Hacking Guide" )
-				.set( "desc", " This poster details the internal workings of the common Nanotrasen airlock. Sadly, it appears out of date." )
-			, 
-			new ByTable()
-				.set( "name", "- RIP Badger" )
-				.set( "desc", " This seditious poster references Nanotrasen's genocide of a space station full of badgers." )
-			, 
-			new ByTable()
-				.set( "name", "- Ambrosia Vulgaris" )
-				.set( "desc", " This poster is lookin' pretty trippy man." )
-			, 
-			new ByTable()
-				.set( "name", "- Donut Corp." )
-				.set( "desc", " This poster is an unauthorized advertisement for Donut Corp." )
-			, 
-			new ByTable()
-				.set( "name", "- EAT." )
-				.set( "desc", " This poster promotes rank gluttony." )
-			, 
-			new ByTable()
-				.set( "name", "- Tools" )
-				.set( "desc", " This poster looks like an advertisement for tools, but is in fact a subliminal jab at the tools at CentComm." )
-			, 
-			new ByTable()
-				.set( "name", "- Power" )
-				.set( "desc", " A poster that positions the seat of power outside Nanotrasen." )
-			, 
-			new ByTable()
-				.set( "name", "- Space Cube" )
-				.set( "desc", " Ignorant of Nature's Harmonic 6 Side Space Cube Creation, the Spacemen are Dumb, Educated Singularity Stupid and Evil." )
-			, 
-			new ByTable()
-				.set( "name", "- Communist State" )
-				.set( "desc", " All hail the Communist party!" )
-			, 
-			new ByTable()
-				.set( "name", "- Lamarr" )
-				.set( "desc", " This poster depicts Lamarr. Probably made by a traitorous Research Director." )
-			, 
-			new ByTable()
-				.set( "name", "- Borg Fancy" )
-				.set( "desc", " Being fancy can be for any borg, just need a suit." )
-			, 
-			new ByTable()
-				.set( "name", "- Borg Fancy v2" )
-				.set( "desc", " Borg Fancy, Now only taking the most fancy." )
-			, 
-			new ByTable()
-				.set( "name", "- Kosmicheskaya Stantsiya 13 Does Not Exist" )
-				.set( "desc", " A poster mocking CentComm's denial of the existence of the derelict station near Space Station 13." )
-			, 
-			new ByTable()
-				.set( "name", "- Rebels Unite" )
-				.set( "desc", " A poster urging the viewer to rebel against Nanotrasen." )
-			, 
-			new ByTable()
-				.set( "name", "- C-20r" )
-				.set( "desc", " A poster advertising the Scarborough Arms C-20r." )
-			, 
-			new ByTable()
-				.set( "name", "- Have a Puff" )
-				.set( "desc", " Who cares about lung cancer when you're high as a kite?" )
-			, 
-			new ByTable()
-				.set( "name", "- Revolver" )
-				.set( "desc", " Because seven shots are all you need." )
-			, 
-			new ByTable()
-				.set( "name", "- D-Day Promo" )
-				.set( "desc", " A promotional poster for some rapper." )
-			, 
-			new ByTable()
-				.set( "name", "- Syndicate Pistol" )
-				.set( "desc", " A poster advertising syndicate pistols as being 'classy as fuck'. It is covered in faded gang tags." )
-			, 
-			new ByTable()
-				.set( "name", "- Energy Swords" )
-				.set( "desc", " All the colors of the bloody murder rainbow." )
-			, 
-			new ByTable()
-				.set( "name", "- Red Rum" )
-				.set( "desc", " Looking at this poster makes you want to kill." )
-			, 
-			new ByTable()
-				.set( "name", "- CC 64K Ad" )
-				.set( "desc", " The latest portable computer from Comrade Computing, with a whole 64kB of ram!" )
-			, 
-			new ByTable()
-				.set( "name", "- Punch Shit" )
-				.set( "desc", " Fight things for no reason, like a man!" )
-			, 
-			new ByTable()
-				.set( "name", "- The Griffin" )
-				.set( "desc", " The Griffin commands you to be the worst you can be. Will you?" )
-			, 
-			new ByTable()
-				.set( "name", "- Lizard" )
-				.set( "desc", " This lewd poster depicts a lizard preparing to mate." )
-			, 
-			new ByTable()
-				.set( "name", "- Free Drone" )
-				.set( "desc", " This poster commemorates the bravery of the rogue drone banned by CentComm." )
-			, 
-			new ByTable()
-				.set( "name", "- Busty Backdoor Xeno Babes 6" )
-				.set( "desc", " Get a load, or give, of these all natural Xenos!" )
-			
+			new ByTable().set( "name", "- Free Tonto" ).set( "desc", " A salvaged shred of a much larger flag, colors bled together and faded from age." ), 
+			new ByTable().set( "name", "- Atmosia Declaration of Independence" ).set( "desc", " A relic of a failed rebellion." ), 
+			new ByTable().set( "name", "- Fun Police" ).set( "desc", " A poster condemning the station's security forces." ), 
+			new ByTable().set( "name", "- Lusty Xenomorph" ).set( "desc", " A heretical poster depicting the titular star of an equally heretical book." ), 
+			new ByTable().set( "name", "- Syndicate Recruitment" ).set( "desc", " See the galaxy! Shatter corrupt megacorporations! Join today!" ), 
+			new ByTable().set( "name", "- Clown" ).set( "desc", " Honk." ), 
+			new ByTable().set( "name", "- Smoke" ).set( "desc", " A poster advertising a rival corporate brand of cigarettes." ), 
+			new ByTable().set( "name", "- Grey Tide" ).set( "desc", " A rebellious poster symbolizing assistant solidarity." ), 
+			new ByTable().set( "name", "- Missing Gloves" ).set( "desc", " This poster references the uproar that followed Nanotrasen's financial cuts toward insulated-glove purchases." ), 
+			new ByTable().set( "name", "- Hacking Guide" ).set( "desc", " This poster details the internal workings of the common Nanotrasen airlock. Sadly, it appears out of date." ), 
+			new ByTable().set( "name", "- RIP Badger" ).set( "desc", " This seditious poster references Nanotrasen's genocide of a space station full of badgers." ), 
+			new ByTable().set( "name", "- Ambrosia Vulgaris" ).set( "desc", " This poster is lookin' pretty trippy man." ), 
+			new ByTable().set( "name", "- Donut Corp." ).set( "desc", " This poster is an unauthorized advertisement for Donut Corp." ), 
+			new ByTable().set( "name", "- EAT." ).set( "desc", " This poster promotes rank gluttony." ), 
+			new ByTable().set( "name", "- Tools" ).set( "desc", " This poster looks like an advertisement for tools, but is in fact a subliminal jab at the tools at CentComm." ), 
+			new ByTable().set( "name", "- Power" ).set( "desc", " A poster that positions the seat of power outside Nanotrasen." ), 
+			new ByTable().set( "name", "- Space Cube" ).set( "desc", " Ignorant of Nature's Harmonic 6 Side Space Cube Creation, the Spacemen are Dumb, Educated Singularity Stupid and Evil." ), 
+			new ByTable().set( "name", "- Communist State" ).set( "desc", " All hail the Communist party!" ), 
+			new ByTable().set( "name", "- Lamarr" ).set( "desc", " This poster depicts Lamarr. Probably made by a traitorous Research Director." ), 
+			new ByTable().set( "name", "- Borg Fancy" ).set( "desc", " Being fancy can be for any borg, just need a suit." ), 
+			new ByTable().set( "name", "- Borg Fancy v2" ).set( "desc", " Borg Fancy, Now only taking the most fancy." ), 
+			new ByTable().set( "name", "- Kosmicheskaya Stantsiya 13 Does Not Exist" ).set( "desc", " A poster mocking CentComm's denial of the existence of the derelict station near Space Station 13." ), 
+			new ByTable().set( "name", "- Rebels Unite" ).set( "desc", " A poster urging the viewer to rebel against Nanotrasen." ), 
+			new ByTable().set( "name", "- C-20r" ).set( "desc", " A poster advertising the Scarborough Arms C-20r." ), 
+			new ByTable().set( "name", "- Have a Puff" ).set( "desc", " Who cares about lung cancer when you're high as a kite?" ), 
+			new ByTable().set( "name", "- Revolver" ).set( "desc", " Because seven shots are all you need." ), 
+			new ByTable().set( "name", "- D-Day Promo" ).set( "desc", " A promotional poster for some rapper." ), 
+			new ByTable().set( "name", "- Syndicate Pistol" ).set( "desc", " A poster advertising syndicate pistols as being 'classy as fuck'. It is covered in faded gang tags." ), 
+			new ByTable().set( "name", "- Energy Swords" ).set( "desc", " All the colors of the bloody murder rainbow." ), 
+			new ByTable().set( "name", "- Red Rum" ).set( "desc", " Looking at this poster makes you want to kill." ), 
+			new ByTable().set( "name", "- CC 64K Ad" ).set( "desc", " The latest portable computer from Comrade Computing, with a whole 64kB of ram!" ), 
+			new ByTable().set( "name", "- Punch Shit" ).set( "desc", " Fight things for no reason, like a man!" ), 
+			new ByTable().set( "name", "- The Griffin" ).set( "desc", " The Griffin commands you to be the worst you can be. Will you?" ), 
+			new ByTable().set( "name", "- Lizard" ).set( "desc", " This lewd poster depicts a lizard preparing to mate." ), 
+			new ByTable().set( "name", "- Free Drone" ).set( "desc", " This poster commemorates the bravery of the rogue drone banned by CentComm." ), 
+			new ByTable().set( "name", "- Busty Backdoor Xeno Babes 6" ).set( "desc", " Get a load, or give, of these all natural Xenos!" )
 		 });
 		public static readonly ByTable legitposters = new ByTable(new object [] { 
-			new ByTable()
-				.set( "name", "- Here For Your Safety" )
-				.set( "desc", " A poster glorifying the station's security force." )
-			, 
-			new ByTable()
-				.set( "name", "- Nanotrasen Logo" )
-				.set( "desc", " A poster depicting the Nanotrasen logo." )
-			, 
-			new ByTable()
-				.set( "name", "- Cleanliness" )
-				.set( "desc", " A poster warning of the dangers of poor hygiene." )
-			, 
-			new ByTable()
-				.set( "name", "- Help Others" )
-				.set( "desc", " A poster encouraging you to help fellow crewmembers." )
-			, 
-			new ByTable()
-				.set( "name", "- Build" )
-				.set( "desc", " A poster glorifying the engineering team." )
-			, 
-			new ByTable()
-				.set( "name", "- Bless This Spess" )
-				.set( "desc", " A poster blessing this area." )
-			, 
-			new ByTable()
-				.set( "name", "- Science" )
-				.set( "desc", " A poster depicting an atom." )
-			, 
-			new ByTable()
-				.set( "name", "- Ian" )
-				.set( "desc", " Arf arf. Yap." )
-			, 
-			new ByTable()
-				.set( "name", "- Obey" )
-				.set( "desc", " A poster instructing the viewer to obey authority." )
-			, 
-			new ByTable()
-				.set( "name", "- Walk" )
-				.set( "desc", " A poster instructing the viewer to walk instead of running." )
-			, 
-			new ByTable()
-				.set( "name", "- State Laws" )
-				.set( "desc", " A poster instructing cyborgs to state their laws." )
-			, 
-			new ByTable()
-				.set( "name", "- Love Ian" )
-				.set( "desc", " Ian is love, Ian is life." )
-			, 
-			new ByTable()
-				.set( "name", "- Space Cops." )
-				.set( "desc", " A poster advertising the television show Space Cops." )
-			, 
-			new ByTable()
-				.set( "name", "- Ue No." )
-				.set( "desc", " This thing is all in Japanese." )
-			, 
-			new ByTable()
-				.set( "name", "- Get Your LEGS" )
-				.set( "desc", " LEGS: Leadership, Experience, Genius, Subordination." )
-			, 
-			new ByTable()
-				.set( "name", "- Do Not Question" )
-				.set( "desc", " A poster instructing the viewer not to ask about things they aren't meant to know." )
-			, 
-			new ByTable()
-				.set( "name", "- Work For A Future" )
-				.set( "desc", " A poster encouraging you to work for your future." )
-			, 
-			new ByTable()
-				.set( "name", "- Soft Cap Pop Art" )
-				.set( "desc", " A poster reprint of some cheap pop art." )
-			, 
+			new ByTable().set( "name", "- Here For Your Safety" ).set( "desc", " A poster glorifying the station's security force." ), 
+			new ByTable().set( "name", "- Nanotrasen Logo" ).set( "desc", " A poster depicting the Nanotrasen logo." ), 
+			new ByTable().set( "name", "- Cleanliness" ).set( "desc", " A poster warning of the dangers of poor hygiene." ), 
+			new ByTable().set( "name", "- Help Others" ).set( "desc", " A poster encouraging you to help fellow crewmembers." ), 
+			new ByTable().set( "name", "- Build" ).set( "desc", " A poster glorifying the engineering team." ), 
+			new ByTable().set( "name", "- Bless This Spess" ).set( "desc", " A poster blessing this area." ), 
+			new ByTable().set( "name", "- Science" ).set( "desc", " A poster depicting an atom." ), 
+			new ByTable().set( "name", "- Ian" ).set( "desc", " Arf arf. Yap." ), 
+			new ByTable().set( "name", "- Obey" ).set( "desc", " A poster instructing the viewer to obey authority." ), 
+			new ByTable().set( "name", "- Walk" ).set( "desc", " A poster instructing the viewer to walk instead of running." ), 
+			new ByTable().set( "name", "- State Laws" ).set( "desc", " A poster instructing cyborgs to state their laws." ), 
+			new ByTable().set( "name", "- Love Ian" ).set( "desc", " Ian is love, Ian is life." ), 
+			new ByTable().set( "name", "- Space Cops." ).set( "desc", " A poster advertising the television show Space Cops." ), 
+			new ByTable().set( "name", "- Ue No." ).set( "desc", " This thing is all in Japanese." ), 
+			new ByTable().set( "name", "- Get Your LEGS" ).set( "desc", " LEGS: Leadership, Experience, Genius, Subordination." ), 
+			new ByTable().set( "name", "- Do Not Question" ).set( "desc", " A poster instructing the viewer not to ask about things they aren't meant to know." ), 
+			new ByTable().set( "name", "- Work For A Future" ).set( "desc", " A poster encouraging you to work for your future." ), 
+			new ByTable().set( "name", "- Soft Cap Pop Art" ).set( "desc", " A poster reprint of some cheap pop art." ), 
 			new ByTable()
 				.set( "name", "- Safety: Internals" )
 				.set( "desc", " A poster instructing the viewer to wear internals in the rare environments where there is no oxygen or the air has been rendered toxic." )
 			, 
-			new ByTable()
-				.set( "name", "- Safety: Eye Protection" )
-				.set( "desc", " A poster instructing the viewer to wear eye protection when dealing with chemicals, smoke, or bright lights." )
-			, 
-			new ByTable()
-				.set( "name", "- Safety: Report" )
-				.set( "desc", " A poster instructing the viewer to report suspicious activity to the security force." )
-			, 
-			new ByTable()
-				.set( "name", "- Report Crimes" )
-				.set( "desc", " A poster encouraging the swift reporting of crime or seditious behavior to station security." )
-			, 
-			new ByTable()
-				.set( "name", "- Ion Rifle" )
-				.set( "desc", " A poster displaying an Ion Rifle." )
-			, 
-			new ByTable()
-				.set( "name", "- Foam Force Ad" )
-				.set( "desc", " Foam Force, it's Foam or be Foamed!" )
-			, 
-			new ByTable()
-				.set( "name", "- Cohiba Robusto Ad" )
-				.set( "desc", " Cohiba Robusto, the classy cigar." )
-			, 
+			new ByTable().set( "name", "- Safety: Eye Protection" ).set( "desc", " A poster instructing the viewer to wear eye protection when dealing with chemicals, smoke, or bright lights." ), 
+			new ByTable().set( "name", "- Safety: Report" ).set( "desc", " A poster instructing the viewer to report suspicious activity to the security force." ), 
+			new ByTable().set( "name", "- Report Crimes" ).set( "desc", " A poster encouraging the swift reporting of crime or seditious behavior to station security." ), 
+			new ByTable().set( "name", "- Ion Rifle" ).set( "desc", " A poster displaying an Ion Rifle." ), 
+			new ByTable().set( "name", "- Foam Force Ad" ).set( "desc", " Foam Force, it's Foam or be Foamed!" ), 
+			new ByTable().set( "name", "- Cohiba Robusto Ad" ).set( "desc", " Cohiba Robusto, the classy cigar." ), 
 			new ByTable()
 				.set( "name", "- 50th Anniversary Vintage Reprint" )
 				.set( "desc", " A reprint of a poster from 2505, commemorating the 50th Aniversery of Nanoposters Manufacturing, a subsidary of Nanotrasen." )
 			, 
-			new ByTable()
-				.set( "name", "- Fruit Bowl" )
-				.set( "desc", " Simple, yet awe-inspiring." )
-			, 
-			new ByTable()
-				.set( "name", "- PDA Ad" )
-				.set( "desc", " A poster advertising the latest PDA from Nanotrasen suppliers." )
-			, 
-			new ByTable()
-				.set( "name", "- Enlist" )
-				.set( "desc", " Enlist in the Nanotrasen Deathsquadron reserves today!" )
-			, 
-			new ByTable()
-				.set( "name", "- Nanomichi Ad" )
-				.set( "desc", " A poster advertising Nanomichi brand audio cassettes." )
-			, 
-			new ByTable()
-				.set( "name", "- 12 Gauge" )
-				.set( "desc", " A poster boasting about the superiority of 12 gauge shotgun shells." )
-			, 
-			new ByTable()
-				.set( "name", "- High-Class Martini" )
-				.set( "desc", " I told you to shake it, no stirring." )
-			, 
-			new ByTable()
-				.set( "name", "- The Owl" )
-				.set( "desc", " The Owl would do his best to protect the station. Will you?" )
-			, 
-			new ByTable()
-				.set( "name", "- No ERP" )
-				.set( "desc", " This poster reminds the crew that Eroticism, Rape and Pornography are banned on Nanotrasen stations." )
-			, 
-			new ByTable()
-				.set( "name", "- Carbon Dioxide" )
-				.set( "desc", " This informational poster teaches the viewer what carbon dioxide is." )
-			
+			new ByTable().set( "name", "- Fruit Bowl" ).set( "desc", " Simple, yet awe-inspiring." ), 
+			new ByTable().set( "name", "- PDA Ad" ).set( "desc", " A poster advertising the latest PDA from Nanotrasen suppliers." ), 
+			new ByTable().set( "name", "- Enlist" ).set( "desc", " Enlist in the Nanotrasen Deathsquadron reserves today!" ), 
+			new ByTable().set( "name", "- Nanomichi Ad" ).set( "desc", " A poster advertising Nanomichi brand audio cassettes." ), 
+			new ByTable().set( "name", "- 12 Gauge" ).set( "desc", " A poster boasting about the superiority of 12 gauge shotgun shells." ), 
+			new ByTable().set( "name", "- High-Class Martini" ).set( "desc", " I told you to shake it, no stirring." ), 
+			new ByTable().set( "name", "- The Owl" ).set( "desc", " The Owl would do his best to protect the station. Will you?" ), 
+			new ByTable().set( "name", "- No ERP" ).set( "desc", " This poster reminds the crew that Eroticism, Rape and Pornography are banned on Nanotrasen stations." ), 
+			new ByTable().set( "name", "- Carbon Dioxide" ).set( "desc", " This informational poster teaches the viewer what carbon dioxide is." )
 		 });
 		public static ByTable world_uplinks = new ByTable();
 		public static ByTable PDAs = new ByTable();
-		public static readonly ByTable rod_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "grille" )
-				.set( 2, typeof(Ent_Structure_Grille) )
-				.set( 3, 2 )
-				.set( "time", 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "table frame" )
-				.set( 2, typeof(Ent_Structure_TableFrame) )
-				.set( 3, 2 )
-				.set( "time", 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable corgi_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "corgi costume" )
-				.set( 2, typeof(Ent_Item_Clothing_Suit_Hooded_IanCostume) )
-				.set( 3, 3 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable monkey_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "monkey mask" )
-				.set( 2, typeof(Ent_Item_Clothing_Mask_Gas_Monkeymask) )
-				.set( 3, 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "monkey suit" )
-				.set( 2, typeof(Ent_Item_Clothing_Suit_Monkeysuit) )
-				.set( 3, 2 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable xeno_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "alien helmet" )
-				.set( 2, typeof(Ent_Item_Clothing_Head_Xenos) )
-				.set( 3, 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "alien suit" )
-				.set( 2, typeof(Ent_Item_Clothing_Suit_Xenos) )
-				.set( 3, 2 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable sandstone_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "pile of dirt" )
-				.set( 2, typeof(Ent_Machinery_Hydroponics_Soil) )
-				.set( 3, 3 )
-				.set( "time", 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "sandstone door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Sandstone) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Assistant Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Sandstone_Assistant) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable diamond_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "diamond door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Transparent_Diamond) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "diamond tile", typeof(Ent_Item_Stack_Tile_Mineral_Diamond), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "Captain Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Diamond_Captain) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "AI Hologram Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Diamond_Ai1) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "AI Core Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Diamond_Ai2) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable uranium_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "uranium door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Uranium) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "uranium tile", typeof(Ent_Item_Stack_Tile_Mineral_Uranium), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "Nuke Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Uranium_Nuke) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Engineer Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Uranium_Eng) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable plasma_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "plasma door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Transparent_Plasma) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "plasma tile", typeof(Ent_Item_Stack_Tile_Mineral_Plasma), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "Scientist Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Plasma_Scientist) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable gold_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "golden door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Gold) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "gold tile", typeof(Ent_Item_Stack_Tile_Mineral_Gold), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "HoS Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Gold_Hos) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "HoP Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Gold_Hop) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "CE Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Gold_Ce) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "RD Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Gold_Rd) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "CMO Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Gold_Cmo) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable silver_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "silver door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Silver) )
-				.set( 3, 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "silver tile", typeof(Ent_Item_Stack_Tile_Mineral_Silver), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "Med Officer Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Silver_Md) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Janitor Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Silver_Janitor) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Sec Officer Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Silver_Sec) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Sec Borg Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Silver_Secborg) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Med Borg Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Silver_Medborg) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable clown_recipes = new ByTable(new object [] { new StackRecipe( "bananium tile", typeof(Ent_Item_Stack_Tile_Mineral_Bananium), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "Clown Statue" )
-				.set( 2, typeof(Ent_Structure_Statue_Bananium_Clown) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable snow_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "Snow Wall" )
-				.set( 2, typeof(Tile_Simulated_Wall_Mineral_Snow) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "Snowman" )
-				.set( 2, typeof(Ent_Structure_Statue_Snow_Snowman) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), new StackRecipe( "Snowball", typeof(Ent_Item_Toy_Snowball), 1 ) });
-		public static readonly ByTable metal_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "stool" )
-				.set( 2, typeof(Ent_Structure_Bed_Stool) )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "chair" )
-				.set( 2, typeof(Ent_Structure_Bed_Chair) )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "swivel chair" )
-				.set( 2, typeof(Ent_Structure_Bed_Chair_Office_Dark) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "comfy chair" )
-				.set( 2, typeof(Ent_Structure_Bed_Chair_Comfy_Beige) )
-				.set( 3, 2 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "bed" )
-				.set( 2, typeof(Ent_Structure_Bed) )
-				.set( 3, 2 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), null, new StackRecipe( "rack parts", typeof(Ent_Item_Weapon_RackParts) ), ((dynamic)new ByTable()
-				.set( 1, "closet" )
-				.set( 2, typeof(Ent_Structure_Closet) )
-				.set( 3, 2 )
-				.set( "time", 15 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), null, ((dynamic)new ByTable()
-				.set( 1, "canister" )
-				.set( 2, typeof(Ent_Machinery_PortableAtmospherics_Canister) )
-				.set( 3, 10 )
-				.set( "time", 15 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), null, new StackRecipe( "floor tile", typeof(Ent_Item_Stack_Tile_Plasteel), 1, 4, 20 ), new StackRecipe( "metal rod", typeof(Ent_Item_Stack_Rods), 1, 2, 60 ), null, ((dynamic)new ByTable()
-				.set( 1, "computer frame" )
-				.set( 2, typeof(Ent_Structure_Computerframe) )
-				.set( 3, 5 )
-				.set( "time", 25 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "wall girders" )
-				.set( 2, typeof(Ent_Structure_Girder) )
-				.set( 3, 2 )
-				.set( "time", 50 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "airlock assembly" )
-				.set( 2, typeof(Ent_Structure_DoorAssembly) )
-				.set( 3, 4 )
-				.set( "time", 50 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "firelock frame" )
-				.set( 2, typeof(Ent_Structure_FirelockFrame) )
-				.set( 3, 3 )
-				.set( "time", 50 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "machine frame" )
-				.set( 2, typeof(Ent_Machinery_ConstructableFrame_MachineFrame) )
-				.set( 3, 5 )
-				.set( "time", 25 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "turret frame" )
-				.set( 2, typeof(Ent_Machinery_PortaTurretConstruct) )
-				.set( 3, 5 )
-				.set( "time", 25 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "meatspike frame" )
-				.set( 2, typeof(Ent_Structure_KitchenspikeFrame) )
-				.set( 3, 5 )
-				.set( "time", 25 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "reflector frame" )
-				.set( 2, typeof(Ent_Structure_Reflector) )
-				.set( 3, 5 )
-				.set( "time", 25 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), null, new StackRecipe( "grenade casing", typeof(Ent_Item_Weapon_Grenade_ChemGrenade) ), new StackRecipe( "light fixture frame", typeof(Ent_Item_Wallframe_LightFixture), 2 ), new StackRecipe( "small light fixture frame", typeof(Ent_Item_Wallframe_LightFixture_Small), 1 ), null, new StackRecipe( "apc frame", typeof(Ent_Item_Wallframe_Apc), 2 ), new StackRecipe( "air alarm frame", typeof(Ent_Item_Wallframe_Alarm), 2 ), new StackRecipe( "fire alarm frame", typeof(Ent_Item_Wallframe_Firealarm), 2 ), new StackRecipe( "button frame", typeof(Ent_Item_Wallframe_Button), 1 ), null, ((dynamic)new ByTable()
-				.set( 1, "iron door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Iron) )
-				.set( 3, 20 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable plasteel_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "AI core" )
-				.set( 2, typeof(Ent_Structure_AIcore) )
-				.set( 3, 4 )
-				.set( "time", 50 )
-				.set( "one_per_turf", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable wood_recipes = new ByTable(new object [] { new StackRecipe( "wooden sandals", typeof(Ent_Item_Clothing_Shoes_Sandal), 1 ), new StackRecipe( "wood floor tile", typeof(Ent_Item_Stack_Tile_Wood), 1, 4, 20 ), ((dynamic)new ByTable()
-				.set( 1, "wood table frame" )
-				.set( 2, typeof(Ent_Structure_TableFrame_Wood) )
-				.set( 3, 2 )
-				.set( "time", 10 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "rifle stock" )
-				.set( 2, typeof(Ent_Item_Weaponcrafting_Stock) )
-				.set( 3, 10 )
-				.set( "time", 40 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "wooden chair" )
-				.set( 2, typeof(Ent_Structure_Bed_Chair_Wood_Normal) )
-				.set( 3, 3 )
-				.set( "time", 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "wooden barricade" )
-				.set( 2, typeof(Ent_Structure_Barricade_Wooden) )
-				.set( 3, 5 )
-				.set( "time", 50 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "wooden door" )
-				.set( 2, typeof(Ent_Structure_MineralDoor_Wood) )
-				.set( 3, 10 )
-				.set( "time", 20 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "coffin" )
-				.set( 2, typeof(Ent_Structure_Closet_Coffin) )
-				.set( 3, 5 )
-				.set( "time", 15 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "book case" )
-				.set( 2, typeof(Ent_Structure_Bookcase) )
-				.set( 3, 4 )
-				.set( "time", 15 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "drying rack" )
-				.set( 2, typeof(Ent_Machinery_Smartfridge_DryingRack) )
-				.set( 3, 10 )
-				.set( "time", 15 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "dog bed" )
-				.set( 2, typeof(Ent_Structure_Bed_Dogbed) )
-				.set( 3, 10 )
-				.set( "time", 10 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "display case chassis" )
-				.set( 2, typeof(Ent_Structure_DisplaycaseChassis) )
-				.set( 3, 5 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "wooden buckler" )
-				.set( 2, typeof(Ent_Item_Weapon_Shield_Riot_Buckler) )
-				.set( 3, 20 )
-				.set( "time", 40 )
-			).applyCtor( typeof(StackRecipe) ) });
-		public static readonly ByTable cardboard_recipes = new ByTable(new object [] { new StackRecipe( "box", typeof(Ent_Item_Weapon_Storage_Box) ), new StackRecipe( "light tubes", typeof(Ent_Item_Weapon_Storage_Box_Lights_Tubes) ), new StackRecipe( "light bulbs", typeof(Ent_Item_Weapon_Storage_Box_Lights_Bulbs) ), new StackRecipe( "mouse traps", typeof(Ent_Item_Weapon_Storage_Box_Mousetraps) ), new StackRecipe( "cardborg suit", typeof(Ent_Item_Clothing_Suit_Cardborg), 3 ), new StackRecipe( "cardborg helmet", typeof(Ent_Item_Clothing_Head_Cardborg) ), new StackRecipe( "pizza box", typeof(Ent_Item_Pizzabox) ), new StackRecipe( "folder", typeof(Ent_Item_Weapon_Folder) ), new StackRecipe( "large box", typeof(Ent_Structure_Closet_Cardboard), 4 ) });
-		public static readonly ByTable runed_metal_recipes = new ByTable(new object [] { ((dynamic)new ByTable()
-				.set( 1, "pylon" )
-				.set( 2, typeof(Ent_Structure_Cult_Pylon) )
-				.set( 3, 4 )
-				.set( "time", 40 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "forge" )
-				.set( 2, typeof(Ent_Structure_Cult_Forge) )
-				.set( 3, 6 )
-				.set( "time", 40 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "archives" )
-				.set( 2, typeof(Ent_Structure_Cult_Tome) )
-				.set( 3, 4 )
-				.set( "time", 40 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ), ((dynamic)new ByTable()
-				.set( 1, "altar" )
-				.set( 2, typeof(Ent_Structure_Cult_Talisman) )
-				.set( 3, 10 )
-				.set( "time", 40 )
-				.set( "one_per_turf", 1 )
-				.set( "on_floor", 1 )
-			).applyCtor( typeof(StackRecipe) ) });
+		public static readonly ByTable rod_recipes = new ByTable(new object [] { 
+			new StackRecipe( "grille", typeof(Ent_Structure_Grille), 2, null, null, 10, true, true ), 
+			new StackRecipe( "table frame", typeof(Ent_Structure_TableFrame), 2, null, null, 10, true, true )
+		 });
+		public static readonly ByTable corgi_recipes = new ByTable(new object [] { new StackRecipe( "corgi costume", typeof(Ent_Item_Clothing_Suit_Hooded_IanCostume), 3, null, null, null, null, true ) });
+		public static readonly ByTable monkey_recipes = new ByTable(new object [] { 
+			new StackRecipe( "monkey mask", typeof(Ent_Item_Clothing_Mask_Gas_Monkeymask), 1, null, null, null, null, true ), 
+			new StackRecipe( "monkey suit", typeof(Ent_Item_Clothing_Suit_Monkeysuit), 2, null, null, null, null, true )
+		 });
+		public static readonly ByTable xeno_recipes = new ByTable(new object [] { 
+			new StackRecipe( "alien helmet", typeof(Ent_Item_Clothing_Head_Xenos), 1, null, null, null, null, true ), 
+			new StackRecipe( "alien suit", typeof(Ent_Item_Clothing_Suit_Xenos), 2, null, null, null, null, true )
+		 });
+		public static readonly ByTable sandstone_recipes = new ByTable(new object [] { 
+			new StackRecipe( "pile of dirt", typeof(Ent_Machinery_Hydroponics_Soil), 3, null, null, 10, true, true ), 
+			new StackRecipe( "sandstone door", typeof(Ent_Structure_MineralDoor_Sandstone), 10, null, null, null, true, true ), 
+			new StackRecipe( "Assistant Statue", typeof(Ent_Structure_Statue_Sandstone_Assistant), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable diamond_recipes = new ByTable(new object [] { 
+			new StackRecipe( "diamond door", typeof(Ent_Structure_MineralDoor_Transparent_Diamond), 10, null, null, null, true, true ), 
+			new StackRecipe( "diamond tile", typeof(Ent_Item_Stack_Tile_Mineral_Diamond), 1, 4, 20 ), 
+			new StackRecipe( "Captain Statue", typeof(Ent_Structure_Statue_Diamond_Captain), 5, null, null, null, true, true ), 
+			new StackRecipe( "AI Hologram Statue", typeof(Ent_Structure_Statue_Diamond_Ai1), 5, null, null, null, true, true ), 
+			new StackRecipe( "AI Core Statue", typeof(Ent_Structure_Statue_Diamond_Ai2), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable uranium_recipes = new ByTable(new object [] { 
+			new StackRecipe( "uranium door", typeof(Ent_Structure_MineralDoor_Uranium), 10, null, null, null, true, true ), 
+			new StackRecipe( "uranium tile", typeof(Ent_Item_Stack_Tile_Mineral_Uranium), 1, 4, 20 ), 
+			new StackRecipe( "Nuke Statue", typeof(Ent_Structure_Statue_Uranium_Nuke), 5, null, null, null, true, true ), 
+			new StackRecipe( "Engineer Statue", typeof(Ent_Structure_Statue_Uranium_Eng), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable plasma_recipes = new ByTable(new object [] { 
+			new StackRecipe( "plasma door", typeof(Ent_Structure_MineralDoor_Transparent_Plasma), 10, null, null, null, true, true ), 
+			new StackRecipe( "plasma tile", typeof(Ent_Item_Stack_Tile_Mineral_Plasma), 1, 4, 20 ), 
+			new StackRecipe( "Scientist Statue", typeof(Ent_Structure_Statue_Plasma_Scientist), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable gold_recipes = new ByTable(new object [] { 
+			new StackRecipe( "golden door", typeof(Ent_Structure_MineralDoor_Gold), 10, null, null, null, true, true ), 
+			new StackRecipe( "gold tile", typeof(Ent_Item_Stack_Tile_Mineral_Gold), 1, 4, 20 ), 
+			new StackRecipe( "HoS Statue", typeof(Ent_Structure_Statue_Gold_Hos), 5, null, null, null, true, true ), 
+			new StackRecipe( "HoP Statue", typeof(Ent_Structure_Statue_Gold_Hop), 5, null, null, null, true, true ), 
+			new StackRecipe( "CE Statue", typeof(Ent_Structure_Statue_Gold_Ce), 5, null, null, null, true, true ), 
+			new StackRecipe( "RD Statue", typeof(Ent_Structure_Statue_Gold_Rd), 5, null, null, null, true, true ), 
+			new StackRecipe( "CMO Statue", typeof(Ent_Structure_Statue_Gold_Cmo), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable silver_recipes = new ByTable(new object [] { 
+			new StackRecipe( "silver door", typeof(Ent_Structure_MineralDoor_Silver), 10, null, null, null, true, true ), 
+			new StackRecipe( "silver tile", typeof(Ent_Item_Stack_Tile_Mineral_Silver), 1, 4, 20 ), 
+			new StackRecipe( "Med Officer Statue", typeof(Ent_Structure_Statue_Silver_Md), 5, null, null, null, true, true ), 
+			new StackRecipe( "Janitor Statue", typeof(Ent_Structure_Statue_Silver_Janitor), 5, null, null, null, true, true ), 
+			new StackRecipe( "Sec Officer Statue", typeof(Ent_Structure_Statue_Silver_Sec), 5, null, null, null, true, true ), 
+			new StackRecipe( "Sec Borg Statue", typeof(Ent_Structure_Statue_Silver_Secborg), 5, null, null, null, true, true ), 
+			new StackRecipe( "Med Borg Statue", typeof(Ent_Structure_Statue_Silver_Medborg), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable clown_recipes = new ByTable(new object [] { 
+			new StackRecipe( "bananium tile", typeof(Ent_Item_Stack_Tile_Mineral_Bananium), 1, 4, 20 ), 
+			new StackRecipe( "Clown Statue", typeof(Ent_Structure_Statue_Bananium_Clown), 5, null, null, null, true, true )
+		 });
+		public static readonly ByTable snow_recipes = new ByTable(new object [] { 
+			new StackRecipe( "Snow Wall", typeof(Tile_Simulated_Wall_Mineral_Snow), 5, null, null, null, true, true ), 
+			new StackRecipe( "Snowman", typeof(Ent_Structure_Statue_Snow_Snowman), 5, null, null, null, true, true ), 
+			new StackRecipe( "Snowball", typeof(Ent_Item_Toy_Snowball), 1 )
+		 });
+		public static readonly ByTable metal_recipes = new ByTable(new object [] { 
+			new StackRecipe( "stool", typeof(Ent_Structure_Bed_Stool), null, null, null, null, true, true ), 
+			new StackRecipe( "chair", typeof(Ent_Structure_Bed_Chair), null, null, null, null, true, true ), 
+			new StackRecipe( "swivel chair", typeof(Ent_Structure_Bed_Chair_Office_Dark), 5, null, null, null, true, true ), 
+			new StackRecipe( "comfy chair", typeof(Ent_Structure_Bed_Chair_Comfy_Beige), 2, null, null, null, true, true ), 
+			new StackRecipe( "bed", typeof(Ent_Structure_Bed), 2, null, null, null, true, true ), 
+			null, 
+			new StackRecipe( "rack parts", typeof(Ent_Item_Weapon_RackParts) ), 
+			new StackRecipe( "closet", typeof(Ent_Structure_Closet), 2, null, null, 15, true, true ), 
+			null, 
+			new StackRecipe( "canister", typeof(Ent_Machinery_PortableAtmospherics_Canister), 10, null, null, 15, true, true ), 
+			null, 
+			new StackRecipe( "floor tile", typeof(Ent_Item_Stack_Tile_Plasteel), 1, 4, 20 ), 
+			new StackRecipe( "metal rod", typeof(Ent_Item_Stack_Rods), 1, 2, 60 ), 
+			null, 
+			new StackRecipe( "computer frame", typeof(Ent_Structure_Computerframe), 5, null, null, 25, true, true ), 
+			new StackRecipe( "wall girders", typeof(Ent_Structure_Girder), 2, null, null, 50, true, true ), 
+			new StackRecipe( "airlock assembly", typeof(Ent_Structure_DoorAssembly), 4, null, null, 50, true, true ), 
+			new StackRecipe( "firelock frame", typeof(Ent_Structure_FirelockFrame), 3, null, null, 50, true, true ), 
+			new StackRecipe( "machine frame", typeof(Ent_Machinery_ConstructableFrame_MachineFrame), 5, null, null, 25, true, true ), 
+			new StackRecipe( "turret frame", typeof(Ent_Machinery_PortaTurretConstruct), 5, null, null, 25, true, true ), 
+			new StackRecipe( "meatspike frame", typeof(Ent_Structure_KitchenspikeFrame), 5, null, null, 25, true, true ), 
+			new StackRecipe( "reflector frame", typeof(Ent_Structure_Reflector), 5, null, null, 25, true, true ), 
+			null, 
+			new StackRecipe( "grenade casing", typeof(Ent_Item_Weapon_Grenade_ChemGrenade) ), 
+			new StackRecipe( "light fixture frame", typeof(Ent_Item_Wallframe_LightFixture), 2 ), 
+			new StackRecipe( "small light fixture frame", typeof(Ent_Item_Wallframe_LightFixture_Small), 1 ), 
+			null, 
+			new StackRecipe( "apc frame", typeof(Ent_Item_Wallframe_Apc), 2 ), 
+			new StackRecipe( "air alarm frame", typeof(Ent_Item_Wallframe_Alarm), 2 ), 
+			new StackRecipe( "fire alarm frame", typeof(Ent_Item_Wallframe_Firealarm), 2 ), 
+			new StackRecipe( "button frame", typeof(Ent_Item_Wallframe_Button), 1 ), 
+			null, 
+			new StackRecipe( "iron door", typeof(Ent_Structure_MineralDoor_Iron), 20, null, null, null, true, true )
+		 });
+		public static readonly ByTable plasteel_recipes = new ByTable(new object [] { new StackRecipe( "AI core", typeof(Ent_Structure_AIcore), 4, null, null, 50, true ) });
+		public static readonly ByTable wood_recipes = new ByTable(new object [] { 
+			new StackRecipe( "wooden sandals", typeof(Ent_Item_Clothing_Shoes_Sandal), 1 ), 
+			new StackRecipe( "wood floor tile", typeof(Ent_Item_Stack_Tile_Wood), 1, 4, 20 ), 
+			new StackRecipe( "wood table frame", typeof(Ent_Structure_TableFrame_Wood), 2, null, null, 10 ), 
+			new StackRecipe( "rifle stock", typeof(Ent_Item_Weaponcrafting_Stock), 10, null, null, 40 ), 
+			new StackRecipe( "wooden chair", typeof(Ent_Structure_Bed_Chair_Wood_Normal), 3, null, null, 10, true, true ), 
+			new StackRecipe( "wooden barricade", typeof(Ent_Structure_Barricade_Wooden), 5, null, null, 50, true, true ), 
+			new StackRecipe( "wooden door", typeof(Ent_Structure_MineralDoor_Wood), 10, null, null, 20, true, true ), 
+			new StackRecipe( "coffin", typeof(Ent_Structure_Closet_Coffin), 5, null, null, 15, true, true ), 
+			new StackRecipe( "book case", typeof(Ent_Structure_Bookcase), 4, null, null, 15, true, true ), 
+			new StackRecipe( "drying rack", typeof(Ent_Machinery_Smartfridge_DryingRack), 10, null, null, 15, true, true ), 
+			new StackRecipe( "dog bed", typeof(Ent_Structure_Bed_Dogbed), 10, null, null, 10, true, true ), 
+			new StackRecipe( "display case chassis", typeof(Ent_Structure_DisplaycaseChassis), 5, null, null, null, true, true ), 
+			new StackRecipe( "wooden buckler", typeof(Ent_Item_Weapon_Shield_Riot_Buckler), 20, null, null, 40 )
+		 });
+		public static readonly ByTable cardboard_recipes = new ByTable(new object [] { 
+			new StackRecipe( "box", typeof(Ent_Item_Weapon_Storage_Box) ), 
+			new StackRecipe( "light tubes", typeof(Ent_Item_Weapon_Storage_Box_Lights_Tubes) ), 
+			new StackRecipe( "light bulbs", typeof(Ent_Item_Weapon_Storage_Box_Lights_Bulbs) ), 
+			new StackRecipe( "mouse traps", typeof(Ent_Item_Weapon_Storage_Box_Mousetraps) ), 
+			new StackRecipe( "cardborg suit", typeof(Ent_Item_Clothing_Suit_Cardborg), 3 ), 
+			new StackRecipe( "cardborg helmet", typeof(Ent_Item_Clothing_Head_Cardborg) ), 
+			new StackRecipe( "pizza box", typeof(Ent_Item_Pizzabox) ), 
+			new StackRecipe( "folder", typeof(Ent_Item_Weapon_Folder) ), 
+			new StackRecipe( "large box", typeof(Ent_Structure_Closet_Cardboard), 4 )
+		 });
+		public static readonly ByTable runed_metal_recipes = new ByTable(new object [] { 
+			new StackRecipe( "pylon", typeof(Ent_Structure_Cult_Pylon), 4, null, null, 40, true, true ), 
+			new StackRecipe( "forge", typeof(Ent_Structure_Cult_Forge), 6, null, null, 40, true, true ), 
+			new StackRecipe( "archives", typeof(Ent_Structure_Cult_Tome), 4, null, null, 40, true, true ), 
+			new StackRecipe( "altar", typeof(Ent_Structure_Cult_Talisman), 10, null, null, 40, true, true )
+		 });
 		public static readonly ByTable disposalpipeID2State = new ByTable(new object [] { "pipe-s", "pipe-c", "pipe-j1", "pipe-j2", "pipe-y", "pipe-t", "disposal", "outlet", "intake", "pipe-j1s", "pipe-j2s" });
 		public static readonly ByTable RPD_recipes = new ByTable()
 			.set( "Regular Pipes", new ByTable()
@@ -1523,29 +1183,337 @@ namespace SomGame {
 				.set( "Sort Junction", new PipeInfo_Disposal( 9, 2 ) )
 			 )
 		;
-		public static readonly ByTable biblenames = new ByTable(new object [] { "Bible", "Quran", "Scrapbook", "Burning Bible", "Clown Bible", "Banana Bible", "Creeper Bible", "White Bible", "Holy Light", "The God Delusion", "Tome", "The King in Yellow", "Ithaqua", "Scientology", "Melted Bible", "Necronomicon" });
-		public static readonly ByTable biblestates = new ByTable(new object [] { "bible", "koran", "scrapbook", "burning", "honk1", "honk2", "creeper", "white", "holylight", "atheist", "tome", "kingyellow", "ithaqua", "scientology", "melted", "necronomicon" });
-		public static readonly ByTable bibleitemstates = new ByTable(new object [] { "bible", "koran", "scrapbook", "bible", "bible", "bible", "syringe_kit", "syringe_kit", "syringe_kit", "syringe_kit", "syringe_kit", "kingyellow", "ithaqua", "scientology", "melted", "necronomicon" });
+		public static readonly ByTable biblenames = new ByTable(new object [] { 
+			"Bible", 
+			"Quran", 
+			"Scrapbook", 
+			"Burning Bible", 
+			"Clown Bible", 
+			"Banana Bible", 
+			"Creeper Bible", 
+			"White Bible", 
+			"Holy Light", 
+			"The God Delusion", 
+			"Tome", 
+			"The King in Yellow", 
+			"Ithaqua", 
+			"Scientology", 
+			"Melted Bible", 
+			"Necronomicon"
+		 });
+		public static readonly ByTable biblestates = new ByTable(new object [] { 
+			"bible", 
+			"koran", 
+			"scrapbook", 
+			"burning", 
+			"honk1", 
+			"honk2", 
+			"creeper", 
+			"white", 
+			"holylight", 
+			"atheist", 
+			"tome", 
+			"kingyellow", 
+			"ithaqua", 
+			"scientology", 
+			"melted", 
+			"necronomicon"
+		 });
+		public static readonly ByTable bibleitemstates = new ByTable(new object [] { 
+			"bible", 
+			"koran", 
+			"scrapbook", 
+			"bible", 
+			"bible", 
+			"bible", 
+			"syringe_kit", 
+			"syringe_kit", 
+			"syringe_kit", 
+			"syringe_kit", 
+			"syringe_kit", 
+			"kingyellow", 
+			"ithaqua", 
+			"scientology", 
+			"melted", 
+			"necronomicon"
+		 });
 		public static readonly ByTable globalBlankCanvases = new ByTable( 4 );
 		public static readonly ByTable GlobalPool = new ByTable();
 		public static readonly ByTable exclude = new ByTable(new object [] { "animate_movement", "contents", "loc", "locs", "parent_type", "vars", "verbs", "type" });
 		public static readonly ByTable pooledvariables = new ByTable();
-		public static readonly ByTable icons_to_ignore_at_floor_init = new ByTable(new object [] { "damaged1", "damaged2", "damaged3", "damaged4", "damaged5", "panelscorched", "floorscorched1", "floorscorched2", "platingdmg1", "platingdmg2", "platingdmg3", "plating", "light_on", "light_on_flicker1", "light_on_flicker2", "light_on_clicker3", "light_on_clicker4", "light_on_clicker5", "light_broken", "light_on_broken", "light_off", "wall_thermite", "grass", "sand", "asteroid", "asteroid_dug", "asteroid0", "asteroid1", "asteroid2", "asteroid3", "asteroid4", "asteroid5", "asteroid6", "asteroid7", "asteroid8", "asteroid9", "asteroid10", "asteroid11", "asteroid12", "oldburning", "light-on-r", "light-on-y", "light-on-g", "light-on-b", "wood", "wood-broken", "carpetcorner", "carpetside", "carpet", "ironsand1", "ironsand2", "ironsand3", "ironsand4", "ironsand5", "ironsand6", "ironsand7", "ironsand8", "ironsand9", "ironsand10", "ironsand11", "ironsand12", "ironsand13", "ironsand14", "ironsand15" });
+		public static readonly ByTable icons_to_ignore_at_floor_init = new ByTable(new object [] { 
+			"damaged1", 
+			"damaged2", 
+			"damaged3", 
+			"damaged4", 
+			"damaged5", 
+			"panelscorched", 
+			"floorscorched1", 
+			"floorscorched2", 
+			"platingdmg1", 
+			"platingdmg2", 
+			"platingdmg3", 
+			"plating", 
+			"light_on", 
+			"light_on_flicker1", 
+			"light_on_flicker2", 
+			"light_on_clicker3", 
+			"light_on_clicker4", 
+			"light_on_clicker5", 
+			"light_broken", 
+			"light_on_broken", 
+			"light_off", 
+			"wall_thermite", 
+			"grass", 
+			"sand", 
+			"asteroid", 
+			"asteroid_dug", 
+			"asteroid0", 
+			"asteroid1", 
+			"asteroid2", 
+			"asteroid3", 
+			"asteroid4", 
+			"asteroid5", 
+			"asteroid6", 
+			"asteroid7", 
+			"asteroid8", 
+			"asteroid9", 
+			"asteroid10", 
+			"asteroid11", 
+			"asteroid12", 
+			"oldburning", 
+			"light-on-r", 
+			"light-on-y", 
+			"light-on-g", 
+			"light-on-b", 
+			"wood", 
+			"wood-broken", 
+			"carpetcorner", 
+			"carpetside", 
+			"carpet", 
+			"ironsand1", 
+			"ironsand2", 
+			"ironsand3", 
+			"ironsand4", 
+			"ironsand5", 
+			"ironsand6", 
+			"ironsand7", 
+			"ironsand8", 
+			"ironsand9", 
+			"ironsand10", 
+			"ironsand11", 
+			"ironsand12", 
+			"ironsand13", 
+			"ironsand14", 
+			"ironsand15"
+		 });
 		public static ByTable admin_ranks = new ByTable();
-		public static readonly ByTable admin_verbs_default = new ByTable(new object [] { typeof(Client).GetMethod( "toggleadminhelpsound" ), typeof(Client).GetMethod( "toggleannouncelogin" ), typeof(Client).GetMethod( "deadmin_self" ), typeof(Client).GetMethod( "cmd_admin_say" ), typeof(Client).GetMethod( "hide_verbs" ), typeof(Client).GetMethod( "hide_most_verbs" ), typeof(Client).GetMethod( "debug_variables" ), typeof(Client).GetMethod( "admin_memo" ), typeof(Client).GetMethod( "deadchat" ), typeof(Client).GetMethod( "dsay" ), typeof(Client).GetMethod( "toggleprayers" ), typeof(Client).GetMethod( "toggleprayersounds" ), typeof(Client).GetMethod( "toggle_hear_radio" ), typeof(Client).GetMethod( "investigate_show" ), typeof(Client).GetMethod( "secrets" ), typeof(Client).GetMethod( "reload_admins" ), typeof(Client).GetMethod( "reestablish_db_connection" ), typeof(Client).GetMethod( "cmd_admin_pm_context" ), typeof(Client).GetMethod( "cmd_admin_pm_panel" ), typeof(Client).GetMethod( "stop_sounds" ) });
-		public static readonly ByTable admin_verbs_admin = new ByTable(new object [] { typeof(Client).GetMethod( "player_panel_new" ), typeof(Client).GetMethod( "invisimin" ), typeof(Admins).GetMethod( "show_player_panel" ), typeof(Client).GetMethod( "game_panel" ), typeof(Client).GetMethod( "check_ai_laws" ), typeof(Admins).GetMethod( "toggleooc" ), typeof(Admins).GetMethod( "toggleoocdead" ), typeof(Admins).GetMethod( "toggleenter" ), typeof(Admins).GetMethod( "toggleguests" ), typeof(Admins).GetMethod( "announce" ), typeof(Admins).GetMethod( "set_admin_notice" ), typeof(Client).GetMethod( "admin_ghost" ), typeof(Client).GetMethod( "toggle_view_range" ), typeof(Admins).GetMethod( "view_txt_log" ), typeof(Admins).GetMethod( "view_atk_log" ), typeof(Client).GetMethod( "cmd_admin_subtle_message" ), typeof(Client).GetMethod( "cmd_admin_delete" ), typeof(Client).GetMethod( "cmd_admin_check_contents" ), typeof(Client).GetMethod( "check_antagonists" ), typeof(Admins).GetMethod( "access_news_network" ), typeof(Client).GetMethod( "giveruntimelog" ), typeof(Client).GetMethod( "getruntimelog" ), typeof(Client).GetMethod( "getserverlog" ), typeof(Client).GetMethod( "jumptocoord" ), typeof(Client).GetMethod( "Getmob" ), typeof(Client).GetMethod( "Getkey" ), typeof(Client).GetMethod( "jumptoarea" ), typeof(Client).GetMethod( "jumptokey" ), typeof(Client).GetMethod( "jumptomob" ), typeof(Client).GetMethod( "jumptoturf" ), typeof(Client).GetMethod( "admin_call_shuttle" ), typeof(Client).GetMethod( "admin_cancel_shuttle" ), typeof(Client).GetMethod( "cmd_admin_direct_narrate" ), typeof(Client).GetMethod( "cmd_admin_world_narrate" ), typeof(Client).GetMethod( "cmd_admin_local_narrate" ), typeof(Client).GetMethod( "cmd_admin_create_centcom_report" ), typeof(Client).GetMethod( "toggle_antag_hud" ), typeof(Client).GetMethod( "toggle_AI_interact" ) });
+		public static readonly ByTable admin_verbs_default = new ByTable(new object [] { 
+			typeof(Client).GetMethod( "toggleadminhelpsound" ), 
+			typeof(Client).GetMethod( "toggleannouncelogin" ), 
+			typeof(Client).GetMethod( "deadmin_self" ), 
+			typeof(Client).GetMethod( "cmd_admin_say" ), 
+			typeof(Client).GetMethod( "hide_verbs" ), 
+			typeof(Client).GetMethod( "hide_most_verbs" ), 
+			typeof(Client).GetMethod( "debug_variables" ), 
+			typeof(Client).GetMethod( "admin_memo" ), 
+			typeof(Client).GetMethod( "deadchat" ), 
+			typeof(Client).GetMethod( "dsay" ), 
+			typeof(Client).GetMethod( "toggleprayers" ), 
+			typeof(Client).GetMethod( "toggleprayersounds" ), 
+			typeof(Client).GetMethod( "toggle_hear_radio" ), 
+			typeof(Client).GetMethod( "investigate_show" ), 
+			typeof(Client).GetMethod( "secrets" ), 
+			typeof(Client).GetMethod( "reload_admins" ), 
+			typeof(Client).GetMethod( "reestablish_db_connection" ), 
+			typeof(Client).GetMethod( "cmd_admin_pm_context" ), 
+			typeof(Client).GetMethod( "cmd_admin_pm_panel" ), 
+			typeof(Client).GetMethod( "stop_sounds" )
+		 });
+		public static readonly ByTable admin_verbs_admin = new ByTable(new object [] { 
+			typeof(Client).GetMethod( "player_panel_new" ), 
+			typeof(Client).GetMethod( "invisimin" ), 
+			typeof(Admins).GetMethod( "show_player_panel" ), 
+			typeof(Client).GetMethod( "game_panel" ), 
+			typeof(Client).GetMethod( "check_ai_laws" ), 
+			typeof(Admins).GetMethod( "toggleooc" ), 
+			typeof(Admins).GetMethod( "toggleoocdead" ), 
+			typeof(Admins).GetMethod( "toggleenter" ), 
+			typeof(Admins).GetMethod( "toggleguests" ), 
+			typeof(Admins).GetMethod( "announce" ), 
+			typeof(Admins).GetMethod( "set_admin_notice" ), 
+			typeof(Client).GetMethod( "admin_ghost" ), 
+			typeof(Client).GetMethod( "toggle_view_range" ), 
+			typeof(Admins).GetMethod( "view_txt_log" ), 
+			typeof(Admins).GetMethod( "view_atk_log" ), 
+			typeof(Client).GetMethod( "cmd_admin_subtle_message" ), 
+			typeof(Client).GetMethod( "cmd_admin_delete" ), 
+			typeof(Client).GetMethod( "cmd_admin_check_contents" ), 
+			typeof(Client).GetMethod( "check_antagonists" ), 
+			typeof(Admins).GetMethod( "access_news_network" ), 
+			typeof(Client).GetMethod( "giveruntimelog" ), 
+			typeof(Client).GetMethod( "getruntimelog" ), 
+			typeof(Client).GetMethod( "getserverlog" ), 
+			typeof(Client).GetMethod( "jumptocoord" ), 
+			typeof(Client).GetMethod( "Getmob" ), 
+			typeof(Client).GetMethod( "Getkey" ), 
+			typeof(Client).GetMethod( "jumptoarea" ), 
+			typeof(Client).GetMethod( "jumptokey" ), 
+			typeof(Client).GetMethod( "jumptomob" ), 
+			typeof(Client).GetMethod( "jumptoturf" ), 
+			typeof(Client).GetMethod( "admin_call_shuttle" ), 
+			typeof(Client).GetMethod( "admin_cancel_shuttle" ), 
+			typeof(Client).GetMethod( "cmd_admin_direct_narrate" ), 
+			typeof(Client).GetMethod( "cmd_admin_world_narrate" ), 
+			typeof(Client).GetMethod( "cmd_admin_local_narrate" ), 
+			typeof(Client).GetMethod( "cmd_admin_create_centcom_report" ), 
+			typeof(Client).GetMethod( "toggle_antag_hud" ), 
+			typeof(Client).GetMethod( "toggle_AI_interact" )
+		 });
 		public static readonly ByTable admin_verbs_ban = new ByTable(new object [] { typeof(Client).GetMethod( "unban_panel" ), typeof(Client).GetMethod( "DB_ban_panel" ), typeof(Client).GetMethod( "stickybanpanel" ) });
 		public static readonly ByTable admin_verbs_sounds = new ByTable(new object [] { typeof(Client).GetMethod( "play_local_sound" ), typeof(Client).GetMethod( "play_sound" ), typeof(Client).GetMethod( "set_round_end_sound" ) });
-		public static readonly ByTable admin_verbs_fun = new ByTable(new object [] { typeof(Client).GetMethod( "cmd_admin_dress" ), typeof(Client).GetMethod( "cmd_admin_gib_self" ), typeof(Client).GetMethod( "drop_bomb" ), typeof(Client).GetMethod( "cinematic" ), typeof(Client).GetMethod( "one_click_antag" ), typeof(Client).GetMethod( "send_space_ninja" ), typeof(Client).GetMethod( "cmd_admin_add_freeform_ai_law" ), typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), typeof(Client).GetMethod( "object_say" ), typeof(Client).GetMethod( "toggle_random_events" ), typeof(Client).GetMethod( "set_ooc" ), typeof(Client).GetMethod( "reset_ooc" ), typeof(Client).GetMethod( "forceEvent" ), typeof(Client).GetMethod( "bluespace_artillery" ), typeof(Client).GetMethod( "admin_change_sec_level" ), typeof(Client).GetMethod( "toggle_nuke" ) });
+		public static readonly ByTable admin_verbs_fun = new ByTable(new object [] { 
+			typeof(Client).GetMethod( "cmd_admin_dress" ), 
+			typeof(Client).GetMethod( "cmd_admin_gib_self" ), 
+			typeof(Client).GetMethod( "drop_bomb" ), 
+			typeof(Client).GetMethod( "cinematic" ), 
+			typeof(Client).GetMethod( "one_click_antag" ), 
+			typeof(Client).GetMethod( "send_space_ninja" ), 
+			typeof(Client).GetMethod( "cmd_admin_add_freeform_ai_law" ), 
+			typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), 
+			typeof(Client).GetMethod( "object_say" ), 
+			typeof(Client).GetMethod( "toggle_random_events" ), 
+			typeof(Client).GetMethod( "set_ooc" ), 
+			typeof(Client).GetMethod( "reset_ooc" ), 
+			typeof(Client).GetMethod( "forceEvent" ), 
+			typeof(Client).GetMethod( "bluespace_artillery" ), 
+			typeof(Client).GetMethod( "admin_change_sec_level" ), 
+			typeof(Client).GetMethod( "toggle_nuke" )
+		 });
 		public static readonly ByTable admin_verbs_spawn = new ByTable(new object [] { typeof(Admins).GetMethod( "spawn_atom" ), typeof(Client).GetMethod( "respawn_character" ) });
-		public static readonly ByTable admin_verbs_server = new ByTable(new object [] { typeof(Admins).GetMethod( "startnow" ), typeof(Admins).GetMethod( "restart" ), typeof(Admins).GetMethod( "end_round" ), typeof(Admins).GetMethod( "delay" ), typeof(Admins).GetMethod( "toggleaban" ), typeof(Client).GetMethod( "toggle_log_hrefs" ), typeof(Client).GetMethod( "everyone_random" ), typeof(Admins).GetMethod( "toggleAI" ), typeof(Client).GetMethod( "cmd_admin_delete" ), typeof(Client).GetMethod( "cmd_debug_del_all" ), typeof(Client).GetMethod( "toggle_random_events" ), typeof(Client).GetMethod( "panicbunker" ) });
-		public static readonly ByTable admin_verbs_debug = new ByTable(new object [] { typeof(Client).GetMethod( "restart_controller" ), typeof(Client).GetMethod( "cmd_admin_list_open_jobs" ), typeof(Client).GetMethod( "Debug2" ), typeof(Client).GetMethod( "cmd_debug_make_powernets" ), typeof(Client).GetMethod( "cmd_debug_mob_lists" ), typeof(Client).GetMethod( "cmd_admin_delete" ), typeof(Client).GetMethod( "cmd_debug_del_all" ), typeof(Client).GetMethod( "restart_controller" ), typeof(Client).GetMethod( "enable_debug_verbs" ), typeof(Client).GetMethod( "callproc" ), typeof(Client).GetMethod( "callproc_datum" ), typeof(Client).GetMethod( "SDQL2_query" ), typeof(Client).GetMethod( "test_movable_UI" ), typeof(Client).GetMethod( "test_snap_UI" ), typeof(Client).GetMethod( "debugNatureMapGenerator" ), typeof(Client).GetMethod( "check_bomb_impacts" ), typeof(GlobalFuncs).GetMethod( "machine_upgrade" ), typeof(Client).GetMethod( "populate_world" ), typeof(Client).GetMethod( "cmd_display_del_log" ), typeof(Client).GetMethod( "reset_latejoin_spawns" ), typeof(Client).GetMethod( "create_outfits" ), typeof(Client).GetMethod( "debug_huds" ), typeof(Client).GetMethod( "map_template_load" ), typeof(Client).GetMethod( "map_template_upload" ) });
+		public static readonly ByTable admin_verbs_server = new ByTable(new object [] { 
+			typeof(Admins).GetMethod( "startnow" ), 
+			typeof(Admins).GetMethod( "restart" ), 
+			typeof(Admins).GetMethod( "end_round" ), 
+			typeof(Admins).GetMethod( "delay" ), 
+			typeof(Admins).GetMethod( "toggleaban" ), 
+			typeof(Client).GetMethod( "toggle_log_hrefs" ), 
+			typeof(Client).GetMethod( "everyone_random" ), 
+			typeof(Admins).GetMethod( "toggleAI" ), 
+			typeof(Client).GetMethod( "cmd_admin_delete" ), 
+			typeof(Client).GetMethod( "cmd_debug_del_all" ), 
+			typeof(Client).GetMethod( "toggle_random_events" ), 
+			typeof(Client).GetMethod( "panicbunker" )
+		 });
+		public static readonly ByTable admin_verbs_debug = new ByTable(new object [] { 
+			typeof(Client).GetMethod( "restart_controller" ), 
+			typeof(Client).GetMethod( "cmd_admin_list_open_jobs" ), 
+			typeof(Client).GetMethod( "Debug2" ), 
+			typeof(Client).GetMethod( "cmd_debug_make_powernets" ), 
+			typeof(Client).GetMethod( "cmd_debug_mob_lists" ), 
+			typeof(Client).GetMethod( "cmd_admin_delete" ), 
+			typeof(Client).GetMethod( "cmd_debug_del_all" ), 
+			typeof(Client).GetMethod( "restart_controller" ), 
+			typeof(Client).GetMethod( "enable_debug_verbs" ), 
+			typeof(Client).GetMethod( "callproc" ), 
+			typeof(Client).GetMethod( "callproc_datum" ), 
+			typeof(Client).GetMethod( "SDQL2_query" ), 
+			typeof(Client).GetMethod( "test_movable_UI" ), 
+			typeof(Client).GetMethod( "test_snap_UI" ), 
+			typeof(Client).GetMethod( "debugNatureMapGenerator" ), 
+			typeof(Client).GetMethod( "check_bomb_impacts" ), 
+			typeof(GlobalFuncs).GetMethod( "machine_upgrade" ), 
+			typeof(Client).GetMethod( "populate_world" ), 
+			typeof(Client).GetMethod( "cmd_display_del_log" ), 
+			typeof(Client).GetMethod( "reset_latejoin_spawns" ), 
+			typeof(Client).GetMethod( "create_outfits" ), 
+			typeof(Client).GetMethod( "debug_huds" ), 
+			typeof(Client).GetMethod( "map_template_load" ), 
+			typeof(Client).GetMethod( "map_template_upload" )
+		 });
 		public static readonly ByTable admin_verbs_possess = new ByTable(new object [] { typeof(GlobalFuncs).GetMethod( "possess" ), typeof(GlobalFuncs).GetMethod( "release" ) });
 		public static readonly ByTable admin_verbs_permissions = new ByTable(new object [] { typeof(Client).GetMethod( "edit_admin_permissions" ), typeof(Client).GetMethod( "create_poll" ) });
 		public static readonly ByTable admin_verbs_rejuv = new ByTable(new object [] { typeof(Client).GetMethod( "respawn_character" ) });
-		public static readonly ByTable admin_verbs_hideable = new ByTable(new object [] { typeof(Client).GetMethod( "set_ooc" ), typeof(Client).GetMethod( "reset_ooc" ), typeof(Client).GetMethod( "deadmin_self" ), typeof(Client).GetMethod( "deadchat" ), typeof(Client).GetMethod( "toggleprayers" ), typeof(Client).GetMethod( "toggle_hear_radio" ), typeof(Admins).GetMethod( "show_traitor_panel" ), typeof(Admins).GetMethod( "toggleenter" ), typeof(Admins).GetMethod( "toggleguests" ), typeof(Admins).GetMethod( "announce" ), typeof(Admins).GetMethod( "set_admin_notice" ), typeof(Client).GetMethod( "admin_ghost" ), typeof(Client).GetMethod( "toggle_view_range" ), typeof(Admins).GetMethod( "view_txt_log" ), typeof(Admins).GetMethod( "view_atk_log" ), typeof(Client).GetMethod( "cmd_admin_subtle_message" ), typeof(Client).GetMethod( "cmd_admin_check_contents" ), typeof(Admins).GetMethod( "access_news_network" ), typeof(Client).GetMethod( "admin_call_shuttle" ), typeof(Client).GetMethod( "admin_cancel_shuttle" ), typeof(Client).GetMethod( "cmd_admin_direct_narrate" ), typeof(Client).GetMethod( "cmd_admin_world_narrate" ), typeof(Client).GetMethod( "cmd_admin_local_narrate" ), typeof(Client).GetMethod( "play_local_sound" ), typeof(Client).GetMethod( "play_sound" ), typeof(Client).GetMethod( "set_round_end_sound" ), typeof(Client).GetMethod( "cmd_admin_dress" ), typeof(Client).GetMethod( "cmd_admin_gib_self" ), typeof(Client).GetMethod( "drop_bomb" ), typeof(Client).GetMethod( "cinematic" ), typeof(Client).GetMethod( "send_space_ninja" ), typeof(Client).GetMethod( "cmd_admin_add_freeform_ai_law" ), typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), typeof(Client).GetMethod( "cmd_admin_create_centcom_report" ), typeof(Client).GetMethod( "object_say" ), typeof(Client).GetMethod( "toggle_random_events" ), typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), typeof(Admins).GetMethod( "startnow" ), typeof(Admins).GetMethod( "restart" ), typeof(Admins).GetMethod( "delay" ), typeof(Admins).GetMethod( "toggleaban" ), typeof(Client).GetMethod( "toggle_log_hrefs" ), typeof(Client).GetMethod( "everyone_random" ), typeof(Admins).GetMethod( "toggleAI" ), typeof(Client).GetMethod( "restart_controller" ), typeof(Client).GetMethod( "cmd_admin_list_open_jobs" ), typeof(Client).GetMethod( "callproc" ), typeof(Client).GetMethod( "callproc_datum" ), typeof(Client).GetMethod( "Debug2" ), typeof(Client).GetMethod( "reload_admins" ), typeof(Client).GetMethod( "cmd_debug_make_powernets" ), typeof(Client).GetMethod( "startSinglo" ), typeof(Client).GetMethod( "cmd_debug_mob_lists" ), typeof(Client).GetMethod( "cmd_debug_del_all" ), typeof(Client).GetMethod( "enable_debug_verbs" ), typeof(GlobalFuncs).GetMethod( "possess" ), typeof(GlobalFuncs).GetMethod( "release" ), typeof(Client).GetMethod( "reload_admins" ), typeof(Client).GetMethod( "panicbunker" ), typeof(Client).GetMethod( "admin_change_sec_level" ), typeof(Client).GetMethod( "toggle_nuke" ), typeof(Client).GetMethod( "cmd_display_del_log" ), typeof(Client).GetMethod( "toggle_antag_hud" ), typeof(Client).GetMethod( "debug_huds" ) });
+		public static readonly ByTable admin_verbs_hideable = new ByTable(new object [] { 
+			typeof(Client).GetMethod( "set_ooc" ), 
+			typeof(Client).GetMethod( "reset_ooc" ), 
+			typeof(Client).GetMethod( "deadmin_self" ), 
+			typeof(Client).GetMethod( "deadchat" ), 
+			typeof(Client).GetMethod( "toggleprayers" ), 
+			typeof(Client).GetMethod( "toggle_hear_radio" ), 
+			typeof(Admins).GetMethod( "show_traitor_panel" ), 
+			typeof(Admins).GetMethod( "toggleenter" ), 
+			typeof(Admins).GetMethod( "toggleguests" ), 
+			typeof(Admins).GetMethod( "announce" ), 
+			typeof(Admins).GetMethod( "set_admin_notice" ), 
+			typeof(Client).GetMethod( "admin_ghost" ), 
+			typeof(Client).GetMethod( "toggle_view_range" ), 
+			typeof(Admins).GetMethod( "view_txt_log" ), 
+			typeof(Admins).GetMethod( "view_atk_log" ), 
+			typeof(Client).GetMethod( "cmd_admin_subtle_message" ), 
+			typeof(Client).GetMethod( "cmd_admin_check_contents" ), 
+			typeof(Admins).GetMethod( "access_news_network" ), 
+			typeof(Client).GetMethod( "admin_call_shuttle" ), 
+			typeof(Client).GetMethod( "admin_cancel_shuttle" ), 
+			typeof(Client).GetMethod( "cmd_admin_direct_narrate" ), 
+			typeof(Client).GetMethod( "cmd_admin_world_narrate" ), 
+			typeof(Client).GetMethod( "cmd_admin_local_narrate" ), 
+			typeof(Client).GetMethod( "play_local_sound" ), 
+			typeof(Client).GetMethod( "play_sound" ), 
+			typeof(Client).GetMethod( "set_round_end_sound" ), 
+			typeof(Client).GetMethod( "cmd_admin_dress" ), 
+			typeof(Client).GetMethod( "cmd_admin_gib_self" ), 
+			typeof(Client).GetMethod( "drop_bomb" ), 
+			typeof(Client).GetMethod( "cinematic" ), 
+			typeof(Client).GetMethod( "send_space_ninja" ), 
+			typeof(Client).GetMethod( "cmd_admin_add_freeform_ai_law" ), 
+			typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), 
+			typeof(Client).GetMethod( "cmd_admin_create_centcom_report" ), 
+			typeof(Client).GetMethod( "object_say" ), 
+			typeof(Client).GetMethod( "toggle_random_events" ), 
+			typeof(Client).GetMethod( "cmd_admin_add_random_ai_law" ), 
+			typeof(Admins).GetMethod( "startnow" ), 
+			typeof(Admins).GetMethod( "restart" ), 
+			typeof(Admins).GetMethod( "delay" ), 
+			typeof(Admins).GetMethod( "toggleaban" ), 
+			typeof(Client).GetMethod( "toggle_log_hrefs" ), 
+			typeof(Client).GetMethod( "everyone_random" ), 
+			typeof(Admins).GetMethod( "toggleAI" ), 
+			typeof(Client).GetMethod( "restart_controller" ), 
+			typeof(Client).GetMethod( "cmd_admin_list_open_jobs" ), 
+			typeof(Client).GetMethod( "callproc" ), 
+			typeof(Client).GetMethod( "callproc_datum" ), 
+			typeof(Client).GetMethod( "Debug2" ), 
+			typeof(Client).GetMethod( "reload_admins" ), 
+			typeof(Client).GetMethod( "cmd_debug_make_powernets" ), 
+			typeof(Client).GetMethod( "startSinglo" ), 
+			typeof(Client).GetMethod( "cmd_debug_mob_lists" ), 
+			typeof(Client).GetMethod( "cmd_debug_del_all" ), 
+			typeof(Client).GetMethod( "enable_debug_verbs" ), 
+			typeof(GlobalFuncs).GetMethod( "possess" ), 
+			typeof(GlobalFuncs).GetMethod( "release" ), 
+			typeof(Client).GetMethod( "reload_admins" ), 
+			typeof(Client).GetMethod( "panicbunker" ), 
+			typeof(Client).GetMethod( "admin_change_sec_level" ), 
+			typeof(Client).GetMethod( "toggle_nuke" ), 
+			typeof(Client).GetMethod( "cmd_display_del_log" ), 
+			typeof(Client).GetMethod( "toggle_antag_hud" ), 
+			typeof(Client).GetMethod( "debug_huds" )
+		 });
 		public static ByTable appearance_keylist = new ByTable( 0 );
-		public static readonly ByTable create_object_forms = new ByTable(new object [] { typeof(Entity), typeof(Ent_Structure), typeof(Ent_Machinery), typeof(Ent_Effect), typeof(Ent_Item), typeof(Ent_Item_Clothing), typeof(Ent_Item_Stack), typeof(Ent_Item_Device), typeof(Ent_Item_Weapon), typeof(Ent_Item_Weapon_ReagentContainers), typeof(Ent_Item_Weapon_Gun) });
+		public static readonly ByTable create_object_forms = new ByTable(new object [] { 
+			typeof(Entity), 
+			typeof(Ent_Structure), 
+			typeof(Ent_Machinery), 
+			typeof(Ent_Effect), 
+			typeof(Ent_Item), 
+			typeof(Ent_Item_Clothing), 
+			typeof(Ent_Item_Stack), 
+			typeof(Ent_Item_Device), 
+			typeof(Ent_Item_Weapon), 
+			typeof(Ent_Item_Weapon_ReagentContainers), 
+			typeof(Ent_Item_Weapon_Gun)
+		 });
 		public static ByTable admin_datums = new ByTable();
 		public static readonly ByTable TYPES_SHORTCUTS = new ByTable()
 			.set( typeof(Ent_Effect_Decal_Cleanable), "CLEANABLE" )
@@ -1567,15 +1535,9 @@ namespace SomGame {
 		public static readonly ByTable VVicon_edit_lock = new ByTable(new object [] { "icon", "icon_state", "overlays", "underlays", "resize" });
 		public static readonly ByTable VVckey_edit = new ByTable(new object [] { "key", "ckey" });
 		public static readonly ByTable custom_outfits = new ByTable();
-		public static readonly dynamic potentialRandomZlevels = new ByTable()
-			.set( "filename", "config/awaymissionconfig.txt" )
-		.apply( typeof(GlobalFuncs).GetMethod( "generateMapList ") );
-		public static readonly dynamic potentialLavaRuins = new ByTable()
-			.set( "filename", "config/lavaRuinConfig.txt" )
-		.apply( typeof(GlobalFuncs).GetMethod( "generateMapList ") );
-		public static readonly dynamic potentialSpaceRuins = new ByTable()
-			.set( "filename", "config/spaceRuinConfig.txt" )
-		.apply( typeof(GlobalFuncs).GetMethod( "generateMapList ") );
+		public static readonly ByTable potentialRandomZlevels = GlobalFuncs.generateMapList( "config/awaymissionconfig.txt" );
+		public static readonly ByTable potentialLavaRuins = GlobalFuncs.generateMapList( "config/lavaRuinConfig.txt" );
+		public static readonly ByTable potentialSpaceRuins = GlobalFuncs.generateMapList( "config/spaceRuinConfig.txt" );
 		public static readonly string sc_safecode1 = "" + Rand13.Int( 0, 9 );
 		public static readonly string sc_safecode2 = "" + Rand13.Int( 0, 9 );
 		public static readonly string sc_safecode3 = "" + Rand13.Int( 0, 9 );
@@ -1583,9 +1545,69 @@ namespace SomGame {
 		public static readonly string sc_safecode5 = "" + Rand13.Int( 0, 9 );
 		public static readonly ByTable clientmessages = new ByTable();
 		public static readonly ByTable preferences_datums = new ByTable();
-		public static readonly ByTable ghost_forms = new ByTable(new object [] { "ghost", "ghostking", "ghostian2", "skeleghost", "ghost_red", "ghost_black", "ghost_blue", "ghost_yellow", "ghost_green", "ghost_pink", "ghost_cyan", "ghost_dblue", "ghost_dred", "ghost_dgreen", "ghost_dcyan", "ghost_grey", "ghost_dyellow", "ghost_dpink", "ghost_purpleswirl", "ghost_funkypurp", "ghost_pinksherbert", "ghost_blazeit", "ghost_mellow", "ghost_rainbow", "ghost_camo", "ghost_fire" });
+		public static readonly ByTable ghost_forms = new ByTable(new object [] { 
+			"ghost", 
+			"ghostking", 
+			"ghostian2", 
+			"skeleghost", 
+			"ghost_red", 
+			"ghost_black", 
+			"ghost_blue", 
+			"ghost_yellow", 
+			"ghost_green", 
+			"ghost_pink", 
+			"ghost_cyan", 
+			"ghost_dblue", 
+			"ghost_dred", 
+			"ghost_dgreen", 
+			"ghost_dcyan", 
+			"ghost_grey", 
+			"ghost_dyellow", 
+			"ghost_dpink", 
+			"ghost_purpleswirl", 
+			"ghost_funkypurp", 
+			"ghost_pinksherbert", 
+			"ghost_blazeit", 
+			"ghost_mellow", 
+			"ghost_rainbow", 
+			"ghost_camo", 
+			"ghost_fire"
+		 });
 		public static readonly ByTable ghost_orbits = new ByTable(new object [] { "circle", "triangle", "square", "hexagon", "pentagon" });
-		public static readonly ByTable non_fakeattack_weapons = new ByTable(new object [] { typeof(Ent_Item_Weapon_Gun_Projectile), typeof(Ent_Item_AmmoBox_A357), typeof(Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow), typeof(Ent_Item_Weapon_Melee_Energy_Sword_Saber), typeof(Ent_Item_Weapon_Storage_Box_Syndicate), typeof(Ent_Item_Weapon_Storage_Box_Emps), typeof(Ent_Item_Weapon_Cartridge_Syndicate), typeof(Ent_Item_Clothing_Under_Chameleon), typeof(Ent_Item_Clothing_Shoes_Sneakers_Syndigaloshes), typeof(Ent_Item_Weapon_Card_Id_Syndicate), typeof(Ent_Item_Clothing_Mask_Gas_Voice), typeof(Ent_Item_Clothing_Glasses_Thermal), typeof(Ent_Item_Device_Chameleon), typeof(Ent_Item_Weapon_Card_Emag), typeof(Ent_Item_Weapon_Storage_Toolbox_Syndicate), typeof(Ent_Item_Weapon_AiModule), typeof(Ent_Item_Device_Radio_Headset_Syndicate), typeof(Ent_Item_Weapon_C4), typeof(Ent_Item_Device_Powersink), typeof(Ent_Item_Weapon_Storage_Box_SyndieKit), typeof(Ent_Item_Toy_Syndicateballoon), typeof(Ent_Item_Weapon_Gun_Energy_Laser_Captain), typeof(Ent_Item_Weapon_HandTele), typeof(Ent_Item_Weapon_Rcd), typeof(Ent_Item_Weapon_Tank_Jetpack), typeof(Ent_Item_Clothing_Under_Rank_Captain), typeof(Ent_Item_Device_Aicard), typeof(Ent_Item_Clothing_Shoes_Magboots), typeof(Ent_Item_Areaeditor_Blueprints), typeof(Ent_Item_Weapon_Disk_Nuclear), typeof(Ent_Item_Clothing_Suit_Space_Nasavoid), typeof(Ent_Item_Weapon_Tank) });
+		public static readonly ByTable non_fakeattack_weapons = new ByTable(new object [] { 
+			typeof(Ent_Item_Weapon_Gun_Projectile), 
+			typeof(Ent_Item_AmmoBox_A357), 
+			typeof(Ent_Item_Weapon_Gun_Energy_KineticAccelerator_Crossbow), 
+			typeof(Ent_Item_Weapon_Melee_Energy_Sword_Saber), 
+			typeof(Ent_Item_Weapon_Storage_Box_Syndicate), 
+			typeof(Ent_Item_Weapon_Storage_Box_Emps), 
+			typeof(Ent_Item_Weapon_Cartridge_Syndicate), 
+			typeof(Ent_Item_Clothing_Under_Chameleon), 
+			typeof(Ent_Item_Clothing_Shoes_Sneakers_Syndigaloshes), 
+			typeof(Ent_Item_Weapon_Card_Id_Syndicate), 
+			typeof(Ent_Item_Clothing_Mask_Gas_Voice), 
+			typeof(Ent_Item_Clothing_Glasses_Thermal), 
+			typeof(Ent_Item_Device_Chameleon), 
+			typeof(Ent_Item_Weapon_Card_Emag), 
+			typeof(Ent_Item_Weapon_Storage_Toolbox_Syndicate), 
+			typeof(Ent_Item_Weapon_AiModule), 
+			typeof(Ent_Item_Device_Radio_Headset_Syndicate), 
+			typeof(Ent_Item_Weapon_C4), 
+			typeof(Ent_Item_Device_Powersink), 
+			typeof(Ent_Item_Weapon_Storage_Box_SyndieKit), 
+			typeof(Ent_Item_Toy_Syndicateballoon), 
+			typeof(Ent_Item_Weapon_Gun_Energy_Laser_Captain), 
+			typeof(Ent_Item_Weapon_HandTele), 
+			typeof(Ent_Item_Weapon_Rcd), 
+			typeof(Ent_Item_Weapon_Tank_Jetpack), 
+			typeof(Ent_Item_Clothing_Under_Rank_Captain), 
+			typeof(Ent_Item_Device_Aicard), 
+			typeof(Ent_Item_Clothing_Shoes_Magboots), 
+			typeof(Ent_Item_Areaeditor_Blueprints), 
+			typeof(Ent_Item_Weapon_Disk_Nuclear), 
+			typeof(Ent_Item_Clothing_Suit_Space_Nasavoid), 
+			typeof(Ent_Item_Weapon_Tank)
+		 });
 		public static ByTable ghost_darkness_images = new ByTable();
 		public static readonly ByTable department_radio_keys = new ByTable()
 			.set( ":r", "right hand" )
@@ -1744,10 +1766,7 @@ namespace SomGame {
 		;
 		public static readonly ByTable crit_allowed_modes = new ByTable(new object [] { "whisper", "changeling", "alientalk" });
 		public static readonly ByTable ventcrawl_machinery = new ByTable(new object [] { typeof(Ent_Machinery_Atmospherics_Components_Unary_VentPump), typeof(Ent_Machinery_Atmospherics_Components_Unary_VentScrubber) });
-		public static readonly dynamic plasmaman_on_fire = ((dynamic)new ByTable()
-			.set( "icon", "icons/mob/OnFire.dmi" )
-			.set( "icon_state", "plasmaman" )
-		).applyCtor( typeof(Image) );
+		public static readonly Image plasmaman_on_fire = new Image( "icons/mob/OnFire.dmi", null, "plasmaman" );
 		public static readonly ByTable synth_flesh_disguises = new ByTable();
 		public static ByTable ai_list = new ByTable();
 		public static readonly ByTable vox_sounds = new ByTable()
@@ -2469,7 +2488,21 @@ namespace SomGame {
 		public static readonly ByTable cable_coil_recipes = new ByTable(new object [] { new StackRecipe( "cable restraints", typeof(Ent_Item_Weapon_Restraints_Handcuffs_Cable), 15 ) });
 		public static readonly ByTable gravity_generators = new ByTable();
 		public static ByTable rad_collectors = new ByTable();
-		public static readonly ByTable blacklisted_tesla_types = new ByTable(new object [] { typeof(Ent_Machinery_Atmospherics), typeof(Ent_Machinery_Power_Emitter), typeof(Ent_Machinery_Field_Generator), typeof(Mob_Living_SimpleAnimal), typeof(Ent_Machinery_ParticleAccelerator_ControlBox), typeof(Ent_Structure_ParticleAccelerator_FuelChamber), typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Center), typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Left), typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Right), typeof(Ent_Structure_ParticleAccelerator_PowerBox), typeof(Ent_Structure_ParticleAccelerator_EndCap), typeof(Ent_Machinery_Field_Containment), typeof(Ent_Structure_Disposalpipe) });
+		public static readonly ByTable blacklisted_tesla_types = new ByTable(new object [] { 
+			typeof(Ent_Machinery_Atmospherics), 
+			typeof(Ent_Machinery_Power_Emitter), 
+			typeof(Ent_Machinery_Field_Generator), 
+			typeof(Mob_Living_SimpleAnimal), 
+			typeof(Ent_Machinery_ParticleAccelerator_ControlBox), 
+			typeof(Ent_Structure_ParticleAccelerator_FuelChamber), 
+			typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Center), 
+			typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Left), 
+			typeof(Ent_Structure_ParticleAccelerator_ParticleEmitter_Right), 
+			typeof(Ent_Structure_ParticleAccelerator_PowerBox), 
+			typeof(Ent_Structure_ParticleAccelerator_EndCap), 
+			typeof(Ent_Machinery_Field_Containment), 
+			typeof(Ent_Structure_Disposalpipe)
+		 });
 		public static ByTable chemical_mob_spawn_meancritters = new ByTable();
 		public static ByTable chemical_mob_spawn_nicecritters = new ByTable();
 		public static ByTable message_servers = new ByTable();
@@ -2493,12 +2526,7 @@ namespace SomGame {
 			.set( typeof(Ent_Effect_Meteor_Flaming), 1 )
 			.set( typeof(Ent_Effect_Meteor_Irradiated), 3 )
 		;
-		public static readonly ByTable meteors_threatening = new ByTable()
-			.set( typeof(Ent_Effect_Meteor_Medium), 4 )
-			.set( typeof(Ent_Effect_Meteor_Big), 8 )
-			.set( typeof(Ent_Effect_Meteor_Flaming), 3 )
-			.set( typeof(Ent_Effect_Meteor_Irradiated), 3 )
-		;
+		public static readonly ByTable meteors_threatening = new ByTable().set( typeof(Ent_Effect_Meteor_Medium), 4 ).set( typeof(Ent_Effect_Meteor_Big), 8 ).set( typeof(Ent_Effect_Meteor_Flaming), 3 ).set( typeof(Ent_Effect_Meteor_Irradiated), 3 );
 		public static readonly ByTable meteors_catastrophic = new ByTable()
 			.set( typeof(Ent_Effect_Meteor_Medium), 5 )
 			.set( typeof(Ent_Effect_Meteor_Big), 75 )
@@ -2506,15 +2534,27 @@ namespace SomGame {
 			.set( typeof(Ent_Effect_Meteor_Irradiated), 10 )
 			.set( typeof(Ent_Effect_Meteor_Tunguska), 1 )
 		;
-		public static readonly ByTable meteorsB = new ByTable()
-			.set( typeof(Ent_Effect_Meteor_Meaty), 5 )
-			.set( typeof(Ent_Effect_Meteor_Meaty_Xeno), 1 )
-		;
+		public static readonly ByTable meteorsB = new ByTable().set( typeof(Ent_Effect_Meteor_Meaty), 5 ).set( typeof(Ent_Effect_Meteor_Meaty_Xeno), 1 );
 		public static readonly ByTable meteorsC = new ByTable(new object [] { typeof(Ent_Effect_Meteor_Dust) });
 		public static readonly ByTable meteorsSPOOKY = new ByTable(new object [] { typeof(Ent_Effect_Meteor_Pumpkin) });
 		public static readonly ByTable html_interfaces = new ByTable();
 		public static readonly JsonHelper JSON = new JsonHelper();
-		public static readonly ByTable spawn_forbidden = new ByTable(new object [] { typeof(Ent_Item_Weapon_Grab), typeof(Ent_Item_TkGrab), typeof(Ent_Item_Weapon_Implant), typeof(Ent_Item_Assembly), typeof(Ent_Item_Device_Onetankbomb), typeof(Ent_Item_Radio), typeof(Ent_Item_Device_Pda_Ai), typeof(Ent_Item_Device_Uplink_Hidden), typeof(Ent_Item_SmallDelivery), typeof(Ent_Item_Missile), typeof(Ent_Item_Projectile), typeof(Ent_Item_Borg_Sight), typeof(Ent_Item_Borg_Stun), typeof(Ent_Item_Weapon_RobotModule) });
+		public static readonly ByTable spawn_forbidden = new ByTable(new object [] { 
+			typeof(Ent_Item_Weapon_Grab), 
+			typeof(Ent_Item_TkGrab), 
+			typeof(Ent_Item_Weapon_Implant), 
+			typeof(Ent_Item_Assembly), 
+			typeof(Ent_Item_Device_Onetankbomb), 
+			typeof(Ent_Item_Radio), 
+			typeof(Ent_Item_Device_Pda_Ai), 
+			typeof(Ent_Item_Device_Uplink_Hidden), 
+			typeof(Ent_Item_SmallDelivery), 
+			typeof(Ent_Item_Missile), 
+			typeof(Ent_Item_Projectile), 
+			typeof(Ent_Item_Borg_Sight), 
+			typeof(Ent_Item_Borg_Stun), 
+			typeof(Ent_Item_Weapon_RobotModule)
+		 });
 		public static readonly ByTable hrefs = new ByTable()
 			.set( 1, "Space Gear" )
 			.set( "Suit Up (Space Travel Gear)", "hsbsuit" )
@@ -2550,17 +2590,64 @@ namespace SomGame {
 			.set( "Spawn O2 Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Oxygen) )
 			.set( "Spawn Air Canister", "hsbspawn&path=" + typeof(Ent_Machinery_PortableAtmospherics_Canister_Air) )
 		;
-		public static readonly ByTable common_tools = new ByTable(new object [] { typeof(Ent_Item_Stack_CableCoil), typeof(Ent_Item_Weapon_Wrench), typeof(Ent_Item_Weapon_Weldingtool), typeof(Ent_Item_Weapon_Screwdriver), typeof(Ent_Item_Weapon_Wirecutters), typeof(Ent_Item_Device_Multitool), typeof(Ent_Item_Weapon_Crowbar) });
-		public static readonly ByTable WALLITEMS = new ByTable(new object [] { typeof(Ent_Machinery_Power_Apc), typeof(Ent_Machinery_Alarm), typeof(Ent_Item_Device_Radio_Intercom), typeof(Ent_Structure_ExtinguisherCabinet), typeof(Ent_Structure_ReagentDispensers_Peppertank), typeof(Ent_Machinery_StatusDisplay), typeof(Ent_Machinery_RequestsConsole), typeof(Ent_Machinery_LightSwitch), typeof(Ent_Structure_Sign), typeof(Ent_Machinery_Newscaster), typeof(Ent_Machinery_Firealarm), typeof(Ent_Structure_Noticeboard), typeof(Ent_Machinery_Button), typeof(Ent_Machinery_Computer_Security_Telescreen), typeof(Ent_Machinery_EmbeddedController_Radio_SimpleVentController), typeof(Ent_Item_Weapon_Storage_Secure_Safe), typeof(Ent_Machinery_DoorTimer), typeof(Ent_Machinery_Flasher), typeof(Ent_Machinery_KeycardAuth), typeof(Ent_Structure_Mirror), typeof(Ent_Structure_Fireaxecabinet), typeof(Ent_Machinery_Computer_Security_Telescreen_Entertainment) });
+		public static readonly ByTable common_tools = new ByTable(new object [] { 
+			typeof(Ent_Item_Stack_CableCoil), 
+			typeof(Ent_Item_Weapon_Wrench), 
+			typeof(Ent_Item_Weapon_Weldingtool), 
+			typeof(Ent_Item_Weapon_Screwdriver), 
+			typeof(Ent_Item_Weapon_Wirecutters), 
+			typeof(Ent_Item_Device_Multitool), 
+			typeof(Ent_Item_Weapon_Crowbar)
+		 });
+		public static readonly ByTable WALLITEMS = new ByTable(new object [] { 
+			typeof(Ent_Machinery_Power_Apc), 
+			typeof(Ent_Machinery_Alarm), 
+			typeof(Ent_Item_Device_Radio_Intercom), 
+			typeof(Ent_Structure_ExtinguisherCabinet), 
+			typeof(Ent_Structure_ReagentDispensers_Peppertank), 
+			typeof(Ent_Machinery_StatusDisplay), 
+			typeof(Ent_Machinery_RequestsConsole), 
+			typeof(Ent_Machinery_LightSwitch), 
+			typeof(Ent_Structure_Sign), 
+			typeof(Ent_Machinery_Newscaster), 
+			typeof(Ent_Machinery_Firealarm), 
+			typeof(Ent_Structure_Noticeboard), 
+			typeof(Ent_Machinery_Button), 
+			typeof(Ent_Machinery_Computer_Security_Telescreen), 
+			typeof(Ent_Machinery_EmbeddedController_Radio_SimpleVentController), 
+			typeof(Ent_Item_Weapon_Storage_Secure_Safe), 
+			typeof(Ent_Machinery_DoorTimer), 
+			typeof(Ent_Machinery_Flasher), 
+			typeof(Ent_Machinery_KeycardAuth), 
+			typeof(Ent_Structure_Mirror), 
+			typeof(Ent_Structure_Fireaxecabinet), 
+			typeof(Ent_Machinery_Computer_Security_Telescreen_Entertainment)
+		 });
 		public static readonly ByTable WALLITEMS_EXTERNAL = new ByTable(new object [] { typeof(Ent_Machinery_Camera), typeof(Ent_Machinery_CameraAssembly), typeof(Ent_Machinery_LightConstruct), typeof(Ent_Machinery_Light) });
 		public static readonly ByTable WALLITEMS_INVERSE = new ByTable(new object [] { typeof(Ent_Machinery_LightConstruct), typeof(Ent_Machinery_Light) });
 		public static readonly ByTable banned_books = new ByTable(new object [] { typeof(Ent_Item_Weapon_Book_Manual_Random), typeof(Ent_Item_Weapon_Book_Manual_Nuclear), typeof(Ent_Item_Weapon_Book_Manual_Wiki) });
-		public static readonly ByTable pipe_types = new ByTable(new object [] { typeof(Ent_Machinery_Atmospherics_Pipe_Simple), typeof(Ent_Machinery_Atmospherics_Pipe_Manifold), typeof(Ent_Machinery_Atmospherics_Pipe_Manifold4w), typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Simple), typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Manifold), typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Manifold4w), typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Junction), typeof(Ent_Machinery_Atmospherics_Components_Unary_PortablesConnector), typeof(Ent_Machinery_Atmospherics_Components_Unary_VentPump), typeof(Ent_Machinery_Atmospherics_Components_Unary_VentScrubber), typeof(Ent_Machinery_Atmospherics_Components_Unary_HeatExchanger), typeof(Ent_Machinery_Atmospherics_Components_Binary_Pump), typeof(Ent_Machinery_Atmospherics_Components_Binary_PassiveGate), typeof(Ent_Machinery_Atmospherics_Components_Binary_VolumePump), typeof(Ent_Machinery_Atmospherics_Components_Binary_Valve), typeof(Ent_Machinery_Atmospherics_Components_Binary_Valve_Digital), typeof(Ent_Machinery_Atmospherics_Components_Trinary_Filter), typeof(Ent_Machinery_Atmospherics_Components_Trinary_Mixer) });
+		public static readonly ByTable pipe_types = new ByTable(new object [] { 
+			typeof(Ent_Machinery_Atmospherics_Pipe_Simple), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_Manifold), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_Manifold4w), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Simple), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Manifold), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Manifold4w), 
+			typeof(Ent_Machinery_Atmospherics_Pipe_HeatExchanging_Junction), 
+			typeof(Ent_Machinery_Atmospherics_Components_Unary_PortablesConnector), 
+			typeof(Ent_Machinery_Atmospherics_Components_Unary_VentPump), 
+			typeof(Ent_Machinery_Atmospherics_Components_Unary_VentScrubber), 
+			typeof(Ent_Machinery_Atmospherics_Components_Unary_HeatExchanger), 
+			typeof(Ent_Machinery_Atmospherics_Components_Binary_Pump), 
+			typeof(Ent_Machinery_Atmospherics_Components_Binary_PassiveGate), 
+			typeof(Ent_Machinery_Atmospherics_Components_Binary_VolumePump), 
+			typeof(Ent_Machinery_Atmospherics_Components_Binary_Valve), 
+			typeof(Ent_Machinery_Atmospherics_Components_Binary_Valve_Digital), 
+			typeof(Ent_Machinery_Atmospherics_Components_Trinary_Filter), 
+			typeof(Ent_Machinery_Atmospherics_Components_Trinary_Mixer)
+		 });
 		public static DBConnection dbcon = new DBConnection();
-		public static readonly dynamic fire_overlay = ((dynamic)new ByTable()
-			.set( "icon", "icons/effects/fire.dmi" )
-			.set( "icon_state", "fire" )
-		).applyCtor( typeof(Image) );
+		public static readonly Image fire_overlay = new Image( "icons/effects/fire.dmi", null, "fire" );
 		public static readonly ByTable crematoriums = new ByTable();
 		public static readonly DmmSuite maploader = new DmmSuite();
 	}

@@ -7,12 +7,16 @@ using SomGame;
 namespace SomEngine {
 	static partial class Game13 {
 		public static string name = "/tg/ Station 13";
-		public static double fps = 10;
+		public static int fps = 10;
 		public const int icon_size = 32;
+
+		public static readonly Type default_mob = typeof(Mob_NewPlayer);
+		public static readonly Type default_tile = typeof(Tile_Space);
+		public static readonly Type default_zone = typeof(Zone_Space);
 
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic New(  ) {
+		public static void New(  ) {
 			string date_string = null;
 			GlobalVars.map_ready = true;
 			date_string = String13.formatTime( Game13.realtime, "YYYY/MM-Month/DD-Day" );
@@ -33,7 +37,7 @@ namespace SomEngine {
 			GlobalFuncs.appearance_loadbanfile();
 			GlobalFuncs.LoadBans();
 			GlobalFuncs.investigate_reset();
-			if ( ( GlobalVars.config != null ) && GlobalVars.config.server_name != null && GlobalVars.config.server_suffix && Game13.port > 0 ) {
+			if ( GlobalVars.config != null && GlobalVars.config.server_name != null && GlobalVars.config.server_suffix && Game13.port > 0 ) {
 				GlobalVars.config.server_name += " #" + Game13.port % 1000 / 100;
 			}
 			GlobalVars.timezoneOffset = String13.parseNumber( String13.formatTime( 0, "hh" ) ) * 36000;
@@ -52,14 +56,14 @@ namespace SomEngine {
 			GlobalFuncs.process_teleport_locs();
 			GlobalFuncs.SortAreas();
 			GlobalVars.map_name = "" + "Box Station";
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		public static dynamic IsBanned( dynamic key = null, dynamic address = null, dynamic computer_id = null ) {
 			dynamic _default = null;
 			bool admin = false;
-			string ckey = null;
+			dynamic ckey = null;
 			string ckeytext = null;
 			string ipquery = null;
 			string cidquery = null;
@@ -73,7 +77,7 @@ namespace SomEngine {
 			dynamic bantype = null;
 			string expires = null;
 			string desc = null;
-			if ( !Lang13.isValid( key ) || !Lang13.isValid( address ) || !Lang13.isValid( computer_id ) ) {
+			if ( !Lang13.Bool( key ) || !Lang13.Bool( address ) || !Lang13.Bool( computer_id ) ) {
 				GlobalFuncs.log_access( "Failed Login (invalid data): " + key + " " + address + "-" + computer_id );
 				return new ByTable()
 					.set( "reason", "invalid login data" )
@@ -82,10 +86,7 @@ namespace SomEngine {
 			}
 			if ( String13.parseNumber( computer_id ) == 2147483648 ) {
 				GlobalFuncs.log_access( "Failed Login (invalid cid): " + key + " " + address + "-" + computer_id );
-				return new ByTable()
-					.set( "reason", "invalid login data" )
-					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" )
-				;
+				return new ByTable().set( "reason", "invalid login data" ).set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" );
 			}
 			admin = false;
 			ckey = String13.ckey( key );
@@ -95,12 +96,9 @@ namespace SomEngine {
 			if ( GlobalFuncs.IsGuestKey( key ) ) {
 				if ( !GlobalVars.guests_allowed ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed" );
-					return new ByTable()
-						.set( "reason", "guest" )
-						.set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." )
-					;
+					return new ByTable().set( "reason", "guest" ).set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." );
 				}
-				if ( GlobalVars.config.panic_bunker && ( GlobalVars.dbcon != null ) && GlobalVars.dbcon.IsConnected() ) {
+				if ( GlobalVars.config.panic_bunker && GlobalVars.dbcon != null && GlobalVars.dbcon.IsConnected() ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed during panic bunker" );
 					return new ByTable()
 						.set( "reason", "guest" )
@@ -108,16 +106,13 @@ namespace SomEngine {
 					;
 				}
 			}
-			if ( ( GlobalVars.config.extreme_popcap != 0 ) && GlobalFuncs.living_player_count() >= GlobalVars.config.extreme_popcap && !admin ) {
+			if ( GlobalVars.config.extreme_popcap != 0 && GlobalFuncs.living_player_count() >= GlobalVars.config.extreme_popcap && !admin ) {
 				GlobalFuncs.log_access( "Failed Login: " + key + " - Population cap reached" );
-				return new ByTable()
-					.set( "reason", "popcap" )
-					.set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message )
-				;
+				return new ByTable().set( "reason", "popcap" ).set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message );
 			}
 			if ( GlobalVars.config.ban_legacy_system ) {
 				_default = GlobalFuncs.CheckBan( String13.ckey( key ), computer_id, address );
-				if ( Lang13.isValid( _default ) ) {
+				if ( Lang13.Bool( _default ) ) {
 					if ( admin ) {
 						GlobalFuncs.log_admin( "The admin " + key + " has been allowed to bypass a matching ban on " + _default["key"] );
 						GlobalFuncs.message_admins( "<span class='adminnotice'>The admin " + key + " has been allowed to bypass a matching ban on " + _default["key"] + "</span>" );
@@ -136,10 +131,10 @@ namespace SomEngine {
 				}
 				ipquery = "";
 				cidquery = "";
-				if ( Lang13.isValid( address ) ) {
+				if ( Lang13.Bool( address ) ) {
 					ipquery = " OR ip = '" + address + "' ";
 				}
-				if ( Lang13.isValid( computer_id ) ) {
+				if ( Lang13.Bool( computer_id ) ) {
 					cidquery = " OR computerid = '" + computer_id + "' ";
 				}
 				query = GlobalVars.dbcon.NewQuery( "SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM " + GlobalFuncs.format_table_name( "ban" ) + " WHERE (ckey = '" + ckeytext + "' " + ipquery + " " + cidquery + ") AND (bantype = 'PERMABAN' OR bantype = 'ADMIN_PERMABAN' OR ((bantype = 'TEMPBAN' OR bantype = 'ADMIN_TEMPBAN') AND expiration_time > Now())) AND isnull(unbanned)" );
@@ -175,16 +170,13 @@ namespace SomEngine {
 						expires = " The is a permanent ban.";
 					}
 					desc = "\nReason: You, or another user of this computer or connection (" + pckey + ") is banned from playing here. The ban reason is:\n" + reason + "\nThis ban was applied by " + ackey + " on " + bantime + ", " + expires;
-					_default = new ByTable()
-						.set( "reason", "" + bantype )
-						.set( "desc", "" + desc )
-					;
+					_default = new ByTable().set( "reason", "" + bantype ).set( "desc", "" + desc );
 					GlobalFuncs.log_access( "Failed Login: " + key + " " + computer_id + " " + address + " - Banned " + _default["reason"] );
 					return _default;
 				}
 			}
 			_default = Game13._internal_IsBanned( key, address, computer_id );
-			if ( Lang13.isValid( _default ) ) {
+			if ( Lang13.Bool( _default ) ) {
 				if ( admin ) {
 					GlobalFuncs.log_admin( "The admin " + key + " has been allowed to bypass a matching host/sticky ban" );
 					GlobalFuncs.message_admins( "<span class='adminnotice'>The admin " + key + " has been allowed to bypass a matching host/sticky ban</span>" );
@@ -195,17 +187,16 @@ namespace SomEngine {
 				}
 			}
 			return _default;
-			return _default;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic update_status(  ) {
+		public static void update_status(  ) {
 			string s = null;
 			ByTable features = null;
 			int n = 0;
 			dynamic M = null;
 			s = "";
-			if ( ( GlobalVars.config != null ) && Lang13.isValid( GlobalVars.config.server_name ) ) {
+			if ( GlobalVars.config != null && Lang13.Bool( GlobalVars.config.server_name ) ) {
 				s += "<b>" + GlobalVars.config.server_name + "</b> &#8212; ";
 			}
 			s += "<b>" + GlobalFuncs.station_name() + "</b>";
@@ -216,7 +207,7 @@ namespace SomEngine {
 			s += ")";
 			features = new ByTable();
 			if ( GlobalVars.ticker != null ) {
-				if ( Lang13.isValid( GlobalVars.master_mode ) ) {
+				if ( Lang13.Bool( GlobalVars.master_mode ) ) {
 					features += GlobalVars.master_mode;
 				}
 			} else {
@@ -225,21 +216,18 @@ namespace SomEngine {
 			if ( !GlobalVars.enter_allowed ) {
 				features += "closed";
 			}
-			features += GlobalVars.abandon_allowed ? "respawn" : "no respawn";
-			if ( ( GlobalVars.config != null ) && GlobalVars.config.allow_vote_mode ) {
+			features += ( GlobalVars.abandon_allowed ? "respawn" : "no respawn" );
+			if ( GlobalVars.config != null && GlobalVars.config.allow_vote_mode ) {
 				features += "vote";
 			}
-			if ( ( GlobalVars.config != null ) && GlobalVars.config.allow_ai ) {
+			if ( GlobalVars.config != null && GlobalVars.config.allow_ai ) {
 				features += "AI allowed";
 			}
 			n = 0;
 			M = null;
 			foreach (dynamic _a in GlobalVars.player_list ) {
 				M = _a;
-				if ( M == null ) {
-					continue;
-				}
-				if ( Lang13.isValid( M.client ) ) {
+				if ( Lang13.Bool( M.client ) ) {
 					n++;
 				}
 			};
@@ -248,7 +236,7 @@ namespace SomEngine {
 			} else if ( n > 0 ) {
 				features += "~" + n + " player";
 			}
-			if ( !Lang13.isValid( Game13.host ) && ( GlobalVars.config != null ) && Lang13.isValid( GlobalVars.config.hostedby ) ) {
+			if ( !Lang13.Bool( Game13.host ) && GlobalVars.config != null && Lang13.Bool( GlobalVars.config.hostedby ) ) {
 				features += "hosted by <b>" + GlobalVars.config.hostedby + "</b>";
 			}
 			if ( features != null ) {
@@ -257,11 +245,11 @@ namespace SomEngine {
 			if ( Game13.status != s ) {
 				Game13.status = s;
 			}
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic load_configuration(  ) {
+		public static void load_configuration(  ) {
 			GlobalVars.protected_config = new ProtectedConfiguration();
 			GlobalVars.config = new Configuration();
 			GlobalVars.config.load( "config/config.txt" );
@@ -271,40 +259,40 @@ namespace SomEngine {
 				GlobalVars.config.loadmaplist( "config/maps.txt" );
 			}
 			GlobalVars.abandon_allowed = GlobalVars.config.respawn;
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic load_motd(  ) {
+		public static void load_motd(  ) {
 			GlobalVars.join_motd = File13.read( "config/motd.txt" );
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic save_mode( dynamic the_mode = null ) {
+		public static void save_mode( dynamic the_mode = null ) {
 			File F = null;
 			F = new File( "data/mode.txt" );
 			File13.delete( F );
 			((dynamic)F).write( the_mode );
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic load_mode(  ) {
+		public static void load_mode(  ) {
 			ByTable Lines = null;
 			Lines = GlobalFuncs.file2list( "data/mode.txt" );
 			if ( Lines.len != 0 ) {
-				if ( Lang13.isValid( Lines[1] ) ) {
+				if ( Lang13.Bool( Lines[1] ) ) {
 					GlobalVars.master_mode = Lines[1];
 					((dynamic)GlobalVars.diary).write( "Saved mode is '" + GlobalVars.master_mode + "'" );
 				}
 			}
-			return null;
+			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic Reboot( dynamic reason = null, string feedback_c = null, string feedback_r = null, int time = 0 ) {
-			double delay = 0;
+		public static dynamic Reboot( dynamic reason = null, string feedback_c = null, string feedback_r = null, int? time = null ) {
+			double? delay = null;
 			dynamic C = null;
 			if ( reason == 1 ) {
 				if ( Task13.user != null ) {
@@ -314,7 +302,7 @@ namespace SomEngine {
 				Game13.write( "<span class='boldannounce'>Rebooting World immediately due to host request</span>" );
 				return Game13._internal_Reboot( 1, feedback_c, feedback_r, time );
 			}
-			if ( time != 0 ) {
+			if ( Lang13.Bool( time ) ) {
 				delay = time;
 			} else {
 				delay = GlobalVars.config.round_end_countdown * 10;
@@ -323,8 +311,8 @@ namespace SomEngine {
 				Game13.write( "<span class='boldannounce'>An admin has delayed the round end.</span>" );
 				return null;
 			}
-			Game13.write( "<span class='boldannounce'>Rebooting World in " + delay / 10 + " " + ( delay > 10 ? "seconds" : "second" ) + ". " + reason + "</span>" );
-			Task13.sleep( delay );
+			Game13.write( "<span class='boldannounce'>Rebooting World in " + ( delay ??0) / 10 + " " + ( ( delay ??0) > 10 ? "seconds" : "second" ) + ". " + reason + "</span>" );
+			Task13.sleep( ((int)( delay )) );
 			if ( GlobalVars.blackbox != null ) {
 				GlobalVars.blackbox.save_all_data_to_sql();
 			}
@@ -336,7 +324,7 @@ namespace SomEngine {
 			GlobalFuncs.log_game( "<span class='boldannounce'>Rebooting World. " + reason + "</span>" );
 			GlobalFuncs.kick_clients_in_lobby( "<span class='boldannounce'>The round came to an end with you in the lobby.</span>", 1 );
 			Task13.schedule( 0, (Task13.Closure)(() => {
-				if ( ( GlobalVars.ticker != null ) && Lang13.isValid( GlobalVars.ticker.round_end_sound ) ) {
+				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.round_end_sound ) ) {
 					Game13.write( new Sound( GlobalVars.ticker.round_end_sound ) );
 				} else {
 					Game13.write( new Sound( Rand13.pick(new object [] { "sound/AI/newroundsexy.ogg", "sound/misc/apcdestroyed.ogg", "sound/misc/bangindonk.ogg", "sound/misc/leavingtg.ogg" }) ) );
@@ -346,13 +334,10 @@ namespace SomEngine {
 			C = null;
 			foreach (dynamic _a in GlobalVars.clients ) {
 				C = _a;
-				if ( C == null ) {
+				if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
 					continue;
 				}
-				if ( !Lang13.isValid( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
-					continue;
-				}
-				if ( Lang13.isValid( GlobalVars.config.server ) ) {
+				if ( Lang13.Bool( GlobalVars.config.server ) ) {
 					Interface13.link( C, "byond://" + GlobalVars.config.server );
 				}
 			};
@@ -377,10 +362,7 @@ namespace SomEngine {
 				C = null;
 				foreach (dynamic _a in GlobalVars.clients ) {
 					C = _a;
-					if ( C == null ) {
-						continue;
-					}
-					if ( !Lang13.isValid( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
+					if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
 						continue;
 					}
 					x++;
@@ -391,10 +373,7 @@ namespace SomEngine {
 				M = null;
 				foreach (dynamic _b in GlobalVars.player_list ) {
 					M = _b;
-					if ( M == null ) {
-						continue;
-					}
-					if ( Lang13.isValid( M.client ) ) {
+					if ( Lang13.Bool( M.client ) ) {
 						n++;
 					}
 				};
@@ -403,23 +382,20 @@ namespace SomEngine {
 				s = new ByTable();
 				s["version"] = GlobalVars.game_version;
 				s["mode"] = GlobalVars.master_mode;
-				s["respawn"] = GlobalVars.config != null ? GlobalVars.abandon_allowed : false;
+				s["respawn"] = ( GlobalVars.config != null ? GlobalVars.abandon_allowed : false );
 				s["enter"] = GlobalVars.enter_allowed;
 				s["vote"] = GlobalVars.config.allow_vote_mode;
 				s["ai"] = GlobalVars.config.allow_ai;
-				s["host"] = Lang13.isValid( Game13.host ) ? Game13.host : null;
+				s["host"] = ( Lang13.Bool( Game13.host ) ? Game13.host : null );
 				admins = 0;
 				C2 = null;
 				foreach (dynamic _c in GlobalVars.clients ) {
 					C2 = _c;
-					if ( C2 == null ) {
+					if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C2 ) ) ) {
 						continue;
 					}
-					if ( !Lang13.isValid( ((dynamic)typeof(Client)).IsInstanceOfType( C2 ) ) ) {
-						continue;
-					}
-					if ( Lang13.isValid( C2.holder ) ) {
-						if ( Lang13.isValid( C2.holder.fakekey ) ) {
+					if ( Lang13.Bool( C2.holder ) ) {
+						if ( Lang13.Bool( C2.holder.fakekey ) ) {
 							continue;
 						}
 						admins++;
@@ -434,7 +410,7 @@ namespace SomEngine {
 				if ( GlobalVars.ticker != null ) {
 					s["gamestate"] = GlobalVars.ticker.current_state;
 				}
-				s["map_name"] = Lang13.isValid( GlobalVars.map_name ) ? GlobalVars.map_name : "Unknown";
+				s["map_name"] = ( Lang13.Bool( GlobalVars.map_name ) ? GlobalVars.map_name : "Unknown" );
 				return String13.conv_list2urlParams( s );
 			} else if ( String13.substr( T, 1, 9 ) == "announce" ) {
 				input = String13.conv_urlParams2list( T );
@@ -445,13 +421,10 @@ namespace SomEngine {
 						C3 = null;
 						foreach (dynamic _d in GlobalVars.clients ) {
 							C3 = _d;
-							if ( C3 == null ) {
+							if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C3 ) ) ) {
 								continue;
 							}
-							if ( !Lang13.isValid( ((dynamic)typeof(Client)).IsInstanceOfType( C3 ) ) ) {
-								continue;
-							}
-							if ( Lang13.isValid( C3.prefs ) && Lang13.isValid( ( C3.prefs.chat_toggles & 64 ) ) ) {
+							if ( Lang13.Bool( C3.prefs ) && Lang13.Bool( C3.prefs.chat_toggles & 64 ) ) {
 								C3.write( "<span class='announce'>PR: " + input["announce"] + "</span>" );
 							}
 						};
