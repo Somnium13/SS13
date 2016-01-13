@@ -7,7 +7,7 @@
     <ProjectGuid>{297FF943-380D-482F-A76C-88A8BA381907}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Game13</RootNamespace>
+    <RootNamespace>Somnium</RootNamespace>
     <AssemblyName>Som13-tg</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,29 +44,32 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes.cs" />
-    <Compile Include="engine\base_classes\CoreMatrix.cs" />
-    <Compile Include="engine\Jake.cs" />
-    <Compile Include="engine\lib_classes\ByTable.cs" />
-    <Compile Include="engine\lib_static\Game13.cs" />
-    <Compile Include="engine\lib_static\Interface13.cs" />
-    <Compile Include="engine\lib_static\DB13.cs" />
-    <Compile Include="engine\lib_classes\SaveFile.cs" />
-    <Compile Include="engine\lib_static\Sys13.cs" />
-    <Compile Include="engine\lib_static\Rand13.cs" />
-    <Compile Include="engine\lib_static\Num13.cs" />
-    <Compile Include="engine\lib_static\Lang13.cs" />
-    <Compile Include="engine\lib_static\String13.cs" />
-    <Compile Include="engine\lib_static\File13.cs" />
-    <Compile Include="engine\lib_static\Icon13.cs" />
-    <Compile Include="engine\lib_static\Map13.cs" />
-    <Compile Include="engine\lib_classes\Txt.cs" />
-    <Compile Include="engine\base_classes\CoreImpl.cs" />
-    <Compile Include="engine\lib_static\Task13.cs" />
-    <Compile Include="engine\lib_static\Temp13.cs" />
-    <Compile Include="Game13.cs" />
-    <Compile Include="GlobalFuncs.cs" />
-    <Compile Include="GlobalVars.cs" />
+    <Compile Include="Engine\ByImpl\BaseClass\EngineMatrix.cs" />
+    <Compile Include="Engine\Jake.cs" />
+    <Compile Include="Engine\ByImpl\ByTable.cs" />
+    <Compile Include="Engine\NewLib\Console13.cs" />
+    <Compile Include="Engine\ByImpl\File.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Game13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Interface13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\DB13.cs" />
+    <Compile Include="Engine\ByImpl\SaveFile.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Sys13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Rand13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Num13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Lang13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\String13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\File13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Icon13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Map13.cs" />
+    <Compile Include="Engine\ByImpl\Txt.cs" />
+    <Compile Include="Engine\ByImpl\BaseClass\CoreImpl.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Task13.cs" />
+    <Compile Include="Engine\ByImpl\StaticLib\Temp13.cs" />
+    <Compile Include="Engine\NewLib\CoroutineSysStupid.cs" />
+    <Compile Include="Game\Classes.cs" />
+    <Compile Include="Game\GameLibExt.cs" />
+    <Compile Include="Game\GlobalFuncs.cs" />
+    <Compile Include="Game\GlobalVars.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
