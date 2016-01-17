@@ -8,7 +8,7 @@ using Somnium.Game;
 namespace Somnium.Engine.ByImpl {
 	static partial class Game13 {
 		public static string name = "/tg/ Station 13";
-		public static double tick_lag = 1;
+		private static double _tick_lag = 1;
 		public const int icon_size = 32;
 
 		public static readonly Type default_mob = typeof(Mob_NewPlayer);
@@ -17,6 +17,7 @@ namespace Somnium.Engine.ByImpl {
 
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 
 		public static void New(  ) {
 			string date_string = null;
 			GlobalVars.map_ready = true;
@@ -24,9 +25,9 @@ namespace Somnium.Engine.ByImpl {
 			GlobalVars.href_logfile = new File( "data/logs/" + date_string + " hrefs.htm" );
 			GlobalVars.diary = new File( "data/logs/" + date_string + ".log" );
 			GlobalVars.diaryofmeanpeople = new File( "data/logs/" + date_string + " Attack.log" );
-			((dynamic)GlobalVars.diary).write( "\n\nStarting up. " + String13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
-			((dynamic)GlobalVars.diaryofmeanpeople).write( "\n\nStarting up. " + String13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
-			GlobalVars.changelog_hash = Num13.md5( "html/changelog.html" );
+			((dynamic)GlobalVars.diary).WriteMsg( "\n\nStarting up. " + String13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
+			((dynamic)GlobalVars.diaryofmeanpeople).WriteMsg( "\n\nStarting up. " + String13.formatTime( Game13.timeofday, "hh:mm.ss" ) + "\n---------------------" );
+			GlobalVars.changelog_hash = Num13.Md5( File13.read( "html/changelog.html" ) );
 			GlobalFuncs.make_datum_references_lists();
 			Game13.load_configuration();
 			Game13.load_mode();
@@ -44,9 +45,9 @@ namespace Somnium.Engine.ByImpl {
 			GlobalVars.timezoneOffset = String13.parseNumber( String13.formatTime( 0, "hh" ) ) * 36000;
 			if ( GlobalVars.config.sql_enabled ) {
 				if ( !GlobalFuncs.setup_database_connection() ) {
-					((dynamic)Game13.log).write( "Your server failed to establish a connection with the database." );
+					((dynamic)Game13.log).WriteMsg( "Your server failed to establish a connection with the database." );
 				} else {
-					((dynamic)Game13.log).write( "Database connection established." );
+					((dynamic)Game13.log).WriteMsg( "Database connection established." );
 				}
 			}
 			GlobalVars.data_core = new Datacore();
@@ -61,21 +62,22 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static dynamic IsBanned( dynamic key = null, dynamic address = null, dynamic computer_id = null ) {
+		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
+		public static dynamic IsBanned( string key = null, dynamic address = null, string computer_id = null ) {
 			dynamic _default = null;
 			bool admin = false;
-			dynamic ckey = null;
+			string ckey = null;
 			string ckeytext = null;
 			string ipquery = null;
 			string cidquery = null;
 			DBQuery query = null;
-			dynamic pckey = null;
+			string pckey = null;
 			dynamic ackey = null;
 			dynamic reason = null;
 			dynamic expiration = null;
-			dynamic duration = null;
+			string duration = null;
 			dynamic bantime = null;
-			dynamic bantype = null;
+			string bantype = null;
 			string expires = null;
 			string desc = null;
 			if ( !Lang13.Bool( key ) || !Lang13.Bool( address ) || !Lang13.Bool( computer_id ) ) {
@@ -91,7 +93,7 @@ namespace Somnium.Engine.ByImpl {
 			}
 			admin = false;
 			ckey = String13.ckey( key );
-			if ( GlobalVars.admin_datums.contains( ckey ) || GlobalVars.deadmins.contains( ckey ) ) {
+			if ( GlobalVars.admin_datums.Contains( ckey ) || GlobalVars.deadmins.Contains( ckey ) ) {
 				admin = true;
 			}
 			if ( GlobalFuncs.IsGuestKey( key ) ) {
@@ -126,8 +128,8 @@ namespace Somnium.Engine.ByImpl {
 			} else {
 				ckeytext = String13.ckey( key );
 				if ( !GlobalFuncs.establish_db_connection() ) {
-					((dynamic)Game13.log).write( "Ban database connection failure. Key " + ckeytext + " not checked" );
-					((dynamic)GlobalVars.diary).write( "Ban database connection failure. Key " + ckeytext + " not checked" );
+					((dynamic)Game13.log).WriteMsg( "Ban database connection failure. Key " + ckeytext + " not checked" );
+					((dynamic)GlobalVars.diary).WriteMsg( "Ban database connection failure. Key " + ckeytext + " not checked" );
 					return _default;
 				}
 				ipquery = "";
@@ -191,6 +193,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 
 		public static void update_status(  ) {
 			string s = null;
 			ByTable features = null;
@@ -209,24 +212,24 @@ namespace Somnium.Engine.ByImpl {
 			features = new ByTable();
 			if ( GlobalVars.ticker != null ) {
 				if ( Lang13.Bool( GlobalVars.master_mode ) ) {
-					features += GlobalVars.master_mode;
+					features.Add( GlobalVars.master_mode );
 				}
 			} else {
-				features += "<b>STARTING</b>";
+				features.Add( "<b>STARTING</b>" );
 			}
 			if ( !GlobalVars.enter_allowed ) {
-				features += "closed";
+				features.Add( "closed" );
 			}
-			features += ( GlobalVars.abandon_allowed ? "respawn" : "no respawn" );
+			features.Add( ( GlobalVars.abandon_allowed ? "respawn" : "no respawn" ) );
 			if ( GlobalVars.config != null && GlobalVars.config.allow_vote_mode ) {
-				features += "vote";
+				features.Add( "vote" );
 			}
 			if ( GlobalVars.config != null && GlobalVars.config.allow_ai ) {
-				features += "AI allowed";
+				features.Add( "AI allowed" );
 			}
 			n = 0;
 			M = null;
-			foreach (dynamic _a in GlobalVars.player_list ) {
+			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.player_list )) {
 				M = _a;
 				if ( !( M is Mob ) ) {
 					continue;
@@ -236,12 +239,12 @@ namespace Somnium.Engine.ByImpl {
 				}
 			}
 			if ( n > 1 ) {
-				features += "~" + n + " players";
+				features.Add( "~" + n + " players" );
 			} else if ( n > 0 ) {
-				features += "~" + n + " player";
+				features.Add( "~" + n + " player" );
 			}
 			if ( !Lang13.Bool( Game13.host ) && GlobalVars.config != null && Lang13.Bool( GlobalVars.config.hostedby ) ) {
-				features += "hosted by <b>" + GlobalVars.config.hostedby + "</b>";
+				features.Add( "hosted by <b>" + GlobalVars.config.hostedby + "</b>" );
 			}
 			if ( features != null ) {
 				s += ": " + GlobalFuncs.list2text( features, ", " );
@@ -253,6 +256,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 
 		public static void load_configuration(  ) {
 			GlobalVars.protected_config = new ProtectedConfiguration();
 			GlobalVars.config = new Configuration();
@@ -267,34 +271,38 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 
 		public static void load_motd(  ) {
 			GlobalVars.join_motd = File13.read( "config/motd.txt" );
 			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
-		public static void save_mode( dynamic the_mode = null ) {
-			File F = null;
+		// ARG INFO: 0 32001 0
+		public static void save_mode( string the_mode = null ) {
+			dynamic F = null;
 			F = new File( "data/mode.txt" );
 			File13.delete( F );
-			((dynamic)F).write( the_mode );
+			((dynamic)F).WriteMsg( the_mode );
 			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 
 		public static void load_mode(  ) {
 			ByTable Lines = null;
 			Lines = GlobalFuncs.file2list( "data/mode.txt" );
 			if ( Lines.len != 0 ) {
 				if ( Lang13.Bool( Lines[1] ) ) {
 					GlobalVars.master_mode = Lines[1];
-					((dynamic)GlobalVars.diary).write( "Saved mode is '" + GlobalVars.master_mode + "'" );
+					((dynamic)GlobalVars.diary).WriteMsg( "Saved mode is '" + GlobalVars.master_mode + "'" );
 				}
 			}
 			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
 		public static dynamic Reboot( dynamic reason = null, string feedback_c = null, string feedback_r = null, int? time = null ) {
 			double? delay = null;
 			dynamic C = null;
@@ -303,7 +311,7 @@ namespace Somnium.Engine.ByImpl {
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.user ) + " Has requested an immediate world restart via client side debugging tools" );
 					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.user ) + " Has requested an immediate world restart via client side debugging tools" );
 				}
-				Game13.write( "<span class='boldannounce'>Rebooting World immediately due to host request</span>" );
+				Game13.WriteMsg( "<span class='boldannounce'>Rebooting World immediately due to host request</span>" );
 				return Game13._internal_Reboot( 1, feedback_c, feedback_r, time );
 			}
 			if ( Lang13.Bool( time ) ) {
@@ -312,16 +320,16 @@ namespace Somnium.Engine.ByImpl {
 				delay = GlobalVars.config.round_end_countdown * 10;
 			}
 			if ( GlobalVars.ticker.delay_end ) {
-				Game13.write( "<span class='boldannounce'>An admin has delayed the round end.</span>" );
+				Game13.WriteMsg( "<span class='boldannounce'>An admin has delayed the round end.</span>" );
 				return null;
 			}
-			Game13.write( "<span class='boldannounce'>Rebooting World in " + ( delay ??0) / 10 + " " + ( ( delay ??0) > 10 ? "seconds" : "second" ) + ". " + reason + "</span>" );
+			Game13.WriteMsg( "<span class='boldannounce'>Rebooting World in " + ( delay ??0) / 10 + " " + ( ( delay ??0) > 10 ? "seconds" : "second" ) + ". " + reason + "</span>" );
 			Task13.sleep( ((int)( delay )) );
 			if ( GlobalVars.blackbox != null ) {
 				GlobalVars.blackbox.save_all_data_to_sql();
 			}
 			if ( GlobalVars.ticker.delay_end ) {
-				Game13.write( "<span class='boldannounce'>Reboot was cancelled by an admin.</span>" );
+				Game13.WriteMsg( "<span class='boldannounce'>Reboot was cancelled by an admin.</span>" );
 				return null;
 			}
 			GlobalFuncs.feedback_set_details( "" + feedback_c, "" + feedback_r );
@@ -329,14 +337,14 @@ namespace Somnium.Engine.ByImpl {
 			GlobalFuncs.kick_clients_in_lobby( "<span class='boldannounce'>The round came to an end with you in the lobby.</span>", 1 );
 			Task13.schedule( 0, (Task13.Closure)(() => {
 				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.round_end_sound ) ) {
-					Game13.write( new Sound( GlobalVars.ticker.round_end_sound ) );
+					Game13.WriteMsg( new Sound( GlobalVars.ticker.round_end_sound ) );
 				} else {
-					Game13.write( new Sound( Rand13.pick(new object [] { "sound/AI/newroundsexy.ogg", "sound/misc/apcdestroyed.ogg", "sound/misc/bangindonk.ogg", "sound/misc/leavingtg.ogg" }) ) );
+					Game13.WriteMsg( new Sound( Rand13.pick(new object [] { "sound/AI/newroundsexy.ogg", "sound/misc/apcdestroyed.ogg", "sound/misc/bangindonk.ogg", "sound/misc/leavingtg.ogg" }) ) );
 				}
 				return;
 			}));
 			C = null;
-			foreach (dynamic _a in GlobalVars.clients ) {
+			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.clients )) {
 				C = _a;
 				if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
 					continue;
@@ -350,6 +358,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
+		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
 		public static dynamic Topic( string T = null, dynamic addr = null, dynamic master = null, dynamic key = null ) {
 			int x = 0;
 			dynamic C = null;
@@ -360,11 +369,11 @@ namespace Somnium.Engine.ByImpl {
 			dynamic C2 = null;
 			ByTable input = null;
 			dynamic C3 = null;
-			((dynamic)GlobalVars.diary).write( "TOPIC: \"" + T + "\", from:" + addr + ", master:" + master + ", key:" + key );
+			((dynamic)GlobalVars.diary).WriteMsg( "TOPIC: \"" + T + "\", from:" + addr + ", master:" + master + ", key:" + key );
 			if ( T == "ping" ) {
 				x = 1;
 				C = null;
-				foreach (dynamic _a in GlobalVars.clients ) {
+				foreach (dynamic _a in Lang13.Enumerate( GlobalVars.clients )) {
 					C = _a;
 					if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C ) ) ) {
 						continue;
@@ -375,7 +384,7 @@ namespace Somnium.Engine.ByImpl {
 			} else if ( T == "players" ) {
 				n = 0;
 				M = null;
-				foreach (dynamic _b in GlobalVars.player_list ) {
+				foreach (dynamic _b in Lang13.Enumerate( GlobalVars.player_list )) {
 					M = _b;
 					if ( !( M is Mob ) ) {
 						continue;
@@ -396,7 +405,7 @@ namespace Somnium.Engine.ByImpl {
 				s["host"] = ( Lang13.Bool( Game13.host ) ? Game13.host : null );
 				admins = 0;
 				C2 = null;
-				foreach (dynamic _c in GlobalVars.clients ) {
+				foreach (dynamic _c in Lang13.Enumerate( GlobalVars.clients )) {
 					C2 = _c;
 					if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C2 ) ) ) {
 						continue;
@@ -426,13 +435,13 @@ namespace Somnium.Engine.ByImpl {
 						return "Bad Key";
 					} else {
 						C3 = null;
-						foreach (dynamic _d in GlobalVars.clients ) {
+						foreach (dynamic _d in Lang13.Enumerate( GlobalVars.clients )) {
 							C3 = _d;
 							if ( !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( C3 ) ) ) {
 								continue;
 							}
-							if ( Lang13.Bool( C3.prefs ) && Lang13.Bool( C3.prefs.chat_toggles & 64 ) ) {
-								C3.write( "<span class='announce'>PR: " + input["announce"] + "</span>" );
+							if ( C3.prefs != null && ( C3.prefs.chat_toggles & 64 ) != 0 ) {
+								((dynamic)C3).WriteMsg( "<span class='announce'>PR: " + input["announce"] + "</span>" );
 							}
 						}
 					}
