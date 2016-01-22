@@ -121,14 +121,14 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static void add_note( string target_ckey = null, dynamic notetext = null, string timestamp = null, string adminckey = null, bool? logged = null, dynamic server = null ) {
+		public static void add_note( string target_ckey = null, dynamic notetext = null, dynamic timestamp = null, dynamic adminckey = null, bool? logged = null, dynamic server = null ) {
 			string new_ckey = null;
 			DBQuery query_find_ckey = null;
-			string err = null;
+			dynamic err = null;
 			string target_sql_ckey = null;
 			string admin_sql_ckey = null;
 			DBQuery query_noteadd = null;
-			string err2 = null;
+			dynamic err2 = null;
 			if ( logged == null ) {
 				logged = true;
 			}
@@ -195,8 +195,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static Objective add_objective( dynamic M = null, dynamic obj_path = null, bool? announce_new_objectives = null, bool? replace_if_impossible = null, bool? admin = null ) {
-			Objective objective = null;
+		public static dynamic add_objective( Mind M = null, dynamic obj_path = null, bool? announce_new_objectives = null, bool? replace_if_impossible = null, bool? admin = null ) {
+			dynamic objective = null;
 			int obj_count = 0;
 			Objective OBJ = null;
 			if ( announce_new_objectives == null ) {
@@ -212,11 +212,11 @@ namespace Somnium.Game {
 			objective.owner = M;
 			M.objectives.Add( objective );
 			if ( admin == true && GlobalFuncs.check_rights( 2 ) ) {
-				objective.find_target_admin();
+				((Objective)objective).find_target_admin();
 			} else {
-				objective.find_target();
+				((Objective)objective).find_target();
 			}
-			if ( !objective.extra_prep() ) {
+			if ( !((Objective)objective).extra_prep() ) {
 				if ( replace_if_impossible == true ) {
 					GlobalFuncs.generate_objectives( objective.owner, 1, GlobalVars.FALSE );
 				}
@@ -224,7 +224,7 @@ namespace Somnium.Game {
 				GlobalFuncs.qdel( Task13.source );
 				return null;
 			}
-			objective.update_explanation_text();
+			((Objective)objective).update_explanation_text();
 			if ( announce_new_objectives == true ) {
 				if ( Lang13.Bool( M.special_role ) ) {
 					((dynamic)M.current).WriteMsg( "<B>You are the " + M.special_role + ".</B>" );
@@ -277,7 +277,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static bool AddBan( string ckey = null, dynamic computerid = null, dynamic reason = null, string bannedby = null, bool temp = false, dynamic minutes = null, string address = null ) {
+		public static bool AddBan( string ckey = null, dynamic computerid = null, dynamic reason = null, dynamic bannedby = null, bool temp = false, dynamic minutes = null, string address = null ) {
 			double bantimestamp = 0;
 			if ( temp ) {
 				GlobalFuncs.UpdateTime();
@@ -327,13 +327,13 @@ namespace Somnium.Game {
 		public static int addtimer( dynamic thingToCall = null, string procToCall = null, int wait = 0, bool? unique = null, params object[] _ ) {
 			ByTable _args = new ByTable( new object[] { thingToCall, procToCall, wait, unique } ).extend(_);
 			Timedevent _event = null;
-			if ( _args[3] == null ) {
-				_args[3] = GlobalVars.FALSE;
+			if ( _args[4] == null ) {
+				_args[4] = GlobalVars.FALSE;
 			}
 			if ( !( GlobalVars.SStimer != null ) ) {
 				return 0;
 			}
-			if ( !Lang13.Bool( _args[0] ) || !Lang13.Bool( _args[1] ) || Lang13.Double( _args[2] ) <= 0 ) {
+			if ( !Lang13.Bool( _args[1] ) || !Lang13.Bool( _args[2] ) || Lang13.Double( _args[3] ) <= 0 ) {
 				return 0;
 			}
 			if ( !GlobalVars.SStimer.can_fire ) {
@@ -341,14 +341,14 @@ namespace Somnium.Game {
 				GlobalVars.SStimer.next_fire = Game13.time + GlobalVars.SStimer.wait;
 			}
 			_event = new Timedevent();
-			_event.thingToCall = _args[0];
-			_event.procToCall = _args[1];
-			_event.timeToRun = Game13.time + Lang13.Double( _args[2] );
+			_event.thingToCall = _args[1];
+			_event.procToCall = _args[2];
+			_event.timeToRun = Game13.time + Lang13.Double( _args[3] );
 			_event.hash = GlobalFuncs.list2text( _args );
 			if ( Lang13.Double( _args.len ) > 4 ) {
 				_event.argList = ((dynamic)_args).Copy( 5 );
 			}
-			if ( Lang13.Bool( _args[3] ) ) {
+			if ( Lang13.Bool( _args[4] ) ) {
 				if ( GlobalVars.SStimer.hashes.Contains( _event.hash ) ) {
 					return 0;
 				}
@@ -360,7 +360,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,291 32001 0
-		public static void admin_forcemove( Mob mover = null, dynamic newloc = null ) {
+		public static void admin_forcemove( dynamic mover = null, dynamic newloc = null ) {
 			if ( mover.buckled != null ) {
 				mover.buckled.unbuckle_mob();
 			}
@@ -368,7 +368,7 @@ namespace Somnium.Game {
 				new ByTable().set( "force", 1 ).apply( mover.GetType().GetMethod( "unbuckle_mob" ) );
 			}
 			mover.loc = newloc;
-			mover.on_forcemove( newloc );
+			((Mob)mover).on_forcemove( newloc );
 			return;
 		}
 
@@ -423,7 +423,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void AdminCreateVirus( dynamic user = null ) {
+		public static void AdminCreateVirus( Mob user = null ) {
 			int i = 0;
 			Disease_Advance D = null;
 			ByTable symptoms = null;
@@ -434,7 +434,7 @@ namespace Somnium.Game {
 			Mob_Living_Carbon_Human H = null;
 			ByTable name_symptoms = null;
 			Symptom S2 = null;
-			if ( !Lang13.Bool( user ) ) {
+			if ( !( user != null ) ) {
 				return;
 			}
 			i = 5;
@@ -444,7 +444,7 @@ namespace Somnium.Game {
 			symptoms.Add( "Done" );
 			symptoms.Add( GlobalVars.list_symptoms.Copy() );
 			while (true) { // Was a do-while, sorry for the mess.
-				if ( Lang13.Bool( user ) ) {
+				if ( user != null ) {
 					symptom = Interface13.input( user, "Choose a symptom to add (" + i + " remaining)", "Choose a Symptom", null, symptoms, 0 );
 					if ( symptom == null ) {
 						return;
@@ -481,7 +481,7 @@ namespace Somnium.Game {
 						continue;
 					}
 					H = _b;
-					if ( Lang13.Bool( ((dynamic)H).z ) != true ) {
+					if ( H.z != 1 ) {
 						continue;
 					}
 					if ( !H.HasDisease( D ) ) {
@@ -514,13 +514,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static Disease_Advance Advance_Mix( ByTable D_list = null ) {
+		public static dynamic Advance_Mix( ByTable D_list = null ) {
 			ByTable diseases = null;
 			Disease_Advance A = null;
 			int i = 0;
-			Disease_Advance D1 = null;
-			Disease_Advance D2 = null;
-			Disease_Advance to_return = null;
+			dynamic D1 = null;
+			dynamic D2 = null;
+			dynamic to_return = null;
 			diseases = new ByTable();
 			A = null;
 			foreach (dynamic _a in Lang13.Enumerate( D_list )) {
@@ -542,10 +542,10 @@ namespace Somnium.Game {
 				D1 = Rand13.pick( diseases );
 				diseases.Remove( D1 );
 				D2 = Rand13.pick( diseases );
-				D2.Mix( D1 );
+				((Disease_Advance)D2).Mix( D1 );
 			}
 			to_return = Rand13.pick( diseases );
-			to_return.Refresh( true );
+			((Disease_Advance)to_return).Refresh( true );
 			return to_return;
 		}
 
@@ -662,26 +662,26 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0
-		public static void appearance_fullban( Mob M = null, string reason = null ) {
-			if ( !( M != null ) || !Lang13.Bool( ((dynamic)M).key ) ) {
+		public static void appearance_fullban( dynamic M = null, string reason = null ) {
+			if ( !Lang13.Bool( M ) || !Lang13.Bool( M.key ) ) {
 				return;
 			}
-			GlobalVars.appearance_keylist.Add( "" + ((dynamic)M).ckey + " ## " + reason );
+			GlobalVars.appearance_keylist.Add( "" + M.ckey + " ## " + reason );
 			GlobalFuncs.appearance_savebanfile();
 			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
-		public static dynamic appearance_isbanned( Mob M = null ) {
+		public static dynamic appearance_isbanned( dynamic M = null ) {
 			dynamic s = null;
 			int startpos = 0;
 			string text = null;
-			if ( M != null ) {
+			if ( Lang13.Bool( M ) ) {
 				s = null;
 				foreach (dynamic _a in Lang13.Enumerate( GlobalVars.appearance_keylist )) {
 					s = _a;
-					if ( String13.find( s, "" + ((dynamic)M).ckey, 1, 0 ) == 1 ) {
+					if ( String13.find( s, "" + M.ckey, 1, 0 ) == 1 ) {
 						startpos = String13.find( s, "## ", 1, 0 ) + 3;
 						if ( startpos != 0 && startpos < Lang13.length( s ) ) {
 							text = String13.substr( s, startpos, 0 );
@@ -757,8 +757,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
-		public static void appearance_unban( Mob M = null ) {
-			GlobalFuncs.appearance_remove( "" + ((dynamic)M).ckey );
+		public static void appearance_unban( dynamic M = null ) {
+			GlobalFuncs.appearance_remove( "" + M.ckey );
 			GlobalFuncs.appearance_savebanfile();
 			return;
 		}
@@ -773,7 +773,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static double askuser( Mob User = null, string Message = null, string Title = null, string Button1 = null, string Button2 = null, string Button3 = null, bool? StealFocus = null, int? Timeout = null ) {
+		public static double? askuser( Mob User = null, string Message = null, string Title = null, string Button1 = null, string Button2 = null, string Button3 = null, bool? StealFocus = null, int? Timeout = null ) {
 			Mob C = null;
 			Browser_Alert A = null;
 			if ( Button1 == null ) {
@@ -790,21 +790,21 @@ namespace Somnium.Game {
 					C = User;
 					User = ((dynamic)C).mob;
 				} else {
-					return 0;
+					return null;
 				}
 			}
 			A = new Browser_Alert( User, Message, Title, Button1, Button2, Button3, StealFocus, Timeout );
 			A.open();
 			A.wait();
-			if ( A.selectedbutton != 0 ) {
+			if ( Lang13.Bool( A.selectedbutton ) ) {
 				return A.selectedbutton;
 			}
-			return 0;
+			return null;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,32 32001 0,0 32001 0
-		public static dynamic AStar( dynamic start = null, dynamic end = null, Mob_Living_SimpleAnimal atom = null, System.Reflection.MethodInfo dist = null, int? maxnodes = null, int? maxnodedepth = null, bool? mintargetdist = null, System.Reflection.MethodInfo adjacent = null, Obj_Item_Weapon_Card_Id id = null, Ent_Static exclude = null, bool? simulated_only = null ) {
+		public static dynamic AStar( dynamic start = null, dynamic end = null, Mob_Living_SimpleAnimal atom = null, System.Reflection.MethodInfo dist = null, dynamic maxnodes = null, dynamic maxnodedepth = null, bool? mintargetdist = null, System.Reflection.MethodInfo adjacent = null, Obj_Item_Weapon_Card_Id id = null, Ent_Static exclude = null, bool? simulated_only = null ) {
 			Heap open = null;
 			ByTable closed = null;
 			ByTable path = null;
@@ -832,7 +832,7 @@ namespace Somnium.Game {
 				simulated_only = true;
 			}
 			if ( Lang13.Bool( maxnodes ) ) {
-				if ( Lang13.Double( Lang13.call( Lang13.bindf( start, dist ), end ) ) > ( maxnodes ??0) ) {
+				if ( Lang13.Double( Lang13.call( Lang13.bindf( start, dist ), end ) ) > Lang13.Double( maxnodes ) ) {
 					return 0;
 				}
 				maxnodedepth = maxnodes;
@@ -852,7 +852,7 @@ namespace Somnium.Game {
 				if ( mintargetdist == true ) {
 					closeenough = Lang13.Double( Lang13.call( Lang13.bindf( cur.source, dist ), end ) ) <= ( mintargetdist == true ?1:0);
 				}
-				if ( Lang13.Bool( maxnodedepth ) && ( cur.nt ??0) > ( maxnodedepth ??0) ) {
+				if ( Lang13.Bool( maxnodedepth ) && cur.nt > Lang13.Double( maxnodedepth ) ) {
 					continue;
 				}
 				if ( cur.source == end || closeenough == true ) {
@@ -876,12 +876,12 @@ namespace Somnium.Game {
 					}
 					newg = cur.g + Lang13.Double( Lang13.call( Lang13.bindf( cur.source, dist ), T ) );
 					if ( !( T.PNode != null ) ) {
-						open.Insert( new PathNode( T, cur, newg, Lang13.call( Lang13.bindf( T, dist ), end ), ( cur.nt ??0) + 1 ) );
+						open.Insert( new PathNode( T, cur, newg, Lang13.call( Lang13.bindf( T, dist ), end ), cur.nt + 1 ) );
 					} else if ( newg < T.PNode.g ) {
 						T.PNode.prevNode = cur;
 						T.PNode.g = newg;
 						T.PNode.calc_f();
-						T.PNode.nt = ( cur.nt ??0) + 1;
+						T.PNode.nt = cur.nt + 1;
 						open.ReSort( T.PNode );
 					}
 				}
@@ -906,7 +906,7 @@ namespace Somnium.Game {
 				i = null;
 				i = 1;
 				while (( i ??0) <= path.len / 2) {
-					path.Swap( ((int)( i )), ((int)( path.len - ( i ??0) + 1 )) );
+					path.Swap( ((int)( i ??0 )), ((int)( path.len - ( i ??0) + 1 )) );
 					i++;
 				}
 			}
@@ -915,7 +915,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static string attach_spans( dynamic input = null, ByTable spans = null ) {
+		public static string attach_spans( dynamic input = null, dynamic spans = null ) {
 			return "" + GlobalFuncs.message_spans_start( spans ) + input + "</span>";
 		}
 
@@ -923,7 +923,7 @@ namespace Somnium.Game {
 		// ARG INFO: 2 32001 0,1 32001 0,1 32001 0
 		public static bool attempt_initiate_surgery( Obj_Item_Weapon I = null, dynamic M = null, dynamic user = null ) {
 			dynamic H = null;
-			Obj_Item_Organ_Limb affecting = null;
+			dynamic affecting = null;
 			string selected_zone = null;
 			Surgery current_surgery = null;
 			Surgery S = null;
@@ -933,7 +933,7 @@ namespace Somnium.Game {
 			dynamic path = null;
 			dynamic P = null;
 			Base_Data S3 = null;
-			Surgery procedure = null;
+			dynamic procedure = null;
 			if ( M is Mob_Living ) {
 				selected_zone = user.zone_sel.selecting;
 				if ( M is Mob_Living_Carbon_Human ) {
@@ -963,7 +963,7 @@ namespace Somnium.Game {
 							if ( !( S2.possible_locs.Find( selected_zone ) != 0 ) ) {
 								continue;
 							}
-							if ( affecting != null && S2.requires_organic_bodypart && affecting.status == 2 ) {
+							if ( Lang13.Bool( affecting ) && S2.requires_organic_bodypart && Lang13.Int( affecting.status ) == 2 ) {
 								continue;
 							}
 							if ( !S2.can_start( user, M ) ) {
@@ -982,12 +982,12 @@ namespace Somnium.Game {
 						if ( Lang13.Bool( P ) && Lang13.Bool( user ) && ((Ent_Static)user).Adjacent( M ) && Lang13.Bool( ((dynamic)user).Contains( I ) ) ) {
 							S3 = available_surgeries[P];
 							procedure = Lang13.call( S3.type );
-							if ( procedure != null ) {
+							if ( Lang13.Bool( procedure ) ) {
 								procedure.location = selected_zone;
 								if ( procedure.ignore_clothes || GlobalFuncs.get_location_accessible( M, selected_zone ) ) {
 									M.surgeries.Add( procedure );
 									procedure.organ = affecting;
-									((Ent_Static)user).visible_message( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt()).item( user ).str, " drapes " ).item( I ).str, " over " ).item( M ).str, "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str, " to prepare for " ).a, procedure.name ).item().str, "." ), Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt( "<span class='notice'>You drape " )).item( I ).str, " over " ).item( M ).str, "'s " ).item( GlobalFuncs.parse_zone( selected_zone ) ).str, " to prepare for " ).a, procedure.name ).item().str, ".</span>" ) );
+									((Ent_Static)user).visible_message( ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).item( user )).str( " drapes " )).item( I )).str( " over " )).item( M )).str( "'s " )).item( GlobalFuncs.parse_zone( selected_zone ) )).str( " to prepare for " ).a( procedure.name )).item()).str( "." ), ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<span class='notice'>You drape " )).item( I )).str( " over " )).item( M )).str( "'s " )).item( GlobalFuncs.parse_zone( selected_zone ) )).str( " to prepare for " ).a( procedure.name )).item()).str( ".</span>" ) );
 									GlobalFuncs.add_logs( user, M, "operated", null, "Operation type: " + procedure.name + ", location: " + selected_zone );
 								} else {
 									((dynamic)user).WriteMsg( "<span class='warning'>You need to expose " + M + "'s " + GlobalFuncs.parse_zone( selected_zone ) + " first!</span>" );
@@ -1093,7 +1093,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static string BlendRGB( string rgb1 = null, dynamic rgb2 = null, dynamic amount = null ) {
+		public static string BlendRGB( string rgb1 = null, dynamic rgb2 = null, double amount = 0 ) {
 			ByTable RGB1 = null;
 			ByTable RGB2 = null;
 			bool usealpha = false;
@@ -1113,7 +1113,7 @@ namespace Somnium.Game {
 			g = Num13.round( Lang13.Double( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount ), 1 );
 			b = Num13.round( Lang13.Double( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount ), 1 );
 			alpha = ( usealpha ? Num13.round( Lang13.Double( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount ), 1 ) : 0 );
-			return ( alpha == null ? String13.color_code( ((int)( r )), ((int)( g )), ((int)( b )) ) : String13.color_code( ((int)( r )), ((int)( g )), ((int)( b )), ((int)( alpha )) ) );
+			return ( alpha == null ? String13.color_code( ((int)( r )), ((int)( g )), ((int)( b )) ) : String13.color_code( ((int)( r )), ((int)( g )), ((int)( b )), ((int)( alpha ??0 )) ) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -1157,15 +1157,15 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static Ent_Static blood_splatter( Ent_Static target = null, dynamic source = null, bool? large = null ) {
-			Ent_Static B = null;
+		public static dynamic blood_splatter( Ent_Static target = null, dynamic source = null, bool? large = null ) {
+			dynamic B = null;
 			Type decal_type = null;
 			dynamic T = null;
 			dynamic M = null;
 			dynamic donor = null;
 			ByTable drips = null;
 			Obj_Effect_Decal_Cleanable_Blood_Drip drop = null;
-			Ent_Static drop2 = null;
+			dynamic drop2 = null;
 			decal_type = typeof(Obj_Effect_Decal_Cleanable_Blood_Splatter);
 			T = GlobalFuncs.get_turf( target );
 			if ( source is Mob_Living_Carbon_Human ) {
@@ -1191,13 +1191,13 @@ namespace Somnium.Game {
 				decal_type = typeof(Obj_Effect_Decal_Cleanable_Blood_Drip);
 			}
 			B = Lang13.find_in( decal_type, T );
-			if ( !( B != null ) ) {
+			if ( !Lang13.Bool( B ) ) {
 				B = Lang13.call( decal_type, T );
 			}
 			drop2 = B;
 			if ( drop2 is Obj_Effect_Decal_Cleanable_Blood_Drip && drips != null && drips.len != 0 && !( large == true ) ) {
-				((dynamic)drop2).overlays |= drips;
-				((dynamic)drop2).drips |= drips;
+				drop2.overlays.Or( drips );
+				drop2.drips.Or( drips );
 			}
 			if ( !Lang13.Bool( source ) ) {
 				return B;
@@ -1215,9 +1215,9 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 3 32001 0,0 32001 0,2 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static void Broadcast_Message( Ent_Dynamic AM = null, bool vmask = false, Obj_Item_Device_Radio radio = null, dynamic message = null, string name = null, string job = null, string realname = null, int? data = null, bool compression = false, ByTable level = null, dynamic freq = null, ByTable spans = null, string verb_say = null, string verb_ask = null, string verb_exclaim = null, string verb_yell = null ) {
+		public static void Broadcast_Message( dynamic AM = null, bool vmask = false, Obj_Item_Device_Radio radio = null, dynamic message = null, dynamic name = null, string job = null, string realname = null, int? data = null, bool compression = false, ByTable level = null, dynamic freq = null, ByTable spans = null, dynamic verb_say = null, string verb_ask = null, string verb_exclaim = null, string verb_yell = null ) {
 			ByTable radios = null;
-			Ent_Dynamic virt = null;
+			dynamic virt = null;
 			Obj_Item_Device_Radio_Intercom R = null;
 			Obj_Item_Device_Radio R2 = null;
 			Obj_Item_Device_Radio R3 = null;
@@ -1236,11 +1236,11 @@ namespace Somnium.Game {
 			}
 			radios = new ByTable();
 			virt = GlobalFuncs.PoolOrNew( typeof(Dynamic_Virtualspeaker), null );
-			((dynamic)virt).name = name;
-			((dynamic)virt).job = job;
+			virt.name = name;
+			virt.job = job;
 			virt.languages = AM.languages;
-			((dynamic)virt).source = AM;
-			((dynamic)virt).radio = radio;
+			virt.source = AM;
+			virt.radio = radio;
 			virt.verb_say = verb_say;
 			virt.verb_ask = verb_ask;
 			virt.verb_exclaim = verb_exclaim;
@@ -1305,7 +1305,7 @@ namespace Somnium.Game {
 						continue;
 					}
 					R5 = _e;
-					if ( GlobalVars.radiochannelsreverse.Contains( R5.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] { ((dynamic)R5).z }) ) > -1 && Lang13.Bool( freqtext ) ) ) {
+					if ( GlobalVars.radiochannelsreverse.Contains( R5.receive_range( GlobalVars.SYND_FREQ, new ByTable(new object [] { R5.z }) ) > -1 && Lang13.Bool( freqtext ) ) ) {
 						radios.Or( R5 );
 					}
 				}
@@ -1331,7 +1331,7 @@ namespace Somnium.Game {
 					receive.Or( M );
 				}
 			}
-			rendered = virt.compose_message( virt, virt.languages, message, freq, spans );
+			rendered = ((Ent_Dynamic)virt).compose_message( virt, virt.languages, message, freq, spans );
 			hearer = null;
 			foreach (dynamic _h in Lang13.Enumerate( receive )) {
 				if ( !( _h is Ent_Dynamic ) ) {
@@ -1341,7 +1341,7 @@ namespace Somnium.Game {
 				hearer.Hear( rendered, virt, AM.languages, message, freq, spans );
 			}
 			if ( Lang13.length( receive ) != 0 ) {
-				blackbox_msg = "" + AM + " " + AM.say_quote( message, spans );
+				blackbox_msg = "" + AM + " " + ((Ent_Dynamic)AM).say_quote( message, spans );
 				if ( GlobalVars.blackbox is Obj_Machinery_BlackboxRecorder ) {
 					dynamic _i = freq; // Was a switch-case, sorry for the mess.
 					if ( _i==1459 ) {
@@ -1378,7 +1378,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,1 32001 0,0 32001 0,0 32001 0
-		public static void Broadcast_SimpleMessage( string source = null, dynamic frequency = null, string text = null, int? data = null, Mob_Living_Carbon_Human M = null, bool compression = false, bool level = false ) {
+		public static void Broadcast_SimpleMessage( string source = null, dynamic frequency = null, string text = null, int? data = null, Mob_Living_Carbon_Human M = null, bool compression = false, int? level = null ) {
 			Mob_Living_Carbon_Human H = null;
 			RadioFrequency connection = null;
 			dynamic display_freq = null;
@@ -1428,7 +1428,7 @@ namespace Somnium.Game {
 					}
 					R = _a;
 					position = GlobalFuncs.get_turf( R );
-					if ( Lang13.Bool( position ) && Lang13.Bool( position.z ) == level ) {
+					if ( Lang13.Bool( position ) && Lang13.IntNullable( position.z ) == level ) {
 						receive.Or( R.send_hear( display_freq, level ) );
 					}
 				}
@@ -1443,7 +1443,7 @@ namespace Somnium.Game {
 						continue;
 					}
 					position2 = GlobalFuncs.get_turf( R2 );
-					if ( Lang13.Bool( position2 ) && Lang13.Bool( position2.z ) == level ) {
+					if ( Lang13.Bool( position2 ) && Lang13.IntNullable( position2.z ) == level ) {
 						receive.Or( R2.send_hear( display_freq ) );
 					}
 				}
@@ -1456,7 +1456,7 @@ namespace Somnium.Game {
 					}
 					R3 = _c;
 					position3 = GlobalFuncs.get_turf( R3 );
-					if ( Lang13.Bool( position3 ) && Lang13.Bool( position3.z ) == level ) {
+					if ( Lang13.Bool( position3 ) && Lang13.IntNullable( position3.z ) == level ) {
 						receive.Or( R3.send_hear( GlobalVars.SYND_FREQ ) );
 					}
 				}
@@ -1479,7 +1479,7 @@ namespace Somnium.Game {
 					}
 					R5 = _e;
 					position4 = GlobalFuncs.get_turf( R5 );
-					if ( Lang13.Bool( position4 ) && Lang13.Bool( position4.z ) == level ) {
+					if ( Lang13.Bool( position4 ) && Lang13.IntNullable( position4.z ) == level ) {
 						receive.Or( R5.send_hear( display_freq ) );
 					}
 				}
@@ -1537,7 +1537,7 @@ namespace Somnium.Game {
 					part_b_extra = " <i>(Intercepted)</i>";
 				}
 				radio = new Obj_Item_Device_Radio_Headset();
-				part_b = Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt( "</span><b> " )).icon( radio ).str, "[" ).item( freq_text ).str, "]" ).item( part_b_extra ).str, "</b> <span class='message'>" );
+				part_b = ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "</span><b> " )).icon( radio )).str( "[" )).item( freq_text )).str( "]" )).item( part_b_extra )).str( "</b> <span class='message'>" );
 				part_c = "</span></span>";
 				if ( display_freq == GlobalVars.SYND_FREQ ) {
 					part_a = "<span class='syndradio'><span class='name'>";
@@ -1629,14 +1629,14 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0,2 32001 0
-		public static void build_click( Mob user = null, dynamic buildmode = null, string _params = null, Ent_Static _object = null ) {
+		public static void build_click( Mob user = null, dynamic buildmode = null, string _params = null, dynamic _object = null ) {
 			Obj_Effect_Bmode_Buildholder holder = null;
 			Obj_Effect_Bmode_Buildholder H = null;
 			ByTable pa = null;
-			Ent_Static T = null;
-			Ent_Static T2 = null;
-			Ent_Static T3 = null;
-			Ent_Static T4 = null;
+			dynamic T = null;
+			dynamic T2 = null;
+			dynamic T3 = null;
+			dynamic T4 = null;
 			Obj_Structure_Window_Reinforced WIN = null;
 			Obj_Structure_Window_Reinforced WIN2 = null;
 			Obj_Structure_Window_Reinforced WIN3 = null;
@@ -1644,7 +1644,7 @@ namespace Somnium.Game {
 			Obj_Structure_Window_Reinforced WIN5 = null;
 			dynamic T5 = null;
 			dynamic A = null;
-			MapGenerator G = null;
+			dynamic G = null;
 			holder = null;
 			H = null;
 			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
@@ -1669,31 +1669,31 @@ namespace Somnium.Game {
 				if ( _object is Tile && pa.Find( "left" ) != 0 && !( pa.Find( "alt" ) != 0 ) && !( pa.Find( "ctrl" ) != 0 ) ) {
 					T = _object;
 					if ( _object is Tile_Space ) {
-						((dynamic)T).ChangeTurf( typeof(Tile_Simulated_Floor_Plasteel) );
+						((Tile)T).ChangeTurf( typeof(Tile_Simulated_Floor_Plasteel) );
 					} else if ( _object is Tile_Simulated_Floor ) {
-						((dynamic)T).ChangeTurf( typeof(Tile_Simulated_Wall) );
+						((Tile)T).ChangeTurf( typeof(Tile_Simulated_Wall) );
 					} else if ( _object is Tile_Simulated_Wall ) {
-						((dynamic)T).ChangeTurf( typeof(Tile_Simulated_Wall_RWall) );
+						((Tile)T).ChangeTurf( typeof(Tile_Simulated_Wall_RWall) );
 					}
-					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built " + T + " at (" + ((dynamic)T).x + "," + ((dynamic)T).y + "," + ((dynamic)T).z + ")" );
+					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built " + T + " at (" + T.x + "," + T.y + "," + T.z + ")" );
 					return;
 				} else if ( pa.Find( "right" ) != 0 ) {
-					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " deleted " + _object + " at (" + ((dynamic)_object).x + "," + ((dynamic)_object).y + "," + ((dynamic)_object).z + ")" );
+					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " deleted " + _object + " at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					if ( _object is Tile_Simulated_Wall ) {
 						T2 = _object;
-						((dynamic)T2).ChangeTurf( typeof(Tile_Simulated_Floor_Plasteel) );
+						((Tile)T2).ChangeTurf( typeof(Tile_Simulated_Floor_Plasteel) );
 					} else if ( _object is Tile_Simulated_Floor ) {
 						T3 = _object;
-						((dynamic)T3).ChangeTurf( typeof(Tile_Space) );
+						((Tile)T3).ChangeTurf( typeof(Tile_Space) );
 					} else if ( _object is Tile_Simulated_Wall_RWall ) {
 						T4 = _object;
-						((dynamic)T4).ChangeTurf( typeof(Tile_Simulated_Wall) );
+						((Tile)T4).ChangeTurf( typeof(Tile_Simulated_Wall) );
 					} else if ( _object is Obj ) {
 						GlobalFuncs.qdel( _object );
 					}
 					return;
 				} else if ( _object is Tile && pa.Find( "alt" ) != 0 && pa.Find( "left" ) != 0 ) {
-					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built an airlock at (" + ((dynamic)_object).x + "," + ((dynamic)_object).y + "," + ((dynamic)_object).z + ")" );
+					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built an airlock at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					new Obj_Machinery_Door_Airlock( GlobalFuncs.get_turf( _object ) );
 				} else if ( _object is Tile && pa.Find( "ctrl" ) != 0 && pa.Find( "left" ) != 0 ) {
 					dynamic _b = ((dynamic)holder.builddir).dir; // Was a switch-case, sorry for the mess.
@@ -1713,7 +1713,7 @@ namespace Somnium.Game {
 						WIN5 = new Obj_Structure_Window_Reinforced( GlobalFuncs.get_turf( _object ) );
 						((dynamic)WIN5).dir = GlobalVars.NORTHWEST;
 					}
-					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built a window at (" + ((dynamic)_object).x + "," + ((dynamic)_object).y + "," + ((dynamic)_object).z + ")" );
+					GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " built a window at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 				}
 			} else if ( _c==2 ) {
 				if ( pa.Find( "left" ) != 0 ) {
@@ -1728,25 +1728,25 @@ namespace Somnium.Game {
 					}
 				} else if ( pa.Find( "right" ) != 0 ) {
 					if ( _object is Obj ) {
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " deleted " + _object + " at (" + ((dynamic)_object).x + "," + ((dynamic)_object).y + "," + ((dynamic)_object).z + ")" );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " deleted " + _object + " at (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 						GlobalFuncs.qdel( _object );
 					}
 				}
 			} else if ( _c==3 ) {
 				if ( pa.Find( "left" ) != 0 ) {
 					if ( _object.vars.Find( holder.buildmode.varholder ) != 0 ) {
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " modified " + ((dynamic)_object).name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
 						_object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder;
 					} else {
-						((dynamic)Task13.user).WriteMsg( "<span class='warning'>" + Temp13.initial( ((dynamic)_object).name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
+						((dynamic)Task13.user).WriteMsg( "<span class='warning'>" + Temp13.initial( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
 					}
 				}
 				if ( pa.Find( "right" ) != 0 ) {
 					if ( _object.vars.Find( holder.buildmode.varholder ) != 0 ) {
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " modified " + ((dynamic)_object).name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " modified " + _object.name + "'s " + holder.buildmode.varholder + " to " + holder.buildmode.valueholder );
 						_object.vars[holder.buildmode.varholder] = Temp13.initial( _object.vars[holder.buildmode.varholder] );
 					} else {
-						((dynamic)Task13.user).WriteMsg( "<span class='warning'>" + Temp13.initial( ((dynamic)_object).name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
+						((dynamic)Task13.user).WriteMsg( "<span class='warning'>" + Temp13.initial( _object.name ) + " does not have a var called '" + holder.buildmode.varholder + "'</span>" );
 					}
 				}
 			} else if ( _c==4 ) {
@@ -1757,9 +1757,9 @@ namespace Somnium.Game {
 					holder.throw_atom = _object;
 				}
 				if ( pa.Find( "right" ) != 0 ) {
-					if ( holder.throw_atom != null ) {
-						((dynamic)holder.throw_atom).throw_at( _object, 10, 1, user );
-						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " threw " + holder.throw_atom + " at " + _object + " (" + ((dynamic)_object).x + "," + ((dynamic)_object).y + "," + ((dynamic)_object).z + ")" );
+					if ( Lang13.Bool( holder.throw_atom ) ) {
+						((Ent_Dynamic)holder.throw_atom).throw_at( _object, 10, 1, user );
+						GlobalFuncs.log_admin( "Build Mode: " + GlobalFuncs.key_name( Task13.user ) + " threw " + holder.throw_atom + " at " + _object + " (" + _object.x + "," + _object.y + "," + _object.z + ")" );
 					}
 				}
 			} else if ( _c==5 ) {
@@ -1776,8 +1776,8 @@ namespace Somnium.Game {
 							((dynamic)Task13.user).WriteMsg( "<span class='warning'>Select generator type first.</span>" );
 						}
 						G = Lang13.call( holder.generator_path );
-						G.defineRegion( holder.cornerA, holder.cornerB, true );
-						G.generate();
+						((MapGenerator)G).defineRegion( holder.cornerA, holder.cornerB, true );
+						((dynamic)G).generate();
 						holder.cornerA = null;
 						holder.cornerB = null;
 						return;
@@ -1827,7 +1827,7 @@ namespace Somnium.Game {
 			adjacencies = 0;
 			if ( A.can_be_unanchored ) {
 				AM = A;
-				if ( !( AM.anchored != 0 ) ) {
+				if ( !Lang13.Bool( AM.anchored ) ) {
 					return 0;
 				}
 				direction = null;
@@ -1835,7 +1835,7 @@ namespace Somnium.Game {
 					direction = _a;
 					AM = GlobalFuncs.find_type_in_direction( A, direction );
 					if ( AM is Ent_Dynamic ) {
-						if ( AM.anchored != 0 ) {
+						if ( Lang13.Bool( AM.anchored ) ) {
 							adjacencies |= 1 << Lang13.Int( direction );
 						}
 					} else if ( Lang13.Bool( AM ) ) {
@@ -1846,7 +1846,7 @@ namespace Somnium.Game {
 				direction2 = null;
 				foreach (dynamic _b in Lang13.Enumerate( GlobalVars.alldirs )) {
 					direction2 = _b;
-					if ( GlobalFuncs.find_type_in_direction( A, direction2 ) != null ) {
+					if ( Lang13.Bool( GlobalFuncs.find_type_in_direction( A, direction2 ) ) ) {
 						adjacencies |= 1 << Lang13.Int( direction2 );
 					}
 				}
@@ -1937,10 +1937,10 @@ namespace Somnium.Game {
 					b = L[( j ??0) + 1];
 					if ( a.c_tag_order != b.c_tag_order ) {
 						if ( a.c_tag_order > b.c_tag_order ) {
-							L.Swap( ((int)( j )), ((int)( ( j ??0) + 1 )) );
+							L.Swap( ((int)( j ??0 )), ((int)( ( j ??0) + 1 )) );
 						}
 					} else if ( String13.order( a.c_tag, b.c_tag ) < 0 ) {
-						L.Swap( ((int)( j )), ((int)( ( j ??0) + 1 )) );
+						L.Swap( ((int)( j ??0 )), ((int)( ( j ??0) + 1 )) );
 					}
 				}
 				i--;
@@ -1967,7 +1967,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 291 32001 0,291 32001 0,0 32001 0
-		public static bool can_see( Obj source = null, Obj_Mecha target = null, int? length = null ) {
+		public static bool can_see( Obj source = null, dynamic target = null, int? length = null ) {
 			dynamic current = null;
 			dynamic target_turf = null;
 			int? steps = null;
@@ -2049,23 +2049,23 @@ namespace Somnium.Game {
 				if ( !( T != null ) ) {
 					continue;
 				}
-				things.Add( ((dynamic)T).contents );
+				things.Add( T.contents );
 			}
 			return things;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int Ceiling( double x = 0 ) {
-			return -Num13.floor( -x );
+		public static int Ceiling( dynamic x = null ) {
+			return -Num13.floor( Lang13.Double( -x ) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,1 32001 0
 		public static void Centcomm_announce( string text = null, Mob Sender = null ) {
-			string msg = null;
+			dynamic msg = null;
 			msg = String13.substr( GlobalFuncs.sanitize( text ), 1, 1024 );
-			msg = Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt( "<span class='adminnotice'><b><font color=orange>CENTCOM:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) ).str, " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( Sender ).str, "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( Sender ).str, "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( Sender ).str, "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( Sender ).str, "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( Sender ).str, "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( Sender ).str, "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).Ref( Sender ).str, "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).Ref( Sender ).str, "'>RPLY</A>):</b> " ).item( msg ).str, "</span>" );
+			msg = ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<span class='adminnotice'><b><font color=orange>CENTCOM:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) )).str( " (<A HREF='?_src_=holder;adminmoreinfo=" )).Ref( Sender )).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" )).Ref( Sender )).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" )).Ref( Sender )).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" )).Ref( Sender )).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" )).Ref( Sender )).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" )).Ref( Sender )).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" )).Ref( Sender )).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" )).Ref( Sender )).str( "'>RPLY</A>):</b> " )).item( msg )).str( "</span>" );
 			((dynamic)GlobalVars.admins).WriteMsg( msg );
 			return;
 		}
@@ -2098,28 +2098,28 @@ namespace Somnium.Game {
 			if ( ( y_dimension ??0) < Game13.icon_size ) {
 				y_offset *= -1;
 			}
-			((dynamic)I).pixel_x = x_offset;
-			((dynamic)I).pixel_y = y_offset;
+			I.pixel_x = ((int)( x_offset ));
+			I.pixel_y = ((int)( y_offset ));
 			return I;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0
-		public static void changeling_transform( Mob user = null, Changelingprofile chosen_prof = null ) {
-			Dna chosen_dna = null;
+		public static void changeling_transform( dynamic user = null, Changelingprofile chosen_prof = null ) {
+			dynamic chosen_dna = null;
 			dynamic slot = null;
-			Obj_Item C = null;
+			dynamic C = null;
 			bool equip = false;
 			dynamic thetype = null;
 			chosen_dna = chosen_prof.dna;
 			user.real_name = chosen_prof.name;
-			((dynamic)user).underwear = chosen_prof.underwear;
-			((dynamic)user).undershirt = chosen_prof.undershirt;
-			((dynamic)user).socks = chosen_prof.socks;
-			chosen_dna.transfer_identity( user, true );
+			user.underwear = chosen_prof.underwear;
+			user.undershirt = chosen_prof.undershirt;
+			user.socks = chosen_prof.socks;
+			((Dna)chosen_dna).transfer_identity( user, true );
 			new ByTable().set( "mutcolor_update", 1 ).apply( user.GetType().GetMethod( "updateappearance" ) );
 			((Mob_Living_Carbon_Human)user).update_body();
-			user.domutcheck();
+			((Mob)user).domutcheck();
 			slot = null;
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.slots )) {
 				slot = _a;
@@ -2139,16 +2139,16 @@ namespace Somnium.Game {
 				} else if ( Lang13.Bool( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) ) {
 					C = user.vars[slot];
 				}
-				((dynamic)C).appearance = chosen_prof.appearance_list[slot];
-				((dynamic)C).name = chosen_prof.name_list[slot];
-				C.flags_cover = Lang13.Int( chosen_prof.flags_cover_list[slot] );
+				C.appearance = chosen_prof.appearance_list[slot];
+				C.name = chosen_prof.name_list[slot];
+				C.flags_cover = chosen_prof.flags_cover_list[slot];
 				C.item_color = chosen_prof.item_color_list[slot];
 				C.item_state = chosen_prof.item_state_list[slot];
 				if ( equip ) {
-					user.equip_to_slot_or_del( C, Lang13.Int( GlobalVars.slot2slot[slot] ) );
+					((Mob)user).equip_to_slot_or_del( C, Lang13.Int( GlobalVars.slot2slot[slot] ) );
 				}
 			}
-			user.regenerate_icons();
+			((Mob)user).regenerate_icons();
 			return;
 		}
 
@@ -2196,8 +2196,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static double cheap_hypotenuse( dynamic Ax = null, dynamic Ay = null, bool Bx = false, bool By = false ) {
-			return Math.Sqrt( Math.Pow( Math.Abs( Lang13.Double( Ax - Bx ) ), 2 ) + Math.Pow( Math.Abs( Lang13.Double( Ay - By ) ), 2 ) );
+		public static double cheap_hypotenuse( int Ax = 0, int Ay = 0, int Bx = 0, int By = 0 ) {
+			return Math.Sqrt( Math.Pow( Math.Abs( Ax - Bx ), 2 ) + Math.Pow( Math.Abs( Ay - By ), 2 ) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -2244,8 +2244,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,1 32001 0,2 32001 0
-		public static bool check_tank_exists( Obj_Item_Weapon_Watertank parent_tank = null, Obj M = null, dynamic O = null ) {
-			if ( !( parent_tank != null ) || !( parent_tank is Obj_Item_Weapon_Watertank ) ) {
+		public static bool check_tank_exists( dynamic parent_tank = null, Obj M = null, dynamic O = null ) {
+			if ( !Lang13.Bool( parent_tank ) || !( parent_tank is Obj_Item_Weapon_Watertank ) ) {
 				((Mob)M).unEquip( O );
 				GlobalFuncs.qdel( 0 );
 				return false;
@@ -2399,8 +2399,8 @@ namespace Somnium.Game {
 			ByTable turfs = null;
 			double rsq = 0;
 			Ent_Static T = null;
-			dynamic dx = null;
-			dynamic dy = null;
+			double dx = 0;
+			double dy = 0;
 			if ( center == null ) {
 				center = Task13.user;
 			}
@@ -2416,9 +2416,9 @@ namespace Somnium.Game {
 					continue;
 				}
 				T = _a;
-				dx = ((dynamic)T).x - centerturf.x;
-				dy = ((dynamic)T).y - centerturf.y;
-				if ( Lang13.Double( dx * dx + dy * dy ) <= rsq ) {
+				dx = T.x - Lang13.Double( centerturf.x );
+				dy = T.y - Lang13.Double( centerturf.y );
+				if ( dx * dx + dy * dy <= rsq ) {
 					turfs.Add( T );
 				}
 			}
@@ -2506,7 +2506,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static void cmd_admin_mute( dynamic whom = null, double mute_type = 0, bool? automute = null ) {
+		public static void cmd_admin_mute( dynamic whom = null, double? mute_type = null, bool? automute = null ) {
 			string muteunmute = null;
 			string mute_string = null;
 			dynamic C = null;
@@ -2559,7 +2559,7 @@ namespace Somnium.Game {
 			}
 			if ( automute == true ) {
 				muteunmute = "auto-muted";
-				P.muted |= ((int)( mute_type ));
+				P.muted |= ((int)( mute_type ??0 ));
 				GlobalFuncs.log_admin( "SPAM AUTOMUTE: " + muteunmute + " " + GlobalFuncs.key_name( whom ) + " from " + mute_string );
 				GlobalFuncs.message_admins( "SPAM AUTOMUTE: " + muteunmute + " " + GlobalFuncs.key_name_admin( whom ) + " from " + mute_string + "." );
 				if ( Lang13.Bool( C ) ) {
@@ -2568,12 +2568,12 @@ namespace Somnium.Game {
 				GlobalFuncs.feedback_add_details( "admin_verb", "AUTOMUTE" );
 				return;
 			}
-			if ( ( P.muted & ((int)( mute_type )) ) != 0 ) {
+			if ( ( P.muted & ((int)( mute_type ??0 )) ) != 0 ) {
 				muteunmute = "unmuted";
-				P.muted &= ~((int)( mute_type ));
+				P.muted &= ~((int)( mute_type ??0 ));
 			} else {
 				muteunmute = "muted";
-				P.muted |= ((int)( mute_type ));
+				P.muted |= ((int)( mute_type ??0 ));
 			}
 			GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.user ) + " has " + muteunmute + " " + GlobalFuncs.key_name( whom ) + " from " + mute_string );
 			GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.user ) + " has " + muteunmute + " " + GlobalFuncs.key_name_admin( whom ) + " from " + mute_string + "." );
@@ -2760,14 +2760,14 @@ namespace Somnium.Game {
 		// ARG INFO: 0 32001 0
 		public static void convert_notes_sql( string ckey = null ) {
 			SaveFile notesfile = null;
-			string notetext = null;
+			dynamic notetext = null;
 			dynamic server = null;
 			string regex = null;
 			Regex results = null;
-			string timestamp = null;
-			string adminckey = null;
+			dynamic timestamp = null;
+			dynamic adminckey = null;
 			DBQuery query_convert_time = null;
-			string err = null;
+			dynamic err = null;
 			notesfile = new SaveFile( "data/player_notes.sav" );
 			if ( !( notesfile != null ) ) {
 				GlobalFuncs.log_game( "Error: Cannot access " + "data/player_notes.sav" );
@@ -2833,7 +2833,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static Mob_Living_Carbon_Human create_space_ninja( Ent_Static spawn_loc = null ) {
+		public static Mob_Living_Carbon_Human create_space_ninja( dynamic spawn_loc = null ) {
 			Mob_Living_Carbon_Human new_ninja = null;
 			Preferences A = null;
 			new_ninja = new Mob_Living_Carbon_Human( spawn_loc );
@@ -2851,7 +2851,7 @@ namespace Somnium.Game {
 			ByTable candidates = null;
 			dynamic M = null;
 			dynamic alien_caste = null;
-			Mob_Living_Carbon_Human spawn_here = null;
+			dynamic spawn_here = null;
 			Mob_Living_Carbon_Alien new_xeno = null;
 			if ( !Lang13.Bool( ckey ) ) {
 				candidates = new ByTable();
@@ -2911,7 +2911,7 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 
 		public static void createRandomZlevel(  ) {
-			string map = null;
+			dynamic map = null;
 			File file = null;
 			Obj_Effect_Landmark L = null;
 			if ( GlobalVars.awaydestinations.len != 0 ) {
@@ -2983,7 +2983,7 @@ namespace Somnium.Game {
 					((dynamic)M).WriteMsg( my_message );
 				}
 				if ( GlobalVars.dead_mob_list.Contains( M ) ) {
-					((dynamic)M).WriteMsg( Lang13.call( Lang13.call( ((dynamic)new Txt( "<a href='?src=" )).Ref( M ).str, ";follow=" ).Ref( user ).str, "'>(F)</a> " ).item( my_message ) );
+					((dynamic)M).WriteMsg( ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<a href='?src=" )).Ref( M )).str( ";follow=" )).Ref( user )).str( "'>(F)</a> " )).item( my_message ) );
 				}
 			}
 			GlobalFuncs.log_say( "" + user.real_name + "/" + ((dynamic)user).key + " : " + message );
@@ -3024,8 +3024,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static int dd_range( int low = 0, double high = 0, double num = 0 ) {
-			return Num13.maxInt( low, Num13.minInt( ((int)( high )), ((int)( num )) ) );
+		public static int dd_range( int low = 0, double high = 0, double? num = null ) {
+			return Num13.maxInt( low, Num13.minInt( ((int)( high )), ((int)( num ??0 )) ) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -3085,7 +3085,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int? dir2angle( double? D = null ) {
+		public static int? dir2angle( dynamic D = null ) {
 			dynamic _a = D; // Was a switch-case, sorry for the mess.
 			if ( _a==1 ) {
 				return 0;
@@ -3284,7 +3284,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0,291 32001 0,0 32001 0
-		public static bool do_after( dynamic user = null, double? delay = null, bool? needhand = null, dynamic target = null, bool? progress = null ) {
+		public static bool do_after( dynamic user = null, dynamic delay = null, bool? needhand = null, dynamic target = null, bool? progress = null ) {
 			bool _default = false;
 			Ent_Static Tloc = null;
 			Ent_Static Uloc = null;
@@ -3323,7 +3323,7 @@ namespace Somnium.Game {
 			if ( progress == true ) {
 				progbar = new Progressbar( user, delay, target );
 			}
-			endtime = Game13.time + ( delay ??0);
+			endtime = Game13.time + Lang13.Double( delay );
 			starttime = Game13.time;
 			_default = true;
 			while (Game13.time < endtime) {
@@ -3430,14 +3430,11 @@ namespace Somnium.Game {
 		public static bool do_teleport( dynamic ateleatom = null, dynamic adestination = null, double? aprecision = null, bool? afteleport = null, bool? aeffectin = null, bool? aeffectout = null, string asoundin = null, dynamic asoundout = null, params object[] _ ) {
 			ByTable _args = new ByTable( new object[] { ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout } ).extend(_);
 			Teleport_Instant_Science D = null;
-			if ( _args[2] == null ) {
-				_args[2] = 0;
-			}
 			if ( _args[3] == null ) {
-				_args[3] = 1;
+				_args[3] = 0;
 			}
 			if ( _args[4] == null ) {
-				_args[4] = null;
+				_args[4] = 1;
 			}
 			if ( _args[5] == null ) {
 				_args[5] = null;
@@ -3447,6 +3444,9 @@ namespace Somnium.Game {
 			}
 			if ( _args[7] == null ) {
 				_args[7] = null;
+			}
+			if ( _args[8] == null ) {
+				_args[8] = null;
 			}
 			D = new Teleport_Instant_Science();
 			if ( Lang13.Bool( _args.apply( D.GetType().GetMethod( "start" ) ) ) ) {
@@ -3477,12 +3477,12 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 2 32001 0,0 32001 0,0 32001 0,291 32001 0,0 32001 0
-		public static Obj DuplicateObject( dynamic original = null, bool? perfectcopy = null, bool? sameloc = null, dynamic newloc = null, bool? nerf = null ) {
-			Obj O = null;
+		public static dynamic DuplicateObject( dynamic original = null, bool? perfectcopy = null, bool? sameloc = null, dynamic newloc = null, bool? nerf = null ) {
+			dynamic O = null;
 			dynamic V = null;
 			dynamic L = null;
-			Obj I = null;
-			Obj M = null;
+			dynamic I = null;
+			dynamic M = null;
 			if ( perfectcopy == null ) {
 				perfectcopy = false;
 			}
@@ -3503,7 +3503,7 @@ namespace Somnium.Game {
 			} else {
 				O = Lang13.call( original.type, newloc );
 			}
-			if ( perfectcopy == true && O != null && Lang13.Bool( original ) ) {
+			if ( perfectcopy == true && Lang13.Bool( O ) && Lang13.Bool( original ) ) {
 				V = null;
 				foreach (dynamic _a in Lang13.Enumerate( original.vars - GlobalVars.forbidden_vars )) {
 					V = _a;
@@ -3528,7 +3528,7 @@ namespace Somnium.Game {
 					((dynamic)M).power_change();
 				}
 			}
-			O.update_icon();
+			((dynamic)O).update_icon();
 			return O;
 		}
 
@@ -3538,13 +3538,13 @@ namespace Somnium.Game {
 			string target_ckey = null;
 			string sql_ckey = null;
 			DBQuery query_find_note_edit = null;
-			string err = null;
+			dynamic err = null;
 			dynamic old_note = null;
 			dynamic adminckey = null;
 			dynamic new_note = null;
 			string edit_text = null;
 			DBQuery query_update_note = null;
-			string err2 = null;
+			dynamic err2 = null;
 			if ( !GlobalVars.dbcon.IsConnected() ) {
 				((dynamic)Task13.user).WriteMsg( "<span class='danger'>Failed to establish database connection.</span>" );
 				return;
@@ -3552,7 +3552,7 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( note_id ) ) {
 				return;
 			}
-			note_id = String13.parseNumber( note_id );
+			note_id = String13.ParseNumber( note_id );
 			sql_ckey = GlobalFuncs.sanitizeSQL( ((dynamic)Task13.user).ckey );
 			query_find_note_edit = GlobalVars.dbcon.NewQuery( "SELECT ckey, notetext, adminckey FROM " + GlobalFuncs.format_table_name( "notes" ) + " WHERE id = " + note_id );
 			if ( !query_find_note_edit.Execute() ) {
@@ -3586,7 +3586,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,2 32001 0,0 32001 0
-		public static double electrocute_mob( dynamic M = null, dynamic power_source = null, Obj source = null, double? siemens_coeff = null ) {
+		public static dynamic electrocute_mob( dynamic M = null, dynamic power_source = null, dynamic source = null, double? siemens_coeff = null ) {
 			dynamic H = null;
 			Obj_Item G = null;
 			dynamic source_area = null;
@@ -3594,12 +3594,12 @@ namespace Somnium.Game {
 			dynamic PN = null;
 			dynamic cell = null;
 			dynamic apc = null;
-			bool PN_damage = false;
-			bool cell_damage = false;
-			double shock_damage = 0;
-			double? drained_hp = null;
-			double drained_energy = 0;
-			double drained_power = 0;
+			dynamic PN_damage = null;
+			dynamic cell_damage = null;
+			dynamic shock_damage = null;
+			dynamic drained_hp = null;
+			dynamic drained_energy = null;
+			dynamic drained_power = null;
 			if ( siemens_coeff == null ) {
 				siemens_coeff = 1;
 			}
@@ -3642,24 +3642,24 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( cell ) && !Lang13.Bool( PN ) ) {
 				return 0;
 			}
-			PN_damage = false;
-			cell_damage = false;
+			PN_damage = 0;
+			cell_damage = 0;
 			if ( Lang13.Bool( PN ) ) {
-				PN_damage = Lang13.Bool( ((dynamic)PN).get_electrocute_damage() );
+				PN_damage = ((dynamic)PN).get_electrocute_damage();
 			}
 			if ( Lang13.Bool( cell ) ) {
-				cell_damage = Lang13.Bool( ((dynamic)cell).get_electrocute_damage() );
+				cell_damage = ((dynamic)cell).get_electrocute_damage();
 			}
 			shock_damage = 0;
-			if ( ( PN_damage ?1:0) >= ( cell_damage ?1:0) ) {
+			if ( Lang13.Double( PN_damage ) >= Lang13.Double( cell_damage ) ) {
 				power_source = PN;
-				shock_damage = PN_damage ?1:0;
+				shock_damage = PN_damage;
 			} else {
 				power_source = cell;
-				shock_damage = cell_damage ?1:0;
+				shock_damage = cell_damage;
 			}
 			drained_hp = ((Mob_Living)M).electrocute_act( shock_damage, source, siemens_coeff );
-			drained_energy = ( drained_hp ??0) * 20;
+			drained_energy = drained_hp * 20;
 			if ( Lang13.Bool( source_area ) ) {
 				((dynamic)source_area).use_power( drained_energy / GlobalVars.CELLRATE );
 			} else if ( power_source is Powernet ) {
@@ -3731,7 +3731,7 @@ namespace Somnium.Game {
 					if ( search != 0 ) {
 						emoji = String13.toLower( String13.substr( text, pos + 1, search ) );
 						if ( GlobalVars.emojis.Contains( emoji ) ) {
-							parsed += Lang13.call( Lang13.call( ((dynamic)new Txt( "<img class=icon src=" )).Ref( "icons/emoji.dmi" ).str, " iconstate='" ).item( emoji ).str, "'>" );
+							parsed += ((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<img class=icon src=" )).Ref( "icons/emoji.dmi" )).str( " iconstate='" )).item( emoji )).str( "'>" );
 							pos = search + 1;
 						} else {
 							parsed += String13.substr( text, pos, search );
@@ -3799,7 +3799,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static string english_list( ByTable input = null, string nothing_text = null, string and_text = null, string comma_text = null, string final_comma_text = null ) {
+		public static string english_list( dynamic input = null, string nothing_text = null, string and_text = null, string comma_text = null, string final_comma_text = null ) {
 			int total = 0;
 			string output = null;
 			int index = 0;
@@ -3815,7 +3815,7 @@ namespace Somnium.Game {
 			if ( final_comma_text == null ) {
 				final_comma_text = "";
 			}
-			total = input.len;
+			total = Lang13.Int( input.len );
 			if ( !( total != 0 ) ) {
 				return "" + nothing_text;
 			} else if ( total == 1 ) {
@@ -3867,9 +3867,9 @@ namespace Somnium.Game {
 			int far_volume = 0;
 			int? postponeCycles = null;
 			EffectSystem_Explosion E = null;
-			bool x0 = false;
-			bool y0 = false;
-			dynamic z0 = null;
+			int x0 = 0;
+			int y0 = 0;
+			int z0 = 0;
 			ByTable affected_turfs = null;
 			dynamic T = null;
 			Obj_Machinery_Door D = null;
@@ -3956,9 +3956,9 @@ namespace Somnium.Game {
 				E.set_up( epicenter );
 				E.start();
 			}
-			x0 = Lang13.Bool( epicenter.x );
-			y0 = Lang13.Bool( epicenter.y );
-			z0 = epicenter.z;
+			x0 = Lang13.Int( epicenter.x );
+			y0 = Lang13.Int( epicenter.y );
+			z0 = Lang13.Int( epicenter.z );
 			affected_turfs = GlobalFuncs.trange( max_range, epicenter );
 			if ( GlobalVars.config.reactionary_explosions ) {
 				T = null;
@@ -4007,7 +4007,7 @@ namespace Somnium.Game {
 				if ( !( T2 is Tile ) ) {
 					continue;
 				}
-				dist2 = GlobalFuncs.cheap_hypotenuse( T2.x, T2.y, x0, y0 );
+				dist2 = GlobalFuncs.cheap_hypotenuse( Lang13.Int( T2.x ), Lang13.Int( T2.y ), x0, y0 );
 				if ( GlobalVars.config.reactionary_explosions ) {
 					Trajectory = T2;
 					while (Trajectory != epicenter) {
@@ -4044,8 +4044,8 @@ namespace Somnium.Game {
 						continue;
 					}
 					I = _f;
-					if ( I != null && !( I.anchored != 0 ) ) {
-						throw_range = Rand13.Int( ((int)( throw_dist )), max_range ??0 );
+					if ( I != null && !Lang13.Bool( I.anchored ) ) {
+						throw_range = Rand13.Int( ((int)( throw_dist ??0 )), max_range ??0 );
 						throw_at = GlobalFuncs.get_ranged_target_turf( I, throw_dir, throw_range );
 						I.throw_speed = 4;
 						I.throw_at_fast( throw_at, throw_range, 2 );
@@ -4154,7 +4154,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static Data_Record find_record( string field = null, string value = null, ByTable L = null ) {
+		public static Data_Record find_record( string field = null, dynamic value = null, ByTable L = null ) {
 			Data_Record R = null;
 			R = null;
 			foreach (dynamic _a in Lang13.Enumerate( L )) {
@@ -4171,14 +4171,14 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 291 32001 0,0 32001 0,0 32001 0
-		public static Base_Data find_type_in_direction( dynamic source = null, dynamic direction = null, bool? range = null ) {
+		public static dynamic find_type_in_direction( dynamic source = null, dynamic direction = null, bool? range = null ) {
 			int? x_offset = null;
 			int? y_offset = null;
 			Tile target_turf = null;
-			Base_Data A = null;
+			dynamic A = null;
 			dynamic a_type = null;
 			dynamic a_type2 = null;
-			Base_Data A2 = null;
+			dynamic A2 = null;
 			if ( range == null ) {
 				range = true;
 			}
@@ -4195,7 +4195,7 @@ namespace Somnium.Game {
 				x_offset -= range == true ?1:0;
 			}
 			target_turf = Map13.get_tile_at( Lang13.Int( source.x + x_offset ), Lang13.Int( source.y + y_offset ), Lang13.Int( source.z ) );
-			if ( Lang13.Bool( source.canSmoothWith ) ) {
+			if ( source.canSmoothWith != null ) {
 				if ( source.smooth == 2 ) {
 					a_type = null;
 					foreach (dynamic _a in Lang13.Enumerate( source.canSmoothWith )) {
@@ -4204,7 +4204,7 @@ namespace Somnium.Game {
 							return target_turf;
 						}
 						A = Lang13.find_in( a_type, target_turf );
-						if ( A != null ) {
+						if ( Lang13.Bool( A ) ) {
 							return A;
 						}
 					}
@@ -4217,7 +4217,7 @@ namespace Somnium.Game {
 						return target_turf;
 					}
 					A = Lang13.find_in( a_type2, target_turf );
-					if ( A != null && A.type == a_type2 ) {
+					if ( Lang13.Bool( A ) && A.type == a_type2 ) {
 						return A;
 					}
 				}
@@ -4227,7 +4227,7 @@ namespace Somnium.Game {
 					return ( source.type == target_turf.type ? target_turf : null );
 				}
 				A2 = Lang13.find_in( source.type, target_turf );
-				return ( A2 != null && A2.type == source.type ? A2 : null );
+				return ( Lang13.Bool( A2 ) && A2.type == source.type ? A2 : null );
 			}
 		}
 
@@ -4340,7 +4340,7 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
 		public static string format_frequency( dynamic f = null ) {
-			f = String13.parseNumber( f );
+			f = String13.ParseNumber( f );
 			return "" + Num13.floor( Lang13.Double( f / 10 ) ) + "." + f % 10;
 		}
 
@@ -4543,11 +4543,11 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
 		public static void generate_female_clothing( string index = null, string t_color = null, string icon = null, bool? type = null ) {
-			Icon female_clothing_icon = null;
+			dynamic female_clothing_icon = null;
 			Icon female_s = null;
 			female_clothing_icon = new Icon( icon, t_color );
 			female_s = new Icon( "icons/mob/uniform.dmi", "" + ( type == true ? "female_full" : "female_top" ) );
-			female_clothing_icon.Blend( female_s, 2 );
+			((Icon)female_clothing_icon).Blend( female_s, 2 );
 			female_clothing_icon = File13.cache( female_clothing_icon );
 			GlobalVars.female_clothing_icons[index] = female_clothing_icon;
 			return;
@@ -5016,17 +5016,17 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static void generate_objectives( dynamic M = null, double? objectives_made = null, bool? has_escape = null ) {
+		public static void generate_objectives( Mind M = null, double? objectives_made = null, bool? has_escape = null ) {
 			ByTable objective_types = null;
 			ByTable escape_objective_types = null;
 			dynamic O = null;
-			Objective obj = null;
+			dynamic obj = null;
 			dynamic E = null;
-			Objective obj2 = null;
+			dynamic obj2 = null;
 			double? i = null;
 			dynamic holder_obj = null;
 			dynamic holder_obj2 = null;
-			Objective O2 = null;
+			dynamic O2 = null;
 			if ( objectives_made == null ) {
 				objectives_made = 2;
 			}
@@ -5120,8 +5120,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 291 32001 0,0 32001 0
-		public static Ent_Static get( Ent_Static loc = null, Type type = null ) {
-			while (loc != null) {
+		public static dynamic get( dynamic loc = null, Type type = null ) {
+			while (Lang13.Bool( loc )) {
 				if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( loc ) ) ) {
 					return loc;
 				}
@@ -5271,20 +5271,20 @@ namespace Somnium.Game {
 		public static int get_active_player_count(  ) {
 			int active_players = 0;
 			int? i = null;
-			Mob M = null;
-			Mob O = null;
+			dynamic M = null;
+			Mob_Dead_Observer O = null;
 			active_players = 0;
 			i = null;
 			i = 1;
 			while (( i ??0) <= GlobalVars.player_list.len) {
 				M = GlobalVars.player_list[i];
-				if ( M != null && Lang13.Bool( ((dynamic)M).client ) ) {
+				if ( Lang13.Bool( M ) && Lang13.Bool( M.client ) ) {
 					if ( M is Mob_NewPlayer ) {
 						i++;
 						continue;
 					} else if ( M is Mob_Dead_Observer ) {
 						O = M;
-						if ( Lang13.Bool( ((dynamic)O).started_as_observer ) ) {
+						if ( O.started_as_observer ) {
 							i++;
 							continue;
 						}
@@ -5462,20 +5462,20 @@ namespace Somnium.Game {
 		// ARG INFO: 3 32001 0,3 32001 0
 		public static double Get_Angle( dynamic start = null, dynamic end = null ) {
 			double _default = 0;
-			bool dy = false;
-			bool dx = false;
+			int dy = 0;
+			int dx = 0;
 			if ( !Lang13.Bool( start ) || !Lang13.Bool( end ) ) {
 				return 0;
 			}
-			dy = Lang13.Bool( end.y * 32 + end.pixel_y - ( start.y * 32 + start.pixel_y ) );
-			dx = Lang13.Bool( end.x * 32 + end.pixel_x - ( start.x * 32 + start.pixel_x ) );
-			if ( !dy ) {
-				return ( ( dx ?1:0) >= 0 ? 90 : 270 );
+			dy = Lang13.Int( end.y * 32 + end.pixel_y - ( start.y * 32 + start.pixel_y ) );
+			dx = Lang13.Int( end.x * 32 + end.pixel_x - ( start.x * 32 + start.pixel_x ) );
+			if ( !( dy != 0 ) ) {
+				return ( dx >= 0 ? 90 : 270 );
 			}
-			_default = GlobalFuncs.arctan( ( dx ?1:0) / ( dy ?1:0) );
-			if ( ( dy ?1:0) < 0 ) {
+			_default = GlobalFuncs.arctan( dx / dy );
+			if ( dy < 0 ) {
 				_default += 180;
-			} else if ( ( dx ?1:0) < 0 ) {
+			} else if ( dx < 0 ) {
 				_default += 360;
 			}
 			return _default;
@@ -5799,29 +5799,29 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int get_domination_time( Gang G = null ) {
+		public static int get_domination_time( dynamic G = null ) {
 			return Num13.maxInt( 180, ((int)( 900 - Num13.round( G.territory.len / GlobalVars.start_state.num_territories * 100, 1 ) * 12 )) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 291 32001 0,0 32001 0
-		public static dynamic get_edge_target_turf( dynamic A = null, int? direction = null ) {
+		public static dynamic get_edge_target_turf( dynamic A = null, dynamic direction = null ) {
 			Tile target = null;
 			target = Map13.get_tile_at( Lang13.Int( A.x ), Lang13.Int( A.y ), Lang13.Int( A.z ) );
 			if ( !Lang13.Bool( A ) || !( target != null ) ) {
 				return 0;
 			}
-			if ( ( ( direction ??0) & 1 ) != 0 ) {
-				target = Map13.get_tile_at( Lang13.Int( ((dynamic)target).x ), Game13.map_size_y, Lang13.Int( ((dynamic)target).z ) );
+			if ( Lang13.Bool( direction & 1 ) ) {
+				target = Map13.get_tile_at( target.x, Game13.map_size_y, target.z );
 			}
-			if ( ( ( direction ??0) & 2 ) != 0 ) {
-				target = Map13.get_tile_at( Lang13.Int( ((dynamic)target).x ), 1, Lang13.Int( ((dynamic)target).z ) );
+			if ( Lang13.Bool( direction & 2 ) ) {
+				target = Map13.get_tile_at( target.x, 1, target.z );
 			}
-			if ( ( ( direction ??0) & 4 ) != 0 ) {
-				target = Map13.get_tile_at( Game13.map_size_x, Lang13.Int( ((dynamic)target).y ), Lang13.Int( ((dynamic)target).z ) );
+			if ( Lang13.Bool( direction & 4 ) ) {
+				target = Map13.get_tile_at( Game13.map_size_x, target.y, target.z );
 			}
-			if ( ( ( direction ??0) & 8 ) != 0 ) {
-				target = Map13.get_tile_at( 1, Lang13.Int( ((dynamic)target).y ), Lang13.Int( ((dynamic)target).z ) );
+			if ( Lang13.Bool( direction & 8 ) ) {
+				target = Map13.get_tile_at( 1, target.y, target.z );
 			}
 			return target;
 		}
@@ -5845,7 +5845,7 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 
 		public static ByTable get_fancy_list_of_types(  ) {
-			ByTable temp = null;
+			dynamic temp = null;
 			dynamic type = null;
 			string typename = null;
 			dynamic tn = null;
@@ -5964,7 +5964,7 @@ namespace Somnium.Game {
 					I = _a;
 					covered_locations |= I.body_parts_covered ??0;
 					face_covered |= I.flags_inv ??0;
-					eyesmouth_covered |= I.flags_cover;
+					eyesmouth_covered |= Lang13.Int( I.flags_cover );
 				}
 				if ( C is Mob_Living_Carbon_Human ) {
 					H = C;
@@ -5976,7 +5976,7 @@ namespace Somnium.Game {
 						I2 = _b;
 						covered_locations |= I2.body_parts_covered ??0;
 						face_covered |= I2.flags_inv ??0;
-						eyesmouth_covered |= I2.flags_cover;
+						eyesmouth_covered |= Lang13.Int( I2.flags_cover );
 					}
 				}
 			}
@@ -6039,7 +6039,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
-		public static double get_location_modifier( Mob_Living M = null ) {
+		public static double get_location_modifier( Mob M = null ) {
 			dynamic T = null;
 			T = GlobalFuncs.get_turf( M );
 			if ( Lang13.Bool( Lang13.find_in( typeof(Obj_Structure_Table_Optable), T ) ) ) {
@@ -6117,14 +6117,14 @@ namespace Somnium.Game {
 		public static Tile get_offset_target_turf( Ent_Static A = null, int dx = 0, int dy = 0 ) {
 			int x = 0;
 			int y = 0;
-			x = Num13.minInt( Game13.map_size_x, Num13.maxInt( 1, Lang13.Int( ((dynamic)A).x + dx ) ) );
-			y = Num13.minInt( Game13.map_size_y, Num13.maxInt( 1, Lang13.Int( ((dynamic)A).y + dy ) ) );
-			return Map13.get_tile_at( x, y, Lang13.Int( ((dynamic)A).z ) );
+			x = Num13.minInt( Game13.map_size_x, Num13.maxInt( 1, A.x + dx ) );
+			y = Num13.minInt( Game13.map_size_y, Num13.maxInt( 1, A.y + dy ) );
+			return Map13.get_tile_at( x, y, A.z );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,32 32001 0,0 32001 0
-		public static dynamic get_path_to( Ent_Static start = null, dynamic end = null, Mob_Living_SimpleAnimal_Bot atom = null, System.Reflection.MethodInfo dist = null, int? maxnodes = null, int? maxnodedepth = null, bool? mintargetdist = null, System.Reflection.MethodInfo adjacent = null, Obj_Item_Weapon_Card_Id id = null, Ent_Static exclude = null, bool? simulated_only = null ) {
+		public static dynamic get_path_to( Ent_Static start = null, dynamic end = null, Mob_Living_SimpleAnimal_Bot atom = null, System.Reflection.MethodInfo dist = null, bool maxnodes = false, int? maxnodedepth = null, bool? mintargetdist = null, System.Reflection.MethodInfo adjacent = null, Obj_Item_Weapon_Card_Id id = null, Ent_Static exclude = null, bool? simulated_only = null ) {
 			dynamic path = null;
 			if ( maxnodedepth == null ) {
 				maxnodedepth = 30;
@@ -6181,8 +6181,8 @@ namespace Somnium.Game {
 		public static Tile get_ranged_target_turf( Ent_Static A = null, int? direction = null, double? range = null ) {
 			int x = 0;
 			int y = 0;
-			x = Lang13.Int( ((dynamic)A).x );
-			y = Lang13.Int( ((dynamic)A).y );
+			x = A.x;
+			y = A.y;
 			if ( ( ( direction ??0) & 1 ) != 0 ) {
 				y = Num13.minInt( Game13.map_size_y, ((int)( y + ( range ??0) )) );
 			}
@@ -6195,7 +6195,7 @@ namespace Somnium.Game {
 			if ( ( ( direction ??0) & 8 ) != 0 ) {
 				x = Num13.maxInt( 1, ((int)( x - ( range ??0) )) );
 			}
-			return Map13.get_tile_at( x, y, Lang13.Int( ((dynamic)A).z ) );
+			return Map13.get_tile_at( x, y, A.z );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -6408,7 +6408,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 32 32001 0,1 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static Tile get_teleport_loc( Ent_Static location = null, Ent_Static target = null, int? distance = null, bool? density = null, double? errorx = null, double? errory = null, bool? eoffsetx = null, bool? eoffsety = null ) {
+		public static dynamic get_teleport_loc( Ent_Static location = null, dynamic target = null, int? distance = null, bool? density = null, double? errorx = null, double? errory = null, bool? eoffsetx = null, bool? eoffsety = null ) {
 			int dirx = 0;
 			int diry = 0;
 			int xoffset = 0;
@@ -6417,7 +6417,7 @@ namespace Somnium.Game {
 			double b1yerror = 0;
 			double b2xerror = 0;
 			double b2yerror = 0;
-			Tile destination = null;
+			dynamic destination = null;
 			ByTable destination_list = null;
 			Tile center = null;
 			dynamic T = null;
@@ -6449,7 +6449,7 @@ namespace Somnium.Game {
 			b2yerror = 0;
 			errorx = Math.Abs( errorx ??0 );
 			errory = Math.Abs( errory ??0 );
-			dynamic _a = ((dynamic)target).dir; // Was a switch-case, sorry for the mess.
+			dynamic _a = target.dir; // Was a switch-case, sorry for the mess.
 			if ( _a==1 ) {
 				diry += distance ??0;
 				yoffset += eoffsety == true ?1:0;
@@ -6483,13 +6483,13 @@ namespace Somnium.Game {
 				b2xerror += errory ??0;
 				b2yerror += errorx ??0;
 			}
-			destination = Map13.get_tile_at( Lang13.Int( ((dynamic)location).x + dirx ), Lang13.Int( ((dynamic)location).y + diry ), Lang13.Int( ((dynamic)location).z ) );
-			if ( destination != null ) {
+			destination = Map13.get_tile_at( location.x + dirx, location.y + diry, location.z );
+			if ( Lang13.Bool( destination ) ) {
 				if ( Lang13.Bool( errorx ) || Lang13.Bool( errory ) ) {
 					destination_list = new ByTable();
-					center = Map13.get_tile_at( Lang13.Int( ((dynamic)destination).x + xoffset ), Lang13.Int( ((dynamic)destination).y + yoffset ), Lang13.Int( ((dynamic)location).z ) );
+					center = Map13.get_tile_at( Lang13.Int( destination.x + xoffset ), Lang13.Int( destination.y + yoffset ), location.z );
 					T = null;
-					foreach (dynamic _b in Lang13.Enumerate( Map13.fetch_in_block( Map13.get_tile_at( Lang13.Int( ((dynamic)center).x + b1xerror ), Lang13.Int( ((dynamic)center).y + b1yerror ), Lang13.Int( ((dynamic)location).z ) ), Map13.get_tile_at( Lang13.Int( ((dynamic)center).x + b2xerror ), Lang13.Int( ((dynamic)center).y + b2yerror ), Lang13.Int( ((dynamic)location).z ) ) ) )) {
+					foreach (dynamic _b in Lang13.Enumerate( Map13.fetch_in_block( Map13.get_tile_at( ((int)( center.x + b1xerror )), ((int)( center.y + b1yerror )), location.z ), Map13.get_tile_at( ((int)( center.x + b2xerror )), ((int)( center.y + b2yerror )), location.z ) ) )) {
 						T = _b;
 						if ( !( T is Tile ) ) {
 							continue;
@@ -6511,13 +6511,13 @@ namespace Somnium.Game {
 						return null;
 					}
 				} else {
-					if ( density == true && Lang13.Bool( ((dynamic)destination).density ) ) {
+					if ( density == true && Lang13.Bool( destination.density ) ) {
 						return null;
 					}
-					if ( Lang13.Double( ((dynamic)destination).x ) > Game13.map_size_x || Lang13.Double( ((dynamic)destination).x ) < 1 ) {
+					if ( Lang13.Double( destination.x ) > Game13.map_size_x || Lang13.Double( destination.x ) < 1 ) {
 						return null;
 					}
-					if ( Lang13.Double( ((dynamic)destination).y ) > Game13.map_size_y || Lang13.Double( ((dynamic)destination).y ) < 1 ) {
+					if ( Lang13.Double( destination.y ) > Game13.map_size_y || Lang13.Double( destination.y ) < 1 ) {
 						return null;
 					}
 				}
@@ -6797,8 +6797,8 @@ namespace Somnium.Game {
 			ByTable process = null;
 			bool pSet = false;
 			int curIndex = 0;
-			dynamic current = null;
-			int currentLayer = 0;
+			Base_Image current = null;
+			double currentLayer = 0;
 			dynamic compare = null;
 			int cmpIndex = 0;
 			Icon add = null;
@@ -6864,7 +6864,7 @@ namespace Somnium.Game {
 			layers = new ByTable();
 			if ( !( noIcon == true ) ) {
 				copy = new Image( curicon, null, curstate, A.layer, curdir );
-				((dynamic)copy).color = A.color;
+				copy.color = A.color;
 				((dynamic)copy).alpha = A.alpha;
 				((dynamic)copy).blend_mode = curblend;
 				layers[copy] = A.layer;
@@ -6875,19 +6875,19 @@ namespace Somnium.Game {
 			while (GlobalVars.TRUE == true) {
 				if ( curIndex <= process.len ) {
 					current = process[curIndex];
-					if ( !Lang13.Bool( current ) ) {
+					if ( !( current != null ) ) {
 						curIndex++;
 						continue;
 					}
-					currentLayer = Lang13.Int( current.layer );
+					currentLayer = current.layer;
 					if ( currentLayer < 0 ) {
 						if ( currentLayer <= -1000 ) {
 							return flat;
 						}
 						if ( !pSet ) {
-							currentLayer = Lang13.Int( A.layer + currentLayer / 1000 );
+							currentLayer = A.layer + currentLayer / 1000;
 						} else {
-							currentLayer = Lang13.Int( A.layer + ( currentLayer + 1000 ) / 1000 );
+							currentLayer = A.layer + ( currentLayer + 1000 ) / 1000;
 						}
 					}
 					cmpIndex = 1;
@@ -6960,9 +6960,9 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static Ent_Dynamic GetFromPool( Type get_type = null, dynamic second_arg = null ) {
-			Ent_Dynamic pooled = null;
-			Ent_Dynamic AM = null;
+		public static dynamic GetFromPool( Type get_type = null, dynamic second_arg = null ) {
+			dynamic pooled = null;
+			Ent_Static AM = null;
 			if ( !( get_type != null ) ) {
 				return null;
 			}
@@ -6973,7 +6973,7 @@ namespace Somnium.Game {
 				return null;
 			}
 			pooled = GlobalFuncs.pop( GlobalVars.GlobalPool[get_type] );
-			if ( pooled != null ) {
+			if ( Lang13.Bool( pooled ) ) {
 				if ( pooled is Ent_Dynamic ) {
 					AM = pooled;
 				}
@@ -7025,7 +7025,7 @@ namespace Somnium.Game {
 			I = null;
 			foreach (dynamic _a in Lang13.Enumerate( ((dynamic)A).overlays )) {
 				I = _a;
-				if ( Lang13.Double( I.layer ) > Lang13.Double( ((dynamic)A).layer ) ) {
+				if ( I.layer > Lang13.Double( ((dynamic)A).layer ) ) {
 					continue;
 				}
 				image_overlay = new Icon( I.icon, I.icon_state );
@@ -7068,9 +7068,9 @@ namespace Somnium.Game {
 			}
 			text_image = new Image( null, A );
 			((dynamic)text_image).maptext = "<font size = 4>" + letter + "</font>";
-			((dynamic)text_image).color = GlobalFuncs.AverageColour( atom_icon );
-			((dynamic)text_image).pixel_x = 7;
-			((dynamic)text_image).pixel_y = 5;
+			text_image.color = GlobalFuncs.AverageColour( atom_icon );
+			text_image.pixel_x = 7;
+			text_image.pixel_y = 5;
 			Lang13.delete( atom_icon );
 			atom_icon = null;
 			return text_image;
@@ -7372,21 +7372,21 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,1 32001 0,0 32001 0
 		public static void healthscan( dynamic user = null, dynamic M = null, bool? mode = null ) {
-			int oxy_loss = 0;
-			int tox_loss = 0;
+			dynamic oxy_loss = null;
+			dynamic tox_loss = null;
 			double fire_loss = 0;
 			double brute_loss = 0;
 			string mob_status = null;
 			dynamic H = null;
 			dynamic H2 = null;
-			ByTable damaged = null;
+			dynamic damaged = null;
 			Obj_Item_Organ_Limb org = null;
 			dynamic H3 = null;
 			Disease D = null;
 			dynamic H4 = null;
 			int blood_volume = 0;
 			double blood_percent = 0;
-			dynamic blood_type = null;
+			string blood_type = null;
 			dynamic implant_detect = null;
 			Obj_Item_Organ_Internal_Cyberimp CI = null;
 			if ( mode == null ) {
@@ -7399,7 +7399,7 @@ namespace Somnium.Game {
 			mob_status = ( Lang13.Double( M.stat ) > 1 ? "<span class='alert'><b>Deceased</b></span>" : "<b>" + M.health + " % healthy</b>" );
 			if ( ( M.status_flags & 8192 ) != 0 ) {
 				mob_status = "<span class='alert'>Deceased</span>";
-				oxy_loss = Num13.maxInt( Rand13.Int( 1, 40 ), oxy_loss, ((int)( 300 - ( tox_loss + fire_loss + brute_loss ) )) );
+				oxy_loss = Num13.maxInt( Rand13.Int( 1, 40 ), Lang13.Int( oxy_loss ), ((int)( 300 - Lang13.Double( tox_loss + fire_loss + brute_loss ) )) );
 			}
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
@@ -7414,13 +7414,13 @@ namespace Somnium.Game {
 			if ( fire_loss > 10 ) {
 				((dynamic)user).WriteMsg( "	<span class='alert'>" + ( fire_loss > 50 ? "Severe" : "Minor" ) + " burn damage detected.</span>" );
 			}
-			if ( oxy_loss > 10 ) {
-				((dynamic)user).WriteMsg( "	<span class='info'><span class='alert'>" + ( oxy_loss > 50 ? "Severe" : "Minor" ) + " oxygen deprivation detected.</span>" );
+			if ( Lang13.Double( oxy_loss ) > 10 ) {
+				((dynamic)user).WriteMsg( "	<span class='info'><span class='alert'>" + ( Lang13.Double( oxy_loss ) > 50 ? "Severe" : "Minor" ) + " oxygen deprivation detected.</span>" );
 			}
-			if ( tox_loss > 10 ) {
-				((dynamic)user).WriteMsg( "	<span class='alert'>" + ( tox_loss > 50 ? "Critical" : "Dangerous" ) + " amount of toxins detected.</span>" );
+			if ( Lang13.Double( tox_loss ) > 10 ) {
+				((dynamic)user).WriteMsg( "	<span class='alert'>" + ( Lang13.Double( tox_loss ) > 50 ? "Critical" : "Dangerous" ) + " amount of toxins detected.</span>" );
 			}
-			if ( ((Mob_Living)M).getStaminaLoss() != 0 ) {
+			if ( Lang13.Bool( ((Mob_Living)M).getStaminaLoss() ) ) {
 				((dynamic)user).WriteMsg( "	<span class='alert'>Subject appears to be suffering from fatigue.</span>" );
 			}
 			if ( ((Mob_Living)M).getCloneLoss() != 0 ) {
@@ -7439,7 +7439,7 @@ namespace Somnium.Game {
 			if ( M is Mob_Living_Carbon_Human && mode == true ) {
 				H2 = M;
 				damaged = ((Mob_Living_Carbon_Human)H2).get_damaged_organs( 1, 1 );
-				if ( Lang13.length( damaged ) > 0 || oxy_loss > 0 || tox_loss > 0 || fire_loss > 0 ) {
+				if ( Lang13.length( damaged ) > 0 || Lang13.Double( oxy_loss ) > 0 || Lang13.Double( tox_loss ) > 0 || fire_loss > 0 ) {
 					((dynamic)user).WriteMsg( "<span class='info'>	Damage: <span class='info'><font color='red'>Brute</font></span>-<font color='#FF8000'>Burn</font>-<font color='green'>Toxin</font>-<font color='blue'>Suffocation</font>\n		Specifics: <font color='red'>" + brute_loss + "</font>-<font color='#FF8000'>" + fire_loss + "</font>-<font color='green'>" + tox_loss + "</font>-<font color='blue'>" + oxy_loss + "</font></span>" );
 					org = null;
 					foreach (dynamic _a in Lang13.Enumerate( damaged )) {
@@ -7455,7 +7455,7 @@ namespace Somnium.Game {
 				H3 = M;
 				((dynamic)user).WriteMsg( "<span class='info'>Species: " + H3.dna.species.name + "</span>" );
 			}
-			((dynamic)user).WriteMsg( "<span class='info'>Body temperature: " + Num13.round( ( M.bodytemperature ??0) - 273.41, 0.1 ) + " &deg;C (" + Num13.round( ( M.bodytemperature ??0) * 171 - 459.6700134277344, 0.1 ) + " &deg;F)</span>" );
+			((dynamic)user).WriteMsg( "<span class='info'>Body temperature: " + Num13.round( Lang13.Double( M.bodytemperature - 273.41 ), 0.1 ) + " &deg;C (" + Num13.round( Lang13.Double( M.bodytemperature * 171 - 459.6700134277344 ), 0.1 ) + " &deg;F)</span>" );
 			if ( Lang13.Bool( M.tod ) && ( Lang13.Int( M.stat ) == 2 || ( M.status_flags & 8192 ) != 0 ) ) {
 				((dynamic)user).WriteMsg( "<span class='info'>Time of Death:</span> " + M.tod );
 			}
@@ -7514,41 +7514,41 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int heat2colour_b( double? temp = null ) {
+		public static int heat2colour_b( dynamic temp = null ) {
 			int _default = 0;
 			temp /= 100;
-			if ( ( temp ??0) >= 66 ) {
+			if ( Lang13.Double( temp ) >= 66 ) {
 				_default = 255;
-			} else if ( ( temp ??0) <= 16 ) {
+			} else if ( Lang13.Double( temp ) <= 16 ) {
 				_default = 0;
 			} else {
-				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Log( ( temp ??0) - 10 ) * 138.51773071289062 - 305.0447998046875 )) ) );
+				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Log( Lang13.Double( temp - 10 ) ) * 138.51773071289062 - 305.0447998046875 )) ) );
 			}
 			return _default;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int heat2colour_g( double? temp = null ) {
+		public static int heat2colour_g( dynamic temp = null ) {
 			int _default = 0;
 			temp /= 100;
-			if ( ( temp ??0) <= 66 ) {
-				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Log( temp ??0 ) * 99.4708023071289 - 161.11956787109375 )) ) );
+			if ( Lang13.Double( temp ) <= 66 ) {
+				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Log( Lang13.Double( temp ) ) * 99.4708023071289 - 161.11956787109375 )) ) );
 			} else {
-				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Pow( ( temp ??0) - 60, -0.07514849305152893 ) * 288.1221618652344 )) ) );
+				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Pow( Lang13.Double( temp - 60 ), -0.07514849305152893 ) * 288.1221618652344 )) ) );
 			}
 			return _default;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static int heat2colour_r( double? temp = null ) {
+		public static int heat2colour_r( dynamic temp = null ) {
 			int _default = 0;
 			temp /= 100;
-			if ( ( temp ??0) <= 66 ) {
+			if ( Lang13.Double( temp ) <= 66 ) {
 				_default = 255;
 			} else {
-				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Pow( ( temp ??0) - 60, -0.13320475816726685 ) * 329.69873046875 )) ) );
+				_default = Num13.maxInt( 0, Num13.minInt( 255, ((int)( Math.Pow( Lang13.Double( temp - 60 ), -0.13320475816726685 ) * 329.69873046875 )) ) );
 			}
 			return _default;
 		}
@@ -7939,7 +7939,7 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
 		public static bool is_gangster( dynamic M = null ) {
-			return M is Mob_Living && Lang13.Bool( M.mind ) && M.mind.gang_datum != null;
+			return M is Mob_Living && Lang13.Bool( M.mind ) && Lang13.Bool( M.mind.gang_datum );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -7995,12 +7995,12 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static bool is_handofgod_prophet( Ent_Static A = null ) {
-			Ent_Static H = null;
+		public static bool is_handofgod_prophet( dynamic A = null ) {
+			dynamic H = null;
 			if ( A is Mob_Living_Carbon_Human ) {
 				H = A;
-				if ( Lang13.Bool( ((dynamic)H).mind ) ) {
-					if ( ( GlobalVars.ticker.mode.blue_deity_prophets | GlobalVars.ticker.mode.red_deity_prophets ).Contains( ((dynamic)H).mind ) ) {
+				if ( Lang13.Bool( H.mind ) ) {
+					if ( ( GlobalVars.ticker.mode.blue_deity_prophets | GlobalVars.ticker.mode.red_deity_prophets ).Contains( H.mind ) ) {
 						return true;
 					}
 				}
@@ -8041,7 +8041,7 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0
 		public static bool is_in_gang( dynamic M = null, string gang_type = null ) {
-			Gang G = null;
+			dynamic G = null;
 			if ( !GlobalFuncs.is_gangster( M ) || !Lang13.Bool( gang_type ) ) {
 				return false;
 			}
@@ -8231,13 +8231,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static bool IsInRange( dynamic val = null, int min = 0, int max = 0 ) {
-			return min <= Lang13.Double( val ) && Lang13.Double( val ) <= max;
+		public static bool IsInRange( dynamic val = null, bool min = false, int max = 0 ) {
+			return ( min ?1:0) <= Lang13.Double( val ) && Lang13.Double( val ) <= max;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 291 32001 0,291 32001 0
-		public static bool isInSight( Obj A = null, dynamic B = null ) {
+		public static bool isInSight( dynamic A = null, dynamic B = null ) {
 			dynamic Aturf = null;
 			dynamic Bturf = null;
 			Aturf = GlobalFuncs.get_turf( A );
@@ -8304,8 +8304,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static bool IsValidSrc( Game_Data A = null ) {
-			Game_Data B = null;
+		public static bool IsValidSrc( dynamic A = null ) {
+			dynamic B = null;
 			if ( A is Game_Data ) {
 				B = A;
 				return !Lang13.Bool( B.gc_destroyed );
@@ -8502,7 +8502,7 @@ namespace Somnium.Game {
 			ByTable mobs_found = null;
 			dynamic original_word = null;
 			string word3 = null;
-			Mob_Living_Silicon_Ai found = null;
+			dynamic found = null;
 			adminhelp_ignored_words = new ByTable(new object [] { "unknown", "the", "a", "an", "of", "monkey", "alien", "as", "i" });
 			msglist = GlobalFuncs.text2list( msg, " " );
 			surnames = new ByTable();
@@ -8559,19 +8559,19 @@ namespace Somnium.Game {
 							ai_found = true;
 						} else {
 							found = ckeys[word3];
-							if ( !( found != null ) ) {
+							if ( !Lang13.Bool( found ) ) {
 								found = surnames[word3];
-								if ( !( found != null ) ) {
+								if ( !Lang13.Bool( found ) ) {
 									found = forenames[word3];
 								}
 							}
-							if ( found != null ) {
+							if ( Lang13.Bool( found ) ) {
 								if ( !mobs_found.Contains( found ) ) {
 									mobs_found.Add( found );
 									if ( !ai_found && found is Mob_Living_Silicon_Ai ) {
 										ai_found = true;
 									}
-									msg += Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt()).item( original_word ).str, "<font size='1' color='black'>(<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( found ).str, "'>?</A>|<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( found ).str, "'>F</A>)</font> " );
+									msg += ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).item( original_word )).str( "<font size='1' color='black'>(<A HREF='?_src_=holder;adminmoreinfo=" )).Ref( found )).str( "'>?</A>|<A HREF='?_src_=holder;adminplayerobservefollow=" )).Ref( found )).str( "'>F</A>)</font> " );
 									continue;
 								}
 							}
@@ -8726,13 +8726,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static dynamic listgetindex( ByTable L = null, dynamic index = null ) {
+		public static dynamic listgetindex( dynamic L = null, dynamic index = null ) {
 			if ( L is ByTable ) {
 				if ( Lang13.isNumber( index ) ) {
-					if ( GlobalFuncs.IsInRange( index, 1, L.len ) ) {
+					if ( GlobalFuncs.IsInRange( index, true, Lang13.Int( L.len ) ) ) {
 						return L[index];
 					}
-				} else if ( L.Contains( index ) ) {
+				} else if ( Lang13.Bool( ((dynamic)L).Contains( index ) ) ) {
 					return L[index];
 				}
 			}
@@ -8818,7 +8818,7 @@ namespace Somnium.Game {
 					rank_name = String13.ckey_preserve_case( query.item[1] );
 					flags = query.item[2];
 					if ( flags is string ) {
-						flags = String13.parseNumber( flags );
+						flags = String13.ParseNumber( flags );
 					}
 					R2 = new AdminRank( rank_name, flags );
 					if ( !( R2 != null ) ) {
@@ -8990,7 +8990,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void log_admin( string text = null ) {
+		public static void log_admin( dynamic text = null ) {
 			GlobalVars.admin_log.Add( text );
 			if ( GlobalVars.config.log_admin ) {
 				((dynamic)GlobalVars.diary).WriteMsg( "[" + GlobalFuncs.time_stamp() + "]ADMIN: " + text );
@@ -9045,7 +9045,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void log_game( string text = null ) {
+		public static void log_game( dynamic text = null ) {
 			if ( GlobalVars.config.log_game ) {
 				((dynamic)GlobalVars.diary).WriteMsg( "[" + GlobalFuncs.time_stamp() + "]GAME: " + text );
 			}
@@ -9143,7 +9143,7 @@ namespace Somnium.Game {
 		// ARG INFO: 
 		public static void make_datum_references_lists(  ) {
 			dynamic spath = null;
-			Base_Data S = null;
+			dynamic S = null;
 			dynamic path = null;
 			GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_Hair), GlobalVars.hair_styles_list, GlobalVars.hair_styles_male_list, GlobalVars.hair_styles_female_list );
 			GlobalFuncs.init_sprite_accessory_subtypes( typeof(SpriteAccessory_FacialHair), GlobalVars.facial_hair_styles_list, GlobalVars.facial_hair_styles_male_list, GlobalVars.facial_hair_styles_female_list );
@@ -9165,10 +9165,10 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Lang13.get_all_types( typeof(Species) ) - typeof(Species) )) {
 				spath = _a;
 				S = Lang13.call( spath );
-				if ( Lang13.Bool( ((dynamic)S).roundstart ) ) {
-					GlobalVars.roundstart_species[((dynamic)S).id] = S.type;
+				if ( Lang13.Bool( S.roundstart ) ) {
+					GlobalVars.roundstart_species[S.id] = S.type;
 				}
-				GlobalVars.species_list[((dynamic)S).id] = S.type;
+				GlobalVars.species_list[S.id] = S.type;
 			}
 			path = null;
 			foreach (dynamic _b in Lang13.Enumerate( Lang13.get_all_types( typeof(Surgery) ) - typeof(Surgery) )) {
@@ -9227,7 +9227,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,1 32001 0,1 32001 0,0 32001 0,0 32001 0
-		public static void makeNewConstruct( Type ctype = null, Mob target = null, dynamic stoner = null, bool? cultoverride = null, Ent_Static loc_override = null ) {
+		public static void makeNewConstruct( Type ctype = null, dynamic target = null, dynamic stoner = null, bool? cultoverride = null, Ent_Static loc_override = null ) {
 			dynamic newstruct = null;
 			if ( stoner == null ) {
 				stoner = null;
@@ -9240,7 +9240,7 @@ namespace Somnium.Game {
 			}
 			newstruct = Lang13.call( ctype, ( loc_override != null ? ((dynamic)( loc_override )) : GlobalFuncs.get_turf( target ) ) );
 			newstruct.faction |= ((dynamic)new Txt()).Ref( stoner );
-			newstruct.key = ((dynamic)target).key;
+			newstruct.key = target.key;
 			if ( Lang13.Bool( stoner ) && GlobalFuncs.iscultist( stoner ) || cultoverride == true ) {
 				if ( GlobalVars.ticker.mode.name == "cult" ) {
 					((GameMode)GlobalVars.ticker.mode).add_cultist( newstruct.mind );
@@ -9265,7 +9265,7 @@ namespace Somnium.Game {
 		// ARG INFO: 
 		public static int maprotate(  ) {
 			int _default = 0;
-			double players = 0;
+			double? players = null;
 			ByTable mapvotes = null;
 			dynamic c = null;
 			dynamic vote = null;
@@ -9306,15 +9306,15 @@ namespace Somnium.Game {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.voteweight <= 0 ) {
+				if ( ( VM.voteweight ??0) <= 0 ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.minusers > 0 && players < VM.minusers ) {
+				if ( ( VM.minusers ??0) > 0 && ( players ??0) < ( VM.minusers ??0) ) {
 					mapvotes.Remove( map );
 					continue;
 				}
-				if ( VM.maxusers > 0 && players > VM.maxusers ) {
+				if ( ( VM.maxusers ??0) > 0 && ( players ??0) > ( VM.maxusers ??0) ) {
 					mapvotes.Remove( map );
 					continue;
 				}
@@ -9422,7 +9422,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void message_admins( string msg = null ) {
+		public static void message_admins( dynamic msg = null ) {
 			msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">" + msg + "</span></span>";
 			((dynamic)GlobalVars.admins).WriteMsg( msg );
 			return;
@@ -9430,7 +9430,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static string message_spans_start( ByTable spans = null ) {
+		public static string message_spans_start( dynamic spans = null ) {
 			string output = null;
 			dynamic S = null;
 			output = "<span class='";
@@ -9531,7 +9531,7 @@ namespace Somnium.Game {
 		public static string mix_color_from_reagents( ByTable reagent_list = null ) {
 			string color = null;
 			double vol_counter = 0;
-			dynamic vol_temp = null;
+			double? vol_temp = null;
 			Reagent R = null;
 			if ( !( reagent_list is ByTable ) ) {
 				return null;
@@ -9544,13 +9544,13 @@ namespace Somnium.Game {
 				}
 				R = _a;
 				vol_temp = R.volume;
-				vol_counter += Lang13.Double( vol_temp );
+				vol_counter += vol_temp ??0;
 				if ( !Lang13.Bool( color ) ) {
 					color = R.color;
 				} else if ( Lang13.length( color ) >= Lang13.length( R.color ) ) {
-					color = GlobalFuncs.BlendRGB( color, R.color, vol_temp / vol_counter );
+					color = GlobalFuncs.BlendRGB( color, R.color, ( vol_temp ??0) / vol_counter );
 				} else {
-					color = GlobalFuncs.BlendRGB( R.color, color, vol_temp / vol_counter );
+					color = GlobalFuncs.BlendRGB( R.color, color, ( vol_temp ??0) / vol_counter );
 				}
 			}
 			return color;
@@ -9558,22 +9558,22 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static void moveElement( ByTable L = null, double? fromIndex = null, double? toIndex = null ) {
+		public static void moveElement( dynamic L = null, double? fromIndex = null, double? toIndex = null ) {
 			if ( fromIndex == toIndex || ( fromIndex ??0) + 1 == toIndex ) {
 				return;
 			}
 			if ( ( fromIndex ??0) > ( toIndex ??0) ) {
 				fromIndex++;
 			}
-			L.Insert( ((int)( toIndex )), null );
-			L.Swap( ((int)( fromIndex )), ((int)( toIndex )) );
+			((dynamic)L).Insert( toIndex, null );
+			L.Swap( ((int)( fromIndex ??0 )), ((int)( toIndex ??0 )) );
 			L.Cut( ((int?)( fromIndex )), ((int)( ( fromIndex ??0) + 1 )) );
 			return;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static void moveRange( ByTable L = null, double? fromIndex = null, double? toIndex = null, double? len = null ) {
+		public static void moveRange( dynamic L = null, double? fromIndex = null, double? toIndex = null, double? len = null ) {
 			double? distance = null;
 			double? i = null;
 			double? i2 = null;
@@ -9589,8 +9589,8 @@ namespace Somnium.Game {
 				i = null;
 				i = 0;
 				while (( i ??0) < ( distance ??0)) {
-					L.Insert( ((int)( fromIndex )), null );
-					L.Swap( ((int)( fromIndex )), ((int)( toIndex )) );
+					((dynamic)L).Insert( fromIndex, null );
+					L.Swap( ((int)( fromIndex ??0 )), ((int)( toIndex ??0 )) );
 					L.Cut( ((int?)( toIndex )), ((int)( ( toIndex ??0) + 1 )) );
 					i++;
 				}
@@ -9601,8 +9601,8 @@ namespace Somnium.Game {
 				i2 = null;
 				i2 = 0;
 				while (( i2 ??0) < ( len ??0)) {
-					L.Insert( ((int)( toIndex )), null );
-					L.Swap( ((int)( fromIndex )), ((int)( toIndex )) );
+					((dynamic)L).Insert( toIndex, null );
+					L.Swap( ((int)( fromIndex ??0 )), ((int)( toIndex ??0 )) );
 					L.Cut( ((int?)( fromIndex )), ((int)( ( fromIndex ??0) + 1 )) );
 					i2++;
 				}
@@ -9612,14 +9612,14 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
-		public static bool near_camera( Ent_Dynamic M = null ) {
-			Ent_Dynamic R = null;
+		public static bool near_camera( dynamic M = null ) {
+			dynamic R = null;
 			if ( !( M.loc is Tile ) ) {
 				return false;
 			}
 			if ( M is Mob_Living_Silicon_Robot ) {
 				R = M;
-				if ( !( Lang13.Bool( ((dynamic)R).camera ) && Lang13.Bool( ((dynamic)((dynamic)R).camera).can_use() ) ) && !GlobalVars.cameranet.checkCameraVis( M ) ) {
+				if ( !( Lang13.Bool( R.camera ) && Lang13.Bool( ((dynamic)R.camera).can_use() ) ) && !GlobalVars.cameranet.checkCameraVis( M ) ) {
 					return false;
 				}
 			} else if ( !GlobalVars.cameranet.checkCameraVis( M ) ) {
@@ -9735,10 +9735,10 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,291 32001 0,0 32001 0,0 32001 0
-		public static void notify_ghosts( string message = null, string ghost_sound = null, dynamic enter_link = null, Obj source = null, Image alert_overlay = null, bool? attack_not_jump = null ) {
+		public static void notify_ghosts( dynamic message = null, string ghost_sound = null, dynamic enter_link = null, Game_Data source = null, Image alert_overlay = null, bool? attack_not_jump = null ) {
 			Mob_Dead_Observer O = null;
 			dynamic A = null;
-			dynamic old_layer = null;
+			double old_layer = 0;
 			if ( ghost_sound == null ) {
 				ghost_sound = null;
 			}
@@ -9766,18 +9766,18 @@ namespace Somnium.Game {
 						((dynamic)O).WriteMsg( new Sound( ghost_sound ) );
 					}
 					if ( source != null ) {
-						A = O.throw_alert( Lang13.call( ((dynamic)new Txt()).Ref( source ).str, "_notify_jump" ), typeof(Obj_Screen_Alert_NotifyJump) );
+						A = O.throw_alert( ((dynamic)((dynamic)new Txt()).Ref( source )).str( "_notify_jump" ), typeof(Obj_Screen_Alert_NotifyJump) );
 						if ( Lang13.Bool( A ) ) {
 							A.desc = message;
 							A.attack_not_jump = attack_not_jump;
 							A.jump_target = source;
 							if ( !( alert_overlay != null ) ) {
-								old_layer = ((dynamic)source).layer;
+								old_layer = Lang13.Double( ((dynamic)source).layer );
 								((dynamic)source).layer = GlobalVars.FLOAT_LAYER;
 								A.overlays.Add( source );
 								((dynamic)source).layer = old_layer;
 							} else {
-								((dynamic)alert_overlay).layer = GlobalVars.FLOAT_LAYER;
+								alert_overlay.layer = GlobalVars.FLOAT_LAYER;
 								A.overlays.Add( alert_overlay );
 							}
 						}
@@ -9790,9 +9790,9 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,1 32001 0
 		public static void Nuke_request( string text = null, Mob Sender = null ) {
-			string msg = null;
+			dynamic msg = null;
 			msg = String13.substr( GlobalFuncs.sanitize( text ), 1, 1024 );
-			msg = Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt( "<span class='adminnotice'><b><font color=orange>NUKE CODE REQUEST:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) ).str, " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( Sender ).str, "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( Sender ).str, "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( Sender ).str, "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( Sender ).str, "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( Sender ).str, "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( Sender ).str, "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).Ref( Sender ).str, "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" ).Ref( Sender ).str, "'>RPLY</A>):</b> " ).item( msg ).str, "</span>" );
+			msg = ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<span class='adminnotice'><b><font color=orange>NUKE CODE REQUEST:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) )).str( " (<A HREF='?_src_=holder;adminmoreinfo=" )).Ref( Sender )).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" )).Ref( Sender )).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" )).Ref( Sender )).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" )).Ref( Sender )).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" )).Ref( Sender )).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" )).Ref( Sender )).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" )).Ref( Sender )).str( "'>BSA</A>) (<A HREF='?_src_=holder;CentcommReply=" )).Ref( Sender )).str( "'>RPLY</A>):</b> " )).item( msg )).str( "</span>" );
 			((dynamic)GlobalVars.admins).WriteMsg( msg );
 			((dynamic)GlobalVars.admins).WriteMsg( "<span class='adminnotice'><b>At this current time, the nuke must have the code manually set via varedit.</b></span>" );
 			return;
@@ -9802,7 +9802,7 @@ namespace Somnium.Game {
 		// ARG INFO: 1 32001 0
 		public static string nukelastname( dynamic M = null ) {
 			dynamic randomname = null;
-			string newname = null;
+			dynamic newname = null;
 			randomname = Rand13.pick( GlobalVars.last_names );
 			newname = String13.substr( GlobalFuncs.sanitize( Interface13.input( M, "You are the nuke operative " + Rand13.pick(new object [] { "Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord" }) + ". Please choose a last name for your family.", "Name change", randomname, null, 0 ) ), 1, 26 );
 			if ( !Lang13.Bool( newname ) ) {
@@ -9873,7 +9873,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static string num2seclevel( double num = 0 ) {
+		public static string num2seclevel( double? num = null ) {
 			dynamic _a = num; // Was a switch-case, sorry for the mess.
 			if ( _a==0 ) {
 				return "green";
@@ -9889,8 +9889,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,291 32001 0
-		public static void onclose( dynamic user = null, string windowid = null, Game_Data _ref = null ) {
-			string param = null;
+		public static void onclose( dynamic user = null, dynamic windowid = null, Game_Data _ref = null ) {
+			dynamic param = null;
 			if ( _ref == null ) {
 				_ref = null;
 			}
@@ -10030,7 +10030,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,1 32001 0,0 32001 0
-		public static string parsepencode( string t = null, dynamic user = null, string signfont = null ) {
+		public static dynamic parsepencode( dynamic t = null, dynamic user = null, string signfont = null ) {
 			if ( user == null ) {
 				user = null;
 			}
@@ -10128,7 +10128,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,1 32001 0
-		public static bool play_vox_word( dynamic word = null, dynamic z_level = null, Mob_Living_Silicon_Ai only_listener = null ) {
+		public static bool play_vox_word( dynamic word = null, int? z_level = null, Mob_Living_Silicon_Ai only_listener = null ) {
 			string sound_file = null;
 			Sound voice = null;
 			dynamic M = null;
@@ -10147,7 +10147,7 @@ namespace Somnium.Game {
 						}
 						if ( Lang13.Bool( M.client ) && !Lang13.Bool( M.ear_deaf ) ) {
 							T = GlobalFuncs.get_turf( M );
-							if ( T.z == z_level ) {
+							if ( Lang13.IntNullable( T.z ) == z_level ) {
 								((dynamic)M).WriteMsg( voice );
 							}
 						}
@@ -10270,13 +10270,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static Ent_Dynamic PoolOrNew( Type get_type = null, dynamic second_arg = null ) {
-			Ent_Dynamic _default = null;
+		public static dynamic PoolOrNew( Type get_type = null, dynamic second_arg = null ) {
+			dynamic _default = null;
 			if ( !( get_type != null ) ) {
 				return _default;
 			}
 			_default = GlobalFuncs.GetFromPool( get_type, second_arg );
-			if ( !( _default != null ) ) {
+			if ( !Lang13.Bool( _default ) ) {
 				if ( get_type is Type ) {
 					if ( second_arg is ByTable ) {
 						_default = second_arg.apply( get_type );
@@ -10304,7 +10304,7 @@ namespace Somnium.Game {
 		// Cat: Object
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 2 32528 0
-		public static void possess( Obj_Singularity O = null ) {
+		public static void possess( Base_Data O = null ) {
 			dynamic T = null;
 			if ( O is Obj_Singularity ) {
 				if ( GlobalVars.config.forbid_singulo_possession ) {
@@ -10352,7 +10352,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				S = _a;
-				if ( GlobalFuncs.get_area( S ) is Zone_TurretProtected || Lang13.Bool( ((dynamic)S).z ) != true ) {
+				if ( GlobalFuncs.get_area( S ) is Zone_TurretProtected || S.z != 1 ) {
 					continue;
 				}
 				S.charge = 0;
@@ -10380,14 +10380,14 @@ namespace Somnium.Game {
 						break;
 					}
 				}
-				if ( Lang13.Bool( A.contents ) ) {
+				if ( A.contents != null ) {
 					AT = null;
 					foreach (dynamic _c in Lang13.Enumerate( A.contents )) {
 						if ( !( _c is Ent_Static ) ) {
 							continue;
 						}
 						AT = _c;
-						if ( Lang13.Bool( ((dynamic)AT).z ) != true ) {
+						if ( AT.z != 1 ) {
 							skip = true;
 						}
 						break;
@@ -10407,7 +10407,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				C = _f;
-				if ( Lang13.Bool( C.cell ) && Lang13.Bool( ((dynamic)C).z ) == true ) {
+				if ( Lang13.Bool( C.cell ) && C.z == 1 ) {
 					A2 = GlobalFuncs.get_area( C );
 					skip2 = false;
 					area_type2 = null;
@@ -10429,7 +10429,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 32 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static ByTable power_list( Ent_Static T = null, Obj_Structure_Cable source = null, double d = 0, bool? unmarked = null, bool? cable_only = null ) {
+		public static ByTable power_list( Ent_Static T = null, Obj_Structure_Cable source = null, double? d = null, bool? unmarked = null, bool? cable_only = null ) {
 			ByTable _default = null;
 			dynamic AM = null;
 			dynamic P = null;
@@ -10482,7 +10482,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				C = _a;
-				if ( Lang13.Bool( C.cell ) && Lang13.Bool( ((dynamic)C).z ) == true ) {
+				if ( Lang13.Bool( C.cell ) && C.z == 1 ) {
 					C.cell.charge = C.cell.maxcharge;
 				}
 			}
@@ -10492,7 +10492,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				S = _b;
-				if ( Lang13.Bool( ((dynamic)S).z ) != true ) {
+				if ( S.z != 1 ) {
 					continue;
 				}
 				S.charge = S.capacity;
@@ -10528,7 +10528,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				S = _a;
-				if ( Lang13.Bool( ((dynamic)S).z ) != true ) {
+				if ( S.z != 1 ) {
 					continue;
 				}
 				S.charge = S.capacity;
@@ -10587,7 +10587,7 @@ namespace Somnium.Game {
 					continue;
 				}
 				C = _a;
-				if ( !( ( C.stat & 3 ) != 0 ) && Lang13.Bool( ((dynamic)C).z ) == true ) {
+				if ( !( ( C.stat & 3 ) != 0 ) && C.z == 1 ) {
 					P = new Obj_Item_Weapon_Paper( C.loc );
 					((dynamic)P).name = "paper- '" + title + "'";
 					P.info = text;
@@ -10676,13 +10676,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static ProjectileData projectile_trajectory( dynamic src_x = null, dynamic src_y = null, double rotation = 0, double angle = 0, int power = 0 ) {
+		public static ProjectileData projectile_trajectory( int src_x = 0, int src_y = 0, double rotation = 0, double angle = 0, int power = 0 ) {
 			double power_x = 0;
 			double power_y = 0;
 			double time = 0;
 			double distance = 0;
-			dynamic dest_x = null;
-			dynamic dest_y = null;
+			double dest_x = 0;
+			double dest_y = 0;
 			power_x = power * Math.Cos( angle );
 			power_y = power * Math.Sin( angle );
 			time = power_y * 2 / 10;
@@ -10698,9 +10698,9 @@ namespace Somnium.Game {
 			ByTable worklist = null;
 			ByTable found_machines = null;
 			int index = 0;
-			Obj P = null;
-			Obj C = null;
-			Obj M = null;
+			Ent_Dynamic P = null;
+			Ent_Dynamic C = null;
+			Ent_Dynamic M = null;
 			Obj_Machinery_Power PM = null;
 			worklist = new ByTable();
 			found_machines = new ByTable();
@@ -10716,7 +10716,7 @@ namespace Somnium.Game {
 						PN.add_cable( C );
 					}
 					worklist.Or( ((Obj_Structure_Cable)C).get_connections() );
-				} else if ( P.anchored != 0 && P is Obj_Machinery_Power ) {
+				} else if ( Lang13.Bool( P.anchored ) && P is Obj_Machinery_Power ) {
 					M = P;
 					found_machines.Or( M );
 				} else {
@@ -10870,7 +10870,7 @@ namespace Somnium.Game {
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0
 		public static dynamic randmut( dynamic M = null, ByTable candidates = null, int? difficulty = null ) {
 			dynamic _default = null;
-			Mutation_Human num = null;
+			dynamic num = null;
 			if ( difficulty == null ) {
 				difficulty = 2;
 			}
@@ -10878,7 +10878,7 @@ namespace Somnium.Game {
 				return _default;
 			}
 			num = Rand13.pick( candidates );
-			_default = num.force_give( M );
+			_default = ((Mutation_Human)num).force_give( M );
 			return _default;
 		}
 
@@ -10886,12 +10886,12 @@ namespace Somnium.Game {
 		// ARG INFO: 1 32001 0
 		public static dynamic randmutb( dynamic M = null ) {
 			dynamic _default = null;
-			Mutation_Human HM = null;
+			dynamic HM = null;
 			if ( !Lang13.Bool( ((dynamic)M).has_dna() ) ) {
 				return _default;
 			}
 			HM = Rand13.pick( ( GlobalVars.bad_mutations | GlobalVars.not_good_mutations ) - GlobalVars.mutations_list["Monkified"] );
-			_default = HM.force_give( M );
+			_default = ((Mutation_Human)HM).force_give( M );
 			return _default;
 		}
 
@@ -10899,12 +10899,12 @@ namespace Somnium.Game {
 		// ARG INFO: 1 32001 0
 		public static dynamic randmutg( dynamic M = null ) {
 			dynamic _default = null;
-			Mutation_Human HM = null;
+			dynamic HM = null;
 			if ( !Lang13.Bool( ((dynamic)M).has_dna() ) ) {
 				return _default;
 			}
 			HM = Rand13.pick( GlobalVars.good_mutations );
-			_default = HM.force_give( M );
+			_default = ((Mutation_Human)HM).force_give( M );
 			return _default;
 		}
 
@@ -11043,7 +11043,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 3 32001 0,0 32001 0,0 32001 0
-		public static void random_step( Ent_Dynamic AM = null, int steps = 0, int chance = 0 ) {
+		public static void random_step( dynamic AM = null, int steps = 0, int chance = 0 ) {
 			int initial_chance = 0;
 			initial_chance = chance;
 			while (steps > 0) {
@@ -11168,20 +11168,20 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0
-		public static void randomize_human( Ent_Static H = null ) {
-			((dynamic)H).gender = Rand13.pick(new object [] { GlobalVars.MALE, GlobalVars.FEMALE });
-			((dynamic)H).real_name = GlobalFuncs.random_unique_name( ((dynamic)H).gender );
-			((dynamic)H).name = ((dynamic)H).real_name;
-			((dynamic)H).underwear = GlobalFuncs.random_underwear( ((dynamic)H).gender );
-			((dynamic)H).skin_tone = GlobalFuncs.random_skin_tone();
-			((dynamic)H).hair_style = GlobalFuncs.random_hair_style( ((dynamic)H).gender );
-			((dynamic)H).facial_hair_style = GlobalFuncs.random_facial_hair_style( ((dynamic)H).gender );
-			((dynamic)H).hair_color = GlobalFuncs.random_short_color();
-			((dynamic)H).facial_hair_color = ((dynamic)H).hair_color;
-			((dynamic)H).eye_color = GlobalFuncs.random_eye_color();
-			((dynamic)H).dna.blood_type = GlobalFuncs.random_blood_type();
+		public static void randomize_human( dynamic H = null ) {
+			H.gender = Rand13.pick(new object [] { GlobalVars.MALE, GlobalVars.FEMALE });
+			H.real_name = GlobalFuncs.random_unique_name( H.gender );
+			H.name = H.real_name;
+			H.underwear = GlobalFuncs.random_underwear( H.gender );
+			H.skin_tone = GlobalFuncs.random_skin_tone();
+			H.hair_style = GlobalFuncs.random_hair_style( H.gender );
+			H.facial_hair_style = GlobalFuncs.random_facial_hair_style( H.gender );
+			H.hair_color = GlobalFuncs.random_short_color();
+			H.facial_hair_color = H.hair_color;
+			H.eye_color = GlobalFuncs.random_eye_color();
+			H.dna.blood_type = GlobalFuncs.random_blood_type();
 			((Mob_Living_Carbon_Human)H).update_body();
-			((dynamic)H).update_hair();
+			((Mob)H).update_hair();
 			return;
 		}
 
@@ -11381,7 +11381,7 @@ namespace Somnium.Game {
 		public static ByTable recursive_hear_check( Ent_Dynamic O = null ) {
 			ByTable _default = null;
 			ByTable processing_list = null;
-			dynamic A = null;
+			Ent_Static A = null;
 			processing_list = new ByTable(new object [] { O });
 			_default = new ByTable();
 			while (processing_list.len != 0) {
@@ -11401,9 +11401,9 @@ namespace Somnium.Game {
 			ByTable processing_list = null;
 			ByTable processed_list = null;
 			ByTable found_mobs = null;
-			Obj A = null;
+			dynamic A = null;
 			bool passed = false;
-			Obj A_tmp = null;
+			dynamic A_tmp = null;
 			Ent_Static B = null;
 			if ( client_check == null ) {
 				client_check = true;
@@ -11423,7 +11423,7 @@ namespace Somnium.Game {
 				if ( A is Mob ) {
 					A_tmp = A;
 					passed = true;
-					if ( client_check == true && !Lang13.Bool( ((dynamic)A_tmp).client ) ) {
+					if ( client_check == true && !Lang13.Bool( A_tmp.client ) ) {
 						passed = false;
 					}
 					if ( sight_check == true && !GlobalFuncs.isInSight( A_tmp, O ) ) {
@@ -11462,7 +11462,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static Regex regex_note_sql_extract( string str = null, string exp = null ) {
+		public static Regex regex_note_sql_extract( dynamic str = null, string exp = null ) {
 			return new Regex( str, exp, Lang13.call( Lang13.getf_dll( "bin/bygex", "regEx_find" ), str, exp ) );
 		}
 
@@ -11640,9 +11640,9 @@ namespace Somnium.Game {
 			dynamic notetext = null;
 			dynamic adminckey = null;
 			DBQuery query_find_note_del = null;
-			string err = null;
+			dynamic err = null;
 			DBQuery query_del_note = null;
-			string err2 = null;
+			dynamic err2 = null;
 			if ( !GlobalVars.dbcon.IsConnected() ) {
 				((dynamic)Task13.user).WriteMsg( "<span class='danger'>Failed to establish database connection.</span>" );
 				return;
@@ -11650,7 +11650,7 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( note_id ) ) {
 				return;
 			}
-			note_id = String13.parseNumber( note_id );
+			note_id = String13.ParseNumber( note_id );
 			query_find_note_del = GlobalVars.dbcon.NewQuery( "SELECT ckey, notetext, adminckey FROM " + GlobalFuncs.format_table_name( "notes" ) + " WHERE id = " + note_id );
 			if ( !query_find_note_del.Execute() ) {
 				err = query_find_note_del.ErrorMsg();
@@ -11764,13 +11764,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static dynamic replacetext( dynamic str = null, string exp = null, string fmt = null ) {
+		public static dynamic replacetext( dynamic str = null, string exp = null, dynamic fmt = null ) {
 			return Lang13.call( Lang13.getf_dll( "bin/bygex", "regex_replaceallliteral" ), str, exp, fmt );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static dynamic replacetextEx( string str = null, string exp = null, string fmt = null ) {
+		public static dynamic replacetextEx( dynamic str = null, string exp = null, dynamic fmt = null ) {
 			return Lang13.call( Lang13.getf_dll( "bin/bygex", "regEx_replaceallliteral" ), str, exp, fmt );
 		}
 
@@ -11792,25 +11792,25 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static ByTable reverseRange( ByTable L = null, double? start = null, double? end = null ) {
+		public static dynamic reverseRange( dynamic L = null, double? start = null, double? end = null ) {
 			if ( start == null ) {
 				start = 1;
 			}
 			if ( end == null ) {
 				end = 0;
 			}
-			if ( L.len != 0 ) {
-				start = ( start ??0) % L.len;
-				end = ( end ??0) % ( L.len + 1 );
+			if ( Lang13.Bool( L.len ) ) {
+				start = ( start ??0) % Lang13.Double( L.len );
+				end = ( end ??0) % Lang13.Double( L.len + 1 );
 				if ( ( start ??0) <= 0 ) {
-					start += L.len;
+					start += Lang13.Double( L.len );
 				}
 				if ( ( end ??0) <= 0 ) {
-					end += L.len + 1;
+					end += Lang13.Double( L.len + 1 );
 				}
 				end--;
 				while (( start ??0) < ( end ??0)) {
-					L.Swap( ((int)( start++ )), ((int)( end-- )) );
+					L.Swap( ((int)( start++ ??0 )), ((int)( end-- ??0 )) );
 				}
 			}
 			return L;
@@ -12314,7 +12314,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static string RoundDiagBar( double value = 0 ) {
+		public static string RoundDiagBar( dynamic value = null ) {
 			dynamic _a = value * 100; // Was a switch-case, sorry for the mess.
 			if ( 95<=_a&&_a<=Double.PositiveInfinity ) {
 				return "max";
@@ -12336,7 +12336,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static string RoundHealth( double? health = null ) {
+		public static string RoundHealth( dynamic health = null ) {
 			dynamic _a = health; // Was a switch-case, sorry for the mess.
 			if ( 100<=_a&&_a<=Double.PositiveInfinity ) {
 				return "health100";
@@ -12382,8 +12382,8 @@ namespace Somnium.Game {
 		// ARG INFO: 0 32001 0
 		public static double? sanitize_frequency( double? f = null ) {
 			f = Num13.floor( f ??0 );
-			f = Num13.maxInt( 1441, ((int)( f )) );
-			f = Num13.minInt( 1489, ((int)( f )) );
+			f = Num13.maxInt( 1441, ((int)( f ??0 )) );
+			f = Num13.minInt( 1489, ((int)( f ??0 )) );
 			if ( ( f ??0) % 2 == 0 ) {
 				f += 1;
 			}
@@ -12423,8 +12423,8 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static string sanitize_hexcolor( dynamic color = null, int? desired_format = null, bool? include_crunch = null, dynamic __default = null ) {
-			string _default = null;
+		public static dynamic sanitize_hexcolor( dynamic color = null, int? desired_format = null, bool? include_crunch = null, dynamic __default = null ) {
+			dynamic _default = null;
 			string crunch = null;
 			int start = 0;
 			int? len = null;
@@ -12472,7 +12472,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static dynamic sanitize_inlist( dynamic value = null, ByTable List = null, string __default = null ) {
+		public static dynamic sanitize_inlist( dynamic value = null, ByTable List = null, dynamic __default = null ) {
 			if ( List.Contains( value ) ) {
 				return value;
 			}
@@ -12487,7 +12487,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static double? sanitize_integer( double? number = null, double? min = null, double? max = null, bool? __default = null ) {
+		public static dynamic sanitize_integer( dynamic number = null, double? min = null, double? max = null, dynamic __default = null ) {
 			if ( min == null ) {
 				min = 0;
 			}
@@ -12495,15 +12495,15 @@ namespace Somnium.Game {
 				max = 1;
 			}
 			if ( __default == null ) {
-				__default = false;
+				__default = 0;
 			}
 			if ( Lang13.isNumber( number ) ) {
-				number = Num13.floor( number ??0 );
-				if ( ( min ??0) <= ( number ??0) && ( number ??0) <= ( max ??0) ) {
+				number = Num13.floor( Lang13.Double( number ) );
+				if ( ( min ??0) <= Lang13.Double( number ) && Lang13.Double( number ) <= ( max ??0) ) {
 					return number;
 				}
 			}
-			return Lang13.DoubleNullable( __default );
+			return __default;
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
@@ -12539,7 +12539,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static string sanitize_text( string text = null, string __default = null ) {
+		public static dynamic sanitize_text( dynamic text = null, dynamic __default = null ) {
 			if ( __default == null ) {
 				__default = "";
 			}
@@ -12621,8 +12621,8 @@ namespace Somnium.Game {
 			tY = tY[1];
 			tX = GlobalFuncs.text2list( tX[1], ":" );
 			tX = tX[1];
-			tX = Num13.maxInt( 1, Num13.minInt( Game13.map_size_x, Lang13.Int( origin.x + ( String13.parseNumber( tX ) - Lang13.Double( Game13.view + 1 ) ) ) ) );
-			tY = Num13.maxInt( 1, Num13.minInt( Game13.map_size_y, Lang13.Int( origin.y + ( String13.parseNumber( tY ) - Lang13.Double( Game13.view + 1 ) ) ) ) );
+			tX = Num13.maxInt( 1, Num13.minInt( Game13.map_size_x, Lang13.Int( origin.x + ( ( String13.ParseNumber( tX ) ??0) - Lang13.Double( Game13.view + 1 ) ) ) ) );
+			tY = Num13.maxInt( 1, Num13.minInt( Game13.map_size_y, Lang13.Int( origin.y + ( ( String13.ParseNumber( tY ) ??0) - Lang13.Double( Game13.view + 1 ) ) ) ) );
 			return Map13.get_tile_at( Lang13.Int( tX ), Lang13.Int( tY ), tZ );
 		}
 
@@ -12669,11 +12669,11 @@ namespace Somnium.Game {
 					} else if ( _a=="/" ) {
 						result /= val ??0;
 					} else if ( _a=="&" ) {
-						result = ((int)( result )) & ( ((int)( val )) );
+						result = ((int)( result )) & ( ((int)( val ??0 )) );
 					} else if ( _a=="|" ) {
-						result = ((int)( result )) | ( ((int)( val )) );
+						result = ((int)( result )) | ( ((int)( val ??0 )) );
 					} else if ( _a=="^" ) {
-						result = ((int)( result )) ^ ( ((int)( val )) );
+						result = ((int)( result )) ^ ( ((int)( val ??0 )) );
 					} else if ( _a=="=" || _a=="==" ) {
 						result = result == val ?1:0;
 					} else if ( _a=="!=" || _a=="<>" ) {
@@ -12854,7 +12854,7 @@ namespace Somnium.Game {
 						querys[querys_pos] = parsed_tree;
 						querys_pos++;
 					} else {
-						((dynamic)Task13.user).WriteMsg( Lang13.call( ((dynamic)new Txt( "<span class='danger'>Parsing error on " )).st_nd_rd( querys_pos ).str, " query. Nothing was executed.</span>" ) );
+						((dynamic)Task13.user).WriteMsg( ((dynamic)((dynamic)new Txt( "<span class='danger'>Parsing error on " )).st_nd_rd( querys_pos )).str( " query. Nothing was executed.</span>" ) );
 						return new ByTable();
 					}
 					query_tree = new ByTable();
@@ -13020,7 +13020,7 @@ namespace Somnium.Game {
 					}
 				} else if ( _char == "'" ) {
 					if ( word != "" ) {
-						((dynamic)Task13.user).WriteMsg( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt()).red().str, "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" ).item( query_text ).str, "</font>\" following \"<font color=gray>" ).item( word ).str, "</font>\". Please check your syntax, and try again." ) );
+						((dynamic)Task13.user).WriteMsg( ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).red()).str( "SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" )).item( query_text )).str( "</font>\" following \"<font color=gray>" )).item( word )).str( "</font>\". Please check your syntax, and try again." ) );
 						return null;
 					}
 					word = "'";
@@ -13040,14 +13040,14 @@ namespace Somnium.Game {
 						i++;
 					}
 					if ( ( i ??0) > ( len ??0) ) {
-						((dynamic)Task13.user).WriteMsg( Lang13.call( Lang13.call( ((dynamic)new Txt()).red().str, "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" ).item( query_text ).str, "</font>\". Please check your syntax, and try again." ) );
+						((dynamic)Task13.user).WriteMsg( ((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).red()).str( "SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" )).item( query_text )).str( "</font>\". Please check your syntax, and try again." ) );
 						return null;
 					}
 					query_list.Add( "" + word + "'" );
 					word = "";
 				} else if ( _char == "\"" ) {
 					if ( word != "" ) {
-						((dynamic)Task13.user).WriteMsg( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt()).red().str, "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" ).item( query_text ).str, "</font>\" following \"<font color=gray>" ).item( word ).str, "</font>\". Please check your syntax, and try again." ) );
+						((dynamic)Task13.user).WriteMsg( ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).red()).str( "SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" )).item( query_text )).str( "</font>\" following \"<font color=gray>" )).item( word )).str( "</font>\". Please check your syntax, and try again." ) );
 						return null;
 					}
 					word = "\"";
@@ -13067,7 +13067,7 @@ namespace Somnium.Game {
 						i++;
 					}
 					if ( ( i ??0) > ( len ??0) ) {
-						((dynamic)Task13.user).WriteMsg( Lang13.call( Lang13.call( ((dynamic)new Txt()).red().str, "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" ).item( query_text ).str, "</font>\". Please check your syntax, and try again." ) );
+						((dynamic)Task13.user).WriteMsg( ((dynamic)((dynamic)((dynamic)((dynamic)new Txt()).red()).str( "SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" )).item( query_text )).str( "</font>\". Please check your syntax, and try again." ) );
 						return null;
 					}
 					query_list.Add( "" + word + "\"" );
@@ -13323,7 +13323,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static void send_byjax( dynamic receiver = null, string control_id = null, string target_element = null, dynamic new_content = null, string callback = null, dynamic callback_args = null ) {
+		public static void send_byjax( dynamic receiver = null, string control_id = null, dynamic target_element = null, dynamic new_content = null, string callback = null, dynamic callback_args = null ) {
 			dynamic argums = null;
 			if ( new_content == null ) {
 				new_content = null;
@@ -13439,7 +13439,7 @@ namespace Somnium.Game {
 							continue;
 						}
 						FA = _b;
-						if ( Lang13.Bool( ((dynamic)FA).z ) == true ) {
+						if ( FA.z == 1 ) {
 							FA.update_icon();
 						}
 					}
@@ -13456,7 +13456,7 @@ namespace Somnium.Game {
 							continue;
 						}
 						FA2 = _c;
-						if ( Lang13.Bool( ((dynamic)FA2).z ) == true ) {
+						if ( FA2.z == 1 ) {
 							FA2.update_icon();
 						}
 					}
@@ -13473,7 +13473,7 @@ namespace Somnium.Game {
 							continue;
 						}
 						FA3 = _d;
-						if ( Lang13.Bool( ((dynamic)FA3).z ) == true ) {
+						if ( FA3.z == 1 ) {
 							FA3.update_icon();
 						}
 					}
@@ -13494,7 +13494,7 @@ namespace Somnium.Game {
 							continue;
 						}
 						FA4 = _f;
-						if ( Lang13.Bool( ((dynamic)FA4).z ) == true ) {
+						if ( FA4.z == 1 ) {
 							FA4.update_icon();
 						}
 					}
@@ -13515,7 +13515,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static dynamic setblock( dynamic istring = null, dynamic blocknumber = null, string replacement = null, int? blocksize = null ) {
+		public static dynamic setblock( dynamic istring = null, dynamic blocknumber = null, dynamic replacement = null, int? blocksize = null ) {
 			if ( blocksize == null ) {
 				blocksize = 3;
 			}
@@ -13562,13 +13562,13 @@ namespace Somnium.Game {
 		// ARG INFO: 
 		public static void setup_map_transitions(  ) {
 			ByTable SLS = null;
-			SpaceLevel D = null;
+			dynamic D = null;
 			int conf_set_len = 0;
 			int k = 0;
 			dynamic A = null;
 			ByTable point_grid = null;
 			ByTable grid = null;
-			Point P = null;
+			dynamic P = null;
 			int? i = null;
 			int? j = null;
 			Point pnt = null;
@@ -13599,7 +13599,7 @@ namespace Somnium.Game {
 				D = new SpaceLevel( GlobalVars.map_transition_config[A] );
 				D.name = A;
 				D.z_value = k;
-				if ( D.linked < 2 ) {
+				if ( Lang13.Double( D.linked ) < 2 ) {
 					GlobalVars.z_levels_list["" + D.z_value] = D;
 				} else {
 					SLS.Add( D );
@@ -13638,13 +13638,13 @@ namespace Somnium.Game {
 			while (SLS.len != 0) {
 				D = Rand13.pick( SLS );
 				SLS.Remove( D );
-				D.xi = P.x;
-				D.yi = P.y;
+				D.xi = Lang13.IntNullable( P.x );
+				D.yi = Lang13.IntNullable( P.y );
 				P.spl = D;
 				possible_points.Or( P.neigbours );
 				used_points.Or( P );
 				possible_points.Remove( used_points );
-				D.set_neigbours( used_points );
+				((SpaceLevel)D).set_neigbours( used_points );
 				P = Rand13.pick( possible_points );
 				grid["" + D.z_value] = D;
 			}
@@ -13663,10 +13663,10 @@ namespace Somnium.Game {
 			zlevelnumber = 1;
 			while (( zlevelnumber ??0) <= grid.len) {
 				D = grid["" + zlevelnumber];
-				if ( !( D != null ) ) {
+				if ( !Lang13.Bool( D ) ) {
 					Task13.crash( "" + zlevelnumber + " position has no space level datum." );
 				}
-				if ( !( D.neigbours.len != 0 ) ) {
+				if ( !Lang13.Bool( D.neigbours.len ) ) {
 					
 				} else {
 					side = null;
@@ -13694,8 +13694,8 @@ namespace Somnium.Game {
 								continue;
 							}
 							S = _d;
-							S.destination_x = ( Lang13.Bool( x_pos_transition[side] ) == true ? ((dynamic)S).x : x_pos_transition[side] );
-							S.destination_y = ( Lang13.Bool( y_pos_transition[side] ) == true ? ((dynamic)S).y : y_pos_transition[side] );
+							S.destination_x = ( Lang13.Bool( x_pos_transition[side] ) == true ? S.x : Lang13.Int( x_pos_transition[side] ) );
+							S.destination_y = ( Lang13.Bool( y_pos_transition[side] ) == true ? S.y : Lang13.Int( y_pos_transition[side] ) );
 							S.destination_z = zdestination;
 						}
 						side++;
@@ -13738,31 +13738,31 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0
-		public static void shake_camera( dynamic M = null, int duration = 0, int? strength = null ) {
+		public static void shake_camera( dynamic M = null, dynamic duration = null, dynamic strength = null ) {
 			dynamic C = null;
 			dynamic oldx = null;
 			dynamic oldy = null;
-			int max = 0;
-			int min = 0;
+			dynamic max = null;
+			dynamic min = null;
 			double? i = null;
 			if ( strength == null ) {
 				strength = 1;
 			}
-			if ( !Lang13.Bool( M ) || !Lang13.Bool( M.client ) || duration <= 0 ) {
+			if ( !Lang13.Bool( M ) || !Lang13.Bool( M.client ) || Lang13.Double( duration ) <= 0 ) {
 				return;
 			}
 			C = M.client;
 			oldx = C.pixel_x;
 			oldy = C.pixel_y;
-			max = ( strength ??0) * Game13.icon_size;
-			min = -( ( strength ??0) * Game13.icon_size );
+			max = strength * Game13.icon_size;
+			min = -( strength * Game13.icon_size );
 			i = null;
 			foreach (dynamic _a in Lang13.IterateRange( 0, duration - 1 )) {
 				i = _a;
 				if ( i == 0 ) {
-					Icon13.animate( new ByTable().set( 1, C ).set( "pixel_x", Rand13.Int( min, max ) ).set( "pixel_y", Rand13.Int( min, max ) ).set( "time", 1 ) );
+					Icon13.animate( new ByTable().set( 1, C ).set( "pixel_x", Rand13.Int( Lang13.Int( min ), Lang13.Int( max ) ) ).set( "pixel_y", Rand13.Int( Lang13.Int( min ), Lang13.Int( max ) ) ).set( "time", 1 ) );
 				} else {
-					Icon13.animate( new ByTable().set( "pixel_x", Rand13.Int( min, max ) ).set( "pixel_y", Rand13.Int( min, max ) ).set( "time", 1 ) );
+					Icon13.animate( new ByTable().set( "pixel_x", Rand13.Int( Lang13.Int( min ), Lang13.Int( max ) ) ).set( "pixel_y", Rand13.Int( Lang13.Int( min ), Lang13.Int( max ) ) ).set( "time", 1 ) );
 				}
 			}
 			Icon13.animate( new ByTable().set( "pixel_x", oldx ).set( "pixel_y", oldy ).set( "time", 1 ) );
@@ -13778,7 +13778,7 @@ namespace Somnium.Game {
 			dynamic letter = null;
 			string target_sql_ckey = null;
 			DBQuery query_get_notes = null;
-			string err = null;
+			dynamic err = null;
 			dynamic id = null;
 			dynamic timestamp = null;
 			dynamic notetext = null;
@@ -13788,7 +13788,7 @@ namespace Somnium.Game {
 			dynamic index_ckey = null;
 			string search = null;
 			DBQuery query_list_notes = null;
-			string err2 = null;
+			dynamic err2 = null;
 			if ( linkless == null ) {
 				linkless = false;
 			}
@@ -13868,16 +13868,16 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static ByTable shuffle( ByTable L = null ) {
+		public static dynamic shuffle( dynamic L = null ) {
 			int? i = null;
-			if ( !( L != null ) ) {
+			if ( !Lang13.Bool( L ) ) {
 				return null;
 			}
-			L = L.Copy();
+			L = ((dynamic)L).Copy();
 			i = null;
 			i = 1;
-			while (( i ??0) < L.len) {
-				L.Swap( i ??0, Rand13.Int( i ??0, L.len ) );
+			while (( i ??0) < Lang13.Double( L.len )) {
+				L.Swap( i ??0, Rand13.Int( i ??0, Lang13.Int( L.len ) ) );
 				i++;
 			}
 			return L;
@@ -14133,7 +14133,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static ByTable sortKey( ByTable L = null, bool? order = null ) {
+		public static dynamic sortKey( ByTable L = null, bool? order = null ) {
 			if ( order == null ) {
 				order = true;
 			}
@@ -14142,7 +14142,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static ByTable sortList( dynamic L = null, System.Reflection.MethodInfo cmp = null ) {
+		public static dynamic sortList( dynamic L = null, System.Reflection.MethodInfo cmp = null ) {
 			if ( cmp == null ) {
 				cmp = typeof(GlobalFuncs).GetMethod( "cmp_text_asc" );
 			}
@@ -14153,7 +14153,7 @@ namespace Somnium.Game {
 		// ARG INFO: 
 		public static ByTable sortmobs(  ) {
 			ByTable moblist = null;
-			ByTable sortmob = null;
+			dynamic sortmob = null;
 			Mob_Living_Silicon_Ai M = null;
 			Mob_Camera M2 = null;
 			Mob_Living_Silicon_Pai M3 = null;
@@ -14269,7 +14269,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static ByTable sortNames( ByTable L = null, bool? order = null ) {
+		public static dynamic sortNames( ByTable L = null, bool? order = null ) {
 			if ( order == null ) {
 				order = true;
 			}
@@ -14278,7 +14278,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static ByTable sortRecord( ByTable L = null, string field = null, int? order = null ) {
+		public static dynamic sortRecord( ByTable L = null, string field = null, dynamic order = null ) {
 			if ( field == null ) {
 				field = "name";
 			}
@@ -14286,12 +14286,12 @@ namespace Somnium.Game {
 				order = 1;
 			}
 			GlobalVars.cmp_field = field;
-			return GlobalFuncs.sortTim( L, ( ( order ??0) >= 0 ? typeof(GlobalFuncs).GetMethod( "cmp_records_asc" ) : typeof(GlobalFuncs).GetMethod( "cmp_records_dsc" ) ) );
+			return GlobalFuncs.sortTim( L, ( Lang13.Double( order ) >= 0 ? typeof(GlobalFuncs).GetMethod( "cmp_records_asc" ) : typeof(GlobalFuncs).GetMethod( "cmp_records_dsc" ) ) );
 		}
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static ByTable sortTim( ByTable L = null, System.Reflection.MethodInfo cmp = null, dynamic associative = null, double? fromIndex = null, double? toIndex = null ) {
+		public static dynamic sortTim( dynamic L = null, System.Reflection.MethodInfo cmp = null, dynamic associative = null, double? fromIndex = null, double? toIndex = null ) {
 			if ( cmp == null ) {
 				cmp = typeof(GlobalFuncs).GetMethod( "cmp_numeric_asc" );
 			}
@@ -14301,14 +14301,14 @@ namespace Somnium.Game {
 			if ( toIndex == null ) {
 				toIndex = 0;
 			}
-			if ( L != null && L.len >= 2 ) {
-				fromIndex = ( fromIndex ??0) % L.len;
-				toIndex = ( toIndex ??0) % ( L.len + 1 );
+			if ( Lang13.Bool( L ) && Lang13.Double( L.len ) >= 2 ) {
+				fromIndex = ( fromIndex ??0) % Lang13.Double( L.len );
+				toIndex = ( toIndex ??0) % Lang13.Double( L.len + 1 );
 				if ( ( fromIndex ??0) <= 0 ) {
-					fromIndex += L.len;
+					fromIndex += Lang13.Double( L.len );
 				}
 				if ( ( toIndex ??0) <= 0 ) {
-					toIndex += L.len + 1;
+					toIndex += Lang13.Double( L.len + 1 );
 				}
 				GlobalVars.sortInstance.L = L;
 				GlobalVars.sortInstance.cmp = cmp;
@@ -14374,7 +14374,7 @@ namespace Somnium.Game {
 			int max_i = 0;
 			dynamic startSide = null;
 			dynamic Me = null;
-			Obj_Effect_Meteor M = null;
+			dynamic M = null;
 			max_i = 10;
 			while (!( pickedstart is Tile_Space )) {
 				startSide = Rand13.pick( GlobalVars.cardinal );
@@ -14388,7 +14388,7 @@ namespace Somnium.Game {
 			Me = GlobalFuncs.pickweight( meteortypes );
 			M = Lang13.call( Me, pickedstart );
 			M.dest = pickedgoal;
-			M.z_original = true;
+			M.z_original = 1;
 			Task13.schedule( 0, (Task13.Closure)(() => {
 				Map13.walk_towards_stupid( M, M.dest, 1 );
 				return;
@@ -14447,7 +14447,7 @@ namespace Somnium.Game {
 						T.ChangeTurf( floor );
 						room_turfs["floors"] += T;
 					}
-					((dynamic)A).contents += T;
+					A.contents.Add( T );
 					y++;
 				}
 				x++;
@@ -14461,7 +14461,7 @@ namespace Somnium.Game {
 			int admincount = 0;
 			string sqltime = null;
 			DBQuery query = null;
-			string err = null;
+			dynamic err = null;
 			if ( !GlobalVars.config.sql_enabled ) {
 				return;
 			}
@@ -14487,7 +14487,7 @@ namespace Somnium.Game {
 			dynamic M = null;
 			string sqltime = null;
 			DBQuery query = null;
-			string err = null;
+			dynamic err = null;
 			if ( !GlobalVars.config.sql_enabled ) {
 				return;
 			}
@@ -14532,7 +14532,7 @@ namespace Somnium.Game {
 			string sqltime = null;
 			string coord = null;
 			DBQuery query = null;
-			string err = null;
+			dynamic err = null;
 			if ( !GlobalVars.config.sql_enabled ) {
 				return;
 			}
@@ -14555,7 +14555,7 @@ namespace Somnium.Game {
 				lakey = GlobalFuncs.sanitizeSQL( H.lastattacker.key );
 			}
 			sqltime = String13.formatTime( Game13.realtime, "YYYY-MM-DD hh:mm:ss" );
-			coord = "" + ((dynamic)H).x + ", " + ((dynamic)H).y + ", " + ((dynamic)H).z;
+			coord = "" + H.x + ", " + H.y + ", " + H.z;
 			GlobalFuncs.establish_db_connection();
 			if ( !GlobalVars.dbcon.IsConnected() ) {
 				GlobalFuncs.log_game( "SQL ERROR during death reporting. Failed to connect." );
@@ -14585,7 +14585,7 @@ namespace Somnium.Game {
 			string sqltime = null;
 			string coord = null;
 			DBQuery query = null;
-			string err = null;
+			dynamic err = null;
 			if ( !GlobalVars.config.sql_enabled ) {
 				return;
 			}
@@ -14608,7 +14608,7 @@ namespace Somnium.Game {
 				lakey = GlobalFuncs.sanitizeSQL( H.lastattacker.key );
 			}
 			sqltime = String13.formatTime( Game13.realtime, "YYYY-MM-DD hh:mm:ss" );
-			coord = "" + ((dynamic)H).x + ", " + ((dynamic)H).y + ", " + ((dynamic)H).z;
+			coord = "" + H.x + ", " + H.y + ", " + H.z;
 			GlobalFuncs.establish_db_connection();
 			if ( !GlobalVars.dbcon.IsConnected() ) {
 				GlobalFuncs.log_game( "SQL ERROR during death reporting. Failed to connect." );
@@ -14680,7 +14680,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static ByTable stickyban2list( string ban = null ) {
+		public static ByTable stickyban2list( dynamic ban = null ) {
 			ByTable _default = null;
 			if ( !Lang13.Bool( ban ) ) {
 				return null;
@@ -14794,7 +14794,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static string stripped_input( dynamic user = null, string message = null, dynamic title = null, string __default = null, int? max_length = null ) {
+		public static string stripped_input( dynamic user = null, string message = null, dynamic title = null, dynamic __default = null, int? max_length = null ) {
 			dynamic name = null;
 			if ( message == null ) {
 				message = "";
@@ -14814,7 +14814,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 32001 0,0 32001 0,0 32001 0,0 32001 0,0 32001 0
-		public static string stripped_multiline_input( dynamic user = null, string message = null, string title = null, string __default = null, int? max_length = null ) {
+		public static string stripped_multiline_input( dynamic user = null, string message = null, string title = null, dynamic __default = null, int? max_length = null ) {
 			dynamic name = null;
 			if ( message == null ) {
 				message = "";
@@ -14873,7 +14873,7 @@ namespace Somnium.Game {
 				GlobalVars.SSevent.reschedule();
 			} else {
 				GlobalVars.SSevent.frequency_upper -= 600;
-				if ( GlobalVars.SSevent.frequency_upper < GlobalVars.SSevent.frequency_lower ) {
+				if ( Lang13.Double( GlobalVars.SSevent.frequency_upper ) < Lang13.Double( GlobalVars.SSevent.frequency_lower ) ) {
 					GlobalVars.SSevent.frequency_upper = GlobalVars.SSevent.frequency_lower;
 				}
 				GlobalVars.SSevent.reschedule();
@@ -14886,9 +14886,9 @@ namespace Somnium.Game {
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,1 32001 0
 		public static void Syndicate_announce( string text = null, Mob Sender = null ) {
-			string msg = null;
+			dynamic msg = null;
 			msg = String13.substr( GlobalFuncs.sanitize( text ), 1, 1024 );
-			msg = Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( Lang13.call( ((dynamic)new Txt( "<span class='adminnotice'><b><font color=crimson>SYNDICATE:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) ).str, " (<A HREF='?_src_=holder;adminmoreinfo=" ).Ref( Sender ).str, "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" ).Ref( Sender ).str, "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( Sender ).str, "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" ).Ref( Sender ).str, "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" ).Ref( Sender ).str, "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" ).Ref( Sender ).str, "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" ).Ref( Sender ).str, "'>BSA</A>) (<A HREF='?_src_=holder;SyndicateReply=" ).Ref( Sender ).str, "'>RPLY</A>):</b> " ).item( msg ).str, "</span>" );
+			msg = ((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)((dynamic)new Txt( "<span class='adminnotice'><b><font color=crimson>SYNDICATE:</font>" )).item( GlobalFuncs.key_name_admin( Sender ) )).str( " (<A HREF='?_src_=holder;adminmoreinfo=" )).Ref( Sender )).str( "'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=" )).Ref( Sender )).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" )).Ref( Sender )).str( "'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=" )).Ref( Sender )).str( "'>SM</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=" )).Ref( Sender )).str( "'>FLW</A>) (<A HREF='?_src_=holder;traitor=" )).Ref( Sender )).str( "'>TP</A>) (<A HREF='?_src_=holder;BlueSpaceArtillery=" )).Ref( Sender )).str( "'>BSA</A>) (<A HREF='?_src_=holder;SyndicateReply=" )).Ref( Sender )).str( "'>RPLY</A>):</b> " )).item( msg )).str( "</span>" );
 			((dynamic)GlobalVars.admins).WriteMsg( msg );
 			return;
 		}
@@ -15070,7 +15070,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void testing( string msg = null ) {
+		public static void testing( dynamic msg = null ) {
 			return;
 		}
 
@@ -15203,33 +15203,33 @@ namespace Somnium.Game {
 		// Cat: Special Verbs
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 1 9024 0
-		public static void togglebuildmode( Mob M = null ) {
+		public static void togglebuildmode( dynamic M = null ) {
 			Obj_Effect_Bmode_Buildholder H = null;
 			Obj_Effect_Bmode_Buildholder H2 = null;
 			Obj_Effect_Bmode_Builddir A = null;
 			Obj_Effect_Bmode_Buildhelp B = null;
 			Obj_Effect_Bmode_Buildmode C = null;
 			Obj_Effect_Bmode_Buildquit D = null;
-			if ( Lang13.Bool( ((dynamic)M).client ) ) {
-				if ( Lang13.Bool( ((dynamic)M).client.buildmode ) ) {
+			if ( Lang13.Bool( M.client ) ) {
+				if ( Lang13.Bool( M.client.buildmode ) ) {
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.user ) + " has left build mode." );
-					((dynamic)M).client.buildmode = 0;
-					((dynamic)M).client.show_popup_menus = true;
+					M.client.buildmode = 0;
+					M.client.show_popup_menus = true;
 					H = null;
 					foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
 						if ( !( _a is Obj_Effect_Bmode_Buildholder ) ) {
 							continue;
 						}
 						H = _a;
-						if ( H.cl == ((dynamic)M).client ) {
+						if ( H.cl == M.client ) {
 							GlobalFuncs.qdel( H );
 						}
 					}
 				} else {
 					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( Task13.user ) + " has entered build mode." );
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.user ) + " has entered build mode." );
-					((dynamic)M).client.buildmode = 1;
-					((dynamic)M).client.show_popup_menus = false;
+					M.client.buildmode = 1;
+					M.client.show_popup_menus = false;
 					H2 = new Obj_Effect_Bmode_Buildholder();
 					A = new Obj_Effect_Bmode_Builddir( H2 );
 					A.master = H2;
@@ -15243,11 +15243,11 @@ namespace Somnium.Game {
 					H2.buildhelp = B;
 					H2.buildmode = C;
 					H2.buildquit = D;
-					((dynamic)M).client.screen += A;
-					((dynamic)M).client.screen += B;
-					((dynamic)M).client.screen += C;
-					((dynamic)M).client.screen += D;
-					H2.cl = ((dynamic)M).client;
+					M.client.screen += A;
+					M.client.screen += B;
+					M.client.screen += C;
+					M.client.screen += D;
+					H2.cl = M.client;
 				}
 			}
 			return;
@@ -15296,13 +15296,13 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static string trim_left( string text = null ) {
+		public static string trim_left( dynamic text = null ) {
 			double? i = null;
 			i = null;
 			foreach (dynamic _a in Lang13.IterateRange( 1, Lang13.length( text ) )) {
 				i = _a;
 				if ( String13.getCharCode( text, ((int?)( i )) ) > 32 ) {
-					return String13.substr( text, ((int)( i )), 0 );
+					return String13.substr( text, ((int)( i ??0 )), 0 );
 				}
 			}
 			return "";
@@ -15400,7 +15400,7 @@ namespace Somnium.Game {
 					T = Map13.get_tile_at( ((int)( x )), ((int)( y )), Lang13.Int( t_center.z ) );
 					if ( T != null ) {
 						L.Add( T );
-						L.Add( ((dynamic)T).contents );
+						L.Add( T.contents );
 					}
 				}
 				y = Lang13.Double( t_center.y + c_dist - 1 );
@@ -15410,7 +15410,7 @@ namespace Somnium.Game {
 					T = Map13.get_tile_at( ((int)( x )), ((int)( y )), Lang13.Int( t_center.z ) );
 					if ( T != null ) {
 						L.Add( T );
-						L.Add( ((dynamic)T).contents );
+						L.Add( T.contents );
 					}
 				}
 				y = Lang13.Double( t_center.y - c_dist );
@@ -15420,7 +15420,7 @@ namespace Somnium.Game {
 					T = Map13.get_tile_at( ((int)( x )), ((int)( y )), Lang13.Int( t_center.z ) );
 					if ( T != null ) {
 						L.Add( T );
-						L.Add( ((dynamic)T).contents );
+						L.Add( T.contents );
 					}
 				}
 				y = Lang13.Double( t_center.y - c_dist + 1 );
@@ -15430,7 +15430,7 @@ namespace Somnium.Game {
 					T = Map13.get_tile_at( ((int)( x )), ((int)( y )), Lang13.Int( t_center.z ) );
 					if ( T != null ) {
 						L.Add( T );
-						L.Add( ((dynamic)T).contents );
+						L.Add( T.contents );
 					}
 				}
 				c_dist++;
@@ -15440,7 +15440,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0
-		public static dynamic unix2date( double timestamp = 0, string seperator = null ) {
+		public static dynamic unix2date( double? timestamp = null, string seperator = null ) {
 			int year = 0;
 			int dayInSeconds = 0;
 			int daysInYear = 0;
@@ -15456,14 +15456,14 @@ namespace Somnium.Game {
 			if ( seperator == null ) {
 				seperator = "-";
 			}
-			if ( timestamp < 0 ) {
+			if ( ( timestamp ??0) < 0 ) {
 				return 0;
 			}
 			year = 1970;
 			dayInSeconds = 86400;
 			daysInYear = 365;
 			daysInLYear = daysInYear + 1;
-			days = Num13.floor( timestamp / dayInSeconds );
+			days = Num13.floor( ( timestamp ??0) / dayInSeconds );
 			tmpDays = days + 1;
 			monthsInDays = new ByTable();
 			month = 1;
@@ -15519,7 +15519,7 @@ namespace Somnium.Game {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0,0 32001 0,0 32001 0
-		public static ByTable view_or_range( dynamic distance = null, Mob center = null, string type = null ) {
+		public static ByTable view_or_range( dynamic distance = null, dynamic center = null, string type = null ) {
 			ByTable _default = null;
 			if ( distance == null ) {
 				distance = Game13.view;
@@ -15569,7 +15569,7 @@ namespace Somnium.Game {
 			Mob_Living H = null;
 			ByTable all_species = null;
 			dynamic speciestype = null;
-			Species S = null;
+			dynamic S = null;
 			if ( M is Mob_Living ) {
 				if ( M is Mob_Living && Lang13.Int( M.stat ) != 2 ) {
 					if ( M.notransform == true ) {

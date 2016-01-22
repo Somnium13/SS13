@@ -138,9 +138,9 @@ namespace Somnium.Game {
 		public static bool comms_allowed = false;
 		public static dynamic comms_key = "default_pwd";
 		public static Configuration config = null;
-		public static string create_mob_html = null;
-		public static string create_object_html = null;
-		public static string create_turf_html = null;
+		public static dynamic create_mob_html = null;
+		public static dynamic create_object_html = null;
+		public static dynamic create_turf_html = null;
 		public static Datacore data_core = null;
 		public static readonly bool days_early = true;
 		public static readonly bool Debug = false;
@@ -246,7 +246,7 @@ function dropdowns() {
 		public static readonly string MALE = "male";
 		public static string map_name = "Unknown";
 		public static bool map_ready = false;
-		public static string master_mode = "traitor";
+		public static dynamic master_mode = "traitor";
 		public static readonly int MAX_ACTIVE_TIME = 400;
 		public static readonly int MAX_CHICKENS = 50;
 		public static int MAX_EX_DEVESTATION_RANGE = 3;
@@ -271,7 +271,7 @@ function dropdowns() {
 		public static int nextid = 1;
 		public static Votablemap nextmap = null;
 		public static readonly bool? NO_SLIP_WHEN_WALKING = true;
-		public static string normal_ooc_colour = "#002eb8";
+		public static dynamic normal_ooc_colour = "#002eb8";
 		public static readonly double? NORTH = 1;
 		public static readonly double? NORTHEAST = 5;
 		public static readonly double? NORTHWEST = 9;
@@ -683,7 +683,7 @@ function dropdowns() {
 		public static readonly ByTable diagonals = new ByTable(new object [] { GlobalVars.NORTHEAST, GlobalVars.NORTHWEST, GlobalVars.SOUTHEAST, GlobalVars.SOUTHWEST });
 		public static readonly ByTable accessable_z_levels = new ByTable(new object [] { 1, 3, 4, 5, 6, 7 });
 		public static ByTable landmarks_list = new ByTable();
-		public static ByTable start_landmarks_list = new ByTable();
+		public static dynamic start_landmarks_list = new ByTable();
 		public static ByTable department_security_spawns = new ByTable();
 		public static ByTable monkeystart = new ByTable();
 		public static ByTable wizardstart = new ByTable();
@@ -985,7 +985,7 @@ function dropdowns() {
 		public static ByTable telecomms_list = new ByTable();
 		public static ByTable recentmessages = new ByTable();
 		public static readonly string year = String13.formatTime( Game13.realtime, "YYYY" );
-		public static readonly double year_integer = String13.parseNumber( GlobalVars.year );
+		public static readonly double? year_integer = String13.ParseNumber( GlobalVars.year );
 		public static ByTable BUMP_TELEPORTERS = new ByTable();
 		public static readonly ByTable contrabandposters = new ByTable(new object [] { 
 			new ByTable().set( "name", "- Free Tonto" ).set( "desc", " A salvaged shred of a much larger flag, colors bled together and faded from age." ), 

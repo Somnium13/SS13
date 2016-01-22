@@ -44,7 +44,12 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\ByImpl\BaseClass\Base_Data.cs" />
+    <Compile Include="Engine\ByImpl\BaseClass\Base_Tile.cs" />
+    <Compile Include="Engine\ByImpl\BaseClass\Base_Zone.cs" />
+    <Compile Include="Engine\ByImpl\BaseClass\Base_Static.cs" />
     <Compile Include="Engine\ByImpl\BaseClass\EngineMatrix.cs" />
+    <Compile Include="Engine\ByImpl\ContentsTable.cs" />
     <Compile Include="Engine\Jake.cs" />
     <Compile Include="Engine\ByImpl\ByTable.cs" />
     <Compile Include="Engine\NewLib\Console13.cs" />
@@ -66,6 +71,7 @@
     <Compile Include="Engine\ByImpl\StaticLib\Task13.cs" />
     <Compile Include="Engine\ByImpl\StaticLib\Temp13.cs" />
     <Compile Include="Engine\NewLib\CoroutineSysStupid.cs" />
+    <Compile Include="Engine\NewLib\DMMLoader.cs" />
     <Compile Include="Game\Classes.cs" />
     <Compile Include="Game\GameLibExt.cs" />
     <Compile Include="Game\GlobalFuncs.cs" />

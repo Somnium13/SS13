@@ -42,7 +42,7 @@ namespace Somnium.Engine.ByImpl {
 			if ( GlobalVars.config != null && GlobalVars.config.server_name != null && GlobalVars.config.server_suffix && Game13.port > 0 ) {
 				GlobalVars.config.server_name += " #" + Game13.port % 1000 / 100;
 			}
-			GlobalVars.timezoneOffset = String13.parseNumber( String13.formatTime( 0, "hh" ) ) * 36000;
+			GlobalVars.timezoneOffset = ( String13.ParseNumber( String13.formatTime( 0, "hh" ) ) ??0) * 36000;
 			if ( GlobalVars.config.sql_enabled ) {
 				if ( !GlobalFuncs.setup_database_connection() ) {
 					((dynamic)Game13.log).WriteMsg( "Your server failed to establish a connection with the database." );
@@ -87,7 +87,7 @@ namespace Somnium.Engine.ByImpl {
 					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided invalid or blank information to the server on connection (byond username, IP, and Computer ID.) Provided information for reference: Username:'" + key + "' IP:'" + address + "' Computer ID:'" + computer_id + "'. (If you continue to get this error, please restart byond or contact byond support.)" )
 				;
 			}
-			if ( String13.parseNumber( computer_id ) == 2147483648 ) {
+			if ( String13.ParseNumber( computer_id ) == 2147483648 ) {
 				GlobalFuncs.log_access( "Failed Login (invalid cid): " + key + " " + address + "-" + computer_id );
 				return new ByTable().set( "reason", "invalid login data" ).set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" );
 			}
@@ -109,7 +109,7 @@ namespace Somnium.Engine.ByImpl {
 					;
 				}
 			}
-			if ( GlobalVars.config.extreme_popcap != 0 && GlobalFuncs.living_player_count() >= GlobalVars.config.extreme_popcap && !admin ) {
+			if ( Lang13.Bool( GlobalVars.config.extreme_popcap ) && GlobalFuncs.living_player_count() >= ( GlobalVars.config.extreme_popcap ??0) && !admin ) {
 				GlobalFuncs.log_access( "Failed Login: " + key + " - Population cap reached" );
 				return new ByTable().set( "reason", "popcap" ).set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message );
 			}
@@ -167,7 +167,7 @@ namespace Somnium.Engine.ByImpl {
 						}
 					}
 					expires = "";
-					if ( String13.parseNumber( duration ) > 0 ) {
+					if ( ( String13.ParseNumber( duration ) ??0) > 0 ) {
 						expires = " The ban is for " + duration + " minutes and expires on " + expiration + " (server time).";
 					} else {
 						expires = " The is a permanent ban.";
@@ -279,7 +279,7 @@ namespace Somnium.Engine.ByImpl {
 
 		// Range: -1 Access: 0 Flags: ( 0, 4, 255 )
 		// ARG INFO: 0 32001 0
-		public static void save_mode( string the_mode = null ) {
+		public static void save_mode( dynamic the_mode = null ) {
 			dynamic F = null;
 			F = new File( "data/mode.txt" );
 			File13.delete( F );
@@ -317,14 +317,14 @@ namespace Somnium.Engine.ByImpl {
 			if ( Lang13.Bool( time ) ) {
 				delay = time;
 			} else {
-				delay = GlobalVars.config.round_end_countdown * 10;
+				delay = ( GlobalVars.config.round_end_countdown ??0) * 10;
 			}
 			if ( GlobalVars.ticker.delay_end ) {
 				Game13.WriteMsg( "<span class='boldannounce'>An admin has delayed the round end.</span>" );
 				return null;
 			}
 			Game13.WriteMsg( "<span class='boldannounce'>Rebooting World in " + ( delay ??0) / 10 + " " + ( ( delay ??0) > 10 ? "seconds" : "second" ) + ". " + reason + "</span>" );
-			Task13.sleep( ((int)( delay )) );
+			Task13.sleep( ((int)( delay ??0 )) );
 			if ( GlobalVars.blackbox != null ) {
 				GlobalVars.blackbox.save_all_data_to_sql();
 			}
