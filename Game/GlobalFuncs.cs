@@ -972,7 +972,7 @@ namespace Somnium.Game {
 							path = null;
 							foreach (dynamic _b in Lang13.Enumerate( S2.species )) {
 								path = _b;
-								if ( Lang13.Bool( path.IsInstanceOfType( M ) ) ) {
+								if ( Lang13.Bool( ((dynamic)path).IsInstanceOfType( M ) ) ) {
 									available_surgeries[S2.name] = S2;
 									break;
 								}
@@ -2123,11 +2123,11 @@ namespace Somnium.Game {
 			slot = null;
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.slots )) {
 				slot = _a;
-				if ( Lang13.Bool( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) && !Lang13.Bool( chosen_prof.exists_list[slot] ) ) {
+				if ( Lang13.Bool( ((dynamic)GlobalVars.slot2type[slot]).IsInstanceOfType( user.vars[slot] ) ) && !Lang13.Bool( chosen_prof.exists_list[slot] ) ) {
 					GlobalFuncs.qdel( user.vars[slot] );
 					continue;
 				}
-				if ( Lang13.Bool( user.vars[slot] ) && !Lang13.Bool( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) || !Lang13.Bool( chosen_prof.exists_list[slot] ) ) {
+				if ( Lang13.Bool( user.vars[slot] ) && !Lang13.Bool( ((dynamic)GlobalVars.slot2type[slot]).IsInstanceOfType( user.vars[slot] ) ) || !Lang13.Bool( chosen_prof.exists_list[slot] ) ) {
 					continue;
 				}
 				C = null;
@@ -2136,7 +2136,7 @@ namespace Somnium.Game {
 					thetype = GlobalVars.slot2type[slot];
 					equip = true;
 					C = Lang13.call( thetype, user );
-				} else if ( Lang13.Bool( GlobalVars.slot2type[slot].IsInstanceOfType( user.vars[slot] ) ) ) {
+				} else if ( Lang13.Bool( ((dynamic)GlobalVars.slot2type[slot]).IsInstanceOfType( user.vars[slot] ) ) ) {
 					C = user.vars[slot];
 				}
 				C.appearance = chosen_prof.appearance_list[slot];
@@ -4200,7 +4200,7 @@ namespace Somnium.Game {
 					a_type = null;
 					foreach (dynamic _a in Lang13.Enumerate( source.canSmoothWith )) {
 						a_type = _a;
-						if ( Lang13.Bool( a_type.IsInstanceOfType( target_turf ) ) ) {
+						if ( Lang13.Bool( ((dynamic)a_type).IsInstanceOfType( target_turf ) ) ) {
 							return target_turf;
 						}
 						A = Lang13.find_in( a_type, target_turf );
@@ -5525,7 +5525,7 @@ namespace Somnium.Game {
 				if ( !( N is Zone ) ) {
 					continue;
 				}
-				if ( Lang13.Bool( areatype.IsInstanceOfType( N ) ) ) {
+				if ( Lang13.Bool( ((dynamic)areatype).IsInstanceOfType( N ) ) ) {
 					A = null;
 					foreach (dynamic _a in Lang13.Enumerate( N )) {
 						if ( !( _a is Ent_Static ) ) {
@@ -5594,7 +5594,7 @@ namespace Somnium.Game {
 				if ( !( N is Zone ) ) {
 					continue;
 				}
-				if ( Lang13.Bool( areatype.IsInstanceOfType( N ) ) ) {
+				if ( Lang13.Bool( ((dynamic)areatype).IsInstanceOfType( N ) ) ) {
 					T = null;
 					foreach (dynamic _a in Lang13.Enumerate( N )) {
 						T = _a;
@@ -5633,7 +5633,7 @@ namespace Somnium.Game {
 				if ( !( N is Zone ) ) {
 					continue;
 				}
-				if ( Lang13.Bool( areatype.IsInstanceOfType( N ) ) ) {
+				if ( Lang13.Bool( ((dynamic)areatype).IsInstanceOfType( N ) ) ) {
 					areas.Add( N );
 				}
 			}
@@ -7067,7 +7067,7 @@ namespace Somnium.Game {
 				}
 			}
 			text_image = new Image( null, A );
-			((dynamic)text_image).maptext = "<font size = 4>" + letter + "</font>";
+			text_image.maptext = "<font size = 4>" + letter + "</font>";
 			text_image.color = GlobalFuncs.AverageColour( atom_icon );
 			text_image.pixel_x = 7;
 			text_image.pixel_y = 5;
@@ -8170,7 +8170,7 @@ namespace Somnium.Game {
 			type = null;
 			foreach (dynamic _a in Lang13.Enumerate( L )) {
 				type = _a;
-				if ( Lang13.Bool( type.IsInstanceOfType( A ) ) ) {
+				if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( A ) ) ) {
 					return true;
 				}
 			}
@@ -8728,7 +8728,7 @@ namespace Somnium.Game {
 		// ARG INFO: 0 32001 0,0 32001 0
 		public static dynamic listgetindex( dynamic L = null, dynamic index = null ) {
 			if ( L is ByTable ) {
-				if ( Lang13.isNumber( index ) ) {
+				if ( Lang13.Bool( Lang13.IsNumber( index ) ) ) {
 					if ( GlobalFuncs.IsInRange( index, true, Lang13.Int( L.len ) ) ) {
 						return L[index];
 					}
@@ -9841,7 +9841,7 @@ namespace Somnium.Game {
 			if ( len == null ) {
 				len = 2;
 			}
-			if ( !Lang13.isNumber( num ) ) {
+			if ( !Lang13.Bool( Lang13.IsNumber( num ) ) ) {
 				num = 0;
 			}
 			num = Num13.floor( Math.Abs( num ) );
@@ -10375,7 +10375,7 @@ namespace Somnium.Game {
 				area_type = null;
 				foreach (dynamic _b in Lang13.Enumerate( skipped_areas )) {
 					area_type = _b;
-					if ( Lang13.Bool( area_type.IsInstanceOfType( A ) ) ) {
+					if ( Lang13.Bool( ((dynamic)area_type).IsInstanceOfType( A ) ) ) {
 						skip = true;
 						break;
 					}
@@ -10413,7 +10413,7 @@ namespace Somnium.Game {
 					area_type2 = null;
 					foreach (dynamic _e in Lang13.Enumerate( skipped_areas )) {
 						area_type2 = _e;
-						if ( Lang13.Bool( area_type2.IsInstanceOfType( A2 ) ) ) {
+						if ( Lang13.Bool( ((dynamic)area_type2).IsInstanceOfType( A2 ) ) ) {
 							skip2 = true;
 							break;
 						}
@@ -12497,7 +12497,7 @@ namespace Somnium.Game {
 			if ( __default == null ) {
 				__default = 0;
 			}
-			if ( Lang13.isNumber( number ) ) {
+			if ( Lang13.Bool( Lang13.IsNumber( number ) ) ) {
 				number = Num13.floor( Lang13.Double( number ) );
 				if ( ( min ??0) <= Lang13.Double( number ) && Lang13.Double( number ) <= ( max ??0) ) {
 					return number;
@@ -12749,58 +12749,58 @@ namespace Somnium.Game {
 				return _out;
 			}
 			type = Lang13.findClass( type );
-			if ( Lang13.Bool( type.IsSubclassOf( typeof(Mob) ) ) ) {
+			if ( Lang13.Bool( ((dynamic)type).IsSubclassOf( typeof(Mob) ) ) ) {
 				d2 = null;
 				foreach (dynamic _b in Lang13.Enumerate( location )) {
 					d2 = _b;
 					if ( !( d2 is Mob ) ) {
 						continue;
 					}
-					if ( Lang13.Bool( type.IsInstanceOfType( d2 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d2 ) ) ) {
 						_out.Add( d2 );
 					}
 				}
-			} else if ( Lang13.Bool( type.IsSubclassOf( typeof(Tile) ) ) ) {
+			} else if ( Lang13.Bool( ((dynamic)type).IsSubclassOf( typeof(Tile) ) ) ) {
 				d3 = null;
 				foreach (dynamic _c in Lang13.Enumerate( location )) {
 					d3 = _c;
 					if ( !( d3 is Tile ) ) {
 						continue;
 					}
-					if ( Lang13.Bool( type.IsInstanceOfType( d3 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d3 ) ) ) {
 						_out.Add( d3 );
 					}
 				}
-			} else if ( Lang13.Bool( type.IsSubclassOf( typeof(Obj) ) ) ) {
+			} else if ( Lang13.Bool( ((dynamic)type).IsSubclassOf( typeof(Obj) ) ) ) {
 				d4 = null;
 				foreach (dynamic _d in Lang13.Enumerate( location )) {
 					if ( !( _d is Obj ) ) {
 						continue;
 					}
 					d4 = _d;
-					if ( Lang13.Bool( type.IsInstanceOfType( d4 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d4 ) ) ) {
 						_out.Add( d4 );
 					}
 				}
-			} else if ( Lang13.Bool( type.IsSubclassOf( typeof(Zone) ) ) ) {
+			} else if ( Lang13.Bool( ((dynamic)type).IsSubclassOf( typeof(Zone) ) ) ) {
 				d5 = null;
 				foreach (dynamic _e in Lang13.Enumerate( location )) {
 					d5 = _e;
 					if ( !( d5 is Zone ) ) {
 						continue;
 					}
-					if ( Lang13.Bool( type.IsInstanceOfType( d5 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d5 ) ) ) {
 						_out.Add( d5 );
 					}
 				}
-			} else if ( Lang13.Bool( type.IsSubclassOf( typeof(Ent_Static) ) ) ) {
+			} else if ( Lang13.Bool( ((dynamic)type).IsSubclassOf( typeof(Ent_Static) ) ) ) {
 				d6 = null;
 				foreach (dynamic _f in Lang13.Enumerate( location )) {
 					if ( !( _f is Ent_Static ) ) {
 						continue;
 					}
 					d6 = _f;
-					if ( Lang13.Bool( type.IsInstanceOfType( d6 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d6 ) ) ) {
 						_out.Add( d6 );
 					}
 				}
@@ -12811,7 +12811,7 @@ namespace Somnium.Game {
 						continue;
 					}
 					d7 = _g;
-					if ( Lang13.Bool( type.IsInstanceOfType( d7 ) ) ) {
+					if ( Lang13.Bool( ((dynamic)type).IsInstanceOfType( d7 ) ) ) {
 						_out.Add( d7 );
 					}
 				}
@@ -12894,7 +12894,7 @@ namespace Somnium.Game {
 				} else {
 					((dynamic)Task13.user).WriteMsg( "" + spaces + item );
 				}
-				if ( !Lang13.isNumber( item ) && Lang13.Bool( query_tree[item] ) ) {
+				if ( !Lang13.Bool( Lang13.IsNumber( item ) ) && Lang13.Bool( query_tree[item] ) ) {
 					if ( query_tree[item] is ByTable ) {
 						((dynamic)Task13.user).WriteMsg( "" + spaces + "    (" );
 						GlobalFuncs.SDQL_testout( query_tree[item], ( indent ??0) + 2 );
@@ -12939,7 +12939,7 @@ namespace Somnium.Game {
 				i = Lang13.IntNullable( ret3["i"] );
 			} else if ( expression[i] == "null" ) {
 				val = null;
-			} else if ( Lang13.isNumber( expression[i] ) ) {
+			} else if ( Lang13.Bool( Lang13.IsNumber( expression[i] ) ) ) {
 				val = expression[i];
 			} else if ( new ByTable(new object [] { "'", "\"" }).Contains( String13.substr( expression[i], 1, 2 ) ) ) {
 				val = String13.substr( expression[i], 2, Lang13.length( expression[i] ) );
@@ -13118,7 +13118,7 @@ namespace Somnium.Game {
 			if ( O is Obj_Item_Weapon_ReagentContainers_Food_Snacks_Grown ) {
 				F = O;
 				while (t_amount < t_max) {
-					t_prod = F.seed( O.loc, O );
+					t_prod = Lang13.call( F.seed, O.loc, O );
 					t_prod.lifespan = F.lifespan;
 					t_prod.endurance = F.endurance;
 					t_prod.maturation = F.maturation;
@@ -13133,7 +13133,7 @@ namespace Somnium.Game {
 				F2 = O;
 				if ( Lang13.Bool( F2.seed ) ) {
 					while (t_amount < t_max) {
-						t_prod2 = F2.seed( O.loc, O );
+						t_prod2 = Lang13.call( F2.seed, O.loc, O );
 						t_prod2.lifespan = F2.lifespan;
 						t_prod2.endurance = F2.endurance;
 						t_prod2.maturation = F2.maturation;
@@ -13837,7 +13837,7 @@ namespace Somnium.Game {
 				search = null;
 				output += "<center><a href='?_src_=holder;addnoteempty=1'>[Add Note]</a></center>";
 				output += ruler;
-				if ( !Lang13.isNumber( index ) ) {
+				if ( !Lang13.Bool( Lang13.IsNumber( index ) ) ) {
 					index = GlobalFuncs.sanitizeSQL( index );
 				}
 				dynamic _b = index; // Was a switch-case, sorry for the mess.
