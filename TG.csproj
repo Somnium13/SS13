@@ -52,7 +52,7 @@
     <Compile Include="Engine\ByImpl\ContentsTable.cs" />
     <Compile Include="Engine\Jake.cs" />
     <Compile Include="Engine\ByImpl\ByTable.cs" />
-    <Compile Include="Engine\NewLib\Console13.cs" />
+    <Compile Include="Engine\NewLib\Logger.cs" />
     <Compile Include="Engine\ByImpl\File.cs" />
     <Compile Include="Engine\ByImpl\StaticLib\Game13.cs" />
     <Compile Include="Engine\ByImpl\StaticLib\Interface13.cs" />
