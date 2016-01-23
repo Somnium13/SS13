@@ -44,38 +44,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\ByImpl\BaseClass\Base_Data.cs" />
-    <Compile Include="Engine\ByImpl\BaseClass\Base_Tile.cs" />
-    <Compile Include="Engine\ByImpl\BaseClass\Base_Zone.cs" />
-    <Compile Include="Engine\ByImpl\BaseClass\Base_Static.cs" />
-    <Compile Include="Engine\ByImpl\BaseClass\EngineMatrix.cs" />
-    <Compile Include="Engine\ByImpl\ContentsTable.cs" />
-    <Compile Include="Engine\Jake.cs" />
-    <Compile Include="Engine\ByImpl\ByTable.cs" />
-    <Compile Include="Engine\NewLib\Logger.cs" />
-    <Compile Include="Engine\ByImpl\File.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Game13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Interface13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\DB13.cs" />
-    <Compile Include="Engine\ByImpl\SaveFile.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Sys13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Rand13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Num13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Lang13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\String13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\File13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Icon13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Map13.cs" />
-    <Compile Include="Engine\ByImpl\Txt.cs" />
-    <Compile Include="Engine\ByImpl\BaseClass\CoreImpl.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Task13.cs" />
-    <Compile Include="Engine\ByImpl\StaticLib\Temp13.cs" />
-    <Compile Include="Engine\NewLib\CoroutineSysStupid.cs" />
-    <Compile Include="Engine\NewLib\DMMLoader.cs" />
-    <Compile Include="Game\Classes.cs" />
-    <Compile Include="Game\GameLibExt.cs" />
-    <Compile Include="Game\GlobalFuncs.cs" />
-    <Compile Include="Game\GlobalVars.cs" />
+    <Compile Include="Engine\**\*.cs" />
+    <Compile Include="Game\**\*.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
