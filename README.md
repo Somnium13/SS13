@@ -1,5 +1,5 @@
-# som--tg-station
-WIP/Test output of the Somnium transdecompiler on tgstation.
+# somnium-ss13
+TG Branch of SS13, now in C#!
 
 This is the entirety of tgstation, translated from DM to C#. You're probably wondering why I'd dedicate such a significant chunk of my time to such an idiotic goal. See [here](A_ROBUST_PROPOSAL.md) for my rationale.
 
