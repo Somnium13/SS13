@@ -17,29 +17,29 @@
 - [SHANGRILA - 0](https://github.com/Shangri-La-Station/Shangri-La-Code)
 
 ## Dead
--[NT - SEP 14 - 31](https://bitbucket.org/animusstations/ntstation13/)
--[NSS - AUG 15 - 13](https://github.com/jamiedigweed/NSS-Phoenix)
--[URIST - AUG 15 - 12](https://github.com/UristMcStation/UristMcStation)
--[COLONIAL MARINES - AUG 15 - 8](https://github.com/apophis775/ColonialMarines)
--[EXOGENESIS - JUL 14 - 4](https://github.com/Hoknar/Exogenesis)
--[RUSSEL - MAY 15 - 2](https://github.com/TehFlaminTaco/RussleStation)
--[PHOTON - APRIL 15 - 2](https://github.com/PJB3005/Photon-station-13)
--[BLOX - JULY 15 - 1](https://github.com/bloxgate/BloxStation)
--[HYPATHIA - SEP 15 - 0](https://github.com/HypatiaStation)
--[ARIA - MAY 15 - 0](https://github.com/DaedalusGame/AriaStation13)
--[NT (RUS) - MAY 15](https://bitbucket.org/animusstations/ntstation13/)
+- [NT - SEP 14 - 31](https://bitbucket.org/animusstations/ntstation13/)
+- [NSS - AUG 15 - 13](https://github.com/jamiedigweed/NSS-Phoenix)
+- [URIST - AUG 15 - 12](https://github.com/UristMcStation/UristMcStation)
+- [COLONIAL MARINES - AUG 15 - 8](https://github.com/apophis775/ColonialMarines)
+- [EXOGENESIS - JUL 14 - 4](https://github.com/Hoknar/Exogenesis)
+- [RUSSEL - MAY 15 - 2](https://github.com/TehFlaminTaco/RussleStation)
+- [PHOTON - APRIL 15 - 2](https://github.com/PJB3005/Photon-station-13)
+- [BLOX - JULY 15 - 1](https://github.com/bloxgate/BloxStation)
+- [HYPATHIA - SEP 15 - 0](https://github.com/HypatiaStation)
+- [ARIA - MAY 15 - 0](https://github.com/DaedalusGame/AriaStation13)
+- [NT (RUS) - MAY 15](https://bitbucket.org/animusstations/ntstation13/)
 
 
 ## Dinosaurs
--[PRE-OPENSS13 - 07?](https://github.com/Glloyd/Pre-Open-SS13-Host-Files-and-Source)
--[OPENSS13 - JUN 08](https://github.com/Mloc/openss13/tree/master/Code)
--[ISNO - JUN 09](https://github.com/GregorStocks/isno)
--[4407 - APRIL 10](https://github.com/nullbear/Goonstation_SS13_r4407)
+- [PRE-OPENSS13 - 07?](https://github.com/Glloyd/Pre-Open-SS13-Host-Files-and-Source)
+- [OPENSS13 - JUN 08](https://github.com/Mloc/openss13/tree/master/Code)
+- [ISNO - JUN 09](https://github.com/GregorStocks/isno)
+- [4407 - APRIL 10](https://github.com/nullbear/Goonstation_SS13_r4407)
 
 # Non-Open
 - Goon
 - Lifeweb
 
 ## Open Remakes
--[SS14 - C# - DEAD?](https://github.com/space-wizards/space-station-14)
--[BUILDSTATION - JAVA - OLD VERSION](https://github.com/Ameliorate/Buildstation-3)
+- [SS14 - C# - DEAD?](https://github.com/space-wizards/space-station-14)
+- [BUILDSTATION - JAVA - OLD VERSION](https://github.com/Ameliorate/Buildstation-3)
