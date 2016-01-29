@@ -83,13 +83,13 @@ namespace Somnium.Engine.ByImpl {
 			if ( !Lang13.Bool( key ) || !Lang13.Bool( address ) || !Lang13.Bool( computer_id ) ) {
 				GlobalFuncs.log_access( "Failed Login (invalid data): " + key + " " + address + "-" + computer_id );
 				return new ByTable()
-					.set( "reason", "invalid login data" )
-					.set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided invalid or blank information to the server on connection (byond username, IP, and Computer ID.) Provided information for reference: Username:'" + key + "' IP:'" + address + "' Computer ID:'" + computer_id + "'. (If you continue to get this error, please restart byond or contact byond support.)" )
+					.Set( "reason", "invalid login data" )
+					.Set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided invalid or blank information to the server on connection (byond username, IP, and Computer ID.) Provided information for reference: Username:'" + key + "' IP:'" + address + "' Computer ID:'" + computer_id + "'. (If you continue to get this error, please restart byond or contact byond support.)" )
 				;
 			}
 			if ( String13.ParseNumber( computer_id ) == 2147483648 ) {
 				GlobalFuncs.log_access( "Failed Login (invalid cid): " + key + " " + address + "-" + computer_id );
-				return new ByTable().set( "reason", "invalid login data" ).set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" );
+				return new ByTable().Set( "reason", "invalid login data" ).Set( "desc", "Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)" );
 			}
 			admin = false;
 			ckey = String13.ckey( key );
@@ -99,19 +99,19 @@ namespace Somnium.Engine.ByImpl {
 			if ( GlobalFuncs.IsGuestKey( key ) ) {
 				if ( !GlobalVars.guests_allowed ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed" );
-					return new ByTable().set( "reason", "guest" ).set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." );
+					return new ByTable().Set( "reason", "guest" ).Set( "desc", "\nReason: Guests not allowed. Please sign in with a byond account." );
 				}
 				if ( GlobalVars.config.panic_bunker && GlobalVars.dbcon != null && GlobalVars.dbcon.IsConnected() ) {
 					GlobalFuncs.log_access( "Failed Login: " + key + " - Guests not allowed during panic bunker" );
 					return new ByTable()
-						.set( "reason", "guest" )
-						.set( "desc", "\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from." )
+						.Set( "reason", "guest" )
+						.Set( "desc", "\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from." )
 					;
 				}
 			}
 			if ( Lang13.Bool( GlobalVars.config.extreme_popcap ) && GlobalFuncs.living_player_count() >= ( GlobalVars.config.extreme_popcap ??0) && !admin ) {
 				GlobalFuncs.log_access( "Failed Login: " + key + " - Population cap reached" );
-				return new ByTable().set( "reason", "popcap" ).set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message );
+				return new ByTable().Set( "reason", "popcap" ).Set( "desc", "\nReason: " + GlobalVars.config.extreme_popcap_message );
 			}
 			if ( GlobalVars.config.ban_legacy_system ) {
 				_default = GlobalFuncs.CheckBan( String13.ckey( key ), computer_id, address );
@@ -173,7 +173,7 @@ namespace Somnium.Engine.ByImpl {
 						expires = " The is a permanent ban.";
 					}
 					desc = "\nReason: You, or another user of this computer or connection (" + pckey + ") is banned from playing here. The ban reason is:\n" + reason + "\nThis ban was applied by " + ackey + " on " + bantime + ", " + expires;
-					_default = new ByTable().set( "reason", "" + bantype ).set( "desc", "" + desc );
+					_default = new ByTable().Set( "reason", "" + bantype ).Set( "desc", "" + desc );
 					GlobalFuncs.log_access( "Failed Login: " + key + " " + computer_id + " " + address + " - Banned " + _default["reason"] );
 					return _default;
 				}
