@@ -270,7 +270,7 @@ function dropdowns() {
 		public static int next_mob_id = 0;
 		public static int nextid = 1;
 		public static Votablemap nextmap = null;
-		public static readonly bool? NO_SLIP_WHEN_WALKING = true;
+		public static readonly bool NO_SLIP_WHEN_WALKING = true;
 		public static dynamic normal_ooc_colour = "#002eb8";
 		public static readonly double? NORTH = 1;
 		public static readonly double? NORTHEAST = 5;
@@ -761,7 +761,7 @@ function dropdowns() {
 			.Set( 11, new AtomHud_Antag() )
 			.Set( 12, new AtomHud_Antag() )
 		;
-		public static readonly ByTable spells = Lang13.get_all_types( typeof(Obj_Effect_ProcHolder_Spell) );
+		public static readonly dynamic spells = Lang13.GetTypes( typeof(Obj_Effect_ProcHolder_Spell) );
 		public static readonly ByTable all_supply_groups = new ByTable(new object [] { 
 			GlobalVars.supply_emergency, 
 			GlobalVars.supply_security, 
@@ -773,10 +773,10 @@ function dropdowns() {
 			GlobalVars.supply_misc
 		 });
 		public static readonly ByTable uplink_items = new ByTable();
-		public static readonly ByTable diseases = Lang13.get_all_types( typeof(Disease) ) - typeof(Disease);
+		public static readonly dynamic diseases = Lang13.GetTypes( typeof(Disease) ) - typeof(Disease);
 		public static readonly ByTable archive_diseases = new ByTable();
 		public static readonly ByTable advance_cures = new ByTable(new object [] { "sodiumchloride", "sugar", "orangejuice", "spaceacillin", "salglu_solution", "ethanol", "leporazine", "synaptizine", "lipolicide", "silver", "gold" });
-		public static readonly ByTable list_symptoms = Lang13.get_all_types( typeof(Symptom) ) - typeof(Symptom);
+		public static readonly dynamic list_symptoms = Lang13.GetTypes( typeof(Symptom) ) - typeof(Symptom);
 		public static readonly ByTable dictionary_symptoms = new ByTable();
 		public static readonly Getrev revdata = new Getrev();
 		public static readonly ByTable same_wires = new ByTable();
