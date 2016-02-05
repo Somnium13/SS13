@@ -16,7 +16,6 @@ namespace Somnium.Engine.ByImpl {
 		public static readonly Type default_zone = typeof(Zone_Space);
 
 
-		// ARG INFO: []
 		public static void New(  ) {
 			string date_string = null;
 			GlobalVars.map_ready = true;
@@ -60,7 +59,6 @@ namespace Somnium.Engine.ByImpl {
 			return;
 		}
 
-		// ARG INFO: [[0,32001,0],[0,32001,0],[0,32001,0]]
 		public static dynamic IsBanned( string key = null, dynamic address = null, string computer_id = null ) {
 			dynamic _default = null;
 			bool admin = false;
@@ -190,7 +188,6 @@ namespace Somnium.Engine.ByImpl {
 			return _default;
 		}
 
-		// ARG INFO: []
 		public static void update_status(  ) {
 			string s = null;
 			ByTable features = null;
@@ -228,9 +225,6 @@ namespace Somnium.Engine.ByImpl {
 			M = null;
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.player_list )) {
 				M = _a;
-				if ( !( M is Mob ) ) {
-					continue;
-				}
 				if ( Lang13.Bool( M.client ) ) {
 					n++;
 				}
@@ -252,7 +246,6 @@ namespace Somnium.Engine.ByImpl {
 			return;
 		}
 
-		// ARG INFO: []
 		public static void load_configuration(  ) {
 			GlobalVars.protected_config = new ProtectedConfiguration();
 			GlobalVars.config = new Configuration();
@@ -266,13 +259,11 @@ namespace Somnium.Engine.ByImpl {
 			return;
 		}
 
-		// ARG INFO: []
 		public static void load_motd(  ) {
 			GlobalVars.join_motd = File13.read( "config/motd.txt" );
 			return;
 		}
 
-		// ARG INFO: [[0,32001,0]]
 		public static void save_mode( dynamic the_mode = null ) {
 			dynamic F = null;
 			F = new File( "data/mode.txt" );
@@ -281,7 +272,6 @@ namespace Somnium.Engine.ByImpl {
 			return;
 		}
 
-		// ARG INFO: []
 		public static void load_mode(  ) {
 			ByTable Lines = null;
 			Lines = GlobalFuncs.file2list( "data/mode.txt" );
@@ -294,7 +284,6 @@ namespace Somnium.Engine.ByImpl {
 			return;
 		}
 
-		// ARG INFO: [[0,32001,0],[0,32001,0],[0,32001,0],[0,32001,0]]
 		public static dynamic Reboot( dynamic reason = null, string feedback_c = null, string feedback_r = null, int? time = null ) {
 			double? delay = null;
 			dynamic C = null;
@@ -349,7 +338,6 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
-		// ARG INFO: [[0,32001,0],[0,32001,0],[0,32001,0],[0,32001,0]]
 		public static dynamic Topic( string T = null, dynamic addr = null, dynamic master = null, dynamic key = null ) {
 			int x = 0;
 			dynamic C = null;
@@ -377,9 +365,6 @@ namespace Somnium.Engine.ByImpl {
 				M = null;
 				foreach (dynamic _b in Lang13.Enumerate( GlobalVars.player_list )) {
 					M = _b;
-					if ( !( M is Mob ) ) {
-						continue;
-					}
 					if ( Lang13.Bool( M.client ) ) {
 						n++;
 					}
