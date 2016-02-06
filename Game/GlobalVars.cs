@@ -984,7 +984,7 @@ function dropdowns() {
 		;
 		public static ByTable telecomms_list = new ByTable();
 		public static ByTable recentmessages = new ByTable();
-		public static readonly string year = String13.formatTime( Game13.realtime, "YYYY" );
+		public static readonly string year = String13.FormatTime( Game13.realtime, "YYYY" );
 		public static readonly double? year_integer = String13.ParseNumber( GlobalVars.year );
 		public static ByTable BUMP_TELEPORTERS = new ByTable();
 		public static readonly ByTable contrabandposters = new ByTable(new object [] { 
