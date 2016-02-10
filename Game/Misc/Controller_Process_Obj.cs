@@ -37,7 +37,7 @@ namespace Somnium.Game {
 						try {
 							((Zone_Awaymission_Beach)o).process();
 						} catch (Exception __) {
-							e = __
+							e = __;
 							Game13.Error( e );
 							continue;
 						}

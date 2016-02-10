@@ -10,12 +10,6 @@ namespace Somnium.Game {
 		public string gcDestroyed = null;
 		public dynamic timeDestroyed = null;
 
-		protected override void __FieldInit() {
-			base.__FieldInit();
-
-			this.dir = 2;
-		}
-
 		// Function from file: nanoexternal.dm
 		public virtual void ui_interact( dynamic user = null, string ui_key = null, Nanoui ui = null, bool? force_open = null ) {
 			ui_key = ui_key ?? "main";

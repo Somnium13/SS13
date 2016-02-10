@@ -51,7 +51,7 @@ namespace Somnium.Game {
 						try {
 							pipeNetwork.process();
 						} catch (Exception __) {
-							e = __
+							e = __;
 							Game13.Error( e );
 							continue;
 						}

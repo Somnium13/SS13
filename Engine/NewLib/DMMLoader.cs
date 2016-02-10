@@ -69,18 +69,18 @@ namespace Somnium.Engine.NewLib {
 										 });
 
 		// leaving this behind for now, just in case...
-		public override dynamic Destroy() {
+		public override dynamic Destroy(dynamic dummy = null) {
 			base.Destroy();
 			return 4;
 		}
 
 		public void LoadMap(string dmm_file, int x_offset, int y_offset, int z_offset) {
-			string tfile = File13.read(dmm_file);
+			string tfile = File13.Read(dmm_file);
 			int tfile_len = tfile.Length;
 
 			string[] tfile_lines = tfile.Split('\n');
 			
-			int key_len = Lang13.length(String13.substr(tfile, 2, String13.find(tfile, quote, 2, 0)));
+			int key_len = Lang13.Length(String13.SubStr(tfile, 2, String13.Find(tfile, quote, 2, 0)));
 			
 			var grid_models = new ByTable();
 
@@ -126,13 +126,13 @@ namespace Somnium.Engine.NewLib {
 			int ycrd = y_offset;
 			int zcrd = -1;
 
-			int tpos = String13.find(tfile, "\n(1,1,");
+			int tpos = String13.Find(tfile, "\n(1,1,");
 			while (tpos != 0) {
 				zcrd++;
-				Game13.map_size_z = Num13.maxInt(Game13.map_size_z, zcrd + z_offset);
-				zgrid = String13.substr(tfile, String13.find(tfile, quote + "\n", tpos, 0) + 2, String13.find(tfile, "\n" + quote, tpos, 0) + 1);
-				z_depth = Lang13.length(zgrid);
-				x_depth = Lang13.length(String13.substr(zgrid, 1, String13.find(zgrid, "\n", 2, 0)));
+				Game13.map_size_z = Num13.MaxInt(Game13.map_size_z, zcrd + z_offset);
+				zgrid = String13.SubStr(tfile, String13.Find(tfile, quote + "\n", tpos, 0) + 2, String13.Find(tfile, "\n" + quote, tpos, 0) + 1);
+				z_depth = Lang13.Length(zgrid);
+				x_depth = Lang13.Length(String13.SubStr(zgrid, 1, String13.Find(zgrid, "\n", 2, 0)));
 				x_tilecount = x_depth / key_len;
 				if (Game13.map_size_x < x_tilecount) {
 					Game13.map_size_x = ((int)(x_tilecount));
@@ -146,12 +146,12 @@ namespace Somnium.Engine.NewLib {
 				gpos = 1;
 				while (gpos != 0) {
 					Logger.Announce("Starting map row #" + ycrd + "...");
-					grid_line = String13.substr(zgrid, gpos ?? 0, String13.find(zgrid, "\n", gpos ?? 0, 0));
+					grid_line = String13.SubStr(zgrid, gpos ?? 0, String13.Find(zgrid, "\n", gpos ?? 0, 0));
 					xcrd = 0;
 
 					foreach (double mpos in Lang13.IterateRange(1, x_depth, key_len)) {
 						xcrd++;
-						string model_key = String13.substr(grid_line, (int)mpos, (int)mpos + key_len);
+						string model_key = String13.SubStr(grid_line, (int)mpos, (int)mpos + key_len);
 						if (model_key != default_key)
 							this.parse_grid(grid_models[model_key], xcrd + x_offset, ycrd + y_offset, zcrd + z_offset);
 					}
@@ -160,13 +160,13 @@ namespace Somnium.Engine.NewLib {
 					}
 					ycrd--;
 
-					gpos = String13.find(zgrid, "\n", gpos ?? 0, 0) + 1;
+					gpos = String13.Find(zgrid, "\n", gpos ?? 0, 0) + 1;
 				}
-				if (String13.find(tfile, quote + "}", tpos, 0) + 2 == tfile_len) {
+				if (String13.Find(tfile, quote + "}", tpos, 0) + 2 == tfile_len) {
 					break;
 				}
 
-				tpos = String13.find(tfile, "\n(1,1,", tpos + 1, 0);
+				tpos = String13.Find(tfile, "\n(1,1,", tpos + 1, 0);
 			}
 			Logger.Announce("Done loading map in " + timer.Elapsed + "s.");
 			return;
@@ -194,27 +194,27 @@ namespace Somnium.Engine.NewLib {
 			old_position = 1;
 			while (true) { // Was a do-while, sorry for the mess.
 				dpos = this.find_next_delimiter_position(model, old_position, ",", "{", "}");
-				full_def = String13.substr(model, old_position, dpos);
-				string path = String13.substr(full_def, 1, String13.find(full_def, "{", 1, 0));
-				atom_def = Lang13.findClass(path);
+				full_def = String13.SubStr(model, old_position, dpos);
+				string path = String13.SubStr(full_def, 1, String13.Find(full_def, "{", 1, 0));
+				atom_def = Lang13.FindClass(path);
 				members.Add(atom_def);
 				old_position = dpos + 1;
 				fields = new ByTable();
-				variables_start = String13.find(full_def, "{", 1, 0);
+				variables_start = String13.Find(full_def, "{", 1, 0);
 				if (variables_start != 0) {
-					full_def = String13.substr(full_def, variables_start + 1, Lang13.length(full_def));
+					full_def = String13.SubStr(full_def, variables_start + 1, Lang13.Length(full_def));
 					fields = this.text2list(full_def, ";");
 				}
 				members_attributes.len++;
 				members_attributes[index++] = fields;
-				Task13.sleep(-1);
+				Task13.Sleep(-1);
 				if (!(dpos != 0)) break;
 			}
 			turfs_underlays = new ByTable();
 			index = members.len;
 			GlobalVars._preloader = new DmmSuite_Preloader(members_attributes[index]);
-			instance = Lang13.find_obj(members[index]);
-			crds = Map13.get_tile_at(xcrd, ((int)(ycrd)), zcrd);
+			instance = Lang13.FindObj(members[index]);
+			crds = Map13.GetTile(xcrd, ((int)(ycrd)), zcrd);
 			if (crds != null) {
 				instance.contents.Add(crds);
 			}
@@ -263,12 +263,12 @@ namespace Somnium.Engine.NewLib {
 				closing_escape = this.quote;
 			}
 			position = initial_position;
-			next_delimiter = String13.find(text, delimiter, position, 0);
-			next_opening = String13.find(text, opening_escape, position, 0);
+			next_delimiter = String13.Find(text, delimiter, position, 0);
+			next_opening = String13.Find(text, opening_escape, position, 0);
 			while (next_opening != 0 && next_opening < next_delimiter) {
-				position = String13.find(text, closing_escape, next_opening + 1, 0) + 1;
-				next_delimiter = String13.find(text, delimiter, position, 0);
-				next_opening = String13.find(text, opening_escape, position, 0);
+				position = String13.Find(text, closing_escape, next_opening + 1, 0) + 1;
+				next_delimiter = String13.Find(text, delimiter, position, 0);
+				next_opening = String13.Find(text, opening_escape, position, 0);
 			}
 			return next_delimiter;
 		}
@@ -277,7 +277,7 @@ namespace Somnium.Engine.NewLib {
 			dynamic instance = null;
 			Tile T = null;
 			GlobalVars._preloader = new DmmSuite_Preloader(attributes, path);
-			T = Map13.get_tile_at(x, ((int)(y)), z);
+			T = Map13.GetTile(x, ((int)(y)), z);
 			if (T != null) {
 				instance = Lang13.Call(path, T);
 			}
@@ -314,13 +314,13 @@ namespace Somnium.Engine.NewLib {
 			old_position = 1;
 			while (true) { // Was a do-while, sorry for the mess.
 				position = this.find_next_delimiter_position(text, old_position, delimiter);
-				equal_position = String13.find(text, "=", old_position, position);
-				trim_left = this.trim_text(String13.substr(text, old_position, (equal_position != 0 ? equal_position : position)), true);
+				equal_position = String13.Find(text, "=", old_position, position);
+				trim_left = this.trim_text(String13.SubStr(text, old_position, (equal_position != 0 ? equal_position : position)), true);
 				old_position = position + 1;
 				if (equal_position != 0) {
-					trim_right = this.trim_text(String13.substr(text, equal_position + 1, position));
-					if (String13.find(trim_right, this.quote, 1, 2) != 0) {
-						trim_right = String13.substr(trim_right, 2, String13.find(trim_right, this.quote, 3, 0));
+					trim_right = this.trim_text(String13.SubStr(text, equal_position + 1, position));
+					if (String13.Find(trim_right, this.quote, 1, 2) != 0) {
+						trim_right = String13.SubStr(trim_right, 2, String13.Find(trim_right, this.quote, 3, 0));
 					}
 					else if (Lang13.Bool(Lang13.IsNumber(String13.ParseNumber(trim_right)))) {
 						trim_right = String13.ParseNumber(trim_right);
@@ -328,11 +328,11 @@ namespace Somnium.Engine.NewLib {
 					else if (trim_right == "null") {
 						trim_right = null;
 					}
-					else if (String13.substr(trim_right, 1, 5) == "list") {
-						trim_right = this.text2list(String13.substr(trim_right, 6, Lang13.length(trim_right)));
+					else if (String13.SubStr(trim_right, 1, 5) == "list") {
+						trim_right = this.text2list(String13.SubStr(trim_right, 6, Lang13.Length(trim_right)));
 					}
-					else if (String13.substr(trim_right, 1, 2) == "'") {
-						trim_right = new File(String13.substr(trim_right, 2, Lang13.length(trim_right)));
+					else if (String13.SubStr(trim_right, 1, 2) == "'") {
+						trim_right = new File(String13.SubStr(trim_right, 2, Lang13.Length(trim_right)));
 					}
 					to_return[trim_left] = trim_right;
 				}
@@ -348,156 +348,21 @@ namespace Somnium.Engine.NewLib {
 			if (trim_quotes == null) {
 				trim_quotes = false;
 			}
-			while (Lang13.length(what) != 0 && String13.find(what, " ", 1, 2) != 0) {
-				what = String13.substr(what, 2, 0);
+			while (Lang13.Length(what) != 0 && String13.Find(what, " ", 1, 2) != 0) {
+				what = String13.SubStr(what, 2, 0);
 			}
-			while (Lang13.length(what) != 0 && String13.find(what, " ", Lang13.length(what), 0) != 0) {
-				what = String13.substr(what, 1, Lang13.length(what));
+			while (Lang13.Length(what) != 0 && String13.Find(what, " ", Lang13.Length(what), 0) != 0) {
+				what = String13.SubStr(what, 1, Lang13.Length(what));
 			}
 			if (trim_quotes == true) {
-				while (Lang13.length(what) != 0 && String13.find(what, this.quote, 1, 2) != 0) {
-					what = String13.substr(what, 2, 0);
+				while (Lang13.Length(what) != 0 && String13.Find(what, this.quote, 1, 2) != 0) {
+					what = String13.SubStr(what, 2, 0);
 				}
-				while (Lang13.length(what) != 0 && String13.find(what, this.quote, Lang13.length(what), 0) != 0) {
-					what = String13.substr(what, 1, Lang13.length(what));
+				while (Lang13.Length(what) != 0 && String13.Find(what, this.quote, Lang13.Length(what), 0) != 0) {
+					what = String13.SubStr(what, 1, Lang13.Length(what));
 				}
 			}
 			return what;
 		}
-		
-		/*
-		public string get_model_key(double? which = null, int key_length = 0) {
-			string key = null;
-			double working_digit = 0;
-			double? digit_pos = null;
-			int place_value = 0;
-			key = "";
-			working_digit = (which ?? 0) - 1;
-			digit_pos = null;
-			foreach (dynamic _a in Lang13.IterateRange(key_length, 1, -1)) {
-				digit_pos = _a;
-				place_value = Num13.floor(working_digit / Math.Pow(this.letter_digits.len, (digit_pos ?? 0) - 1));
-				working_digit -= place_value * Math.Pow(this.letter_digits.len, (digit_pos ?? 0) - 1);
-				key = "" + key + this.letter_digits[place_value + 1];
-			}
-			return key;
-		}
-
-		public string check_attributes(dynamic A = null) {
-			string attributes_text = null;
-			dynamic V = null;
-			attributes_text = "{";
-			V = null;
-			foreach (dynamic _a in Lang13.Enumerate(A.vars)) {
-				V = _a;
-				Task13.sleep(-1);
-				if (!Lang13.Bool(Temp13.issaved(A.vars[V])) || A.vars[V] == Temp13.initial(A.vars[V])) {
-					continue;
-				}
-				if (A.vars[V] is string) {
-					attributes_text += "" + V + " = \"" + A.vars[V] + "\"";
-				}
-				else if (Lang13.Bool(Lang13.IsNumber(A.vars[V])) || A.vars[V] is Type) {
-					attributes_text += "" + V + " = " + A.vars[V];
-				}
-				else if (A.vars[V] is Icon || A.vars[V] is File) {
-					attributes_text += "" + V + " = '" + A.vars[V] + "'";
-				}
-				else {
-					continue;
-				}
-				if (attributes_text != "{") {
-					attributes_text += "; ";
-				}
-			}
-			if (attributes_text == "{") {
-				return null;
-			}
-			if (String13.substr(attributes_text, Lang13.length(attributes_text) - 1, 0) == "; ") {
-				attributes_text = String13.substr(attributes_text, 1, Lang13.length(attributes_text) - 1);
-			}
-			attributes_text += "}";
-			return attributes_text;
-		}
-
-		public string make_template(Tile model = null, dynamic flags = null) {
-			string template = null;
-			string obj_template = null;
-			string mob_template = null;
-			string turf_template = null;
-			string area_template = null;
-			Obj O = null;
-			dynamic M = null;
-			Ent_Static m_area = null;
-			template = "";
-			obj_template = "";
-			mob_template = "";
-			turf_template = "";
-			if (!Lang13.Bool(flags & 2)) {
-				turf_template = "" + model.type + this.check_attributes(model) + ",";
-			}
-			else {
-				turf_template = "" + Game13.default_tile + ",";
-			}
-			area_template = "";
-			if (!Lang13.Bool(flags & 4)) {
-				O = null;
-				foreach (dynamic _a in Lang13.Enumerate(model.contents)) {
-					if (!(_a is Obj)) {
-						continue;
-					}
-					O = _a;
-					obj_template += "" + O.type + this.check_attributes(O) + ",";
-				}
-			}
-			M = null;
-			foreach (dynamic _b in Lang13.Enumerate(model.contents)) {
-				M = _b;
-				if (!(M is Mob)) {
-					continue;
-				}
-				if (Lang13.Bool(M.client)) {
-					if (!Lang13.Bool(flags & 16)) {
-						mob_template += "" + M.type + this.check_attributes(M) + ",";
-					}
-				}
-				else if (!Lang13.Bool(flags & 8)) {
-					mob_template += "" + M.type + this.check_attributes(M) + ",";
-				}
-			}
-			if (!Lang13.Bool(flags & 1)) {
-				m_area = model.loc;
-				area_template = "" + m_area.type + this.check_attributes(m_area);
-			}
-			else {
-				area_template = "" + Game13.default_zone;
-			}
-			template = "" + obj_template + mob_template + turf_template + area_template;
-			return template;
-		}
-
-		public string trim_text(string what = null, bool? trim_quotes = null) {
-			if (trim_quotes == null) {
-				trim_quotes = false;
-			}
-			while (Lang13.length(what) != 0 && String13.find(what, " ", 1, 2) != 0) {
-				what = String13.substr(what, 2, 0);
-			}
-			while (Lang13.length(what) != 0 && String13.find(what, " ", Lang13.length(what), 0) != 0) {
-				what = String13.substr(what, 1, Lang13.length(what));
-			}
-			if (trim_quotes == true) {
-				while (Lang13.length(what) != 0 && String13.find(what, this.quote, 1, 2) != 0) {
-					what = String13.substr(what, 2, 0);
-				}
-				while (Lang13.length(what) != 0 && String13.find(what, this.quote, Lang13.length(what), 0) != 0) {
-					what = String13.substr(what, 1, Lang13.length(what));
-				}
-			}
-			return what;
-		}
-		*/
 	}
-
-
 }

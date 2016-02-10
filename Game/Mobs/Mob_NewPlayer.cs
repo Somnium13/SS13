@@ -38,8 +38,6 @@ namespace Somnium.Game {
 		// Function from file: new_player.dm
 		public override bool Move( dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0 ) {
 			Dir = Dir ?? 0;
-			step_x = step_x ?? 0;
-			step_y = step_y ?? 0;
 
 			return false;
 		}

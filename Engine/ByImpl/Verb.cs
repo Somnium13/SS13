@@ -21,7 +21,7 @@ namespace Somnium.Engine.ByImpl {
 		Default, InView, InViewExcludeThis, InUserLocation, InRange, InUserContents, IsUser
 	}
 
-	[AttributeUsage(AttributeTargets.Method)]
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	class VerbArg : Attribute {
 		public VerbArg(int n, InputType type) {
 

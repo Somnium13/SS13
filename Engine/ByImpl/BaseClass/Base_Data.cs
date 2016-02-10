@@ -24,7 +24,7 @@ namespace Somnium.Engine.ByImpl {
 		public virtual void Del() { }
 		public virtual void Read(SaveFile F, dynamic __id = null, dynamic locorner = null) { }
 		public virtual void Write(SaveFile F) { }
-		public virtual dynamic Topic(string href = "", ByTable href_list = null, dynamic hsrc = null) { return null; }
+		public virtual dynamic Topic(string href = "", ByTable href_list = null, dynamic hsrc = null, Game.HtmlInterface currui = null) { return null; }
 
 
 		public dynamic __CallVerb(string n, params object[] o) {

@@ -40,7 +40,7 @@ namespace Somnium.Game {
 					this.scheck();
 				}
 			} catch (Exception __) {
-				e = __
+				e = __;
 				Game13.Error( e );
 				return false;
 			}

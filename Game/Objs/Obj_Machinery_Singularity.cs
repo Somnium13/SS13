@@ -522,7 +522,7 @@ namespace Somnium.Game {
 						this.consume( X );
 					}
 				} catch (Exception __) {
-					e = __
+					e = __;
 					GlobalFuncs.error( "Singularity eat() caught exception:" );
 					GlobalFuncs.error( e );
 					continue;

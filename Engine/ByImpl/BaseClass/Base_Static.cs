@@ -18,7 +18,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public bool density;
-		public int dir;
+		public int dir = 2; // this is the default pretty much everywhere.
 
 		// Everything to do with appearance:
 		public Appearance appearance;
@@ -184,28 +184,28 @@ namespace Somnium.Engine.ByImpl {
 			}
 		}*/
 
-		public void Click(dynamic location, dynamic control, dynamic _params) {
-
+		public virtual bool Click(dynamic location, string control, string _params) {
+			return false; // ?
 		}
 
-		public void DblClick(dynamic location, dynamic control, dynamic _params) {
-
+		public virtual bool DblClick(dynamic _object, string location, string control, dynamic _params) {
+			return false; // ?
 		}
 
-		public bool Enter(Somnium.Game.Ent_Dynamic O, dynamic old_loc) {
+		public virtual bool Enter(Somnium.Game.Ent_Dynamic O, Game.Ent_Static old_loc) {
 			return false;
 		}
 
-		public void Entered(Somnium.Game.Ent_Dynamic O, dynamic old_loc) {
-
-		}
-
-		public bool Exit(Somnium.Game.Ent_Dynamic O, dynamic old_loc) {
+		public virtual bool Exit(Game.Ent_Dynamic O, Game.Ent_Static new_loc) {
 			return false;
 		}
 
-		public void Exited(Somnium.Game.Ent_Dynamic O, dynamic old_loc) {
+		public virtual dynamic Entered(Somnium.Game.Ent_Dynamic O, Game.Ent_Static old_loc) {
+			return null;
+		}
 
+		public virtual dynamic Exited(Somnium.Game.Ent_Dynamic O, Game.Ent_Static new_loc) {
+			return null;
 		}
 
 		public void MouseDown(dynamic location, dynamic control, dynamic _params) {

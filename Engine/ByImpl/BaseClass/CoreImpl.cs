@@ -14,7 +14,7 @@ namespace Somnium.Engine.ByImpl {
 		public string connection;
 		public int control_freak;
 		public string default_verb_category;
-		public int dir;
+		public int dir = 2; // From Client's broken initializer
 		public string edge_limit;
 		public dynamic eye;
 		public string gender;
@@ -95,8 +95,20 @@ namespace Somnium.Engine.ByImpl {
 
 		public string screen_loc;
 
-		public virtual bool Move(dynamic NewLoc = null, int Dir = 0, int step_x = 0, int step_y = 0) {
-			return false ;
+		public virtual bool Move(dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0) {
+			return false;
+		}
+
+		public virtual dynamic Bump(Game.Obj Obstacle = null, dynamic yes = null) {
+			return null;
+		}
+
+		public virtual dynamic Crossed(Game.Ent_Dynamic O = null, dynamic X = null) {
+			return null;
+		}
+
+		public virtual dynamic Uncrossed(Game.Ent_Dynamic O = null) {
+			return null;
 		}
 	}
 
@@ -178,8 +190,8 @@ namespace Somnium.Engine.ByImpl {
 
 		}
 
-		public virtual void Login() {
-
+		public virtual dynamic Login() {
+			return null;
 		}
 
 		public virtual bool Logout() {

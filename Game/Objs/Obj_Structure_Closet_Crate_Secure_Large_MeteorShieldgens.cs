@@ -9,10 +9,10 @@ namespace Somnium.Game {
 		// Function from file: meteor_supply.dm
 		public Obj_Structure_Closet_Crate_Secure_Large_MeteorShieldgens ( dynamic loc = null ) : base( (object)(loc) ) {
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
-			new Obj_Machinery_Shieldgen( this );
-			new Obj_Machinery_Shieldgen( this );
-			new Obj_Machinery_Shieldgen( this );
-			new Obj_Machinery_Shieldgen( this );
+			new Obj_Machinery_ShieldGen ( this );
+			new Obj_Machinery_ShieldGen(this);
+			new Obj_Machinery_ShieldGen(this);
+			new Obj_Machinery_ShieldGen(this);
 			return;
 		}
 

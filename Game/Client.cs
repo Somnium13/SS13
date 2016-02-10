@@ -44,12 +44,6 @@ namespace Somnium.Game {
 		public bool target_can_click = false;
 		public bool gun_mode = false;
 
-		protected override void __FieldInit() {
-			base.__FieldInit();
-
-			this.dir = 2;
-		}
-
 		// Function from file: client procs.dm
 		public Client ( dynamic TopicData = null ) {
 			

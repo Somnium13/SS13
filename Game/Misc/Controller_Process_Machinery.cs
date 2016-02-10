@@ -79,7 +79,7 @@ namespace Somnium.Game {
 						}
 					}
 				} catch (Exception __) {
-					e = __
+					e = __;
 					Game13.Error( e );
 					continue;
 				}

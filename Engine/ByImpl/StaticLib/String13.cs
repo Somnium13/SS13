@@ -177,5 +177,10 @@ namespace Somnium.Engine.ByImpl {
 
 			return new Regex(@"[^0-9a-zA-Z@_-]").Replace(a, "");
 		}
+
+		// This is supposed to take varargs but the only generated code that uses it only uses two args.
+		public static string Concat(string p1, string p2) {
+			return p1 + p2;
+		}
 	}
 }
