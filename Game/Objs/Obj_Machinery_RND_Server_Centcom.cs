@@ -35,9 +35,9 @@ namespace Somnium.Game {
 
 			foreach (dynamic _b in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_RND_Server) )) {
 				S = _b;
-				
 
-				switch ((double?)( S.server_id )) {
+
+				switch ((int?)(S.server_id)) {
 					case -1:
 						continue;
 						break;

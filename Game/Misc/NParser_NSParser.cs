@@ -31,8 +31,7 @@ namespace Somnium.Game {
 			while (this.index <= this.tokens.len) {
 				this.curToken = this.tokens[this.index];
 
-				switch ((Type)( this.curToken.type )) {
-					case typeof(Token_Keyword):
+				if (this.curToken.type == typeof(Token_Keyword)) {
 						kw = this.options.keywords[((dynamic)this.curToken).value];
 						kw = Lang13.Call( kw );
 
@@ -42,8 +41,7 @@ namespace Somnium.Game {
 								return null;
 							}
 						}
-						break;
-					case typeof(Token_Word):
+				} else if (this.curToken.type == typeof(Token_Word)) {
 						ntok = null;
 
 						if ( this.index + 1 > this.tokens.len ) {
@@ -74,8 +72,7 @@ namespace Somnium.Game {
 							this.index++;
 							continue;
 						}
-						break;
-					case typeof(Token_Symbol):
+				} else if (this.curToken.type == typeof(Token_Symbol)) {
 						
 						if ( ((dynamic)this.curToken).value == "}" ) {
 							
@@ -89,16 +86,14 @@ namespace Somnium.Game {
 							this.index++;
 							continue;
 						}
-						break;
-					case typeof(Token_End):
+
+				} else if (this.curToken.type == typeof(Token_End)) {
 						this.warnings.Add( new ScriptError_BadToken( this.curToken ) );
 						this.index++;
 						continue;
-						break;
-					default:
+				} else {
 						this.errors.Add( new ScriptError_BadToken( this.curToken ) );
 						return null;
-						break;
 				}
 				this.index++;
 			}

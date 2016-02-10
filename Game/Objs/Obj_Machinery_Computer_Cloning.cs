@@ -247,7 +247,7 @@ namespace Somnium.Game {
 			dat = "<h3>Cloning System Control</h3>";
 			dat += new Txt( "<font size=-1><a href='byond://?src=" ).Ref( this ).str( ";refresh=1'>Refresh</a></font>\n		<br><tt>" ).item( this.temp ).str( "</tt><br>" ).ToString();
 
-			switch ((double?)( this.menu )) {
+			switch ((int?)(this.menu)) {
 				case 1:
 					dat += "<h4>Modules</h4>";
 

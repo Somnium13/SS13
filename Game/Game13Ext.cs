@@ -155,7 +155,6 @@ namespace Somnium.Engine.ByImpl {
 				}
 				return;
 			}));
-			return Game13._internal_New();
 		}
 
 		// Function from file: IsBanned.dm
@@ -317,7 +316,6 @@ namespace Somnium.Engine.ByImpl {
 		// Function from file: unsorted.dm
 		public static void Error( dynamic e = null ) {
 			GlobalFuncs.print_runtime( e );
-			Game13._internal_Error( e );
 			return;
 		}
 

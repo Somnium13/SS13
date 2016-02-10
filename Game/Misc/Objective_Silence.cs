@@ -47,14 +47,14 @@ namespace Somnium.Game {
 							continue;
 						}
 
-						switch ((Type)( T.loc.type )) {
-							case typeof(Zone_Shuttle_Escape_Centcom):
-							case typeof(Zone_Shuttle_EscapePod1_Centcom):
-							case typeof(Zone_Shuttle_EscapePod2_Centcom):
-							case typeof(Zone_Shuttle_EscapePod3_Centcom):
-							case typeof(Zone_Shuttle_EscapePod5_Centcom):
-								return 0;
-								break;
+						if (
+							T.loc.type == typeof(Zone_Shuttle_Escape_Centcom) ||
+							T.loc.type == typeof(Zone_Shuttle_EscapePod1_Centcom) || 
+							T.loc.type == typeof(Zone_Shuttle_EscapePod2_Centcom) ||
+							T.loc.type == typeof(Zone_Shuttle_EscapePod3_Centcom) ||
+							T.loc.type == typeof(Zone_Shuttle_EscapePod5_Centcom)
+						) {
+							return 0;
 						}
 					}
 				}

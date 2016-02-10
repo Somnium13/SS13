@@ -167,8 +167,8 @@ namespace Somnium.Game {
 			((Mob)a).set_machine( this );
 			dat = "<TITLE>Telecommunication Server Monitor</TITLE><center><b>Telecommunications Server Monitor</b></center>";
 
-			switch ((bool)( this.screen )) {
-				case 0:
+			switch ( this.screen ) {
+				case false:
 					dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n				<br>Current Network: <a href='?src=" ).Ref( this ).str( ";network=1'>" ).item( this.network ).str( "</a><br>" ).ToString();
 
 					if ( this.servers.len != 0 ) {
@@ -184,7 +184,7 @@ namespace Somnium.Game {
 						dat += new Txt( "<br>No servers detected. Scan for servers: <a href='?src=" ).Ref( this ).str( ";operation=scan'>[Scan]</a>" ).ToString();
 					}
 					break;
-				case 1:
+				case true:
 					dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n				<center><a href='?src=" ).Ref( this ).str( ";operation=mainmenu'>[Main Menu]</a>     <a href='?src=" ).Ref( this ).str( ";operation=refresh'>[Refresh]</a></center>\n				<br>Current Network: " ).item( this.network ).str( "\n				<br>Selected Server: " ).item( this.SelectedServer.id ).ToString();
 
 					if ( Convert.ToDouble( ((dynamic)this.SelectedServer).totaltraffic ) >= 1024 ) {

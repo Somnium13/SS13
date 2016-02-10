@@ -45,8 +45,8 @@ namespace Somnium.Game {
 
 		// Function from file: reagent_dispenser.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

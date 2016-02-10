@@ -23,7 +23,7 @@ namespace Somnium.Game {
 				user.flying = false;
 				Icon13.Animate( new ByTable().Set( 1, user ).Set( "pixel_y", this.pixel_y + 10 ).Set( "time", 1 ).Set( "loop", 1 ) );
 				Icon13.Animate( new ByTable().Set( 1, user ).Set( "pixel_y", this.pixel_y ).Set( "time", 10 ).Set( "loop", 1 ).Set( "easing", 1 ) );
-				Icon13.AnimateFixMe( user );
+				Icon13.Animate( user );
 
 				if ( user.lying == true ) {
 					user.pixel_y -= 6;
@@ -61,7 +61,7 @@ namespace Somnium.Game {
 				a.flying = false;
 				Icon13.Animate( new ByTable().Set( 1, a ).Set( "pixel_y", this.pixel_y + 10 ).Set( "time", 1 ).Set( "loop", 1 ) );
 				Icon13.Animate( new ByTable().Set( 1, a ).Set( "pixel_y", this.pixel_y ).Set( "time", 10 ).Set( "loop", 1 ).Set( "easing", 1 ) );
-				Icon13.AnimateFixMe( a );
+				Icon13.Animate( a );
 
 				if ( a.lying == true ) {
 					a.pixel_y -= 6;

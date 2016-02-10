@@ -79,8 +79,8 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( href_list["ready"] ) ) {
-				
-				switch ((double?)( String13.ParseNumber( href_list["ready"] ) )) {
+
+				switch ((int?)(String13.ParseNumber(href_list["ready"]))) {
 					case 1:
 						this.ready = true;
 						break;

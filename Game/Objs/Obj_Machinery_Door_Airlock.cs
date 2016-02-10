@@ -569,7 +569,7 @@ namespace Somnium.Game {
 				} else if ( Lang13.Bool( href_list["aiEnable"] ) ) {
 					code2 = String13.ParseNumber( href_list["aiEnable"] );
 
-					switch ((double?)( code2 )) {
+					switch ((int?)(code2)) {
 						case 1:
 							
 							if ( this.isWireCut( GlobalVars.AIRLOCK_WIRE_IDSCAN ) != 0 ) {

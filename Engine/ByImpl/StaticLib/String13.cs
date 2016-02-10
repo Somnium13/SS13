@@ -168,6 +168,11 @@ namespace Somnium.Engine.ByImpl {
 			return "";
 		}
 
+		public static string UrlDecode(string a) {
+			Logger.Debug("->String13.url_decode");
+			return "";
+		}
+
 		public static string CKey(string a) {
 
 			return new Regex(@"[^0-9a-z@]").Replace(a.ToLower(), "");

@@ -10,9 +10,9 @@ namespace Somnium.Engine.ByImpl {
 			_name = name;
 		}
 
-		public void WriteMsg(string data) {
+		public void WriteMsg(object data) {
 			if (this == Game13.log)
-				Logger.Log(data);
+				Logger.Log(data.ToString());
 			else
 				Logger.LogFile("[" + _name + "] << " + data);
 		}

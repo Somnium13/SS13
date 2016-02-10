@@ -115,8 +115,8 @@ namespace Somnium.Game {
 
 		// Function from file: shielding.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					this.stability -= 80;
 					break;

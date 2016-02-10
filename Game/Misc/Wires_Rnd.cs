@@ -23,7 +23,7 @@ namespace Somnium.Game {
 
 			rnd = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)rnd).disabled = !mended;
 					break;
@@ -44,7 +44,7 @@ namespace Somnium.Game {
 
 			rnd = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)rnd).disabled = !Lang13.Bool( ((dynamic)rnd).disabled );
 					break;

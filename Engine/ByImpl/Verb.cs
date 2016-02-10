@@ -35,7 +35,7 @@ namespace Somnium.Engine.ByImpl {
 	}
 
 	enum VerbArgFilter {
-		Any, InViewExcludeThis, FromGlobalVar, FromGlobalFunc, FromMemberVar, FromMemberFunc, TheseValues
+		Any, InViewExcludeThis, FromGlobalVar, FromGlobalFunc, FromMemberVar, FromMemberFunc, TheseValues, FromGlobalVarMemberVar
 	}
 
 	[Flags]

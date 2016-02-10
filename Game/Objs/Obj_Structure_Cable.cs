@@ -57,7 +57,7 @@ namespace Somnium.Game {
 		// Function from file: cable.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.returnToPool( this );
 					break;

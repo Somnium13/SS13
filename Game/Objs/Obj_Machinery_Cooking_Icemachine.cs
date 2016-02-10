@@ -68,8 +68,8 @@ namespace Somnium.Game {
 				this.beaker.loc = this.loc;
 				this.beaker = null;
 			} else if ( Lang13.Bool( href_list["synthcond"] ) && Lang13.Bool( href_list["type"] ) ) {
-				
-				switch ((double?)( String13.ParseNumber( href_list["type"] ) )) {
+
+				switch ((int?)(String13.ParseNumber(href_list["type"]))) {
 					case 2:
 						_default = Rand13.Pick(new object [] { "cola", "dr_gibb", "space_up", "spacemountainwind" });
 						break;

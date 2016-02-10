@@ -38,7 +38,7 @@ namespace Somnium.Game {
 				return;
 			}
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 					new_range = ( ((dynamic)C).view_range == Lang13.Initial( C, "view_range" ) ? ((dynamic)C).short_range : Lang13.Initial( C, "view_range" ) );
 					((dynamic)C).setViewRange( new_range );
@@ -63,7 +63,7 @@ namespace Somnium.Game {
 
 			C = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 					range = ( mended ? Lang13.Initial( C, "view_range" ) : ((dynamic)C).short_range );
 					((dynamic)C).setViewRange( range );

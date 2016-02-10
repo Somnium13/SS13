@@ -398,7 +398,7 @@ namespace Somnium.Game {
 				severity = 1;
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)(severity)) {
 				case 1:
 					this.ChangeTurf( GlobalFuncs.get_base_turf( this.z ) );
 					return false;

@@ -50,7 +50,7 @@ namespace Somnium.Game {
 		// Function from file: snow.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.visible_message( new Txt( "<span class='danger'>" ).the( this ).item().str( " is blown apart!</span>" ).ToString() );
 					GlobalFuncs.qdel( this );

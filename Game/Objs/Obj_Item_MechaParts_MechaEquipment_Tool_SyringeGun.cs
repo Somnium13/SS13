@@ -166,16 +166,15 @@ namespace Somnium.Game {
 		// Function from file: medical_tools.dm
 		public dynamic get_reagents_list(  ) {
 			dynamic output = null;
-			double i = 0;
+
 			dynamic reagent_id = null;
 
 			
-			foreach (dynamic _a in Lang13.IterateRange( 1, this.known_reagents.len )) {
-				i = _a;
+			foreach (double i in Lang13.IterateRange( 1, this.known_reagents.len )) {
 				
 				reagent_id = this.known_reagents[i];
-				Interface13.Stat( i, this.processed_reagents.Contains( reagent_id ) );
-				output += "<input type=\"checkbox\" value=\"" + null + "\" name=\"reagent_" + reagent_id + "\" " + ( false ? "checked=\"1\"" : null ) + "> " + this.known_reagents[reagent_id] + "<br />";
+
+				output += "<input type=\"checkbox\" value=\"" + reagent_id + "\" name=\"reagent_" + i + "\" " + (this.processed_reagents.Contains(reagent_id) ? "checked=\"1\"" : "") + "> " + this.known_reagents[reagent_id] + "<br />";
 			}
 			return output;
 		}

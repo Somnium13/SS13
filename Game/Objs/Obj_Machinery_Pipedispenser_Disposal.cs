@@ -46,7 +46,7 @@ namespace Somnium.Game {
 					p_type = String13.ParseNumber( href_list["dmake"] );
 					C = new Obj_Structure_Disposalconstruct( this.loc );
 
-					switch ((double?)( p_type )) {
+					switch ((int?)(p_type)) {
 						case 0:
 							C.ptype = 0;
 							break;

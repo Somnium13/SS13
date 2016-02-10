@@ -79,7 +79,7 @@ namespace Somnium.Game {
 				return null;
 			}
 
-			switch ((double?)( this.filter_type )) {
+			switch ((int?)(this.filter_type)) {
 				case 0:
 					current_filter_type = "Plasma";
 					break;
@@ -152,7 +152,7 @@ namespace Somnium.Game {
 				filtered_out = new GasMixture();
 				filtered_out.temperature = Lang13.DoubleNullable( removed.temperature );
 
-				switch ((double?)( this.filter_type )) {
+				switch ((int?)(this.filter_type)) {
 					case 0:
 						filtered_out.toxins = removed.toxins;
 						removed.toxins = 0;

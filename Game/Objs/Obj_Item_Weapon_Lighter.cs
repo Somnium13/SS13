@@ -151,14 +151,14 @@ namespace Somnium.Game {
 		// Function from file: cigs_lighters.dm
 		public override bool? update_icon( dynamic location = null, dynamic target = null ) {
 			
-			switch ((bool)( this.lit )) {
-				case 1:
+			switch ( this.lit ) {
+				case true:
 					this.name = "lit " + Lang13.Initial( this, "name" );
 					this.item_state = "" + Lang13.Initial( this, "item_state" ) + "on";
 					this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "-on";
 					this.damtype = "fire";
 					break;
-				case 0:
+				case false:
 					this.name = "" + Lang13.Initial( this, "name" );
 					this.item_state = "" + Lang13.Initial( this, "item_state" ) + "off";
 					this.icon_state = "" + Lang13.Initial( this, "icon_state" );

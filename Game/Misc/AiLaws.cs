@@ -43,7 +43,7 @@ namespace Somnium.Game {
 				this.rm_law( lawtype, index );
 				lawtype_str = "law #" + index;
 
-				switch ((double?)( lawtype )) {
+				switch ((int?)(lawtype)) {
 					case 0:
 						lawtype_str = "law zero";
 						break;
@@ -104,8 +104,8 @@ namespace Somnium.Game {
 
 		// Function from file: ai_laws.dm
 		public void rm_law( double? law_type = null, double? idx = null ) {
-			
-			switch ((double?)( law_type )) {
+
+			switch ((int?)(law_type)) {
 				case -2:
 					this.ion.Cut( ((int?)( idx )), ((int)( ( idx ??0) + 1 )) );
 					break;

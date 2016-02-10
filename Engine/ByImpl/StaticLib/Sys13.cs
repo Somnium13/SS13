@@ -8,5 +8,9 @@ namespace Somnium.Engine.ByImpl {
 			Logger.Debug("**EXECUTE");
 			return 0;
 		}
+
+		public static void Shutdown() {
+
+		}
 	}
 }

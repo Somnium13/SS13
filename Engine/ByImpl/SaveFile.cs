@@ -49,5 +49,9 @@ namespace Somnium.Engine.ByImpl {
 			Logger.Debug("SAVE-READ");
 			return null;
 		}
+
+		public void ExportText(string a, string b) {
+
+		}
 	}
 }

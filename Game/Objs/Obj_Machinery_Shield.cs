@@ -83,8 +83,8 @@ namespace Somnium.Game {
 
 		// Function from file: shieldgen.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 75 ) ) {

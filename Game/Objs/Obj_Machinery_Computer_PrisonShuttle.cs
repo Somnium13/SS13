@@ -56,8 +56,8 @@ namespace Somnium.Game {
 			GlobalVars.prison_shuttle_moving_to_station = false;
 			GlobalVars.prison_shuttle_moving_to_prison = false;
 
-			switch ((bool)( GlobalVars.prison_shuttle_at_station )) {
-				case 0:
+			switch ( GlobalVars.prison_shuttle_at_station ) {
+				case false:
 					GlobalVars.prison_shuttle_at_station = true;
 
 					if ( GlobalVars.prison_shuttle_moving_to_station || GlobalVars.prison_shuttle_moving_to_prison ) {
@@ -101,7 +101,7 @@ namespace Somnium.Game {
 					}
 					((Zone)start_location).move_contents_to( end_location );
 					break;
-				case 1:
+				case true:
 					GlobalVars.prison_shuttle_at_station = false;
 
 					if ( GlobalVars.prison_shuttle_moving_to_station || GlobalVars.prison_shuttle_moving_to_prison ) {

@@ -45,7 +45,7 @@ namespace Somnium.Game {
 
 			R = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 4:
 					
 					if ( !( ((dynamic)R).camera == null ) && Lang13.Bool( ((dynamic)R).camera.can_use() ) && !Lang13.Bool( ((dynamic)R).scrambledcodes ) ) {
@@ -67,7 +67,7 @@ namespace Somnium.Game {
 
 			R = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 4:
 					
 					if ( !( ((dynamic)R).camera == null ) && !Lang13.Bool( ((dynamic)R).scrambledcodes ) ) {

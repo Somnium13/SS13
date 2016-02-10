@@ -40,8 +40,8 @@ namespace Somnium.Game {
 			Effect_Effect_System_SparkSpread s2 = null;
 			Effect_Effect_System_SparkSpread s3 = null;
 
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 80 ) ) {

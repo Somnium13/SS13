@@ -24,8 +24,8 @@ namespace Somnium.Game {
 		// Function from file: nuclear.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
 			
-			switch ((bool)( this.mode )) {
-				case 0:
+			switch ( this.mode ) {
+				case false:
 					this.mode = true;
 					this.charge_cost = 100;
 					this.fire_sound = "sound/weapons/laser.ogg";
@@ -33,7 +33,7 @@ namespace Somnium.Game {
 					this.projectile_type = "/obj/item/projectile/beam";
 					this.modifystate = "energykill";
 					break;
-				case 1:
+				case true:
 					this.mode = false;
 					this.charge_cost = 100;
 					this.fire_sound = "sound/weapons/Taser.ogg";

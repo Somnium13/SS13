@@ -35,7 +35,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( href_list["mode"] ) ) {
 				this.mode = String13.ParseNumber( href_list["mode"] );
 
-				switch ((double?)( this.mode )) {
+				switch ((int?)(this.mode)) {
 					case 0:
 						this.occupant_message( "Switched RCD to Deconstruct." );
 						break;

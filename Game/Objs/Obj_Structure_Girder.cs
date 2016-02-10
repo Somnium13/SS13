@@ -56,8 +56,8 @@ namespace Somnium.Game {
 
 		// Function from file: girders.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 25 ) && this.state == 2 ) {

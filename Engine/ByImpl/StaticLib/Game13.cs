@@ -97,6 +97,8 @@ namespace Somnium.Engine.ByImpl {
 		public static dynamic GetConfig(string s, string k = null) { Logger.Debug("GET CFG"); return null; }
 		public static void SetConfig(string s, string k, string v) { Logger.Debug("SET CFG"); }
 
+		public static dynamic Export(string url) { return null; }
+
 		public static void WriteMsg(dynamic o) {
 			// HUAH! http://www.dotnetperls.com/remove-html-tags
 			string stripped = System.Text.RegularExpressions.Regex.Replace(o, "<.*?>", "");

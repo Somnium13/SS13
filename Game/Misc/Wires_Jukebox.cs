@@ -34,7 +34,7 @@ namespace Somnium.Game {
 
 			J = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 				case 2:
 				case 4:
@@ -95,7 +95,7 @@ namespace Somnium.Game {
 			}
 			J = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 				case 2:
 				case 4:

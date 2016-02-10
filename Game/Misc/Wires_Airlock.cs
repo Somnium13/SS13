@@ -42,7 +42,7 @@ namespace Somnium.Game {
 
 			A = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 					
 					if ( Lang13.Bool( ((dynamic)A).arePowerSystemsOn() ) && !Lang13.Bool( ((dynamic)A).stat & 2 ) && A.density ) {

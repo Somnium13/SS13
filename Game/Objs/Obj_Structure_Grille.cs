@@ -259,7 +259,7 @@ namespace Somnium.Game {
 		// Function from file: grille.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.health -= Rand13.Int( 30, 50 );
 					break;

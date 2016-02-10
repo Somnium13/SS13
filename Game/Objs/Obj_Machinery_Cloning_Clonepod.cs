@@ -54,8 +54,8 @@ namespace Somnium.Game {
 			dynamic A2 = null;
 			dynamic A3 = null;
 
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this )) {

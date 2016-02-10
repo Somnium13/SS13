@@ -336,8 +336,8 @@ namespace Somnium.Game {
 			steps = 0;
 
 			if ( !Lang13.Bool( step ) ) {
-				
-				switch ((double?)( this.current_size )) {
+
+				switch ((int?)(this.current_size)) {
 					case 1:
 						steps = 1;
 						break;
@@ -582,7 +582,7 @@ namespace Somnium.Game {
 				temp_allowed_size = force_size;
 			}
 
-			switch ((double?)( temp_allowed_size )) {
+			switch ((int?)( temp_allowed_size )) {
 				case 1:
 					this.current_size = 1;
 					this.icon = "icons/obj/singularity.dmi";

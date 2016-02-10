@@ -842,7 +842,7 @@ namespace Somnium.Game {
 			b_loss = null;
 			f_loss = null;
 
-			switch ((double?)( severity )) {
+			switch ((int?)(severity)) {
 				case 1:
 					b_loss += 500;
 					this.gib();

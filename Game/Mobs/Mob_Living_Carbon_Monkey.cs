@@ -494,7 +494,7 @@ namespace Somnium.Game {
 				Icon13.Flick( "flash", this.flash );
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)(severity)) {
 				case 1:
 					
 					if ( this.stat != 2 ) {

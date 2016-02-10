@@ -23,7 +23,7 @@ namespace Somnium.Game {
 
 			R = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 					((dynamic)R).listening = !Lang13.Bool( ((dynamic)R).listening );
 					((dynamic)R).broadcasting = ((dynamic)R).listening;

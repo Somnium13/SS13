@@ -23,7 +23,7 @@ namespace Somnium.Game {
 
 			A = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)A).locked = !Lang13.Bool( ((dynamic)A).locked );
 					break;

@@ -59,7 +59,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			switch ((double?)( this.mode )) {
+			switch ((int?)( this.mode )) {
 				case 1:
 					
 					if ( !this.action_checks( target ) && !Lang13.Bool( this.locked ) ) {

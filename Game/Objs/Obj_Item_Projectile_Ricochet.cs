@@ -322,8 +322,8 @@ namespace Somnium.Game {
 
 		// Function from file: ricochet.dm
 		public override bool? update_icon( dynamic location = null, dynamic target = null ) {
-			
-			switch ((double?)( this.pos_to )) {
+
+			switch ((int?)(this.pos_to)) {
 				case 1:
 					
 					if ( this.pos_from == GlobalVars.WEST ) {

@@ -364,13 +364,14 @@ namespace Somnium.Game {
 				result = value_1 != value_2;
 			}
 
-			switch ((bool)( result )) {
-				case 0:
+			switch ( result ) {
+				case false:
 					
 					if ( Lang13.Bool( this.pulse_if_false ) ) {
 						((Obj_Item_Device_Assembly)this.pulse_if_false).pulsed();
 					}
 					break;
+
 				default:
 					
 					if ( Lang13.Bool( this.pulse_if_true ) ) {

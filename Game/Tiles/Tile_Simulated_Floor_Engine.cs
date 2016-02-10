@@ -44,8 +44,8 @@ namespace Somnium.Game {
 			Tile_Simulated_Floor_Engine F = null;
 			Tile_Simulated_Floor_Engine F2 = null;
 
-			
-			switch ((double?)( severity )) {
+
+			switch ((int?)(severity)) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 80 ) ) {

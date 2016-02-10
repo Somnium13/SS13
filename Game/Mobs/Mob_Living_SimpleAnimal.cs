@@ -152,7 +152,7 @@ namespace Somnium.Game {
 			}
 			base.ex_act( severity, (object)(child) );
 
-			switch ((double?)( severity )) {
+			switch ((int?)(severity)) {
 				case 1:
 					this.adjustBruteLoss( 500 );
 					this.gib();

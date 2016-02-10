@@ -314,7 +314,7 @@ namespace Somnium.Game {
 			}
 			dat = GlobalVars.POS_HEADER + new Txt( "\n	<div class=\"navbar\">\n		" ).item( GlobalFuncs.worldtime2text() ).str( ", " ).item( GlobalVars.current_date_string ).str( "<br />\n		" ).item( logindata ).str( "\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 1 ).str( "\">Order</a> |\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 3 ).str( "\">Products</a> |\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 6 ).str( "\">Settings</a>\n	</div>" ).ToString();
 
-			switch ((double?)( this.screen )) {
+			switch ((int?)(this.screen)) {
 				case 0:
 					dat += this.LoginScreen();
 					break;

@@ -67,8 +67,8 @@ namespace Somnium.Game {
 			}
 			new_portal = new Obj_Effect_Portal( T, 3000 );
 
-			switch ((bool)( this.setting )) {
-				case 0:
+			switch ( this.setting ) {
+				case false:
 					
 					if ( this.blue_portal != null ) {
 						GlobalFuncs.qdel( this.blue_portal );
@@ -77,7 +77,7 @@ namespace Somnium.Game {
 					this.blue_portal = new_portal;
 					this.blue_portal.creator = this;
 					break;
-				case 1:
+				case true:
 					
 					if ( this.red_portal != null ) {
 						GlobalFuncs.qdel( this.red_portal );
@@ -106,13 +106,13 @@ namespace Somnium.Game {
 		// Function from file: special.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
 			
-			switch ((bool)( this.setting )) {
-				case 0:
+			switch ( this.setting ) {
+				case false:
 					this.setting = true;
 					this.fire_sound = "sound/weapons/portalgun_red.ogg";
 					GlobalFuncs.to_chat( user, "Now set to fire <span style='color: #FF6600;'>red portals</span>." );
 					break;
-				case 1:
+				case true:
 					this.setting = false;
 					this.fire_sound = "sound/weapons/portalgun_blue.ogg";
 					GlobalFuncs.to_chat( user, "Now set to fire <span style='color: #0066FF;'>blue portals</span>." );

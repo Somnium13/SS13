@@ -64,13 +64,10 @@ namespace Somnium.Game {
 
 			if ( T != null ) {
 				
-				switch ((Type)( T.type )) {
-					case typeof(JsonToken_Text):
-					case typeof(JsonToken_Number):
+				if (T.type == typeof(JsonToken_Text) || T.type == typeof(JsonToken_Number)) {
 						this.next_token();
 						return ((dynamic)T).value;
-						break;
-					case typeof(JsonToken_Word):
+				} else if (T.type == typeof(JsonToken_Word)) {
 						this.next_token();
 
 						dynamic _a = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
@@ -81,16 +78,13 @@ namespace Somnium.Game {
 						} else if ( _a=="null" ) {
 							return null;
 						}
-						break;
-					case typeof(JsonToken_Symbol):
-						
+				} else if (T.type == typeof(JsonToken_Symbol)) {
 						dynamic _b = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
 						if ( _b=="[" ) {
 							return this.read_array();
 						} else if ( _b=="{" ) {
 							return this.ReadObject( this.tokens.Copy( this.i ) );
 						}
-						break;
 				}
 			}
 			this.die();

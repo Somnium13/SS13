@@ -10294,7 +10294,7 @@ wink, yawn" );
 			}
 
 			if ( jittery_time != 0 && !( this.jitteriness != 0 ) ) {
-				Icon13.AnimateFixMe( this );
+				Icon13.Animate( this );
 			}
 			this.handle_trace_chems();
 			liver = this.internal_organs_by_name["liver"];

@@ -205,8 +205,8 @@ namespace Somnium.Game {
 						access_overlap = check_accesses & GlobalFuncs.get_region_accesses( i );
 
 						if ( access_overlap.len != 0 ) {
-							
-							switch ((double?)( i )) {
+
+							switch ((int?)(i)) {
 								case 1:
 									this.icon_state = "flatpacksec";
 									break;

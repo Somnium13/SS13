@@ -1269,14 +1269,14 @@ namespace Somnium.Game {
 				return;
 			}
 
-			switch ((bool?)( doorstate )) {
-				case 0:
+			switch ( doorstate ) {
+				case false:
 					((dynamic)bususer.gui_icons.adminbus_door_0).icon_state = "icon_door_0-on";
 					((dynamic)bususer.gui_icons.adminbus_door_1).icon_state = "icon_door_1-off";
 					this.door_mode = false;
 					this.overlays.Remove( new Image( this.icon, "opendoor" ) );
 					break;
-				case 1:
+				case true:
 					((dynamic)bususer.gui_icons.adminbus_door_0).icon_state = "icon_door_0-off";
 					((dynamic)bususer.gui_icons.adminbus_door_1).icon_state = "icon_door_1-on";
 					this.door_mode = true;

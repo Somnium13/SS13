@@ -122,11 +122,11 @@ namespace Somnium.Game {
 							found = null;
 							node_type = this.getNodeType( i );
 
-							switch ((bool)( node_type )) {
-								case 0:
+							switch ( node_type ) {
+								case false:
 									found = this.findConnecting( direction, i );
 									break;
-								case 1:
+								case true:
 									found = this.findConnectingHE( direction, i );
 									break;
 								default:

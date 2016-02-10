@@ -51,7 +51,7 @@ namespace Somnium.Game {
 
 			V = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)(index)) {
 				case 1:
 					((dynamic)V).shoot_inventory = !Lang13.Bool( ((dynamic)V).shoot_inventory );
 					break;

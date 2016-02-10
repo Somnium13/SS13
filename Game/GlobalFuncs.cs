@@ -21084,7 +21084,7 @@ Subject's pulse: ??? BPM" );
 
 					if ( Lang13.Bool( sstep ) && sstep % segment_length == 0 ) {
 						
-						switch ((double?)( movement_dir )) {
+						switch ((int?)( movement_dir )) {
 							case 1:
 								movement_dir = GlobalVars.EAST;
 								break;

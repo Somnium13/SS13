@@ -89,6 +89,11 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
+		public static Game.Tile GetStepRandom() {
+			Logger.Debug("map->get_step_random");
+			return null;
+		}
+
 		/////
 
 		public static void Walk(Game.Ent_Dynamic ent, int dir, int lag = 0) {
