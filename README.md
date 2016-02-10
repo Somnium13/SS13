@@ -13,7 +13,7 @@ If you want to become part of my crack team of non-skids, hit me up at bigboysau
 - Nov 15: 100% of functions decompiled.
 - Jan 5: **It compiles.**
 - Jan 6: Globals initialize without throwing exceptions.
-- Feb 9: Switched to /vg/, freezed transpiled output.
+- Feb 9: Switched to /vg/. Now editing generated code.
 
 ## Credits
 - melichior - Project Lead - Wrote the transcompiler
