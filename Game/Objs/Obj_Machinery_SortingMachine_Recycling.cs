@@ -33,7 +33,7 @@ namespace Somnium.Game {
 		public override dynamic interact( dynamic user = null, bool? flag1 = null ) {
 			string dat = null;
 			int? i = null;
-			dynamic selected = null;
+			bool selected = false;
 			string cssclass = null;
 			Browser popup = null;
 
@@ -51,9 +51,8 @@ namespace Somnium.Game {
 			i = 1;
 
 			while (( i ??0) <= this.types.len) {
-				Interface13.Stat( null, this.selected_types.Contains( this.types[i] ) );
-				selected = null;
-				cssclass = ( Lang13.Bool( selected ) ? "linkOn" : "linkDanger" );
+				selected = this.selected_types.Contains( this.types[i] );
+				cssclass = ( selected ? "linkOn" : "linkDanger" );
 				dat += new Txt( "<a href='?src=" ).Ref( this ).str( ";toggle_types=" ).item( i ).str( "' class='" ).item( cssclass ).str( "'>" ).item( this.types[i] ).str( "</a><br>" ).ToString();
 				i++;
 			}
@@ -65,8 +64,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: sortingmachinery.dm
-		public override bool? sort( Ent_Dynamic A = null ) {
-			return A.w_type != 0 && false;
+		public override bool sort( Ent_Dynamic A = null ) {
+			return A.w_type != 0 && this.selected_types.Contains( this.types[A.w_type] );
 		}
 
 		// Function from file: sortingmachinery.dm
@@ -84,9 +83,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( href_list["toggle_types"] ) ) {
 				typeID = String13.ParseNumber( href_list["toggle_types"] );
 				typeID = ( ( typeID ??0) <= 1 ? 1 : ( ( typeID ??0) >= this.types.len ? this.types.len : typeID ) );
-				Interface13.Stat( null, this.selected_types.Contains( this.types[typeID] ) );
 
-				if ( ( typeID ??0) <= 1 ) {
+				if ( this.selected_types.Contains( this.types[typeID] ) ) {
 					this.selected_types.Remove( this.types[typeID] );
 				} else {
 					this.selected_types.Add( this.types[typeID] );

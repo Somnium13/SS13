@@ -164,15 +164,11 @@ namespace Somnium.Game {
 					this.Fire( M, user, 0, false, true );
 					this.damage_multiplier = 1;
 					return null;
+				} else if ( this.target.Contains( this.target != null && Lang13.Bool( M ) ) ) {
+					this.Fire( M, user, 0, false, true );
+					return null;
 				} else {
-					Interface13.Stat( null, this.target.Contains( this.target != null && Lang13.Bool( M ) ) );
-
-					if ( user.a_intent == "hurt" ) {
-						this.Fire( M, user, 0, false, true );
-						return null;
-					} else {
-						return base.attack( (object)(M), (object)(user), def_zone, eat_override );
-					}
+					return base.attack( (object)(M), (object)(user), def_zone, eat_override );
 				}
 			} else {
 				return base.attack( (object)(M), (object)(user), def_zone, eat_override );
@@ -246,9 +242,8 @@ namespace Somnium.Game {
 				
 				if ( user is Mob_Living ) {
 					M = user;
-					Interface13.Stat( null, M.mutations.Contains( 5 ) );
 
-					if ( false && Rand13.PercentChance( 50 ) ) {
+					if ( Lang13.Bool( M.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 						GlobalFuncs.to_chat( M, "<span class='danger'>" + this + " blows up in your face.</span>" );
 						((Mob_Living)M).take_organ_damage( 0, 20 );
 						new ByTable().Set( 1, this ).Set( "force_drop", 1 ).Apply( Lang13.BindFunc( M, "drop_item" ) );
@@ -265,9 +260,8 @@ namespace Somnium.Game {
 
 			if ( user is Mob_Living ) {
 				M2 = user;
-				Interface13.Stat( null, M2.mutations.Contains( 4 ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( M2.mutations.Contains( 4 ) ) ) {
 					GlobalFuncs.to_chat( M2, "<span class='warning'>Your meaty finger is much too large for the trigger guard!</span>" );
 					return;
 				}

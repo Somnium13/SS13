@@ -30,8 +30,8 @@ namespace Somnium.Game {
 
 		// Function from file: shuttle.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( !Lang13.Bool( Lang13.FindIn( typeof(Obj_Effect_Decal_Cleanable_Soot), this ) ) ) {

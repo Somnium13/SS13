@@ -46,12 +46,10 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( P ) && P is Obj_Item_Device_Multitool ) {
 				update_mt_menu = false;
 				re_init = false;
-				Interface13.Stat( null, href_list.Contains( "set_tag" ) );
 
-				if ( false ) {
-					Interface13.Stat( null, this.vars.Contains( href_list["set_tag"] ) );
-
-					if ( !false ) {
+				if ( href_list.Contains( "set_tag" ) ) {
+					
+					if ( !this.vars.Contains( href_list["set_tag"] ) ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Something went wrong: Unable to find " + href_list["set_tag"] + " in vars!</span>" );
 						return true;
 					}
@@ -63,9 +61,8 @@ namespace Somnium.Game {
 						re_init = true;
 					}
 				}
-				Interface13.Stat( null, href_list.Contains( "unlink" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "unlink" ) ) {
 					idx = String13.ParseNumber( href_list["unlink"] );
 
 					if ( !Lang13.Bool( idx ) ) {
@@ -89,9 +86,8 @@ namespace Somnium.Game {
 					}
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "link" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "link" ) ) {
 					O2 = P.buffer;
 
 					if ( !( O2 != null ) ) {
@@ -103,7 +99,7 @@ namespace Somnium.Game {
 						return true;
 					}
 
-					if ( this.isLinkedWith( O2 ) == true ) {
+					if ( this.isLinkedWith( O2 ) ) {
 						GlobalFuncs.to_chat( Task13.User, new Txt( "<span class='attack'>A red light flashes on " ).the( P ).item().str( ". The two devices are already linked.</span>" ).ToString() );
 						return true;
 					}
@@ -116,9 +112,8 @@ namespace Somnium.Game {
 					}
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "buffer" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "buffer" ) ) {
 					
 					if ( this is Obj_Machinery_Telecomms ) {
 						
@@ -134,9 +129,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( Task13.User, "<span class='confirm'>A green light flashes, and the device appears in the multitool buffer.</span>" );
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "flush" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "flush" ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='confirm'>A green light flashes, and the device disappears from the multitool buffer.</span>" );
 					P.buffer = null;
 					update_mt_menu = true;

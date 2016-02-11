@@ -50,9 +50,8 @@ namespace Somnium.Game {
 			dynamic data = null;
 
 			this.frequency = Convert.ToDouble( signal.frequency );
-			Interface13.Stat( null, signal.data.Contains( "mob" ) );
 
-			if ( false ) {
+			if ( Lang13.Bool( signal.data.Contains( "mob" ) ) ) {
 				this.speaker = signal.data["mob"];
 			}
 			this.message = signal.data["message"];

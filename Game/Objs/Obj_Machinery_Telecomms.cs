@@ -136,14 +136,12 @@ namespace Somnium.Game {
 			
 			if ( buffer != null && buffer != this && buffer is Obj_Machinery_Telecomms ) {
 				T = buffer;
-				Interface13.Stat( null, ((dynamic)T).links.Contains( this ) );
 
-				if ( !false ) {
+				if ( !Lang13.Bool( ((dynamic)T).links.Contains( this ) ) ) {
 					((dynamic)T).links.Add( this );
 				}
-				Interface13.Stat( null, this.links.Contains( T ) );
 
-				if ( !( !false ) ) {
+				if ( !this.links.Contains( T ) ) {
 					this.links.Add( T );
 				}
 				this.temp = new Txt( "<font color = #666633>-% Successfully linked with " ).Ref( buffer ).str( " " ).item( ((dynamic)buffer).name ).str( " %-</font color>" ).ToString();
@@ -162,9 +160,8 @@ namespace Somnium.Game {
 		public override bool unlinkFrom( Mob user = null, Base_Data buffer = null ) {
 			Base_Data T = null;
 
-			Interface13.Stat( null, this.links.Contains( buffer != null && buffer != null ) );
-
-			if ( false ) {
+			
+			if ( this.links.Contains( buffer != null && buffer != null ) ) {
 				T = buffer;
 
 				if ( Lang13.Bool( ((dynamic)T).links ) ) {
@@ -247,9 +244,8 @@ namespace Somnium.Game {
 						if ( String13.FindIgnoreCase( String13.NumberToString( Convert.ToDouble( newfreq ) ), ".", 1, 0 ) != 0 ) {
 							newfreq *= 10;
 						}
-						Interface13.Stat( null, this.freq_listening.Contains( newfreq ) );
 
-						if ( !( String13.FindIgnoreCase( String13.NumberToString( Convert.ToDouble( newfreq ) ), ".", 1, 0 ) != 0 ) && Convert.ToDouble( newfreq ) < 10000 ) {
+						if ( !this.freq_listening.Contains( newfreq ) && Convert.ToDouble( newfreq ) < 10000 ) {
 							this.freq_listening.Add( newfreq );
 							this.temp = "<font color = #666633>-% New frequency filter assigned: \"" + newfreq + " GHz\" %-</font color>";
 						}
@@ -274,9 +270,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: machine_interactions.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			Interface13.Stat( null, this.links.Contains( O != null && O != null ) );
-			return null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			return this.links.Contains( O != null && O != null );
 		}
 
 		// Function from file: machine_interactions.dm
@@ -436,9 +431,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( this.autolinkers )) {
 						x = _a;
 						
-						Interface13.Stat( null, T.autolinkers.Contains( x ) );
 
-						if ( false ) {
+						if ( T.autolinkers.Contains( x ) ) {
 							this.links.Or( T );
 							break;
 						}
@@ -454,9 +448,8 @@ namespace Somnium.Game {
 			if ( !( signal != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, this.freq_listening.Contains( ((dynamic)signal).frequency ) );
 
-			if ( !( signal != null ) || !( this.freq_listening.len != 0 ) ) {
+			if ( this.freq_listening.Contains( ((dynamic)signal).frequency ) || !( this.freq_listening.len != 0 ) ) {
 				return true;
 			} else {
 				return false;

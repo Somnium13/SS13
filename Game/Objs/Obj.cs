@@ -134,9 +134,8 @@ namespace Somnium.Game {
 				
 				((Mob)user).unset_machine();
 			}
-			Interface13.Stat( null, GlobalVars.processing_objects.Contains( this ) );
 
-			if ( false ) {
+			if ( GlobalVars.processing_objects.Contains( this ) ) {
 				GlobalVars.processing_objects.Remove( this );
 			}
 			base.Destroy( (object)(brokenup) );
@@ -352,7 +351,7 @@ a {
 		}
 
 		// Function from file: objs.dm
-		public virtual bool? isLinkedWith( Base_Data O = null ) {
+		public virtual bool isLinkedWith( Base_Data O = null ) {
 			return false;
 		}
 
@@ -401,7 +400,7 @@ a {
 						continue;
 					}
 
-					if ( !( M is Mob_Living_Silicon_Ai ) && !( M is Mob_Living_Silicon_Robot ) && !false ) {
+					if ( !( M is Mob_Living_Silicon_Ai ) && !( M is Mob_Living_Silicon_Robot ) && !nearby.Contains( M ) ) {
 						this._using.Remove( M );
 						continue;
 					}
@@ -434,9 +433,8 @@ a {
 							this._using.Remove( M );
 							continue;
 						}
-						Interface13.Stat( null, nearby.Contains( !Lang13.Bool( M ) ) );
 
-						if ( !Lang13.Bool( M ) || !Lang13.Bool( M.client ) || M.machine != this ) {
+						if ( nearby.Contains( !Lang13.Bool( M ) ) ) {
 							
 							if ( M is Mob_Living_Silicon_Ai || M is Mob_Living_Silicon_Robot ) {
 								is_in_use = true;
@@ -444,9 +442,8 @@ a {
 							}
 
 							if ( Lang13.Bool( M.mutations ) && M.mutations.len != 0 ) {
-								Interface13.Stat( null, M.mutations.Contains( 1 ) );
-
-								if ( false ) {
+								
+								if ( Lang13.Bool( M.mutations.Contains( 1 ) ) ) {
 									is_in_use = true;
 									this.attack_hand( M, GlobalVars.TRUE );
 								}
@@ -538,9 +535,8 @@ a {
 			foreach (dynamic _a in Lang13.Enumerate( this.req_access )) {
 				req = _a;
 				
-				Interface13.Stat( null, L.Contains( req ) );
 
-				if ( !false ) {
+				if ( !L.Contains( req ) ) {
 					return false;
 				}
 			}
@@ -550,9 +546,8 @@ a {
 				foreach (dynamic _b in Lang13.Enumerate( this.req_one_access )) {
 					req2 = _b;
 					
-					Interface13.Stat( null, L.Contains( req2 ) );
 
-					if ( false ) {
+					if ( L.Contains( req2 ) ) {
 						return true;
 					}
 				}

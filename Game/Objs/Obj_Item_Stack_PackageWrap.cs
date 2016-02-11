@@ -100,9 +100,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( target.anchored ) ) {
 				return false;
 			}
-			Interface13.Stat( null, user.Contains( target ) );
 
-			if ( Lang13.Bool( target.anchored ) ) {
+			if ( Lang13.Bool( user.Contains( target ) ) ) {
 				return false;
 			}
 

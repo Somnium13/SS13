@@ -10,6 +10,7 @@ namespace Somnium.Game {
 		public string gcDestroyed = null;
 		public dynamic timeDestroyed = null;
 
+
 		// Function from file: nanoexternal.dm
 		public virtual void ui_interact( dynamic user = null, string ui_key = null, Nanoui ui = null, bool? force_open = null ) {
 			ui_key = ui_key ?? "main";
@@ -28,9 +29,8 @@ namespace Somnium.Game {
 		public virtual void setGender( string gend = null ) {
 			gend = gend ?? GlobalVars.FEMALE;
 
-			Interface13.Stat( null, this.vars.Contains( "gender" ) );
-
-			if ( !( gend == null ) ) {
+			
+			if ( !this.vars.Contains( "gender" ) ) {
 				Task13.Crash( "Oh shit you stupid nigger the " + this + " doesn't have a gender variable." );
 			}
 
@@ -82,9 +82,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.vars )) {
 				key = _a;
 				
-				Interface13.Stat( null, exclude.Contains( key ) );
 
-				if ( false ) {
+				if ( exclude.Contains( key ) ) {
 					continue;
 				}
 				GlobalVars.pooledvariables[this.type][key] = Lang13.Initial( this, key );

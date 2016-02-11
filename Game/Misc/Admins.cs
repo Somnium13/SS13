@@ -582,4342 +582,4317 @@ namespace Somnium.Game {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Unfortunately, there weren't enough candidates available.</span>" );
 					}
 				}
-			} else {
-				Interface13.Stat( null, href_list.Contains( "announce_laws" ) );
+			} else if ( href_list.Contains( "announce_laws" ) ) {
+				S = Lang13.FindObj( href_list["mob"] );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has notified " + GlobalFuncs.key_name( S ) + " of a change to their laws." );
+				GlobalFuncs.message_admins( "" + Task13.User.key + " has notified " + GlobalFuncs.key_name( S ) + " of a change to their laws." );
+				GlobalFuncs.to_chat( S, "____________________________________" );
+				GlobalFuncs.to_chat( S, "<span style=\"color:red;font-weight:bold;\">LAW CHANGE NOTICE</span>" );
 
-				if ( Lang13.Bool( href_list["makeAntag"] ) ) {
-					S = Lang13.FindObj( href_list["mob"] );
-					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has notified " + GlobalFuncs.key_name( S ) + " of a change to their laws." );
-					GlobalFuncs.message_admins( "" + Task13.User.key + " has notified " + GlobalFuncs.key_name( S ) + " of a change to their laws." );
-					GlobalFuncs.to_chat( S, "____________________________________" );
-					GlobalFuncs.to_chat( S, "<span style=\"color:red;font-weight:bold;\">LAW CHANGE NOTICE</span>" );
+				if ( Lang13.Bool( S.laws ) ) {
+					GlobalFuncs.to_chat( S, "<b>Your new laws are as follows:</b>" );
+					S.laws.show_laws( S );
+				} else {
+					GlobalFuncs.to_chat( S, "<b>Your laws are null.</b> Contact a coder immediately." );
+				}
+				GlobalFuncs.to_chat( S, "____________________________________" );
 
-					if ( Lang13.Bool( S.laws ) ) {
-						GlobalFuncs.to_chat( S, "<b>Your new laws are as follows:</b>" );
-						S.laws.show_laws( S );
-					} else {
-						GlobalFuncs.to_chat( S, "<b>Your laws are null.</b> Contact a coder immediately." );
+				if ( S is Mob_Living_Silicon_Ai ) {
+					AI = S;
+					((Mob_Living_Silicon_Ai)AI).notify_slaved( true );
+				}
+			} else if ( href_list.Contains( "add_law" ) ) {
+				S2 = Lang13.FindObj( href_list["mob"] );
+				lawtypes = new ByTable().Set( "Law Zero", 0 ).Set( "Ion", -2 ).Set( "Core", -1 ).Set( "Standard", 1 );
+				lawtype = Interface13.Input( "Select a law type.", "Law Type", 1, null, lawtypes, InputType.Any );
+				lawtype = lawtypes[lawtype];
+
+				if ( lawtype == null ) {
+					return null;
+				}
+				Game13.log.WriteMsg( "## TESTING: " + ( "Lawtype: " + lawtype ) );
+
+				if ( lawtype == 1 ) {
+					lawtype = String13.ParseNumber( Interface13.Input( "Enter desired law priority. (15-50)", "Priority", 15, null, null, InputType.Num ) );
+					lawtype = ( Convert.ToDouble( lawtype ) <= 15 ? ((dynamic)( 15 )) : ( Convert.ToDouble( lawtype ) >= 50 ? ((dynamic)( 50 )) : lawtype ) );
+				}
+				newlaw = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( Task13.User, "Please enter a new law for the AI.", "Freeform Law Entry", "", null, InputType.Any ) ), 1, 1024 );
+
+				if ( newlaw == "" ) {
+					return null;
+				}
+				((AiLaws)S2.laws).add_law( lawtype, newlaw );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
+				GlobalFuncs.message_admins( "" + Task13.User.key + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
+				GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
+			} else if ( href_list.Contains( "reset_laws" ) ) {
+				S3 = Lang13.FindObj( href_list["mob"] );
+				lawtypes2 = Lang13.GetTypes( typeof(AiLaws) ) - typeof(AiLaws);
+				lawtype2 = Interface13.Input( "Select a lawset.", "Law Type", 1, null, lawtypes2, InputType.Null | InputType.Any );
+
+				if ( lawtype2 == null ) {
+					return null;
+				}
+				Game13.log.WriteMsg( "## TESTING: " + ( "Lawtype: " + lawtype2 ) );
+				law_zeroth = null;
+				law_zeroth_borg = null;
+
+				if ( Lang13.Bool( S3.laws.zeroth ) || Lang13.Bool( S3.laws.zeroth_borg ) ) {
+					
+					if ( Interface13.Alert( this, "Do you also wish to clear law zero?", "Yes", "No" ) == "No" ) {
+						law_zeroth = S3.laws.zeroth;
+						law_zeroth_borg = S3.laws.zeroth;
 					}
-					GlobalFuncs.to_chat( S, "____________________________________" );
+				}
+				S3.laws = Lang13.Call( lawtype2 );
+				S3.laws.zeroth = law_zeroth;
+				S3.laws.zeroth_borg = law_zeroth_borg;
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
+				GlobalFuncs.message_admins( "" + Task13.User.key + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
+				GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
+			} else if ( href_list.Contains( "clear_laws" ) ) {
+				S4 = Lang13.FindObj( href_list["mob"] );
+				S4.laws.clear_inherent_laws();
+				S4.laws.clear_supplied_laws();
+				S4.laws.clear_ion_laws();
 
-					if ( S is Mob_Living_Silicon_Ai ) {
-						AI = S;
-						((Mob_Living_Silicon_Ai)AI).notify_slaved( true );
+				if ( Lang13.Bool( S4.laws.zeroth ) || Lang13.Bool( S4.laws.zeroth_borg ) ) {
+					
+					if ( Interface13.Alert( this, "Do you also wish to clear law zero?", "Yes", "No" ) == "Yes" ) {
+						S4.laws.set_zeroth_law( "", "" );
+					}
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has purged " + GlobalFuncs.key_name( S4 ) );
+				GlobalFuncs.message_admins( "" + Task13.User.key + " has purged " + GlobalFuncs.key_name( S4 ) );
+				GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has purged " + GlobalFuncs.key_name( S4 ) );
+			} else if ( Lang13.Bool( href_list["dbsearchckey"] ) || Lang13.Bool( href_list["dbsearchadmin"] ) ) {
+				adminckey = href_list["dbsearchadmin"];
+				playerckey = href_list["dbsearchckey"];
+				this.DB_ban_panel( playerckey, adminckey );
+				return null;
+			} else if ( Lang13.Bool( href_list["dbbanedit"] ) ) {
+				banedit = href_list["dbbanedit"];
+				banid = String13.ParseNumber( href_list["dbbanid"] );
+
+				if ( !Lang13.Bool( banedit ) || !Lang13.Bool( banid ) ) {
+					return null;
+				}
+				this.DB_ban_edit( banid, banedit );
+				return null;
+			} else if ( Lang13.Bool( href_list["dbbanaddtype"] ) ) {
+				bantype = String13.ParseNumber( href_list["dbbanaddtype"] );
+				banckey = href_list["dbbanaddckey"];
+				banduration = String13.ParseNumber( href_list["dbbaddduration"] );
+				banjob = href_list["dbbanaddjob"];
+				banreason = href_list["dbbanreason"];
+				banckey = String13.CKey( banckey );
+
+				switch ((int?)( bantype )) {
+					case 1:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
+							return null;
+						}
+						banduration = null;
+						banjob = null;
+						break;
+					case 2:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banduration ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and duration)" );
+							return null;
+						}
+						banjob = null;
+						break;
+					case 3:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banjob ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and job)" );
+							return null;
+						}
+						banduration = null;
+						break;
+					case 4:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banjob ) || !Lang13.Bool( banduration ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and job)" );
+							return null;
+						}
+						break;
+					case 6:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
+							return null;
+						}
+						banduration = null;
+						banjob = null;
+						break;
+					case 7:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
+							return null;
+						}
+						banduration = null;
+						break;
+					case 8:
+						
+						if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banduration ) ) {
+							GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason, and duration)" );
+							return null;
+						}
+						break;
+				}
+				playermob = null;
+
+				foreach (dynamic _c in Lang13.Enumerate( GlobalVars.player_list )) {
+					M = _c;
+					
+
+					if ( M.ckey == banckey ) {
+						playermob = M;
+						break;
+					}
+				}
+				banreason = "(MANUAL BAN) " + banreason;
+				this.DB_ban_record( bantype, playermob, banduration, banreason, banjob, null, banckey );
+			} else if ( Lang13.Bool( href_list["editrights"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 128 ) ) {
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " attempted to edit the admin permissions without sufficient rights." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempted to edit the admin permissions without sufficient rights." );
+					return null;
+				}
+				adm_ckey = null;
+				task = href_list["editrights"];
+
+				if ( task == "add" ) {
+					new_ckey = String13.CKey( Interface13.Input( Task13.User, "New admin's ckey", "Admin ckey", null, null, InputType.Str | InputType.Null ) );
+
+					if ( !Lang13.Bool( new_ckey ) ) {
+						return null;
+					}
+
+					if ( GlobalVars.admin_datums.Contains( new_ckey ) ) {
+						GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': " + new_ckey + " is already an admin</font>" );
+						return null;
+					}
+					adm_ckey = new_ckey;
+					task = "rank";
+				} else if ( task != "show" ) {
+					adm_ckey = String13.CKey( href_list["ckey"] );
+
+					if ( !Lang13.Bool( adm_ckey ) ) {
+						GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': No valid ckey</font>" );
+						return null;
+					}
+				}
+				D = GlobalVars.admin_datums[adm_ckey];
+
+				if ( task == "remove" ) {
+					
+					if ( Interface13.Alert( "Are you sure you want to remove " + adm_ckey + "?", "Message", "Yes", "Cancel" ) == "Yes" ) {
+						
+						if ( !( D != null ) ) {
+							return null;
+						}
+						GlobalVars.admin_datums.Remove( adm_ckey );
+						D.disassociate();
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + adm_ckey + " from the admins list" );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + adm_ckey + " from the admins list" );
+						this.log_admin_rank_modification( adm_ckey, "Removed" );
+					}
+				} else if ( task == "rank" ) {
+					new_rank = null;
+
+					if ( GlobalVars.admin_ranks.len != 0 ) {
+						new_rank = Interface13.Input( "Please select a rank", "New rank", null, null, GlobalVars.admin_ranks | "*New Rank*", InputType.Null | InputType.Any );
+					} else {
+						new_rank = Interface13.Input( "Please select a rank", "New rank", null, null, new ByTable(new object [] { "Game Master", "Game Admin", "Trial Admin", "Admin Observer", "*New Rank*" }), InputType.Null | InputType.Any );
+					}
+					rights = 0;
+
+					if ( D != null ) {
+						rights = D.rights;
+					}
+
+					dynamic _d = new_rank; // Was a switch-case, sorry for the mess.
+					if ( _d==null || _d=="" ) {
+						return null;
+					} else if ( _d=="*New Rank*" ) {
+						new_rank = Interface13.Input( "Please input a new rank", "New custom rank", null, null, null, InputType.Str | InputType.Null );
+
+						if ( GlobalVars.config.admin_legacy_system ) {
+							new_rank = String13.CKeyPreserveCase( new_rank );
+						}
+
+						if ( !Lang13.Bool( new_rank ) ) {
+							GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>" );
+							return null;
+						}
+
+						if ( GlobalVars.config.admin_legacy_system ) {
+							
+							if ( GlobalVars.admin_ranks.len != 0 ) {
+								
+								if ( GlobalVars.admin_ranks.Contains( new_rank ) ) {
+									rights = GlobalVars.admin_ranks[new_rank];
+								} else {
+									GlobalVars.admin_ranks[new_rank] = 0;
+								}
+							}
+						}
+					} else {
+						
+						if ( GlobalVars.config.admin_legacy_system ) {
+							new_rank = String13.CKeyPreserveCase( new_rank );
+							rights = GlobalVars.admin_ranks[new_rank];
+						}
+					}
+
+					if ( D != null ) {
+						D.disassociate();
+						D.rank = new_rank;
+						D.rights = rights;
+					} else {
+						D = new Admins( new_rank, rights, adm_ckey );
+					}
+					C = GlobalVars.directory[adm_ckey];
+					D.associate( C );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " edited the admin rank of " + adm_ckey + " to " + new_rank );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited the admin rank of " + adm_ckey + " to " + new_rank );
+					this.log_admin_rank_modification( adm_ckey, new_rank );
+				} else if ( task == "permissions" ) {
+					
+					if ( !( D != null ) ) {
+						return null;
+					}
+					permissionlist = new ByTable();
+					i = null;
+					i = 1;
+
+					while (( i ??0) <= 16384) {
+						permissionlist[GlobalFuncs.rights2text( i )] = i;
+						i <<= 1;
+					}
+					new_permission = Interface13.Input( "Select a permission to turn on/off", "Permission toggle", null, null, permissionlist, InputType.Null | InputType.Any );
+
+					if ( !Lang13.Bool( new_permission ) ) {
+						return null;
+					}
+					D.rights ^= permissionlist[new_permission];
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled the " + new_permission + " permission of " + adm_ckey );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled the " + new_permission + " permission of " + adm_ckey );
+					this.log_admin_permission_modification( adm_ckey, permissionlist[new_permission] );
+				}
+				this.edit_admin_permissions();
+			} else if ( Lang13.Bool( href_list["call_shuttle"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+
+				if ( GlobalVars.ticker.mode.name == "blob" ) {
+					Interface13.Alert( "You can't call the shuttle during blob!" );
+					return null;
+				}
+
+				dynamic _f = href_list["call_shuttle"]; // Was a switch-case, sorry for the mess.
+				if ( _f=="1" ) {
+					
+					if ( !( GlobalVars.ticker != null ) || GlobalVars.emergency_shuttle.location != 0 ) {
+						return null;
+					}
+					GlobalVars.emergency_shuttle.incall();
+					GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " called the Emergency Shuttle" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " called the Emergency Shuttle to the station</span>" );
+				} else if ( _f=="2" ) {
+					
+					if ( !( GlobalVars.ticker != null ) || GlobalVars.emergency_shuttle.location != 0 || GlobalVars.emergency_shuttle.direction == 0 ) {
+						return null;
+					}
+
+					switch ((int)( GlobalVars.emergency_shuttle.direction )) {
+						case -1:
+							GlobalVars.emergency_shuttle.incall();
+							GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " called the Emergency Shuttle" );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " called the Emergency Shuttle to the station</span>" );
+							break;
+						case 1:
+							GlobalVars.emergency_shuttle.recall();
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " sent the Emergency Shuttle back" );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the Emergency Shuttle back</span>" );
+							break;
+					}
+				}
+				href_list["secretsadmin"] = "check_antagonist";
+			} else if ( Lang13.Bool( href_list["edit_shuttle_time"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 16 ) ) {
+					return null;
+				}
+				GlobalVars.emergency_shuttle.settimeleft( Interface13.Input( "Enter new shuttle duration (seconds):", "Edit Shuttle Timeleft", GlobalVars.emergency_shuttle.timeleft(), null, null, InputType.Num ) );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited the Emergency Shuttle's timeleft to " + GlobalVars.emergency_shuttle.timeleft() );
+				GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " edited the Emergency Shuttle's timeleft to " + GlobalVars.emergency_shuttle.timeleft() + "</span>" );
+				href_list["secretsadmin"] = "check_antagonist";
+			} else if ( Lang13.Bool( href_list["delay_round_end"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 16 ) ) {
+					return null;
+				}
+				GlobalVars.ticker.delay_end = !( GlobalVars.ticker.delay_end != 0 ) ?1:0;
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " " + ( GlobalVars.ticker.delay_end != 0 ? "delayed the round end" : "has made the round end normally" ) + "." );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name( Task13.User ) + " " + ( GlobalVars.ticker.delay_end != 0 ? "delayed the round end" : "has made the round end normally" ) + ".</span>" );
+				href_list["secretsadmin"] = "check_antagonist";
+			} else if ( Lang13.Bool( href_list["simplemake"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				M2 = Lang13.FindObj( href_list["mob"] );
+
+				if ( !( M2 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+				delmob = false;
+
+				switch ((string)( Interface13.Alert( "Delete old mob?", "Message", "Yes", "No", "Cancel" ) )) {
+					case "Cancel":
+						return null;
+						break;
+					case "Yes":
+						delmob = true;
+						break;
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has used rudimentary transformation on " + GlobalFuncs.key_name( M2 ) + ". Transforming to " + href_list["simplemake"] + "; deletemob=" + delmob );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " has used rudimentary transformation on " + GlobalFuncs.key_name_admin( M2 ) + ". Transforming to " + href_list["simplemake"] + "; deletemob=" + delmob + "</span>" );
+				new_mob = null;
+
+				dynamic _h = href_list["simplemake"]; // Was a switch-case, sorry for the mess.
+				if ( _h=="observer" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Dead_Observer), null, null, delmob );
+				} else if ( _h=="drone" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Drone), null, null, delmob );
+				} else if ( _h=="hunter" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Hunter), null, null, delmob );
+				} else if ( _h=="queen" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Queen), null, null, delmob );
+				} else if ( _h=="sentinel" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Sentinel), null, null, delmob );
+				} else if ( _h=="larva" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Larva), null, null, delmob );
+				} else if ( _h=="human" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Human), null, null, delmob );
+				} else if ( _h=="slime" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Slime), null, null, delmob );
+				} else if ( _h=="adultslime" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Slime_Adult), null, null, delmob );
+				} else if ( _h=="monkey" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Monkey), null, null, delmob );
+				} else if ( _h=="robot" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Silicon_Robot), null, null, delmob );
+				} else if ( _h=="cat" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Cat), null, null, delmob );
+				} else if ( _h=="runtime" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Cat_Runtime), null, null, delmob );
+				} else if ( _h=="corgi" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Corgi), null, null, delmob );
+				} else if ( _h=="ian" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Corgi_Ian), null, null, delmob );
+				} else if ( _h=="crab" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Crab), null, null, delmob );
+				} else if ( _h=="coffee" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Crab_Coffee), null, null, delmob );
+				} else if ( _h=="parrot" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Parrot), null, null, delmob );
+				} else if ( _h=="polyparrot" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Parrot_Poly), null, null, delmob );
+				} else if ( _h=="constructarmoured" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Armoured), null, null, delmob );
+				} else if ( _h=="constructbuilder" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Builder), null, null, delmob );
+				} else if ( _h=="constructwraith" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Wraith), null, null, delmob );
+				} else if ( _h=="shade" ) {
+					new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Shade), null, null, delmob );
+				}
+
+				if ( Lang13.Bool( new_mob ) && new_mob != M2 ) {
+					
+					if ( new_mob.client == CLIENT ) {
+						Task13.User = new_mob;
+					}
+					this.show_player_panel( new_mob );
+				}
+			} else if ( Lang13.Bool( href_list["unbanf"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				banfolder = href_list["unbanf"];
+				GlobalVars.Banlist.cd = "/base/" + banfolder;
+				key = GlobalVars.Banlist["key"];
+
+				if ( Interface13.Alert( Task13.User, "Are you sure you want to unban " + key + "?", "Confirmation", "Yes", "No" ) == "Yes" ) {
+					
+					if ( GlobalFuncs.RemoveBan( banfolder ) ) {
+						this.unbanpanel();
+					} else {
+						Interface13.Alert( Task13.User, "This ban has already been lifted / does not exist.", "Error", "Ok" );
+						this.unbanpanel();
+					}
+				}
+			} else if ( Lang13.Bool( href_list["warn"] ) ) {
+				Task13.User.client.warn( href_list["warn"] );
+			} else if ( Lang13.Bool( href_list["unwarn"] ) ) {
+				Task13.User.client.unwarn( href_list["unwarn"] );
+			} else if ( Lang13.Bool( href_list["unbane"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				GlobalFuncs.UpdateTime();
+				reason = null;
+				banfolder2 = href_list["unbane"];
+				GlobalVars.Banlist.cd = "/base/" + banfolder2;
+				reason2 = GlobalVars.Banlist["reason"];
+				temp = Lang13.Bool( GlobalVars.Banlist["temp"] );
+				minutes = Convert.ToDouble( GlobalVars.Banlist["minutes"] );
+				banned_key = GlobalVars.Banlist["key"];
+				GlobalVars.Banlist.cd = "/base";
+				duration = null;
+
+				switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No" ) )) {
+					case "Yes":
+						temp = true;
+						mins = 0;
+
+						if ( minutes > GlobalVars.CMinutes ) {
+							mins = minutes - GlobalVars.CMinutes;
+						}
+						mins = Interface13.Input( Task13.User, "How long (in minutes)? (Default: 1440)", "Ban time", ( Lang13.Bool( mins ) ? mins : ((dynamic)( 1440 )) ), null, InputType.Num | InputType.Null );
+
+						if ( !Lang13.Bool( mins ) ) {
+							return null;
+						}
+						mins = Num13.MinInt( 525599, Convert.ToInt32( mins ) );
+						minutes = GlobalVars.CMinutes + Convert.ToDouble( mins );
+						duration = GlobalFuncs.GetExp( minutes );
+						reason = Interface13.Input( Task13.User, "Reason?", "reason", reason2, null, InputType.Str | InputType.Null );
+
+						if ( !Lang13.Bool( reason ) ) {
+							return null;
+						}
+						break;
+					case "No":
+						temp = false;
+						duration = "Perma";
+						reason = Interface13.Input( Task13.User, "Reason?", "reason", reason2, null, InputType.Str | InputType.Null );
+
+						if ( !Lang13.Bool( reason ) ) {
+							return null;
+						}
+						break;
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration );
+				GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration + "</span>" );
+				GlobalVars.Banlist.cd = "/base/" + banfolder2;
+				GlobalFuncs.to_chat( GlobalVars.Banlist["reason"], reason );
+				GlobalFuncs.to_chat( GlobalVars.Banlist["temp"], temp );
+				GlobalFuncs.to_chat( GlobalVars.Banlist["minutes"], minutes );
+				GlobalFuncs.to_chat( GlobalVars.Banlist["bannedby"], Task13.User.ckey );
+				GlobalVars.Banlist.cd = "/base";
+				GlobalFuncs.feedback_inc( "ban_edit", 1 );
+				this.unbanpanel();
+			} else if ( Lang13.Bool( href_list["oocban"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				M3 = Lang13.FindObj( href_list["oocban"] );
+
+				if ( !( M3 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( !Lang13.Bool( M3.ckey ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
+					return null;
+				}
+				oocbanned = GlobalVars.oocban_keylist.Find( "" + String13.CKey( "" + M3.ckey ) );
+
+				if ( oocbanned != 0 ) {
+					
+					switch ((string)( Interface13.Alert( "Reason: Remove OOC ban?", "Please Confirm", "Yes", "No" ) )) {
+						case "Yes":
+							GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M3 ) + "'s OOC ban" );
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M3 ) + "'s OOC ban" );
+							GlobalFuncs.feedback_inc( "ban_ooc_unban", 1 );
+							this.DB_ban_unban( M3.ckey, 7 );
+							GlobalFuncs.ooc_unban( M3 );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + GlobalFuncs.key_name_admin( M3 ) + "'s OOC ban</span>" );
+							GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>" + Task13.User.client.ckey + " has removed your OOC ban.</B></BIG></span>" );
+							break;
 					}
 				} else {
-					Interface13.Stat( null, href_list.Contains( "add_law" ) );
+					
+					switch ((string)( Interface13.Alert( "OOC ban " + M3.ckey + "?", null, "Yes", "No" ) )) {
+						case "Yes":
+							
+							switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
+								case "Yes":
+									mins2 = Interface13.Input( Task13.User, "How long (in minutes)?", "OOC Ban time", 1440, null, InputType.Num | InputType.Null );
 
-					if ( Lang13.Bool( href_list["makeAntag"] ) ) {
-						S2 = Lang13.FindObj( href_list["mob"] );
-						lawtypes = new ByTable().Set( "Law Zero", 0 ).Set( "Ion", -2 ).Set( "Core", -1 ).Set( "Standard", 1 );
-						lawtype = Interface13.Input( "Select a law type.", "Law Type", 1, null, lawtypes, InputType.Any );
-						lawtype = lawtypes[lawtype];
+									if ( !Lang13.Bool( mins2 ) ) {
+										return null;
+									}
 
-						if ( lawtype == null ) {
+									if ( Convert.ToDouble( mins2 ) >= 525600 ) {
+										mins2 = 525599;
+									}
+									reason3 = Interface13.Input( Task13.User, "Reason?", "reason", "Shinposting", null, InputType.Str | InputType.Null );
+
+									if ( !Lang13.Bool( reason3 ) ) {
+										return null;
+									}
+									GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has banned " + M3.ckey + ". - Reason: " + reason3 + " - This will be removed in " + mins2 + " minutes." );
+									GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>You have been OOC banned by " + Task13.User.client.ckey + ".\nReason: " + reason3 + ".</B></BIG></span>" );
+									GlobalFuncs.to_chat( M3, "<span class='warning'>This is a temporary ooc ban, it will be removed in " + mins2 + " minutes.</span>" );
+									GlobalFuncs.feedback_inc( "ban_ooc_tmp", 1 );
+									this.DB_ban_record( 8, M3, mins2, reason3 );
+									GlobalFuncs.feedback_inc( "ban_ooc_tmp_mins", mins2 );
+
+									if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
+										GlobalFuncs.to_chat( M3, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + " or consider not being a shithead in OOC</span>" );
+									} else {
+										GlobalFuncs.to_chat( M3, "<span class='warning'>No ban appeals URL has been set.</span>" );
+									}
+									GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason3 + "\nThis will be removed in " + mins2 + " minutes." );
+									GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason3 + "\nThis will be removed in " + mins2 + " minutes.</span>" );
+									break;
+								case "No":
+									reason4 = Interface13.Input( Task13.User, "Reason?", "reason", "Shinposting", null, InputType.Str | InputType.Null );
+
+									if ( !Lang13.Bool( reason4 ) ) {
+										return null;
+									}
+									GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>You have been ooc banned by " + Task13.User.client.ckey + ".\nReason: " + reason4 + ".</B></BIG></span>" );
+									GlobalFuncs.to_chat( M3, "<span class='warning'>This is a permanent ooc ban.</span>" );
+
+									if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
+										GlobalFuncs.to_chat( M3, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + " or consider not being a shithead in OOC</span>" );
+									} else {
+										GlobalFuncs.to_chat( M3, "<span class='warning'>No ban appeals URL has been set.</span>" );
+									}
+									GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has perma-ooc-banned " + M3.ckey + ". - Reason: " + reason4 + " - This is a permanent ooc ban." );
+									GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason4 + "\nThis is a permanent ooc ban." );
+									GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason4 + "\nThis is a permanent ooc ban.</span>" );
+									GlobalFuncs.feedback_inc( "ban_ooc_perma", 1 );
+									this.DB_ban_record( 7, M3, -1, reason4 );
+									break;
+								case "Cancel":
+									return null;
+									break;
+							}
+							GlobalFuncs.ooc_ban( M3 );
 							return null;
-						}
-						Game13.log.WriteMsg( "## TESTING: " + ( "Lawtype: " + lawtype ) );
-
-						if ( lawtype == 1 ) {
-							lawtype = String13.ParseNumber( Interface13.Input( "Enter desired law priority. (15-50)", "Priority", 15, null, null, InputType.Num ) );
-							lawtype = ( Convert.ToDouble( lawtype ) <= 15 ? ((dynamic)( 15 )) : ( Convert.ToDouble( lawtype ) >= 50 ? ((dynamic)( 50 )) : lawtype ) );
-						}
-						newlaw = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( Task13.User, "Please enter a new law for the AI.", "Freeform Law Entry", "", null, InputType.Any ) ), 1, 1024 );
-
-						if ( newlaw == "" ) {
+							break;
+						case "No":
 							return null;
-						}
-						((AiLaws)S2.laws).add_law( lawtype, newlaw );
-						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
-						GlobalFuncs.message_admins( "" + Task13.User.key + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
-						GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has added a law to " + GlobalFuncs.key_name( S2 ) + ": \"" + newlaw + "\"" );
+							break;
+						default:
+							return null;
+							break;
+					}
+				}
+			} else if ( Lang13.Bool( href_list["appearanceban"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				M4 = Lang13.FindObj( href_list["appearanceban"] );
+
+				if ( !( M4 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( !Lang13.Bool( M4.ckey ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
+					return null;
+				}
+				banreason2 = GlobalFuncs.appearance_isbanned( M4 );
+
+				if ( Lang13.Bool( banreason2 ) ) {
+					
+					switch ((string)( Interface13.Alert( "Reason: '" + banreason2 + "' Remove appearance ban?", "Please Confirm", "Yes", "No" ) )) {
+						case "Yes":
+							GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M4 ) + "'s appearance ban" );
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M4 ) + "'s appearance ban" );
+							GlobalFuncs.feedback_inc( "ban_appearance_unban", 1 );
+							this.DB_ban_unban( M4.ckey, 6 );
+							GlobalFuncs.appearance_unban( M4 );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + GlobalFuncs.key_name_admin( M4 ) + "'s appearance ban</span>" );
+							GlobalFuncs.to_chat( M4, "<span class='warning'><BIG><B>" + Task13.User.client.ckey + " has removed your appearance ban.</B></BIG></span>" );
+							break;
+					}
+				} else {
+					
+					switch ((string)( Interface13.Alert( "Appearance ban " + M4.ckey + "?", null, "Yes", "No", "Cancel" ) )) {
+						case "Yes":
+							reason5 = Interface13.Input( Task13.User, "Reason?", "reason", "Metafriender", null, InputType.Str | InputType.Null );
+
+							if ( !Lang13.Bool( reason5 ) ) {
+								return null;
+							}
+							GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " appearance banned " + GlobalFuncs.key_name( M4 ) + ". reason: " + reason5 );
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " appearance banned " + GlobalFuncs.key_name( M4 ) + ". \nReason: " + reason5 );
+							GlobalFuncs.feedback_inc( "ban_appearance", 1 );
+							this.DB_ban_record( 6, M4, -1, reason5 );
+							GlobalFuncs.appearance_fullban( M4, "" + reason5 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
+							GlobalFuncs.notes_add( M4.ckey, "Appearance banned - " + reason5 );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " appearance banned " + GlobalFuncs.key_name_admin( M4 ) + "</span>" );
+							GlobalFuncs.to_chat( M4, "<span class='warning'><BIG><B>You have been appearance banned by " + Task13.User.client.ckey + ".</B></BIG></span>" );
+							GlobalFuncs.to_chat( M4, "<span class='danger'>The reason is: " + reason5 + "</span>" );
+							GlobalFuncs.to_chat( M4, "<span class='warning'>Appearance ban can be lifted only upon request.</span>" );
+
+							if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
+								GlobalFuncs.to_chat( M4, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
+							} else {
+								GlobalFuncs.to_chat( M4, "<span class='warning'>No ban appeals URL has been set.</span>" );
+							}
+							break;
+						case "No":
+							return null;
+							break;
+					}
+				}
+			} else if ( Lang13.Bool( href_list["jobban2"] ) ) {
+				M5 = Lang13.FindObj( href_list["jobban2"] );
+
+				if ( !( M5 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( !Lang13.Bool( M5.ckey ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
+					return null;
+				}
+
+				if ( !( GlobalVars.job_master != null ) ) {
+					GlobalFuncs.to_chat( Task13.User, "Job Master has not been setup!" );
+					return null;
+				}
+				dat = "";
+				header = "<head><title>Job-Ban Panel: " + M5.name + "</title></head>";
+				body = null;
+				jobs = "";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr align='center' bgcolor='ccccff'><th colspan='" ).item( Lang13.Length( GlobalVars.command_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=commanddept;jobban4=" ).Ref( M5 ).str( "'>Command Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _o in Lang13.Enumerate( GlobalVars.command_positions )) {
+					jobPos = _o;
+					
+
+					if ( !Lang13.Bool( jobPos ) ) {
+						continue;
+					}
+					job = GlobalVars.job_master.GetJob( jobPos );
+
+					if ( !( job != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
 					} else {
-						Interface13.Stat( null, href_list.Contains( "reset_laws" ) );
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
 
-						if ( Lang13.Bool( href_list["makeAntag"] ) ) {
-							S3 = Lang13.FindObj( href_list["mob"] );
-							lawtypes2 = Lang13.GetTypes( typeof(AiLaws) ) - typeof(AiLaws);
-							lawtype2 = Interface13.Input( "Select a lawset.", "Law Type", 1, null, lawtypes2, InputType.Null | InputType.Any );
+					if ( counter >= 6 ) {
+						jobs += "</tr><tr>";
+						counter = 0;
+					}
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='ffddf0'><th colspan='" ).item( Lang13.Length( GlobalVars.security_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=securitydept;jobban4=" ).Ref( M5 ).str( "'>Security Positions</a></th></tr><tr align='center'>" ).ToString();
 
-							if ( lawtype2 == null ) {
+				foreach (dynamic _p in Lang13.Enumerate( GlobalVars.security_positions )) {
+					jobPos2 = _p;
+					
+
+					if ( !Lang13.Bool( jobPos2 ) ) {
+						continue;
+					}
+					job2 = GlobalVars.job_master.GetJob( jobPos2 );
+
+					if ( !( job2 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job2.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job2.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job2.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job2.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job2.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='fff5cc'><th colspan='" ).item( Lang13.Length( GlobalVars.engineering_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=engineeringdept;jobban4=" ).Ref( M5 ).str( "'>Engineering Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _q in Lang13.Enumerate( GlobalVars.engineering_positions )) {
+					jobPos3 = _q;
+					
+
+					if ( !Lang13.Bool( jobPos3 ) ) {
+						continue;
+					}
+					job3 = GlobalVars.job_master.GetJob( jobPos3 );
+
+					if ( !( job3 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job3.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job3.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job3.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job3.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job3.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='ffeef0'><th colspan='" ).item( Lang13.Length( GlobalVars.medical_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=medicaldept;jobban4=" ).Ref( M5 ).str( "'>Medical Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _r in Lang13.Enumerate( GlobalVars.medical_positions )) {
+					jobPos4 = _r;
+					
+
+					if ( !Lang13.Bool( jobPos4 ) ) {
+						continue;
+					}
+					job4 = GlobalVars.job_master.GetJob( jobPos4 );
+
+					if ( !( job4 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job4.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job4.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job4.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job4.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job4.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='e79fff'><th colspan='" ).item( Lang13.Length( GlobalVars.science_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=sciencedept;jobban4=" ).Ref( M5 ).str( "'>Science Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _s in Lang13.Enumerate( GlobalVars.science_positions )) {
+					jobPos5 = _s;
+					
+
+					if ( !Lang13.Bool( jobPos5 ) ) {
+						continue;
+					}
+					job5 = GlobalVars.job_master.GetJob( jobPos5 );
+
+					if ( !( job5 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job5.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job5.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job5.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job5.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job5.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='dddddd'><th colspan='" ).item( Lang13.Length( GlobalVars.civilian_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=civiliandept;jobban4=" ).Ref( M5 ).str( "'>Civilian Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _t in Lang13.Enumerate( GlobalVars.civilian_positions )) {
+					jobPos6 = _t;
+					
+
+					if ( !Lang13.Bool( jobPos6 ) ) {
+						continue;
+					}
+					job6 = GlobalVars.job_master.GetJob( jobPos6 );
+
+					if ( !( job6 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job6.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job6.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job6.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job6.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job6.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Internal Affairs Agent" ) ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Internal Affairs Agent;jobban4=" ).Ref( M5 ).str( "'><font color=red>Internal Affairs Agent</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Internal Affairs Agent;jobban4=" ).Ref( M5 ).str( "'>Internal Affairs Agent</a></td>" ).ToString();
+				}
+				jobs += "</tr></table>";
+				counter = 0;
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='ccffcc'><th colspan='" ).item( Lang13.Length( GlobalVars.nonhuman_positions ) + 1 ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=nonhumandept;jobban4=" ).Ref( M5 ).str( "'>Non-human Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				foreach (dynamic _u in Lang13.Enumerate( GlobalVars.nonhuman_positions )) {
+					jobPos7 = _u;
+					
+
+					if ( !Lang13.Bool( jobPos7 ) ) {
+						continue;
+					}
+					job7 = GlobalVars.job_master.GetJob( jobPos7 );
+
+					if ( !( job7 != null ) ) {
+						continue;
+					}
+
+					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job7.title ) ) ) {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job7.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job7.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+						counter++;
+					} else {
+						jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job7.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job7.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+						counter++;
+					}
+
+					if ( counter >= 5 ) {
+						jobs += "</tr><tr align='center'>";
+						counter = 0;
+					}
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "pAI" ) ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=pAI;jobban4=" ).Ref( M5 ).str( "'><font color=red>pAI</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=pAI;jobban4=" ).Ref( M5 ).str( "'>pAI</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "AntagHUD" ) ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=AntagHUD;jobban4=" ).Ref( M5 ).str( "'><font color=red>AntagHUD</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=AntagHUD;jobban4=" ).Ref( M5 ).str( "'>AntagHUD</a></td>" ).ToString();
+				}
+				jobs += "</tr></table>";
+				isbanned_dept = GlobalFuncs.jobban_isbanned( M5, "Syndicate" );
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += new Txt( "<tr bgcolor='ffeeaa'><th colspan='10'><a href='?src=" ).Ref( this ).str( ";jobban3=Syndicate;jobban4=" ).Ref( M5 ).str( "'>Antagonist Positions</a></th></tr><tr align='center'>" ).ToString();
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "traitor" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=traitor;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Traitor", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=traitor;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Traitor", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "changeling" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=changeling;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Changeling", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=changeling;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Changeling", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "operative" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=operative;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Nuke Operative", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=operative;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Nuke Operative", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "revolutionary" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=revolutionary;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Revolutionary", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=revolutionary;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Revolutionary", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+				jobs += "</tr><tr align='center'>";
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "cultist" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=cultist;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Cultist", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=cultist;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Cultist", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "wizard" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=wizard;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Wizard", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=wizard;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Wizard", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Emergency Response Team" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Emergency Response Team;jobban4=" ).Ref( M5 ).str( "'><font color=red>Emergency Response Team</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Emergency Response Team;jobban4=" ).Ref( M5 ).str( "'>Emergency Response Team</a></td>" ).ToString();
+				}
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Vox Raider" ) ) || Lang13.Bool( isbanned_dept ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Vox Raider;jobban4=" ).Ref( M5 ).str( "'><font color=red>Vox&nbsp;Raider</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Vox Raider;jobban4=" ).Ref( M5 ).str( "'>Vox&nbsp;Raider</a></td>" ).ToString();
+				}
+				jobs += "</tr></table>";
+				jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
+				jobs += "<tr bgcolor='ccccff'><th colspan='1'>Other Races</th></tr><tr align='center'>";
+
+				if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Dionaea" ) ) ) {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Dionaea;jobban4=" ).Ref( M5 ).str( "'><font color=red>Dionaea</font></a></td>" ).ToString();
+				} else {
+					jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Dionaea;jobban4=" ).Ref( M5 ).str( "'>Dionaea</a></td>" ).ToString();
+				}
+				jobs += "</tr></table>";
+				body = "<body>" + jobs + "</body>";
+				dat = "<tt>" + header + body + "</tt>";
+				Interface13.Browse( Task13.User, dat, "window=jobban2;size=800x490" );
+				return null;
+			} else if ( Lang13.Bool( href_list["jobban3"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				M6 = Lang13.FindObj( href_list["jobban4"] );
+
+				if ( !( M6 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( M6 != Task13.User ) {
+					
+					if ( Lang13.Bool( M6.client ) && Lang13.Bool( M6.client.holder ) && Lang13.Bool( M6.client.holder.rights & 4 ) ) {
+						Interface13.Alert( "You cannot perform this action. You must be of a higher administrative rank!" );
+						return null;
+					}
+				}
+
+				if ( !( GlobalVars.job_master != null ) ) {
+					GlobalFuncs.to_chat( Task13.User, "Job Master has not been setup!" );
+					return null;
+				}
+				joblist = new ByTable();
+
+				dynamic _bc = href_list["jobban3"]; // Was a switch-case, sorry for the mess.
+				if ( _bc=="commanddept" ) {
+					
+					foreach (dynamic _v in Lang13.Enumerate( GlobalVars.command_positions )) {
+						jobPos8 = _v;
+						
+
+						if ( !Lang13.Bool( jobPos8 ) ) {
+							continue;
+						}
+						temp2 = GlobalVars.job_master.GetJob( jobPos8 );
+
+						if ( !( temp2 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp2.title );
+					}
+				} else if ( _bc=="securitydept" ) {
+					
+					foreach (dynamic _w in Lang13.Enumerate( GlobalVars.security_positions )) {
+						jobPos9 = _w;
+						
+
+						if ( !Lang13.Bool( jobPos9 ) ) {
+							continue;
+						}
+						temp3 = GlobalVars.job_master.GetJob( jobPos9 );
+
+						if ( !( temp3 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp3.title );
+					}
+				} else if ( _bc=="engineeringdept" ) {
+					
+					foreach (dynamic _x in Lang13.Enumerate( GlobalVars.engineering_positions )) {
+						jobPos10 = _x;
+						
+
+						if ( !Lang13.Bool( jobPos10 ) ) {
+							continue;
+						}
+						temp4 = GlobalVars.job_master.GetJob( jobPos10 );
+
+						if ( !( temp4 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp4.title );
+					}
+				} else if ( _bc=="medicaldept" ) {
+					
+					foreach (dynamic _y in Lang13.Enumerate( GlobalVars.medical_positions )) {
+						jobPos11 = _y;
+						
+
+						if ( !Lang13.Bool( jobPos11 ) ) {
+							continue;
+						}
+						temp5 = GlobalVars.job_master.GetJob( jobPos11 );
+
+						if ( !( temp5 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp5.title );
+					}
+				} else if ( _bc=="sciencedept" ) {
+					
+					foreach (dynamic _z in Lang13.Enumerate( GlobalVars.science_positions )) {
+						jobPos12 = _z;
+						
+
+						if ( !Lang13.Bool( jobPos12 ) ) {
+							continue;
+						}
+						temp6 = GlobalVars.job_master.GetJob( jobPos12 );
+
+						if ( !( temp6 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp6.title );
+					}
+				} else if ( _bc=="civiliandept" ) {
+					
+					foreach (dynamic _ba in Lang13.Enumerate( GlobalVars.civilian_positions )) {
+						jobPos13 = _ba;
+						
+
+						if ( !Lang13.Bool( jobPos13 ) ) {
+							continue;
+						}
+						temp7 = GlobalVars.job_master.GetJob( jobPos13 );
+
+						if ( !( temp7 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp7.title );
+					}
+				} else if ( _bc=="nonhumandept" ) {
+					joblist.Add( "pAI" );
+
+					foreach (dynamic _bb in Lang13.Enumerate( GlobalVars.nonhuman_positions )) {
+						jobPos14 = _bb;
+						
+
+						if ( !Lang13.Bool( jobPos14 ) ) {
+							continue;
+						}
+						temp8 = GlobalVars.job_master.GetJob( jobPos14 );
+
+						if ( !( temp8 != null ) ) {
+							continue;
+						}
+						joblist.Add( temp8.title );
+					}
+				} else {
+					joblist.Add( href_list["jobban3"] );
+				}
+				notbannedlist = new ByTable();
+
+				foreach (dynamic _bd in Lang13.Enumerate( joblist )) {
+					job8 = _bd;
+					
+
+					if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( M6, job8 ) ) ) {
+						notbannedlist.Add( job8 );
+					}
+				}
+
+				if ( notbannedlist.len != 0 ) {
+					
+					switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
+						case "Yes":
+							
+							if ( GlobalVars.config.ban_legacy_system ) {
+								GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Your server is using the legacy banning system, which does not support temporary job bans. Consider upgrading. Aborting ban.</span>" );
 								return null;
 							}
-							Game13.log.WriteMsg( "## TESTING: " + ( "Lawtype: " + lawtype2 ) );
-							law_zeroth = null;
-							law_zeroth_borg = null;
+							mins3 = Interface13.Input( Task13.User, "How long (in minutes)?", "Ban time", 1440, null, InputType.Num | InputType.Null );
 
-							if ( Lang13.Bool( S3.laws.zeroth ) || Lang13.Bool( S3.laws.zeroth_borg ) ) {
+							if ( !Lang13.Bool( mins3 ) ) {
+								return null;
+							}
+							reason6 = Interface13.Input( Task13.User, "Reason?", "Please State Reason", "", null, InputType.Str | InputType.Null );
+
+							if ( !Lang13.Bool( reason6 ) ) {
+								return null;
+							}
+							msg = null;
+
+							foreach (dynamic _be in Lang13.Enumerate( notbannedlist )) {
+								job9 = _be;
 								
-								if ( Interface13.Alert( this, "Do you also wish to clear law zero?", "Yes", "No" ) == "No" ) {
-									law_zeroth = S3.laws.zeroth;
-									law_zeroth_borg = S3.laws.zeroth;
+								GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " temp-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job9 + " for " + mins3 + " minutes. reason: " + reason6 );
+								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " temp-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job9 + " for " + mins3 + " minutes" );
+								GlobalFuncs.feedback_inc( "ban_job_tmp", 1 );
+								this.DB_ban_record( 4, M6, mins3, reason6, job9 );
+								GlobalFuncs.feedback_add_details( "ban_job_tmp", "- " + job9 );
+								GlobalFuncs.jobban_fullban( M6, job9, "" + reason6 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
+
+								if ( !Lang13.Bool( msg ) ) {
+									msg = job9;
+								} else {
+									msg += ", " + job9;
 								}
 							}
-							S3.laws = Lang13.Call( lawtype2 );
-							S3.laws.zeroth = law_zeroth;
-							S3.laws.zeroth_borg = law_zeroth_borg;
-							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
-							GlobalFuncs.message_admins( "" + Task13.User.key + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
-							GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has reset " + GlobalFuncs.key_name( S3 ) + ": " + lawtype2 );
+							GlobalFuncs.notes_add( M6.ckey, "Banned  from " + msg + " - " + reason6 );
+							GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " banned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg + " for " + mins3 + " minutes</span>" );
+							GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been jobbanned by " + Task13.User.client.ckey + " from: " + msg + ".</B></BIG></span>" );
+							GlobalFuncs.to_chat( M6, "<span class='danger'>The reason is: " + reason6 + "</span>" );
+							GlobalFuncs.to_chat( M6, "<span class='warning'>This jobban will be lifted in " + mins3 + " minutes.</span>" );
+							href_list["jobban2"] = 1;
+							return 1;
+							break;
+						case "No":
+							reason7 = Interface13.Input( Task13.User, "Reason?", "Please State Reason", "", null, InputType.Str | InputType.Null );
+
+							if ( Lang13.Bool( reason7 ) ) {
+								msg2 = null;
+
+								foreach (dynamic _bf in Lang13.Enumerate( notbannedlist )) {
+									job10 = _bf;
+									
+									GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " perma-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job10 + ". reason: " + reason7 );
+									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " perma-banned " + GlobalFuncs.key_name( M6 ) + " from " + job10 );
+									GlobalFuncs.feedback_inc( "ban_job", 1 );
+									this.DB_ban_record( 3, M6, -1, reason7, job10 );
+									GlobalFuncs.feedback_add_details( "ban_job", "- " + job10 );
+									GlobalFuncs.jobban_fullban( M6, job10, "" + reason7 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
+
+									if ( !Lang13.Bool( msg2 ) ) {
+										msg2 = job10;
+									} else {
+										msg2 += ", " + job10;
+									}
+								}
+								GlobalFuncs.notes_add( M6.ckey, "Banned  from " + msg2 + " - " + reason7 );
+								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " banned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg2 + "</span>" );
+								GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been jobbanned by " + Task13.User.client.ckey + " from: " + msg2 + ".</B></BIG></span>" );
+								GlobalFuncs.to_chat( M6, "<span class='danger'>The reason is: " + reason7 + "</span>" );
+								GlobalFuncs.to_chat( M6, "<span class='warning'>Jobban can be lifted only upon request.</span>" );
+								href_list["jobban2"] = 1;
+								return 1;
+							}
+							break;
+						case "Cancel":
+							return null;
+							break;
+					}
+				}
+
+				if ( joblist.len != 0 ) {
+					
+					if ( !GlobalVars.config.ban_legacy_system ) {
+						GlobalFuncs.to_chat( Task13.User, "Unfortunately, database based unbanning cannot be done through this panel" );
+						this.DB_ban_panel( M6.ckey );
+						return null;
+					}
+					msg3 = null;
+
+					foreach (dynamic _bi in Lang13.Enumerate( joblist )) {
+						job11 = _bi;
+						
+						reason8 = GlobalFuncs.jobban_isbanned( M6, job11 );
+
+						if ( !Lang13.Bool( reason8 ) ) {
+							continue;
+						}
+
+						switch ((string)( Interface13.Alert( "Job: '" + job11 + "' Reason: '" + reason8 + "' Un-jobban?", "Please Confirm", "Yes", "No" ) )) {
+							case "Yes":
+								GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " unjobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job11 );
+								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " unbanned " + GlobalFuncs.key_name( M6 ) + " from " + job11 );
+								this.DB_ban_unban( M6.ckey, 3, job11 );
+								GlobalFuncs.feedback_inc( "ban_job_unban", 1 );
+								GlobalFuncs.feedback_add_details( "ban_job_unban", "- " + job11 );
+								GlobalFuncs.jobban_unban( M6, job11 );
+
+								if ( !Lang13.Bool( msg3 ) ) {
+									msg3 = job11;
+								} else {
+									msg3 += ", " + job11;
+								}
+								break;
+							default:
+								continue;
+								break;
+						}
+					}
+
+					if ( Lang13.Bool( msg3 ) ) {
+						GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " unbanned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg3 + "</span>" );
+						GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been un-jobbanned by " + Task13.User.client.ckey + " from " + msg3 + ".</B></BIG></span>" );
+						href_list["jobban2"] = 1;
+					}
+					return 1;
+				}
+				return 0;
+			} else if ( Lang13.Bool( href_list["boot2"] ) ) {
+				M7 = Lang13.FindObj( href_list["boot2"] );
+
+				if ( M7 is Mob ) {
+					
+					if ( !GlobalFuncs.check_if_greater_rights_than( M7.client ) ) {
+						return null;
+					}
+					GlobalFuncs.to_chat( M7, "<span class='warning'>You have been kicked from the server</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " booted " + GlobalFuncs.key_name( M7 ) + "." );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " booted " + GlobalFuncs.key_name_admin( M7 ) + ".</span>" );
+					Lang13.Delete( M7.client );
+					M7.client = null;
+				}
+			} else if ( Lang13.Bool( href_list["removejobban"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				t = href_list["removejobban"];
+
+				if ( Lang13.Bool( t ) ) {
+					
+					if ( Interface13.Alert( "Do you want to unjobban " + t + "?", "Unjobban confirmation", "Yes", "No" ) == "Yes" && Lang13.Bool( t ) ) {
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + t );
+						GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + t + "</span>" );
+						GlobalFuncs.jobban_remove( t );
+						href_list["ban"] = 1;
+						t_split = GlobalFuncs.text2list( t, " - " );
+						key2 = t_split[1];
+						job12 = t_split[2];
+						this.DB_ban_unban( String13.CKey( key2 ), 3, job12 );
+					}
+				}
+			} else if ( Lang13.Bool( href_list["newban"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				M8 = Lang13.FindObj( href_list["newban"] );
+
+				if ( !( M8 is Mob ) ) {
+					return null;
+				}
+
+				switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
+					case "Yes":
+						mins4 = Interface13.Input( Task13.User, "How long (in minutes)?", "Ban time", 1440, null, InputType.Num | InputType.Null );
+
+						if ( !Lang13.Bool( mins4 ) ) {
+							return null;
+						}
+
+						if ( Convert.ToDouble( mins4 ) >= 525600 ) {
+							mins4 = 525599;
+						}
+						reason9 = Interface13.Input( Task13.User, "Reason?", "reason", "Griefer", null, InputType.Str | InputType.Null );
+
+						if ( !Lang13.Bool( reason9 ) ) {
+							return null;
+						}
+						GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason9, Task13.User.ckey, true, mins4 );
+						GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ". - Reason: " + reason9 + " - This will be removed in " + mins4 + " minutes." );
+						GlobalFuncs.to_chat( M8, "<span class='warning'><BIG><B>You have been banned by " + Task13.User.client.ckey + ".\nReason: " + reason9 + ".</B></BIG></span>" );
+						GlobalFuncs.to_chat( M8, "<span class='warning'>This is a temporary ban, it will be removed in " + mins4 + " minutes.</span>" );
+						GlobalFuncs.feedback_inc( "ban_tmp", 1 );
+						this.DB_ban_record( 2, M8, mins4, reason9 );
+						GlobalFuncs.feedback_inc( "ban_tmp_mins", mins4 );
+
+						if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
+							GlobalFuncs.to_chat( M8, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
 						} else {
-							Interface13.Stat( null, href_list.Contains( "clear_laws" ) );
+							GlobalFuncs.to_chat( M8, "<span class='warning'>No ban appeals URL has been set.</span>" );
+						}
+						GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason9 + "\nThis will be removed in " + mins4 + " minutes." );
+						GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason9 + "\nThis will be removed in " + mins4 + " minutes.</span>" );
+						Lang13.Delete( M8.client );
+						M8.client = null;
+						break;
+					case "No":
+						reason10 = Interface13.Input( Task13.User, "Reason?", "reason", "Griefer", null, InputType.Str | InputType.Null );
 
-							if ( Lang13.Bool( href_list["makeAntag"] ) ) {
-								S4 = Lang13.FindObj( href_list["mob"] );
-								S4.laws.clear_inherent_laws();
-								S4.laws.clear_supplied_laws();
-								S4.laws.clear_ion_laws();
+						if ( !Lang13.Bool( reason10 ) ) {
+							return null;
+						}
 
-								if ( Lang13.Bool( S4.laws.zeroth ) || Lang13.Bool( S4.laws.zeroth_borg ) ) {
-									
-									if ( Interface13.Alert( this, "Do you also wish to clear law zero?", "Yes", "No" ) == "Yes" ) {
-										S4.laws.set_zeroth_law( "", "" );
-									}
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has purged " + GlobalFuncs.key_name( S4 ) );
-								GlobalFuncs.message_admins( "" + Task13.User.key + " has purged " + GlobalFuncs.key_name( S4 ) );
-								GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name( Task13.User ) + " has purged " + GlobalFuncs.key_name( S4 ) );
-							} else if ( Lang13.Bool( href_list["dbsearchckey"] ) || Lang13.Bool( href_list["dbsearchadmin"] ) ) {
-								adminckey = href_list["dbsearchadmin"];
-								playerckey = href_list["dbsearchckey"];
-								this.DB_ban_panel( playerckey, adminckey );
+						switch ((string)( Interface13.Alert( Task13.User, "IP ban?", null, "Yes", "No", "Cancel" ) )) {
+							case "Cancel":
 								return null;
-							} else if ( Lang13.Bool( href_list["dbbanedit"] ) ) {
-								banedit = href_list["dbbanedit"];
-								banid = String13.ParseNumber( href_list["dbbanid"] );
-
-								if ( !Lang13.Bool( banedit ) || !Lang13.Bool( banid ) ) {
-									return null;
-								}
-								this.DB_ban_edit( banid, banedit );
-								return null;
-							} else if ( Lang13.Bool( href_list["dbbanaddtype"] ) ) {
-								bantype = String13.ParseNumber( href_list["dbbanaddtype"] );
-								banckey = href_list["dbbanaddckey"];
-								banduration = String13.ParseNumber( href_list["dbbaddduration"] );
-								banjob = href_list["dbbanaddjob"];
-								banreason = href_list["dbbanreason"];
-								banckey = String13.CKey( banckey );
-
-								switch ((double?)( bantype )) {
-									case 1:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
-											return null;
-										}
-										banduration = null;
-										banjob = null;
-										break;
-									case 2:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banduration ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and duration)" );
-											return null;
-										}
-										banjob = null;
-										break;
-									case 3:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banjob ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and job)" );
-											return null;
-										}
-										banduration = null;
-										break;
-									case 4:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banjob ) || !Lang13.Bool( banduration ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason and job)" );
-											return null;
-										}
-										break;
-									case 6:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
-											return null;
-										}
-										banduration = null;
-										banjob = null;
-										break;
-									case 7:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey and reason)" );
-											return null;
-										}
-										banduration = null;
-										break;
-									case 8:
-										
-										if ( !Lang13.Bool( banckey ) || !Lang13.Bool( banreason ) || !Lang13.Bool( banduration ) ) {
-											GlobalFuncs.to_chat( Task13.User, "Not enough parameters (Requires ckey, reason, and duration)" );
-											return null;
-										}
-										break;
-								}
-								playermob = null;
-
-								foreach (dynamic _c in Lang13.Enumerate( GlobalVars.player_list )) {
-									M = _c;
-									
-
-									if ( M.ckey == banckey ) {
-										playermob = M;
-										break;
-									}
-								}
-								banreason = "(MANUAL BAN) " + banreason;
-								this.DB_ban_record( bantype, playermob, banduration, banreason, banjob, null, banckey );
-							} else if ( Lang13.Bool( href_list["editrights"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 128 ) ) {
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " attempted to edit the admin permissions without sufficient rights." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempted to edit the admin permissions without sufficient rights." );
-									return null;
-								}
-								adm_ckey = null;
-								task = href_list["editrights"];
-
-								if ( task == "add" ) {
-									new_ckey = String13.CKey( Interface13.Input( Task13.User, "New admin's ckey", "Admin ckey", null, null, InputType.Str | InputType.Null ) );
-
-									if ( !Lang13.Bool( new_ckey ) ) {
-										return null;
-									}
-									Interface13.Stat( null, GlobalVars.admin_datums.Contains( new_ckey ) );
-
-									if ( !Lang13.Bool( new_ckey ) ) {
-										GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': " + new_ckey + " is already an admin</font>" );
-										return null;
-									}
-									adm_ckey = new_ckey;
-									task = "rank";
-								} else if ( task != "show" ) {
-									adm_ckey = String13.CKey( href_list["ckey"] );
-
-									if ( !Lang13.Bool( adm_ckey ) ) {
-										GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': No valid ckey</font>" );
-										return null;
-									}
-								}
-								D = GlobalVars.admin_datums[adm_ckey];
-
-								if ( task == "remove" ) {
-									
-									if ( Interface13.Alert( "Are you sure you want to remove " + adm_ckey + "?", "Message", "Yes", "Cancel" ) == "Yes" ) {
-										
-										if ( !( D != null ) ) {
-											return null;
-										}
-										GlobalVars.admin_datums.Remove( adm_ckey );
-										D.disassociate();
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + adm_ckey + " from the admins list" );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + adm_ckey + " from the admins list" );
-										this.log_admin_rank_modification( adm_ckey, "Removed" );
-									}
-								} else if ( task == "rank" ) {
-									new_rank = null;
-
-									if ( GlobalVars.admin_ranks.len != 0 ) {
-										new_rank = Interface13.Input( "Please select a rank", "New rank", null, null, GlobalVars.admin_ranks | "*New Rank*", InputType.Null | InputType.Any );
-									} else {
-										new_rank = Interface13.Input( "Please select a rank", "New rank", null, null, new ByTable(new object [] { "Game Master", "Game Admin", "Trial Admin", "Admin Observer", "*New Rank*" }), InputType.Null | InputType.Any );
-									}
-									rights = 0;
-
-									if ( D != null ) {
-										rights = D.rights;
-									}
-
-									dynamic _d = new_rank; // Was a switch-case, sorry for the mess.
-									if ( _d==null || _d=="" ) {
-										return null;
-									} else if ( _d=="*New Rank*" ) {
-										new_rank = Interface13.Input( "Please input a new rank", "New custom rank", null, null, null, InputType.Str | InputType.Null );
-
-										if ( GlobalVars.config.admin_legacy_system ) {
-											new_rank = String13.CKeyPreserveCase( new_rank );
-										}
-
-										if ( !Lang13.Bool( new_rank ) ) {
-											GlobalFuncs.to_chat( Task13.User, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>" );
-											return null;
-										}
-
-										if ( GlobalVars.config.admin_legacy_system ) {
-											
-											if ( GlobalVars.admin_ranks.len != 0 ) {
-												Interface13.Stat( null, GlobalVars.admin_ranks.Contains( new_rank ) );
-
-												if ( false ) {
-													rights = GlobalVars.admin_ranks[new_rank];
-												} else {
-													GlobalVars.admin_ranks[new_rank] = 0;
-												}
-											}
-										}
-									} else {
-										
-										if ( GlobalVars.config.admin_legacy_system ) {
-											new_rank = String13.CKeyPreserveCase( new_rank );
-											rights = GlobalVars.admin_ranks[new_rank];
-										}
-									}
-
-									if ( D != null ) {
-										D.disassociate();
-										D.rank = new_rank;
-										D.rights = rights;
-									} else {
-										D = new Admins( new_rank, rights, adm_ckey );
-									}
-									C = GlobalVars.directory[adm_ckey];
-									D.associate( C );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " edited the admin rank of " + adm_ckey + " to " + new_rank );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited the admin rank of " + adm_ckey + " to " + new_rank );
-									this.log_admin_rank_modification( adm_ckey, new_rank );
-								} else if ( task == "permissions" ) {
-									
-									if ( !( D != null ) ) {
-										return null;
-									}
-									permissionlist = new ByTable();
-									i = null;
-									i = 1;
-
-									while (( i ??0) <= 16384) {
-										permissionlist[GlobalFuncs.rights2text( i )] = i;
-										i <<= 1;
-									}
-									new_permission = Interface13.Input( "Select a permission to turn on/off", "Permission toggle", null, null, permissionlist, InputType.Null | InputType.Any );
-
-									if ( !Lang13.Bool( new_permission ) ) {
-										return null;
-									}
-									D.rights ^= permissionlist[new_permission];
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled the " + new_permission + " permission of " + adm_ckey );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled the " + new_permission + " permission of " + adm_ckey );
-									this.log_admin_permission_modification( adm_ckey, permissionlist[new_permission] );
-								}
-								this.edit_admin_permissions();
-							} else if ( Lang13.Bool( href_list["call_shuttle"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-
-								if ( GlobalVars.ticker.mode.name == "blob" ) {
-									Interface13.Alert( "You can't call the shuttle during blob!" );
-									return null;
-								}
-
-								dynamic _f = href_list["call_shuttle"]; // Was a switch-case, sorry for the mess.
-								if ( _f=="1" ) {
-									
-									if ( !( GlobalVars.ticker != null ) || GlobalVars.emergency_shuttle.location != 0 ) {
-										return null;
-									}
-									GlobalVars.emergency_shuttle.incall();
-									GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " called the Emergency Shuttle" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " called the Emergency Shuttle to the station</span>" );
-								} else if ( _f=="2" ) {
-									
-									if ( !( GlobalVars.ticker != null ) || GlobalVars.emergency_shuttle.location != 0 || GlobalVars.emergency_shuttle.direction == 0 ) {
-										return null;
-									}
-
-									switch ((int)( GlobalVars.emergency_shuttle.direction )) {
-										case -1:
-											GlobalVars.emergency_shuttle.incall();
-											GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " called the Emergency Shuttle" );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " called the Emergency Shuttle to the station</span>" );
-											break;
-										case 1:
-											GlobalVars.emergency_shuttle.recall();
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " sent the Emergency Shuttle back" );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the Emergency Shuttle back</span>" );
-											break;
-									}
-								}
-								href_list["secretsadmin"] = "check_antagonist";
-							} else if ( Lang13.Bool( href_list["edit_shuttle_time"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 16 ) ) {
-									return null;
-								}
-								GlobalVars.emergency_shuttle.settimeleft( Interface13.Input( "Enter new shuttle duration (seconds):", "Edit Shuttle Timeleft", GlobalVars.emergency_shuttle.timeleft(), null, null, InputType.Num ) );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited the Emergency Shuttle's timeleft to " + GlobalVars.emergency_shuttle.timeleft() );
-								GlobalFuncs.captain_announce( "The emergency shuttle has been called. It will arrive in " + Num13.Floor( GlobalVars.emergency_shuttle.timeleft() / 60 ) + " minutes." );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " edited the Emergency Shuttle's timeleft to " + GlobalVars.emergency_shuttle.timeleft() + "</span>" );
-								href_list["secretsadmin"] = "check_antagonist";
-							} else if ( Lang13.Bool( href_list["delay_round_end"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 16 ) ) {
-									return null;
-								}
-								GlobalVars.ticker.delay_end = !( GlobalVars.ticker.delay_end != 0 ) ?1:0;
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " " + ( GlobalVars.ticker.delay_end != 0 ? "delayed the round end" : "has made the round end normally" ) + "." );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name( Task13.User ) + " " + ( GlobalVars.ticker.delay_end != 0 ? "delayed the round end" : "has made the round end normally" ) + ".</span>" );
-								href_list["secretsadmin"] = "check_antagonist";
-							} else if ( Lang13.Bool( href_list["simplemake"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								M2 = Lang13.FindObj( href_list["mob"] );
-
-								if ( !( M2 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-								delmob = false;
-
-								switch ((string)( Interface13.Alert( "Delete old mob?", "Message", "Yes", "No", "Cancel" ) )) {
-									case "Cancel":
-										return null;
-										break;
-									case "Yes":
-										delmob = true;
-										break;
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has used rudimentary transformation on " + GlobalFuncs.key_name( M2 ) + ". Transforming to " + href_list["simplemake"] + "; deletemob=" + delmob );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " has used rudimentary transformation on " + GlobalFuncs.key_name_admin( M2 ) + ". Transforming to " + href_list["simplemake"] + "; deletemob=" + delmob + "</span>" );
-								new_mob = null;
-
-								dynamic _h = href_list["simplemake"]; // Was a switch-case, sorry for the mess.
-								if ( _h=="observer" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Dead_Observer), null, null, delmob );
-								} else if ( _h=="drone" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Drone), null, null, delmob );
-								} else if ( _h=="hunter" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Hunter), null, null, delmob );
-								} else if ( _h=="queen" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Queen), null, null, delmob );
-								} else if ( _h=="sentinel" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Humanoid_Sentinel), null, null, delmob );
-								} else if ( _h=="larva" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Alien_Larva), null, null, delmob );
-								} else if ( _h=="human" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Human), null, null, delmob );
-								} else if ( _h=="slime" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Slime), null, null, delmob );
-								} else if ( _h=="adultslime" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Slime_Adult), null, null, delmob );
-								} else if ( _h=="monkey" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Carbon_Monkey), null, null, delmob );
-								} else if ( _h=="robot" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_Silicon_Robot), null, null, delmob );
-								} else if ( _h=="cat" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Cat), null, null, delmob );
-								} else if ( _h=="runtime" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Cat_Runtime), null, null, delmob );
-								} else if ( _h=="corgi" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Corgi), null, null, delmob );
-								} else if ( _h=="ian" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Corgi_Ian), null, null, delmob );
-								} else if ( _h=="crab" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Crab), null, null, delmob );
-								} else if ( _h=="coffee" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Crab_Coffee), null, null, delmob );
-								} else if ( _h=="parrot" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Parrot), null, null, delmob );
-								} else if ( _h=="polyparrot" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Parrot_Poly), null, null, delmob );
-								} else if ( _h=="constructarmoured" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Armoured), null, null, delmob );
-								} else if ( _h=="constructbuilder" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Builder), null, null, delmob );
-								} else if ( _h=="constructwraith" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Construct_Wraith), null, null, delmob );
-								} else if ( _h=="shade" ) {
-									new_mob = ((Mob)M2).change_mob_type( typeof(Mob_Living_SimpleAnimal_Shade), null, null, delmob );
-								}
-
-								if ( Lang13.Bool( new_mob ) && new_mob != M2 ) {
-									
-									if ( new_mob.client == CLIENT ) {
-										Task13.User = new_mob;
-									}
-									this.show_player_panel( new_mob );
-								}
-							} else if ( Lang13.Bool( href_list["unbanf"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								banfolder = href_list["unbanf"];
-								GlobalVars.Banlist.cd = "/base/" + banfolder;
-								key = GlobalVars.Banlist["key"];
-
-								if ( Interface13.Alert( Task13.User, "Are you sure you want to unban " + key + "?", "Confirmation", "Yes", "No" ) == "Yes" ) {
-									
-									if ( GlobalFuncs.RemoveBan( banfolder ) ) {
-										this.unbanpanel();
-									} else {
-										Interface13.Alert( Task13.User, "This ban has already been lifted / does not exist.", "Error", "Ok" );
-										this.unbanpanel();
-									}
-								}
-							} else if ( Lang13.Bool( href_list["warn"] ) ) {
-								Task13.User.client.warn( href_list["warn"] );
-							} else if ( Lang13.Bool( href_list["unwarn"] ) ) {
-								Task13.User.client.unwarn( href_list["unwarn"] );
-							} else if ( Lang13.Bool( href_list["unbane"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								GlobalFuncs.UpdateTime();
-								reason = null;
-								banfolder2 = href_list["unbane"];
-								GlobalVars.Banlist.cd = "/base/" + banfolder2;
-								reason2 = GlobalVars.Banlist["reason"];
-								temp = Lang13.Bool( GlobalVars.Banlist["temp"] );
-								minutes = Convert.ToDouble( GlobalVars.Banlist["minutes"] );
-								banned_key = GlobalVars.Banlist["key"];
-								GlobalVars.Banlist.cd = "/base";
-								duration = null;
-
-								switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No" ) )) {
-									case "Yes":
-										temp = true;
-										mins = 0;
-
-										if ( minutes > GlobalVars.CMinutes ) {
-											mins = minutes - GlobalVars.CMinutes;
-										}
-										mins = Interface13.Input( Task13.User, "How long (in minutes)? (Default: 1440)", "Ban time", ( Lang13.Bool( mins ) ? mins : ((dynamic)( 1440 )) ), null, InputType.Num | InputType.Null );
-
-										if ( !Lang13.Bool( mins ) ) {
-											return null;
-										}
-										mins = Num13.MinInt( 525599, Convert.ToInt32( mins ) );
-										minutes = GlobalVars.CMinutes + Convert.ToDouble( mins );
-										duration = GlobalFuncs.GetExp( minutes );
-										reason = Interface13.Input( Task13.User, "Reason?", "reason", reason2, null, InputType.Str | InputType.Null );
-
-										if ( !Lang13.Bool( reason ) ) {
-											return null;
-										}
-										break;
-									case "No":
-										temp = false;
-										duration = "Perma";
-										reason = Interface13.Input( Task13.User, "Reason?", "reason", reason2, null, InputType.Str | InputType.Null );
-
-										if ( !Lang13.Bool( reason ) ) {
-											return null;
-										}
-										break;
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration );
-								GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " edited " + banned_key + "'s ban. Reason: " + reason + " Duration: " + duration + "</span>" );
-								GlobalVars.Banlist.cd = "/base/" + banfolder2;
-								GlobalFuncs.to_chat( GlobalVars.Banlist["reason"], reason );
-								GlobalFuncs.to_chat( GlobalVars.Banlist["temp"], temp );
-								GlobalFuncs.to_chat( GlobalVars.Banlist["minutes"], minutes );
-								GlobalFuncs.to_chat( GlobalVars.Banlist["bannedby"], Task13.User.ckey );
-								GlobalVars.Banlist.cd = "/base";
-								GlobalFuncs.feedback_inc( "ban_edit", 1 );
-								this.unbanpanel();
-							} else if ( Lang13.Bool( href_list["oocban"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								M3 = Lang13.FindObj( href_list["oocban"] );
-
-								if ( !( M3 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( !Lang13.Bool( M3.ckey ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
-									return null;
-								}
-								oocbanned = GlobalVars.oocban_keylist.Find( "" + String13.CKey( "" + M3.ckey ) );
-
-								if ( oocbanned != 0 ) {
-									
-									switch ((string)( Interface13.Alert( "Reason: Remove OOC ban?", "Please Confirm", "Yes", "No" ) )) {
-										case "Yes":
-											GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M3 ) + "'s OOC ban" );
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M3 ) + "'s OOC ban" );
-											GlobalFuncs.feedback_inc( "ban_ooc_unban", 1 );
-											this.DB_ban_unban( M3.ckey, 7 );
-											GlobalFuncs.ooc_unban( M3 );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + GlobalFuncs.key_name_admin( M3 ) + "'s OOC ban</span>" );
-											GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>" + Task13.User.client.ckey + " has removed your OOC ban.</B></BIG></span>" );
-											break;
-									}
-								} else {
-									
-									switch ((string)( Interface13.Alert( "OOC ban " + M3.ckey + "?", null, "Yes", "No" ) )) {
-										case "Yes":
-											
-											switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
-												case "Yes":
-													mins2 = Interface13.Input( Task13.User, "How long (in minutes)?", "OOC Ban time", 1440, null, InputType.Num | InputType.Null );
-
-													if ( !Lang13.Bool( mins2 ) ) {
-														return null;
-													}
-
-													if ( Convert.ToDouble( mins2 ) >= 525600 ) {
-														mins2 = 525599;
-													}
-													reason3 = Interface13.Input( Task13.User, "Reason?", "reason", "Shinposting", null, InputType.Str | InputType.Null );
-
-													if ( !Lang13.Bool( reason3 ) ) {
-														return null;
-													}
-													GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has banned " + M3.ckey + ". - Reason: " + reason3 + " - This will be removed in " + mins2 + " minutes." );
-													GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>You have been OOC banned by " + Task13.User.client.ckey + ".\nReason: " + reason3 + ".</B></BIG></span>" );
-													GlobalFuncs.to_chat( M3, "<span class='warning'>This is a temporary ooc ban, it will be removed in " + mins2 + " minutes.</span>" );
-													GlobalFuncs.feedback_inc( "ban_ooc_tmp", 1 );
-													this.DB_ban_record( 8, M3, mins2, reason3 );
-													GlobalFuncs.feedback_inc( "ban_ooc_tmp_mins", mins2 );
-
-													if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
-														GlobalFuncs.to_chat( M3, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + " or consider not being a shithead in OOC</span>" );
-													} else {
-														GlobalFuncs.to_chat( M3, "<span class='warning'>No ban appeals URL has been set.</span>" );
-													}
-													GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason3 + "\nThis will be removed in " + mins2 + " minutes." );
-													GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason3 + "\nThis will be removed in " + mins2 + " minutes.</span>" );
-													break;
-												case "No":
-													reason4 = Interface13.Input( Task13.User, "Reason?", "reason", "Shinposting", null, InputType.Str | InputType.Null );
-
-													if ( !Lang13.Bool( reason4 ) ) {
-														return null;
-													}
-													GlobalFuncs.to_chat( M3, "<span class='warning'><BIG><B>You have been ooc banned by " + Task13.User.client.ckey + ".\nReason: " + reason4 + ".</B></BIG></span>" );
-													GlobalFuncs.to_chat( M3, "<span class='warning'>This is a permanent ooc ban.</span>" );
-
-													if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
-														GlobalFuncs.to_chat( M3, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + " or consider not being a shithead in OOC</span>" );
-													} else {
-														GlobalFuncs.to_chat( M3, "<span class='warning'>No ban appeals URL has been set.</span>" );
-													}
-													GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has perma-ooc-banned " + M3.ckey + ". - Reason: " + reason4 + " - This is a permanent ooc ban." );
-													GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason4 + "\nThis is a permanent ooc ban." );
-													GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has ooc banned " + M3.ckey + ".\nReason: " + reason4 + "\nThis is a permanent ooc ban.</span>" );
-													GlobalFuncs.feedback_inc( "ban_ooc_perma", 1 );
-													this.DB_ban_record( 7, M3, -1, reason4 );
-													break;
-												case "Cancel":
-													return null;
-													break;
-											}
-											GlobalFuncs.ooc_ban( M3 );
-											return null;
-											break;
-										case "No":
-											return null;
-											break;
-										default:
-											return null;
-											break;
-									}
-								}
-							} else if ( Lang13.Bool( href_list["appearanceban"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								M4 = Lang13.FindObj( href_list["appearanceban"] );
-
-								if ( !( M4 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( !Lang13.Bool( M4.ckey ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
-									return null;
-								}
-								banreason2 = GlobalFuncs.appearance_isbanned( M4 );
-
-								if ( Lang13.Bool( banreason2 ) ) {
-									
-									switch ((string)( Interface13.Alert( "Reason: '" + banreason2 + "' Remove appearance ban?", "Please Confirm", "Yes", "No" ) )) {
-										case "Yes":
-											GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M4 ) + "'s appearance ban" );
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + GlobalFuncs.key_name( M4 ) + "'s appearance ban" );
-											GlobalFuncs.feedback_inc( "ban_appearance_unban", 1 );
-											this.DB_ban_unban( M4.ckey, 6 );
-											GlobalFuncs.appearance_unban( M4 );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + GlobalFuncs.key_name_admin( M4 ) + "'s appearance ban</span>" );
-											GlobalFuncs.to_chat( M4, "<span class='warning'><BIG><B>" + Task13.User.client.ckey + " has removed your appearance ban.</B></BIG></span>" );
-											break;
-									}
-								} else {
-									
-									switch ((string)( Interface13.Alert( "Appearance ban " + M4.ckey + "?", null, "Yes", "No", "Cancel" ) )) {
-										case "Yes":
-											reason5 = Interface13.Input( Task13.User, "Reason?", "reason", "Metafriender", null, InputType.Str | InputType.Null );
-
-											if ( !Lang13.Bool( reason5 ) ) {
-												return null;
-											}
-											GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " appearance banned " + GlobalFuncs.key_name( M4 ) + ". reason: " + reason5 );
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " appearance banned " + GlobalFuncs.key_name( M4 ) + ". \nReason: " + reason5 );
-											GlobalFuncs.feedback_inc( "ban_appearance", 1 );
-											this.DB_ban_record( 6, M4, -1, reason5 );
-											GlobalFuncs.appearance_fullban( M4, "" + reason5 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
-											GlobalFuncs.notes_add( M4.ckey, "Appearance banned - " + reason5 );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " appearance banned " + GlobalFuncs.key_name_admin( M4 ) + "</span>" );
-											GlobalFuncs.to_chat( M4, "<span class='warning'><BIG><B>You have been appearance banned by " + Task13.User.client.ckey + ".</B></BIG></span>" );
-											GlobalFuncs.to_chat( M4, "<span class='danger'>The reason is: " + reason5 + "</span>" );
-											GlobalFuncs.to_chat( M4, "<span class='warning'>Appearance ban can be lifted only upon request.</span>" );
-
-											if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
-												GlobalFuncs.to_chat( M4, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
-											} else {
-												GlobalFuncs.to_chat( M4, "<span class='warning'>No ban appeals URL has been set.</span>" );
-											}
-											break;
-										case "No":
-											return null;
-											break;
-									}
-								}
-							} else if ( Lang13.Bool( href_list["jobban2"] ) ) {
-								M5 = Lang13.FindObj( href_list["jobban2"] );
-
-								if ( !( M5 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( !Lang13.Bool( M5.ckey ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This mob has no ckey" );
-									return null;
-								}
-
-								if ( !( GlobalVars.job_master != null ) ) {
-									GlobalFuncs.to_chat( Task13.User, "Job Master has not been setup!" );
-									return null;
-								}
-								dat = "";
-								header = "<head><title>Job-Ban Panel: " + M5.name + "</title></head>";
-								body = null;
-								jobs = "";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr align='center' bgcolor='ccccff'><th colspan='" ).item( Lang13.Length( GlobalVars.command_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=commanddept;jobban4=" ).Ref( M5 ).str( "'>Command Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _o in Lang13.Enumerate( GlobalVars.command_positions )) {
-									jobPos = _o;
-									
-
-									if ( !Lang13.Bool( jobPos ) ) {
-										continue;
-									}
-									job = GlobalVars.job_master.GetJob( jobPos );
-
-									if ( !( job != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 6 ) {
-										jobs += "</tr><tr>";
-										counter = 0;
-									}
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='ffddf0'><th colspan='" ).item( Lang13.Length( GlobalVars.security_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=securitydept;jobban4=" ).Ref( M5 ).str( "'>Security Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _p in Lang13.Enumerate( GlobalVars.security_positions )) {
-									jobPos2 = _p;
-									
-
-									if ( !Lang13.Bool( jobPos2 ) ) {
-										continue;
-									}
-									job2 = GlobalVars.job_master.GetJob( jobPos2 );
-
-									if ( !( job2 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job2.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job2.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job2.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job2.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job2.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='fff5cc'><th colspan='" ).item( Lang13.Length( GlobalVars.engineering_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=engineeringdept;jobban4=" ).Ref( M5 ).str( "'>Engineering Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _q in Lang13.Enumerate( GlobalVars.engineering_positions )) {
-									jobPos3 = _q;
-									
-
-									if ( !Lang13.Bool( jobPos3 ) ) {
-										continue;
-									}
-									job3 = GlobalVars.job_master.GetJob( jobPos3 );
-
-									if ( !( job3 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job3.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job3.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job3.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job3.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job3.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='ffeef0'><th colspan='" ).item( Lang13.Length( GlobalVars.medical_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=medicaldept;jobban4=" ).Ref( M5 ).str( "'>Medical Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _r in Lang13.Enumerate( GlobalVars.medical_positions )) {
-									jobPos4 = _r;
-									
-
-									if ( !Lang13.Bool( jobPos4 ) ) {
-										continue;
-									}
-									job4 = GlobalVars.job_master.GetJob( jobPos4 );
-
-									if ( !( job4 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job4.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job4.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job4.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job4.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job4.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='e79fff'><th colspan='" ).item( Lang13.Length( GlobalVars.science_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=sciencedept;jobban4=" ).Ref( M5 ).str( "'>Science Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _s in Lang13.Enumerate( GlobalVars.science_positions )) {
-									jobPos5 = _s;
-									
-
-									if ( !Lang13.Bool( jobPos5 ) ) {
-										continue;
-									}
-									job5 = GlobalVars.job_master.GetJob( jobPos5 );
-
-									if ( !( job5 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job5.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job5.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job5.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job5.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job5.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='dddddd'><th colspan='" ).item( Lang13.Length( GlobalVars.civilian_positions ) ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=civiliandept;jobban4=" ).Ref( M5 ).str( "'>Civilian Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _t in Lang13.Enumerate( GlobalVars.civilian_positions )) {
-									jobPos6 = _t;
-									
-
-									if ( !Lang13.Bool( jobPos6 ) ) {
-										continue;
-									}
-									job6 = GlobalVars.job_master.GetJob( jobPos6 );
-
-									if ( !( job6 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job6.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job6.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job6.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job6.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job6.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Internal Affairs Agent" ) ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Internal Affairs Agent;jobban4=" ).Ref( M5 ).str( "'><font color=red>Internal Affairs Agent</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Internal Affairs Agent;jobban4=" ).Ref( M5 ).str( "'>Internal Affairs Agent</a></td>" ).ToString();
-								}
-								jobs += "</tr></table>";
-								counter = 0;
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='ccffcc'><th colspan='" ).item( Lang13.Length( GlobalVars.nonhuman_positions ) + 1 ).str( "'><a href='?src=" ).Ref( this ).str( ";jobban3=nonhumandept;jobban4=" ).Ref( M5 ).str( "'>Non-human Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								foreach (dynamic _u in Lang13.Enumerate( GlobalVars.nonhuman_positions )) {
-									jobPos7 = _u;
-									
-
-									if ( !Lang13.Bool( jobPos7 ) ) {
-										continue;
-									}
-									job7 = GlobalVars.job_master.GetJob( jobPos7 );
-
-									if ( !( job7 != null ) ) {
-										continue;
-									}
-
-									if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, job7.title ) ) ) {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job7.title ).str( ";jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( job7.title, " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-										counter++;
-									} else {
-										jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=" ).item( job7.title ).str( ";jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( job7.title, " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-										counter++;
-									}
-
-									if ( counter >= 5 ) {
-										jobs += "</tr><tr align='center'>";
-										counter = 0;
-									}
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "pAI" ) ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=pAI;jobban4=" ).Ref( M5 ).str( "'><font color=red>pAI</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=pAI;jobban4=" ).Ref( M5 ).str( "'>pAI</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "AntagHUD" ) ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=AntagHUD;jobban4=" ).Ref( M5 ).str( "'><font color=red>AntagHUD</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=AntagHUD;jobban4=" ).Ref( M5 ).str( "'>AntagHUD</a></td>" ).ToString();
-								}
-								jobs += "</tr></table>";
-								isbanned_dept = GlobalFuncs.jobban_isbanned( M5, "Syndicate" );
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += new Txt( "<tr bgcolor='ffeeaa'><th colspan='10'><a href='?src=" ).Ref( this ).str( ";jobban3=Syndicate;jobban4=" ).Ref( M5 ).str( "'>Antagonist Positions</a></th></tr><tr align='center'>" ).ToString();
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "traitor" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=traitor;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Traitor", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=traitor;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Traitor", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "changeling" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=changeling;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Changeling", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=changeling;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Changeling", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "operative" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=operative;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Nuke Operative", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=operative;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Nuke Operative", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "revolutionary" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=revolutionary;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Revolutionary", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=revolutionary;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Revolutionary", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-								jobs += "</tr><tr align='center'>";
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "cultist" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=cultist;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Cultist", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=cultist;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Cultist", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "wizard" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=wizard;jobban4=" ).Ref( M5 ).str( "'><font color=red>" ).item( GlobalFuncs.replacetext( "Wizard", " ", "&nbsp" ) ).str( "</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=wizard;jobban4=" ).Ref( M5 ).str( "'>" ).item( GlobalFuncs.replacetext( "Wizard", " ", "&nbsp" ) ).str( "</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Emergency Response Team" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Emergency Response Team;jobban4=" ).Ref( M5 ).str( "'><font color=red>Emergency Response Team</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Emergency Response Team;jobban4=" ).Ref( M5 ).str( "'>Emergency Response Team</a></td>" ).ToString();
-								}
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Vox Raider" ) ) || Lang13.Bool( isbanned_dept ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Vox Raider;jobban4=" ).Ref( M5 ).str( "'><font color=red>Vox&nbsp;Raider</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Vox Raider;jobban4=" ).Ref( M5 ).str( "'>Vox&nbsp;Raider</a></td>" ).ToString();
-								}
-								jobs += "</tr></table>";
-								jobs += "<table cellpadding='1' cellspacing='0' width='100%'>";
-								jobs += "<tr bgcolor='ccccff'><th colspan='1'>Other Races</th></tr><tr align='center'>";
-
-								if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M5, "Dionaea" ) ) ) {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Dionaea;jobban4=" ).Ref( M5 ).str( "'><font color=red>Dionaea</font></a></td>" ).ToString();
-								} else {
-									jobs += new Txt( "<td width='20%'><a href='?src=" ).Ref( this ).str( ";jobban3=Dionaea;jobban4=" ).Ref( M5 ).str( "'>Dionaea</a></td>" ).ToString();
-								}
-								jobs += "</tr></table>";
-								body = "<body>" + jobs + "</body>";
-								dat = "<tt>" + header + body + "</tt>";
-								Interface13.Browse( Task13.User, dat, "window=jobban2;size=800x490" );
-								return null;
-							} else if ( Lang13.Bool( href_list["jobban3"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								M6 = Lang13.FindObj( href_list["jobban4"] );
-
-								if ( !( M6 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( M6 != Task13.User ) {
-									
-									if ( Lang13.Bool( M6.client ) && Lang13.Bool( M6.client.holder ) && Lang13.Bool( M6.client.holder.rights & 4 ) ) {
-										Interface13.Alert( "You cannot perform this action. You must be of a higher administrative rank!" );
-										return null;
-									}
-								}
-
-								if ( !( GlobalVars.job_master != null ) ) {
-									GlobalFuncs.to_chat( Task13.User, "Job Master has not been setup!" );
-									return null;
-								}
-								joblist = new ByTable();
-
-								dynamic _bc = href_list["jobban3"]; // Was a switch-case, sorry for the mess.
-								if ( _bc=="commanddept" ) {
-									
-									foreach (dynamic _v in Lang13.Enumerate( GlobalVars.command_positions )) {
-										jobPos8 = _v;
-										
-
-										if ( !Lang13.Bool( jobPos8 ) ) {
-											continue;
-										}
-										temp2 = GlobalVars.job_master.GetJob( jobPos8 );
-
-										if ( !( temp2 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp2.title );
-									}
-								} else if ( _bc=="securitydept" ) {
-									
-									foreach (dynamic _w in Lang13.Enumerate( GlobalVars.security_positions )) {
-										jobPos9 = _w;
-										
-
-										if ( !Lang13.Bool( jobPos9 ) ) {
-											continue;
-										}
-										temp3 = GlobalVars.job_master.GetJob( jobPos9 );
-
-										if ( !( temp3 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp3.title );
-									}
-								} else if ( _bc=="engineeringdept" ) {
-									
-									foreach (dynamic _x in Lang13.Enumerate( GlobalVars.engineering_positions )) {
-										jobPos10 = _x;
-										
-
-										if ( !Lang13.Bool( jobPos10 ) ) {
-											continue;
-										}
-										temp4 = GlobalVars.job_master.GetJob( jobPos10 );
-
-										if ( !( temp4 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp4.title );
-									}
-								} else if ( _bc=="medicaldept" ) {
-									
-									foreach (dynamic _y in Lang13.Enumerate( GlobalVars.medical_positions )) {
-										jobPos11 = _y;
-										
-
-										if ( !Lang13.Bool( jobPos11 ) ) {
-											continue;
-										}
-										temp5 = GlobalVars.job_master.GetJob( jobPos11 );
-
-										if ( !( temp5 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp5.title );
-									}
-								} else if ( _bc=="sciencedept" ) {
-									
-									foreach (dynamic _z in Lang13.Enumerate( GlobalVars.science_positions )) {
-										jobPos12 = _z;
-										
-
-										if ( !Lang13.Bool( jobPos12 ) ) {
-											continue;
-										}
-										temp6 = GlobalVars.job_master.GetJob( jobPos12 );
-
-										if ( !( temp6 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp6.title );
-									}
-								} else if ( _bc=="civiliandept" ) {
-									
-									foreach (dynamic _ba in Lang13.Enumerate( GlobalVars.civilian_positions )) {
-										jobPos13 = _ba;
-										
-
-										if ( !Lang13.Bool( jobPos13 ) ) {
-											continue;
-										}
-										temp7 = GlobalVars.job_master.GetJob( jobPos13 );
-
-										if ( !( temp7 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp7.title );
-									}
-								} else if ( _bc=="nonhumandept" ) {
-									joblist.Add( "pAI" );
-
-									foreach (dynamic _bb in Lang13.Enumerate( GlobalVars.nonhuman_positions )) {
-										jobPos14 = _bb;
-										
-
-										if ( !Lang13.Bool( jobPos14 ) ) {
-											continue;
-										}
-										temp8 = GlobalVars.job_master.GetJob( jobPos14 );
-
-										if ( !( temp8 != null ) ) {
-											continue;
-										}
-										joblist.Add( temp8.title );
-									}
-								} else {
-									joblist.Add( href_list["jobban3"] );
-								}
-								notbannedlist = new ByTable();
-
-								foreach (dynamic _bd in Lang13.Enumerate( joblist )) {
-									job8 = _bd;
-									
-
-									if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( M6, job8 ) ) ) {
-										notbannedlist.Add( job8 );
-									}
-								}
-
-								if ( notbannedlist.len != 0 ) {
-									
-									switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
-										case "Yes":
-											
-											if ( GlobalVars.config.ban_legacy_system ) {
-												GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Your server is using the legacy banning system, which does not support temporary job bans. Consider upgrading. Aborting ban.</span>" );
-												return null;
-											}
-											mins3 = Interface13.Input( Task13.User, "How long (in minutes)?", "Ban time", 1440, null, InputType.Num | InputType.Null );
-
-											if ( !Lang13.Bool( mins3 ) ) {
-												return null;
-											}
-											reason6 = Interface13.Input( Task13.User, "Reason?", "Please State Reason", "", null, InputType.Str | InputType.Null );
-
-											if ( !Lang13.Bool( reason6 ) ) {
-												return null;
-											}
-											msg = null;
-
-											foreach (dynamic _be in Lang13.Enumerate( notbannedlist )) {
-												job9 = _be;
-												
-												GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " temp-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job9 + " for " + mins3 + " minutes. reason: " + reason6 );
-												GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " temp-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job9 + " for " + mins3 + " minutes" );
-												GlobalFuncs.feedback_inc( "ban_job_tmp", 1 );
-												this.DB_ban_record( 4, M6, mins3, reason6, job9 );
-												GlobalFuncs.feedback_add_details( "ban_job_tmp", "- " + job9 );
-												GlobalFuncs.jobban_fullban( M6, job9, "" + reason6 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
-
-												if ( !Lang13.Bool( msg ) ) {
-													msg = job9;
-												} else {
-													msg += ", " + job9;
-												}
-											}
-											GlobalFuncs.notes_add( M6.ckey, "Banned  from " + msg + " - " + reason6 );
-											GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " banned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg + " for " + mins3 + " minutes</span>" );
-											GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been jobbanned by " + Task13.User.client.ckey + " from: " + msg + ".</B></BIG></span>" );
-											GlobalFuncs.to_chat( M6, "<span class='danger'>The reason is: " + reason6 + "</span>" );
-											GlobalFuncs.to_chat( M6, "<span class='warning'>This jobban will be lifted in " + mins3 + " minutes.</span>" );
-											href_list["jobban2"] = 1;
-											return 1;
-											break;
-										case "No":
-											reason7 = Interface13.Input( Task13.User, "Reason?", "Please State Reason", "", null, InputType.Str | InputType.Null );
-
-											if ( Lang13.Bool( reason7 ) ) {
-												msg2 = null;
-
-												foreach (dynamic _bf in Lang13.Enumerate( notbannedlist )) {
-													job10 = _bf;
-													
-													GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " perma-jobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job10 + ". reason: " + reason7 );
-													GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " perma-banned " + GlobalFuncs.key_name( M6 ) + " from " + job10 );
-													GlobalFuncs.feedback_inc( "ban_job", 1 );
-													this.DB_ban_record( 3, M6, -1, reason7, job10 );
-													GlobalFuncs.feedback_add_details( "ban_job", "- " + job10 );
-													GlobalFuncs.jobban_fullban( M6, job10, "" + reason7 + "; By " + Task13.User.ckey + " on " + String13.FormatTime( Game13.realtime, null ) );
-
-													if ( !Lang13.Bool( msg2 ) ) {
-														msg2 = job10;
-													} else {
-														msg2 += ", " + job10;
-													}
-												}
-												GlobalFuncs.notes_add( M6.ckey, "Banned  from " + msg2 + " - " + reason7 );
-												GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " banned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg2 + "</span>" );
-												GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been jobbanned by " + Task13.User.client.ckey + " from: " + msg2 + ".</B></BIG></span>" );
-												GlobalFuncs.to_chat( M6, "<span class='danger'>The reason is: " + reason7 + "</span>" );
-												GlobalFuncs.to_chat( M6, "<span class='warning'>Jobban can be lifted only upon request.</span>" );
-												href_list["jobban2"] = 1;
-												return 1;
-											}
-											break;
-										case "Cancel":
-											return null;
-											break;
-									}
-								}
-
-								if ( joblist.len != 0 ) {
-									
-									if ( !GlobalVars.config.ban_legacy_system ) {
-										GlobalFuncs.to_chat( Task13.User, "Unfortunately, database based unbanning cannot be done through this panel" );
-										this.DB_ban_panel( M6.ckey );
-										return null;
-									}
-									msg3 = null;
-
-									foreach (dynamic _bi in Lang13.Enumerate( joblist )) {
-										job11 = _bi;
-										
-										reason8 = GlobalFuncs.jobban_isbanned( M6, job11 );
-
-										if ( !Lang13.Bool( reason8 ) ) {
-											continue;
-										}
-
-										switch ((string)( Interface13.Alert( "Job: '" + job11 + "' Reason: '" + reason8 + "' Un-jobban?", "Please Confirm", "Yes", "No" ) )) {
-											case "Yes":
-												GlobalFuncs.ban_unban_log_save( "" + GlobalFuncs.key_name( Task13.User ) + " unjobbanned " + GlobalFuncs.key_name( M6 ) + " from " + job11 );
-												GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " unbanned " + GlobalFuncs.key_name( M6 ) + " from " + job11 );
-												this.DB_ban_unban( M6.ckey, 3, job11 );
-												GlobalFuncs.feedback_inc( "ban_job_unban", 1 );
-												GlobalFuncs.feedback_add_details( "ban_job_unban", "- " + job11 );
-												GlobalFuncs.jobban_unban( M6, job11 );
-
-												if ( !Lang13.Bool( msg3 ) ) {
-													msg3 = job11;
-												} else {
-													msg3 += ", " + job11;
-												}
-												break;
-											default:
-												continue;
-												break;
-										}
-									}
-
-									if ( Lang13.Bool( msg3 ) ) {
-										GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " unbanned " + GlobalFuncs.key_name_admin( M6 ) + " from " + msg3 + "</span>" );
-										GlobalFuncs.to_chat( M6, "<span class='warning'><BIG><B>You have been un-jobbanned by " + Task13.User.client.ckey + " from " + msg3 + ".</B></BIG></span>" );
-										href_list["jobban2"] = 1;
-									}
-									return 1;
-								}
-								return 0;
-							} else if ( Lang13.Bool( href_list["boot2"] ) ) {
-								M7 = Lang13.FindObj( href_list["boot2"] );
-
-								if ( M7 is Mob ) {
-									
-									if ( !GlobalFuncs.check_if_greater_rights_than( M7.client ) ) {
-										return null;
-									}
-									GlobalFuncs.to_chat( M7, "<span class='warning'>You have been kicked from the server</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " booted " + GlobalFuncs.key_name( M7 ) + "." );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " booted " + GlobalFuncs.key_name_admin( M7 ) + ".</span>" );
-									Lang13.Delete( M7.client );
-									M7.client = null;
-								}
-							} else if ( Lang13.Bool( href_list["removejobban"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								t = href_list["removejobban"];
-
-								if ( Lang13.Bool( t ) ) {
-									
-									if ( Interface13.Alert( "Do you want to unjobban " + t + "?", "Unjobban confirmation", "Yes", "No" ) == "Yes" && Lang13.Bool( t ) ) {
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " removed " + t );
-										GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " removed " + t + "</span>" );
-										GlobalFuncs.jobban_remove( t );
-										href_list["ban"] = 1;
-										t_split = GlobalFuncs.text2list( t, " - " );
-										key2 = t_split[1];
-										job12 = t_split[2];
-										this.DB_ban_unban( String13.CKey( key2 ), 3, job12 );
-									}
-								}
-							} else if ( Lang13.Bool( href_list["newban"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								M8 = Lang13.FindObj( href_list["newban"] );
-
-								if ( !( M8 is Mob ) ) {
-									return null;
-								}
-
-								switch ((string)( Interface13.Alert( "Temporary Ban?", null, "Yes", "No", "Cancel" ) )) {
-									case "Yes":
-										mins4 = Interface13.Input( Task13.User, "How long (in minutes)?", "Ban time", 1440, null, InputType.Num | InputType.Null );
-
-										if ( !Lang13.Bool( mins4 ) ) {
-											return null;
-										}
-
-										if ( Convert.ToDouble( mins4 ) >= 525600 ) {
-											mins4 = 525599;
-										}
-										reason9 = Interface13.Input( Task13.User, "Reason?", "reason", "Griefer", null, InputType.Str | InputType.Null );
-
-										if ( !Lang13.Bool( reason9 ) ) {
-											return null;
-										}
-										GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason9, Task13.User.ckey, true, mins4 );
-										GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ". - Reason: " + reason9 + " - This will be removed in " + mins4 + " minutes." );
-										GlobalFuncs.to_chat( M8, "<span class='warning'><BIG><B>You have been banned by " + Task13.User.client.ckey + ".\nReason: " + reason9 + ".</B></BIG></span>" );
-										GlobalFuncs.to_chat( M8, "<span class='warning'>This is a temporary ban, it will be removed in " + mins4 + " minutes.</span>" );
-										GlobalFuncs.feedback_inc( "ban_tmp", 1 );
-										this.DB_ban_record( 2, M8, mins4, reason9 );
-										GlobalFuncs.feedback_inc( "ban_tmp_mins", mins4 );
-
-										if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
-											GlobalFuncs.to_chat( M8, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
-										} else {
-											GlobalFuncs.to_chat( M8, "<span class='warning'>No ban appeals URL has been set.</span>" );
-										}
-										GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason9 + "\nThis will be removed in " + mins4 + " minutes." );
-										GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason9 + "\nThis will be removed in " + mins4 + " minutes.</span>" );
-										Lang13.Delete( M8.client );
-										M8.client = null;
-										break;
-									case "No":
-										reason10 = Interface13.Input( Task13.User, "Reason?", "reason", "Griefer", null, InputType.Str | InputType.Null );
-
-										if ( !Lang13.Bool( reason10 ) ) {
-											return null;
-										}
-
-										switch ((string)( Interface13.Alert( Task13.User, "IP ban?", null, "Yes", "No", "Cancel" ) )) {
-											case "Cancel":
-												return null;
-												break;
-											case "Yes":
-												GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason10, Task13.User.ckey, false, 0, M8.lastKnownIP );
-												break;
-											case "No":
-												GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason10, Task13.User.ckey, false, 0 );
-												break;
-										}
-										sticky = Interface13.Alert( Task13.User, "Sticky Ban " + M8.ckey + "? Use this only if you never intend to unban the player.", "Sticky Icky", "Yes", "No" ) == "Yes";
-
-										if ( sticky ) {
-											Game13.SetConfig( "keyban", M8.ckey, "type=sticky&reason=" + reason10 + "&message=" + reason10 + "&admin=" + String13.CKey( Task13.User.key ) );
-											GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sticky banned " + GlobalFuncs.key_name( M8 ) + "." );
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sticky banned " + GlobalFuncs.key_name( M8 ) + "." );
-										}
-										GlobalFuncs.to_chat( M8, "<span class='warning'><BIG><B>You have been banned by " + Task13.User.client.ckey + ".\nReason: " + reason10 + ".</B></BIG></span>" );
-										GlobalFuncs.to_chat( M8, "<span class='warning'>This is a permanent ban.</span>" );
-
-										if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
-											GlobalFuncs.to_chat( M8, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
-										} else {
-											GlobalFuncs.to_chat( M8, "<span class='warning'>No ban appeals URL has been set.</span>" );
-										}
-										GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has permabanned " + M8.ckey + ". - Reason: " + reason10 + " - This is a permanent ban." );
-										GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason10 + "\nThis is a permanent ban." );
-										GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason10 + "\nThis is a permanent ban.</span>" );
-										GlobalFuncs.feedback_inc( "ban_perma", 1 );
-										this.DB_ban_record( 1, M8, -1, reason10 );
-										Lang13.Delete( M8.client );
-										M8.client = null;
-										break;
-									case "Cancel":
-										return null;
-										break;
-								}
-							} else if ( Lang13.Bool( href_list["unjobbanf"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4 ) ) {
-									return null;
-								}
-								banfolder3 = href_list["unjobbanf"];
-								GlobalVars.Banlist.cd = "/base/" + banfolder3;
-								key3 = GlobalVars.Banlist["key"];
-
-								if ( Interface13.Alert( Task13.User, "Are you sure you want to unban " + key3 + "?", "Confirmation", "Yes", "No" ) == "Yes" ) {
-									
-									if ( GlobalFuncs.RemoveBanjob( banfolder3 ) ) {
-										this.unjobbanpanel();
-									} else {
-										Interface13.Alert( Task13.User, "This ban has already been lifted / does not exist.", "Error", "Ok" );
-										this.unjobbanpanel();
-									}
-								}
-							} else if ( Lang13.Bool( href_list["mute"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M9 = Lang13.FindObj( href_list["mute"] );
-
-								if ( !( M9 is Mob ) ) {
-									return null;
-								}
-
-								if ( !Lang13.Bool( M9.client ) ) {
-									return null;
-								}
-								mute_type = href_list["mute_type"];
-
-								if ( mute_type is string ) {
-									mute_type = String13.ParseNumber( mute_type );
-								}
-
-								if ( !Lang13.Bool( Lang13.IsNumber( mute_type ) ) ) {
-									return null;
-								}
-								GlobalFuncs.cmd_admin_mute( M9, mute_type );
-							} else if ( Lang13.Bool( href_list["c_mode"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-
-								if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
-									return Interface13.Alert( Task13.User, "The game has already started." );
-								}
-								dat2 = "<B>What mode do you wish to play?</B><HR>";
-
-								foreach (dynamic _bl in Lang13.Enumerate( GlobalVars.config.modes )) {
-									mode = _bl;
-									
-									dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=" ).item( mode ).str( "'>" ).item( GlobalVars.config.mode_names[mode] ).str( "</A><br>" ).ToString();
-								}
-								dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=secret'>Secret</A><br>" ).ToString();
-								dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=random'>Random</A><br>" ).ToString();
-								dat2 += "Now: " + GlobalVars.master_mode;
-								Interface13.Browse( Task13.User, dat2, "window=c_mode" );
-							} else if ( Lang13.Bool( href_list["f_secret"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-
-								if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
-									return Interface13.Alert( Task13.User, "The game has already started." );
-								}
-
-								if ( GlobalVars.master_mode != "secret" ) {
-									return Interface13.Alert( Task13.User, "The game mode has to be secret!" );
-								}
-								dat3 = "<B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>";
-
-								foreach (dynamic _bm in Lang13.Enumerate( GlobalVars.config.modes )) {
-									mode2 = _bm;
-									
-									dat3 += new Txt( "<A href='?src=" ).Ref( this ).str( ";f_secret2=" ).item( mode2 ).str( "'>" ).item( GlobalVars.config.mode_names[mode2] ).str( "</A><br>" ).ToString();
-								}
-								dat3 += new Txt( "<A href='?src=" ).Ref( this ).str( ";f_secret2=secret'>Random (default)</A><br>" ).ToString();
-								dat3 += "Now: " + GlobalVars.secret_force_mode;
-								Interface13.Browse( Task13.User, dat3, "window=f_secret" );
-							} else if ( Lang13.Bool( href_list["c_mode2"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 18 ) ) {
-									return null;
-								}
-
-								if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
-									return Interface13.Alert( Task13.User, "The game has already started." );
-								}
-								GlobalVars.master_mode = href_list["c_mode2"];
-
-								if ( GlobalVars.master_mode != "mixed" || Interface13.Alert( "Do you wish to specify which game modes to be mixed?", "Specify Mixed", "Yes", "No" ) == "No" ) {
-									GlobalVars.mixed_modes = new ByTable();
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.master_mode + "." );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the mode as " + GlobalVars.master_mode + ".</span>" );
-									GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><b>The mode is now: " + GlobalVars.master_mode + "</b></span>" );
-									this.Game();
-									Game13.save_mode( GlobalVars.master_mode );
-									this.Topic( href, new ByTable().Set( "c_mode", 1 ) );
-								} else {
-									possible = new ByTable();
-									possible.Add( GlobalVars.mixed_allowed );
-									possible.Add( "DONE" );
-									possible.Add( "CANCEL" );
-
-									if ( possible.len < 3 ) {
-										return Interface13.Alert( Task13.User, "Not enough possible game modes." );
-									}
-									mixed_mode_added = null;
-
-									while (possible.len >= 3) {
-										mixed_mode_add = Interface13.Input( "Pick game modes to add to the mix. (" + mixed_mode_added + ")", "Specify Mixed", null, null, possible, InputType.Any );
-										possible.Remove( mixed_mode_add );
-
-										if ( mixed_mode_add == "CANCEL" ) {
-											return null;
-										} else if ( mixed_mode_add == "DONE" ) {
-											break;
-										} else {
-											GlobalVars.mixed_modes.Add( mixed_mode_add );
-											possible.Remove( mixed_mode_add );
-
-											if ( !Lang13.Bool( mixed_mode_added ) ) {
-												mixed_mode_added = mixed_mode_add;
-											} else {
-												mixed_mode_added = "" + mixed_mode_added + ", " + mixed_mode_add;
-											}
-										}
-									}
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.master_mode + " with the following modes: " + mixed_mode_added + "." );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the mode as " + GlobalVars.master_mode + " with the following modes: " + mixed_mode_added + ".</span>" );
-									GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><b>The mode is now: " + GlobalVars.master_mode + " (" + mixed_mode_added + ")</b></span>" );
-									this.Game();
-									Game13.save_mode( GlobalVars.master_mode );
-									this.Topic( href, new ByTable().Set( "c_mode", 1 ) );
-								}
-							} else if ( Lang13.Bool( href_list["f_secret2"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 18 ) ) {
-									return null;
-								}
-
-								if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
-									return Interface13.Alert( Task13.User, "The game has already started." );
-								}
-
-								if ( GlobalVars.master_mode != "secret" ) {
-									return Interface13.Alert( Task13.User, "The game mode has to be secret!" );
-								}
-								GlobalVars.secret_force_mode = href_list["f_secret2"];
-
-								if ( GlobalVars.secret_force_mode != "mixed" || Interface13.Alert( "Do you wish to specify which game modes to be mixed?", "Specify Secret Mixed", "Yes", "No" ) == "No" ) {
-									GlobalVars.mixed_modes = new ByTable();
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + "." );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + ".</span>" );
-									this.Game();
-									this.Topic( href, new ByTable().Set( "f_secret", 1 ) );
-								} else {
-									possible2 = new ByTable();
-									possible2.Add( GlobalVars.mixed_allowed );
-									possible2.Add( "DONE" );
-									possible2.Add( "CANCEL" );
-
-									if ( possible2.len < 3 ) {
-										return Interface13.Alert( Task13.User, "Not enough possible game modes." );
-									}
-									mixed_mode_added2 = null;
-
-									while (possible2.len >= 3) {
-										mixed_mode_add2 = Interface13.Input( "Pick game modes to add to the secret mix. (" + mixed_mode_added2 + ")", "Specify Secret Mixed", null, null, possible2, InputType.Any );
-										possible2.Remove( mixed_mode_add2 );
-
-										if ( mixed_mode_add2 == "CANCEL" ) {
-											return null;
-										} else if ( mixed_mode_add2 == "DONE" ) {
-											break;
-										} else {
-											GlobalVars.mixed_modes.Add( mixed_mode_add2 );
-											possible2.Remove( mixed_mode_add2 );
-
-											if ( !Lang13.Bool( mixed_mode_added2 ) ) {
-												mixed_mode_added2 = mixed_mode_add2;
-											} else {
-												mixed_mode_added2 = "" + mixed_mode_added2 + ", " + mixed_mode_add2;
-											}
-										}
-									}
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.secret_force_mode + " with the following modes: " + mixed_mode_added2 + "." );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + " with the following modes: " + mixed_mode_added2 + ".</span>" );
-									this.Game();
-									this.Topic( href, new ByTable().Set( "f_secret", 1 ) );
-								}
-							} else if ( Lang13.Bool( href_list["monkeyone"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H = Lang13.FindObj( href_list["monkeyone"] );
-
-								if ( !( H is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempting to monkeyize " + GlobalFuncs.key_name( H ) );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempting to monkeyize " + GlobalFuncs.key_name_admin( H ) + "</span>" );
-								M10 = ((Mob_Living_Carbon_Human)H).monkeyize();
-
-								if ( Lang13.Bool( M10 ) ) {
-									
-									if ( M10.client == CLIENT ) {
-										Task13.User = M10;
-									}
-									this.show_player_panel( M10 );
-								}
-							} else if ( Lang13.Bool( href_list["corgione"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H2 = Lang13.FindObj( href_list["corgione"] );
-
-								if ( !( H2 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempting to corgize " + GlobalFuncs.key_name( H2 ) );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempting to corgize " + GlobalFuncs.key_name_admin( H2 ) + "</span>" );
-								M11 = ((Mob_Living_Carbon_Human)H2).corgize();
-
-								if ( M11 != null ) {
-									
-									if ( M11.client == CLIENT ) {
-										Task13.User = M11;
-									}
-									this.show_player_panel( M11 );
-								}
-							} else if ( Lang13.Bool( href_list["forcespeech"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									return null;
-								}
-								M12 = Lang13.FindObj( href_list["forcespeech"] );
-
-								if ( !( M12 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "this can only be used on instances of type /mob" );
-								}
-								speech = Interface13.Input( "What will " + GlobalFuncs.key_name( M12 ) + " say?.", "Force speech", "", null, null, InputType.Any );
-
-								if ( !Lang13.Bool( speech ) ) {
-									return null;
-								}
-								((Ent_Dynamic)M12).say( speech );
-								speech = GlobalFuncs.sanitize( speech );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " forced " + GlobalFuncs.key_name( M12 ) + " to say: " + speech );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " forced " + GlobalFuncs.key_name_admin( M12 ) + " to say: " + speech + "</span>" );
-							} else if ( Lang13.Bool( href_list["sendtoprison"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-
-								if ( Interface13.Alert( Task13.User, "Warp to prison?", "Message", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								M13 = Lang13.FindObj( href_list["sendtoprison"] );
-
-								if ( !( M13 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( M13 is Mob_Living_Silicon_Ai ) {
-									GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
-									return null;
-								}
-								prison_cell = Rand13.PickFromTable( GlobalVars.prisonwarp );
-
-								if ( !Lang13.Bool( prison_cell ) ) {
-									return null;
-								}
-								((Mob)M13).Paralyse( 5 );
-								((Ent_Static)M13).visible_message( "<span class=\"sinister\">You hear the sound of cell doors slamming shut, and " + M13.name + " suddenly vanishes!</span>", "<span class=\"sinister\">You hear the sound of cell doors slamming shut!</span>" );
-								Task13.Sleep( 5 );
-
-								if ( !Lang13.Bool( M13 ) ) {
-									return null;
-								}
-								M13.loc = prison_cell;
-								GlobalFuncs.to_chat( M13, "<span class='warning'>You have been sent to the prison station!</span>" );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " sent " + GlobalFuncs.key_name( M13 ) + " to the prison station." );
-								GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent " + GlobalFuncs.key_name_admin( M13 ) + " to the prison station.</span>" );
-							} else if ( Lang13.Bool( href_list["tdome1"] ) || Lang13.Bool( href_list["tdome2"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									return null;
-								}
-
-								if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								M14 = null;
-								team = "";
-
-								if ( Lang13.Bool( href_list["tdome1"] ) ) {
-									team = "Green";
-									M14 = Lang13.FindObj( href_list["tdome1"] );
-								} else if ( Lang13.Bool( href_list["tdome2"] ) ) {
-									team = "Red";
-									M14 = Lang13.FindObj( href_list["tdome2"] );
-								}
-
-								if ( !( M14 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( M14 is Mob_Living_Silicon_Ai ) {
-									GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
-									return null;
-								}
-								pack = null;
-
-								switch ((string)( team )) {
-									case "Green":
-										pack = new Obj_Item_Packobelongings_Green( M14.loc );
-										pack.x = GlobalVars.map.tDomeX + 2;
-										break;
-									case "Red":
-										pack = new Obj_Item_Packobelongings_Red( M14.loc );
-										pack.x = GlobalVars.map.tDomeX - 2;
-										break;
-								}
-								pack.z = GlobalVars.map.tDomeZ;
-								pack.y = GlobalVars.map.tDomeY;
-								pack.name = "" + M14.real_name + "'s belongings";
-
-								foreach (dynamic _bo in Lang13.Enumerate( M14, typeof(Obj_Item) )) {
-									I = _bo;
-									
-
-									if ( I is Obj_Item_Clothing_Glasses ) {
-										G = I;
-
-										if ( Lang13.Bool( ((dynamic)G).prescription ) ) {
-											continue;
-										}
-									}
-									((Mob)M14).u_equip( I, true );
-
-									if ( I != null ) {
-										I.loc = M14.loc;
-										I.layer = Convert.ToDouble( Lang13.Initial( I, "layer" ) );
-										I.loc = pack;
-									}
-								}
-								ident = null;
-
-								switch ((string)( team )) {
-									case "Green":
-										ident = new Obj_Item_Weapon_Card_Id_Thunderdome_Green( M14 );
-										ident.name = "" + M14.real_name + "'s Thunderdome Green ID";
-										break;
-									case "Red":
-										ident = new Obj_Item_Weapon_Card_Id_Thunderdome_Red( M14 );
-										ident.name = "" + M14.real_name + "'s Thunderdome Red ID";
-										break;
-								}
-
-								if ( !( M14 is Mob_Living_Carbon ) ) {
-									GlobalFuncs.qdel( ident );
-								}
-
-								switch ((string)( team )) {
-									case "Green":
-										
-										if ( M14 is Mob_Living_Carbon_Human ) {
-											H3 = M14;
-											((Mob)H3).equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Green( H3 ), 14 );
-											((Mob)H3).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Brown( H3 ), 12 );
-											((Mob)H3).equip_to_slot_or_del( ident, 7 );
-											((Mob)H3).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Green( H3 ), 6 );
-											((Mob)H3).regenerate_icons();
-										} else if ( M14 is Mob_Living_Carbon_Monkey ) {
-											K = M14;
-											JS = new Obj_Item_Clothing_Monkeyclothes_JumpsuitGreen( K );
-											olduniform = null;
-											oldhat = null;
-
-											if ( Lang13.Bool( K.uniform ) ) {
-												olduniform = K.uniform;
-												K.uniform = null;
-												olduniform.loc = pack;
-											}
-											K.uniform = JS;
-											K.uniform.loc = K;
-
-											if ( Lang13.Bool( K.hat ) ) {
-												oldhat = K.hat;
-												K.hat = null;
-												oldhat.loc = pack;
-											}
-											((Mob)K).equip_to_slot_or_del( ident, 5 );
-											((Mob)K).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Green( K ), 4 );
-											((Mob)K).regenerate_icons();
-										}
-										break;
-									case "Red":
-										
-										if ( M14 is Mob_Living_Carbon_Human ) {
-											H4 = M14;
-											((Mob)H4).equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Red( H4 ), 14 );
-											((Mob)H4).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Brown( H4 ), 12 );
-											((Mob)H4).equip_to_slot_or_del( ident, 7 );
-											((Mob)H4).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Red( H4 ), 6 );
-											((Mob)H4).regenerate_icons();
-										} else if ( M14 is Mob_Living_Carbon_Monkey ) {
-											K2 = M14;
-											JS2 = new Obj_Item_Clothing_Monkeyclothes_JumpsuitRed( K2 );
-											olduniform2 = null;
-											oldhat2 = null;
-
-											if ( Lang13.Bool( K2.uniform ) ) {
-												olduniform2 = K2.uniform;
-												K2.uniform = null;
-												olduniform2.loc = pack;
-											}
-											K2.uniform = JS2;
-											K2.uniform.loc = K2;
-
-											if ( Lang13.Bool( K2.hat ) ) {
-												oldhat2 = K2.hat;
-												K2.hat = null;
-												oldhat2.loc = pack;
-											}
-											((Mob)K2).equip_to_slot_or_del( ident, 5 );
-											((Mob)K2).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Red( K2 ), 4 );
-											((Mob)K2).regenerate_icons();
-										}
-										break;
-								}
-
-								if ( pack.contents.len == 0 ) {
-									GlobalFuncs.qdel( pack );
-								}
-
-								switch ((string)( team )) {
-									case "Green":
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M14 ) + " to the thunderdome. (Team Green)" );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M14 ) + " to the thunderdome. (Team Green)" );
-										M14.loc = Rand13.PickFromTable( GlobalVars.tdome1 );
-										break;
-									case "Red":
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M14 ) + " to the thunderdome. (Team Red)" );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M14 ) + " to the thunderdome. (Team Red)" );
-										M14.loc = Rand13.PickFromTable( GlobalVars.tdome2 );
-										break;
-								}
-								GlobalFuncs.to_chat( M14, "<span class='danger'>You have been chosen to fight for the " + team + " Team. " + Rand13.Pick(new object [] { "The wheel of fate is turning!", "Heaven or Hell!", "Set Spell Card!", "Hologram Summer Again!", "Get ready for the next battle!", "Fight for your life!" }) + "</span>" );
-							} else if ( Lang13.Bool( href_list["tdomeadmin"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									return null;
-								}
-
-								if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								M15 = Lang13.FindObj( href_list["tdomeadmin"] );
-
-								if ( !( M15 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( M15 is Mob_Living_Silicon_Ai ) {
-									GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
-									return null;
-								}
-								((Mob)M15).Paralyse( 5 );
-								Task13.Sleep( 5 );
-								M15.loc = Rand13.PickFromTable( GlobalVars.tdomeadmin );
-								Task13.Schedule( 50, (Task13.Closure)(() => {
-									GlobalFuncs.to_chat( M15, "<span class='notice'>You have been sent to the Thunderdome.</span>" );
-									return;
-								}));
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M15 ) + " to the thunderdome. (Admin.)" );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M15 ) + " to the thunderdome. (Admin.)" );
-							} else if ( Lang13.Bool( href_list["tdomeobserve"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									return null;
-								}
-
-								if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								M16 = Lang13.FindObj( href_list["tdomeobserve"] );
-
-								if ( !( M16 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-
-								if ( M16 is Mob_Living_Silicon_Ai ) {
-									GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
-									return null;
-								}
-
-								foreach (dynamic _bs in Lang13.Enumerate( M16, typeof(Obj_Item) )) {
-									I2 = _bs;
-									
-									((Mob)M16).u_equip( I2, true );
-
-									if ( I2 != null ) {
-										I2.loc = M16.loc;
-										I2.layer = Convert.ToDouble( Lang13.Initial( I2, "layer" ) );
-									}
-								}
-
-								if ( M16 is Mob_Living_Carbon_Human ) {
-									observer = M16;
-									((Mob)observer).equip_to_slot_or_del( new Obj_Item_Clothing_Under_SuitJacket( observer ), 14 );
-									((Mob)observer).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Black( observer ), 12 );
-								}
-								((Mob)M16).Paralyse( 5 );
-								Task13.Sleep( 5 );
-								M16.loc = Rand13.PickFromTable( GlobalVars.tdomeobserve );
-								Task13.Schedule( 50, (Task13.Closure)(() => {
-									GlobalFuncs.to_chat( M16, "<span class='notice'>You have been sent to the Thunderdome.</span>" );
-									return;
-								}));
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M16 ) + " to the thunderdome. (Observer.)" );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M16 ) + " to the thunderdome. (Observer.)" );
-							} else if ( Lang13.Bool( href_list["revive"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 512 ) ) {
-									return null;
-								}
-								L = Lang13.FindObj( href_list["revive"] );
-
-								if ( !( L is Mob_Living ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living" );
-									return null;
-								}
-
-								if ( GlobalVars.config.allow_admin_rev ) {
-									((Mob_Living)L).revive( false );
-									GlobalFuncs.message_admins( "<span class='warning'>Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " healed / revived " + GlobalFuncs.key_name_admin( L ) + "!</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " healed / revived " + GlobalFuncs.key_name( L ) );
-								} else {
-									GlobalFuncs.to_chat( Task13.User, "Admin Rejuvinates have been disabled" );
-								}
-							} else if ( Lang13.Bool( href_list["makeai"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H5 = Lang13.FindObj( href_list["makeai"] );
-
-								if ( !( H5 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								GlobalFuncs.message_admins( "<span class='warning'>Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " AIized " + GlobalFuncs.key_name_admin( H5 ) + "!</span>" );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " AIized " + GlobalFuncs.key_name( H5 ) );
-								M17 = ((Mob)H5).AIize();
-
-								if ( M17 != null ) {
-									
-									if ( M17.client == CLIENT ) {
-										Task13.User = M17;
-									}
-									this.show_player_panel( M17 );
-								}
-							} else if ( Lang13.Bool( href_list["makealien"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H6 = Lang13.FindObj( href_list["makealien"] );
-
-								if ( !( H6 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								M18 = Task13.User.client.cmd_admin_alienize( H6 );
-
-								if ( Lang13.Bool( M18 ) ) {
-									
-									if ( M18.client == CLIENT ) {
-										Task13.User = M18;
-									}
-									this.show_player_panel( M18 );
-								}
-							} else if ( Lang13.Bool( href_list["makeslime"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H7 = Lang13.FindObj( href_list["makeslime"] );
-
-								if ( !( H7 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								M19 = Task13.User.client.cmd_admin_slimeize( H7 );
-
-								if ( Lang13.Bool( M19 ) ) {
-									
-									if ( M19.client == CLIENT ) {
-										Task13.User = M19;
-									}
-									this.show_player_panel( M19 );
-								}
-							} else if ( Lang13.Bool( href_list["makecluwne"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H8 = Lang13.FindObj( href_list["makecluwne"] );
-
-								if ( !( H8 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								M20 = Task13.User.client.cmd_admin_cluwneize( H8 );
-
-								if ( M20 != null ) {
-									
-									if ( M20.client == CLIENT ) {
-										Task13.User = M20;
-									}
-									this.show_player_panel( M20 );
-								}
-							} else if ( Lang13.Bool( href_list["makerobot"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H9 = Lang13.FindObj( href_list["makerobot"] );
-
-								if ( !( H9 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								M21 = Task13.User.client.cmd_admin_robotize( H9 );
-
-								if ( M21 != null ) {
-									
-									if ( M21.client == CLIENT ) {
-										Task13.User = M21;
-									}
-									this.show_player_panel( M21 );
-								}
-							} else if ( Lang13.Bool( href_list["makemommi"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H10 = Lang13.FindObj( href_list["makemommi"] );
-
-								if ( !( H10 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								M22 = Task13.User.client.cmd_admin_mommify( H10 );
-
-								if ( M22 != null ) {
-									
-									if ( M22.client == CLIENT ) {
-										Task13.User = M22;
-									}
-									this.show_player_panel( M22 );
-								}
-							} else if ( Lang13.Bool( href_list["makeanimal"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								M23 = Lang13.FindObj( href_list["makeanimal"] );
-
-								if ( M23 is Mob_NewPlayer ) {
-									GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/new_player" );
-									return null;
-								}
-								new_mob2 = Task13.User.client.cmd_admin_animalize( M23 );
-
-								if ( Lang13.Bool( new_mob2 ) && new_mob2 != M23 ) {
-									
-									if ( new_mob2.client == CLIENT ) {
-										Task13.User = new_mob2;
-									}
-									this.show_player_panel( new_mob2 );
-								}
-							} else if ( Lang13.Bool( href_list["togmutate"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								H11 = Lang13.FindObj( href_list["togmutate"] );
-
-								if ( !( H11 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								block = String13.ParseNumber( href_list["block"] );
-								Task13.User.client.cmd_admin_toggle_block( H11, block );
-								this.show_player_panel( H11 );
-							} else if ( Lang13.Bool( href_list["adminplayeropts"] ) ) {
-								M24 = Lang13.FindObj( href_list["adminplayeropts"] );
-								this.show_player_panel( M24 );
-							} else if ( Lang13.Bool( href_list["adminplayerobservejump"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8192, false ) && !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M25 = Lang13.FindObj( href_list["adminplayerobservejump"] );
-								C2 = Task13.User.client;
-
-								if ( !( Task13.User is Mob_Dead_Observer ) ) {
-									C2.admin_ghost();
-								}
-								Task13.Sleep( 2 );
-
-								if ( C2 != null ) {
-									C2.jumptomob( M25 );
-								}
-							} else if ( Lang13.Bool( href_list["check_antagonist"] ) ) {
-								this.check_antagonists();
-							} else if ( Lang13.Bool( href_list["cult_nextobj"] ) ) {
-								
-								if ( Interface13.Alert( Task13.User, "Validate the current Cult objective and unlock the next one?", "Cult Cheat Code", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								cult_round = GlobalFuncs.find_active_mode( "cult" );
-
-								if ( !Lang13.Bool( cult_round ) ) {
-									Interface13.Alert( "Couldn't locate cult mode datum! This shouldn't ever happen, tell a coder!" );
-									return null;
-								}
-								((GameMode_Cult)cult_round).bypass_phase();
-								GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has unlocked the Cult's next objective." );
-								GlobalFuncs.log_admin( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has unlocked the Cult's next objective." );
-								this.check_antagonists();
-							} else if ( Lang13.Bool( href_list["cult_mindspeak"] ) ) {
-								input = GlobalFuncs.stripped_input( Task13.User, "Communicate to all the cultists with the voice of Nar-Sie", "Voice of Nar-Sie", "" );
-
-								if ( !Lang13.Bool( input ) ) {
-									return null;
-								}
-
-								foreach (dynamic _bt in Lang13.Enumerate( GlobalVars.ticker.mode.cult, typeof(Mind) )) {
-									H12 = _bt;
-									
-
-									if ( Lang13.Bool( H12.current ) ) {
-										GlobalFuncs.to_chat( H12.current, "<span class='game say'><span class='danger'>Nar-Sie</span> murmurs, <span class='sinister'>" + input + "</span></span>" );
-									}
-								}
-
-								foreach (dynamic _bu in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Dead_Observer) )) {
-									O = _bu;
-									
-									GlobalFuncs.to_chat( O, "<span class='game say'><span class='danger'>Nar-Sie</span> murmurs, <span class='sinister'>" + input + "</span></span>" );
-								}
-								GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has talked with the Voice of Nar-Sie." );
-								GlobalVars.diary.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]NARSIE: " + ( "" + GlobalFuncs.key_name( Task13.User ) + " Voice of Nar-Sie: " + input ) ) );
-							} else if ( Lang13.Bool( href_list["cult_privatespeak"] ) ) {
-								M26 = Lang13.FindObj( href_list["cult_privatespeak"] );
-
-								if ( !Lang13.Bool( M26 ) ) {
-									return null;
-								}
-								input2 = GlobalFuncs.stripped_input( Task13.User, "Whisper to " + M26.real_name + " with the voice of Nar-Sie", "Voice of Nar-Sie", "" );
-
-								if ( !Lang13.Bool( input2 ) ) {
-									return null;
-								}
-								GlobalFuncs.to_chat( M26, "<span class='game say'><span class='danger'>Nar-Sie</span> whispers to you, <span class='sinister'>" + input2 + "</span></span>" );
-
-								foreach (dynamic _bv in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Dead_Observer) )) {
-									O2 = _bv;
-									
-									GlobalFuncs.to_chat( O2, "<span class='game say'><span class='danger'>Nar-Sie</span> whispers to " + M26.real_name + ", <span class='sinister'>" + input2 + "</span></span>" );
-								}
-								GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has talked with the Voice of Nar-Sie." );
-							} else if ( Lang13.Bool( href_list["adminplayerobservecoodjump"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								x = String13.ParseNumber( href_list["X"] );
-								y = String13.ParseNumber( href_list["Y"] );
-								z = String13.ParseNumber( href_list["Z"] );
-								C3 = Task13.User.client;
-
-								if ( !( Task13.User is Mob_Dead_Observer ) ) {
-									C3.admin_ghost();
-								}
-								Task13.Sleep( 2 );
-								C3.jumptocoord( x, y, z );
-							} else if ( Lang13.Bool( href_list["adminchecklaws"] ) ) {
-								this.output_ai_laws();
-							} else if ( Lang13.Bool( href_list["adminmoreinfo"] ) ) {
-								M27 = Lang13.FindObj( href_list["adminmoreinfo"] );
-
-								if ( !( M27 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
-									return null;
-								}
-								location_description = "";
-								special_role_description = "";
-								health_description = "";
-								gender_description = "";
-								species_description = "Not A Human";
-								T = GlobalFuncs.get_turf( M27 );
-
-								if ( T is Tile ) {
-									
-									if ( T.loc is Zone ) {
-										location_description = "(" + ( M27.loc == T ? "at coordinates " : "in " + M27.loc + " at coordinates " ) + " " + T.x + ", " + T.y + ", " + T.z + " in area <b>" + T.loc + "</b>)";
-									} else {
-										location_description = "(" + ( M27.loc == T ? "at coordinates " : "in " + M27.loc + " at coordinates " ) + " " + T.x + ", " + T.y + ", " + T.z + ")";
-									}
-								}
-
-								if ( Lang13.Bool( M27.mind ) ) {
-									special_role_description = "Role: <b>" + M27.mind.assigned_role + "</b>; Antagonist: <font color='red'><b>" + M27.mind.special_role + "</b></font>; Has been rev: " + ( M27.mind.has_been_rev == true ? "Yes" : "No" );
-								} else {
-									special_role_description = "Role: <i>Mind datum missing</i> Antagonist: <i>Mind datum missing</i>; Has been rev: <i>Mind datum missing</i>;";
-								}
-
-								if ( M27 is Mob_Living ) {
-									L2 = M27;
-									status = null;
-
-									dynamic _bw = M27.stat; // Was a switch-case, sorry for the mess.
-									if ( _bw==0 ) {
-										status = "Alive";
-									} else if ( _bw==1 ) {
-										status = "<font color='orange'><b>Unconscious</b></font>";
-									} else if ( _bw==2 ) {
-										status = "<font color='red'><b>Dead</b></font>";
-									}
-									health_description = "Status = " + status;
-									health_description += "<BR>Oxy: " + ((Mob_Living)L2).getOxyLoss() + " - Tox: " + ((Mob_Living)L2).getToxLoss() + " - Fire: " + ((Mob_Living)L2).getFireLoss() + " - Brute: " + ((Mob_Living)L2).getBruteLoss() + " - Clone: " + ((Mob_Living)L2).getCloneLoss() + " - Brain: " + ((Mob_Living)L2).getBrainLoss();
-								} else {
-									health_description = "This mob type has no health to speak of.";
-								}
-
-								dynamic _bx = M27.gender; // Was a switch-case, sorry for the mess.
-								if ( _bx=="male" || _bx=="female" ) {
-									gender_description = "" + M27.gender;
-								} else {
-									gender_description = "<font color='red'><b>" + M27.gender + "</b></font>";
-								}
-
-								if ( M27 is Mob_Living_Carbon_Human ) {
-									H13 = M27;
-									species_description = "" + ( Lang13.Bool( H13.species ) ? H13.species.name : "<span class='danger'><b>No Species</b></span>" );
-								}
-								GlobalFuncs.to_chat( this.owner, "<b>Info about " + M27.name + ":</b> " );
-								GlobalFuncs.to_chat( this.owner, "Mob type = " + M27.type + "; Species = " + species_description + "; Gender = " + gender_description + "; Damage = " + health_description + ";" );
-								GlobalFuncs.to_chat( this.owner, "Name = <b>" + M27.name + "</b>; Real_name = " + M27.real_name + "; Mind_name = " + ( Lang13.Bool( M27.mind ) ? "" + M27.mind.name : "" ) + "; Key = <b>" + M27.key + "</b>;" );
-								GlobalFuncs.to_chat( this.owner, "Location = " + location_description + ";" );
-								GlobalFuncs.to_chat( this.owner, "" + special_role_description );
-								GlobalFuncs.to_chat( this.owner, new Txt( "(<a href='?src=" ).Ref( Task13.User ).str( ";priv_msg=" ).Ref( M27 ).str( "'>PM</a>) (<A HREF='?src=" ).Ref( this ).str( ";adminplayeropts=" ).Ref( M27 ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( M27 ).str( "'>VV</A>) (<A HREF='?src=" ).Ref( this ).str( ";subtlemessage=" ).Ref( M27 ).str( "'>SM</A>) (<A HREF='?src=" ).Ref( this ).str( ";adminplayerobservejump=" ).Ref( M27 ).str( "'>JMP</A>) (<A HREF='?src=" ).Ref( this ).str( ";secretsadmin=check_antagonist'>CA</A>)" ).ToString() );
-							} else if ( Lang13.Bool( href_list["adminspawncookie"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 10 ) ) {
-									return null;
-								}
-								H14 = Lang13.FindObj( href_list["adminspawncookie"] );
-
-								if ( !( H14 is Mob_Living_Carbon_Human ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
-									return null;
-								}
-								((Mob)H14).equip_to_slot_or_del( new Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie( H14 ), 4 );
-
-								if ( !( H14.l_hand is Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie ) ) {
-									((Mob)H14).equip_to_slot_or_del( new Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie( H14 ), 5 );
-
-									if ( !( H14.r_hand is Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie ) ) {
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( H14 ) + " has their hands full, so they did not receive their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) + "." );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( H14 ) + " has their hands full, so they did not receive their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) + "." );
-										return null;
-									} else {
-										((Mob)H14).update_inv_r_hand();
-									}
-								} else {
-									((Mob)H14).update_inv_l_hand();
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( H14 ) + " got their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( H14 ) + " got their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) );
-								GlobalFuncs.feedback_inc( "admin_cookies_spawned", 1 );
-								GlobalFuncs.to_chat( H14, "<span class='notice'>Your prayers have been answered!! You received the <b>best cookie</b>!</span>" );
-							} else if ( Lang13.Bool( href_list["BlueSpaceArtillery"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 10 ) ) {
-									return null;
-								}
-								M28 = Lang13.FindObj( href_list["BlueSpaceArtillery"] );
-
-								if ( !( M28 is Mob_Living ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living" );
-									return null;
-								}
-
-								if ( Interface13.Alert( this.owner, "Are you sure you wish to hit " + GlobalFuncs.key_name( M28 ) + " with Blue Space Artillery?", "Confirm Firing?", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-
-								if ( GlobalVars.BSACooldown ) {
-									GlobalFuncs.to_chat( this.owner, "Standby!  Reload cycle in progress!  Gunnary crews ready in five seconds!" );
-									return null;
-								}
-								GlobalVars.BSACooldown = true;
-								Task13.Schedule( 50, (Task13.Closure)(() => {
-									GlobalVars.BSACooldown = false;
-									return;
-								}));
-								GlobalFuncs.to_chat( M28, "You've been hit by bluespace artillery!" );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( M28 ) + " has been hit by Bluespace Artillery fired by " + this.owner );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( M28 ) + " has been hit by Bluespace Artillery fired by " + this.owner );
-								S5 = null;
-								S5 = new Obj_Effect_Stop();
-								S5.victim = M28;
-								S5.loc = M28.loc;
-								Task13.Schedule( 20, (Task13.Closure)(() => {
-									Lang13.Delete( S5 );
-									S5 = null;
-									return;
-								}));
-								T2 = GlobalFuncs.get_turf( M28 );
-
-								if ( T2 is Tile_Simulated_Floor ) {
-									
-									if ( Rand13.PercentChance( 80 ) ) {
-										((Tile_Simulated_Floor)T2).break_tile_to_plating();
-									} else {
-										((Tile_Simulated_Floor)T2).break_tile();
-									}
-								}
-
-								if ( Lang13.Bool( M28.health ) == true ) {
-									((Mob)M28).gib();
-								} else {
-									((Mob_Living)M28).adjustBruteLoss( Num13.MinInt( 99, Convert.ToInt32( M28.health - 1 ) ) );
-									((Mob)M28).Stun( 20 );
-									((Mob)M28).Weaken( 20 );
-									M28.stuttering = 20;
-								}
-							} else if ( Lang13.Bool( href_list["CentcommReply"] ) ) {
-								M29 = Lang13.FindObj( href_list["CentcommReply"] );
-								receive_type = null;
-
-								if ( M29 is Mob_Living_Carbon_Human ) {
-									H15 = M29;
-
-									if ( !( H15.ears is Obj_Item_Device_Radio_Headset ) ) {
-										GlobalFuncs.to_chat( Task13.User, "The person you are trying to contact is not wearing a headset" );
-										return null;
-									}
-									receive_type = "headset";
-								} else if ( M29 is Mob_Living_Silicon ) {
-									receive_type = "official communication channel";
-								}
-
-								if ( !Lang13.Bool( receive_type ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This mob type cannot be replied to" );
-									return null;
-								}
-								input3 = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( M29 ) + " via their " + receive_type + ".", "Outgoing message from The Syndicate", "", null, InputType.Any );
-
-								if ( !Lang13.Bool( input3 ) ) {
-									return null;
-								}
-								GlobalFuncs.to_chat( this.owner, "You sent " + input3 + " to " + M29 + " via a secure channel." );
-								GlobalFuncs.log_admin( "" + this.owner + " replied to " + GlobalFuncs.key_name( M29 ) + "'s Centcomm message with the message " + input3 + "." );
-								GlobalFuncs.message_admins( "" + this.owner + " replied to " + GlobalFuncs.key_name( M29 ) + "'s Centcom message with: \"" + input3 + "\"" );
-								GlobalFuncs.to_chat( M29, "You hear something crackle from your " + receive_type + " for a moment before a voice speaks.  \"Please stand by for a message from Central Command.  Message as follows. <b>\"" + input3 + "\"</b>  Message ends.\"" );
-							} else if ( Lang13.Bool( href_list["SyndicateReply"] ) ) {
-								M30 = Lang13.FindObj( href_list["SyndicateReply"] );
-								receive_type2 = null;
-
-								if ( M30 is Mob_Living_Carbon_Human ) {
-									H16 = M30;
-
-									if ( !( H16.ears is Obj_Item_Device_Radio_Headset ) ) {
-										GlobalFuncs.to_chat( Task13.User, "The person you are trying to contact is not wearing a headset" );
-										return null;
-									}
-									receive_type2 = "headset";
-								} else if ( M30 is Mob_Living_Silicon ) {
-									receive_type2 = "undetectable communications channel";
-								}
-
-								if ( !Lang13.Bool( receive_type2 ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This mob type cannot be replied to" );
-									return null;
-								}
-								input4 = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( M30 ) + " via their " + receive_type2 + ".", "Outgoing message from The Syndicate", "", null, InputType.Any );
-
-								if ( !Lang13.Bool( input4 ) ) {
-									return null;
-								}
-								GlobalFuncs.to_chat( this.owner, "You sent " + input4 + " to " + M30 + " via a secure channel." );
-								GlobalFuncs.log_admin( "" + this.owner + " replied to " + GlobalFuncs.key_name( M30 ) + "'s Syndicate message with the message " + input4 + "." );
-								GlobalFuncs.to_chat( M30, "You hear something crackle from your " + receive_type2 + " for a moment before a voice speaks.  \"Please stand by for a message from your benefactor.  Message as follows, agent. <b>\"" + input4 + "\"</b>  Message ends.\"" );
-							} else if ( Lang13.Bool( href_list["CentcommFaxView"] ) ) {
-								P = Lang13.FindObj( href_list["CentcommFaxView"] );
-								info_2 = "";
-
-								if ( Lang13.Bool( P.img ) ) {
-									Interface13.CacheBrowseResource( Task13.User, P.img.img, "tmp_photo.png" );
-									info_2 = "<img src='tmp_photo.png' width='192' style='-ms-interpolation-mode:nearest-neighbor' /><br>";
-								}
-								Interface13.Browse( Task13.User, "<HTML><HEAD><TITLE>Centcomm Fax Message</TITLE></HEAD><BODY>" + info_2 + P.info + P.stamps + "</BODY></HTML>", "window=Centcomm Fax Message" );
-							} else if ( Lang13.Bool( href_list["CentcommFaxReply"] ) ) {
-								H17 = Lang13.FindObj( href_list["CentcommFaxReply"] );
-								sent = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( H17 ) + " via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Centcomm", "", null, InputType.Null | InputType.StrMultiline );
-
-								if ( !Lang13.Bool( sent ) ) {
-									return null;
-								}
-								sentname = Interface13.Input( this.owner, "Pick a title for the report", "Title", null, null, InputType.Str | InputType.Null );
-								GlobalFuncs.SendFax( sent, sentname, null, null, true );
-								GlobalFuncs.to_chat( this.owner, "Message reply to transmitted successfully." );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( this.owner ) + " replied to a fax message from " + GlobalFuncs.key_name( H17 ) + ": " + sent );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this.owner ) + " replied to a fax message from " + GlobalFuncs.key_name_admin( H17 ) );
-							} else if ( Lang13.Bool( href_list["jumpto"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M31 = Lang13.FindObj( href_list["jumpto"] );
-								Task13.User.client.jumptomob( M31 );
-							} else if ( Lang13.Bool( href_list["getmob"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-
-								if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
-									return null;
-								}
-								M32 = Lang13.FindObj( href_list["getmob"] );
-								Task13.User.client.Getmob( M32 );
-							} else if ( Lang13.Bool( href_list["sendmob"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M33 = Lang13.FindObj( href_list["sendmob"] );
-								Task13.User.client.sendmob( M33 );
-							} else if ( Lang13.Bool( href_list["narrateto"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M34 = Lang13.FindObj( href_list["narrateto"] );
-								Task13.User.client.cmd_admin_direct_narrate( M34 );
-							} else if ( Lang13.Bool( href_list["subtlemessage"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								M35 = Lang13.FindObj( href_list["subtlemessage"] );
-								Task13.User.client.cmd_admin_subtle_message( M35 );
-							} else if ( Lang13.Bool( href_list["rapsheet"] ) ) {
-								this.checkSessionKey();
-								Interface13.Link( Task13.User, this.getVGPanel( "rapsheet", new ByTable().Set( "ckey", href_list["rsckey"] ), true ) );
-								return null;
-							} else if ( Lang13.Bool( href_list["bansheet"] ) ) {
-								Interface13.Link( Task13.User, this.getVGPanel( "rapsheet", null, true ) );
-								return null;
-							} else if ( Lang13.Bool( href_list["traitor"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8194 ) ) {
-									return null;
-								}
-
-								if ( !( GlobalVars.ticker != null ) || !Lang13.Bool( GlobalVars.ticker.mode ) ) {
-									Interface13.Alert( "The game hasn't started yet!" );
-									return null;
-								}
-								M36 = Lang13.FindObj( href_list["traitor"] );
-
-								if ( !( M36 is Mob ) ) {
-									GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob." );
-									return null;
-								}
-								this.show_traitor_panel( M36 );
-							} else if ( Lang13.Bool( href_list["set_base_laws"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You don't have +FUN. Go away.</span>" );
-									return null;
-								}
-								lawtypes3 = Lang13.GetTypes( typeof(AiLaws) ) - typeof(AiLaws);
-								selected_law = Interface13.Input( "Select the default lawset desired.", "Lawset Selection", null, null, lawtypes3, InputType.Null | InputType.Any );
-
-								if ( !Lang13.Bool( selected_law ) ) {
-									return null;
-								}
-								subject = "Unknown";
-
-								dynamic _by = href_list["set_base_laws"]; // Was a switch-case, sorry for the mess.
-								if ( _by=="ai" ) {
-									GlobalVars.base_law_type = selected_law;
-									subject = "AIs and Cyborgs";
-								} else if ( _by=="mommi" ) {
-									GlobalVars.mommi_base_law_type = selected_law;
-									subject = "MoMMIs";
-								}
-								GlobalFuncs.to_chat( Task13.User, "<span class='notice'>New " + subject + " will spawn with the " + selected_law + " lawset.</span>" );
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
-								GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
-								GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name_admin( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
-							} else if ( Lang13.Bool( href_list["create_object"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								this.create_object( Task13.User ); return null;
-							} else if ( Lang13.Bool( href_list["quick_create_object"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								this.quick_create_object( Task13.User ); return null;
-							} else if ( Lang13.Bool( href_list["create_turf"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								this.create_turf( Task13.User ); return null;
-							} else if ( Lang13.Bool( href_list["create_mob"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-								this.create_mob( Task13.User ); return null;
-							} else if ( Lang13.Bool( href_list["object_list"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 4096 ) ) {
-									return null;
-								}
-
-								if ( !GlobalVars.config.allow_admin_spawning ) {
-									GlobalFuncs.to_chat( Task13.User, "Spawning of items is not allowed." );
-									return null;
-								}
-								loc = Task13.User.loc;
-								dirty_paths = null;
-
-								if ( href_list["object_list"] is string ) {
-									dirty_paths = new ByTable(new object [] { href_list["object_list"] });
-								} else if ( href_list["object_list"] is ByTable ) {
-									dirty_paths = href_list["object_list"];
-								}
-								paths = new ByTable();
-								removed_paths = new ByTable();
-
-								foreach (dynamic _bz in Lang13.Enumerate( dirty_paths )) {
-									dirty_path = _bz;
-									
-									path = Lang13.FindClass( dirty_path );
-
-									if ( !( path != null ) ) {
-										removed_paths.Add( dirty_path );
-										continue;
-									} else if ( !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj) ) ) && !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Tile) ) ) && !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Mob) ) ) ) {
-										removed_paths.Add( dirty_path );
-										continue;
-									} else if ( Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj_Item_Weapon_Gun_Energy_PulseRifle) ) ) ) {
-										
-										if ( !GlobalFuncs.check_rights( 8, false ) ) {
-											removed_paths.Add( dirty_path );
-											continue;
-										}
-									} else if ( Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj_Effect_Bhole) ) ) ) {
-										
-										if ( !GlobalFuncs.check_rights( 8, false ) ) {
-											removed_paths.Add( dirty_path );
-											continue;
-										}
-									}
-									paths.Add( path );
-								}
-
-								if ( !( paths != null ) ) {
-									Interface13.Alert( "The path list you sent is empty" );
-									return null;
-								}
-
-								if ( Lang13.Length( paths ) > 5 ) {
-									Interface13.Alert( "Select fewer object types, (max 5)" );
-									return null;
-								} else if ( Lang13.Length( removed_paths ) != 0 ) {
-									Interface13.Alert( "Removed:\n" + GlobalFuncs.list2text( removed_paths, "\n" ) );
-								}
-								offset = GlobalFuncs.text2list( href_list["offset"], "," );
-								number = ( ( String13.ParseNumber( href_list["object_count"] ) ??0) <= 1 ? 1 : ( ( String13.ParseNumber( href_list["object_count"] ) ??0) >= 100 ? 100 : String13.ParseNumber( href_list["object_count"] ) ) );
-								X = ( offset.len > 0 ? String13.ParseNumber( offset[1] ) : 0 );
-								Y = ( offset.len > 1 ? String13.ParseNumber( offset[2] ) : 0 );
-								Z = ( offset.len > 2 ? String13.ParseNumber( offset[3] ) : 0 );
-								tmp_dir = href_list["object_dir"];
-								obj_dir = ( Lang13.Bool( tmp_dir ) ? String13.ParseNumber( tmp_dir ) : 2 );
-
-								if ( !Lang13.Bool( obj_dir ) || !false ) {
-									obj_dir = 2;
-								}
-								obj_name = GlobalFuncs.sanitize( href_list["object_name"] );
-								where = href_list["object_where"];
-								Interface13.Stat( null, new ByTable(new object [] { "onfloor", "inhand", "inmarked" }).Contains( where ) );
-
-								if ( !( !Lang13.Bool( obj_dir ) || !false ) ) {
-									where = "onfloor";
-								}
-
-								if ( where == "inhand" ) {
-									GlobalFuncs.to_chat( Task13.User, "Support for inhand not available yet. Will spawn on floor." );
-									where = "onfloor";
-								}
-
-								if ( where == "inhand" ) {
-									
-									if ( !( Task13.User is Mob_Living_Carbon_Human || Task13.User is Mob_Living_Carbon_Monkey ) ) {
-										GlobalFuncs.to_chat( Task13.User, "Can only spawn in hand when you're a human or a monkey." );
-										where = "onfloor";
-									} else if ( Lang13.Bool( Task13.User.get_active_hand() ) ) {
-										GlobalFuncs.to_chat( Task13.User, "Your active hand is full. Spawning on floor." );
-										where = "onfloor";
-									}
-								}
-
-								if ( where == "inmarked" ) {
-									
-									if ( !Lang13.Bool( this.marked_datum ) ) {
-										GlobalFuncs.to_chat( Task13.User, "You don't have any object marked. Abandoning spawn." );
-										return null;
-									} else if ( !( this.marked_datum is Ent_Static ) ) {
-										GlobalFuncs.to_chat( Task13.User, "The object you have marked cannot be used as a target. Target must be of type /atom. Abandoning spawn." );
-										return null;
-									}
-								}
-								target = null;
-
-								switch ((string)( where )) {
-									case "onfloor":
-										
-										dynamic _ca = href_list["offset_type"]; // Was a switch-case, sorry for the mess.
-										if ( _ca=="absolute" ) {
-											target = Map13.GetTile( ((int)( X ??0 )), ((int)( Y ??0 )), ((int)( Z ??0 )) );
-										} else if ( _ca=="relative" ) {
-											target = Map13.GetTile( ((int)( loc.x + ( X ??0) )), ((int)( loc.y + ( Y ??0) )), ((int)( loc.z + ( Z ??0) )) );
-										}
-										break;
-									case "inmarked":
-										target = this.marked_datum;
-										break;
-								}
-
-								if ( Lang13.Bool( target ) ) {
-									
-									foreach (dynamic _cc in Lang13.Enumerate( paths )) {
-										path2 = _cc;
-										
-										i2 = null;
-										i2 = 0;
-
-										while (( i2 ??0) < ( number ??0)) {
-											Interface13.Stat( null, Lang13.GetTypes( typeof(Tile) ).Contains( path2 ) );
-
-											if ( false ) {
-												O3 = target;
-												N = ((Tile)O3).ChangeTurf( path2 );
-
-												if ( Lang13.Bool( N ) ) {
-													
-													if ( Lang13.Bool( obj_name ) ) {
-														N.name = obj_name;
-													}
-												}
-											} else {
-												O4 = Lang13.Call( path2, target );
-
-												if ( Lang13.Bool( O4 ) ) {
-													O4.dir = obj_dir;
-
-													if ( Lang13.Bool( obj_name ) ) {
-														O4.name = obj_name;
-
-														if ( O4 is Mob ) {
-															M37 = O4;
-															M37.real_name = obj_name;
-														}
-													}
-												}
-											}
-											i2++;
-										}
-									}
-								}
-
-								if ( number == 1 ) {
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " created a " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
-
-									foreach (dynamic _cd in Lang13.Enumerate( paths )) {
-										path3 = _cd;
-										
-
-										if ( Lang13.Bool( path3.IsSubclassOf( typeof(Mob) ) ) ) {
-											GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created a " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
-											break;
-										}
-									}
-								} else {
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " created " + number + "ea " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
-
-									foreach (dynamic _ce in Lang13.Enumerate( paths )) {
-										path4 = _ce;
-										
-
-										if ( Lang13.Bool( path4.IsSubclassOf( typeof(Mob) ) ) ) {
-											GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created " + number + "ea " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
-											break;
-										}
-									}
-								}
-								return null;
-							} else if ( Lang13.Bool( href_list["secretsfun"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 8 ) ) {
-									return null;
-								}
-								ok = false;
-
-								dynamic _dq = href_list["secretsfun"]; // Was a switch-case, sorry for the mess.
-								if ( _dq=="sec_clothes" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC" );
-
-									foreach (dynamic _cf in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Under) )) {
-										O5 = _cf;
-										
-										Lang13.Delete( O5 );
-										O5 = null;
-									}
-									ok = true;
-								} else if ( _dq=="sec_all_clothes" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SAC" );
-
-									foreach (dynamic _cg in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing) )) {
-										O6 = _cg;
-										
-										Lang13.Delete( O6 );
-										O6 = null;
-									}
-									ok = true;
-								} else if ( _dq=="sec_classic1" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC1" );
-
-									foreach (dynamic _ch in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Suit_Fire) )) {
-										O7 = _ch;
-										
-										Lang13.Delete( O7 );
-										O7 = null;
-									}
-
-									foreach (dynamic _ci in Lang13.Enumerate( typeof(Game13), typeof(Obj_Structure_Grille) )) {
-										O8 = _ci;
-										
-										Lang13.Delete( O8 );
-										O8 = null;
-									}
-								} else if ( _dq=="monkey" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "M" );
-
-									foreach (dynamic _cj in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H18 = _cj;
-										
-										Task13.Schedule( 0, (Task13.Closure)(() => {
-											H18.monkeyize();
-											return;
-										}));
-									}
-									ok = true;
-								} else if ( _dq=="corgi" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "M" );
-
-									foreach (dynamic _ck in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H19 = _ck;
-										
-										Task13.Schedule( 0, (Task13.Closure)(() => {
-											H19.corgize();
-											return;
-										}));
-									}
-									ok = true;
-								} else if ( _dq=="striketeam" ) {
-									
-									if ( Task13.User.client.strike_team() ) {
-										GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-										GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Strike" );
-									}
-								} else if ( _dq=="tripleAI" ) {
-									Task13.User.client.triple_ai();
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TriAI" );
-								} else if ( _dq=="gravity" ) {
-									
-									if ( !( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) ) {
-										GlobalFuncs.to_chat( Task13.User, "Please wait until the game starts!  Not sure how it will work otherwise." );
-										return null;
-									}
-									GlobalVars.gravity_is_on = !( GlobalVars.gravity_is_on == true );
-
-									foreach (dynamic _cl in Lang13.Enumerate( GlobalVars.areas )) {
-										A = _cl;
-										
-										((Zone)A).gravitychange( GlobalVars.gravity_is_on, A );
-									}
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Grav" );
-
-									if ( GlobalVars.gravity_is_on == true ) {
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled gravity on." );
-										GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled gravity on.</span>" );
-										GlobalFuncs.command_alert( "Gravity generators are again functioning within normal parameters. Sorry for any inconvenience." );
-									} else {
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled gravity off." );
-										GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled gravity off.</span>" );
-										GlobalFuncs.command_alert( "Feedback surge detected in mass-distributions systems. Artifical gravity has been disabled whilst the system reinitializes. Further failures may result in a gravitational collapse and formation of blackholes. Have a nice day." );
-									}
-								} else if ( _dq=="wave" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Meteor" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned a meteor wave" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned a meteor wave.</span>" );
-									new Event_MeteorWave();
-								} else if ( _dq=="goblob" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Blob" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned a blob" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned a blob.</span>" );
-									new Event_Blob();
-								} else if ( _dq=="aliens" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Aliens" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned an alien infestation" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempted an alien infestation</span>" );
-									new Event_AlienInfestation();
-								} else if ( _dq=="power" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "P" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all areas powered" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all areas powered</span>" );
-									GlobalFuncs.power_restore();
-								} else if ( _dq=="unpower" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "UP" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all areas unpowered" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all areas unpowered</span>" );
-									GlobalFuncs.power_failure();
-								} else if ( _dq=="quickpower" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "QP" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all SMESs powered" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all SMESs powered</span>" );
-									GlobalFuncs.power_restore_quick();
-								} else if ( _dq=="activateprison" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AP" );
-									GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><B>Transit signature detected.</B></span>" );
-									GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><B>Incoming shuttle.</B></span>" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the prison shuttle to the station.</span>" );
-								} else if ( _dq=="deactivateprison" ) {
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the prison shuttle back.</span>" );
-								} else if ( _dq=="toggleprisonstatus" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TPS" );
-
-									foreach (dynamic _cm in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_PrisonShuttle) )) {
-										PS = _cm;
-										
-										PS.allowedtocall = !PS.allowedtocall;
-										GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled status of prison shuttle to " + PS.allowedtocall + ".</span>" );
-									}
-								} else if ( _dq=="prisonwarp" ) {
-									
-									if ( !( GlobalVars.ticker != null ) ) {
-										Interface13.Alert( "The game hasn't started yet!" );
-										return null;
-									}
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PW" );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " teleported all players to the prison station.</span>" );
-									security = null;
-
-									foreach (dynamic _co in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H20 = _co;
-										
-
-										if ( H20 != null ) {
-											Interface13.Stat( null, GlobalVars.prisonwarped.Contains( H20 ) );
-
-											if ( false ) {
-												continue;
-											}
-											security = GlobalVars.FALSE;
-											H20.Paralyse( 5 );
-											id = H20.get_id_card();
-
-											if ( Lang13.Bool( id ) ) {
-												Interface13.Stat( null, id.access.Contains( GlobalVars.access_security ) );
-
-												if ( false ) {
-													security = GlobalVars.TRUE;
-												}
-											}
-
-											if ( !( security == true ) ) {
-												
-												foreach (dynamic _cn in Lang13.Enumerate( H20.get_all_slots(), typeof(Obj_Item) )) {
-													I3 = _cn;
-													
-													H20.drop_from_inventory( I3 );
-												}
-												H20.loc = Rand13.PickFromTable( GlobalVars.prisonwarp );
-												H20.equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Prisoner( H20 ), 14 );
-												H20.equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Orange( H20 ), 12 );
-											} else {
-												H20.loc = Rand13.PickFromTable( GlobalVars.prisonsecuritywarp );
-											}
-											GlobalVars.prisonwarped.Add( H20 );
-										}
-									}
-								} else if ( _dq=="traitor_all" ) {
-									
-									if ( !( GlobalVars.ticker != null ) ) {
-										Interface13.Alert( "The game hasn't started yet!" );
-										return null;
-									}
-									objective = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( "Enter an objective", null, null, null, null, InputType.Any ) ), 1, 1024 );
-
-									if ( !Lang13.Bool( objective ) ) {
-										return null;
-									}
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TA(" + objective + ")" );
-
-									foreach (dynamic _cp in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
-										H21 = _cp;
-										
-
-										if ( H21.stat == 2 || !( H21.client != null ) || !( H21.mind != null ) ) {
-											continue;
-										}
-
-										if ( GlobalFuncs.is_special_character( H21 ) != 0 ) {
-											continue;
-										}
-										GlobalVars.ticker.mode.traitors.Add( H21.mind );
-										H21.mind.special_role = "traitor";
-										new_objective = new Objective();
-										new_objective.owner = H21;
-										new_objective.explanation_text = objective;
-										H21.mind.objectives.Add( new_objective );
-										((GameMode)GlobalVars.ticker.mode).greet_traitor( H21.mind );
-										((GameMode)GlobalVars.ticker.mode).finalize_traitor( H21.mind );
-									}
-
-									foreach (dynamic _cq in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Silicon) )) {
-										A2 = _cq;
-										
-										GlobalVars.ticker.mode.traitors.Add( A2.mind );
-										A2.mind.special_role = "traitor";
-										new_objective2 = new Objective();
-										new_objective2.owner = A2;
-										new_objective2.explanation_text = objective;
-										A2.mind.objectives.Add( new_objective2 );
-										((GameMode)GlobalVars.ticker.mode).greet_traitor( A2.mind );
-										((GameMode)GlobalVars.ticker.mode).finalize_traitor( A2.mind );
-									}
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " used everyone is a traitor secret. Objective is " + objective + "</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used everyone is a traitor secret. Objective is " + objective );
-								} else if ( _dq=="moveadminshuttle" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShA" );
-									GlobalFuncs.move_admin_shuttle();
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the centcom administration shuttle</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the centcom administration shuttle" );
-								} else if ( _dq=="moveferry" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShF" );
-
-									if ( !( GlobalVars.transport_shuttle != null ) || !Lang13.Bool( GlobalVars.transport_shuttle.linked_area ) ) {
-										GlobalFuncs.to_chat( Task13.User, "There is no transport shuttle!" );
-										return null;
-									}
-									GlobalVars.transport_shuttle.move( Task13.User );
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the centcom ferry</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the centcom ferry" );
-								} else if ( _dq=="movealienship" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShX" );
-									GlobalFuncs.move_alien_ship();
-									GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the alien dinghy</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the alien dinghy" );
-								} else if ( _dq=="togglebombcap" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BC" );
-
-									dynamic _cr = GlobalVars.MAX_EXPLOSION_RANGE; // Was a switch-case, sorry for the mess.
-									if ( _cr==14 ) {
-										GlobalVars.MAX_EXPLOSION_RANGE = 16;
-									} else if ( _cr==16 ) {
-										GlobalVars.MAX_EXPLOSION_RANGE = 20;
-									} else if ( _cr==20 ) {
-										GlobalVars.MAX_EXPLOSION_RANGE = 28;
-									} else if ( _cr==28 ) {
-										GlobalVars.MAX_EXPLOSION_RANGE = 56;
-									} else if ( _cr==56 ) {
-										GlobalVars.MAX_EXPLOSION_RANGE = 128;
-									} else {
-										GlobalVars.MAX_EXPLOSION_RANGE = 14;
-									}
-									range_dev = GlobalVars.MAX_EXPLOSION_RANGE * 0.25;
-									range_high = GlobalVars.MAX_EXPLOSION_RANGE * 0.5;
-									range_low = GlobalVars.MAX_EXPLOSION_RANGE;
-									GlobalFuncs.message_admins( "<span class='danger'> " + GlobalFuncs.key_name_admin( Task13.User ) + " changed the bomb cap to " + range_dev + ", " + range_high + ", " + range_low + "</span>" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " changed the bomb cap to " + GlobalVars.MAX_EXPLOSION_RANGE );
-								} else if ( _dq=="flicklights" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FL" );
-
-									while (!Lang13.Bool( Task13.User.stat )) {
-										
-										foreach (dynamic _cu in Lang13.Enumerate( GlobalVars.player_list )) {
-											M38 = _cu;
-											
-
-											if ( Convert.ToInt32( M38.stat ) != 2 && Rand13.PercentChance( 25 ) ) {
-												AffectedArea = GlobalFuncs.get_area( M38 );
-
-												if ( AffectedArea.name != "Space" && AffectedArea.name != "Engine Walls" && AffectedArea.name != "Chemical Lab Test Chamber" && AffectedArea.name != "Escape Shuttle" && AffectedArea.name != "Arrival Area" && AffectedArea.name != "Arrival Shuttle" && AffectedArea.name != "start area" && AffectedArea.name != "Engine Combustion Chamber" ) {
-													AffectedArea.power_light = false;
-													AffectedArea.power_change();
-													Task13.Schedule( Rand13.Int( 55, 185 ), (Task13.Closure)(() => {
-														AffectedArea.power_light = true;
-														AffectedArea.power_change();
-														return;
-													}));
-													Message = Rand13.Int( 1, 4 );
-
-													switch ((int)( Message )) {
-														case 1:
-															M38.show_message( "<span class='notice'>You shudder as if cold...</span>", 1 );
-															break;
-														case 2:
-															M38.show_message( "<span class='notice'>You feel something gliding across your back...</span>", 1 );
-															break;
-														case 3:
-															M38.show_message( "<span class='notice'>Your eyes twitch, you feel like something you can't see is here...</span>", 1 );
-															break;
-														case 4:
-															M38.show_message( "<span class='notice'>You notice something moving out of the corner of your eye, but nothing is there...</span>", 1 );
-															break;
-													}
-
-													foreach (dynamic _ct in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( M38, 5 ), typeof(Obj) )) {
-														W = _ct;
-														
-
-														if ( Rand13.PercentChance( 25 ) && !Lang13.Bool( W.anchored ) ) {
-															Map13.StepRandom( W );
-														}
-													}
-												}
-											}
-										}
-										Task13.Sleep( Rand13.Int( 100, 1000 ) );
-									}
-
-									foreach (dynamic _cv in Lang13.Enumerate( GlobalVars.player_list )) {
-										M39 = _cv;
-										
-
-										if ( Convert.ToInt32( M39.stat ) != 2 ) {
-											M39.show_message( "<span class='notice'>The chilling wind suddenly stops...</span>", 1 );
-										}
-									}
-								} else if ( _dq=="wave" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "MW" );
-									new Event_MeteorWave();
-								} else if ( _dq=="gravanomalies" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "GA" );
-									GlobalFuncs.command_alert( "Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert" );
-									GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/granomalies.ogg" ) );
-									T3 = Rand13.PickFromTable( GlobalVars.blobstart );
-									bh = new Obj_Effect_Bhole( T3.loc );
-									Task13.Schedule( Rand13.Int( 100, 600 ), (Task13.Closure)(() => {
-										Lang13.Delete( bh );
-										bh = null;
-										return;
-									}));
-								} else if ( _dq=="timeanomalies" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "STA" );
-									GlobalFuncs.wormhole_event();
-								} else if ( _dq=="goblob" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BL" );
-									GlobalFuncs.mini_blob_event();
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned blob" );
-								} else if ( _dq=="aliens" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AL" );
-
-									if ( GlobalVars.aliens_allowed ) {
-										new Event_AlienInfestation();
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned aliens" );
-									}
-								} else if ( _dq=="alien_silent" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ALS" );
-
-									if ( GlobalVars.aliens_allowed ) {
-										GlobalFuncs.create_xeno();
-									}
-								} else if ( _dq=="spiders" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SL" );
-									new Event_SpiderInfestation();
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned spiders" );
-								} else if ( _dq=="comms_blackout" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "CB" );
-									answer = Interface13.Alert( Task13.User, "Would you like to alert the crew?", "Alert", "Yes", "No" );
-
-									if ( answer == "Yes" ) {
-										GlobalFuncs.communications_blackout( false );
-									} else {
-										GlobalFuncs.communications_blackout( true );
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a communications blackout." );
-								} else if ( _dq=="pda_spam" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PDA" );
-									new Event_PdaSpam();
-								} else if ( _dq=="carp" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "C" );
-									choice = Interface13.Input( "You sure you want to spawn carp?", null, null, null, new ByTable(new object [] { "Badmin", "Cancel" }), InputType.Any );
-
-									if ( choice == "Badmin" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned carp." );
-										new Event_CarpMigration();
-									}
-								} else if ( _dq=="radiation" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "R" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has has irradiated the station" );
-									new Event_RadiationStorm();
-								} else if ( _dq=="immovable" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "IR" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent an immovable rod to the station" );
-									GlobalFuncs.immovablerod();
-								} else if ( _dq=="prison_break" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PB" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has allowed a prison break" );
-									GlobalFuncs.prison_break();
-								} else if ( _dq=="lightout" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "LO" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has broke a lot of lights" );
-									GlobalFuncs.lightsout( true, 2 );
-								} else if ( _dq=="blackout" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BO" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " broke all lights" );
-									GlobalFuncs.lightsout( false, 0 );
-								} else if ( _dq=="whiteout" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "WO" );
-
-									foreach (dynamic _cw in Lang13.Enumerate( GlobalVars.alllights, typeof(Obj_Machinery_Light) )) {
-										L3 = _cw;
-										
-										L3.fix();
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " fixed all lights" );
-								} else if ( _dq=="aliens" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AL" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned aliens" );
-									new Event_AlienInfestation();
-								} else if ( _dq=="radiation" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "RAD" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has started a radiation event" );
-									new Event_RadiationStorm();
-								} else if ( _dq=="floorlava" ) {
-									
-									if ( GlobalVars.floorIsLava ) {
-										GlobalFuncs.to_chat( Task13.User, "The floor is lava already." );
-										return null;
-									}
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "LF" );
-									length = Interface13.Input( Task13.User, "How long will the lava last? (in seconds)", "Length", 180, null, InputType.Num );
-									length = Num13.MinInt( ((int)( Math.Abs( Convert.ToDouble( length ) ) )), 1200 );
-									damage = Interface13.Input( Task13.User, "How deadly will the lava be?", "Damage", 2, null, InputType.Num );
-									damage = Num13.MinInt( ((int)( Math.Abs( Convert.ToDouble( damage ) ) )), 100 );
-									sure = Interface13.Alert( Task13.User, "Are you sure you want to do this?", "Confirmation", "YES!", "Nah" );
-
-									if ( sure == "Nah" ) {
-										return null;
-									}
-									GlobalVars.floorIsLava = true;
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made the floor LAVA! It'll last " + length + " seconds and it will deal " + damage + " damage to everyone." );
-									count = 0;
-									lavaturfs = new ByTable();
-
-									foreach (dynamic _cx in Lang13.Enumerate( GlobalVars.turfs, typeof(Tile_Simulated_Floor) )) {
-										F = _cx;
-										
-										count++;
-
-										if ( !( count % 50000 != 0 ) ) {
-											Task13.Sleep( ((int)( Game13.tick_lag )) );
-										}
-
-										if ( F.z == 1 ) {
-											F.name = "lava";
-											F.desc = "The floor is LAVA!";
-											F.overlays.Add( "lava" );
-											F.lava = true;
-											lavaturfs.Add( F );
-										}
-									}
-									Task13.Schedule( 0, (Task13.Closure)(() => {
-										i3 = null;
-										i3 = i3;
-
-										while (( i3 ??0) < Convert.ToDouble( length )) {
-											
-											if ( Lang13.Bool( damage ) ) {
-												
-												foreach (dynamic _cz in Lang13.Enumerate( GlobalVars.living_mob_list, typeof(Mob_Living_Carbon) )) {
-													L4 = _cz;
-													
-
-													if ( L4.loc is Tile_Simulated_Floor ) {
-														F2 = L4.loc;
-
-														if ( Lang13.Bool( ((dynamic)F2).lava ) ) {
-															safe = false;
-
-															foreach (dynamic _cy in Lang13.Enumerate( F2.contents, typeof(Obj_Structure) )) {
-																O9 = _cy;
-																
-
-																if ( ( O9.level ??0) > ( F2.level ??0) && !( O9 is Obj_Structure_Window ) ) {
-																	safe = true;
-																	break;
-																}
-															}
-
-															if ( !safe ) {
-																L4.adjustFireLoss( damage );
-															}
-														}
-													}
-												}
-											}
-											Task13.Sleep( 10 );
-											i3++;
-										}
-
-										foreach (dynamic _da in Lang13.Enumerate( lavaturfs, typeof(Tile_Simulated_Floor) )) {
-											F3 = _da;
-											
-
-											if ( F3.z == 1 ) {
-												F3.name = Lang13.Initial( F3, "name" );
-												F3.desc = Lang13.Initial( F3, "desc" );
-												F3.overlays.len = 0;
-												F3.lava = false;
-												F3.update_icon();
-											}
-										}
-										GlobalVars.floorIsLava = false;
-										return;
-									}));
-									return null;
-								} else if ( _dq=="thebees" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BEE" );
-									answer2 = Interface13.Alert( "What's this? A Space Station woefully underpopulated by bees?", null, "Let's fix it!", "On second thought, let's not." );
-
-									if ( answer2 == "Let's fix it!" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " unleashed the bees onto the crew." );
-										GlobalFuncs.to_chat( typeof(Game13), "<font size='10' color='red'><b>NOT THE BEES!</b></font>" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/effects/bees.ogg" ) );
-
-										foreach (dynamic _db in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living) )) {
-											M40 = _db;
-											
-											BEE = new Mob_Living_SimpleAnimal_Bee( GlobalFuncs.get_turf( M40 ) );
-											BEE.strength = 16;
-											BEE.toxic = 5;
-											BEE.mut = 2;
-											BEE.feral = 25;
-											BEE.target = M40;
-											BEE.icon_state = "bees_swarm-feral";
-										}
-									}
-								} else if ( _dq=="virus" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "V" );
-									answer3 = Interface13.Alert( "Do you want this to be a greater disease or a lesser one?", null, "Greater", "Lesser" );
-
-									if ( answer3 == "Lesser" ) {
-										GlobalFuncs.virus2_lesser_infection();
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has triggered a lesser virus outbreak." );
-									} else {
-										GlobalFuncs.virus2_greater_infection();
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has triggered a greater virus outbreak." );
-									}
-								} else if ( _dq=="retardify" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "RET" );
-
-									foreach (dynamic _dc in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
-										H22 = _dc;
-										
-										GlobalFuncs.to_chat( H22, "<span class='danger'>You suddenly feel stupid.</span>" );
-										H22.setBrainLoss( 60 );
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made everybody retarded" );
-								} else if ( _dq=="fakeguns" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FG" );
-
-									foreach (dynamic _dd in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item) )) {
-										W2 = _dd;
-										
-
-										if ( W2 is Obj_Item_Clothing || W2 is Obj_Item_Weapon_Card_Id || W2 is Obj_Item_Weapon_Disk || W2 is Obj_Item_Weapon_Tank ) {
-											continue;
-										}
-										W2.icon = "icons/obj/gun.dmi";
-										W2.icon_state = "revolver";
-										W2.item_state = "gun";
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made every item look like a gun" );
-								} else if ( _dq=="experimentalguns" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "GUN" );
-
-									foreach (dynamic _df in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon) )) {
-										C4 = _df;
-										
-										turflist = new ByTable();
-
-										foreach (dynamic _de in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( 1, this ) )) {
-											T4 = _de;
-											
-											turflist.Add( T4 );
-										}
-
-										if ( !( turflist.len != 0 ) ) {
-											turflist.Add( GlobalFuncs.get_turf( C4 ) );
-										}
-										U = Rand13.PickFromTable( turflist );
-										E = new Obj_Structure_Closet_Crate_Secure_Weapon_Experimental( U );
-										GlobalFuncs.to_chat( C4, "<span class='danger'>A crate appears next to you. You think you can read \"" + E.chosen_set + "\" scribbled on it</span>" );
-										((Tile)U).turf_animation( "icons/effects/96x96.dmi", "beamin", -32, 0, 5, "sound/weapons/emitter2.ogg" );
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " distributed experimental guns to the entire crew" );
-								} else if ( _dq=="schoolgirl" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SG" );
-
-									foreach (dynamic _dg in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Under) )) {
-										W3 = _dg;
-										
-										W3.icon_state = "schoolgirl";
-										W3.item_state = "w_suit";
-										W3._color = "schoolgirl";
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated Japanese Animes mode" );
-									GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/animes.ogg" ) );
-								} else if ( _dq=="eagles" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "EgL" );
-
-									foreach (dynamic _dh in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock) )) {
-										W4 = _dh;
-										
-
-										if ( W4.z == 1 && !( GlobalFuncs.get_area( W4 ) is Zone_Bridge ) && !( GlobalFuncs.get_area( W4 ) is Zone_CrewQuarters ) && !( GlobalFuncs.get_area( W4 ) is Zone_Security_Prison ) ) {
-											W4.req_access = new ByTable();
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated Egalitarian Station mode" );
-									GlobalFuncs.command_alert( "Centcomm airlock control override activated. Please take this time to get acquainted with your coworkers." );
-									GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/commandreport.ogg", null, null, null, 60 ) );
-								} else if ( _dq=="dorf" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "DF" );
-
-									foreach (dynamic _di in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										B = _di;
-										
-										B.f_style = "Dward Beard";
-										B.update_hair();
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated dorf mode" );
-								} else if ( _dq=="ionstorm" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "I" );
-									GlobalFuncs.generate_ion_law();
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered an ion storm" );
-									show_log = Interface13.Alert( Task13.User, "Show ion message?", "Message", "Yes", "No" );
-
-									if ( show_log == "Yes" ) {
-										GlobalFuncs.command_alert( "Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/ionstorm.ogg" ) );
-									}
-								} else if ( _dq=="spacevines" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "K" );
-									new Event_Spacevine();
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned spacevines" );
-								} else if ( _dq=="onlyone" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "OO" );
-									Task13.User.client.only_one();
-								} else if ( _dq=="togglenarsie" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "NA" );
-									choice2 = Interface13.Input( "How do you wish for narsie to interact with her surroundings?", null, null, null, new ByTable(new object [] { "CultStation13", "Nar-Singulo" }), InputType.Any );
-
-									if ( choice2 == "CultStation13" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set narsie's behaviour to \"CultStation13\"." );
-										GlobalVars.narsie_behaviour = "CultStation13";
-									}
-
-									if ( choice2 == "Nar-Singulo" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set narsie's behaviour to \"Nar-Singulo\"." );
-										GlobalVars.narsie_behaviour = "Nar-Singulo";
-									}
-								} else if ( _dq=="hellonearth" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "NS" );
-									choice3 = Interface13.Input( "You sure you want to end the round and summon narsie at your location? Misuse of this could result in removal of flags or halarity.", null, null, null, new ByTable(new object [] { "PRAISE SATAN", "Cancel" }), InputType.Any );
-
-									if ( choice3 == "PRAISE SATAN" ) {
-										new Obj_Machinery_Singularity_Narsie_Large( GlobalFuncs.get_turf( Task13.User ) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has summoned narsie and brought about a new realm of suffering." );
-									}
-								} else if ( _dq=="supermattercascade" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC" );
-									choice4 = Interface13.Input( "You sure you want to destroy the universe and create a large explosion at your location? Misuse of this could result in removal of flags or halarity.", null, null, null, new ByTable(new object [] { "NO TIME TO EXPLAIN", "Cancel" }), InputType.Any );
-
-									if ( choice4 == "NO TIME TO EXPLAIN" ) {
-										GlobalFuncs.explosion( GlobalFuncs.get_turf( Task13.User ), 8, 16, 24, 32, 1 );
-										new Tile_Unsimulated_Wall_Supermatter( GlobalFuncs.get_turf( Task13.User ) );
-										GlobalFuncs.SetUniversalState( typeof(UniversalState_SupermatterCascade) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has managed to destroy the universe with a supermatter cascade. Good job, " + GlobalFuncs.key_name_admin( Task13.User ) );
-									}
-								} else if ( _dq=="spawnadminbus" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AB" );
-									A3 = new Obj_Structure_Bed_Chair_Vehicle_Adminbus( GlobalFuncs.get_turf( Task13.User ) );
-									A3.dir = ((int)( GlobalVars.EAST ));
-									A3.update_lightsource();
-									A3.busjuke.dir = ((int)( GlobalVars.EAST ));
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned an Adminbus. Who gave him the keys?" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned an Adminbus." );
-								} else if ( _dq=="spawnselfdummy" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TD" );
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned himself as a Test Dummy." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned himself as a Test Dummy." );
-									T5 = GlobalFuncs.get_turf( Task13.User );
-									D2 = new Mob_Living_Carbon_Human_Dummy( T5 );
-									Task13.User.client.cmd_assume_direct_control( D2 );
-									D2.equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Black( D2 ), 14 );
-									D2.equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Black( D2 ), 12 );
-									D2.equip_to_slot_or_del( new Obj_Item_Device_Radio_Headset_Heads_Captain(  ), 8 );
-									D2.equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Backpack_Satchel( D2 ), 1 );
-									D2.equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Box_Engineer( D2.back ), 18 );
-									((Tile)T5).turf_animation( "icons/effects/96x96.dmi", "beamin", -32, 0, 5, "sound/misc/adminspawn.ogg" );
-									D2.name = "Admin";
-									D2.real_name = "Admin";
-									newname = "";
-									newname = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( D2, "Before you step out as an embodied god, what name do you wish for?", "Choose your name.", "Admin", null, InputType.Str | InputType.Null ) ), 1, 26 );
-
-									if ( !Lang13.Bool( newname ) ) {
-										newname = "Admin";
-									}
-									D2.name = newname;
-									D2.real_name = newname;
-									admin_id = new Obj_Item_Weapon_Card_Id_Admin( D2 );
-									admin_id.registered_name = newname;
-									D2.equip_to_slot_or_del( admin_id, 7 );
-								} else if ( _dq=="fakealerts" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FAKEA" );
-									choice5 = Interface13.Input( "Choose the type of fake alert you wish to trigger", "False Flag and Bait Panel", null, null, new ByTable(new object [] { "Biohazard", "Lifesigns", "Malfunction", "Ion", "Meteor Wave", "Carp Migration", "Return" }), InputType.Any );
-
-									if ( choice5 == "Return" ) {
-										return null;
-									}
-
-									if ( choice5 == "Biohazard" ) {
-										levelchoice = Interface13.Input( "Set the level of the biohazard alert, or leave at 0 to have a random level (1 to 7 supported only)", "Space FEMA Readiness Program", 0, null, null, InputType.Num );
-
-										if ( !Lang13.Bool( levelchoice ) || Convert.ToDouble( levelchoice ) > 7 || Convert.ToDouble( levelchoice ) < 0 ) {
-											GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Invalid input range (0 to 7 only)</span>" );
-											return null;
-										}
-										GlobalFuncs.biohazard_alert( levelchoice );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Biohzard Alert." );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Biohzard Alert." );
-										return null;
-									}
-
-									if ( choice5 == "Lifesigns" ) {
-										GlobalFuncs.command_alert( "Unidentified lifesigns detected coming aboard " + GlobalFuncs.station_name() + ". Secure any exterior access, including ducting and ventilation.", "Lifesign Alert" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/aliens.ogg" ) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Lifesign Alert." );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Lifesign Alert." );
-										return null;
-									}
-
-									if ( choice5 == "Malfunction" ) {
-										salertchoice = Interface13.Input( "Do you wish to include the Hostile Runtimes warning to have an authentic Malfunction Takeover Alert ?", "Nanotrasen Alert Level Monitor", null, null, new ByTable(new object [] { "Yes", "No" }), InputType.Any );
-
-										if ( salertchoice == "Yes" ) {
-											GlobalFuncs.command_alert( "Hostile runtimes detected in all station systems, please deactivate your AI to prevent possible damage to its morality core.", "Anomaly Alert" );
-										}
-										GlobalFuncs.to_chat( typeof(Game13), "<font size=4 color='red'>Attention! Delta security level reached!</font>" );
-										GlobalFuncs.to_chat( typeof(Game13), "<font color='red'>" + GlobalVars.config.alert_desc_delta + "</font>" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/aimalf.ogg" ) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Malfunction Takeover Alert (Hostile Runtimes alert " + ( salertchoice == "Yes" ? "included" : "excluded" ) + ")" );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Malfunction Takeover Alert (Hostile Runtimes alert " + ( salertchoice == "Yes" ? "included" : "excluded" ) + ")" );
-										return null;
-									}
-
-									if ( choice5 == "Ion" ) {
-										GlobalFuncs.command_alert( "Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/ionstorm.ogg" ) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Ion Alert." );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Ion Alert." );
-										return null;
-									}
-
-									if ( choice5 == "Meteor Wave" ) {
-										GlobalFuncs.command_alert( "A meteor storm has been detected on collision course with the station. Seek shelter within the core of the station immediately.", "Meteor Alert" );
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/meteors.ogg" ) );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Meteor Alert." );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Meteor Alert." );
-										return null;
-									}
-
-									if ( choice5 == "Carp Migration" ) {
-										GlobalFuncs.command_alert( "Unknown biological entities have been detected near " + GlobalFuncs.station_name() + ", please stand-by.", "Lifesign Alert" );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Carp Migration Alert." );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Carp Migration Alert." );
-										return null;
-									}
-								} else if ( _dq=="fakebooms" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FAKEE" );
-									choice6 = Interface13.Input( "How much high-budget explosions do you want ?", "Micheal Bay SFX Systems", 1, null, null, InputType.Num );
-
-									if ( Convert.ToDouble( choice6 ) < 1 ) {
-										GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Invalid input range (null or negative)</span>" );
-										return null;
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " improvised himself as Micheal Bay and triggered " + Num13.Floor( Convert.ToDouble( choice6 ) ) + " fake explosions." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " improvised himself as Micheal Bay and triggered " + Num13.Floor( Convert.ToDouble( choice6 ) ) + " fake explosions." );
-
-									foreach (dynamic _dj in Lang13.IterateRange( 1, choice6 )) {
-										i4 = _dj;
-										
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/effects/explosionfar.ogg" ) );
-										Task13.Sleep( Rand13.Int( 2, 10 ) );
-									}
-								} else if ( _dq=="massbomber" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBM" );
-									choice7 = Interface13.Alert( "Dress every player like Bomberman and give them BBDs?", "Bomberman Mode Activation", "Confirm", "Cancel" );
-
-									if ( choice7 == "Confirm" ) {
-										GlobalVars.bomberman_mode = true;
-										GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/bomberman/start.ogg" ) );
-
-										foreach (dynamic _dk in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
-											M41 = _dk;
-											
-
-											if ( Lang13.Bool( M41.wear_suit ) ) {
-												O10 = M41.wear_suit;
-												M41.u_equip( O10, true );
-												O10.loc = M41.loc;
-											}
-
-											if ( Lang13.Bool( M41.head ) ) {
-												O11 = M41.head;
-												M41.u_equip( O11, true );
-												O11.loc = M41.loc;
-											}
-											M41.equip_to_slot_or_del( new Obj_Item_Clothing_Head_Helmet_Space_Bomberman( M41 ), 11 );
-											M41.equip_to_slot_or_del( new Obj_Item_Clothing_Suit_Space_Bomberman( M41 ), 13 );
-											M41.equip_to_slot_or_del( new Obj_Item_Weapon_Bomberman( M41 ), 17 );
-											M41.update_icons();
-											GlobalFuncs.to_chat( M41, "Wait...what?" );
-											Task13.Schedule( 50, (Task13.Closure)(() => {
-												GlobalFuncs.to_chat( M41, "<span class='notice'>Tip: Use the BBD in your suit's pocket to place bombs.</span>" );
-												GlobalFuncs.to_chat( M41, "<span class='notice'>Try to keep your BBD and escape this hell hole alive!</span>" );
-												return;
-											}));
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " turned everyone into Bomberman!" );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " turned everyone into Bomberman!" );
-								} else if ( _dq=="bomberhurt" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBH" );
-									choice8 = Interface13.Alert( "Activate Cuban Pete mode? Note that newly spawned BBD will still have player damage deactivated.", "Activating Bomberman Bombs Player Damage", "Confirm", "Cancel" );
-
-									if ( choice8 == "Confirm" ) {
-										GlobalVars.bomberman_hurt = true;
-
-										foreach (dynamic _dl in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
-											B2 = _dl;
-											
-
-											if ( !( B2.arena != null ) ) {
-												B2.hurt_players = true;
-											}
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the player damage of the Bomberman Bomb Dispensers currently in the world. Cuban Pete approves." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the player damage of the Bomberman Bomb Dispensers currently in the world. Cuban Pete approves." );
-								} else if ( _dq=="bomberdestroy" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBD" );
-									choice9 = Interface13.Alert( "Activate Michael Bay mode? Note that newly spawned BBD will still have environnement damage deactivated.", "Activating Bomberman Bombs Environnement Damage", "Confirm", "Cancel" );
-
-									if ( choice9 == "Confirm" ) {
-										GlobalVars.bomberman_destroy = true;
-
-										foreach (dynamic _dm in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
-											B3 = _dm;
-											
-
-											if ( !( B3.arena != null ) ) {
-												B3.destroy_environnement = true;
-											}
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the environnement damage of the Bomberman Bomb Dispensers currently in the world. Michael Bay approves." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the environnement damage of the Bomberman Bomb Dispensers currently in the world. Michael Bay approves." );
-								} else if ( _dq=="bombernohurt" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBNH" );
-									choice10 = Interface13.Alert( "Disable Cuban Pete mode.", "Disable Bomberman Bombs Player Damage", "Confirm", "Cancel" );
-
-									if ( choice10 == "Confirm" ) {
-										GlobalVars.bomberman_hurt = false;
-
-										foreach (dynamic _dn in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
-											B4 = _dn;
-											
-
-											if ( !( B4.arena != null ) ) {
-												B4.hurt_players = false;
-											}
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the player damage of the Bomberman Bomb Dispensers currently in the world." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the player damage of the Bomberman Bomb Dispensers currently in the world." );
-								} else if ( _dq=="bombernodestroy" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBND" );
-									choice11 = Interface13.Alert( "Disable Michael Bay mode?", "Disable Bomberman Bombs Environnement Damage", "Confirm", "Cancel" );
-
-									if ( choice11 == "Confirm" ) {
-										GlobalVars.bomberman_destroy = false;
-
-										foreach (dynamic _do in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
-											B5 = _do;
-											
-
-											if ( !( B5.arena != null ) ) {
-												B5.destroy_environnement = false;
-											}
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the environnement damage of the Bomberman Bomb Dispensers currently in the world." );
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the environnement damage of the Bomberman Bomb Dispensers currently in the world." );
-								} else if ( _dq=="togglebombmethod" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BM" );
-									choice12 = Interface13.Input( "Do you wish for explosions to take walls and obstacles into account?", null, null, null, new ByTable(new object [] { "Yes, let's have realistic explosions", "No, let's have perfectly circular explosions" }), InputType.Any );
-
-									if ( choice12 == "Yes, let's have realistic explosions" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set explosions to take walls and obstacles into account." );
-										GlobalVars.explosion_newmethod = true;
-									}
-
-									if ( choice12 == "No, let's have perfectly circular explosions" ) {
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set explosions to completely pass through walls and obstacles." );
-										GlobalVars.explosion_newmethod = false;
-									}
-								} else if ( _dq=="placeturret" ) {
-									GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
-									GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TUR" );
-									possible_guns = new ByTable();
-
-									foreach (dynamic _dp in Lang13.Enumerate( Lang13.GetTypes( typeof(Obj_Item_Weapon_Gun_Energy) ) )) {
-										path5 = _dp;
-										
-										possible_guns.Add( path5 );
-									}
-									choice13 = Interface13.Input( "What energy gun do you want inside the turret?", null, null, null, possible_guns, InputType.Any );
-
-									if ( !Lang13.Bool( choice13 ) ) {
-										return null;
-									}
-									gun = Lang13.Call( choice13 );
-									Turret = new Obj_Machinery_PortaTurret( GlobalFuncs.get_turf( Task13.User ) );
-									Turret.installation = choice13;
-									Turret.gun_charge = Lang13.Bool( gun.power_supply.charge );
-									Turret.update_gun();
-									GlobalFuncs.qdel( gun );
-									emag = Interface13.Input( "Emag the turret?", null, null, null, new ByTable(new object [] { "Yes", "No" }), InputType.Any );
-
-									if ( emag == "Yes" ) {
-										Turret.emag( Task13.User );
-									}
-								} else if ( _dq=="hardcore_mode" ) {
-									choice14 = Interface13.Input( "Are you sure you want to " + ( GlobalVars.ticker.hardcore_mode ? "disable" : "enable" ) + " hardcore mode? Starvation will " + ( GlobalVars.ticker.hardcore_mode ? "no longer" : "" ) + "slowly kill player-controlled humans.", "Admin Abuse", null, null, new ByTable(new object [] { "Yes", "No!" }), InputType.Any );
-
-									if ( choice14 == "Yes" ) {
-										
-										if ( !GlobalVars.hardcore_mode ) {
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has ENABLED hardcore mode!" );
-											GlobalVars.hardcore_mode = true;
-											GlobalFuncs.to_chat( typeof(Game13), "<h5><span class='danger'>Hardcore mode has been enabled</span></h5>" );
-											GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>Not eating for a prolonged period of time will slowly kill player-controlled characters (braindead and catatonic characters are not affected).</span>" );
-											GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>If your hunger indicator starts flashing red and black, your character is starving and may die soon!</span>" );
-										} else {
-											GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has DISABLED hardcore mode!" );
-											GlobalVars.hardcore_mode = false;
-											GlobalFuncs.to_chat( typeof(Game13), "<h5><span class='danger'>Hardcore mode has been disabled</span></h5>" );
-											GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>Starvation will no longer kill player-controlled characters.</span>" );
-										}
-									}
-								}
-
-								if ( Task13.User != null ) {
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used secret " + href_list["secretsfun"] );
-
-									if ( ok ) {
-										GlobalFuncs.to_chat( typeof(Game13), "<B>A secret has been activated by " + Task13.User.key + "!</B>" );
-									}
-								}
-							} else if ( Lang13.Bool( href_list["secretsadmin"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 2 ) ) {
-									return null;
-								}
-								ok2 = false;
-
-								dynamic _eb = href_list["secretsadmin"]; // Was a switch-case, sorry for the mess.
-								if ( _eb=="clear_bombs" ) {
-									num = false;
-
-									foreach (dynamic _dr in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Device_TransferValve) )) {
-										TV = _dr;
-										
-
-										if ( Lang13.Bool( TV.tank_one ) || Lang13.Bool( TV.tank_two ) ) {
-											Lang13.Delete( TV );
-											TV = null;
-											TV++;
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has removed " + num + " bombs" );
-								} else if ( _eb=="detonate_bombs" ) {
-									num2 = false;
-
-									foreach (dynamic _ds in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Device_TransferValve) )) {
-										TV2 = _ds;
-										
-
-										if ( Lang13.Bool( TV2.tank_one ) || Lang13.Bool( TV2.tank_two ) ) {
-											TV2.toggle_valve();
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has toggled valves on " + num2 + " bombs" );
-								} else if ( _eb=="list_bombers" ) {
-									dat4 = "<B>Bombing List<HR>";
-
-									foreach (dynamic _dt in Lang13.Enumerate( GlobalVars.bombers )) {
-										l = _dt;
-										
-										dat4 += "" + l + "<BR>";
-									}
-									Interface13.Browse( Task13.User, dat4, "window=bombers" );
-								} else if ( _eb=="list_signalers" ) {
-									dat5 = "<B>Showing last " + Lang13.Length( GlobalVars.lastsignalers ) + " signalers.</B><HR>";
-
-									foreach (dynamic _du in Lang13.Enumerate( GlobalVars.lastsignalers )) {
-										sig = _du;
-										
-										dat5 += "" + sig + "<BR>";
-									}
-									Interface13.Browse( Task13.User, dat5, "window=lastsignalers;size=800x500" );
-								} else if ( _eb=="list_lawchanges" ) {
-									dat6 = "<B>Showing last " + Lang13.Length( GlobalVars.lawchanges ) + " law changes.</B><HR>";
-
-									foreach (dynamic _dv in Lang13.Enumerate( GlobalVars.lawchanges )) {
-										sig2 = _dv;
-										
-										dat6 += "" + sig2 + "<BR>";
-									}
-									Interface13.Browse( Task13.User, dat6, "window=lawchanges;size=800x500" );
-								} else if ( _eb=="list_job_debug" ) {
-									dat7 = "<B>Job Debug info.</B><HR>";
-
-									if ( GlobalVars.job_master != null ) {
-										
-										foreach (dynamic _dw in Lang13.Enumerate( GlobalVars.job_master.job_debug )) {
-											line = _dw;
-											
-											dat7 += "" + line + "<BR>";
-										}
-										dat7 += "*******<BR><BR>";
-
-										foreach (dynamic _dx in Lang13.Enumerate( GlobalVars.job_master.occupations, typeof(Job) )) {
-											job13 = _dx;
-											
-
-											if ( !( job13 != null ) ) {
-												continue;
-											}
-											dat7 += "job: " + job13.title + ", current_positions: " + job13.current_positions + ", total_positions: " + job13.total_positions + " <BR>";
-										}
-										Interface13.Browse( Task13.User, dat7, "window=jobdebug;size=600x500" );
-									}
-								} else if ( _eb=="showailaws" ) {
-									this.output_ai_laws();
-								} else if ( _eb=="showgm" ) {
-									
-									if ( !( GlobalVars.ticker != null ) ) {
-										Interface13.Alert( "The game hasn't started yet!" );
-									} else if ( Lang13.Bool( GlobalVars.ticker.mode ) ) {
-										Interface13.Alert( "The game mode is " + GlobalVars.ticker.mode.name );
-									} else {
-										Interface13.Alert( "For some reason there's a ticker, but not a game mode" );
-									}
-								} else if ( _eb=="manifest" ) {
-									dat8 = "<B>Showing Crew Manifest.</B><HR>";
-									dat8 += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>";
-
-									foreach (dynamic _dy in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H23 = _dy;
-										
-
-										if ( Lang13.Bool( H23.ckey ) ) {
-											dat8 += "<tr><td>" + H23.name + "</td><td>" + H23.get_assignment() + "</td></tr>";
-										}
-									}
-									dat8 += "</table>";
-									Interface13.Browse( Task13.User, dat8, "window=manifest;size=440x410" );
-								} else if ( _eb=="check_antagonist" ) {
-									this.check_antagonists();
-								} else if ( _eb=="DNA" ) {
-									dat9 = "<B>Showing DNA from blood.</B><HR>";
-									dat9 += "<table cellspacing=5><tr><th>Name</th><th>DNA</th><th>Blood Type</th></tr>";
-
-									foreach (dynamic _dz in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H24 = _dz;
-										
-
-										if ( H24.dna != null && Lang13.Bool( H24.ckey ) ) {
-											dat9 += "<tr><td>" + H24 + "</td><td>" + H24.dna.unique_enzymes + "</td><td>" + H24.b_type + "</td></tr>";
-										}
-									}
-									dat9 += "</table>";
-									Interface13.Browse( Task13.User, dat9, "window=DNA;size=440x410" );
-								} else if ( _eb=="fingerprints" ) {
-									dat10 = "<B>Showing Fingerprints.</B><HR>";
-									dat10 += "<table cellspacing=5><tr><th>Name</th><th>Fingerprints</th></tr>";
-
-									foreach (dynamic _ea in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
-										H25 = _ea;
-										
-
-										if ( Lang13.Bool( H25.ckey ) ) {
-											
-											if ( H25.dna != null && Lang13.Bool( H25.dna.uni_identity ) ) {
-												dat10 += "<tr><td>" + H25 + "</td><td>" + Num13.Md5( H25.dna.uni_identity ) + "</td></tr>";
-											} else if ( H25.dna != null && !Lang13.Bool( H25.dna.uni_identity ) ) {
-												dat10 += "<tr><td>" + H25 + "</td><td>H.dna.uni_identity = null</td></tr>";
-											} else if ( !( H25.dna != null ) ) {
-												dat10 += "<tr><td>" + H25 + "</td><td>H.dna = null</td></tr>";
-											}
-										}
-									}
-									dat10 += "</table>";
-									Interface13.Browse( Task13.User, dat10, "window=fingerprints;size=440x410" );
-								}
-
-								if ( Task13.User != null ) {
-									GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used secret " + href_list["secretsadmin"] );
-
-									if ( ok2 ) {
-										GlobalFuncs.to_chat( typeof(Game13), "<B>A secret has been activated by " + Task13.User.key + "!</B>" );
-									}
-								}
-							} else if ( Lang13.Bool( href_list["secretscoder"] ) ) {
-								
-								if ( !GlobalFuncs.check_rights( 32 ) ) {
-									return null;
-								}
-
-								dynamic _ef = href_list["secretscoder"]; // Was a switch-case, sorry for the mess.
-								if ( _ef=="spawn_objects" ) {
-									dat11 = "<B>Admin Log<HR></B>";
-
-									foreach (dynamic _ec in Lang13.Enumerate( GlobalVars.admin_log )) {
-										l2 = _ec;
-										
-										dat11 += "<li>" + l2 + "</li>";
-									}
-
-									if ( !( GlobalVars.admin_log.len != 0 ) ) {
-										dat11 += "No-one has done anything this round!";
-									}
-									Interface13.Browse( Task13.User, dat11, "window=admin_log" );
-								} else if ( _ef=="maint_access_brig" ) {
-									
-									foreach (dynamic _ed in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock_Maintenance) )) {
-										M42 = _ed;
-										
-										Interface13.Stat( null, M42.req_access.Contains( GlobalVars.access_maint_tunnels ) );
-
-										if ( M42 is Obj_Machinery_Door_Airlock_Maintenance ) {
-											M42.req_access = new ByTable(new object [] { GlobalVars.access_brig });
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made all maint doors brig access-only." );
-								} else if ( _ef=="maint_access_engiebrig" ) {
-									
-									foreach (dynamic _ee in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock_Maintenance) )) {
-										M43 = _ee;
-										
-										Interface13.Stat( null, M43.req_access.Contains( GlobalVars.access_maint_tunnels ) );
-
-										if ( M43 is Obj_Machinery_Door_Airlock_Maintenance ) {
-											M43.req_access = new ByTable();
-											M43.req_one_access = new ByTable(new object [] { GlobalVars.access_brig, GlobalVars.access_engine });
-										}
-									}
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made all maint doors engineering and brig access-only." );
-								} else if ( _ef=="infinite_sec" ) {
-									J = GlobalVars.job_master.GetJob( "Security Officer" );
-
-									if ( !( J != null ) ) {
-										return null;
-									}
-									J.total_positions = -1;
-									J.spawn_positions = -1;
-									GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has removed the cap on security officers." );
-								} else if ( _ef=="virus_custom" ) {
-									
-									if ( GlobalFuncs.virus2_make_custom( Task13.User.client ) ) {
-										GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "V_C" );
-										GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has trigger a custom virus outbreak." );
-									}
-								}
-							} else if ( Lang13.Bool( href_list["ac_view_wanted"] ) ) {
-								this.admincaster_screen = 18;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_channel_name"] ) ) {
-								this.admincaster_feed_channel.channel_name = GlobalFuncs.strip_html_simple( Interface13.Input( Task13.User, "Provide a Feed Channel Name", "Network Channel Handler", "", null, InputType.Any ) );
-
-								while (String13.FindIgnoreCase( this.admincaster_feed_channel.channel_name, " ", 1, 0 ) == 1) {
-									this.admincaster_feed_channel.channel_name = String13.SubStr( this.admincaster_feed_channel.channel_name, 2, Lang13.Length( this.admincaster_feed_channel.channel_name ) + 1 );
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_channel_lock"] ) ) {
-								this.admincaster_feed_channel.locked = !Lang13.Bool( this.admincaster_feed_channel.locked );
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_submit_new_channel"] ) ) {
-								check = false;
-
-								foreach (dynamic _eg in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
-									FC = _eg;
-									
-
-									if ( FC.channel_name == this.admincaster_feed_channel.channel_name ) {
-										check = true;
-										break;
-									}
-								}
-
-								if ( this.admincaster_feed_channel.channel_name == "" || this.admincaster_feed_channel.channel_name == "[REDACTED]" || check ) {
-									this.admincaster_screen = 7;
-								} else {
-									choice15 = Interface13.Alert( "Please confirm Feed channel creation", "Network Channel Handler", "Confirm", "Cancel" );
-
-									if ( choice15 == "Confirm" ) {
-										newChannel = new FeedChannel();
-										newChannel.channel_name = this.admincaster_feed_channel.channel_name;
-										newChannel.author = this.admincaster_signature;
-										newChannel.locked = Lang13.Bool( this.admincaster_feed_channel.locked );
-										newChannel.is_admin_channel = true;
-										GlobalFuncs.feedback_inc( "newscaster_channels", 1 );
-										GlobalVars.news_network.network_channels.Add( newChannel );
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created command feed channel: " + this.admincaster_feed_channel.channel_name + "!" );
-										this.admincaster_screen = 5;
-									}
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_channel_receiving"] ) ) {
-								available_channels = new ByTable();
-
-								foreach (dynamic _eh in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
-									F4 = _eh;
-									
-									available_channels.Add( F4.channel_name );
-								}
-								this.admincaster_feed_channel.channel_name = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Choose receiving Feed Channel", "Network Channel Handler", null, available_channels, InputType.Any ) );
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_new_message"] ) ) {
-								this.admincaster_feed_message.body = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Write your Feed story", "Network Channel Handler", "", null, InputType.Any ) );
-
-								while (String13.FindIgnoreCase( this.admincaster_feed_message.body, " ", 1, 0 ) == 1) {
-									this.admincaster_feed_message.body = String13.SubStr( this.admincaster_feed_message.body, 2, Lang13.Length( this.admincaster_feed_message.body ) + 1 );
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_submit_new_message"] ) ) {
-								
-								if ( this.admincaster_feed_message.body == "" || this.admincaster_feed_message.body == "[REDACTED]" || this.admincaster_feed_channel.channel_name == "" ) {
-									this.admincaster_screen = 6;
-								} else {
-									newMsg = new FeedMessage();
-									newMsg.author = this.admincaster_signature;
-									newMsg.body = this.admincaster_feed_message.body;
-									newMsg.is_admin_message = true;
-									GlobalFuncs.feedback_inc( "newscaster_stories", 1 );
-
-									foreach (dynamic _ei in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
-										FC2 = _ei;
-										
-
-										if ( FC2.channel_name == this.admincaster_feed_channel.channel_name ) {
-											FC2.messages.Add( newMsg );
-											break;
-										}
-									}
-									this.admincaster_screen = 4;
-								}
-
-								foreach (dynamic _ej in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
-									NEWSCASTER = _ej;
-									
-									NEWSCASTER.newsAlert( this.admincaster_feed_channel.channel_name );
-								}
-								GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " submitted a feed story to channel: " + this.admincaster_feed_channel.channel_name + "!" );
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_create_channel"] ) ) {
-								this.admincaster_screen = 2;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_create_feed_story"] ) ) {
-								this.admincaster_screen = 3;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_menu_censor_story"] ) ) {
-								this.admincaster_screen = 10;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_menu_censor_channel"] ) ) {
-								this.admincaster_screen = 11;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_menu_wanted"] ) ) {
-								already_wanted = false;
-
-								if ( GlobalVars.news_network.wanted_issue != null ) {
-									already_wanted = true;
-								}
-
-								if ( already_wanted ) {
-									this.admincaster_feed_message.author = GlobalVars.news_network.wanted_issue.author;
-									this.admincaster_feed_message.body = GlobalVars.news_network.wanted_issue.body;
-								}
-								this.admincaster_screen = 14;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_wanted_name"] ) ) {
-								this.admincaster_feed_message.author = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide the name of the Wanted person", "Network Security Handler", "", null, InputType.Any ) );
-
-								while (String13.FindIgnoreCase( this.admincaster_feed_message.author, " ", 1, 0 ) == 1) {
-									this.admincaster_feed_message.author = String13.SubStr( this.admincaster_feed_message.author, 2, Lang13.Length( this.admincaster_feed_message.author ) + 1 );
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_wanted_desc"] ) ) {
-								this.admincaster_feed_message.body = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide the a description of the Wanted person and any other details you deem important", "Network Security Handler", "", null, InputType.Any ) );
-
-								while (String13.FindIgnoreCase( this.admincaster_feed_message.body, " ", 1, 0 ) == 1) {
-									this.admincaster_feed_message.body = String13.SubStr( this.admincaster_feed_message.body, 2, Lang13.Length( this.admincaster_feed_message.body ) + 1 );
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_submit_wanted"] ) ) {
-								input_param = String13.ParseNumber( href_list["ac_submit_wanted"] );
-
-								if ( this.admincaster_feed_message.author == "" || this.admincaster_feed_message.body == "" ) {
-									this.admincaster_screen = 16;
-								} else {
-									choice16 = Interface13.Alert( "Please confirm Wanted Issue " + ( input_param == 1 ? "creation." : "edit." ), "Network Security Handler", "Confirm", "Cancel" );
-
-									if ( choice16 == "Confirm" ) {
-										
-										if ( input_param == 1 ) {
-											WANTED = new FeedMessage();
-											WANTED.author = this.admincaster_feed_message.author;
-											WANTED.body = this.admincaster_feed_message.body;
-											WANTED.backup_author = this.admincaster_signature;
-											WANTED.is_admin_message = true;
-											GlobalVars.news_network.wanted_issue = WANTED;
-
-											foreach (dynamic _ek in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
-												NEWSCASTER2 = _ek;
-												
-												NEWSCASTER2.newsAlert();
-												NEWSCASTER2.update_icon();
-											}
-											this.admincaster_screen = 15;
-										} else {
-											GlobalVars.news_network.wanted_issue.author = this.admincaster_feed_message.author;
-											GlobalVars.news_network.wanted_issue.body = this.admincaster_feed_message.body;
-											GlobalVars.news_network.wanted_issue.backup_author = this.admincaster_feed_message.backup_author;
-											this.admincaster_screen = 19;
-										}
-										GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " issued a Station-wide Wanted Notification for " + this.admincaster_feed_message.author + "!" );
-									}
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_cancel_wanted"] ) ) {
-								choice17 = Interface13.Alert( "Please confirm Wanted Issue removal", "Network Security Handler", "Confirm", "Cancel" );
-
-								if ( choice17 == "Confirm" ) {
-									GlobalVars.news_network.wanted_issue = null;
-
-									foreach (dynamic _el in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
-										NEWSCASTER3 = _el;
-										
-										NEWSCASTER3.update_icon();
-									}
-									this.admincaster_screen = 17;
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_censor_channel_author"] ) ) {
-								FC3 = Lang13.FindObj( href_list["ac_censor_channel_author"] );
-
-								if ( FC3.author != "<B>[REDACTED]</B>" ) {
-									FC3.backup_author = FC3.author;
-									FC3.author = "<B>[REDACTED]</B>";
-								} else {
-									FC3.author = FC3.backup_author;
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_censor_channel_story_author"] ) ) {
-								MSG = Lang13.FindObj( href_list["ac_censor_channel_story_author"] );
-
-								if ( MSG.author != "<B>[REDACTED]</B>" ) {
-									MSG.backup_author = MSG.author;
-									MSG.author = "<B>[REDACTED]</B>";
-								} else {
-									MSG.author = MSG.backup_author;
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_censor_channel_story_body"] ) ) {
-								MSG2 = Lang13.FindObj( href_list["ac_censor_channel_story_body"] );
-
-								if ( MSG2.body != "<B>[REDACTED]</B>" ) {
-									MSG2.backup_body = MSG2.body;
-									MSG2.body = "<B>[REDACTED]</B>";
-								} else {
-									MSG2.body = MSG2.backup_body;
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_pick_d_notice"] ) ) {
-								FC4 = Lang13.FindObj( href_list["ac_pick_d_notice"] );
-								this.admincaster_feed_channel = FC4;
-								this.admincaster_screen = 13;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_toggle_d_notice"] ) ) {
-								FC5 = Lang13.FindObj( href_list["ac_toggle_d_notice"] );
-								FC5.censored = !FC5.censored;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_view"] ) ) {
-								this.admincaster_screen = 1;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_setScreen"] ) ) {
-								this.admincaster_screen = String13.ParseNumber( href_list["ac_setScreen"] );
-
-								if ( this.admincaster_screen == 0 ) {
-									
-									if ( Lang13.Bool( this.admincaster_feed_channel ) ) {
-										this.admincaster_feed_channel = new FeedChannel();
-									}
-
-									if ( this.admincaster_feed_message != null ) {
-										this.admincaster_feed_message = new FeedMessage();
-									}
-								}
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_show_channel"] ) ) {
-								FC6 = Lang13.FindObj( href_list["ac_show_channel"] );
-								this.admincaster_feed_channel = FC6;
-								this.admincaster_screen = 9;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_pick_censor_channel"] ) ) {
-								FC7 = Lang13.FindObj( href_list["ac_pick_censor_channel"] );
-								this.admincaster_feed_channel = FC7;
-								this.admincaster_screen = 12;
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_refresh"] ) ) {
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["ac_set_signature"] ) ) {
-								this.admincaster_signature = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide your desired signature", "Network Identity Handler", "", null, InputType.Any ) );
-								this.access_news_network();
-							} else if ( Lang13.Bool( href_list["populate_inactive_customitems"] ) ) {
-								
-								if ( GlobalFuncs.check_rights( 18 ) ) {
-									GlobalFuncs.populate_inactive_customitems_list( this.owner );
-								}
-							} else if ( Lang13.Bool( href_list["vsc"] ) ) {
-								
-								if ( GlobalFuncs.check_rights( 18 ) ) {
-									
-									if ( href_list["vsc"] == "airflow" ) {
-										GlobalVars.zas_settings.ChangeSettingsDialog( Task13.User );
-									}
-
-									if ( href_list["vsc"] == "default" ) {
-										GlobalVars.zas_settings.SetDefault( Task13.User );
-									}
-								}
-							} else if ( Lang13.Bool( href_list["toglang"] ) ) {
-								
-								if ( GlobalFuncs.check_rights( 4096 ) ) {
-									M44 = Lang13.FindObj( href_list["toglang"] );
-
-									if ( !( M44 is Mob ) ) {
-										GlobalFuncs.to_chat( Task13.User, "" + M44 + " is illegal type, must be /mob!" );
-										return null;
-									}
-									lang2toggle = href_list["lang"];
-									L5 = GlobalVars.all_languages[lang2toggle];
-									Interface13.Stat( null, M44.languages.Contains( L5 ) );
-
-									if ( !( M44 is Mob ) ) {
-										
-										if ( !Lang13.Bool( ((Mob)M44).remove_language( lang2toggle ) ) ) {
-											GlobalFuncs.to_chat( Task13.User, new Txt( "Failed to remove language '" ).item( lang2toggle ).str( "' from " ).the( M44 ).item().str( "!" ).ToString() );
-										}
-									} else if ( !((Mob)M44).add_language( lang2toggle ) ) {
-										GlobalFuncs.to_chat( Task13.User, new Txt( "Failed to add language '" ).item( lang2toggle ).str( "' from " ).the( M44 ).item().str( "!" ).ToString() );
-									}
-									this.show_player_panel( M44 );
-								}
+								break;
+							case "Yes":
+								GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason10, Task13.User.ckey, false, 0, M8.lastKnownIP );
+								break;
+							case "No":
+								GlobalFuncs.AddBan( M8.ckey, M8.computer_id, reason10, Task13.User.ckey, false, 0 );
+								break;
+						}
+						sticky = Interface13.Alert( Task13.User, "Sticky Ban " + M8.ckey + "? Use this only if you never intend to unban the player.", "Sticky Icky", "Yes", "No" ) == "Yes";
+
+						if ( sticky ) {
+							Game13.SetConfig( "keyban", M8.ckey, "type=sticky&reason=" + reason10 + "&message=" + reason10 + "&admin=" + String13.CKey( Task13.User.key ) );
+							GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sticky banned " + GlobalFuncs.key_name( M8 ) + "." );
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sticky banned " + GlobalFuncs.key_name( M8 ) + "." );
+						}
+						GlobalFuncs.to_chat( M8, "<span class='warning'><BIG><B>You have been banned by " + Task13.User.client.ckey + ".\nReason: " + reason10 + ".</B></BIG></span>" );
+						GlobalFuncs.to_chat( M8, "<span class='warning'>This is a permanent ban.</span>" );
+
+						if ( Lang13.Bool( GlobalVars.config.banappeals ) ) {
+							GlobalFuncs.to_chat( M8, "<span class='warning'>To try to resolve this matter head to " + GlobalVars.config.banappeals + "</span>" );
+						} else {
+							GlobalFuncs.to_chat( M8, "<span class='warning'>No ban appeals URL has been set.</span>" );
+						}
+						GlobalFuncs.ban_unban_log_save( "" + Task13.User.client.ckey + " has permabanned " + M8.ckey + ". - Reason: " + reason10 + " - This is a permanent ban." );
+						GlobalFuncs.log_admin( "" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason10 + "\nThis is a permanent ban." );
+						GlobalFuncs.message_admins( "<span class='warning'>" + Task13.User.client.ckey + " has banned " + M8.ckey + ".\nReason: " + reason10 + "\nThis is a permanent ban.</span>" );
+						GlobalFuncs.feedback_inc( "ban_perma", 1 );
+						this.DB_ban_record( 1, M8, -1, reason10 );
+						Lang13.Delete( M8.client );
+						M8.client = null;
+						break;
+					case "Cancel":
+						return null;
+						break;
+				}
+			} else if ( Lang13.Bool( href_list["unjobbanf"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4 ) ) {
+					return null;
+				}
+				banfolder3 = href_list["unjobbanf"];
+				GlobalVars.Banlist.cd = "/base/" + banfolder3;
+				key3 = GlobalVars.Banlist["key"];
+
+				if ( Interface13.Alert( Task13.User, "Are you sure you want to unban " + key3 + "?", "Confirmation", "Yes", "No" ) == "Yes" ) {
+					
+					if ( GlobalFuncs.RemoveBanjob( banfolder3 ) ) {
+						this.unjobbanpanel();
+					} else {
+						Interface13.Alert( Task13.User, "This ban has already been lifted / does not exist.", "Error", "Ok" );
+						this.unjobbanpanel();
+					}
+				}
+			} else if ( Lang13.Bool( href_list["mute"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M9 = Lang13.FindObj( href_list["mute"] );
+
+				if ( !( M9 is Mob ) ) {
+					return null;
+				}
+
+				if ( !Lang13.Bool( M9.client ) ) {
+					return null;
+				}
+				mute_type = href_list["mute_type"];
+
+				if ( mute_type is string ) {
+					mute_type = String13.ParseNumber( mute_type );
+				}
+
+				if ( !Lang13.Bool( Lang13.IsNumber( mute_type ) ) ) {
+					return null;
+				}
+				GlobalFuncs.cmd_admin_mute( M9, mute_type );
+			} else if ( Lang13.Bool( href_list["c_mode"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+
+				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
+					return Interface13.Alert( Task13.User, "The game has already started." );
+				}
+				dat2 = "<B>What mode do you wish to play?</B><HR>";
+
+				foreach (dynamic _bl in Lang13.Enumerate( GlobalVars.config.modes )) {
+					mode = _bl;
+					
+					dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=" ).item( mode ).str( "'>" ).item( GlobalVars.config.mode_names[mode] ).str( "</A><br>" ).ToString();
+				}
+				dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=secret'>Secret</A><br>" ).ToString();
+				dat2 += new Txt( "<A href='?src=" ).Ref( this ).str( ";c_mode2=random'>Random</A><br>" ).ToString();
+				dat2 += "Now: " + GlobalVars.master_mode;
+				Interface13.Browse( Task13.User, dat2, "window=c_mode" );
+			} else if ( Lang13.Bool( href_list["f_secret"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+
+				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
+					return Interface13.Alert( Task13.User, "The game has already started." );
+				}
+
+				if ( GlobalVars.master_mode != "secret" ) {
+					return Interface13.Alert( Task13.User, "The game mode has to be secret!" );
+				}
+				dat3 = "<B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>";
+
+				foreach (dynamic _bm in Lang13.Enumerate( GlobalVars.config.modes )) {
+					mode2 = _bm;
+					
+					dat3 += new Txt( "<A href='?src=" ).Ref( this ).str( ";f_secret2=" ).item( mode2 ).str( "'>" ).item( GlobalVars.config.mode_names[mode2] ).str( "</A><br>" ).ToString();
+				}
+				dat3 += new Txt( "<A href='?src=" ).Ref( this ).str( ";f_secret2=secret'>Random (default)</A><br>" ).ToString();
+				dat3 += "Now: " + GlobalVars.secret_force_mode;
+				Interface13.Browse( Task13.User, dat3, "window=f_secret" );
+			} else if ( Lang13.Bool( href_list["c_mode2"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 18 ) ) {
+					return null;
+				}
+
+				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
+					return Interface13.Alert( Task13.User, "The game has already started." );
+				}
+				GlobalVars.master_mode = href_list["c_mode2"];
+
+				if ( GlobalVars.master_mode != "mixed" || Interface13.Alert( "Do you wish to specify which game modes to be mixed?", "Specify Mixed", "Yes", "No" ) == "No" ) {
+					GlobalVars.mixed_modes = new ByTable();
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.master_mode + "." );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the mode as " + GlobalVars.master_mode + ".</span>" );
+					GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><b>The mode is now: " + GlobalVars.master_mode + "</b></span>" );
+					this.Game();
+					Game13.save_mode( GlobalVars.master_mode );
+					this.Topic( href, new ByTable().Set( "c_mode", 1 ) );
+				} else {
+					possible = new ByTable();
+					possible.Add( GlobalVars.mixed_allowed );
+					possible.Add( "DONE" );
+					possible.Add( "CANCEL" );
+
+					if ( possible.len < 3 ) {
+						return Interface13.Alert( Task13.User, "Not enough possible game modes." );
+					}
+					mixed_mode_added = null;
+
+					while (possible.len >= 3) {
+						mixed_mode_add = Interface13.Input( "Pick game modes to add to the mix. (" + mixed_mode_added + ")", "Specify Mixed", null, null, possible, InputType.Any );
+						possible.Remove( mixed_mode_add );
+
+						if ( mixed_mode_add == "CANCEL" ) {
+							return null;
+						} else if ( mixed_mode_add == "DONE" ) {
+							break;
+						} else {
+							GlobalVars.mixed_modes.Add( mixed_mode_add );
+							possible.Remove( mixed_mode_add );
+
+							if ( !Lang13.Bool( mixed_mode_added ) ) {
+								mixed_mode_added = mixed_mode_add;
+							} else {
+								mixed_mode_added = "" + mixed_mode_added + ", " + mixed_mode_add;
 							}
 						}
 					}
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.master_mode + " with the following modes: " + mixed_mode_added + "." );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the mode as " + GlobalVars.master_mode + " with the following modes: " + mixed_mode_added + ".</span>" );
+					GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><b>The mode is now: " + GlobalVars.master_mode + " (" + mixed_mode_added + ")</b></span>" );
+					this.Game();
+					Game13.save_mode( GlobalVars.master_mode );
+					this.Topic( href, new ByTable().Set( "c_mode", 1 ) );
+				}
+			} else if ( Lang13.Bool( href_list["f_secret2"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 18 ) ) {
+					return null;
+				}
+
+				if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) {
+					return Interface13.Alert( Task13.User, "The game has already started." );
+				}
+
+				if ( GlobalVars.master_mode != "secret" ) {
+					return Interface13.Alert( Task13.User, "The game mode has to be secret!" );
+				}
+				GlobalVars.secret_force_mode = href_list["f_secret2"];
+
+				if ( GlobalVars.secret_force_mode != "mixed" || Interface13.Alert( "Do you wish to specify which game modes to be mixed?", "Specify Secret Mixed", "Yes", "No" ) == "No" ) {
+					GlobalVars.mixed_modes = new ByTable();
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + "." );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + ".</span>" );
+					this.Game();
+					this.Topic( href, new ByTable().Set( "f_secret", 1 ) );
+				} else {
+					possible2 = new ByTable();
+					possible2.Add( GlobalVars.mixed_allowed );
+					possible2.Add( "DONE" );
+					possible2.Add( "CANCEL" );
+
+					if ( possible2.len < 3 ) {
+						return Interface13.Alert( Task13.User, "Not enough possible game modes." );
+					}
+					mixed_mode_added2 = null;
+
+					while (possible2.len >= 3) {
+						mixed_mode_add2 = Interface13.Input( "Pick game modes to add to the secret mix. (" + mixed_mode_added2 + ")", "Specify Secret Mixed", null, null, possible2, InputType.Any );
+						possible2.Remove( mixed_mode_add2 );
+
+						if ( mixed_mode_add2 == "CANCEL" ) {
+							return null;
+						} else if ( mixed_mode_add2 == "DONE" ) {
+							break;
+						} else {
+							GlobalVars.mixed_modes.Add( mixed_mode_add2 );
+							possible2.Remove( mixed_mode_add2 );
+
+							if ( !Lang13.Bool( mixed_mode_added2 ) ) {
+								mixed_mode_added2 = mixed_mode_add2;
+							} else {
+								mixed_mode_added2 = "" + mixed_mode_added2 + ", " + mixed_mode_add2;
+							}
+						}
+					}
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " set the mode as " + GlobalVars.secret_force_mode + " with the following modes: " + mixed_mode_added2 + "." );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " set the forced secret mode as " + GlobalVars.secret_force_mode + " with the following modes: " + mixed_mode_added2 + ".</span>" );
+					this.Game();
+					this.Topic( href, new ByTable().Set( "f_secret", 1 ) );
+				}
+			} else if ( Lang13.Bool( href_list["monkeyone"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H = Lang13.FindObj( href_list["monkeyone"] );
+
+				if ( !( H is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempting to monkeyize " + GlobalFuncs.key_name( H ) );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempting to monkeyize " + GlobalFuncs.key_name_admin( H ) + "</span>" );
+				M10 = ((Mob_Living_Carbon_Human)H).monkeyize();
+
+				if ( Lang13.Bool( M10 ) ) {
+					
+					if ( M10.client == CLIENT ) {
+						Task13.User = M10;
+					}
+					this.show_player_panel( M10 );
+				}
+			} else if ( Lang13.Bool( href_list["corgione"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H2 = Lang13.FindObj( href_list["corgione"] );
+
+				if ( !( H2 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " attempting to corgize " + GlobalFuncs.key_name( H2 ) );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempting to corgize " + GlobalFuncs.key_name_admin( H2 ) + "</span>" );
+				M11 = ((Mob_Living_Carbon_Human)H2).corgize();
+
+				if ( M11 != null ) {
+					
+					if ( M11.client == CLIENT ) {
+						Task13.User = M11;
+					}
+					this.show_player_panel( M11 );
+				}
+			} else if ( Lang13.Bool( href_list["forcespeech"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					return null;
+				}
+				M12 = Lang13.FindObj( href_list["forcespeech"] );
+
+				if ( !( M12 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "this can only be used on instances of type /mob" );
+				}
+				speech = Interface13.Input( "What will " + GlobalFuncs.key_name( M12 ) + " say?.", "Force speech", "", null, null, InputType.Any );
+
+				if ( !Lang13.Bool( speech ) ) {
+					return null;
+				}
+				((Ent_Dynamic)M12).say( speech );
+				speech = GlobalFuncs.sanitize( speech );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " forced " + GlobalFuncs.key_name( M12 ) + " to say: " + speech );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " forced " + GlobalFuncs.key_name_admin( M12 ) + " to say: " + speech + "</span>" );
+			} else if ( Lang13.Bool( href_list["sendtoprison"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+
+				if ( Interface13.Alert( Task13.User, "Warp to prison?", "Message", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				M13 = Lang13.FindObj( href_list["sendtoprison"] );
+
+				if ( !( M13 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( M13 is Mob_Living_Silicon_Ai ) {
+					GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
+					return null;
+				}
+				prison_cell = Rand13.PickFromTable( GlobalVars.prisonwarp );
+
+				if ( !Lang13.Bool( prison_cell ) ) {
+					return null;
+				}
+				((Mob)M13).Paralyse( 5 );
+				((Ent_Static)M13).visible_message( "<span class=\"sinister\">You hear the sound of cell doors slamming shut, and " + M13.name + " suddenly vanishes!</span>", "<span class=\"sinister\">You hear the sound of cell doors slamming shut!</span>" );
+				Task13.Sleep( 5 );
+
+				if ( !Lang13.Bool( M13 ) ) {
+					return null;
+				}
+				M13.loc = prison_cell;
+				GlobalFuncs.to_chat( M13, "<span class='warning'>You have been sent to the prison station!</span>" );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " sent " + GlobalFuncs.key_name( M13 ) + " to the prison station." );
+				GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent " + GlobalFuncs.key_name_admin( M13 ) + " to the prison station.</span>" );
+			} else if ( Lang13.Bool( href_list["tdome1"] ) || Lang13.Bool( href_list["tdome2"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					return null;
+				}
+
+				if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				M14 = null;
+				team = "";
+
+				if ( Lang13.Bool( href_list["tdome1"] ) ) {
+					team = "Green";
+					M14 = Lang13.FindObj( href_list["tdome1"] );
+				} else if ( Lang13.Bool( href_list["tdome2"] ) ) {
+					team = "Red";
+					M14 = Lang13.FindObj( href_list["tdome2"] );
+				}
+
+				if ( !( M14 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( M14 is Mob_Living_Silicon_Ai ) {
+					GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
+					return null;
+				}
+				pack = null;
+
+				switch ((string)( team )) {
+					case "Green":
+						pack = new Obj_Item_Packobelongings_Green( M14.loc );
+						pack.x = GlobalVars.map.tDomeX + 2;
+						break;
+					case "Red":
+						pack = new Obj_Item_Packobelongings_Red( M14.loc );
+						pack.x = GlobalVars.map.tDomeX - 2;
+						break;
+				}
+				pack.z = GlobalVars.map.tDomeZ;
+				pack.y = GlobalVars.map.tDomeY;
+				pack.name = "" + M14.real_name + "'s belongings";
+
+				foreach (dynamic _bo in Lang13.Enumerate( M14, typeof(Obj_Item) )) {
+					I = _bo;
+					
+
+					if ( I is Obj_Item_Clothing_Glasses ) {
+						G = I;
+
+						if ( Lang13.Bool( ((dynamic)G).prescription ) ) {
+							continue;
+						}
+					}
+					((Mob)M14).u_equip( I, true );
+
+					if ( I != null ) {
+						I.loc = M14.loc;
+						I.layer = Convert.ToDouble( Lang13.Initial( I, "layer" ) );
+						I.loc = pack;
+					}
+				}
+				ident = null;
+
+				switch ((string)( team )) {
+					case "Green":
+						ident = new Obj_Item_Weapon_Card_Id_Thunderdome_Green( M14 );
+						ident.name = "" + M14.real_name + "'s Thunderdome Green ID";
+						break;
+					case "Red":
+						ident = new Obj_Item_Weapon_Card_Id_Thunderdome_Red( M14 );
+						ident.name = "" + M14.real_name + "'s Thunderdome Red ID";
+						break;
+				}
+
+				if ( !( M14 is Mob_Living_Carbon ) ) {
+					GlobalFuncs.qdel( ident );
+				}
+
+				switch ((string)( team )) {
+					case "Green":
+						
+						if ( M14 is Mob_Living_Carbon_Human ) {
+							H3 = M14;
+							((Mob)H3).equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Green( H3 ), 14 );
+							((Mob)H3).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Brown( H3 ), 12 );
+							((Mob)H3).equip_to_slot_or_del( ident, 7 );
+							((Mob)H3).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Green( H3 ), 6 );
+							((Mob)H3).regenerate_icons();
+						} else if ( M14 is Mob_Living_Carbon_Monkey ) {
+							K = M14;
+							JS = new Obj_Item_Clothing_Monkeyclothes_JumpsuitGreen( K );
+							olduniform = null;
+							oldhat = null;
+
+							if ( Lang13.Bool( K.uniform ) ) {
+								olduniform = K.uniform;
+								K.uniform = null;
+								olduniform.loc = pack;
+							}
+							K.uniform = JS;
+							K.uniform.loc = K;
+
+							if ( Lang13.Bool( K.hat ) ) {
+								oldhat = K.hat;
+								K.hat = null;
+								oldhat.loc = pack;
+							}
+							((Mob)K).equip_to_slot_or_del( ident, 5 );
+							((Mob)K).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Green( K ), 4 );
+							((Mob)K).regenerate_icons();
+						}
+						break;
+					case "Red":
+						
+						if ( M14 is Mob_Living_Carbon_Human ) {
+							H4 = M14;
+							((Mob)H4).equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Red( H4 ), 14 );
+							((Mob)H4).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Brown( H4 ), 12 );
+							((Mob)H4).equip_to_slot_or_del( ident, 7 );
+							((Mob)H4).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Red( H4 ), 6 );
+							((Mob)H4).regenerate_icons();
+						} else if ( M14 is Mob_Living_Carbon_Monkey ) {
+							K2 = M14;
+							JS2 = new Obj_Item_Clothing_Monkeyclothes_JumpsuitRed( K2 );
+							olduniform2 = null;
+							oldhat2 = null;
+
+							if ( Lang13.Bool( K2.uniform ) ) {
+								olduniform2 = K2.uniform;
+								K2.uniform = null;
+								olduniform2.loc = pack;
+							}
+							K2.uniform = JS2;
+							K2.uniform.loc = K2;
+
+							if ( Lang13.Bool( K2.hat ) ) {
+								oldhat2 = K2.hat;
+								K2.hat = null;
+								oldhat2.loc = pack;
+							}
+							((Mob)K2).equip_to_slot_or_del( ident, 5 );
+							((Mob)K2).equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Belt_Thunderdome_Red( K2 ), 4 );
+							((Mob)K2).regenerate_icons();
+						}
+						break;
+				}
+
+				if ( pack.contents.len == 0 ) {
+					GlobalFuncs.qdel( pack );
+				}
+
+				switch ((string)( team )) {
+					case "Green":
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M14 ) + " to the thunderdome. (Team Green)" );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M14 ) + " to the thunderdome. (Team Green)" );
+						M14.loc = Rand13.PickFromTable( GlobalVars.tdome1 );
+						break;
+					case "Red":
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M14 ) + " to the thunderdome. (Team Red)" );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M14 ) + " to the thunderdome. (Team Red)" );
+						M14.loc = Rand13.PickFromTable( GlobalVars.tdome2 );
+						break;
+				}
+				GlobalFuncs.to_chat( M14, "<span class='danger'>You have been chosen to fight for the " + team + " Team. " + Rand13.Pick(new object [] { "The wheel of fate is turning!", "Heaven or Hell!", "Set Spell Card!", "Hologram Summer Again!", "Get ready for the next battle!", "Fight for your life!" }) + "</span>" );
+			} else if ( Lang13.Bool( href_list["tdomeadmin"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					return null;
+				}
+
+				if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				M15 = Lang13.FindObj( href_list["tdomeadmin"] );
+
+				if ( !( M15 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( M15 is Mob_Living_Silicon_Ai ) {
+					GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
+					return null;
+				}
+				((Mob)M15).Paralyse( 5 );
+				Task13.Sleep( 5 );
+				M15.loc = Rand13.PickFromTable( GlobalVars.tdomeadmin );
+				Task13.Schedule( 50, (Task13.Closure)(() => {
+					GlobalFuncs.to_chat( M15, "<span class='notice'>You have been sent to the Thunderdome.</span>" );
+					return;
+				}));
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M15 ) + " to the thunderdome. (Admin.)" );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M15 ) + " to the thunderdome. (Admin.)" );
+			} else if ( Lang13.Bool( href_list["tdomeobserve"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					return null;
+				}
+
+				if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				M16 = Lang13.FindObj( href_list["tdomeobserve"] );
+
+				if ( !( M16 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+
+				if ( M16 is Mob_Living_Silicon_Ai ) {
+					GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/living/silicon/ai" );
+					return null;
+				}
+
+				foreach (dynamic _bs in Lang13.Enumerate( M16, typeof(Obj_Item) )) {
+					I2 = _bs;
+					
+					((Mob)M16).u_equip( I2, true );
+
+					if ( I2 != null ) {
+						I2.loc = M16.loc;
+						I2.layer = Convert.ToDouble( Lang13.Initial( I2, "layer" ) );
+					}
+				}
+
+				if ( M16 is Mob_Living_Carbon_Human ) {
+					observer = M16;
+					((Mob)observer).equip_to_slot_or_del( new Obj_Item_Clothing_Under_SuitJacket( observer ), 14 );
+					((Mob)observer).equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Black( observer ), 12 );
+				}
+				((Mob)M16).Paralyse( 5 );
+				Task13.Sleep( 5 );
+				M16.loc = Rand13.PickFromTable( GlobalVars.tdomeobserve );
+				Task13.Schedule( 50, (Task13.Closure)(() => {
+					GlobalFuncs.to_chat( M16, "<span class='notice'>You have been sent to the Thunderdome.</span>" );
+					return;
+				}));
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has sent " + GlobalFuncs.key_name( M16 ) + " to the thunderdome. (Observer.)" );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent " + GlobalFuncs.key_name_admin( M16 ) + " to the thunderdome. (Observer.)" );
+			} else if ( Lang13.Bool( href_list["revive"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 512 ) ) {
+					return null;
+				}
+				L = Lang13.FindObj( href_list["revive"] );
+
+				if ( !( L is Mob_Living ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living" );
+					return null;
+				}
+
+				if ( GlobalVars.config.allow_admin_rev ) {
+					((Mob_Living)L).revive( false );
+					GlobalFuncs.message_admins( "<span class='warning'>Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " healed / revived " + GlobalFuncs.key_name_admin( L ) + "!</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " healed / revived " + GlobalFuncs.key_name( L ) );
+				} else {
+					GlobalFuncs.to_chat( Task13.User, "Admin Rejuvinates have been disabled" );
+				}
+			} else if ( Lang13.Bool( href_list["makeai"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H5 = Lang13.FindObj( href_list["makeai"] );
+
+				if ( !( H5 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				GlobalFuncs.message_admins( "<span class='warning'>Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " AIized " + GlobalFuncs.key_name_admin( H5 ) + "!</span>" );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " AIized " + GlobalFuncs.key_name( H5 ) );
+				M17 = ((Mob)H5).AIize();
+
+				if ( M17 != null ) {
+					
+					if ( M17.client == CLIENT ) {
+						Task13.User = M17;
+					}
+					this.show_player_panel( M17 );
+				}
+			} else if ( Lang13.Bool( href_list["makealien"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H6 = Lang13.FindObj( href_list["makealien"] );
+
+				if ( !( H6 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				M18 = Task13.User.client.cmd_admin_alienize( H6 );
+
+				if ( Lang13.Bool( M18 ) ) {
+					
+					if ( M18.client == CLIENT ) {
+						Task13.User = M18;
+					}
+					this.show_player_panel( M18 );
+				}
+			} else if ( Lang13.Bool( href_list["makeslime"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H7 = Lang13.FindObj( href_list["makeslime"] );
+
+				if ( !( H7 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				M19 = Task13.User.client.cmd_admin_slimeize( H7 );
+
+				if ( Lang13.Bool( M19 ) ) {
+					
+					if ( M19.client == CLIENT ) {
+						Task13.User = M19;
+					}
+					this.show_player_panel( M19 );
+				}
+			} else if ( Lang13.Bool( href_list["makecluwne"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H8 = Lang13.FindObj( href_list["makecluwne"] );
+
+				if ( !( H8 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				M20 = Task13.User.client.cmd_admin_cluwneize( H8 );
+
+				if ( M20 != null ) {
+					
+					if ( M20.client == CLIENT ) {
+						Task13.User = M20;
+					}
+					this.show_player_panel( M20 );
+				}
+			} else if ( Lang13.Bool( href_list["makerobot"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H9 = Lang13.FindObj( href_list["makerobot"] );
+
+				if ( !( H9 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				M21 = Task13.User.client.cmd_admin_robotize( H9 );
+
+				if ( M21 != null ) {
+					
+					if ( M21.client == CLIENT ) {
+						Task13.User = M21;
+					}
+					this.show_player_panel( M21 );
+				}
+			} else if ( Lang13.Bool( href_list["makemommi"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H10 = Lang13.FindObj( href_list["makemommi"] );
+
+				if ( !( H10 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				M22 = Task13.User.client.cmd_admin_mommify( H10 );
+
+				if ( M22 != null ) {
+					
+					if ( M22.client == CLIENT ) {
+						Task13.User = M22;
+					}
+					this.show_player_panel( M22 );
+				}
+			} else if ( Lang13.Bool( href_list["makeanimal"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				M23 = Lang13.FindObj( href_list["makeanimal"] );
+
+				if ( M23 is Mob_NewPlayer ) {
+					GlobalFuncs.to_chat( Task13.User, "This cannot be used on instances of type /mob/new_player" );
+					return null;
+				}
+				new_mob2 = Task13.User.client.cmd_admin_animalize( M23 );
+
+				if ( Lang13.Bool( new_mob2 ) && new_mob2 != M23 ) {
+					
+					if ( new_mob2.client == CLIENT ) {
+						Task13.User = new_mob2;
+					}
+					this.show_player_panel( new_mob2 );
+				}
+			} else if ( Lang13.Bool( href_list["togmutate"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				H11 = Lang13.FindObj( href_list["togmutate"] );
+
+				if ( !( H11 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				block = String13.ParseNumber( href_list["block"] );
+				Task13.User.client.cmd_admin_toggle_block( H11, block );
+				this.show_player_panel( H11 );
+			} else if ( Lang13.Bool( href_list["adminplayeropts"] ) ) {
+				M24 = Lang13.FindObj( href_list["adminplayeropts"] );
+				this.show_player_panel( M24 );
+			} else if ( Lang13.Bool( href_list["adminplayerobservejump"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8192, false ) && !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M25 = Lang13.FindObj( href_list["adminplayerobservejump"] );
+				C2 = Task13.User.client;
+
+				if ( !( Task13.User is Mob_Dead_Observer ) ) {
+					C2.admin_ghost();
+				}
+				Task13.Sleep( 2 );
+
+				if ( C2 != null ) {
+					C2.jumptomob( M25 );
+				}
+			} else if ( Lang13.Bool( href_list["check_antagonist"] ) ) {
+				this.check_antagonists();
+			} else if ( Lang13.Bool( href_list["cult_nextobj"] ) ) {
+				
+				if ( Interface13.Alert( Task13.User, "Validate the current Cult objective and unlock the next one?", "Cult Cheat Code", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				cult_round = GlobalFuncs.find_active_mode( "cult" );
+
+				if ( !Lang13.Bool( cult_round ) ) {
+					Interface13.Alert( "Couldn't locate cult mode datum! This shouldn't ever happen, tell a coder!" );
+					return null;
+				}
+				((GameMode_Cult)cult_round).bypass_phase();
+				GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has unlocked the Cult's next objective." );
+				GlobalFuncs.log_admin( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has unlocked the Cult's next objective." );
+				this.check_antagonists();
+			} else if ( Lang13.Bool( href_list["cult_mindspeak"] ) ) {
+				input = GlobalFuncs.stripped_input( Task13.User, "Communicate to all the cultists with the voice of Nar-Sie", "Voice of Nar-Sie", "" );
+
+				if ( !Lang13.Bool( input ) ) {
+					return null;
+				}
+
+				foreach (dynamic _bt in Lang13.Enumerate( GlobalVars.ticker.mode.cult, typeof(Mind) )) {
+					H12 = _bt;
+					
+
+					if ( Lang13.Bool( H12.current ) ) {
+						GlobalFuncs.to_chat( H12.current, "<span class='game say'><span class='danger'>Nar-Sie</span> murmurs, <span class='sinister'>" + input + "</span></span>" );
+					}
+				}
+
+				foreach (dynamic _bu in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Dead_Observer) )) {
+					O = _bu;
+					
+					GlobalFuncs.to_chat( O, "<span class='game say'><span class='danger'>Nar-Sie</span> murmurs, <span class='sinister'>" + input + "</span></span>" );
+				}
+				GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has talked with the Voice of Nar-Sie." );
+				GlobalVars.diary.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]NARSIE: " + ( "" + GlobalFuncs.key_name( Task13.User ) + " Voice of Nar-Sie: " + input ) ) );
+			} else if ( Lang13.Bool( href_list["cult_privatespeak"] ) ) {
+				M26 = Lang13.FindObj( href_list["cult_privatespeak"] );
+
+				if ( !Lang13.Bool( M26 ) ) {
+					return null;
+				}
+				input2 = GlobalFuncs.stripped_input( Task13.User, "Whisper to " + M26.real_name + " with the voice of Nar-Sie", "Voice of Nar-Sie", "" );
+
+				if ( !Lang13.Bool( input2 ) ) {
+					return null;
+				}
+				GlobalFuncs.to_chat( M26, "<span class='game say'><span class='danger'>Nar-Sie</span> whispers to you, <span class='sinister'>" + input2 + "</span></span>" );
+
+				foreach (dynamic _bv in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Dead_Observer) )) {
+					O2 = _bv;
+					
+					GlobalFuncs.to_chat( O2, "<span class='game say'><span class='danger'>Nar-Sie</span> whispers to " + M26.real_name + ", <span class='sinister'>" + input2 + "</span></span>" );
+				}
+				GlobalFuncs.message_admins( "Admin " + GlobalFuncs.key_name_admin( Task13.User ) + " has talked with the Voice of Nar-Sie." );
+			} else if ( Lang13.Bool( href_list["adminplayerobservecoodjump"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				x = String13.ParseNumber( href_list["X"] );
+				y = String13.ParseNumber( href_list["Y"] );
+				z = String13.ParseNumber( href_list["Z"] );
+				C3 = Task13.User.client;
+
+				if ( !( Task13.User is Mob_Dead_Observer ) ) {
+					C3.admin_ghost();
+				}
+				Task13.Sleep( 2 );
+				C3.jumptocoord( x, y, z );
+			} else if ( Lang13.Bool( href_list["adminchecklaws"] ) ) {
+				this.output_ai_laws();
+			} else if ( Lang13.Bool( href_list["adminmoreinfo"] ) ) {
+				M27 = Lang13.FindObj( href_list["adminmoreinfo"] );
+
+				if ( !( M27 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob" );
+					return null;
+				}
+				location_description = "";
+				special_role_description = "";
+				health_description = "";
+				gender_description = "";
+				species_description = "Not A Human";
+				T = GlobalFuncs.get_turf( M27 );
+
+				if ( T is Tile ) {
+					
+					if ( T.loc is Zone ) {
+						location_description = "(" + ( M27.loc == T ? "at coordinates " : "in " + M27.loc + " at coordinates " ) + " " + T.x + ", " + T.y + ", " + T.z + " in area <b>" + T.loc + "</b>)";
+					} else {
+						location_description = "(" + ( M27.loc == T ? "at coordinates " : "in " + M27.loc + " at coordinates " ) + " " + T.x + ", " + T.y + ", " + T.z + ")";
+					}
+				}
+
+				if ( Lang13.Bool( M27.mind ) ) {
+					special_role_description = "Role: <b>" + M27.mind.assigned_role + "</b>; Antagonist: <font color='red'><b>" + M27.mind.special_role + "</b></font>; Has been rev: " + ( M27.mind.has_been_rev == true ? "Yes" : "No" );
+				} else {
+					special_role_description = "Role: <i>Mind datum missing</i> Antagonist: <i>Mind datum missing</i>; Has been rev: <i>Mind datum missing</i>;";
+				}
+
+				if ( M27 is Mob_Living ) {
+					L2 = M27;
+					status = null;
+
+					dynamic _bw = M27.stat; // Was a switch-case, sorry for the mess.
+					if ( _bw==0 ) {
+						status = "Alive";
+					} else if ( _bw==1 ) {
+						status = "<font color='orange'><b>Unconscious</b></font>";
+					} else if ( _bw==2 ) {
+						status = "<font color='red'><b>Dead</b></font>";
+					}
+					health_description = "Status = " + status;
+					health_description += "<BR>Oxy: " + ((Mob_Living)L2).getOxyLoss() + " - Tox: " + ((Mob_Living)L2).getToxLoss() + " - Fire: " + ((Mob_Living)L2).getFireLoss() + " - Brute: " + ((Mob_Living)L2).getBruteLoss() + " - Clone: " + ((Mob_Living)L2).getCloneLoss() + " - Brain: " + ((Mob_Living)L2).getBrainLoss();
+				} else {
+					health_description = "This mob type has no health to speak of.";
+				}
+
+				dynamic _bx = M27.gender; // Was a switch-case, sorry for the mess.
+				if ( _bx=="male" || _bx=="female" ) {
+					gender_description = "" + M27.gender;
+				} else {
+					gender_description = "<font color='red'><b>" + M27.gender + "</b></font>";
+				}
+
+				if ( M27 is Mob_Living_Carbon_Human ) {
+					H13 = M27;
+					species_description = "" + ( Lang13.Bool( H13.species ) ? H13.species.name : "<span class='danger'><b>No Species</b></span>" );
+				}
+				GlobalFuncs.to_chat( this.owner, "<b>Info about " + M27.name + ":</b> " );
+				GlobalFuncs.to_chat( this.owner, "Mob type = " + M27.type + "; Species = " + species_description + "; Gender = " + gender_description + "; Damage = " + health_description + ";" );
+				GlobalFuncs.to_chat( this.owner, "Name = <b>" + M27.name + "</b>; Real_name = " + M27.real_name + "; Mind_name = " + ( Lang13.Bool( M27.mind ) ? "" + M27.mind.name : "" ) + "; Key = <b>" + M27.key + "</b>;" );
+				GlobalFuncs.to_chat( this.owner, "Location = " + location_description + ";" );
+				GlobalFuncs.to_chat( this.owner, "" + special_role_description );
+				GlobalFuncs.to_chat( this.owner, new Txt( "(<a href='?src=" ).Ref( Task13.User ).str( ";priv_msg=" ).Ref( M27 ).str( "'>PM</a>) (<A HREF='?src=" ).Ref( this ).str( ";adminplayeropts=" ).Ref( M27 ).str( "'>PP</A>) (<A HREF='?_src_=vars;Vars=" ).Ref( M27 ).str( "'>VV</A>) (<A HREF='?src=" ).Ref( this ).str( ";subtlemessage=" ).Ref( M27 ).str( "'>SM</A>) (<A HREF='?src=" ).Ref( this ).str( ";adminplayerobservejump=" ).Ref( M27 ).str( "'>JMP</A>) (<A HREF='?src=" ).Ref( this ).str( ";secretsadmin=check_antagonist'>CA</A>)" ).ToString() );
+			} else if ( Lang13.Bool( href_list["adminspawncookie"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 10 ) ) {
+					return null;
+				}
+				H14 = Lang13.FindObj( href_list["adminspawncookie"] );
+
+				if ( !( H14 is Mob_Living_Carbon_Human ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living/carbon/human" );
+					return null;
+				}
+				((Mob)H14).equip_to_slot_or_del( new Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie( H14 ), 4 );
+
+				if ( !( H14.l_hand is Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie ) ) {
+					((Mob)H14).equip_to_slot_or_del( new Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie( H14 ), 5 );
+
+					if ( !( H14.r_hand is Obj_Item_Weapon_ReagentContainers_Food_Snacks_Cookie ) ) {
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( H14 ) + " has their hands full, so they did not receive their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) + "." );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( H14 ) + " has their hands full, so they did not receive their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) + "." );
+						return null;
+					} else {
+						((Mob)H14).update_inv_r_hand();
+					}
+				} else {
+					((Mob)H14).update_inv_l_hand();
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( H14 ) + " got their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( H14 ) + " got their cookie, spawned by " + GlobalFuncs.key_name( this.owner ) );
+				GlobalFuncs.feedback_inc( "admin_cookies_spawned", 1 );
+				GlobalFuncs.to_chat( H14, "<span class='notice'>Your prayers have been answered!! You received the <b>best cookie</b>!</span>" );
+			} else if ( Lang13.Bool( href_list["BlueSpaceArtillery"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 10 ) ) {
+					return null;
+				}
+				M28 = Lang13.FindObj( href_list["BlueSpaceArtillery"] );
+
+				if ( !( M28 is Mob_Living ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob/living" );
+					return null;
+				}
+
+				if ( Interface13.Alert( this.owner, "Are you sure you wish to hit " + GlobalFuncs.key_name( M28 ) + " with Blue Space Artillery?", "Confirm Firing?", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+
+				if ( GlobalVars.BSACooldown ) {
+					GlobalFuncs.to_chat( this.owner, "Standby!  Reload cycle in progress!  Gunnary crews ready in five seconds!" );
+					return null;
+				}
+				GlobalVars.BSACooldown = true;
+				Task13.Schedule( 50, (Task13.Closure)(() => {
+					GlobalVars.BSACooldown = false;
+					return;
+				}));
+				GlobalFuncs.to_chat( M28, "You've been hit by bluespace artillery!" );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( M28 ) + " has been hit by Bluespace Artillery fired by " + this.owner );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( M28 ) + " has been hit by Bluespace Artillery fired by " + this.owner );
+				S5 = null;
+				S5 = new Obj_Effect_Stop();
+				S5.victim = M28;
+				S5.loc = M28.loc;
+				Task13.Schedule( 20, (Task13.Closure)(() => {
+					Lang13.Delete( S5 );
+					S5 = null;
+					return;
+				}));
+				T2 = GlobalFuncs.get_turf( M28 );
+
+				if ( T2 is Tile_Simulated_Floor ) {
+					
+					if ( Rand13.PercentChance( 80 ) ) {
+						((Tile_Simulated_Floor)T2).break_tile_to_plating();
+					} else {
+						((Tile_Simulated_Floor)T2).break_tile();
+					}
+				}
+
+				if ( Lang13.Bool( M28.health ) == true ) {
+					((Mob)M28).gib();
+				} else {
+					((Mob_Living)M28).adjustBruteLoss( Num13.MinInt( 99, Convert.ToInt32( M28.health - 1 ) ) );
+					((Mob)M28).Stun( 20 );
+					((Mob)M28).Weaken( 20 );
+					M28.stuttering = 20;
+				}
+			} else if ( Lang13.Bool( href_list["CentcommReply"] ) ) {
+				M29 = Lang13.FindObj( href_list["CentcommReply"] );
+				receive_type = null;
+
+				if ( M29 is Mob_Living_Carbon_Human ) {
+					H15 = M29;
+
+					if ( !( H15.ears is Obj_Item_Device_Radio_Headset ) ) {
+						GlobalFuncs.to_chat( Task13.User, "The person you are trying to contact is not wearing a headset" );
+						return null;
+					}
+					receive_type = "headset";
+				} else if ( M29 is Mob_Living_Silicon ) {
+					receive_type = "official communication channel";
+				}
+
+				if ( !Lang13.Bool( receive_type ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This mob type cannot be replied to" );
+					return null;
+				}
+				input3 = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( M29 ) + " via their " + receive_type + ".", "Outgoing message from The Syndicate", "", null, InputType.Any );
+
+				if ( !Lang13.Bool( input3 ) ) {
+					return null;
+				}
+				GlobalFuncs.to_chat( this.owner, "You sent " + input3 + " to " + M29 + " via a secure channel." );
+				GlobalFuncs.log_admin( "" + this.owner + " replied to " + GlobalFuncs.key_name( M29 ) + "'s Centcomm message with the message " + input3 + "." );
+				GlobalFuncs.message_admins( "" + this.owner + " replied to " + GlobalFuncs.key_name( M29 ) + "'s Centcom message with: \"" + input3 + "\"" );
+				GlobalFuncs.to_chat( M29, "You hear something crackle from your " + receive_type + " for a moment before a voice speaks.  \"Please stand by for a message from Central Command.  Message as follows. <b>\"" + input3 + "\"</b>  Message ends.\"" );
+			} else if ( Lang13.Bool( href_list["SyndicateReply"] ) ) {
+				M30 = Lang13.FindObj( href_list["SyndicateReply"] );
+				receive_type2 = null;
+
+				if ( M30 is Mob_Living_Carbon_Human ) {
+					H16 = M30;
+
+					if ( !( H16.ears is Obj_Item_Device_Radio_Headset ) ) {
+						GlobalFuncs.to_chat( Task13.User, "The person you are trying to contact is not wearing a headset" );
+						return null;
+					}
+					receive_type2 = "headset";
+				} else if ( M30 is Mob_Living_Silicon ) {
+					receive_type2 = "undetectable communications channel";
+				}
+
+				if ( !Lang13.Bool( receive_type2 ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This mob type cannot be replied to" );
+					return null;
+				}
+				input4 = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( M30 ) + " via their " + receive_type2 + ".", "Outgoing message from The Syndicate", "", null, InputType.Any );
+
+				if ( !Lang13.Bool( input4 ) ) {
+					return null;
+				}
+				GlobalFuncs.to_chat( this.owner, "You sent " + input4 + " to " + M30 + " via a secure channel." );
+				GlobalFuncs.log_admin( "" + this.owner + " replied to " + GlobalFuncs.key_name( M30 ) + "'s Syndicate message with the message " + input4 + "." );
+				GlobalFuncs.to_chat( M30, "You hear something crackle from your " + receive_type2 + " for a moment before a voice speaks.  \"Please stand by for a message from your benefactor.  Message as follows, agent. <b>\"" + input4 + "\"</b>  Message ends.\"" );
+			} else if ( Lang13.Bool( href_list["CentcommFaxView"] ) ) {
+				P = Lang13.FindObj( href_list["CentcommFaxView"] );
+				info_2 = "";
+
+				if ( Lang13.Bool( P.img ) ) {
+					Interface13.CacheBrowseResource( Task13.User, P.img.img, "tmp_photo.png" );
+					info_2 = "<img src='tmp_photo.png' width='192' style='-ms-interpolation-mode:nearest-neighbor' /><br>";
+				}
+				Interface13.Browse( Task13.User, "<HTML><HEAD><TITLE>Centcomm Fax Message</TITLE></HEAD><BODY>" + info_2 + P.info + P.stamps + "</BODY></HTML>", "window=Centcomm Fax Message" );
+			} else if ( Lang13.Bool( href_list["CentcommFaxReply"] ) ) {
+				H17 = Lang13.FindObj( href_list["CentcommFaxReply"] );
+				sent = Interface13.Input( this.owner, "Please enter a message to reply to " + GlobalFuncs.key_name( H17 ) + " via secure connection. NOTE: BBCode does not work, but HTML tags do! Use <br> for line breaks.", "Outgoing message from Centcomm", "", null, InputType.Null | InputType.StrMultiline );
+
+				if ( !Lang13.Bool( sent ) ) {
+					return null;
+				}
+				sentname = Interface13.Input( this.owner, "Pick a title for the report", "Title", null, null, InputType.Str | InputType.Null );
+				GlobalFuncs.SendFax( sent, sentname, null, null, true );
+				GlobalFuncs.to_chat( this.owner, "Message reply to transmitted successfully." );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( this.owner ) + " replied to a fax message from " + GlobalFuncs.key_name( H17 ) + ": " + sent );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this.owner ) + " replied to a fax message from " + GlobalFuncs.key_name_admin( H17 ) );
+			} else if ( Lang13.Bool( href_list["jumpto"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M31 = Lang13.FindObj( href_list["jumpto"] );
+				Task13.User.client.jumptomob( M31 );
+			} else if ( Lang13.Bool( href_list["getmob"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+
+				if ( Interface13.Alert( Task13.User, "Confirm?", "Message", "Yes", "No" ) != "Yes" ) {
+					return null;
+				}
+				M32 = Lang13.FindObj( href_list["getmob"] );
+				Task13.User.client.Getmob( M32 );
+			} else if ( Lang13.Bool( href_list["sendmob"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M33 = Lang13.FindObj( href_list["sendmob"] );
+				Task13.User.client.sendmob( M33 );
+			} else if ( Lang13.Bool( href_list["narrateto"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M34 = Lang13.FindObj( href_list["narrateto"] );
+				Task13.User.client.cmd_admin_direct_narrate( M34 );
+			} else if ( Lang13.Bool( href_list["subtlemessage"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				M35 = Lang13.FindObj( href_list["subtlemessage"] );
+				Task13.User.client.cmd_admin_subtle_message( M35 );
+			} else if ( Lang13.Bool( href_list["rapsheet"] ) ) {
+				this.checkSessionKey();
+				Interface13.Link( Task13.User, this.getVGPanel( "rapsheet", new ByTable().Set( "ckey", href_list["rsckey"] ), true ) );
+				return null;
+			} else if ( Lang13.Bool( href_list["bansheet"] ) ) {
+				Interface13.Link( Task13.User, this.getVGPanel( "rapsheet", null, true ) );
+				return null;
+			} else if ( Lang13.Bool( href_list["traitor"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8194 ) ) {
+					return null;
+				}
+
+				if ( !( GlobalVars.ticker != null ) || !Lang13.Bool( GlobalVars.ticker.mode ) ) {
+					Interface13.Alert( "The game hasn't started yet!" );
+					return null;
+				}
+				M36 = Lang13.FindObj( href_list["traitor"] );
+
+				if ( !( M36 is Mob ) ) {
+					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of type /mob." );
+					return null;
+				}
+				this.show_traitor_panel( M36 );
+			} else if ( Lang13.Bool( href_list["set_base_laws"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You don't have +FUN. Go away.</span>" );
+					return null;
+				}
+				lawtypes3 = Lang13.GetTypes( typeof(AiLaws) ) - typeof(AiLaws);
+				selected_law = Interface13.Input( "Select the default lawset desired.", "Lawset Selection", null, null, lawtypes3, InputType.Null | InputType.Any );
+
+				if ( !Lang13.Bool( selected_law ) ) {
+					return null;
+				}
+				subject = "Unknown";
+
+				dynamic _by = href_list["set_base_laws"]; // Was a switch-case, sorry for the mess.
+				if ( _by=="ai" ) {
+					GlobalVars.base_law_type = selected_law;
+					subject = "AIs and Cyborgs";
+				} else if ( _by=="mommi" ) {
+					GlobalVars.mommi_base_law_type = selected_law;
+					subject = "MoMMIs";
+				}
+				GlobalFuncs.to_chat( Task13.User, "<span class='notice'>New " + subject + " will spawn with the " + selected_law + " lawset.</span>" );
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
+				GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
+				GlobalVars.lawchanges.Add( "" + GlobalFuncs.key_name_admin( this.owner ) + " set the default laws of " + subject + " to: " + selected_law );
+			} else if ( Lang13.Bool( href_list["create_object"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				this.create_object( Task13.User ); return null;
+			} else if ( Lang13.Bool( href_list["quick_create_object"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				this.quick_create_object( Task13.User ); return null;
+			} else if ( Lang13.Bool( href_list["create_turf"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				this.create_turf( Task13.User ); return null;
+			} else if ( Lang13.Bool( href_list["create_mob"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+				this.create_mob( Task13.User ); return null;
+			} else if ( Lang13.Bool( href_list["object_list"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 4096 ) ) {
+					return null;
+				}
+
+				if ( !GlobalVars.config.allow_admin_spawning ) {
+					GlobalFuncs.to_chat( Task13.User, "Spawning of items is not allowed." );
+					return null;
+				}
+				loc = Task13.User.loc;
+				dirty_paths = null;
+
+				if ( href_list["object_list"] is string ) {
+					dirty_paths = new ByTable(new object [] { href_list["object_list"] });
+				} else if ( href_list["object_list"] is ByTable ) {
+					dirty_paths = href_list["object_list"];
+				}
+				paths = new ByTable();
+				removed_paths = new ByTable();
+
+				foreach (dynamic _bz in Lang13.Enumerate( dirty_paths )) {
+					dirty_path = _bz;
+					
+					path = Lang13.FindClass( dirty_path );
+
+					if ( !( path != null ) ) {
+						removed_paths.Add( dirty_path );
+						continue;
+					} else if ( !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj) ) ) && !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Tile) ) ) && !Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Mob) ) ) ) {
+						removed_paths.Add( dirty_path );
+						continue;
+					} else if ( Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj_Item_Weapon_Gun_Energy_PulseRifle) ) ) ) {
+						
+						if ( !GlobalFuncs.check_rights( 8, false ) ) {
+							removed_paths.Add( dirty_path );
+							continue;
+						}
+					} else if ( Lang13.Bool( ((dynamic)path).IsSubclassOf( typeof(Obj_Effect_Bhole) ) ) ) {
+						
+						if ( !GlobalFuncs.check_rights( 8, false ) ) {
+							removed_paths.Add( dirty_path );
+							continue;
+						}
+					}
+					paths.Add( path );
+				}
+
+				if ( !( paths != null ) ) {
+					Interface13.Alert( "The path list you sent is empty" );
+					return null;
+				}
+
+				if ( Lang13.Length( paths ) > 5 ) {
+					Interface13.Alert( "Select fewer object types, (max 5)" );
+					return null;
+				} else if ( Lang13.Length( removed_paths ) != 0 ) {
+					Interface13.Alert( "Removed:\n" + GlobalFuncs.list2text( removed_paths, "\n" ) );
+				}
+				offset = GlobalFuncs.text2list( href_list["offset"], "," );
+				number = ( ( String13.ParseNumber( href_list["object_count"] ) ??0) <= 1 ? 1 : ( ( String13.ParseNumber( href_list["object_count"] ) ??0) >= 100 ? 100 : String13.ParseNumber( href_list["object_count"] ) ) );
+				X = ( offset.len > 0 ? String13.ParseNumber( offset[1] ) : 0 );
+				Y = ( offset.len > 1 ? String13.ParseNumber( offset[2] ) : 0 );
+				Z = ( offset.len > 2 ? String13.ParseNumber( offset[3] ) : 0 );
+				tmp_dir = href_list["object_dir"];
+				obj_dir = ( Lang13.Bool( tmp_dir ) ? String13.ParseNumber( tmp_dir ) : 2 );
+
+				if ( !Lang13.Bool( obj_dir ) || !GlobalVars.alldirs.Contains( obj_dir ) ) {
+					obj_dir = 2;
+				}
+				obj_name = GlobalFuncs.sanitize( href_list["object_name"] );
+				where = href_list["object_where"];
+
+				if ( !new ByTable(new object [] { "onfloor", "inhand", "inmarked" }).Contains( where ) ) {
+					where = "onfloor";
+				}
+
+				if ( where == "inhand" ) {
+					GlobalFuncs.to_chat( Task13.User, "Support for inhand not available yet. Will spawn on floor." );
+					where = "onfloor";
+				}
+
+				if ( where == "inhand" ) {
+					
+					if ( !( Task13.User is Mob_Living_Carbon_Human || Task13.User is Mob_Living_Carbon_Monkey ) ) {
+						GlobalFuncs.to_chat( Task13.User, "Can only spawn in hand when you're a human or a monkey." );
+						where = "onfloor";
+					} else if ( Lang13.Bool( Task13.User.get_active_hand() ) ) {
+						GlobalFuncs.to_chat( Task13.User, "Your active hand is full. Spawning on floor." );
+						where = "onfloor";
+					}
+				}
+
+				if ( where == "inmarked" ) {
+					
+					if ( !Lang13.Bool( this.marked_datum ) ) {
+						GlobalFuncs.to_chat( Task13.User, "You don't have any object marked. Abandoning spawn." );
+						return null;
+					} else if ( !( this.marked_datum is Ent_Static ) ) {
+						GlobalFuncs.to_chat( Task13.User, "The object you have marked cannot be used as a target. Target must be of type /atom. Abandoning spawn." );
+						return null;
+					}
+				}
+				target = null;
+
+				switch ((string)( where )) {
+					case "onfloor":
+						
+						dynamic _ca = href_list["offset_type"]; // Was a switch-case, sorry for the mess.
+						if ( _ca=="absolute" ) {
+							target = Map13.GetTile( ((int)( X ??0 )), ((int)( Y ??0 )), ((int)( Z ??0 )) );
+						} else if ( _ca=="relative" ) {
+							target = Map13.GetTile( ((int)( loc.x + ( X ??0) )), ((int)( loc.y + ( Y ??0) )), ((int)( loc.z + ( Z ??0) )) );
+						}
+						break;
+					case "inmarked":
+						target = this.marked_datum;
+						break;
+				}
+
+				if ( Lang13.Bool( target ) ) {
+					
+					foreach (dynamic _cc in Lang13.Enumerate( paths )) {
+						path2 = _cc;
+						
+						i2 = null;
+						i2 = 0;
+
+						while (( i2 ??0) < ( number ??0)) {
+							
+							if ( Lang13.Bool( Lang13.GetTypes( typeof(Tile) ).Contains( path2 ) ) ) {
+								O3 = target;
+								N = ((Tile)O3).ChangeTurf( path2 );
+
+								if ( Lang13.Bool( N ) ) {
+									
+									if ( Lang13.Bool( obj_name ) ) {
+										N.name = obj_name;
+									}
+								}
+							} else {
+								O4 = Lang13.Call( path2, target );
+
+								if ( Lang13.Bool( O4 ) ) {
+									O4.dir = obj_dir;
+
+									if ( Lang13.Bool( obj_name ) ) {
+										O4.name = obj_name;
+
+										if ( O4 is Mob ) {
+											M37 = O4;
+											M37.real_name = obj_name;
+										}
+									}
+								}
+							}
+							i2++;
+						}
+					}
+				}
+
+				if ( number == 1 ) {
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " created a " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
+
+					foreach (dynamic _cd in Lang13.Enumerate( paths )) {
+						path3 = _cd;
+						
+
+						if ( Lang13.Bool( path3.IsSubclassOf( typeof(Mob) ) ) ) {
+							GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created a " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
+							break;
+						}
+					}
+				} else {
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " created " + number + "ea " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
+
+					foreach (dynamic _ce in Lang13.Enumerate( paths )) {
+						path4 = _ce;
+						
+
+						if ( Lang13.Bool( path4.IsSubclassOf( typeof(Mob) ) ) ) {
+							GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created " + number + "ea " + GlobalFuncs.english_list( paths ) + " at " + GlobalFuncs.formatJumpTo( GlobalFuncs.get_turf( Task13.User ) ) );
+							break;
+						}
+					}
+				}
+				return null;
+			} else if ( Lang13.Bool( href_list["secretsfun"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 8 ) ) {
+					return null;
+				}
+				ok = false;
+
+				dynamic _dq = href_list["secretsfun"]; // Was a switch-case, sorry for the mess.
+				if ( _dq=="sec_clothes" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC" );
+
+					foreach (dynamic _cf in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Under) )) {
+						O5 = _cf;
+						
+						Lang13.Delete( O5 );
+						O5 = null;
+					}
+					ok = true;
+				} else if ( _dq=="sec_all_clothes" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SAC" );
+
+					foreach (dynamic _cg in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing) )) {
+						O6 = _cg;
+						
+						Lang13.Delete( O6 );
+						O6 = null;
+					}
+					ok = true;
+				} else if ( _dq=="sec_classic1" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC1" );
+
+					foreach (dynamic _ch in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Suit_Fire) )) {
+						O7 = _ch;
+						
+						Lang13.Delete( O7 );
+						O7 = null;
+					}
+
+					foreach (dynamic _ci in Lang13.Enumerate( typeof(Game13), typeof(Obj_Structure_Grille) )) {
+						O8 = _ci;
+						
+						Lang13.Delete( O8 );
+						O8 = null;
+					}
+				} else if ( _dq=="monkey" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "M" );
+
+					foreach (dynamic _cj in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H18 = _cj;
+						
+						Task13.Schedule( 0, (Task13.Closure)(() => {
+							H18.monkeyize();
+							return;
+						}));
+					}
+					ok = true;
+				} else if ( _dq=="corgi" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "M" );
+
+					foreach (dynamic _ck in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H19 = _ck;
+						
+						Task13.Schedule( 0, (Task13.Closure)(() => {
+							H19.corgize();
+							return;
+						}));
+					}
+					ok = true;
+				} else if ( _dq=="striketeam" ) {
+					
+					if ( Task13.User.client.strike_team() ) {
+						GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+						GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Strike" );
+					}
+				} else if ( _dq=="tripleAI" ) {
+					Task13.User.client.triple_ai();
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TriAI" );
+				} else if ( _dq=="gravity" ) {
+					
+					if ( !( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) ) ) {
+						GlobalFuncs.to_chat( Task13.User, "Please wait until the game starts!  Not sure how it will work otherwise." );
+						return null;
+					}
+					GlobalVars.gravity_is_on = !( GlobalVars.gravity_is_on == true );
+
+					foreach (dynamic _cl in Lang13.Enumerate( GlobalVars.areas )) {
+						A = _cl;
+						
+						((Zone)A).gravitychange( GlobalVars.gravity_is_on, A );
+					}
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Grav" );
+
+					if ( GlobalVars.gravity_is_on == true ) {
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled gravity on." );
+						GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled gravity on.</span>" );
+						GlobalFuncs.command_alert( "Gravity generators are again functioning within normal parameters. Sorry for any inconvenience." );
+					} else {
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " toggled gravity off." );
+						GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled gravity off.</span>" );
+						GlobalFuncs.command_alert( "Feedback surge detected in mass-distributions systems. Artifical gravity has been disabled whilst the system reinitializes. Further failures may result in a gravitational collapse and formation of blackholes. Have a nice day." );
+					}
+				} else if ( _dq=="wave" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Meteor" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned a meteor wave" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned a meteor wave.</span>" );
+					new Event_MeteorWave();
+				} else if ( _dq=="goblob" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Blob" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned a blob" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned a blob.</span>" );
+					new Event_Blob();
+				} else if ( _dq=="aliens" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "Aliens" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " spawned an alien infestation" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " attempted an alien infestation</span>" );
+					new Event_AlienInfestation();
+				} else if ( _dq=="power" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "P" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all areas powered" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all areas powered</span>" );
+					GlobalFuncs.power_restore();
+				} else if ( _dq=="unpower" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "UP" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all areas unpowered" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all areas unpowered</span>" );
+					GlobalFuncs.power_failure();
+				} else if ( _dq=="quickpower" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "QP" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " made all SMESs powered" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " made all SMESs powered</span>" );
+					GlobalFuncs.power_restore_quick();
+				} else if ( _dq=="activateprison" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AP" );
+					GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><B>Transit signature detected.</B></span>" );
+					GlobalFuncs.to_chat( typeof(Game13), "<span class='notice'><B>Incoming shuttle.</B></span>" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the prison shuttle to the station.</span>" );
+				} else if ( _dq=="deactivateprison" ) {
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " sent the prison shuttle back.</span>" );
+				} else if ( _dq=="toggleprisonstatus" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TPS" );
+
+					foreach (dynamic _cm in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_PrisonShuttle) )) {
+						PS = _cm;
+						
+						PS.allowedtocall = !PS.allowedtocall;
+						GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " toggled status of prison shuttle to " + PS.allowedtocall + ".</span>" );
+					}
+				} else if ( _dq=="prisonwarp" ) {
+					
+					if ( !( GlobalVars.ticker != null ) ) {
+						Interface13.Alert( "The game hasn't started yet!" );
+						return null;
+					}
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PW" );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " teleported all players to the prison station.</span>" );
+					security = null;
+
+					foreach (dynamic _co in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H20 = _co;
+						
+
+						if ( H20 != null ) {
+							
+							if ( GlobalVars.prisonwarped.Contains( H20 ) ) {
+								continue;
+							}
+							security = GlobalVars.FALSE;
+							H20.Paralyse( 5 );
+							id = H20.get_id_card();
+
+							if ( Lang13.Bool( id ) ) {
+								
+								if ( Lang13.Bool( id.access.Contains( GlobalVars.access_security ) ) ) {
+									security = GlobalVars.TRUE;
+								}
+							}
+
+							if ( !( security == true ) ) {
+								
+								foreach (dynamic _cn in Lang13.Enumerate( H20.get_all_slots(), typeof(Obj_Item) )) {
+									I3 = _cn;
+									
+									H20.drop_from_inventory( I3 );
+								}
+								H20.loc = Rand13.PickFromTable( GlobalVars.prisonwarp );
+								H20.equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Prisoner( H20 ), 14 );
+								H20.equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Orange( H20 ), 12 );
+							} else {
+								H20.loc = Rand13.PickFromTable( GlobalVars.prisonsecuritywarp );
+							}
+							GlobalVars.prisonwarped.Add( H20 );
+						}
+					}
+				} else if ( _dq=="traitor_all" ) {
+					
+					if ( !( GlobalVars.ticker != null ) ) {
+						Interface13.Alert( "The game hasn't started yet!" );
+						return null;
+					}
+					objective = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( "Enter an objective", null, null, null, null, InputType.Any ) ), 1, 1024 );
+
+					if ( !Lang13.Bool( objective ) ) {
+						return null;
+					}
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TA(" + objective + ")" );
+
+					foreach (dynamic _cp in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
+						H21 = _cp;
+						
+
+						if ( H21.stat == 2 || !( H21.client != null ) || !( H21.mind != null ) ) {
+							continue;
+						}
+
+						if ( GlobalFuncs.is_special_character( H21 ) != 0 ) {
+							continue;
+						}
+						GlobalVars.ticker.mode.traitors.Add( H21.mind );
+						H21.mind.special_role = "traitor";
+						new_objective = new Objective();
+						new_objective.owner = H21;
+						new_objective.explanation_text = objective;
+						H21.mind.objectives.Add( new_objective );
+						((GameMode)GlobalVars.ticker.mode).greet_traitor( H21.mind );
+						((GameMode)GlobalVars.ticker.mode).finalize_traitor( H21.mind );
+					}
+
+					foreach (dynamic _cq in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Silicon) )) {
+						A2 = _cq;
+						
+						GlobalVars.ticker.mode.traitors.Add( A2.mind );
+						A2.mind.special_role = "traitor";
+						new_objective2 = new Objective();
+						new_objective2.owner = A2;
+						new_objective2.explanation_text = objective;
+						A2.mind.objectives.Add( new_objective2 );
+						((GameMode)GlobalVars.ticker.mode).greet_traitor( A2.mind );
+						((GameMode)GlobalVars.ticker.mode).finalize_traitor( A2.mind );
+					}
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " used everyone is a traitor secret. Objective is " + objective + "</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used everyone is a traitor secret. Objective is " + objective );
+				} else if ( _dq=="moveadminshuttle" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShA" );
+					GlobalFuncs.move_admin_shuttle();
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the centcom administration shuttle</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the centcom administration shuttle" );
+				} else if ( _dq=="moveferry" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShF" );
+
+					if ( !( GlobalVars.transport_shuttle != null ) || !Lang13.Bool( GlobalVars.transport_shuttle.linked_area ) ) {
+						GlobalFuncs.to_chat( Task13.User, "There is no transport shuttle!" );
+						return null;
+					}
+					GlobalVars.transport_shuttle.move( Task13.User );
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the centcom ferry</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the centcom ferry" );
+				} else if ( _dq=="movealienship" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ShX" );
+					GlobalFuncs.move_alien_ship();
+					GlobalFuncs.message_admins( "<span class='notice'>" + GlobalFuncs.key_name_admin( Task13.User ) + " moved the alien dinghy</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " moved the alien dinghy" );
+				} else if ( _dq=="togglebombcap" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BC" );
+
+					dynamic _cr = GlobalVars.MAX_EXPLOSION_RANGE; // Was a switch-case, sorry for the mess.
+					if ( _cr==14 ) {
+						GlobalVars.MAX_EXPLOSION_RANGE = 16;
+					} else if ( _cr==16 ) {
+						GlobalVars.MAX_EXPLOSION_RANGE = 20;
+					} else if ( _cr==20 ) {
+						GlobalVars.MAX_EXPLOSION_RANGE = 28;
+					} else if ( _cr==28 ) {
+						GlobalVars.MAX_EXPLOSION_RANGE = 56;
+					} else if ( _cr==56 ) {
+						GlobalVars.MAX_EXPLOSION_RANGE = 128;
+					} else {
+						GlobalVars.MAX_EXPLOSION_RANGE = 14;
+					}
+					range_dev = GlobalVars.MAX_EXPLOSION_RANGE * 0.25;
+					range_high = GlobalVars.MAX_EXPLOSION_RANGE * 0.5;
+					range_low = GlobalVars.MAX_EXPLOSION_RANGE;
+					GlobalFuncs.message_admins( "<span class='danger'> " + GlobalFuncs.key_name_admin( Task13.User ) + " changed the bomb cap to " + range_dev + ", " + range_high + ", " + range_low + "</span>" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " changed the bomb cap to " + GlobalVars.MAX_EXPLOSION_RANGE );
+				} else if ( _dq=="flicklights" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FL" );
+
+					while (!Lang13.Bool( Task13.User.stat )) {
+						
+						foreach (dynamic _cu in Lang13.Enumerate( GlobalVars.player_list )) {
+							M38 = _cu;
+							
+
+							if ( Convert.ToInt32( M38.stat ) != 2 && Rand13.PercentChance( 25 ) ) {
+								AffectedArea = GlobalFuncs.get_area( M38 );
+
+								if ( AffectedArea.name != "Space" && AffectedArea.name != "Engine Walls" && AffectedArea.name != "Chemical Lab Test Chamber" && AffectedArea.name != "Escape Shuttle" && AffectedArea.name != "Arrival Area" && AffectedArea.name != "Arrival Shuttle" && AffectedArea.name != "start area" && AffectedArea.name != "Engine Combustion Chamber" ) {
+									AffectedArea.power_light = false;
+									AffectedArea.power_change();
+									Task13.Schedule( Rand13.Int( 55, 185 ), (Task13.Closure)(() => {
+										AffectedArea.power_light = true;
+										AffectedArea.power_change();
+										return;
+									}));
+									Message = Rand13.Int( 1, 4 );
+
+									switch ((int)( Message )) {
+										case 1:
+											M38.show_message( "<span class='notice'>You shudder as if cold...</span>", 1 );
+											break;
+										case 2:
+											M38.show_message( "<span class='notice'>You feel something gliding across your back...</span>", 1 );
+											break;
+										case 3:
+											M38.show_message( "<span class='notice'>Your eyes twitch, you feel like something you can't see is here...</span>", 1 );
+											break;
+										case 4:
+											M38.show_message( "<span class='notice'>You notice something moving out of the corner of your eye, but nothing is there...</span>", 1 );
+											break;
+									}
+
+									foreach (dynamic _ct in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( M38, 5 ), typeof(Obj) )) {
+										W = _ct;
+										
+
+										if ( Rand13.PercentChance( 25 ) && !Lang13.Bool( W.anchored ) ) {
+											Map13.StepRandom( W );
+										}
+									}
+								}
+							}
+						}
+						Task13.Sleep( Rand13.Int( 100, 1000 ) );
+					}
+
+					foreach (dynamic _cv in Lang13.Enumerate( GlobalVars.player_list )) {
+						M39 = _cv;
+						
+
+						if ( Convert.ToInt32( M39.stat ) != 2 ) {
+							M39.show_message( "<span class='notice'>The chilling wind suddenly stops...</span>", 1 );
+						}
+					}
+				} else if ( _dq=="wave" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "MW" );
+					new Event_MeteorWave();
+				} else if ( _dq=="gravanomalies" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "GA" );
+					GlobalFuncs.command_alert( "Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert" );
+					GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/granomalies.ogg" ) );
+					T3 = Rand13.PickFromTable( GlobalVars.blobstart );
+					bh = new Obj_Effect_Bhole( T3.loc );
+					Task13.Schedule( Rand13.Int( 100, 600 ), (Task13.Closure)(() => {
+						Lang13.Delete( bh );
+						bh = null;
+						return;
+					}));
+				} else if ( _dq=="timeanomalies" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "STA" );
+					GlobalFuncs.wormhole_event();
+				} else if ( _dq=="goblob" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BL" );
+					GlobalFuncs.mini_blob_event();
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned blob" );
+				} else if ( _dq=="aliens" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AL" );
+
+					if ( GlobalVars.aliens_allowed ) {
+						new Event_AlienInfestation();
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned aliens" );
+					}
+				} else if ( _dq=="alien_silent" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "ALS" );
+
+					if ( GlobalVars.aliens_allowed ) {
+						GlobalFuncs.create_xeno();
+					}
+				} else if ( _dq=="spiders" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SL" );
+					new Event_SpiderInfestation();
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned spiders" );
+				} else if ( _dq=="comms_blackout" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "CB" );
+					answer = Interface13.Alert( Task13.User, "Would you like to alert the crew?", "Alert", "Yes", "No" );
+
+					if ( answer == "Yes" ) {
+						GlobalFuncs.communications_blackout( false );
+					} else {
+						GlobalFuncs.communications_blackout( true );
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a communications blackout." );
+				} else if ( _dq=="pda_spam" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PDA" );
+					new Event_PdaSpam();
+				} else if ( _dq=="carp" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "C" );
+					choice = Interface13.Input( "You sure you want to spawn carp?", null, null, null, new ByTable(new object [] { "Badmin", "Cancel" }), InputType.Any );
+
+					if ( choice == "Badmin" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned carp." );
+						new Event_CarpMigration();
+					}
+				} else if ( _dq=="radiation" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "R" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has has irradiated the station" );
+					new Event_RadiationStorm();
+				} else if ( _dq=="immovable" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "IR" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has sent an immovable rod to the station" );
+					GlobalFuncs.immovablerod();
+				} else if ( _dq=="prison_break" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "PB" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has allowed a prison break" );
+					GlobalFuncs.prison_break();
+				} else if ( _dq=="lightout" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "LO" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has broke a lot of lights" );
+					GlobalFuncs.lightsout( true, 2 );
+				} else if ( _dq=="blackout" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BO" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " broke all lights" );
+					GlobalFuncs.lightsout( false, 0 );
+				} else if ( _dq=="whiteout" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "WO" );
+
+					foreach (dynamic _cw in Lang13.Enumerate( GlobalVars.alllights, typeof(Obj_Machinery_Light) )) {
+						L3 = _cw;
+						
+						L3.fix();
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " fixed all lights" );
+				} else if ( _dq=="aliens" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AL" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned aliens" );
+					new Event_AlienInfestation();
+				} else if ( _dq=="radiation" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "RAD" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has started a radiation event" );
+					new Event_RadiationStorm();
+				} else if ( _dq=="floorlava" ) {
+					
+					if ( GlobalVars.floorIsLava ) {
+						GlobalFuncs.to_chat( Task13.User, "The floor is lava already." );
+						return null;
+					}
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "LF" );
+					length = Interface13.Input( Task13.User, "How long will the lava last? (in seconds)", "Length", 180, null, InputType.Num );
+					length = Num13.MinInt( ((int)( Math.Abs( Convert.ToDouble( length ) ) )), 1200 );
+					damage = Interface13.Input( Task13.User, "How deadly will the lava be?", "Damage", 2, null, InputType.Num );
+					damage = Num13.MinInt( ((int)( Math.Abs( Convert.ToDouble( damage ) ) )), 100 );
+					sure = Interface13.Alert( Task13.User, "Are you sure you want to do this?", "Confirmation", "YES!", "Nah" );
+
+					if ( sure == "Nah" ) {
+						return null;
+					}
+					GlobalVars.floorIsLava = true;
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made the floor LAVA! It'll last " + length + " seconds and it will deal " + damage + " damage to everyone." );
+					count = 0;
+					lavaturfs = new ByTable();
+
+					foreach (dynamic _cx in Lang13.Enumerate( GlobalVars.turfs, typeof(Tile_Simulated_Floor) )) {
+						F = _cx;
+						
+						count++;
+
+						if ( !( count % 50000 != 0 ) ) {
+							Task13.Sleep( ((int)( Game13.tick_lag )) );
+						}
+
+						if ( F.z == 1 ) {
+							F.name = "lava";
+							F.desc = "The floor is LAVA!";
+							F.overlays.Add( "lava" );
+							F.lava = true;
+							lavaturfs.Add( F );
+						}
+					}
+					Task13.Schedule( 0, (Task13.Closure)(() => {
+						i3 = null;
+						i3 = i3;
+
+						while (( i3 ??0) < Convert.ToDouble( length )) {
+							
+							if ( Lang13.Bool( damage ) ) {
+								
+								foreach (dynamic _cz in Lang13.Enumerate( GlobalVars.living_mob_list, typeof(Mob_Living_Carbon) )) {
+									L4 = _cz;
+									
+
+									if ( L4.loc is Tile_Simulated_Floor ) {
+										F2 = L4.loc;
+
+										if ( Lang13.Bool( ((dynamic)F2).lava ) ) {
+											safe = false;
+
+											foreach (dynamic _cy in Lang13.Enumerate( F2.contents, typeof(Obj_Structure) )) {
+												O9 = _cy;
+												
+
+												if ( ( O9.level ??0) > ( F2.level ??0) && !( O9 is Obj_Structure_Window ) ) {
+													safe = true;
+													break;
+												}
+											}
+
+											if ( !safe ) {
+												L4.adjustFireLoss( damage );
+											}
+										}
+									}
+								}
+							}
+							Task13.Sleep( 10 );
+							i3++;
+						}
+
+						foreach (dynamic _da in Lang13.Enumerate( lavaturfs, typeof(Tile_Simulated_Floor) )) {
+							F3 = _da;
+							
+
+							if ( F3.z == 1 ) {
+								F3.name = Lang13.Initial( F3, "name" );
+								F3.desc = Lang13.Initial( F3, "desc" );
+								F3.overlays.len = 0;
+								F3.lava = false;
+								F3.update_icon();
+							}
+						}
+						GlobalVars.floorIsLava = false;
+						return;
+					}));
+					return null;
+				} else if ( _dq=="thebees" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BEE" );
+					answer2 = Interface13.Alert( "What's this? A Space Station woefully underpopulated by bees?", null, "Let's fix it!", "On second thought, let's not." );
+
+					if ( answer2 == "Let's fix it!" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " unleashed the bees onto the crew." );
+						GlobalFuncs.to_chat( typeof(Game13), "<font size='10' color='red'><b>NOT THE BEES!</b></font>" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/effects/bees.ogg" ) );
+
+						foreach (dynamic _db in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living) )) {
+							M40 = _db;
+							
+							BEE = new Mob_Living_SimpleAnimal_Bee( GlobalFuncs.get_turf( M40 ) );
+							BEE.strength = 16;
+							BEE.toxic = 5;
+							BEE.mut = 2;
+							BEE.feral = 25;
+							BEE.target = M40;
+							BEE.icon_state = "bees_swarm-feral";
+						}
+					}
+				} else if ( _dq=="virus" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "V" );
+					answer3 = Interface13.Alert( "Do you want this to be a greater disease or a lesser one?", null, "Greater", "Lesser" );
+
+					if ( answer3 == "Lesser" ) {
+						GlobalFuncs.virus2_lesser_infection();
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has triggered a lesser virus outbreak." );
+					} else {
+						GlobalFuncs.virus2_greater_infection();
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has triggered a greater virus outbreak." );
+					}
+				} else if ( _dq=="retardify" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "RET" );
+
+					foreach (dynamic _dc in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
+						H22 = _dc;
+						
+						GlobalFuncs.to_chat( H22, "<span class='danger'>You suddenly feel stupid.</span>" );
+						H22.setBrainLoss( 60 );
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made everybody retarded" );
+				} else if ( _dq=="fakeguns" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FG" );
+
+					foreach (dynamic _dd in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item) )) {
+						W2 = _dd;
+						
+
+						if ( W2 is Obj_Item_Clothing || W2 is Obj_Item_Weapon_Card_Id || W2 is Obj_Item_Weapon_Disk || W2 is Obj_Item_Weapon_Tank ) {
+							continue;
+						}
+						W2.icon = "icons/obj/gun.dmi";
+						W2.icon_state = "revolver";
+						W2.item_state = "gun";
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made every item look like a gun" );
+				} else if ( _dq=="experimentalguns" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "GUN" );
+
+					foreach (dynamic _df in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon) )) {
+						C4 = _df;
+						
+						turflist = new ByTable();
+
+						foreach (dynamic _de in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( 1, this ) )) {
+							T4 = _de;
+							
+							turflist.Add( T4 );
+						}
+
+						if ( !( turflist.len != 0 ) ) {
+							turflist.Add( GlobalFuncs.get_turf( C4 ) );
+						}
+						U = Rand13.PickFromTable( turflist );
+						E = new Obj_Structure_Closet_Crate_Secure_Weapon_Experimental( U );
+						GlobalFuncs.to_chat( C4, "<span class='danger'>A crate appears next to you. You think you can read \"" + E.chosen_set + "\" scribbled on it</span>" );
+						((Tile)U).turf_animation( "icons/effects/96x96.dmi", "beamin", -32, 0, 5, "sound/weapons/emitter2.ogg" );
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " distributed experimental guns to the entire crew" );
+				} else if ( _dq=="schoolgirl" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SG" );
+
+					foreach (dynamic _dg in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Clothing_Under) )) {
+						W3 = _dg;
+						
+						W3.icon_state = "schoolgirl";
+						W3.item_state = "w_suit";
+						W3._color = "schoolgirl";
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated Japanese Animes mode" );
+					GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/animes.ogg" ) );
+				} else if ( _dq=="eagles" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "EgL" );
+
+					foreach (dynamic _dh in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock) )) {
+						W4 = _dh;
+						
+
+						if ( W4.z == 1 && !( GlobalFuncs.get_area( W4 ) is Zone_Bridge ) && !( GlobalFuncs.get_area( W4 ) is Zone_CrewQuarters ) && !( GlobalFuncs.get_area( W4 ) is Zone_Security_Prison ) ) {
+							W4.req_access = new ByTable();
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated Egalitarian Station mode" );
+					GlobalFuncs.command_alert( "Centcomm airlock control override activated. Please take this time to get acquainted with your coworkers." );
+					GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/commandreport.ogg", null, null, null, 60 ) );
+				} else if ( _dq=="dorf" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "DF" );
+
+					foreach (dynamic _di in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						B = _di;
+						
+						B.f_style = "Dward Beard";
+						B.update_hair();
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " activated dorf mode" );
+				} else if ( _dq=="ionstorm" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "I" );
+					GlobalFuncs.generate_ion_law();
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered an ion storm" );
+					show_log = Interface13.Alert( Task13.User, "Show ion message?", "Message", "Yes", "No" );
+
+					if ( show_log == "Yes" ) {
+						GlobalFuncs.command_alert( "Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/ionstorm.ogg" ) );
+					}
+				} else if ( _dq=="spacevines" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "K" );
+					new Event_Spacevine();
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned spacevines" );
+				} else if ( _dq=="onlyone" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "OO" );
+					Task13.User.client.only_one();
+				} else if ( _dq=="togglenarsie" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "NA" );
+					choice2 = Interface13.Input( "How do you wish for narsie to interact with her surroundings?", null, null, null, new ByTable(new object [] { "CultStation13", "Nar-Singulo" }), InputType.Any );
+
+					if ( choice2 == "CultStation13" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set narsie's behaviour to \"CultStation13\"." );
+						GlobalVars.narsie_behaviour = "CultStation13";
+					}
+
+					if ( choice2 == "Nar-Singulo" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set narsie's behaviour to \"Nar-Singulo\"." );
+						GlobalVars.narsie_behaviour = "Nar-Singulo";
+					}
+				} else if ( _dq=="hellonearth" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "NS" );
+					choice3 = Interface13.Input( "You sure you want to end the round and summon narsie at your location? Misuse of this could result in removal of flags or halarity.", null, null, null, new ByTable(new object [] { "PRAISE SATAN", "Cancel" }), InputType.Any );
+
+					if ( choice3 == "PRAISE SATAN" ) {
+						new Obj_Machinery_Singularity_Narsie_Large( GlobalFuncs.get_turf( Task13.User ) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has summoned narsie and brought about a new realm of suffering." );
+					}
+				} else if ( _dq=="supermattercascade" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "SC" );
+					choice4 = Interface13.Input( "You sure you want to destroy the universe and create a large explosion at your location? Misuse of this could result in removal of flags or halarity.", null, null, null, new ByTable(new object [] { "NO TIME TO EXPLAIN", "Cancel" }), InputType.Any );
+
+					if ( choice4 == "NO TIME TO EXPLAIN" ) {
+						GlobalFuncs.explosion( GlobalFuncs.get_turf( Task13.User ), 8, 16, 24, 32, 1 );
+						new Tile_Unsimulated_Wall_Supermatter( GlobalFuncs.get_turf( Task13.User ) );
+						GlobalFuncs.SetUniversalState( typeof(UniversalState_SupermatterCascade) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has managed to destroy the universe with a supermatter cascade. Good job, " + GlobalFuncs.key_name_admin( Task13.User ) );
+					}
+				} else if ( _dq=="spawnadminbus" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "AB" );
+					A3 = new Obj_Structure_Bed_Chair_Vehicle_Adminbus( GlobalFuncs.get_turf( Task13.User ) );
+					A3.dir = ((int)( GlobalVars.EAST ));
+					A3.update_lightsource();
+					A3.busjuke.dir = ((int)( GlobalVars.EAST ));
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned an Adminbus. Who gave him the keys?" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has spawned an Adminbus." );
+				} else if ( _dq=="spawnselfdummy" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TD" );
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned himself as a Test Dummy." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " spawned himself as a Test Dummy." );
+					T5 = GlobalFuncs.get_turf( Task13.User );
+					D2 = new Mob_Living_Carbon_Human_Dummy( T5 );
+					Task13.User.client.cmd_assume_direct_control( D2 );
+					D2.equip_to_slot_or_del( new Obj_Item_Clothing_Under_Color_Black( D2 ), 14 );
+					D2.equip_to_slot_or_del( new Obj_Item_Clothing_Shoes_Black( D2 ), 12 );
+					D2.equip_to_slot_or_del( new Obj_Item_Device_Radio_Headset_Heads_Captain(  ), 8 );
+					D2.equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Backpack_Satchel( D2 ), 1 );
+					D2.equip_to_slot_or_del( new Obj_Item_Weapon_Storage_Box_Engineer( D2.back ), 18 );
+					((Tile)T5).turf_animation( "icons/effects/96x96.dmi", "beamin", -32, 0, 5, "sound/misc/adminspawn.ogg" );
+					D2.name = "Admin";
+					D2.real_name = "Admin";
+					newname = "";
+					newname = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( D2, "Before you step out as an embodied god, what name do you wish for?", "Choose your name.", "Admin", null, InputType.Str | InputType.Null ) ), 1, 26 );
+
+					if ( !Lang13.Bool( newname ) ) {
+						newname = "Admin";
+					}
+					D2.name = newname;
+					D2.real_name = newname;
+					admin_id = new Obj_Item_Weapon_Card_Id_Admin( D2 );
+					admin_id.registered_name = newname;
+					D2.equip_to_slot_or_del( admin_id, 7 );
+				} else if ( _dq=="fakealerts" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FAKEA" );
+					choice5 = Interface13.Input( "Choose the type of fake alert you wish to trigger", "False Flag and Bait Panel", null, null, new ByTable(new object [] { "Biohazard", "Lifesigns", "Malfunction", "Ion", "Meteor Wave", "Carp Migration", "Return" }), InputType.Any );
+
+					if ( choice5 == "Return" ) {
+						return null;
+					}
+
+					if ( choice5 == "Biohazard" ) {
+						levelchoice = Interface13.Input( "Set the level of the biohazard alert, or leave at 0 to have a random level (1 to 7 supported only)", "Space FEMA Readiness Program", 0, null, null, InputType.Num );
+
+						if ( !Lang13.Bool( levelchoice ) || Convert.ToDouble( levelchoice ) > 7 || Convert.ToDouble( levelchoice ) < 0 ) {
+							GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Invalid input range (0 to 7 only)</span>" );
+							return null;
+						}
+						GlobalFuncs.biohazard_alert( levelchoice );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Biohzard Alert." );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Biohzard Alert." );
+						return null;
+					}
+
+					if ( choice5 == "Lifesigns" ) {
+						GlobalFuncs.command_alert( "Unidentified lifesigns detected coming aboard " + GlobalFuncs.station_name() + ". Secure any exterior access, including ducting and ventilation.", "Lifesign Alert" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/aliens.ogg" ) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Lifesign Alert." );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Lifesign Alert." );
+						return null;
+					}
+
+					if ( choice5 == "Malfunction" ) {
+						salertchoice = Interface13.Input( "Do you wish to include the Hostile Runtimes warning to have an authentic Malfunction Takeover Alert ?", "Nanotrasen Alert Level Monitor", null, null, new ByTable(new object [] { "Yes", "No" }), InputType.Any );
+
+						if ( salertchoice == "Yes" ) {
+							GlobalFuncs.command_alert( "Hostile runtimes detected in all station systems, please deactivate your AI to prevent possible damage to its morality core.", "Anomaly Alert" );
+						}
+						GlobalFuncs.to_chat( typeof(Game13), "<font size=4 color='red'>Attention! Delta security level reached!</font>" );
+						GlobalFuncs.to_chat( typeof(Game13), "<font color='red'>" + GlobalVars.config.alert_desc_delta + "</font>" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/aimalf.ogg" ) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Malfunction Takeover Alert (Hostile Runtimes alert " + ( salertchoice == "Yes" ? "included" : "excluded" ) + ")" );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Malfunction Takeover Alert (Hostile Runtimes alert " + ( salertchoice == "Yes" ? "included" : "excluded" ) + ")" );
+						return null;
+					}
+
+					if ( choice5 == "Ion" ) {
+						GlobalFuncs.command_alert( "Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/ionstorm.ogg" ) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Ion Alert." );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Ion Alert." );
+						return null;
+					}
+
+					if ( choice5 == "Meteor Wave" ) {
+						GlobalFuncs.command_alert( "A meteor storm has been detected on collision course with the station. Seek shelter within the core of the station immediately.", "Meteor Alert" );
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/AI/meteors.ogg" ) );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Meteor Alert." );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Meteor Alert." );
+						return null;
+					}
+
+					if ( choice5 == "Carp Migration" ) {
+						GlobalFuncs.command_alert( "Unknown biological entities have been detected near " + GlobalFuncs.station_name() + ", please stand-by.", "Lifesign Alert" );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Carp Migration Alert." );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " triggered a FAKE Carp Migration Alert." );
+						return null;
+					}
+				} else if ( _dq=="fakebooms" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "FAKEE" );
+					choice6 = Interface13.Input( "How much high-budget explosions do you want ?", "Micheal Bay SFX Systems", 1, null, null, InputType.Num );
+
+					if ( Convert.ToDouble( choice6 ) < 1 ) {
+						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Invalid input range (null or negative)</span>" );
+						return null;
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " improvised himself as Micheal Bay and triggered " + Num13.Floor( Convert.ToDouble( choice6 ) ) + " fake explosions." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " improvised himself as Micheal Bay and triggered " + Num13.Floor( Convert.ToDouble( choice6 ) ) + " fake explosions." );
+
+					foreach (dynamic _dj in Lang13.IterateRange( 1, choice6 )) {
+						i4 = _dj;
+						
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/effects/explosionfar.ogg" ) );
+						Task13.Sleep( Rand13.Int( 2, 10 ) );
+					}
+				} else if ( _dq=="massbomber" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBM" );
+					choice7 = Interface13.Alert( "Dress every player like Bomberman and give them BBDs?", "Bomberman Mode Activation", "Confirm", "Cancel" );
+
+					if ( choice7 == "Confirm" ) {
+						GlobalVars.bomberman_mode = true;
+						GlobalFuncs.to_chat( typeof(Game13), new Sound( "sound/bomberman/start.ogg" ) );
+
+						foreach (dynamic _dk in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living_Carbon_Human) )) {
+							M41 = _dk;
+							
+
+							if ( Lang13.Bool( M41.wear_suit ) ) {
+								O10 = M41.wear_suit;
+								M41.u_equip( O10, true );
+								O10.loc = M41.loc;
+							}
+
+							if ( Lang13.Bool( M41.head ) ) {
+								O11 = M41.head;
+								M41.u_equip( O11, true );
+								O11.loc = M41.loc;
+							}
+							M41.equip_to_slot_or_del( new Obj_Item_Clothing_Head_Helmet_Space_Bomberman( M41 ), 11 );
+							M41.equip_to_slot_or_del( new Obj_Item_Clothing_Suit_Space_Bomberman( M41 ), 13 );
+							M41.equip_to_slot_or_del( new Obj_Item_Weapon_Bomberman( M41 ), 17 );
+							M41.update_icons();
+							GlobalFuncs.to_chat( M41, "Wait...what?" );
+							Task13.Schedule( 50, (Task13.Closure)(() => {
+								GlobalFuncs.to_chat( M41, "<span class='notice'>Tip: Use the BBD in your suit's pocket to place bombs.</span>" );
+								GlobalFuncs.to_chat( M41, "<span class='notice'>Try to keep your BBD and escape this hell hole alive!</span>" );
+								return;
+							}));
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " turned everyone into Bomberman!" );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " turned everyone into Bomberman!" );
+				} else if ( _dq=="bomberhurt" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBH" );
+					choice8 = Interface13.Alert( "Activate Cuban Pete mode? Note that newly spawned BBD will still have player damage deactivated.", "Activating Bomberman Bombs Player Damage", "Confirm", "Cancel" );
+
+					if ( choice8 == "Confirm" ) {
+						GlobalVars.bomberman_hurt = true;
+
+						foreach (dynamic _dl in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
+							B2 = _dl;
+							
+
+							if ( !( B2.arena != null ) ) {
+								B2.hurt_players = true;
+							}
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the player damage of the Bomberman Bomb Dispensers currently in the world. Cuban Pete approves." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the player damage of the Bomberman Bomb Dispensers currently in the world. Cuban Pete approves." );
+				} else if ( _dq=="bomberdestroy" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBD" );
+					choice9 = Interface13.Alert( "Activate Michael Bay mode? Note that newly spawned BBD will still have environnement damage deactivated.", "Activating Bomberman Bombs Environnement Damage", "Confirm", "Cancel" );
+
+					if ( choice9 == "Confirm" ) {
+						GlobalVars.bomberman_destroy = true;
+
+						foreach (dynamic _dm in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
+							B3 = _dm;
+							
+
+							if ( !( B3.arena != null ) ) {
+								B3.destroy_environnement = true;
+							}
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the environnement damage of the Bomberman Bomb Dispensers currently in the world. Michael Bay approves." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " enabled the environnement damage of the Bomberman Bomb Dispensers currently in the world. Michael Bay approves." );
+				} else if ( _dq=="bombernohurt" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBNH" );
+					choice10 = Interface13.Alert( "Disable Cuban Pete mode.", "Disable Bomberman Bombs Player Damage", "Confirm", "Cancel" );
+
+					if ( choice10 == "Confirm" ) {
+						GlobalVars.bomberman_hurt = false;
+
+						foreach (dynamic _dn in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
+							B4 = _dn;
+							
+
+							if ( !( B4.arena != null ) ) {
+								B4.hurt_players = false;
+							}
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the player damage of the Bomberman Bomb Dispensers currently in the world." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the player damage of the Bomberman Bomb Dispensers currently in the world." );
+				} else if ( _dq=="bombernodestroy" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BBND" );
+					choice11 = Interface13.Alert( "Disable Michael Bay mode?", "Disable Bomberman Bombs Environnement Damage", "Confirm", "Cancel" );
+
+					if ( choice11 == "Confirm" ) {
+						GlobalVars.bomberman_destroy = false;
+
+						foreach (dynamic _do in Lang13.Enumerate( GlobalVars.bombermangear, typeof(Obj_Item_Weapon_Bomberman) )) {
+							B5 = _do;
+							
+
+							if ( !( B5.arena != null ) ) {
+								B5.destroy_environnement = false;
+							}
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the environnement damage of the Bomberman Bomb Dispensers currently in the world." );
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " disabled the environnement damage of the Bomberman Bomb Dispensers currently in the world." );
+				} else if ( _dq=="togglebombmethod" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "BM" );
+					choice12 = Interface13.Input( "Do you wish for explosions to take walls and obstacles into account?", null, null, null, new ByTable(new object [] { "Yes, let's have realistic explosions", "No, let's have perfectly circular explosions" }), InputType.Any );
+
+					if ( choice12 == "Yes, let's have realistic explosions" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set explosions to take walls and obstacles into account." );
+						GlobalVars.explosion_newmethod = true;
+					}
+
+					if ( choice12 == "No, let's have perfectly circular explosions" ) {
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has set explosions to completely pass through walls and obstacles." );
+						GlobalVars.explosion_newmethod = false;
+					}
+				} else if ( _dq=="placeturret" ) {
+					GlobalFuncs.feedback_inc( "admin_secrets_fun_used", 1 );
+					GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "TUR" );
+					possible_guns = new ByTable();
+
+					foreach (dynamic _dp in Lang13.Enumerate( Lang13.GetTypes( typeof(Obj_Item_Weapon_Gun_Energy) ) )) {
+						path5 = _dp;
+						
+						possible_guns.Add( path5 );
+					}
+					choice13 = Interface13.Input( "What energy gun do you want inside the turret?", null, null, null, possible_guns, InputType.Any );
+
+					if ( !Lang13.Bool( choice13 ) ) {
+						return null;
+					}
+					gun = Lang13.Call( choice13 );
+					Turret = new Obj_Machinery_PortaTurret( GlobalFuncs.get_turf( Task13.User ) );
+					Turret.installation = choice13;
+					Turret.gun_charge = Lang13.Bool( gun.power_supply.charge );
+					Turret.update_gun();
+					GlobalFuncs.qdel( gun );
+					emag = Interface13.Input( "Emag the turret?", null, null, null, new ByTable(new object [] { "Yes", "No" }), InputType.Any );
+
+					if ( emag == "Yes" ) {
+						Turret.emag( Task13.User );
+					}
+				} else if ( _dq=="hardcore_mode" ) {
+					choice14 = Interface13.Input( "Are you sure you want to " + ( GlobalVars.ticker.hardcore_mode ? "disable" : "enable" ) + " hardcore mode? Starvation will " + ( GlobalVars.ticker.hardcore_mode ? "no longer" : "" ) + "slowly kill player-controlled humans.", "Admin Abuse", null, null, new ByTable(new object [] { "Yes", "No!" }), InputType.Any );
+
+					if ( choice14 == "Yes" ) {
+						
+						if ( !GlobalVars.hardcore_mode ) {
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has ENABLED hardcore mode!" );
+							GlobalVars.hardcore_mode = true;
+							GlobalFuncs.to_chat( typeof(Game13), "<h5><span class='danger'>Hardcore mode has been enabled</span></h5>" );
+							GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>Not eating for a prolonged period of time will slowly kill player-controlled characters (braindead and catatonic characters are not affected).</span>" );
+							GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>If your hunger indicator starts flashing red and black, your character is starving and may die soon!</span>" );
+						} else {
+							GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has DISABLED hardcore mode!" );
+							GlobalVars.hardcore_mode = false;
+							GlobalFuncs.to_chat( typeof(Game13), "<h5><span class='danger'>Hardcore mode has been disabled</span></h5>" );
+							GlobalFuncs.to_chat( typeof(Game13), "<span class='info'>Starvation will no longer kill player-controlled characters.</span>" );
+						}
+					}
+				}
+
+				if ( Task13.User != null ) {
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used secret " + href_list["secretsfun"] );
+
+					if ( ok ) {
+						GlobalFuncs.to_chat( typeof(Game13), "<B>A secret has been activated by " + Task13.User.key + "!</B>" );
+					}
+				}
+			} else if ( Lang13.Bool( href_list["secretsadmin"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 2 ) ) {
+					return null;
+				}
+				ok2 = false;
+
+				dynamic _eb = href_list["secretsadmin"]; // Was a switch-case, sorry for the mess.
+				if ( _eb=="clear_bombs" ) {
+					num = false;
+
+					foreach (dynamic _dr in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Device_TransferValve) )) {
+						TV = _dr;
+						
+
+						if ( Lang13.Bool( TV.tank_one ) || Lang13.Bool( TV.tank_two ) ) {
+							Lang13.Delete( TV );
+							TV = null;
+							TV++;
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has removed " + num + " bombs" );
+				} else if ( _eb=="detonate_bombs" ) {
+					num2 = false;
+
+					foreach (dynamic _ds in Lang13.Enumerate( typeof(Game13), typeof(Obj_Item_Device_TransferValve) )) {
+						TV2 = _ds;
+						
+
+						if ( Lang13.Bool( TV2.tank_one ) || Lang13.Bool( TV2.tank_two ) ) {
+							TV2.toggle_valve();
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has toggled valves on " + num2 + " bombs" );
+				} else if ( _eb=="list_bombers" ) {
+					dat4 = "<B>Bombing List<HR>";
+
+					foreach (dynamic _dt in Lang13.Enumerate( GlobalVars.bombers )) {
+						l = _dt;
+						
+						dat4 += "" + l + "<BR>";
+					}
+					Interface13.Browse( Task13.User, dat4, "window=bombers" );
+				} else if ( _eb=="list_signalers" ) {
+					dat5 = "<B>Showing last " + Lang13.Length( GlobalVars.lastsignalers ) + " signalers.</B><HR>";
+
+					foreach (dynamic _du in Lang13.Enumerate( GlobalVars.lastsignalers )) {
+						sig = _du;
+						
+						dat5 += "" + sig + "<BR>";
+					}
+					Interface13.Browse( Task13.User, dat5, "window=lastsignalers;size=800x500" );
+				} else if ( _eb=="list_lawchanges" ) {
+					dat6 = "<B>Showing last " + Lang13.Length( GlobalVars.lawchanges ) + " law changes.</B><HR>";
+
+					foreach (dynamic _dv in Lang13.Enumerate( GlobalVars.lawchanges )) {
+						sig2 = _dv;
+						
+						dat6 += "" + sig2 + "<BR>";
+					}
+					Interface13.Browse( Task13.User, dat6, "window=lawchanges;size=800x500" );
+				} else if ( _eb=="list_job_debug" ) {
+					dat7 = "<B>Job Debug info.</B><HR>";
+
+					if ( GlobalVars.job_master != null ) {
+						
+						foreach (dynamic _dw in Lang13.Enumerate( GlobalVars.job_master.job_debug )) {
+							line = _dw;
+							
+							dat7 += "" + line + "<BR>";
+						}
+						dat7 += "*******<BR><BR>";
+
+						foreach (dynamic _dx in Lang13.Enumerate( GlobalVars.job_master.occupations, typeof(Job) )) {
+							job13 = _dx;
+							
+
+							if ( !( job13 != null ) ) {
+								continue;
+							}
+							dat7 += "job: " + job13.title + ", current_positions: " + job13.current_positions + ", total_positions: " + job13.total_positions + " <BR>";
+						}
+						Interface13.Browse( Task13.User, dat7, "window=jobdebug;size=600x500" );
+					}
+				} else if ( _eb=="showailaws" ) {
+					this.output_ai_laws();
+				} else if ( _eb=="showgm" ) {
+					
+					if ( !( GlobalVars.ticker != null ) ) {
+						Interface13.Alert( "The game hasn't started yet!" );
+					} else if ( Lang13.Bool( GlobalVars.ticker.mode ) ) {
+						Interface13.Alert( "The game mode is " + GlobalVars.ticker.mode.name );
+					} else {
+						Interface13.Alert( "For some reason there's a ticker, but not a game mode" );
+					}
+				} else if ( _eb=="manifest" ) {
+					dat8 = "<B>Showing Crew Manifest.</B><HR>";
+					dat8 += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>";
+
+					foreach (dynamic _dy in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H23 = _dy;
+						
+
+						if ( Lang13.Bool( H23.ckey ) ) {
+							dat8 += "<tr><td>" + H23.name + "</td><td>" + H23.get_assignment() + "</td></tr>";
+						}
+					}
+					dat8 += "</table>";
+					Interface13.Browse( Task13.User, dat8, "window=manifest;size=440x410" );
+				} else if ( _eb=="check_antagonist" ) {
+					this.check_antagonists();
+				} else if ( _eb=="DNA" ) {
+					dat9 = "<B>Showing DNA from blood.</B><HR>";
+					dat9 += "<table cellspacing=5><tr><th>Name</th><th>DNA</th><th>Blood Type</th></tr>";
+
+					foreach (dynamic _dz in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H24 = _dz;
+						
+
+						if ( H24.dna != null && Lang13.Bool( H24.ckey ) ) {
+							dat9 += "<tr><td>" + H24 + "</td><td>" + H24.dna.unique_enzymes + "</td><td>" + H24.b_type + "</td></tr>";
+						}
+					}
+					dat9 += "</table>";
+					Interface13.Browse( Task13.User, dat9, "window=DNA;size=440x410" );
+				} else if ( _eb=="fingerprints" ) {
+					dat10 = "<B>Showing Fingerprints.</B><HR>";
+					dat10 += "<table cellspacing=5><tr><th>Name</th><th>Fingerprints</th></tr>";
+
+					foreach (dynamic _ea in Lang13.Enumerate( GlobalVars.mob_list, typeof(Mob_Living_Carbon_Human) )) {
+						H25 = _ea;
+						
+
+						if ( Lang13.Bool( H25.ckey ) ) {
+							
+							if ( H25.dna != null && Lang13.Bool( H25.dna.uni_identity ) ) {
+								dat10 += "<tr><td>" + H25 + "</td><td>" + Num13.Md5( H25.dna.uni_identity ) + "</td></tr>";
+							} else if ( H25.dna != null && !Lang13.Bool( H25.dna.uni_identity ) ) {
+								dat10 += "<tr><td>" + H25 + "</td><td>H.dna.uni_identity = null</td></tr>";
+							} else if ( !( H25.dna != null ) ) {
+								dat10 += "<tr><td>" + H25 + "</td><td>H.dna = null</td></tr>";
+							}
+						}
+					}
+					dat10 += "</table>";
+					Interface13.Browse( Task13.User, dat10, "window=fingerprints;size=440x410" );
+				}
+
+				if ( Task13.User != null ) {
+					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " used secret " + href_list["secretsadmin"] );
+
+					if ( ok2 ) {
+						GlobalFuncs.to_chat( typeof(Game13), "<B>A secret has been activated by " + Task13.User.key + "!</B>" );
+					}
+				}
+			} else if ( Lang13.Bool( href_list["secretscoder"] ) ) {
+				
+				if ( !GlobalFuncs.check_rights( 32 ) ) {
+					return null;
+				}
+
+				dynamic _ef = href_list["secretscoder"]; // Was a switch-case, sorry for the mess.
+				if ( _ef=="spawn_objects" ) {
+					dat11 = "<B>Admin Log<HR></B>";
+
+					foreach (dynamic _ec in Lang13.Enumerate( GlobalVars.admin_log )) {
+						l2 = _ec;
+						
+						dat11 += "<li>" + l2 + "</li>";
+					}
+
+					if ( !( GlobalVars.admin_log.len != 0 ) ) {
+						dat11 += "No-one has done anything this round!";
+					}
+					Interface13.Browse( Task13.User, dat11, "window=admin_log" );
+				} else if ( _ef=="maint_access_brig" ) {
+					
+					foreach (dynamic _ed in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock_Maintenance) )) {
+						M42 = _ed;
+						
+
+						if ( Lang13.Bool( M42.req_access.Contains( GlobalVars.access_maint_tunnels ) ) ) {
+							M42.req_access = new ByTable(new object [] { GlobalVars.access_brig });
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made all maint doors brig access-only." );
+				} else if ( _ef=="maint_access_engiebrig" ) {
+					
+					foreach (dynamic _ee in Lang13.Enumerate( GlobalVars.all_doors, typeof(Obj_Machinery_Door_Airlock_Maintenance) )) {
+						M43 = _ee;
+						
+
+						if ( Lang13.Bool( M43.req_access.Contains( GlobalVars.access_maint_tunnels ) ) ) {
+							M43.req_access = new ByTable();
+							M43.req_one_access = new ByTable(new object [] { GlobalVars.access_brig, GlobalVars.access_engine });
+						}
+					}
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " made all maint doors engineering and brig access-only." );
+				} else if ( _ef=="infinite_sec" ) {
+					J = GlobalVars.job_master.GetJob( "Security Officer" );
+
+					if ( !( J != null ) ) {
+						return null;
+					}
+					J.total_positions = -1;
+					J.spawn_positions = -1;
+					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has removed the cap on security officers." );
+				} else if ( _ef=="virus_custom" ) {
+					
+					if ( GlobalFuncs.virus2_make_custom( Task13.User.client ) ) {
+						GlobalFuncs.feedback_add_details( "admin_secrets_fun_used", "V_C" );
+						GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has trigger a custom virus outbreak." );
+					}
+				}
+			} else if ( Lang13.Bool( href_list["ac_view_wanted"] ) ) {
+				this.admincaster_screen = 18;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_channel_name"] ) ) {
+				this.admincaster_feed_channel.channel_name = GlobalFuncs.strip_html_simple( Interface13.Input( Task13.User, "Provide a Feed Channel Name", "Network Channel Handler", "", null, InputType.Any ) );
+
+				while (String13.FindIgnoreCase( this.admincaster_feed_channel.channel_name, " ", 1, 0 ) == 1) {
+					this.admincaster_feed_channel.channel_name = String13.SubStr( this.admincaster_feed_channel.channel_name, 2, Lang13.Length( this.admincaster_feed_channel.channel_name ) + 1 );
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_channel_lock"] ) ) {
+				this.admincaster_feed_channel.locked = !Lang13.Bool( this.admincaster_feed_channel.locked );
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_submit_new_channel"] ) ) {
+				check = false;
+
+				foreach (dynamic _eg in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
+					FC = _eg;
+					
+
+					if ( FC.channel_name == this.admincaster_feed_channel.channel_name ) {
+						check = true;
+						break;
+					}
+				}
+
+				if ( this.admincaster_feed_channel.channel_name == "" || this.admincaster_feed_channel.channel_name == "[REDACTED]" || check ) {
+					this.admincaster_screen = 7;
+				} else {
+					choice15 = Interface13.Alert( "Please confirm Feed channel creation", "Network Channel Handler", "Confirm", "Cancel" );
+
+					if ( choice15 == "Confirm" ) {
+						newChannel = new FeedChannel();
+						newChannel.channel_name = this.admincaster_feed_channel.channel_name;
+						newChannel.author = this.admincaster_signature;
+						newChannel.locked = Lang13.Bool( this.admincaster_feed_channel.locked );
+						newChannel.is_admin_channel = true;
+						GlobalFuncs.feedback_inc( "newscaster_channels", 1 );
+						GlobalVars.news_network.network_channels.Add( newChannel );
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " created command feed channel: " + this.admincaster_feed_channel.channel_name + "!" );
+						this.admincaster_screen = 5;
+					}
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_channel_receiving"] ) ) {
+				available_channels = new ByTable();
+
+				foreach (dynamic _eh in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
+					F4 = _eh;
+					
+					available_channels.Add( F4.channel_name );
+				}
+				this.admincaster_feed_channel.channel_name = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Choose receiving Feed Channel", "Network Channel Handler", null, available_channels, InputType.Any ) );
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_new_message"] ) ) {
+				this.admincaster_feed_message.body = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Write your Feed story", "Network Channel Handler", "", null, InputType.Any ) );
+
+				while (String13.FindIgnoreCase( this.admincaster_feed_message.body, " ", 1, 0 ) == 1) {
+					this.admincaster_feed_message.body = String13.SubStr( this.admincaster_feed_message.body, 2, Lang13.Length( this.admincaster_feed_message.body ) + 1 );
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_submit_new_message"] ) ) {
+				
+				if ( this.admincaster_feed_message.body == "" || this.admincaster_feed_message.body == "[REDACTED]" || this.admincaster_feed_channel.channel_name == "" ) {
+					this.admincaster_screen = 6;
+				} else {
+					newMsg = new FeedMessage();
+					newMsg.author = this.admincaster_signature;
+					newMsg.body = this.admincaster_feed_message.body;
+					newMsg.is_admin_message = true;
+					GlobalFuncs.feedback_inc( "newscaster_stories", 1 );
+
+					foreach (dynamic _ei in Lang13.Enumerate( GlobalVars.news_network.network_channels, typeof(FeedChannel) )) {
+						FC2 = _ei;
+						
+
+						if ( FC2.channel_name == this.admincaster_feed_channel.channel_name ) {
+							FC2.messages.Add( newMsg );
+							break;
+						}
+					}
+					this.admincaster_screen = 4;
+				}
+
+				foreach (dynamic _ej in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
+					NEWSCASTER = _ej;
+					
+					NEWSCASTER.newsAlert( this.admincaster_feed_channel.channel_name );
+				}
+				GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " submitted a feed story to channel: " + this.admincaster_feed_channel.channel_name + "!" );
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_create_channel"] ) ) {
+				this.admincaster_screen = 2;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_create_feed_story"] ) ) {
+				this.admincaster_screen = 3;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_menu_censor_story"] ) ) {
+				this.admincaster_screen = 10;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_menu_censor_channel"] ) ) {
+				this.admincaster_screen = 11;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_menu_wanted"] ) ) {
+				already_wanted = false;
+
+				if ( GlobalVars.news_network.wanted_issue != null ) {
+					already_wanted = true;
+				}
+
+				if ( already_wanted ) {
+					this.admincaster_feed_message.author = GlobalVars.news_network.wanted_issue.author;
+					this.admincaster_feed_message.body = GlobalVars.news_network.wanted_issue.body;
+				}
+				this.admincaster_screen = 14;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_wanted_name"] ) ) {
+				this.admincaster_feed_message.author = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide the name of the Wanted person", "Network Security Handler", "", null, InputType.Any ) );
+
+				while (String13.FindIgnoreCase( this.admincaster_feed_message.author, " ", 1, 0 ) == 1) {
+					this.admincaster_feed_message.author = String13.SubStr( this.admincaster_feed_message.author, 2, Lang13.Length( this.admincaster_feed_message.author ) + 1 );
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_wanted_desc"] ) ) {
+				this.admincaster_feed_message.body = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide the a description of the Wanted person and any other details you deem important", "Network Security Handler", "", null, InputType.Any ) );
+
+				while (String13.FindIgnoreCase( this.admincaster_feed_message.body, " ", 1, 0 ) == 1) {
+					this.admincaster_feed_message.body = String13.SubStr( this.admincaster_feed_message.body, 2, Lang13.Length( this.admincaster_feed_message.body ) + 1 );
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_submit_wanted"] ) ) {
+				input_param = String13.ParseNumber( href_list["ac_submit_wanted"] );
+
+				if ( this.admincaster_feed_message.author == "" || this.admincaster_feed_message.body == "" ) {
+					this.admincaster_screen = 16;
+				} else {
+					choice16 = Interface13.Alert( "Please confirm Wanted Issue " + ( input_param == 1 ? "creation." : "edit." ), "Network Security Handler", "Confirm", "Cancel" );
+
+					if ( choice16 == "Confirm" ) {
+						
+						if ( input_param == 1 ) {
+							WANTED = new FeedMessage();
+							WANTED.author = this.admincaster_feed_message.author;
+							WANTED.body = this.admincaster_feed_message.body;
+							WANTED.backup_author = this.admincaster_signature;
+							WANTED.is_admin_message = true;
+							GlobalVars.news_network.wanted_issue = WANTED;
+
+							foreach (dynamic _ek in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
+								NEWSCASTER2 = _ek;
+								
+								NEWSCASTER2.newsAlert();
+								NEWSCASTER2.update_icon();
+							}
+							this.admincaster_screen = 15;
+						} else {
+							GlobalVars.news_network.wanted_issue.author = this.admincaster_feed_message.author;
+							GlobalVars.news_network.wanted_issue.body = this.admincaster_feed_message.body;
+							GlobalVars.news_network.wanted_issue.backup_author = this.admincaster_feed_message.backup_author;
+							this.admincaster_screen = 19;
+						}
+						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " issued a Station-wide Wanted Notification for " + this.admincaster_feed_message.author + "!" );
+					}
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_cancel_wanted"] ) ) {
+				choice17 = Interface13.Alert( "Please confirm Wanted Issue removal", "Network Security Handler", "Confirm", "Cancel" );
+
+				if ( choice17 == "Confirm" ) {
+					GlobalVars.news_network.wanted_issue = null;
+
+					foreach (dynamic _el in Lang13.Enumerate( GlobalVars.allCasters, typeof(Obj_Machinery_Newscaster) )) {
+						NEWSCASTER3 = _el;
+						
+						NEWSCASTER3.update_icon();
+					}
+					this.admincaster_screen = 17;
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_censor_channel_author"] ) ) {
+				FC3 = Lang13.FindObj( href_list["ac_censor_channel_author"] );
+
+				if ( FC3.author != "<B>[REDACTED]</B>" ) {
+					FC3.backup_author = FC3.author;
+					FC3.author = "<B>[REDACTED]</B>";
+				} else {
+					FC3.author = FC3.backup_author;
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_censor_channel_story_author"] ) ) {
+				MSG = Lang13.FindObj( href_list["ac_censor_channel_story_author"] );
+
+				if ( MSG.author != "<B>[REDACTED]</B>" ) {
+					MSG.backup_author = MSG.author;
+					MSG.author = "<B>[REDACTED]</B>";
+				} else {
+					MSG.author = MSG.backup_author;
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_censor_channel_story_body"] ) ) {
+				MSG2 = Lang13.FindObj( href_list["ac_censor_channel_story_body"] );
+
+				if ( MSG2.body != "<B>[REDACTED]</B>" ) {
+					MSG2.backup_body = MSG2.body;
+					MSG2.body = "<B>[REDACTED]</B>";
+				} else {
+					MSG2.body = MSG2.backup_body;
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_pick_d_notice"] ) ) {
+				FC4 = Lang13.FindObj( href_list["ac_pick_d_notice"] );
+				this.admincaster_feed_channel = FC4;
+				this.admincaster_screen = 13;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_toggle_d_notice"] ) ) {
+				FC5 = Lang13.FindObj( href_list["ac_toggle_d_notice"] );
+				FC5.censored = !FC5.censored;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_view"] ) ) {
+				this.admincaster_screen = 1;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_setScreen"] ) ) {
+				this.admincaster_screen = String13.ParseNumber( href_list["ac_setScreen"] );
+
+				if ( this.admincaster_screen == 0 ) {
+					
+					if ( Lang13.Bool( this.admincaster_feed_channel ) ) {
+						this.admincaster_feed_channel = new FeedChannel();
+					}
+
+					if ( this.admincaster_feed_message != null ) {
+						this.admincaster_feed_message = new FeedMessage();
+					}
+				}
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_show_channel"] ) ) {
+				FC6 = Lang13.FindObj( href_list["ac_show_channel"] );
+				this.admincaster_feed_channel = FC6;
+				this.admincaster_screen = 9;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_pick_censor_channel"] ) ) {
+				FC7 = Lang13.FindObj( href_list["ac_pick_censor_channel"] );
+				this.admincaster_feed_channel = FC7;
+				this.admincaster_screen = 12;
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_refresh"] ) ) {
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["ac_set_signature"] ) ) {
+				this.admincaster_signature = GlobalFuncs.adminscrub( Interface13.Input( Task13.User, "Provide your desired signature", "Network Identity Handler", "", null, InputType.Any ) );
+				this.access_news_network();
+			} else if ( Lang13.Bool( href_list["populate_inactive_customitems"] ) ) {
+				
+				if ( GlobalFuncs.check_rights( 18 ) ) {
+					GlobalFuncs.populate_inactive_customitems_list( this.owner );
+				}
+			} else if ( Lang13.Bool( href_list["vsc"] ) ) {
+				
+				if ( GlobalFuncs.check_rights( 18 ) ) {
+					
+					if ( href_list["vsc"] == "airflow" ) {
+						GlobalVars.zas_settings.ChangeSettingsDialog( Task13.User );
+					}
+
+					if ( href_list["vsc"] == "default" ) {
+						GlobalVars.zas_settings.SetDefault( Task13.User );
+					}
+				}
+			} else if ( Lang13.Bool( href_list["toglang"] ) ) {
+				
+				if ( GlobalFuncs.check_rights( 4096 ) ) {
+					M44 = Lang13.FindObj( href_list["toglang"] );
+
+					if ( !( M44 is Mob ) ) {
+						GlobalFuncs.to_chat( Task13.User, "" + M44 + " is illegal type, must be /mob!" );
+						return null;
+					}
+					lang2toggle = href_list["lang"];
+					L5 = GlobalVars.all_languages[lang2toggle];
+
+					if ( Lang13.Bool( M44.languages.Contains( L5 ) ) ) {
+						
+						if ( !((Mob)M44).remove_language( lang2toggle ) ) {
+							GlobalFuncs.to_chat( Task13.User, new Txt( "Failed to remove language '" ).item( lang2toggle ).str( "' from " ).the( M44 ).item().str( "!" ).ToString() );
+						}
+					} else if ( !((Mob)M44).add_language( lang2toggle ) ) {
+						GlobalFuncs.to_chat( Task13.User, new Txt( "Failed to add language '" ).item( lang2toggle ).str( "' from " ).the( M44 ).item().str( "!" ).ToString() );
+					}
+					this.show_player_panel( M44 );
 				}
 			}
 
@@ -5213,9 +5188,8 @@ namespace Somnium.Game {
 					((dynamic)S12).transit_delay = new_value;
 				} else if ( _er=="use transit" ) {
 					new_value = Interface13.Input( Task13.User, "" + 0 + " -  no transit, " + 1 + " - only across z levels, " + 2 + " - always", "Shuttle editing (" + GlobalFuncs.capitalize( ((dynamic)S12).name ) + ")", ((dynamic)S12).use_transit, null, InputType.Num );
-					Interface13.Stat( null, new ByTable(new object [] { 0, 1, 2 }).Contains( new_value ) );
 
-					if ( false ) {
+					if ( new ByTable(new object [] { 0, 1, 2 }).Contains( new_value ) ) {
 						((dynamic)S12).use_transit = new_value;
 					} else {
 						GlobalFuncs.to_chat( Task13.User, "Not valid!" );
@@ -5226,9 +5200,8 @@ namespace Somnium.Game {
 					((dynamic)S12).pre_flight_delay = new_value;
 				} else if ( _er=="direction" ) {
 					new_value = Interface13.Input( Task13.User, "" + GlobalVars.NORTH + " - north, " + GlobalVars.SOUTH + " - south, " + GlobalVars.WEST + " - west, " + GlobalVars.EAST + " - east", "Shuttle editing (" + GlobalFuncs.capitalize( ((dynamic)S12).name ) + ")", ((dynamic)S12).dir, null, InputType.Num );
-					Interface13.Stat( null, GlobalVars.cardinal.Contains( new_value ) );
 
-					if ( false ) {
+					if ( GlobalVars.cardinal.Contains( new_value ) ) {
 						((dynamic)S12).dir = new_value;
 					} else {
 						GlobalFuncs.to_chat( Task13.User, "Not valid!" );
@@ -5247,24 +5220,20 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( Task13.User, "To prevent accidental mistakes, you can only set these locations to docking ports in the shuttle's memory (use the \"Add a destination docking port to a shuttle\" command)" );
 					locations = new ByTable(new object [] { "--Cancel--" });
 
-					switch ((Type)( S12.type )) {
-						case typeof(Shuttle_Vox):
-							locations.Add( new ByTable().Set( "Vox home (MOVING TO IT WILL END THE ROUND)", "dock_home" ) );
-							break;
-						case typeof(Shuttle_Escape):
-							locations.Add( new ByTable().Set( "Escape shuttle home", "dock_station" ).Set( "Escape shuttle centcom", "dock_centcom" ) );
-							break;
-						case typeof(Shuttle_Taxi):
-							locations.Add( new ByTable()
-								.Set( "Taxi medbay silicon", "dock_medical_silicon" )
-								.Set( "Taxi engineering cargo", "dock_engineering_cargo" )
-								.Set( "Taxi security science", "dock_security_science" )
-								.Set( "Taxi abandoned station", "dock_abandoned" )
-							 );
-							break;
-						case typeof(Shuttle_Supply):
-							locations.Add( new ByTable().Set( "Centcom loading bay", "dock_centcom" ).Set( "Station cargo bay", "dock_station" ) );
-							break;
+					dynamic _eq = S12.type; // Was a switch-case, sorry for the mess.
+					if ( _eq==typeof(Shuttle_Vox) ) {
+						locations.Add( new ByTable().Set( "Vox home (MOVING TO IT WILL END THE ROUND)", "dock_home" ) );
+					} else if ( _eq==typeof(Shuttle_Escape) ) {
+						locations.Add( new ByTable().Set( "Escape shuttle home", "dock_station" ).Set( "Escape shuttle centcom", "dock_centcom" ) );
+					} else if ( _eq==typeof(Shuttle_Taxi) ) {
+						locations.Add( new ByTable()
+							.Set( "Taxi medbay silicon", "dock_medical_silicon" )
+							.Set( "Taxi engineering cargo", "dock_engineering_cargo" )
+							.Set( "Taxi security science", "dock_security_science" )
+							.Set( "Taxi abandoned station", "dock_abandoned" )
+						 );
+					} else if ( _eq==typeof(Shuttle_Supply) ) {
+						locations.Add( new ByTable().Set( "Centcom loading bay", "dock_centcom" ).Set( "Station cargo bay", "dock_station" ) );
 					}
 					choice22 = Interface13.Input( Task13.User, "Select a location to modify", "Shuttle editing", null, locations, InputType.Any );
 					variable_to_edit = locations[choice22];
@@ -6004,9 +5973,8 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( applicant.mind.special_role ) ) {
 							
 							if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "cultist" ) ) && !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "Syndicate" ) ) ) {
-								Interface13.Stat( null, temp.restricted_jobs.Contains( applicant.job ) );
-
-								if ( !false ) {
+								
+								if ( !temp.restricted_jobs.Contains( applicant.job ) ) {
 									candidates.Add( applicant );
 								}
 							}
@@ -6109,9 +6077,8 @@ namespace Somnium.Game {
 							if ( !Lang13.Bool( applicant.mind.special_role ) ) {
 								
 								if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "revolutionary" ) ) && !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "Syndicate" ) ) ) {
-									Interface13.Stat( null, temp.restricted_jobs.Contains( applicant.job ) );
-
-									if ( !false ) {
+									
+									if ( !temp.restricted_jobs.Contains( applicant.job ) ) {
 										candidates.Add( applicant );
 									}
 								}
@@ -6167,9 +6134,8 @@ namespace Somnium.Game {
 							if ( !Lang13.Bool( applicant.mind.special_role ) ) {
 								
 								if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "changeling" ) ) && !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "Syndicate" ) ) ) {
-									Interface13.Stat( null, temp.restricted_jobs.Contains( applicant.job ) );
-
-									if ( !false ) {
+									
+									if ( !temp.restricted_jobs.Contains( applicant.job ) ) {
 										candidates.Add( applicant );
 									}
 								}
@@ -6224,9 +6190,8 @@ namespace Somnium.Game {
 							if ( !Lang13.Bool( applicant.mind.special_role ) ) {
 								
 								if ( !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "traitor" ) ) && !Lang13.Bool( GlobalFuncs.jobban_isbanned( applicant, "Syndicate" ) ) ) {
-									Interface13.Stat( null, temp.restricted_jobs.Contains( applicant.job ) );
-
-									if ( !false ) {
+									
+									if ( !temp.restricted_jobs.Contains( applicant.job ) ) {
 										candidates += applicant;
 									}
 								}
@@ -6989,7 +6954,7 @@ namespace Somnium.Game {
 			serverip = "" + Game13.internet_address + ":" + Game13.port;
 			bantype_pass = false;
 
-			switch ((double?)( bantype )) {
+			switch ((int?)( bantype )) {
 				case 1:
 					bantype_str = "PERMABAN";
 					duration = -1;
@@ -7919,9 +7884,8 @@ namespace Somnium.Game {
 						
 
 						if ( L.stat != 2 ) {
-							Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( L.mind ) );
-
-							if ( false ) {
+							
+							if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( L.mind ) ) ) {
 								living_cultists++;
 							} else if ( L is Mob_Living_Carbon ) {
 								living_crew++;
@@ -8780,7 +8744,7 @@ namespace Somnium.Game {
 			}
 			dat = "<HEAD><TITLE>Admin Newscaster</TITLE></HEAD><H3>Admin Newscaster Unit</H3>";
 
-			switch ((double?)( this.admincaster_screen )) {
+			switch ((int?)( this.admincaster_screen )) {
 				case 0:
 					dat += "Welcome to the admin newscaster.<BR> Here you can add, edit and censor every newspiece on the network.\n				<BR>Feed channels and stories entered through here will be uneditable and handled as official news by the rest of the units.\n				<BR>Note that this panel allows full freedom over the news network, there are no constrictions except the few basic ones. Don't break things!</FONT>\n			";
 
@@ -9383,9 +9347,8 @@ namespace Somnium.Game {
 				} else {
 					f = false;
 				}
-				Interface13.Stat( null, M.languages.Contains( L2 ) );
 
-				if ( !f ) {
+				if ( Lang13.Bool( M.languages.Contains( L2 ) ) ) {
 					body += new Txt( "<a href='?src=" ).Ref( this ).str( ";toglang=" ).Ref( M ).str( ";lang=" ).item( String13.HtmlEncode( k ) ).str( "' style='color:#006600'>" ).item( k ).str( "</a>" ).ToString();
 				} else {
 					body += new Txt( "<a href='?src=" ).Ref( this ).str( ";toglang=" ).Ref( M ).str( ";lang=" ).item( String13.HtmlEncode( k ) ).str( "' style='color:#ff0000'>" ).item( k ).str( "</a>" ).ToString();

@@ -47,9 +47,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.keyslot1.channels )) {
 					ch_name = _a;
 					
-					Interface13.Stat( null, this.channels.Contains( ch_name ) );
 
-					if ( false ) {
+					if ( this.channels.Contains( ch_name ) ) {
 						continue;
 					}
 					this.channels.Add( ch_name );
@@ -74,9 +73,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( this.keyslot2.channels )) {
 					ch_name2 = _b;
 					
-					Interface13.Stat( null, this.channels.Contains( ch_name2 ) );
 
-					if ( false ) {
+					if ( this.channels.Contains( ch_name2 ) ) {
 						continue;
 					}
 					this.channels.Add( ch_name2 );

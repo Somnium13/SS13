@@ -59,9 +59,8 @@ namespace Somnium.Game {
 					L = target;
 
 					if ( Lang13.Bool( ((dynamic)L).stat ) ) {
-						Interface13.Stat( null, this.turretTargets.Contains( L ) );
-
-						if ( false ) {
+						
+						if ( this.turretTargets.Contains( L ) ) {
 							this.Exited( L );
 						}
 					}

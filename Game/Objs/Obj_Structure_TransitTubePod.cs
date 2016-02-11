@@ -48,9 +48,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( this.loc, typeof(Obj_Structure_TransitTube_Station) )) {
 						station = _a;
 						
-						Interface13.Stat( null, station.directions().Contains( this.dir ) );
 
-						if ( station is Obj_Structure_TransitTube_Station ) {
+						if ( station.directions().Contains( this.dir ) ) {
 							
 							if ( !station.pod_moving ) {
 								
@@ -62,13 +61,9 @@ namespace Somnium.Game {
 									} else {
 										station.open_animation();
 									}
-								} else {
-									Interface13.Stat( null, station.directions().Contains( direction ) );
-
-									if ( direction == station.dir ) {
-										this.dir = ((int)( direction ??0 ));
-										station.launch_pod();
-									}
+								} else if ( station.directions().Contains( direction ) ) {
+									this.dir = ((int)( direction ??0 ));
+									station.launch_pod();
 								}
 							}
 							return null;
@@ -78,9 +73,8 @@ namespace Somnium.Game {
 					foreach (dynamic _b in Lang13.Enumerate( this.loc, typeof(Obj_Structure_TransitTube) )) {
 						tube = _b;
 						
-						Interface13.Stat( null, tube.directions().Contains( this.dir ) );
 
-						if ( tube is Obj_Structure_TransitTube ) {
+						if ( tube.directions().Contains( this.dir ) ) {
 							
 							if ( tube.has_exit( direction ) ) {
 								this.dir = ((int)( direction ??0 ));

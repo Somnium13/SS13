@@ -109,7 +109,7 @@ namespace Somnium.Game {
 			dynamic H = null;
 
 			
-			if ( this.status && false && Rand13.PercentChance( 50 ) ) {
+			if ( this.status && Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				((Mob)user).simple_message( "<span class='danger'>You accidentally hit yourself with " + this + "!</span>", "<span class='danger'>The " + this.name + " goes mad!</span>" );
 				((Mob)user).Weaken( this.stunforce * 3 );
 				this.deductcharge( this.hitcost );
@@ -194,7 +194,7 @@ namespace Somnium.Game {
 		// Function from file: stunbaton.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
 			
-			if ( this.status && false && Rand13.PercentChance( 50 ) ) {
+			if ( this.status && Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				((Mob)user).simple_message( "<span class='warning'>You grab the " + this + " on the wrong side.</span>", "<span class='danger'>The " + this.name + " blasts you with its power!</span>" );
 				((Mob)user).Weaken( this.stunforce * 3 );
 				this.deductcharge( this.hitcost );

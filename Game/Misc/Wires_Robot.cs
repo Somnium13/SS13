@@ -56,7 +56,7 @@ namespace Somnium.Game {
 
 			R = this.holder;
 
-			switch ((int?)(index)) {
+			switch ((int?)( index )) {
 				case 8:
 					
 					if ( !Lang13.Bool( ((dynamic)R).emagged ) && !( R is Mob_Living_Silicon_Robot_Mommi ) ) {
@@ -84,7 +84,7 @@ namespace Somnium.Game {
 
 			R = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 16:
 					
 					if ( !mended ) {

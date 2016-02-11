@@ -175,9 +175,8 @@ namespace Somnium.Game {
 				this.update_music();
 				this.update_icon();
 			}
-			Interface13.Stat( null, href_list.Contains( "screen" ) );
 
-			if ( Lang13.Bool( href_list["power"] ) ) {
+			if ( href_list.Contains( "screen" ) ) {
 				
 				if ( Task13.User is Mob_Dead_Observer && !GlobalFuncs.canGhostWrite( Task13.User, this, "" ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You can't do that.</span>" );
@@ -185,9 +184,8 @@ namespace Somnium.Game {
 				}
 				this.screen = String13.ParseNumber( href_list["screen"] );
 			}
-			Interface13.Stat( null, href_list.Contains( "act" ) );
 
-			if ( Lang13.Bool( href_list["power"] ) ) {
+			if ( href_list.Contains( "act" ) ) {
 				
 				dynamic _a = href_list["act"]; // Was a switch-case, sorry for the mess.
 				if ( _a=="Save Settings" ) {
@@ -204,9 +202,8 @@ namespace Somnium.Game {
 					}
 					this.change_cost = Num13.MaxInt( 0, ((int)( String13.ParseNumber( href_list["set_change_cost"] ) ??0 )) );
 					this.linked_account = new_linked_account;
-					Interface13.Stat( null, ((dynamic)( href_list != null && href_list["lock"] != "" )).Contains( "lock" ) );
 
-					if ( !( new_linked_account != null ) ) {
+					if ( Lang13.Bool( ((dynamic)( href_list != null && href_list["lock"] != "" )).Contains( "lock" ) ) ) {
 						this.change_access = new ByTable(new object [] { String13.ParseNumber( href_list["lock"] ) });
 					} else {
 						this.change_access = new ByTable();
@@ -411,7 +408,7 @@ namespace Somnium.Game {
 			}
 			t += "</div>";
 
-			switch ((double?)( this.screen )) {
+			switch ((int?)( this.screen )) {
 				case 1:
 					t += this.ScreenMain( a );
 					break;
@@ -734,9 +731,8 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( response ) ) {
 					json = File13.Read( response["CONTENT"] );
-					Interface13.Stat( null, ((dynamic)json).Contains( "/>" ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( ((dynamic)json).Contains( "/>" ) ) ) {
 						this.visible_message( new Txt( "<span class='warning'>" ).icon( this ).str( " " ).The( this ).item().str( " buzzes, unable to update its playlist.</span>" ).ToString(), "<em>You hear a buzz.</em>" );
 						this.stat &= 1;
 						this.update_icon();

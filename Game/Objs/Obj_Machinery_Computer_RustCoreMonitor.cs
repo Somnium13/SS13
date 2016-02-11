@@ -47,8 +47,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: core_monitor.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			bool? _default = null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			bool _default = false;
 
 			_default = this.linked_core == O;
 			return _default;

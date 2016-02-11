@@ -41,9 +41,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( Task13.User.stat ) || Task13.User.restrained() || Task13.User.stunned != 0 || Task13.User.lying == true ) {
 				return true;
 			}
-			Interface13.Stat( null, ((dynamic)Task13.User).Contains( this.owner ) );
 
-			if ( !( Lang13.Bool( Task13.User.stat ) || Task13.User.restrained() || Task13.User.stunned != 0 || Task13.User.lying == true ) ) {
+			if ( !Lang13.Bool( ((dynamic)Task13.User).Contains( this.owner ) ) ) {
 				return true;
 			}
 			this.owner.ui_action_click();

@@ -21,17 +21,12 @@ namespace Somnium.Game {
 				return false;
 			}
 			H = M;
-			Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( H.mind ) );
 
-			if ( !( M is Mob_Living_Carbon ) ) {
+			if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( H.mind ) ) {
 				((Ent_Static)H).visible_message( "" + H + " seems to resist the implant!", "You feel the corporate tendrils of Nanotrasen try to invade your mind!" );
 				return false;
-			} else {
-				Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) );
-
-				if ( !( M is Mob_Living_Carbon ) ) {
-					((GameMode)GlobalVars.ticker.mode).remove_revolutionary( H.mind );
-				}
+			} else if ( GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) ) {
+				((GameMode)GlobalVars.ticker.mode).remove_revolutionary( H.mind );
 			}
 			GlobalFuncs.to_chat( H, "<span class = 'notice'>You feel a surge of loyalty towards Nanotrasen.</span>" );
 			return true;

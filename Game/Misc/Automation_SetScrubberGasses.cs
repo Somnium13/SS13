@@ -35,9 +35,8 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( href_list["tog_gas"] ) ) {
 				gas = href_list["tog_gas"];
-				Interface13.Stat( null, this.gasses.Contains( gas ) );
 
-				if ( !false ) {
+				if ( !this.gasses.Contains( gas ) ) {
 					return _default;
 				}
 				this.gasses[gas] = !Lang13.Bool( this.gasses[gas] );

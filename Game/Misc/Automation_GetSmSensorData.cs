@@ -64,9 +64,8 @@ namespace Somnium.Game {
 
 		// Function from file: supermatter.dm
 		public override dynamic Evaluate(  ) {
-			Interface13.Stat( null, this.parent.sensor_information.Contains( Lang13.Bool( this.sensor ) && Lang13.Bool( this.field ) && Lang13.Bool( this.sensor ) ) );
-
-			if ( false ) {
+			
+			if ( this.parent.sensor_information.Contains( Lang13.Bool( this.sensor ) && Lang13.Bool( this.field ) && Lang13.Bool( this.sensor ) ) ) {
 				return this.parent.sensor_information[this.sensor][this.field];
 			}
 			return 0;

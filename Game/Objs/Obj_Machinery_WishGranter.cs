@@ -57,43 +57,37 @@ namespace Somnium.Game {
 					.Set( "heard", new Txt( "kneels before " ).the( this ).item().str( " and mumbles sinisterly," ).ToString() )
 					.Set( "unheard", new Txt( "kneels before " ).the( this ).item().str( " and mumbles something sinisterly." ).ToString() )
 					.Set( "allow_lastwords", 0 )
-				.Apply( a.__CallVerb("Whisper" ) );
+				.Apply( a.__CallVerb("Whisper" );
 				Task13.Schedule( 10, (Task13.Closure)(() => {
 					GlobalFuncs.message_admins( new Txt().item( a ).str( " has interacted with " ).the( this ).item().str( " (Wish Granter) and is now its powerful avatar!" ).ToString() );
 					((Ent_Static)a).visible_message( new Txt( "<span class='sinister'>" ).item( a ).str( " clenches in pain before " ).the( this ).item().str( " and then raises back up with a demonic and soulless expression!</span>" ).ToString(), new Txt( "<span class='sinister'>" ).the( this ).item().str( " answers and your head pounds for a moment before your vision clears. You are the avatar of " ).item( this ).str( ", and your power is LIMITLESS! And it's all yours. You need to make sure no one can take it from you! No one must know, first!</span>" ).ToString(), "<span class='sinister'>You hear a demonic hum, this can't be good!</span>" );
 					this.charges--;
 					this.insisting = 0;
-					Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 						((Dna)a.dna).SetSEState( GlobalVars.HULKBLOCK, true );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 9 ) );
 
-					if ( !( !false ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 9 ) ) ) {
 						a.mutations.Add( 9 );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 3 ) );
 
-					if ( !( !( !false ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 3 ) ) ) {
 						a.mutations.Add( 3 );
 						a.sight |= 28;
 						a.see_in_dark = 8;
 						a.see_invisible = 45;
 					}
-					Interface13.Stat( null, a.mutations.Contains( 2 ) );
 
-					if ( !( !( !( !false ) ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 2 ) ) ) {
 						a.mutations.Add( 2 );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 106 ) );
 
-					if ( !( !( !( !( !false ) ) ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 106 ) ) ) {
 						a.mutations.Add( 106 );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 1 ) );
 
-					if ( !( !( !( !( !( !false ) ) ) ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 1 ) ) ) {
 						a.mutations.Add( 1 );
 					}
 					((Mob)a).update_mutations();

@@ -22,9 +22,8 @@ namespace Somnium.Game {
 
 		// Function from file: kitchen.dm
 		public override bool? attack( dynamic M = null, dynamic user = null, string def_zone = null, bool? eat_override = null ) {
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You accidentally cut yourself with the " + this + ".</span>" );
 				((Mob_Living)user).take_organ_damage( 20 );
 				return null;

@@ -55,13 +55,9 @@ namespace Somnium.Game {
 
 			if ( M == user ) {
 				inject_message = "<span class='notice'>You inject yourself with " + this + ".</span>";
-			} else {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( M == user && Rand13.PercentChance( 50 ) ) {
-					inject_message = "<span class='notice'>Oops! You inject yourself with " + this + " by accident.</span>";
-					M = user;
-				}
+			} else if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
+				inject_message = "<span class='notice'>Oops! You inject yourself with " + this + " by accident.</span>";
+				M = user;
 			}
 
 			if ( Lang13.Bool( this.reagents.total_volume ) ) {

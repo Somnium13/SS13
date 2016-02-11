@@ -95,9 +95,8 @@ namespace Somnium.Game {
 			if ( flatpack == null ) {
 				return;
 			}
-			Interface13.Stat( null, this.stacked.Contains( new Txt().Ref( flatpack ).ToString() ) );
 
-			if ( !( flatpack == null ) ) {
+			if ( !this.stacked.Contains( new Txt().Ref( flatpack ).ToString() ) ) {
 				return;
 			}
 			oldimage = this.stacked[new Txt().Ref( flatpack ).ToString()];
@@ -205,8 +204,8 @@ namespace Somnium.Game {
 						access_overlap = check_accesses & GlobalFuncs.get_region_accesses( i );
 
 						if ( access_overlap.len != 0 ) {
-
-							switch ((int?)(i)) {
+							
+							switch ((int?)( i )) {
 								case 1:
 									this.icon_state = "flatpacksec";
 									break;

@@ -39,9 +39,8 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( targets, typeof(Mob_Living_Carbon_Human) )) {
 				target = _b;
 				
-				Interface13.Stat( null, target.mutations.Contains( 104 ) );
 
-				if ( target is Mob_Living_Carbon_Human ) {
+				if ( target.mutations.Contains( 104 ) ) {
 					target.show_message( "<span class='notice'>You hear " + user.real_name + "'s voice: " + say + "</span>" );
 				} else {
 					target.show_message( "<span class='notice'>You hear a voice that seems to echo around the room: " + say + "</span>" );

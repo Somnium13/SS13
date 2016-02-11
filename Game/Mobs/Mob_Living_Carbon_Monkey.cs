@@ -494,7 +494,7 @@ namespace Somnium.Game {
 				Icon13.Flick( "flash", this.flash );
 			}
 
-			switch ((int?)(severity)) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( this.stat != 2 ) {
@@ -1526,7 +1526,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( this.stat == 2 || false ) {
+			if ( this.stat == 2 || this.mutations.Contains( 3 ) ) {
 				this.sight |= GlobalVars.SEE_TURFS;
 				this.sight |= GlobalVars.SEE_MOBS;
 				this.sight |= GlobalVars.SEE_OBJS;
@@ -1907,9 +1907,8 @@ namespace Somnium.Game {
 			} else {
 				
 				if ( !spaceproof ) {
-					Interface13.Stat( null, this.mutations.Contains( 2 ) );
-
-					if ( !false ) {
+					
+					if ( !this.mutations.Contains( 2 ) ) {
 						this.adjustBruteLoss( 2 );
 						this.pressure_alert = -2;
 					} else {
@@ -2307,9 +2306,8 @@ namespace Somnium.Game {
 			}
 
 			if ( this.getFireLoss() != 0 ) {
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-				if ( false || Rand13.PercentChance( 50 ) ) {
+				
+				if ( this.mutations.Contains( 106 ) || Rand13.PercentChance( 50 ) ) {
 					
 					dynamic _a = this.getFireLoss(); // Was a switch-case, sorry for the mess.
 					if ( 1<=_a&&_a<=50 ) {
@@ -2319,9 +2317,8 @@ namespace Somnium.Game {
 					}
 				}
 			}
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
 
-			if ( this.getFireLoss() != 0 && Convert.ToDouble( this.health ) <= 25 ) {
+			if ( this.mutations.Contains( 4 ) && Convert.ToDouble( this.health ) <= 25 ) {
 				this.mutations.Remove( 4 );
 				GlobalFuncs.to_chat( this, "<span class='warning'>You suddenly feel very weak.</span>" );
 				this.Weaken( 3 );

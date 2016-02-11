@@ -89,9 +89,8 @@ namespace Somnium.Game {
 				H = M;
 
 				if ( H is Mob_Living_Carbon_Human ) {
-					Interface13.Stat( null, H.mutations.Contains( 4 ) );
-
-					if ( false || false ) {
+					
+					if ( H.mutations.Contains( 4 ) || H.mutations.Contains( 202 ) ) {
 						this.unlock_atom( H );
 						this.visible_message( new Txt( "<span class='notice'>" ).item( H ).str( " easily breaks free of " ).the( this ).item().str( "'s hold!</span>" ).ToString() );
 						return null;
@@ -105,9 +104,8 @@ namespace Somnium.Game {
 		public override void LoseTarget(  ) {
 			dynamic L = null;
 
-			Interface13.Stat( null, this.locked_atoms.Contains( this.target ) );
-
-			if ( false ) {
+			
+			if ( this.locked_atoms.Contains( this.target ) ) {
 				this.unlock_atom( this.target );
 			}
 			L = this.target;
@@ -137,15 +135,11 @@ namespace Somnium.Game {
 						this.lock_atom( H );
 						this.visible_message( new Txt( "<span class='danger'>" ).The( this ).item().str( " grabs " ).the( H ).item().str( " with its tongue!" ).ToString() );
 					}
-				} else {
-					Interface13.Stat( null, this.locked_atoms.Contains( H ) );
-
-					if ( !( this.locked_atoms.len != 0 ) ) {
-						
-						if ( Rand13.PercentChance( 20 ) ) {
-							GlobalFuncs.to_chat( H, "<span class='danger'>You feel very weak!</span>" );
-							((Mob)H).Weaken( 3 );
-						}
+				} else if ( this.locked_atoms.Contains( H ) ) {
+					
+					if ( Rand13.PercentChance( 20 ) ) {
+						GlobalFuncs.to_chat( H, "<span class='danger'>You feel very weak!</span>" );
+						((Mob)H).Weaken( 3 );
 					}
 				}
 			}

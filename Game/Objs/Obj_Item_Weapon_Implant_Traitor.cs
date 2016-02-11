@@ -50,19 +50,14 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Traitor), Lang13.Bool( H.contents ) || Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Loyalty), H.contents ) ) ) ) ) {
 				((Ent_Static)H).visible_message( "" + H + " seems to resist the implant!", "You feel a strange sensation in your head that quickly dissipates." );
 				return false;
-			} else {
-				Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( H.mind ) );
-
-				if ( Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Traitor), Lang13.Bool( H.contents ) || Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Loyalty), H.contents ) ) ) ) ) {
-					((Ent_Static)H).visible_message( "" + H + " seems to resist the implant!", "You feel a familiar sensation in your head that quickly dissipates." );
-					return false;
-				}
+			} else if ( GlobalVars.ticker.mode.traitors.Contains( H.mind ) ) {
+				((Ent_Static)H).visible_message( "" + H + " seems to resist the implant!", "You feel a familiar sensation in your head that quickly dissipates." );
+				return false;
 			}
 			H.implanting = true;
 			GlobalFuncs.to_chat( H, "<span class = 'notice'>You feel a surge of loyalty towards " + user.name + ".</span>" );
-			Interface13.Stat( null, GlobalVars.ticker.mode.implanter.Contains( user.mind ) );
 
-			if ( !Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Traitor), Lang13.Bool( H.contents ) || Lang13.Bool( Lang13.FindIn( typeof(Obj_Item_Weapon_Implant_Loyalty), H.contents ) ) ) ) ) {
+			if ( !GlobalVars.ticker.mode.implanter.Contains( user.mind ) ) {
 				GlobalVars.ticker.mode.implanter[_ref] = new ByTable();
 			}
 			implanters = GlobalVars.ticker.mode.implanter[_ref];

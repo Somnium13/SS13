@@ -115,9 +115,8 @@ namespace Somnium.Game {
 			if ( _default != 0 ) {
 				return _default;
 			}
-			Interface13.Stat( null, href_list.Contains( "toggle_out_flag" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "toggle_out_flag" ) ) {
 				bitflag_value = String13.ParseNumber( href_list["toggle_out_flag"] );
 
 				if ( !GlobalFuncs.test_bitflag( bitflag_value ) && ( bitflag_value ??0) <= 32 ) {

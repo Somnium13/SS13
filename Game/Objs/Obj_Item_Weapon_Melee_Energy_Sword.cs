@@ -106,9 +106,8 @@ namespace Somnium.Game {
 
 		// Function from file: energy.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) && this.active ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) && this.active ) {
 				GlobalFuncs.to_chat( user, "<span class='danger'>You accidentally cut yourself with " + this + ".</span>" );
 				((Mob_Living)user).take_organ_damage( 5, 5 );
 				return null;

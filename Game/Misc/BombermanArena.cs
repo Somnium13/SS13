@@ -558,9 +558,8 @@ namespace Somnium.Game {
 			}
 
 			if ( winner != null ) {
-				Interface13.Stat( null, GlobalVars.arena_leaderboard.Contains( ((dynamic)winner).client.key ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.arena_leaderboard.Contains( ((dynamic)winner).client.key ) ) {
 					GlobalVars.arena_leaderboard[((dynamic)winner).client.key] = GlobalVars.arena_leaderboard[((dynamic)winner).client.key] + 1;
 				} else {
 					GlobalVars.arena_leaderboard.Add( ((dynamic)winner).client.key );
@@ -621,9 +620,8 @@ namespace Somnium.Game {
 				}
 				C = S2.player_client;
 				client_mob = C.mob;
-				Interface13.Stat( null, GlobalVars.ready_gladiators.Contains( C ) );
 
-				if ( !( S2.player_client != null ) ) {
+				if ( GlobalVars.ready_gladiators.Contains( C ) ) {
 					GlobalVars.ready_gladiators.Remove( C );
 				}
 

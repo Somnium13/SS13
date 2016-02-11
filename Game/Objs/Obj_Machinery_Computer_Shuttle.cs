@@ -81,9 +81,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( b, "The access level of " + a.registered_name + "'s card is not high enough. " );
 					return null;
 				}
-				Interface13.Stat( null, a.access.Contains( GlobalVars.access_heads ) );
 
-				if ( !( !( cardaccess is ByTable ) || !( cardaccess.len != 0 ) ) ) {
+				if ( !Lang13.Bool( a.access.Contains( GlobalVars.access_heads ) ) ) {
 					GlobalFuncs.to_chat( b, "The access level of " + a.registered_name + "'s card is not high enough. " );
 					return 0;
 				}

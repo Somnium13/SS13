@@ -28,9 +28,8 @@ namespace Somnium.Game {
 
 		// Function from file: shields.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You beat yourself in the head with " + this + ".</span>" );
 				((Mob_Living)user).take_organ_damage( 5 );
 			}

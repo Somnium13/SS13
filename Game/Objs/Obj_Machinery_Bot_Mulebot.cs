@@ -1030,7 +1030,7 @@ namespace Somnium.Game {
 
 			this.unload( 0 );
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 2:
 					i = null;
 					i = 1;

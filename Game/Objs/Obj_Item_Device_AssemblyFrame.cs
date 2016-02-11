@@ -92,7 +92,7 @@ namespace Somnium.Game {
 					if ( choice is Obj_Item_Device_Assembly_Math && AS is Obj_Item_Device_Assembly_Math ) {
 						choices_connections = this.connections[choice];
 
-						if ( Lang13.Bool( choices_connections ) && false ) {
+						if ( Lang13.Bool( choices_connections ) && Lang13.Bool( choices_connections.Contains( AS ) ) ) {
 							GlobalFuncs.to_chat( Task13.User, "<span class='info'>SYSTEM ERROR: Infinite loop detected, operation aborted.</span>" );
 							return;
 						}

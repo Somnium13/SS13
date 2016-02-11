@@ -520,9 +520,8 @@ namespace Somnium.Game {
 		public virtual void rename(  ) {
 			string n_name = null;
 
-			Interface13.Stat( null, Task13.User.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Task13.User.mutations.Contains( 5 ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You cut yourself on " + this + ".</span>" );
 				return;
 			}

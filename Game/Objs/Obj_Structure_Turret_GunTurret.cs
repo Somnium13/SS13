@@ -77,9 +77,8 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( href_list["scan_for"] ) ) {
-				Interface13.Stat( null, this.scan_for.Contains( href_list["scan_for"] ) );
-
-				if ( false ) {
+				
+				if ( this.scan_for.Contains( href_list["scan_for"] ) ) {
 					this.scan_for[href_list["scan_for"]] = !Lang13.Bool( this.scan_for[href_list["scan_for"]] );
 				}
 			}
@@ -193,9 +192,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInViewExcludeThis( this, this.scan_range ), typeof(Mob_Living_Carbon_Human) )) {
 					M = _a;
 					
-					Interface13.Stat( null, this.exclude.Contains( Lang13.Bool( M.stat ) || M.lying == true || M != null ) );
 
-					if ( M is Mob_Living_Carbon_Human ) {
+					if ( this.exclude.Contains( Lang13.Bool( M.stat ) || M.lying == true || M != null ) ) {
 						continue;
 					}
 					pos_targets.Add( M );
@@ -207,9 +205,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( Map13.FetchInViewExcludeThis( this, this.scan_range ), typeof(Mob_Living_Silicon) )) {
 					M2 = _b;
 					
-					Interface13.Stat( null, this.exclude.Contains( Lang13.Bool( M2.stat ) || M2.lying == true || M2 != null ) );
 
-					if ( M2 is Mob_Living_Silicon ) {
+					if ( this.exclude.Contains( Lang13.Bool( M2.stat ) || M2.lying == true || M2 != null ) ) {
 						continue;
 					}
 					pos_targets.Add( M2 );
@@ -221,9 +218,8 @@ namespace Somnium.Game {
 				foreach (dynamic _c in Lang13.Enumerate( Map13.FetchInViewExcludeThis( this, this.scan_range ), typeof(Obj_Mecha) )) {
 					M3 = _c;
 					
-					Interface13.Stat( null, this.exclude.Contains( M3 ) );
 
-					if ( M3 is Obj_Mecha ) {
+					if ( this.exclude.Contains( M3 ) ) {
 						continue;
 					}
 					pos_targets.Add( M3 );
@@ -235,9 +231,8 @@ namespace Somnium.Game {
 				foreach (dynamic _d in Lang13.Enumerate( Map13.FetchInViewExcludeThis( this, this.scan_range ), typeof(Mob_Living_Carbon_Alien) )) {
 					M4 = _d;
 					
-					Interface13.Stat( null, this.exclude.Contains( Lang13.Bool( M4.stat ) || M4.lying == true || M4 != null ) );
 
-					if ( M4 is Mob_Living_Carbon_Alien ) {
+					if ( this.exclude.Contains( Lang13.Bool( M4.stat ) || M4.lying == true || M4 != null ) ) {
 						continue;
 					}
 					pos_targets.Add( M4 );

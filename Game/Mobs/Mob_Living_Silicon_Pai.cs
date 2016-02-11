@@ -434,7 +434,7 @@ namespace Somnium.Game {
 				Icon13.Flick( "flash", this.flash );
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( this.stat != 2 ) {
@@ -1187,7 +1187,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( this.stat == 2 || !Lang13.Bool( C.status ) || !false ) {
+			if ( this.stat == 2 || !Lang13.Bool( C.status ) || !Lang13.Bool( C.network.Contains( this.network ) ) ) {
 				return false;
 			}
 			this.set_machine( this );
@@ -1298,9 +1298,8 @@ namespace Somnium.Game {
 					foreach (dynamic _b in Lang13.Enumerate( patient.virus2 )) {
 						ID = _b;
 						
-						Interface13.Stat( null, GlobalVars.virusDB.Contains( ID ) );
 
-						if ( false ) {
+						if ( GlobalVars.virusDB.Contains( ID ) ) {
 							foundVirus = 1;
 							break;
 						}

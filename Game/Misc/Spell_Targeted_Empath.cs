@@ -42,9 +42,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( user, "<span class='warning'>This can only be used on carbon beings.</span>" );
 				return false;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 204 ) );
 
-			if ( !( M is Mob_Living_Carbon ) ) {
+			if ( M.mutations.Contains( 204 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You can't see into " + M.name + "'s mind at all!</span>" );
 				return false;
 			}
@@ -152,9 +151,8 @@ namespace Somnium.Game {
 				}
 			}
 			GlobalFuncs.to_chat( user, "<span class='notice'> <b>Thoughts</b>: " + M.name + " is currently " + thoughts + ".</span>" );
-			Interface13.Stat( null, M.spell_list.Contains( typeof(Spell_Targeted_Empath) ) );
 
-			if ( M is Mob_Living_Carbon_Human ) {
+			if ( M.spell_list.Contains( typeof(Spell_Targeted_Empath) ) ) {
 				GlobalFuncs.to_chat( M, "<span class='warning'>You sense " + Task13.User.name + " reading your mind.</span>" );
 			} else if ( Rand13.PercentChance( 5 ) || M.mind != null && M.mind.assigned_role == "Chaplain" ) {
 				GlobalFuncs.to_chat( M, "<span class='warning'>You sense someone intruding upon your thoughts...</span>" );

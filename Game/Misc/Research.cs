@@ -116,9 +116,8 @@ namespace Somnium.Game {
 		public void AddDesign2Known( Design D = null ) {
 			Design known = null;
 
-			Interface13.Stat( null, this.known_designs.Contains( D ) );
-
-			if ( !false ) {
+			
+			if ( !this.known_designs.Contains( D ) ) {
 				
 				foreach (dynamic _a in Lang13.Enumerate( this.known_designs, typeof(Design) )) {
 					known = _a;

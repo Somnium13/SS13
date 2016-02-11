@@ -78,17 +78,12 @@ namespace Somnium.Game {
 				bitflagvalue = String13.ParseNumber( href_list["togglecheck"] );
 
 				if ( Lang13.Bool( this.mode ) ) {
-					Interface13.Stat( null, new ByTable(new object [] { 1, 2, 4 }).Contains( bitflagvalue ) );
-
-					if ( !false ) {
+					
+					if ( !new ByTable(new object [] { 1, 2, 4 }).Contains( bitflagvalue ) ) {
 						return 0;
 					}
-				} else {
-					Interface13.Stat( null, new ByTable(new object [] { 1, 2 }).Contains( bitflagvalue ) );
-
-					if ( !Lang13.Bool( this.mode ) ) {
-						return 0;
-					}
+				} else if ( !new ByTable(new object [] { 1, 2 }).Contains( bitflagvalue ) ) {
+					return 0;
 				}
 
 				if ( ( ((int)( this.checks ??0 )) & ((int)( bitflagvalue ??0 )) ) != 0 ) {

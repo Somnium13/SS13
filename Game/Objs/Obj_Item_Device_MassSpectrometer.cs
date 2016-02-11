@@ -112,9 +112,8 @@ namespace Somnium.Game {
 				if ( !Lang13.Bool( C.dna ) ) {
 					return null;
 				}
-				Interface13.Stat( null, C.mutations.Contains( 8 ) );
 
-				if ( !Lang13.Bool( C.dna ) ) {
+				if ( Lang13.Bool( C.mutations.Contains( 8 ) ) ) {
 					return null;
 				}
 				B = ((Mob_Living_Carbon)C).take_blood( this, this.reagents.maximum_volume );

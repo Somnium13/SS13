@@ -277,9 +277,8 @@ namespace Somnium.Game {
 				A = a;
 
 				if ( !Lang13.Bool( ((dynamic)A).has_fine_manipulation ) || Convert.ToDouble( this.w_class ) >= 4 ) {
-					Interface13.Stat( null, A.contents.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( A.contents.Contains( this ) ) {
 						A.drop_from_inventory( this );
 					}
 					GlobalFuncs.to_chat( a, "Your claws aren't capable of such fine manipulation." );
@@ -435,7 +434,7 @@ namespace Somnium.Game {
 		// Function from file: items.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;
@@ -483,16 +482,14 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( user.stat ) || !( this.loc is Tile ) ) {
 				return;
 			}
-			Interface13.Stat( null, user.mutations.Contains( 1 ) );
 
-			if ( ( Lang13.Bool( user.stat ) || !( this.loc is Tile ) ) && !Lang13.Bool( user.get_active_hand() ) ) {
+			if ( user.mutations.Contains( 1 ) && !Lang13.Bool( user.get_active_hand() ) ) {
 				O = new Obj_Item_TkGrab( this );
 				user.put_in_active_hand( O );
 				O.host = user;
 				O.focus_object( this );
 			} else {
-				Interface13.Stat( Game13.log, user.mutations.Contains( 1 ) );
-				null.WriteMsg( "## WARNING: " + ( "Strange attack_tk(): TK(" + ( ( Lang13.Bool( user.stat ) || !( this.loc is Tile ) ) && !Lang13.Bool( user.get_active_hand() ) ) + ") empty hand(" + !Lang13.Bool( user.get_active_hand() ) + ")" ) );
+				Game13.log.WriteMsg( "## WARNING: " + ( "Strange attack_tk(): TK(" + user.mutations.Contains( 1 ) + ") empty hand(" + !Lang13.Bool( user.get_active_hand() ) + ")" ) );
 			}
 			return;
 		}
@@ -537,9 +534,8 @@ namespace Somnium.Game {
 
 			if ( user is Mob_Living_Carbon_Human ) {
 				H = user;
-				Interface13.Stat( null, H.mutations.Contains( 106 ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( H.mutations.Contains( 106 ) ) ) {
 					prot = true;
 				} else if ( Lang13.Bool( H.gloves ) ) {
 					G = H.gloves;
@@ -549,7 +545,7 @@ namespace Somnium.Game {
 					}
 				}
 
-				if ( !prot && false && Rand13.PercentChance( 50 ) ) {
+				if ( !prot && Lang13.Bool( H.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 					((Mob_Living)H).apply_damage( 10, "fire", Rand13.Pick(new object [] { "l_hand", "r_hand" }) );
 					((Mob)user).drop_hands();
 					((Ent_Static)user).visible_message( new Txt( "<span class='notice'>" ).item( user ).str( " tries to burn the " ).item( this.name ).str( ", but burns " ).his_her_its_their().str( " hand trying!</span>" ).ToString(), "<span class='warning'>You try to burn the " + this.name + ", but burn your hand trying!</span>" );
@@ -742,9 +738,8 @@ namespace Somnium.Game {
 					if ( !( ( ( this.slot_flags ??0) & 2 ) != 0 ) ) {
 						return 0;
 					}
-					Interface13.Stat( null, H.mutations.Contains( 6 ) );
 
-					if ( !( ( ( this.slot_flags ??0) & 2 ) != 0 ) && Lang13.Bool( ((dynamic)H).species ) && Lang13.Bool( ((dynamic)H).species.flags & 8192 ) && !Lang13.Bool( this.flags & 8192 ) ) {
+					if ( H.mutations.Contains( 6 ) && Lang13.Bool( ((dynamic)H).species ) && Lang13.Bool( ((dynamic)H).species.flags & 8192 ) && !Lang13.Bool( this.flags & 8192 ) ) {
 						return 0;
 					}
 
@@ -1097,9 +1092,8 @@ namespace Somnium.Game {
 
 		// Function from file: items.dm
 		public virtual dynamic unwield( dynamic user = null ) {
-			Interface13.Stat( null, user.Contains( Lang13.Bool( this.flags & 64 ) && this != null ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( user.Contains( Lang13.Bool( this.flags & 64 ) && this != null ) ) ) {
 				((Mob)user).drop_from_inventory( this );
 			}
 
@@ -1128,9 +1122,8 @@ namespace Somnium.Game {
 
 			if ( !Lang13.Bool( this.wielded ) ) {
 				this.wielded = GlobalFuncs.getFromPool( typeof(Obj_Item_Offhand) );
-				Interface13.Stat( null, new ByTable(new object [] { null, this }).Contains( ((Mob)user).get_active_hand() ) );
 
-				if ( false && ((Mob)user).put_in_inactive_hand( this.wielded ) || !( inactive == true ) && false && ((Mob)user).put_in_active_hand( this.wielded ) ) {
+				if ( new ByTable(new object [] { null, this }).Contains( ((Mob)user).get_active_hand() ) && ((Mob)user).put_in_inactive_hand( this.wielded ) || !( inactive == true ) && new ByTable(new object [] { null, this }).Contains( ((Mob)user).get_inactive_hand() ) && ((Mob)user).put_in_active_hand( this.wielded ) ) {
 					((Obj_Item_Offhand)this.wielded).attach_to( this );
 					this.update_wield( user );
 					return true;
@@ -1143,9 +1136,8 @@ namespace Somnium.Game {
 
 		// Function from file: items.dm
 		public virtual void ui_action_click(  ) {
-			Interface13.Stat( null, ((dynamic)Task13.User).Contains( this ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( ((dynamic)Task13.User).Contains( this ) ) ) {
 				this.attack_self( Task13.User );
 			}
 			return;
@@ -1188,9 +1180,8 @@ namespace Somnium.Game {
 				H = M;
 
 				if ( this is Obj_Item_Clothing_Under || this is Obj_Item_Clothing_Suit ) {
-					Interface13.Stat( null, H.mutations.Contains( 6 ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( H.mutations.Contains( 6 ) ) ) {
 						Game13.log.WriteMsg( "## TESTING: " + ( "" + M + " TOO FAT TO WEAR " + this + "!" ) );
 
 						if ( !Lang13.Bool( this.flags & 8192 ) ) {
@@ -1664,9 +1655,8 @@ namespace Somnium.Game {
 		public void _internal_equipped( dynamic user = null, dynamic slot = null ) {
 			
 			if ( this.cant_drop != 0 ) {
-				Interface13.Stat( null, new ByTable(new object [] { 5, 4 }).Contains( slot ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { 5, 4 }).Contains( slot ) ) {
 					user.WriteMsg( new Txt( "<span class='notice'>" ).The( this ).item().str( " sticks to your hand!</span>" ).ToString() );
 				}
 			}
@@ -1983,9 +1973,8 @@ namespace Somnium.Game {
 							((dynamic)C).imprinted = "" + S.name;
 							_ref = new Txt().Ref( U.mind ).ToString();
 							necromancers = null;
-							Interface13.Stat( null, GlobalVars.ticker.mode.necromancer.Contains( U.mind ) );
 
-							if ( !Lang13.Bool( T.client ) ) {
+							if ( !GlobalVars.ticker.mode.necromancer.Contains( U.mind ) ) {
 								GlobalVars.ticker.mode.necromancer[_ref] = new ByTable();
 							}
 							necromancers = GlobalVars.ticker.mode.necromancer[_ref];
@@ -2092,9 +2081,8 @@ namespace Somnium.Game {
 						if ( Z != null && Z.mind != null && !GlobalFuncs.iscultist( Z ) ) {
 							_ref2 = new Txt().Ref( U.mind ).ToString();
 							necromancers2 = null;
-							Interface13.Stat( null, GlobalVars.ticker.mode.necromancer.Contains( U.mind ) );
 
-							if ( !false ) {
+							if ( !GlobalVars.ticker.mode.necromancer.Contains( U.mind ) ) {
 								GlobalVars.ticker.mode.necromancer[_ref2] = new ByTable();
 							}
 							necromancers2 = GlobalVars.ticker.mode.necromancer[_ref2];
@@ -2155,9 +2143,8 @@ namespace Somnium.Game {
 			M.lastattacker = user;
 			GlobalFuncs.add_logs( user, M, "attacked", null, I.name, "(INTENT: " + String13.ToUpper( user.a_intent ) + ") (DAMTYE: " + String13.ToUpper( I.damtype ) + ")" );
 			power = I.force;
-			Interface13.Stat( null, user.mutations.Contains( 4 ) );
 
-			if ( Lang13.Bool( this.hitsound ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 4 ) ) ) {
 				power *= 2;
 			}
 
@@ -2277,9 +2264,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( user ) ) {
 					showname = " by " + user + "!";
 				}
-				Interface13.Stat( null, Map13.FetchViewers( null, M ).Contains( user ) );
 
-				if ( !Lang13.Bool( user ) ) {
+				if ( !Map13.FetchViewers( null, M ).Contains( user ) ) {
 					showname = ".";
 				}
 
@@ -2326,9 +2312,8 @@ namespace Somnium.Game {
 						}
 					}
 				} else if ( _a=="fire" ) {
-					Interface13.Stat( null, M.mutations.Contains( 2 ) );
-
-					if ( !false ) {
+					
+					if ( !Lang13.Bool( M.mutations.Contains( 2 ) ) ) {
 						
 						if ( M is Mob_Living_Carbon_Monkey ) {
 							K2 = M;

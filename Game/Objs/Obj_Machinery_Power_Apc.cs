@@ -182,7 +182,7 @@ namespace Somnium.Game {
 		// Function from file: apc.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( Lang13.Bool( this.cell ) ) {
@@ -1418,7 +1418,7 @@ namespace Somnium.Game {
 				AI = user;
 				robot = user;
 
-				if ( this.aidisabled || this.malfhack && this.malfai is Mob_Living_Silicon_Ai && ( AI is Mob_Living_Silicon_Ai && this.malfai != AI && this.malfai != ((dynamic)AI).parent || robot is Mob_Living_Silicon_Robot && false ) ) {
+				if ( this.aidisabled || this.malfhack && this.malfai is Mob_Living_Silicon_Ai && ( AI is Mob_Living_Silicon_Ai && this.malfai != AI && this.malfai != ((dynamic)AI).parent || robot is Mob_Living_Silicon_Robot && Lang13.Bool( ((dynamic)this.malfai).connected_robots.Contains( robot ) ) ) ) {
 					
 					if ( !( loud == true ) ) {
 						GlobalFuncs.to_chat( user, new Txt( "<span class='warning'>" ).The( this ).item().str( " have AI control disabled!</span>" ).ToString() );
@@ -1489,7 +1489,7 @@ namespace Somnium.Game {
 		// Function from file: apc.dm
 		public int get_malf_status( dynamic user = null ) {
 			
-			if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && false && user is Mob_Living_Silicon_Ai ) {
+			if ( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && GlobalVars.ticker.mode.malf_ai.Contains( user.mind ) && user is Mob_Living_Silicon_Ai ) {
 				
 				if ( this.malfai == ( Lang13.Bool( user.parent ) ? user.parent : user ) ) {
 					

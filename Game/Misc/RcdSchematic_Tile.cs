@@ -72,9 +72,8 @@ namespace Somnium.Game {
 				our_list = this.get_our_list();
 				idx = ( Num13.Floor( String13.ParseNumber( href_list["select_paint"] ) ??0 ) <= 1 ? 1 : ( Num13.Floor( String13.ParseNumber( href_list["select_paint"] ) ??0 ) >= our_list.len ? our_list.len : Num13.Floor( String13.ParseNumber( href_list["select_paint"] ) ??0 ) ) );
 				this.selection = our_list[idx];
-				Interface13.Stat( null, this.get_dir_list_by_dir_type( this.selection.adirs ).Contains( this.selected_dir ) );
 
-				if ( !( Num13.Floor( String13.ParseNumber( href_list["select_paint"] ) ??0 ) <= 1 ) ) {
+				if ( !this.get_dir_list_by_dir_type( this.selection.adirs ).Contains( this.selected_dir ) ) {
 					this.selected_dir = 2;
 				}
 				this.master.update_options_menu();
@@ -83,9 +82,8 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( href_list["set_dir"] ) ) {
 				dir = String13.ParseNumber( href_list["set_dir"] );
-				Interface13.Stat( null, this.get_dir_list_by_dir_type( this.selection.adirs ).Contains( dir ) );
 
-				if ( !false ) {
+				if ( !this.get_dir_list_by_dir_type( this.selection.adirs ).Contains( dir ) ) {
 					return 1;
 				}
 				this.selected_dir = dir;

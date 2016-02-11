@@ -26,9 +26,8 @@ namespace Somnium.Game {
 
 		// Function from file: materials.dm
 		public bool getMaterial( dynamic mat_id = null ) {
-			Interface13.Stat( null, GlobalVars.material_list.Contains( mat_id ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( GlobalVars.material_list.Contains( mat_id ) ) ) {
 				Game13.log.WriteMsg( "## WARNING: " + ( "getMaterial(): Unknown material " + mat_id + "!" ) );
 				return false;
 			}
@@ -37,9 +36,8 @@ namespace Somnium.Game {
 
 		// Function from file: materials.dm
 		public bool getAmount( dynamic mat_id = null ) {
-			Interface13.Stat( null, this.storage.Contains( mat_id ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( this.storage.Contains( mat_id ) ) ) {
 				Game13.log.WriteMsg( "## WARNING: " + ( "getAmount(): Unknown material " + mat_id + "!" ) );
 				return false;
 			}
@@ -48,9 +46,8 @@ namespace Somnium.Game {
 
 		// Function from file: materials.dm
 		public void removeAmount( dynamic mat_id = null, int amount = 0 ) {
-			Interface13.Stat( null, this.storage.Contains( mat_id ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( this.storage.Contains( mat_id ) ) ) {
 				Game13.log.WriteMsg( "## WARNING: " + ( "removeAmount(): Unknown material " + mat_id + "!" ) );
 				return;
 			}
@@ -124,9 +121,8 @@ namespace Somnium.Game {
 
 		// Function from file: materials.dm
 		public void addAmount( dynamic mat_id = null, double amount = 0 ) {
-			Interface13.Stat( null, this.storage.Contains( mat_id ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( this.storage.Contains( mat_id ) ) ) {
 				Game13.log.WriteMsg( "## WARNING: " + ( "addAmount(): Unknown material " + mat_id + "!" ) );
 				return;
 			}
@@ -148,11 +144,6 @@ namespace Somnium.Game {
 			}
 			newargs.Apply( Lang13.BindFunc( base, "resetVariables" ) );
 
-			//
-
-			base.resetVariables();
-
-			//
 			if ( !Lang13.Bool( GlobalVars.initial_materials ) ) {
 				GlobalFuncs.initialize_materials();
 			}

@@ -57,9 +57,8 @@ namespace Somnium.Game {
 						foreach (dynamic _a in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_GravityGenerator) )) {
 							G = _a;
 							
-							Interface13.Stat( null, G.localareas.Contains( A ) );
 
-							if ( G is Obj_Machinery_GravityGenerator && G.on ) {
+							if ( G.localareas.Contains( A ) && G.on ) {
 								break;
 							}
 						}

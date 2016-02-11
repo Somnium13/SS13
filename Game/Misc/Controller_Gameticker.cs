@@ -101,9 +101,8 @@ namespace Somnium.Game {
 				temprole = Mind.special_role;
 
 				if ( Lang13.Bool( temprole ) ) {
-					Interface13.Stat( null, total_antagonists.Contains( temprole ) );
-
-					if ( false ) {
+					
+					if ( total_antagonists.Contains( temprole ) ) {
 						total_antagonists[temprole] += ", " + Mind.name + "(" + Mind.key + ")";
 					} else {
 						total_antagonists.Add( temprole );

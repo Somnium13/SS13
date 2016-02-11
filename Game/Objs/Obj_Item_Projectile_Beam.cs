@@ -243,9 +243,8 @@ namespace Somnium.Game {
 
 				if ( this.linear_movement ) {
 					this.update_pixel();
-					Interface13.Stat( null, GlobalVars.beam_master.Contains( "" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY ) );
 
-					if ( !false ) {
+					if ( !GlobalVars.beam_master.Contains( "" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY ) ) {
 						I = new Image( this.icon, "" + this.icon_state + "_pixel", 13, target_dir );
 						I.transform = Num13.Rotate( I.transform, this.target_angle + 45 );
 						I.pixel_x = this.PixelX;
@@ -255,13 +254,11 @@ namespace Somnium.Game {
 
 					if ( this.loc != null && Lang13.Bool( target_dir ) ) {
 						this.loc.overlays.Add( GlobalVars.beam_master["" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY] );
-						Interface13.Stat( null, GlobalVars.beam_master.Contains( reference ) );
 
-						if ( false ) {
+						if ( GlobalVars.beam_master.Contains( reference ) ) {
 							turf_master = GlobalVars.beam_master[reference];
-							Interface13.Stat( null, turf_master.Contains( "" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY ) );
 
-							if ( false ) {
+							if ( Lang13.Bool( turf_master.Contains( "" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY ) ) ) {
 								turfs = turf_master["" + this.icon_state + "_angle" + this.target_angle + "_pX" + this.PixelX + "_pY" + this.PixelY];
 								turfs += this.loc;
 							} else {
@@ -274,22 +271,19 @@ namespace Somnium.Game {
 						}
 					}
 				} else {
-					Interface13.Stat( null, GlobalVars.beam_master.Contains( "" + this.icon_state + target_dir ) );
-
-					if ( !this.linear_movement ) {
+					
+					if ( !GlobalVars.beam_master.Contains( "" + this.icon_state + target_dir ) ) {
 						I2 = new Image( this.icon, this.icon_state, 10, target_dir );
 						GlobalVars.beam_master["" + this.icon_state + target_dir] = I2;
 					}
 
 					if ( this.loc != null && Lang13.Bool( target_dir ) ) {
 						this.loc.overlays.Add( GlobalVars.beam_master["" + this.icon_state + target_dir] );
-						Interface13.Stat( null, GlobalVars.beam_master.Contains( reference ) );
 
-						if ( false ) {
+						if ( GlobalVars.beam_master.Contains( reference ) ) {
 							turf_master2 = GlobalVars.beam_master[reference];
-							Interface13.Stat( null, turf_master2.Contains( "" + this.icon_state + target_dir ) );
 
-							if ( false ) {
+							if ( Lang13.Bool( turf_master2.Contains( "" + this.icon_state + target_dir ) ) ) {
 								turfs3 = turf_master2["" + this.icon_state + target_dir];
 								turfs3 += this.loc;
 							} else {

@@ -43,9 +43,8 @@ namespace Somnium.Game {
 							connected_levels.Or( R.listening_level );
 						}
 					}
-					Interface13.Stat( null, connected_levels.Contains( ((dynamic)signal).data["level"] ) );
 
-					if ( H is Obj_Machinery_Telecomms_Hub ) {
+					if ( connected_levels.Contains( ((dynamic)signal).data["level"] ) ) {
 						return true;
 					}
 				}

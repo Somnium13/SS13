@@ -27,9 +27,8 @@ namespace Somnium.Game {
 			dynamic H = null;
 			int time = 0;
 
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>The " + this + " slips out of your hand and hits your head.</span>" );
 				((Mob_Living)user).take_organ_damage( 10 );
 				((Mob)user).Paralyse( 2 );

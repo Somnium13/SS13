@@ -400,9 +400,8 @@ namespace Somnium.Game {
 						T = Map13.GetTile( x, y, z ??0 );
 						T.loc.contents.Remove( T );
 						T = Lang13.Call( tp, Map13.GetTile( x, y, z ??0 ) );
-						Interface13.Stat( null, F.dir.Contains( "AREA" ) );
 
-						if ( false ) {
+						if ( F.dir.Contains( "AREA" ) ) {
 							n = F.ReadItem( "AREA", n );
 							A = areas[n];
 							A.contents += T;

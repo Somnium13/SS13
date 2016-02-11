@@ -50,11 +50,10 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: gyrotron_controller.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			bool? _default = null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			bool _default = false;
 
-			Interface13.Stat( null, this.linked_gyrotrons.Contains( O ) );
-			_default = null;
+			_default = this.linked_gyrotrons.Contains( O );
 			return _default;
 		}
 

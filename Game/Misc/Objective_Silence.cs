@@ -47,13 +47,8 @@ namespace Somnium.Game {
 							continue;
 						}
 
-						if (
-							T.loc.type == typeof(Zone_Shuttle_Escape_Centcom) ||
-							T.loc.type == typeof(Zone_Shuttle_EscapePod1_Centcom) || 
-							T.loc.type == typeof(Zone_Shuttle_EscapePod2_Centcom) ||
-							T.loc.type == typeof(Zone_Shuttle_EscapePod3_Centcom) ||
-							T.loc.type == typeof(Zone_Shuttle_EscapePod5_Centcom)
-						) {
+						dynamic _a = T.loc.type; // Was a switch-case, sorry for the mess.
+						if ( _a==typeof(Zone_Shuttle_Escape_Centcom) || _a==typeof(Zone_Shuttle_EscapePod1_Centcom) || _a==typeof(Zone_Shuttle_EscapePod2_Centcom) || _a==typeof(Zone_Shuttle_EscapePod3_Centcom) || _a==typeof(Zone_Shuttle_EscapePod5_Centcom) ) {
 							return 0;
 						}
 					}

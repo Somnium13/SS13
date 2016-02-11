@@ -137,15 +137,11 @@ namespace Somnium.Game {
 					this.in_chamber.damage *= 121;
 					this.Fire( M, user, 0, false, true );
 					return null;
+				} else if ( this.target.Contains( this.target != null && Lang13.Bool( M ) ) ) {
+					this.Fire( M, user, 0, false, true );
+					return null;
 				} else {
-					Interface13.Stat( null, this.target.Contains( this.target != null && Lang13.Bool( M ) ) );
-
-					if ( user.a_intent == "hurt" ) {
-						this.Fire( M, user, 0, false, true );
-						return null;
-					} else {
-						return base.attack( (object)(M), (object)(user), def_zone, eat_override );
-					}
+					return base.attack( (object)(M), (object)(user), def_zone, eat_override );
 				}
 			} else {
 				return base.attack( (object)(M), (object)(user), def_zone, eat_override );
@@ -171,7 +167,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( Lang13.Bool( user ) && Lang13.Bool( user.client ) && user.client.gun_mode && !false ) {
+			if ( Lang13.Bool( user ) && Lang13.Bool( user.client ) && user.client.gun_mode && !this.target.Contains( A ) ) {
 				this.PreFire( A, user, _params, struggle );
 			} else {
 				this.Fire( A, user, _params, null, struggle );
@@ -245,7 +241,7 @@ namespace Somnium.Game {
 			Mob_Living L = null;
 
 			
-			if ( !( this.target != null ) || !false ) {
+			if ( !( this.target != null ) || !this.target.Contains( M ) ) {
 				this.lock_time = Game13.time;
 
 				if ( this.target != null && !this.automatic ) {
@@ -280,15 +276,14 @@ namespace Somnium.Game {
 				return;
 			}
 
-			if ( A is Mob && A is Mob_Living && !false ) {
+			if ( A is Mob && A is Mob_Living && !this.target.Contains( A ) ) {
 				this.Aim( A );
 			} else {
 				M = GlobalFuncs.GunTrace( Task13.User.x, Task13.User.y, Convert.ToInt32( A.x ), Convert.ToInt32( A.y ), Task13.User.z, Task13.User );
-				Interface13.Stat( null, ((dynamic)( Map13.FetchInView( null, user ) != null && !false )).Contains( Lang13.Bool( M ) && M is Mob_Living && Lang13.Bool( M ) ) );
 
-				if ( A is Mob && A is Mob_Living && !false ) {
+				if ( Lang13.Bool( ((dynamic)( Map13.FetchInView( null, user ) != null && !this.target.Contains( M ) )).Contains( Lang13.Bool( M ) && M is Mob_Living && Lang13.Bool( M ) ) ) ) {
 					this.Aim( M );
-				} else if ( !( M is Mob ) || M is Mob && !false ) {
+				} else if ( !( M is Mob ) || M is Mob && !Map13.FetchInView( null, user ).Contains( M ) ) {
 					this.Fire( A, user, _params, null, struggle );
 				}
 			}
@@ -361,9 +356,8 @@ namespace Somnium.Game {
 				
 				if ( user is Mob_Living ) {
 					M = user;
-					Interface13.Stat( null, M.mutations.Contains( 5 ) );
 
-					if ( false && Rand13.PercentChance( 50 ) ) {
+					if ( Lang13.Bool( M.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 						GlobalFuncs.to_chat( M, "<span class='danger'>" + this + " blows up in your face.</span>" );
 						((Mob_Living)M).take_organ_damage( 0, 20 );
 						new ByTable().Set( 1, this ).Set( "force_drop", 1 ).Apply( Lang13.BindFunc( M, "drop_item" ) );
@@ -380,9 +374,8 @@ namespace Somnium.Game {
 
 			if ( user is Mob_Living ) {
 				M2 = user;
-				Interface13.Stat( null, M2.mutations.Contains( 4 ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( M2.mutations.Contains( 4 ) ) ) {
 					GlobalFuncs.to_chat( M2, "<span class='warning'>Your meaty finger is much too large for the trigger guard!</span>" );
 					return;
 				}

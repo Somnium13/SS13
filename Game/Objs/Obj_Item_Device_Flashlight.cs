@@ -36,9 +36,8 @@ namespace Somnium.Game {
 			this.add_fingerprint( user );
 
 			if ( this.on && ((dynamic)user.zone_sel).selecting == "eyes" ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( ( false || ((Mob_Living)user).getBrainLoss() >= 60 ) && Rand13.PercentChance( 50 ) ) {
+				
+				if ( ( Lang13.Bool( user.mutations.Contains( 5 ) ) || ((Mob_Living)user).getBrainLoss() >= 60 ) && Rand13.PercentChance( 50 ) ) {
 					return base.attack( (object)(M), (object)(user), def_zone, eat_override );
 				}
 
@@ -73,16 +72,12 @@ namespace Somnium.Game {
 					
 					if ( Convert.ToInt32( M.stat ) == 2 || ( M.sdisabilities & 1 ) != 0 ) {
 						GlobalFuncs.to_chat( user, "<span class='notice'>" + M + " pupils does not react to the light!</span>" );
-					} else {
-						Interface13.Stat( null, M.mutations.Contains( 3 ) );
-
-						if ( Convert.ToInt32( M.stat ) == 2 || ( M.sdisabilities & 1 ) != 0 ) {
-							Icon13.Flick( "flash", M.flash );
-							GlobalFuncs.to_chat( user, "<span class='notice'>" + M + " pupils give an eerie glow!</span>" );
-						} else if ( !Lang13.Bool( M.blinded ) ) {
-							Icon13.Flick( "flash", M.flash );
-							GlobalFuncs.to_chat( user, "<span class='notice'>" + M + "'s pupils narrow.</span>" );
-						}
+					} else if ( Lang13.Bool( M.mutations.Contains( 3 ) ) ) {
+						Icon13.Flick( "flash", M.flash );
+						GlobalFuncs.to_chat( user, "<span class='notice'>" + M + " pupils give an eerie glow!</span>" );
+					} else if ( !Lang13.Bool( M.blinded ) ) {
+						Icon13.Flick( "flash", M.flash );
+						GlobalFuncs.to_chat( user, "<span class='notice'>" + M + "'s pupils narrow.</span>" );
 					}
 				}
 			} else {

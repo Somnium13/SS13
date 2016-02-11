@@ -20,9 +20,8 @@ namespace Somnium.Game {
 		// Function from file: smoothwall.dm
 		public Tile_Unsimulated_Wall ( dynamic loc = null ) : base( (object)(loc) ) {
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
-			Interface13.Stat( null, GlobalVars.smoothable_unsims.Contains( this.icon_state ) );
 
-			if ( false ) {
+			if ( GlobalVars.smoothable_unsims.Contains( this.icon_state ) ) {
 				this.relativewall();
 				this.relativewall_neighbours();
 			}

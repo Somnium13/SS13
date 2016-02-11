@@ -314,25 +314,25 @@ namespace Somnium.Game {
 			if ( this.lasers ) {
 				
 				switch ((bool)( this.lasertype )) {
-					case 1:
+					case true:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam), this.loc );
 						break;
-					case 2:
+					case 2 != 0:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Heavylaser), this.loc );
 						fire_sound = "sound/weapons/lasercannonfire.ogg";
 						break;
-					case 3:
+					case 3 != 0:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Pulse), this.loc );
 						fire_sound = "sound/weapons/pulse.ogg";
 						break;
-					case 4:
+					case 4 != 0:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Change), this.loc );
 						fire_sound = "sound/weapons/radgun.ogg";
 						break;
-					case 5:
+					case 5 != 0:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Lastertag_Blue), this.loc );
 						break;
-					case 6:
+					case 6 != 0:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Lastertag_Red), this.loc );
 						break;
 				}
@@ -430,9 +430,8 @@ namespace Somnium.Game {
 			dynamic V = null;
 			dynamic A = null;
 
-			Interface13.Stat( null, this.protected_area.turretTargets.Contains( Lang13.Bool( T ) && Lang13.Bool( T ) ) );
-
-			if ( false ) {
+			
+			if ( this.protected_area.turretTargets.Contains( Lang13.Bool( T ) && Lang13.Bool( T ) ) ) {
 				area_T = GlobalFuncs.get_area( T );
 
 				if ( !Lang13.Bool( area_T ) || area_T.type != this.protected_area.type ) {

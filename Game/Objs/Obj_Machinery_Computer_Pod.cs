@@ -63,9 +63,8 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( href_list["add"] ) ) {
 					new_id_tag = Interface13.Input( "Enter a new id_tag", "Mass Driver Controls", "id_tag", null, null, InputType.Any );
-					Interface13.Stat( null, this.id_tags.Contains( new_id_tag ) );
 
-					if ( !false ) {
+					if ( !this.id_tags.Contains( new_id_tag ) ) {
 						this.id_tags.Add( new_id_tag );
 						this.solo_sync( new_id_tag );
 					}
@@ -73,14 +72,12 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( href_list["remove"] ) ) {
 					ident_tag = href_list["driver"];
-					Interface13.Stat( null, this.synced.Contains( ident_tag ) );
 
-					if ( false ) {
+					if ( this.synced.Contains( ident_tag ) ) {
 						this.synced.Remove( ident_tag );
 					}
-					Interface13.Stat( null, this.door_only_tags.Contains( ident_tag ) );
 
-					if ( false ) {
+					if ( this.door_only_tags.Contains( ident_tag ) ) {
 						this.door_only_tags.Remove( ident_tag );
 					}
 					this.timings.Remove( ident_tag );
@@ -270,14 +267,12 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( this.id_tags )) {
 				ident_tag = _b;
 				
-				Interface13.Stat( null, this.door_only_tags.Contains( ident_tag ) );
 
-				if ( !false ) {
+				if ( !this.door_only_tags.Contains( ident_tag ) ) {
 					dat += new Txt( "<BR><BR><B>" ).item( ident_tag ).str( "</B> <A href='?src=" ).Ref( this ).str( ";remove=1;driver=" ).item( ident_tag ).str( "'>remove</A>" ).ToString();
 				}
-				Interface13.Stat( null, this.synced.Contains( ident_tag ) );
 
-				if ( !false ) {
+				if ( this.synced.Contains( ident_tag ) ) {
 					d2 = "";
 
 					if ( Lang13.Bool( this.timings[ident_tag] ) ) {
@@ -432,7 +427,7 @@ namespace Somnium.Game {
 					continue;
 				}
 
-				if ( M.id_tag == ident_tag && !false ) {
+				if ( M.id_tag == ident_tag && !this.synced.Contains( ident_tag ) ) {
 					this.synced.Add( ident_tag );
 					this.timings.Add( ident_tag );
 					this.timings[ident_tag] = 0;
@@ -447,9 +442,8 @@ namespace Somnium.Game {
 					break;
 				}
 			}
-			Interface13.Stat( null, this.synced.Contains( ident_tag ) );
 
-			if ( !false ) {
+			if ( !this.synced.Contains( ident_tag ) ) {
 				
 				foreach (dynamic _b in Lang13.Enumerate( GlobalVars.poddoors, typeof(Obj_Machinery_Door_Poddoor) )) {
 					M2 = _b;
@@ -459,7 +453,7 @@ namespace Somnium.Game {
 						continue;
 					}
 
-					if ( M2.id_tag == ident_tag && !false && !false ) {
+					if ( M2.id_tag == ident_tag && !this.synced.Contains( ident_tag ) && !this.door_only_tags.Contains( ident_tag ) ) {
 						this.door_only_tags.Add( ident_tag );
 						break;
 					}
@@ -491,7 +485,7 @@ namespace Somnium.Game {
 					ident_tag = _a;
 					
 
-					if ( M.id_tag == ident_tag && !false ) {
+					if ( M.id_tag == ident_tag && !this.synced.Contains( ident_tag ) ) {
 						this.synced.Add( ident_tag );
 						this.timings.Add( ident_tag );
 						this.timings[ident_tag] = this.default_timings;
@@ -520,7 +514,7 @@ namespace Somnium.Game {
 					ident_tag2 = _c;
 					
 
-					if ( M2.id_tag == ident_tag2 && !false && !false ) {
+					if ( M2.id_tag == ident_tag2 && !this.synced.Contains( ident_tag2 ) && !this.door_only_tags.Contains( ident_tag2 ) ) {
 						this.door_only_tags.Add( ident_tag2 );
 						break;
 					}

@@ -386,9 +386,8 @@ namespace Somnium.Game {
 					case "hardcore":
 					case "hardcores":
 						B.name = "The Hardcores";
-						Interface13.Stat( null, H.mutations.Contains( 300 ) );
 
-						if ( !false ) {
+						if ( !Lang13.Bool( H.mutations.Contains( 300 ) ) ) {
 							H.mutations.Add( 300 );
 						}
 						J = "Atmospherics Technician";

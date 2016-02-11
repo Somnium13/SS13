@@ -74,9 +74,8 @@ namespace Somnium.Game {
 						GlobalFuncs.to_chat( b, "<span class='warning'>Yeah, good idea. Give something deader than the pizza in your fridge legs.  Mom would be so proud.</span>" );
 						return GlobalVars.TRUE;
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( mmi.brainmob.mind ) );
 
-					if ( Convert.ToInt32( mmi.brainmob.stat ) == 2 ) {
+					if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( mmi.brainmob.mind ) ) {
 						GlobalFuncs.to_chat( b, new Txt( "<span class='warning'>" ).The( this ).item().str( "'s firmware lets out a shrill sound, and flashes 'Abnormal Memory Engram'. It refuses to accept " ).the( mmi ).item().str( ".</span>" ).ToString() );
 						return GlobalVars.TRUE;
 					}

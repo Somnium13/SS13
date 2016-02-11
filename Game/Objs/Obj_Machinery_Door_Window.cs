@@ -44,8 +44,7 @@ namespace Somnium.Game {
 		public override int emag( dynamic user = null ) {
 			dynamic used_emag = null;
 
-			Interface13.Stat( null, user.contents.Contains( typeof(Obj_Item_Weapon_Card_Emag) ) );
-			used_emag = null;
+			used_emag = user.contents.Contains( typeof(Obj_Item_Weapon_Card_Emag) );
 			return this.hackOpen( used_emag, user ) ?1:0;
 		}
 

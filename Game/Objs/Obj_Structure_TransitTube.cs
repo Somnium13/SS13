@@ -101,9 +101,8 @@ namespace Somnium.Game {
 			dynamic text_part = null;
 			int direction = 0;
 
-			Interface13.Stat( null, GlobalVars.direction_table.Contains( text ) );
-
-			if ( false ) {
+			
+			if ( GlobalVars.direction_table.Contains( text ) ) {
 				return GlobalVars.direction_table[text];
 			}
 			split_text = GlobalFuncs.text2list( text, "-" );
@@ -240,13 +239,9 @@ namespace Somnium.Game {
 					if ( tube.directions() == null && tube.icon_state == "auto" ) {
 						connected_auto.Add( direction );
 						break;
-					} else {
-						Interface13.Stat( null, tube.directions().Contains( Num13.Rotate( direction, 180 ) ) );
-
-						if ( tube.directions() == null && tube.icon_state == "auto" ) {
-							connected.Add( direction );
-							break;
-						}
+					} else if ( tube.directions().Contains( Num13.Rotate( direction, 180 ) ) ) {
+						connected.Add( direction );
+						break;
 					}
 				}
 			}

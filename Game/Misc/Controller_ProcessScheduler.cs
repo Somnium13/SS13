@@ -239,19 +239,16 @@ namespace Somnium.Game {
 
 		// Function from file: processScheduler.dm
 		public void setRunningProcessState( Controller_Process process = null ) {
-			Interface13.Stat( null, this.queued.Contains( process ) );
-
-			if ( false ) {
+			
+			if ( this.queued.Contains( process ) ) {
 				this.queued.Remove( process );
 			}
-			Interface13.Stat( null, this.idle.Contains( process ) );
 
-			if ( false ) {
+			if ( this.idle.Contains( process ) ) {
 				this.idle.Remove( process );
 			}
-			Interface13.Stat( null, this.running.Contains( process ) );
 
-			if ( !false ) {
+			if ( !this.running.Contains( process ) ) {
 				this.running.Add( process );
 			}
 			return;
@@ -259,19 +256,16 @@ namespace Somnium.Game {
 
 		// Function from file: processScheduler.dm
 		public void setQueuedProcessState( Controller_Process process = null ) {
-			Interface13.Stat( null, this.running.Contains( process ) );
-
-			if ( false ) {
+			
+			if ( this.running.Contains( process ) ) {
 				this.running.Remove( process );
 			}
-			Interface13.Stat( null, this.idle.Contains( process ) );
 
-			if ( false ) {
+			if ( this.idle.Contains( process ) ) {
 				this.idle.Remove( process );
 			}
-			Interface13.Stat( null, this.queued.Contains( process ) );
 
-			if ( !false ) {
+			if ( !this.queued.Contains( process ) ) {
 				this.queued.Add( process );
 			}
 			process.f_queued();
@@ -280,19 +274,16 @@ namespace Somnium.Game {
 
 		// Function from file: processScheduler.dm
 		public void setIdleProcessState( Controller_Process process = null ) {
-			Interface13.Stat( null, this.running.Contains( process ) );
-
-			if ( false ) {
+			
+			if ( this.running.Contains( process ) ) {
 				this.running.Remove( process );
 			}
-			Interface13.Stat( null, this.queued.Contains( process ) );
 
-			if ( false ) {
+			if ( this.queued.Contains( process ) ) {
 				this.queued.Remove( process );
 			}
-			Interface13.Stat( null, this.idle.Contains( process ) );
 
-			if ( !false ) {
+			if ( !this.idle.Contains( process ) ) {
 				this.idle.Add( process );
 			}
 			return;
@@ -497,9 +488,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Lang13.GetTypes( typeof(Controller_Process) ) - typeof(Controller_Process) )) {
 				process = _a;
 				
-				Interface13.Stat( null, this.deferredSetupList.Contains( process ) );
 
-				if ( !false ) {
+				if ( !this.deferredSetupList.Contains( process ) ) {
 					this.addProcess( Lang13.Call( process, this ) );
 				}
 			}
@@ -514,9 +504,8 @@ namespace Somnium.Game {
 
 		// Function from file: processScheduler.dm
 		public void deferSetupFor( Type processPath = null ) {
-			Interface13.Stat( null, this.deferredSetupList.Contains( processPath ) );
-
-			if ( !false ) {
+			
+			if ( !this.deferredSetupList.Contains( processPath ) ) {
 				this.deferredSetupList.Add( processPath );
 			}
 			return;

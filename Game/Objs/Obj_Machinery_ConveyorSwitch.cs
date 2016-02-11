@@ -43,9 +43,8 @@ namespace Somnium.Game {
 			if ( _default != 0 ) {
 				return _default;
 			}
-			Interface13.Stat( null, href_list.Contains( "setconvdir" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "setconvdir" ) ) {
 				this.convdir = String13.ParseNumber( href_list["setconvdir"] );
 				this.updateConfig();
 				return 1;

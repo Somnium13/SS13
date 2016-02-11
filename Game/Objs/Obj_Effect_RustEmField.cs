@@ -360,9 +360,8 @@ namespace Somnium.Game {
 		public void AddParticles( dynamic name = null, bool? quantity = null ) {
 			quantity = quantity ?? true;
 
-			Interface13.Stat( null, this.dormant_reactant_quantities.Contains( name ) );
-
-			if ( quantity == null ) {
+			
+			if ( this.dormant_reactant_quantities.Contains( name ) ) {
 				this.dormant_reactant_quantities[name] += quantity;
 			} else if ( name != "proton" && name != "electron" && name != "neutron" ) {
 				this.dormant_reactant_quantities.Add( name );

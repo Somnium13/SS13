@@ -100,14 +100,10 @@ namespace Somnium.Game {
 				this.loaded_food = null;
 				this.loaded_food_name = null;
 				return null;
+			} else if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
+				this.eyestab( user, user ); return null;
 			} else {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( this.loaded_food != null && Rand13.PercentChance( 50 ) ) {
-					this.eyestab( user, user ); return null;
-				} else {
-					this.eyestab( M, user ); return null;
-				}
+				this.eyestab( M, user ); return null;
 			}
 			return null;
 		}

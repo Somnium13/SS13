@@ -51,9 +51,8 @@ namespace Somnium.Game {
 			}
 
 			if ( this.width > 1 ) {
-				Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 					this.bound_width = this.width * Game13.icon_size;
 					this.bound_height = Game13.icon_size;
 				} else {
@@ -78,9 +77,8 @@ namespace Somnium.Game {
 			_default = base.Move( (object)(NewLoc), Dir, step_x, step_y );
 
 			if ( this.width > 1 ) {
-				Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 					this.bound_width = this.width * Game13.icon_size;
 					this.bound_height = Game13.icon_size;
 				} else {
@@ -115,7 +113,7 @@ namespace Somnium.Game {
 			Effect_Effect_System_SparkSpread s = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					break;

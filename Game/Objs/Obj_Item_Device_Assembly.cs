@@ -246,9 +246,8 @@ namespace Somnium.Game {
 			ByTable L = null;
 			string var_to_change = null;
 
-			Interface13.Stat( null, this.accessible_values.Contains( !Lang13.Bool( value ) ) );
-
-			if ( false ) {
+			
+			if ( this.accessible_values.Contains( !Lang13.Bool( value ) ) ) {
 				return;
 			}
 			L = String13.ParseUrlParams( this.accessible_values[value] );
@@ -275,9 +274,8 @@ namespace Somnium.Game {
 			ByTable L = null;
 			dynamic var_to_grab = null;
 
-			Interface13.Stat( null, this.accessible_values.Contains( !Lang13.Bool( value ) ) );
-
-			if ( false ) {
+			
+			if ( this.accessible_values.Contains( !Lang13.Bool( value ) ) ) {
 				return null;
 			}
 			L = String13.ParseUrlParams( this.accessible_values[value] );

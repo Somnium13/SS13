@@ -49,9 +49,8 @@ namespace Somnium.Game {
 					GlobalFuncs.qdel( this );
 					return null;
 				}
-				Interface13.Stat( null, GlobalVars.processing_objects.Contains( this ) );
 
-				if ( !( this.snow_amount == 0 ) ) {
+				if ( !GlobalVars.processing_objects.Contains( this ) ) {
 					GlobalVars.processing_objects.Add( this );
 				}
 			}
@@ -98,9 +97,8 @@ namespace Somnium.Game {
 					GlobalFuncs.qdel( this );
 					return null;
 				}
-				Interface13.Stat( null, GlobalVars.processing_objects.Contains( this ) );
 
-				if ( !( this.snow_amount == 0 ) ) {
+				if ( !GlobalVars.processing_objects.Contains( this ) ) {
 					GlobalVars.processing_objects.Add( this );
 				}
 			}

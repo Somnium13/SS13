@@ -110,9 +110,8 @@ namespace Somnium.Game {
 				
 				if ( Task13.User is Mob_Living_Carbon_Human ) {
 					H = Task13.User;
-					Interface13.Stat( null, H.mutations.Contains( 5 ) );
 
-					if ( false && Rand13.PercentChance( 50 ) ) {
+					if ( H.mutations.Contains( 5 ) && Rand13.PercentChance( 50 ) ) {
 						GlobalFuncs.to_chat( H, "<span class='warning'>You smack yourself in the face while swinging the " + this + "!</span>" );
 						H.Stun( 2 );
 						H.drop_item( this );

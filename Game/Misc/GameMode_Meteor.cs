@@ -94,19 +94,13 @@ namespace Somnium.Game {
 						continue;
 					}
 
-					switch ((Type)( location.loc.type )) {
-						case typeof(Zone_Shuttle_Escape_Centcom):
-							text += "<br><b><font size=2>" + player.real_name + " escaped on the emergency shuttle</font></b>";
-							break;
-						case typeof(Zone_Shuttle_EscapePod1_Centcom):
-						case typeof(Zone_Shuttle_EscapePod2_Centcom):
-						case typeof(Zone_Shuttle_EscapePod3_Centcom):
-						case typeof(Zone_Shuttle_EscapePod5_Centcom):
-							text += "<br><font size=2>" + player.real_name + " escaped in a life pod.</font>";
-							break;
-						default:
-							text += "<br><font size=1>" + player.real_name + " survived but is stranded without any hope of rescue.</font>";
-							break;
+					dynamic _a = location.loc.type; // Was a switch-case, sorry for the mess.
+					if ( _a==typeof(Zone_Shuttle_Escape_Centcom) ) {
+						text += "<br><b><font size=2>" + player.real_name + " escaped on the emergency shuttle</font></b>";
+					} else if ( _a==typeof(Zone_Shuttle_EscapePod1_Centcom) || _a==typeof(Zone_Shuttle_EscapePod2_Centcom) || _a==typeof(Zone_Shuttle_EscapePod3_Centcom) || _a==typeof(Zone_Shuttle_EscapePod5_Centcom) ) {
+						text += "<br><font size=2>" + player.real_name + " escaped in a life pod.</font>";
+					} else {
+						text += "<br><font size=1>" + player.real_name + " survived but is stranded without any hope of rescue.</font>";
 					}
 					survivors++;
 				}

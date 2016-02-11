@@ -218,9 +218,8 @@ namespace Somnium.Game {
 		public bool check_for_weapons( Base_Data slot_item = null ) {
 			
 			if ( slot_item is Obj_Item_Weapon_Gun || slot_item is Obj_Item_Weapon_Melee ) {
-				Interface13.Stat( null, this.safe_weapons.Contains( slot_item.type ) );
-
-				if ( !false ) {
+				
+				if ( !this.safe_weapons.Contains( slot_item.type ) ) {
 					return true;
 				}
 			}
@@ -339,7 +338,7 @@ namespace Somnium.Game {
 
 					if ( C is Mob_Living_Carbon_Human ) {
 						this.threatlevel = this.assess_perp( C );
-					} else if ( C is Mob_Living_Carbon_Monkey && false ) {
+					} else if ( C is Mob_Living_Carbon_Monkey && GlobalVars.ticker.mode.infected_monkeys.Contains( C.viruses.Contains( typeof(Disease_JungleFever) ) || C.mind != null ) ) {
 						this.threatlevel = 666;
 					} else {
 						continue;
@@ -583,7 +582,7 @@ namespace Somnium.Game {
 
 								if ( M is Mob_Living_Carbon_Human ) {
 									
-									if ( Convert.ToDouble( M.stuttering ) < 10 && !false ) {
+									if ( Convert.ToDouble( M.stuttering ) < 10 && !Lang13.Bool( M.mutations.Contains( 4 ) ) ) {
 										M.stuttering = 10;
 									}
 									((Mob)M).Stun( 10 );

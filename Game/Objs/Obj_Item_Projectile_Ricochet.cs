@@ -147,7 +147,7 @@ namespace Somnium.Game {
 
 			trail = new Obj_Structure_RicochetTrail( this.loc );
 
-			switch ((double?)( this.pos_to )) {
+			switch ((int?)( this.pos_to )) {
 				case 1:
 					
 					if ( this.pos_from == GlobalVars.WEST ) {
@@ -194,7 +194,7 @@ namespace Somnium.Game {
 				return;
 			}
 
-			switch ((double?)( this.pos_to )) {
+			switch ((int?)( this.pos_to )) {
 				case 1:
 					
 					if ( this.pos_from == GlobalVars.WEST ) {
@@ -279,7 +279,7 @@ namespace Somnium.Game {
 			bump.dir = ((int)( this.pos_to ??0 ));
 			GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/items/metal_impact.ogg", 50, 1 );
 
-			switch ((double?)( this.pos_to )) {
+			switch ((int?)( this.pos_to )) {
 				case 1:
 					
 					if ( this.pos_from == GlobalVars.WEST ) {
@@ -322,8 +322,8 @@ namespace Somnium.Game {
 
 		// Function from file: ricochet.dm
 		public override bool? update_icon( dynamic location = null, dynamic target = null ) {
-
-			switch ((int?)(this.pos_to)) {
+			
+			switch ((int?)( this.pos_to )) {
 				case 1:
 					
 					if ( this.pos_from == GlobalVars.WEST ) {

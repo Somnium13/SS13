@@ -146,7 +146,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( Lang13.Bool( upgrade_type ) && false && false ) {
+			if ( Lang13.Bool( upgrade_type ) && this.spell_levels.Contains( upgrade_type ) && this.level_max.Contains( upgrade_type ) ) {
 				
 				if ( Convert.ToDouble( this.spell_levels[upgrade_type] ) >= Convert.ToDouble( this.level_max[upgrade_type] ) ) {
 					return false;
@@ -249,9 +249,8 @@ namespace Somnium.Game {
 			Mob SA = null;
 			dynamic spell = null;
 
-			Interface13.Stat( null, user.spell_list.Contains( this ) );
-
-			if ( !( user == null ) && this.holder == user ) {
+			
+			if ( !user.spell_list.Contains( this ) && this.holder == user ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You shouldn't have this spell! Something's wrong.</span>" );
 				return false;
 			}
@@ -316,7 +315,7 @@ namespace Somnium.Game {
 					return false;
 				}
 
-				if ( user is Mob_Living_Carbon_Human || user is Mob_Living_Carbon_Monkey && !false ) {
+				if ( user is Mob_Living_Carbon_Human || user is Mob_Living_Carbon_Monkey && !new ByTable(new object [] { "emote", "none" }).Contains( this.invocation_type ) ) {
 					
 					if ( user.wear_mask is Obj_Item_Clothing_Mask_Muzzle ) {
 						GlobalFuncs.to_chat( user, "Mmmf mrrfff!" );
@@ -387,9 +386,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( targets, typeof(Ent_Static) )) {
 				target = _a;
 				
-				Interface13.Stat( null, GlobalFuncs.view_or_range( this.range, Task13.User, this.selection_type ).Contains( target ) );
 
-				if ( !( target is Ent_Static ) ) {
+				if ( !GlobalFuncs.view_or_range( this.range, Task13.User, this.selection_type ).Contains( target ) ) {
 					continue;
 				}
 				valid_targets.Add( target );

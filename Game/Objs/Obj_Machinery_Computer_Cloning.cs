@@ -247,7 +247,7 @@ namespace Somnium.Game {
 			dat = "<h3>Cloning System Control</h3>";
 			dat += new Txt( "<font size=-1><a href='byond://?src=" ).Ref( this ).str( ";refresh=1'>Refresh</a></font>\n		<br><tt>" ).item( this.temp ).str( "</tt><br>" ).ToString();
 
-			switch ((int?)(this.menu)) {
+			switch ((int?)( this.menu )) {
 				case 1:
 					dat += "<h4>Modules</h4>";
 
@@ -423,9 +423,8 @@ namespace Somnium.Game {
 				this.scantemp = "Error: No signs of intelligence detected.";
 				return;
 			}
-			Interface13.Stat( null, subject.mutations.Contains( 8 ) );
 
-			if ( !subject.has_brain() || subject.suiciding == true ) {
+			if ( subject.mutations.Contains( 8 ) || subject.suiciding == true ) {
 				this.scantemp = "Error: Mental interface failure.";
 				return;
 			}
@@ -553,9 +552,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: cloning.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			Interface13.Stat( null, this.links.Contains( O != null && O != null ) );
-			return null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			return this.links.Contains( O != null && O != null );
 		}
 
 		// Function from file: cloning.dm

@@ -39,9 +39,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.steps, typeof(ByTable) )) {
 				this_step = _a;
 				
-				Interface13.Stat( null, this_step.Contains( "amount" ) );
 
-				if ( this_step is ByTable ) {
+				if ( this_step.Contains( "amount" ) ) {
 					this_step.Add( new ByTable().Set( "max_amount", this_step["amount"] ) );
 				}
 			}
@@ -61,15 +60,13 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( user, "<span class='warning'>This tool only works for deconstruction!</span>" );
 				return false;
 			}
-			Interface13.Stat( null, given_step.Contains( "amount" ) );
 
-			if ( !( Lang13.Bool( used_atom.construction_delay_mult ) && !Lang13.Bool( used_atom.construction_delay_mult["construct"] ) ) && !false ) {
+			if ( !Lang13.Bool( given_step.Contains( "amount" ) ) && !Lang13.Bool( given_step.Contains( "delay" ) ) ) {
 				return true;
 			}
 			delay = false;
-			Interface13.Stat( null, given_step.Contains( "delay" ) );
 
-			if ( !( Lang13.Bool( used_atom.construction_delay_mult ) && !Lang13.Bool( used_atom.construction_delay_mult["construct"] ) ) && !false ) {
+			if ( Lang13.Bool( given_step.Contains( "delay" ) ) ) {
 				
 				if ( Lang13.Bool( used_atom.construction_delay_mult ) ) {
 					delay = Lang13.Bool( given_step["delay"] * used_atom.construction_delay_mult["construct"] );
@@ -86,15 +83,14 @@ namespace Somnium.Game {
 				}
 			}
 			amount = 0;
-			Interface13.Stat( null, given_step.Contains( "amount" ) );
 
-			if ( ( delay ?1:0) > 0 ) {
+			if ( Lang13.Bool( given_step.Contains( "amount" ) ) ) {
 				amount = Lang13.DoubleNullable( given_step["amount"] );
 			}
 
 			if ( ( amount ??0) > 0 ) {
 				
-				if ( used_atom is Obj_Item_Stack && !false ) {
+				if ( used_atom is Obj_Item_Stack && !Lang13.Bool( given_step.Contains( "take" ) ) ) {
 					stack = used_atom;
 
 					if ( Convert.ToDouble( stack.amount ) < ( amount ??0) ) {
@@ -104,7 +100,7 @@ namespace Somnium.Game {
 						return false;
 					}
 					((Obj_Item_Stack)stack).use( amount );
-				} else if ( used_atom is Obj_Item_Weapon_Weldingtool && !false ) {
+				} else if ( used_atom is Obj_Item_Weapon_Weldingtool && !Lang13.Bool( given_step.Contains( "take" ) ) ) {
 					welder = used_atom;
 
 					if ( !((Obj_Item_Weapon_Weldingtool)welder).isOn() ) {
@@ -119,7 +115,7 @@ namespace Somnium.Game {
 				} else {
 					atom_name = used_atom.name;
 
-					if ( this.permanence || false ) {
+					if ( this.permanence || Lang13.Bool( given_step.Contains( "keep" ) ) ) {
 						
 						if ( ((Mob)user).drop_item( used_atom, this.holder ) ) {
 							this.used_atoms.Add( new ByTable().Set( "" + this.steps.Find( given_step ), used_atom ) );
@@ -193,9 +189,8 @@ namespace Somnium.Game {
 
 		// Function from file: construction_datum.dm
 		public virtual void start_construct_message( dynamic step = null, dynamic user = null, dynamic used_atom = null ) {
-			Interface13.Stat( null, step.Contains( "start_msg" ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( step.Contains( "start_msg" ) ) ) {
 				((Ent_Static)user).visible_message( this.fixText( step["start_msg"], user ), this.fixText( step["start_msg"], user, true ) );
 			}
 			return;
@@ -203,9 +198,8 @@ namespace Somnium.Game {
 
 		// Function from file: construction_datum.dm
 		public virtual void construct_message( dynamic step = null, dynamic user = null, dynamic diff = null, bool? _override = null ) {
-			Interface13.Stat( null, step.Contains( "vis_msg" ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( step.Contains( "vis_msg" ) ) ) {
 				((Ent_Static)user).visible_message( this.fixText( step["vis_msg"], user ), this.fixText( step["vis_msg"], user, true ) );
 			}
 			return;

@@ -265,7 +265,7 @@ namespace Somnium.Game {
 		// Function from file: machinery.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;
@@ -827,20 +827,17 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( P ) && P is Obj_Item_Device_Multitool ) {
 				update_mt_menu = false;
 				re_init = false;
-				Interface13.Stat( null, href_list.Contains( "set_tag" ) );
 
-				if ( false ) {
-					Interface13.Stat( null, GlobalVars.multitool_var_whitelist.Contains( href_list["set_tag"] ) );
-
-					if ( !false ) {
+				if ( href_list.Contains( "set_tag" ) ) {
+					
+					if ( !GlobalVars.multitool_var_whitelist.Contains( href_list["set_tag"] ) ) {
 						newid = String13.SubStr( GlobalFuncs.reject_bad_text( Interface13.Input( Task13.User, "Specify the new ID tag", this, null, null, InputType.Str | InputType.Null ) ), 1, 1024 );
 						GlobalFuncs.log_admin( "" + Task13.User + " (" + GlobalFuncs.formatPlayerPanel( Task13.User, Task13.User.ckey ) + ") attempted to modify variable(var = " + href_list["set_tag"] + ", value = " + newid + ") using multitool - " + GlobalFuncs.formatJumpTo( Task13.User ) );
 						GlobalFuncs.message_admins( "" + Task13.User + " (" + GlobalFuncs.formatPlayerPanel( Task13.User, Task13.User.ckey ) + ") attempted to modify variable(var = " + href_list["set_tag"] + ", value = " + newid + ") using multitool - " + GlobalFuncs.formatJumpTo( Task13.User ) );
 						return false;
 					}
-					Interface13.Stat( null, this.vars.Contains( href_list["set_tag"] ) );
 
-					if ( !( !false ) ) {
+					if ( !this.vars.Contains( href_list["set_tag"] ) ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Something went wrong: Unable to find " + href_list["set_tag"] + " in vars!</span>" );
 						return true;
 					}
@@ -853,9 +850,8 @@ namespace Somnium.Game {
 					}
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "unlink" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "unlink" ) ) {
 					idx = String13.ParseNumber( href_list["unlink"] );
 
 					if ( !Lang13.Bool( idx ) ) {
@@ -874,9 +870,8 @@ namespace Somnium.Game {
 					}
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "link" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "link" ) ) {
 					O2 = P.buffer;
 
 					if ( !( O2 != null ) ) {
@@ -888,7 +883,7 @@ namespace Somnium.Game {
 						return true;
 					}
 
-					if ( this.isLinkedWith( O2 ) == true ) {
+					if ( this.isLinkedWith( O2 ) ) {
 						GlobalFuncs.to_chat( Task13.User, new Txt( "<span class='attack'>A red light flashes on " ).the( P ).item().str( ". The two devices are already linked.</span>" ).ToString() );
 						return true;
 					}
@@ -900,9 +895,8 @@ namespace Somnium.Game {
 					}
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "buffer" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "buffer" ) ) {
 					
 					if ( this is Obj_Machinery_Telecomms ) {
 						
@@ -918,9 +912,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( Task13.User, "<span class='confirm'>A green light flashes, and the device appears in the multitool buffer.</span>" );
 					update_mt_menu = true;
 				}
-				Interface13.Stat( null, href_list.Contains( "flush" ) );
 
-				if ( false ) {
+				if ( href_list.Contains( "flush" ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='confirm'>A green light flashes, and the device disappears from the multitool buffer.</span>" );
 					P.buffer = null;
 					update_mt_menu = true;
@@ -956,12 +949,10 @@ namespace Somnium.Game {
 			string newid = null;
 			dynamic newfreq = null;
 
-			Interface13.Stat( null, href_list.Contains( "set_id" ) );
-
-			if ( false ) {
-				Interface13.Stat( null, this.vars.Contains( "id_tag" ) );
-
-				if ( !false ) {
+			
+			if ( href_list.Contains( "set_id" ) ) {
+				
+				if ( !this.vars.Contains( "id_tag" ) ) {
 					Game13.log.WriteMsg( "## WARNING: " + ( "set_id: " + this.type + " has no id_tag var." ) );
 				}
 				newid = String13.SubStr( GlobalFuncs.reject_bad_text( Interface13.Input( Task13.User, "Specify the new ID tag for this machine", this, ((dynamic)this).id_tag, null, InputType.Str | InputType.Null ) ), 1, 1024 );
@@ -971,12 +962,10 @@ namespace Somnium.Game {
 					return 3;
 				}
 			}
-			Interface13.Stat( null, href_list.Contains( "set_freq" ) );
 
-			if ( false ) {
-				Interface13.Stat( null, this.vars.Contains( "frequency" ) );
-
-				if ( !false ) {
+			if ( href_list.Contains( "set_freq" ) ) {
+				
+				if ( !this.vars.Contains( "frequency" ) ) {
 					Game13.log.WriteMsg( "## WARNING: " + ( "set_freq: " + this.type + " has no frequency var." ) );
 					return 0;
 				}

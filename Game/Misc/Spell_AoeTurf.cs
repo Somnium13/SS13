@@ -69,9 +69,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( GlobalFuncs.view_or_range( this.range, this.holder, this.selection_type ) )) {
 				target = _a;
 				
-				Interface13.Stat( null, GlobalFuncs.view_or_range( this.inner_radius, this.holder, this.selection_type ).Contains( target ) );
 
-				if ( !false ) {
+				if ( !GlobalFuncs.view_or_range( this.inner_radius, this.holder, this.selection_type ).Contains( target ) ) {
 					
 					if ( target.density && ( this.spell_flags & 64 ) != 0 ) {
 						continue;

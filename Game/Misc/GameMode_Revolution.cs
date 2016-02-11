@@ -211,9 +211,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_NewPlayer) )) {
 				player = _a;
 				
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( player.mind.assigned_role ) );
 
-				if ( player is Mob_NewPlayer ) {
+				if ( GlobalVars.command_positions.Contains( player.mind.assigned_role ) ) {
 					head_check++;
 				}
 			}

@@ -35,15 +35,11 @@ namespace Somnium.Game {
 
 			if ( prefix == ";" ) {
 				message.message = String13.SubStr( message.message, 2, 0 );
+			} else if ( new ByTable(new object [] { ":", "#" }).Contains( prefix ) ) {
+				prefix += String13.SubStr( message.message, 2, 3 );
+				message.message = String13.SubStr( message.message, 3, 0 );
 			} else {
-				Interface13.Stat( null, new ByTable(new object [] { ":", "#" }).Contains( prefix ) );
-
-				if ( prefix == ";" ) {
-					prefix += String13.SubStr( message.message, 2, 3 );
-					message.message = String13.SubStr( message.message, 3, 0 );
-				} else {
-					prefix = "";
-				}
+				prefix = "";
 			}
 			words = GlobalFuncs.text2list( message.message, " " );
 			rearranged = new ByTable();
@@ -54,12 +50,10 @@ namespace Somnium.Game {
 				cword = Rand13.PickFromTable( words );
 				words.Remove( cword );
 				suffix = String13.SubStr( cword, Lang13.Length( cword ) - 1, Lang13.Length( cword ) );
-				Interface13.Stat( null, new ByTable(new object [] { ".", ",", ";", "!", ":", "?" }).Contains( Lang13.Length( cword ) > 0 && Lang13.Bool( suffix ) ) );
 
-				if ( false ) {
+				while (new ByTable(new object [] { ".", ",", ";", "!", ":", "?" }).Contains( Lang13.Length( cword ) > 0 && Lang13.Bool( suffix ) )) {
 					cword = String13.SubStr( cword, 1, Lang13.Length( cword ) - 1 );
 					suffix = String13.SubStr( cword, Lang13.Length( cword ) - 1, Lang13.Length( cword ) );
-					// goto 81;
 				}
 
 				if ( Lang13.Length( cword ) != 0 ) {

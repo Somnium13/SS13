@@ -100,9 +100,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( O, "<span class='warning'>You cannot be " + this.display_name + ".</span>" );
 				return;
 			}
-			Interface13.Stat( null, this.currently_querying.Contains( O ) );
 
-			if ( !Lang13.Bool( this.check_observer( O ) ) ) {
+			if ( this.currently_querying.Contains( O ) ) {
 				GlobalFuncs.to_chat( O, "<span class='notice'>Removed from registration list.</span>" );
 				this.currently_querying.Remove( O );
 				return;
@@ -520,7 +519,7 @@ namespace Somnium.Game {
 		// Function from file: seed_datums.dm
 		public void add_newline_to_controller(  ) {
 			
-			if ( this.name == "new line" || !false ) {
+			if ( this.name == "new line" || !GlobalVars.plant_controller.seeds.Contains( this.name ) ) {
 				this.uid = GlobalVars.plant_controller.seeds.len + 1;
 				this.name = "" + this.uid;
 				GlobalVars.plant_controller.seeds[this.name] = this;
@@ -621,9 +620,8 @@ namespace Somnium.Game {
 					rid = _b;
 					
 					gene_chem = gene_value[rid];
-					Interface13.Stat( null, this.chems.Contains( rid ) );
 
-					if ( !false || !Lang13.Bool( this.chems[rid] ) ) {
+					if ( !this.chems.Contains( rid ) || !Lang13.Bool( this.chems[rid] ) ) {
 						this.chems[rid] = gene_chem.Copy();
 						continue;
 					}

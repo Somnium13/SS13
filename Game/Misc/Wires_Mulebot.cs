@@ -74,7 +74,7 @@ namespace Somnium.Game {
 		// Function from file: mulebot.dm
 		public override void UpdatePulsed( double? index = null ) {
 			
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 64:
 				case 128:
 				case 256:

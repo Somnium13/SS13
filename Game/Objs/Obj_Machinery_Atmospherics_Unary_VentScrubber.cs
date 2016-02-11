@@ -80,9 +80,8 @@ namespace Somnium.Game {
 		public override int multitool_topic( Mob user = null, ByTable href_list = null, dynamic O = null ) {
 			string newid = null;
 
-			Interface13.Stat( null, href_list.Contains( "set_id" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "set_id" ) ) {
 				newid = String13.SubStr( GlobalFuncs.reject_bad_text( Interface13.Input( Task13.User, "Specify the new ID tag for this machine", this, this.id_tag, null, InputType.Str | InputType.Null ) ), 1, 1024 );
 
 				if ( !Lang13.Bool( newid ) ) {

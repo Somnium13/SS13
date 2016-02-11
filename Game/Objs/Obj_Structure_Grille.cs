@@ -222,9 +222,8 @@ namespace Somnium.Game {
 			humanverb = Rand13.PickFromTable( new ByTable(new object [] { "kick", "slam", "elbow" }) );
 			((Mob)a).delayNextAttack( 8 );
 			((Ent_Static)a).visible_message( new Txt( "<span class='warning'>" ).item( a ).str( " " ).item( humanverb ).str( "s " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='warning'>You " ).item( humanverb ).str( " " ).the( this ).item().str( ".</span>" ).ToString(), "<span class='warning'>You hear twisting metal.</span>" );
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-			if ( false ) {
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 				this.health -= 5;
 			} else {
 				this.health -= 3;

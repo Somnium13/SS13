@@ -139,9 +139,8 @@ namespace Somnium.Game {
 				}
 
 				if ( this.allowed_materials != null && this.allowed_materials.len != 0 ) {
-					Interface13.Stat( null, this.allowed_materials.Contains( found ) );
-
-					if ( !false ) {
+					
+					if ( !this.allowed_materials.Contains( found ) ) {
 						
 						if ( Lang13.Bool( a.materials ) && ( this.research_flags & 1024 ) != 0 ) {
 							this.busy = false;
@@ -249,16 +248,13 @@ namespace Somnium.Game {
 				if ( this.panel_open && this.linked_console != null ) {
 					this.linked_console.linked_machines.Remove( this );
 
-					switch ((Type)( this.type )) {
-						case typeof(Obj_Machinery_RND_Fabricator_Protolathe):
-							this.linked_console.linked_lathe = null;
-							break;
-						case typeof(Obj_Machinery_RND_DestructiveAnalyzer):
-							this.linked_console.linked_destroy = null;
-							break;
-						case typeof(Obj_Machinery_RND_Fabricator_CircuitImprinter):
-							this.linked_console.linked_imprinter = null;
-							break;
+					dynamic _a = this.type; // Was a switch-case, sorry for the mess.
+					if ( _a==typeof(Obj_Machinery_RND_Fabricator_Protolathe) ) {
+						this.linked_console.linked_lathe = null;
+					} else if ( _a==typeof(Obj_Machinery_RND_DestructiveAnalyzer) ) {
+						this.linked_console.linked_destroy = null;
+					} else if ( _a==typeof(Obj_Machinery_RND_Fabricator_CircuitImprinter) ) {
+						this.linked_console.linked_imprinter = null;
 					}
 					this.linked_console = null;
 					this.overlays.Remove( "" + this.base_state + "_link" );

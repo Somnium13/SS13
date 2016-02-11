@@ -40,9 +40,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: modules.dm
-		public dynamic inmodlist( Type type = null ) {
-			Interface13.Stat( null, GlobalVars.modules.Contains( "" + type ) );
-			return null;
+		public bool inmodlist( Type type = null ) {
+			return GlobalVars.modules.Contains( "" + type );
 		}
 
 		// Function from file: modules.dm

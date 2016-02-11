@@ -454,15 +454,13 @@ namespace Somnium.Game {
 
 		// Function from file: organ_external.dm
 		public void release_restraints(  ) {
-			Interface13.Stat( null, new ByTable(new object [] { 128, 256, 512, 1024 }).Contains( Lang13.Bool( this.owner.handcuffed ) && this.body_part != 0 ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { 128, 256, 512, 1024 }).Contains( Lang13.Bool( this.owner.handcuffed ) && this.body_part != 0 ) ) {
 				this.owner.visible_message( new Txt().The( this.owner.handcuffed.name ).item().str( " falls off of " ).item( this.owner.name ).str( "." ).ToString(), new Txt().The( this.owner.handcuffed.name ).item().str( " falls off you." ).ToString() );
 				this.owner.drop_from_inventory( this.owner.handcuffed );
 			}
-			Interface13.Stat( null, new ByTable(new object [] { 32, 64, 8, 16 }).Contains( Lang13.Bool( this.owner.legcuffed ) && this.body_part != 0 ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { 32, 64, 8, 16 }).Contains( Lang13.Bool( this.owner.legcuffed ) && this.body_part != 0 ) ) {
 				this.owner.visible_message( new Txt().The( this.owner.legcuffed.name ).item().str( " falls off of " ).item( this.owner ).str( "." ).ToString(), new Txt().The( this.owner.legcuffed.name ).item().str( " falls off you." ).ToString() );
 				this.owner.drop_from_inventory( this.owner.legcuffed );
 			}

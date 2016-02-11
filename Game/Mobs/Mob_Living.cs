@@ -74,9 +74,8 @@ namespace Somnium.Game {
 					
 
 					if ( MoMMI.can_see_static() ) {
-						Interface13.Stat( null, this.static_overlays.Contains( MoMMI.static_choice ) );
-
-						if ( false ) {
+						
+						if ( this.static_overlays.Contains( MoMMI.static_choice ) ) {
 							MoMMI.static_overlays.Add( this.static_overlays[MoMMI.static_choice] );
 							MoMMI.client.images.Add( this.static_overlays[MoMMI.static_choice] );
 						} else {
@@ -144,17 +143,15 @@ namespace Somnium.Game {
 			}
 
 			if ( setting == 1 ) {
-				Interface13.Stat( null, ((dynamic)( Lang13.Bool( GlobalVars.ticker.mode.cult ) && GlobalVars.universal_cult_chat )).Contains( this.mind ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( ((dynamic)( Lang13.Bool( GlobalVars.ticker.mode.cult ) && GlobalVars.universal_cult_chat )).Contains( this.mind ) ) ) {
 					return true;
 				}
 			}
 
 			if ( setting == 2 ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this.mind ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) {
 					return true;
 				}
 			}
@@ -422,40 +419,33 @@ namespace Somnium.Game {
 				if ( _a=="sandbox" ) {
 					this.CanBuild();
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( this.mind ) );
 
-				if ( false || false ) {
+				if ( GlobalVars.ticker.mode.revolutionaries.Contains( this.mind ) || GlobalVars.ticker.mode.head_revolutionaries.Contains( this.mind ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_rev_icons_added( this.mind );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this.mind ) );
 
-				if ( false || false ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_cult_icons_added( this.mind );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( this.mind ) );
 
-				if ( false || false ) {
+				if ( GlobalVars.ticker.mode.syndicates.Contains( this.mind ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_all_synd_icons();
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( this.mind ) );
 
-				if ( false || false ) {
+				if ( GlobalVars.ticker.mode.wizards.Contains( this.mind ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_all_wizard_icons();
 				}
 				_ref = new Txt().Ref( this.mind ).ToString();
-				Interface13.Stat( null, GlobalVars.ticker.mode.implanter.Contains( _ref ) );
 
-				if ( false || false ) {
+				if ( GlobalVars.ticker.mode.implanter.Contains( _ref ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_traitor_icons_added( this.mind );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.implanted.Contains( this.mind ) );
 
-				if ( false || false ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.implanted.Contains( this.mind ) ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_traitor_icons_added( this.mind );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.thralls.Contains( _ref ) );
 
-				if ( false || false || false ) {
+				if ( GlobalVars.ticker.mode.thralls.Contains( _ref ) || GlobalVars.ticker.mode.enthralled.Contains( this.mind ) ) {
 					((GameMode)GlobalVars.ticker.mode).update_vampire_icons_added( this.mind );
 				}
 				return _default;
@@ -571,8 +561,7 @@ namespace Somnium.Game {
 			dynamic signaler = null;
 			int? absorb = null;
 
-			Interface13.Stat( null, ((dynamic)this).Contains( typeof(Obj_Item_Weapon_CloakingDevice) ) );
-			C = Lang13.FindObj( null );
+			C = Lang13.FindObj( ((dynamic)this).Contains( typeof(Obj_Item_Weapon_CloakingDevice) ) );
 
 			if ( Lang13.Bool( C ) && Lang13.Bool( C.active ) ) {
 				((Obj_Item)C).attack_self( this );
@@ -717,9 +706,9 @@ namespace Somnium.Game {
 						return;
 					}
 
-					if ( tmob is Mob_Living_Carbon_Human && false ) {
+					if ( tmob is Mob_Living_Carbon_Human && Lang13.Bool( ((dynamic)tmob).mutations.Contains( 6 ) ) ) {
 						
-						if ( Rand13.PercentChance( 40 ) && !false ) {
+						if ( Rand13.PercentChance( 40 ) && !this.mutations.Contains( 6 ) ) {
 							GlobalFuncs.to_chat( this, "<span class='danger'>You fail to push " + tmob + "'s fat ass out of the way.</span>" );
 							this.now_pushing = false;
 							return;
@@ -1009,9 +998,8 @@ namespace Somnium.Game {
 					G2 = _c;
 					
 					M4 = G2.loc;
-					Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( M4 ) );
 
-					if ( !( G2 is Obj_Item_Weapon_Gun ) ) {
+					if ( !Map13.FetchInView( null, this ).Contains( M4 ) ) {
 						this.NotTargeted( G2 );
 					}
 				}
@@ -1026,7 +1014,7 @@ namespace Somnium.Game {
 							M5 = _d;
 							
 
-							if ( M5 != null && !false ) {
+							if ( M5 != null && !Map13.FetchInView( null, this ).Contains( M5 ) ) {
 								M5.NotTargeted( G3 );
 							}
 						}
@@ -1264,19 +1252,14 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( this.reagents ) && ((Reagents)this.reagents).has_reagent( "bustanut" ) ) {
-				Interface13.Stat( null, this.mutations.Contains( 300 ) );
-
-				if ( !false ) {
+				
+				if ( !this.mutations.Contains( 300 ) ) {
 					this.mutations.Add( 300 );
 					GlobalFuncs.to_chat( this, "<span class='notice'>You feel like you're the best around.  Nothing's going to get you down.</span>" );
 				}
-			} else {
-				Interface13.Stat( null, this.mutations.Contains( 300 ) );
-
-				if ( Lang13.Bool( this.reagents ) && ((Reagents)this.reagents).has_reagent( "bustanut" ) ) {
-					this.mutations.Remove( 300 );
-					GlobalFuncs.to_chat( this, "<span class='notice'>You feel like a pleb.</span>" );
-				}
+			} else if ( this.mutations.Contains( 300 ) ) {
+				this.mutations.Remove( 300 );
+				GlobalFuncs.to_chat( this, "<span class='notice'>You feel like a pleb.</span>" );
 			}
 			this.handle_beams();
 
@@ -1292,9 +1275,8 @@ namespace Somnium.Game {
 			}
 
 			if ( this.mind != null ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.implanted.Contains( this.mind ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( GlobalVars.ticker.mode.implanted.Contains( this.mind ) ) ) {
 					
 					if ( this.implanting ) {
 						return false;
@@ -1400,7 +1382,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: language.dm
-		public override dynamic remove_language( dynamic rem_language = null ) {
+		public override bool remove_language( dynamic rem_language = null ) {
 			Language L = null;
 
 			L = GlobalVars.all_languages[rem_language];
@@ -1609,7 +1591,7 @@ namespace Somnium.Game {
 				if ( S is Mob_Living_Silicon_Ai ) {
 					renderedAI = new Txt( "<i><span class='game say'>Robotic Talk, <a href='byond://?src=" ).Ref( S ).str( ";track2=" ).Ref( S ).str( ";track=" ).Ref( this ).str( "'><span class='name'>" ).item( this.name ).str( "</span></a> <span class='message'>" ).item( message_a ).str( "</span></span></i>" ).ToString();
 					GlobalFuncs.to_chat( S, renderedAI );
-				} else if ( ((Mob)S).binarycheck() || false && !( S is Mob_NewPlayer ) ) {
+				} else if ( ((Mob)S).binarycheck() || GlobalVars.dead_mob_list.Contains( S ) && !( S is Mob_NewPlayer ) ) {
 					GlobalFuncs.handle_render( S, rendered, this );
 				}
 			}
@@ -1637,7 +1619,7 @@ namespace Somnium.Game {
 				S = _a;
 				
 
-				if ( !Lang13.Bool( S.stat ) && ((Mob)S).hivecheck() || false && !( S is Mob_NewPlayer ) ) {
+				if ( !Lang13.Bool( S.stat ) && ((Mob)S).hivecheck() || GlobalVars.dead_mob_list.Contains( S ) && !( S is Mob_NewPlayer ) ) {
 					GlobalFuncs.handle_render( S, rendered, this );
 				}
 			}
@@ -1758,7 +1740,7 @@ namespace Somnium.Game {
 							M = _a;
 							
 
-							if ( ((Mob)M).lingcheck() || false && !( M is Mob_NewPlayer ) ) {
+							if ( ((Mob)M).lingcheck() || GlobalVars.dead_mob_list.Contains( M ) && !( M is Mob_NewPlayer ) ) {
 								GlobalFuncs.handle_render( M, themessage, this );
 							}
 						}
@@ -1776,7 +1758,7 @@ namespace Somnium.Game {
 							M2 = _b;
 							
 
-							if ( ((Mob)M2).construct_chat_check( 2 ) || false && !( M2 is Mob_NewPlayer ) ) {
+							if ( ((Mob)M2).construct_chat_check( 2 ) || GlobalVars.dead_mob_list.Contains( M2 ) && !( M2 is Mob_NewPlayer ) ) {
 								GlobalFuncs.handle_render( M2, themessage2, this );
 							}
 						}
@@ -1914,11 +1896,9 @@ namespace Somnium.Game {
 
 		// Function from file: living_defines.dm
 		public void unsubLife( GameMode sub = null ) {
-			Interface13.Stat( null, this.callOnLife.Contains( new Txt().Ref( sub ).ToString() ) );
-
-			if ( false ) {
+			
+			while (this.callOnLife.Contains( new Txt().Ref( sub ).ToString() )) {
 				this.callOnLife.Remove( new Txt().Ref( sub ).ToString() );
-				// goto 2;
 			}
 			return;
 		}
@@ -2098,16 +2078,14 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: living.dm
-		public double get_strength(  ) {
-			double _default = 0;
+		public int get_strength(  ) {
+			int _default = 0;
 
-			double strength = 0;
+			int strength = 0;
 
 			strength = 1;
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
-			strength += 0;
-			Interface13.Stat( null, this.mutations.Contains( 202 ) );
-			strength += 0;
+			strength += this.mutations.Contains( 4 ) ?1:0;
+			strength += this.mutations.Contains( 202 ) ?1:0;
 			_default = strength;
 			return _default;
 		}
@@ -2170,17 +2148,15 @@ namespace Somnium.Game {
 				} else {
 					speed_mod = 0;
 				}
-				Interface13.Stat( null, H.mutations.Contains( 10 ) );
 
-				if ( Lang13.Bool( tool ) ) {
+				if ( H.mutations.Contains( 10 ) ) {
 					
 					if ( !( ((dynamic)H).gloves is Obj_Item ) ) {
 						speed_mod += 0.25;
 					}
 				}
-				Interface13.Stat( null, H.mutations.Contains( 11 ) );
 
-				if ( Lang13.Bool( tool ) ) {
+				if ( H.mutations.Contains( 11 ) ) {
 					
 					if ( H.wear_mask is Obj_Item_Clothing_Mask ) {
 						M = H.wear_mask;
@@ -2669,9 +2645,8 @@ namespace Somnium.Game {
 			dynamic def_zone = null;
 
 			t = ((dynamic)this.zone_sel).selecting;
-			Interface13.Stat( null, new ByTable(new object [] { "eyes", "mouth" }).Contains( t ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { "eyes", "mouth" }).Contains( t ) ) {
 				t = "head";
 			}
 			def_zone = GlobalFuncs.ran_zone( t );
@@ -2896,14 +2871,12 @@ namespace Somnium.Game {
 
 			
 			if ( this is Mob_Living_Carbon_Human ) {
-				Interface13.Stat( null, this.mutations.Contains( 109 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 109 ) ) {
 					return false;
 				}
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
 
-				if ( false ) {
+				if ( this.mutations.Contains( 106 ) ) {
 					return false;
 				}
 				H = this;
@@ -2925,9 +2898,8 @@ namespace Somnium.Game {
 				H.updatehealth();
 				return true;
 			} else if ( this is Mob_Living_Carbon_Monkey ) {
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 106 ) ) {
 					return false;
 				}
 				M = this;
@@ -3262,9 +3234,8 @@ namespace Somnium.Game {
 			if ( _a=="brute" ) {
 				this.adjustBruteLoss( damage / ( blocked + 1 ) );
 			} else if ( _a=="fire" ) {
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 106 ) ) {
 					damage = 0;
 				}
 				this.adjustFireLoss( damage / ( blocked + 1 ) );
@@ -3455,9 +3426,8 @@ namespace Somnium.Game {
 			if ( this.nutrition - sustenance > 0 || forcesweat == true ) {
 				heatmodifier = 1;
 				this.nutrition = Num13.MaxInt( ((int)( this.nutrition - sustenance )), 0 );
-				Interface13.Stat( null, this.mutations.Contains( 6 ) );
 
-				if ( false ) {
+				if ( this.mutations.Contains( 6 ) ) {
 					heatmodifier = heatmodifier * 2;
 				}
 				this.bodytemperature -= amount * heatmodifier;
@@ -3485,9 +3455,8 @@ namespace Somnium.Game {
 			if ( this.nutrition - amount > 0 || forceburn == true ) {
 				heatmodifier = 061;
 				this.nutrition = Num13.MaxInt( ((int)( this.nutrition - amount )), 0 );
-				Interface13.Stat( null, this.mutations.Contains( 6 ) );
 
-				if ( false ) {
+				if ( this.mutations.Contains( 6 ) ) {
 					heatmodifier = heatmodifier * 2;
 				}
 				this.bodytemperature += amount * heatmodifier;
@@ -3541,9 +3510,8 @@ namespace Somnium.Game {
 			i = 1;
 
 			while (( i ??0) <= 3) {
-				Interface13.Stat( null, this.mind.vampire.powers.Contains( i ) );
-
-				if ( !false ) {
+				
+				if ( !this.mind.vampire.powers.Contains( i ) ) {
 					this.mind.vampire.powers.Add( i );
 				}
 				i++;
@@ -4120,7 +4088,7 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( ((dynamic)CM2).handcuffed ) && CM2.canmove && CM2.special_delayer.blocked() ) {
 					CM2.delayNext( 7, 100 );
 
-					if ( CM2 is Mob_Living_Carbon_Alien_Humanoid || false ) {
+					if ( CM2 is Mob_Living_Carbon_Alien_Humanoid || Task13.User.mutations.Contains( 4 ) ) {
 						CM2.visible_message( "<span class='danger'>" + CM2 + " is trying to break the handcuffs!</span>", "<span class='warning'>You attempt to break your handcuffs. (This will take around five seconds and you will need to stand still).</span>" );
 						Task13.Schedule( 0, (Task13.Closure)(() => {
 							
@@ -4167,7 +4135,7 @@ namespace Somnium.Game {
 				} else if ( Lang13.Bool( ((dynamic)CM2).legcuffed ) && CM2.canmove && CM2.special_delayer.blocked() ) {
 					CM2.delayNext( 7, 100 );
 
-					if ( CM2 is Mob_Living_Carbon_Alien_Humanoid || false ) {
+					if ( CM2 is Mob_Living_Carbon_Alien_Humanoid || Task13.User.mutations.Contains( 4 ) ) {
 						CM2.visible_message( "<span class='danger'>" + CM2 + " is trying to break the legcuffs!</span>", "<span class='warning'>You attempt to break your legcuffs. (This will take around five seconds and you need to stand still).</span>" );
 						Task13.Schedule( 0, (Task13.Closure)(() => {
 							

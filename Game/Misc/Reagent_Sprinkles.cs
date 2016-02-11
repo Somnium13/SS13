@@ -28,9 +28,8 @@ namespace Somnium.Game {
 
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				Interface13.Stat( null, new ByTable(new object [] { "Security Officer", "Head of Security", "Detective", "Warden" }).Contains( H.job ) );
 
-				if ( false ) {
+				if ( new ByTable(new object [] { "Security Officer", "Head of Security", "Detective", "Warden" }).Contains( H.job ) ) {
 					H.heal_organ_damage( 1, 1 );
 					H.nutrition += this.nutriment_factor * 0.5;
 				}

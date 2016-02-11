@@ -143,9 +143,8 @@ namespace Somnium.Game {
 					if ( this.editingcode == Task13.User ) {
 						return null;
 					}
-					Interface13.Stat( null, this.viewingcode.Contains( Task13.User ) );
 
-					if ( this.editingcode == Task13.User ) {
+					if ( this.viewingcode.Contains( Task13.User ) ) {
 						return null;
 					}
 
@@ -207,7 +206,7 @@ namespace Somnium.Game {
 			if ( a is Mob_Living_Silicon || Lang13.Bool( this.auth ) ) {
 				
 				switch ((bool)( this.screen )) {
-					case 0:
+					case false:
 						dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n					<br>Current Network: <a href='?src=" ).Ref( this ).str( ";network=1'>" ).item( this.network ).str( "</a><br>" ).ToString();
 
 						if ( this.servers.len != 0 ) {
@@ -223,7 +222,7 @@ namespace Somnium.Game {
 							dat += new Txt( "<br>No servers detected. Scan for servers: <a href='?src=" ).Ref( this ).str( ";operation=scan'>[Scan]</a>" ).ToString();
 						}
 						break;
-					case 1:
+					case true:
 						
 						if ( this.SelectedServer != null ) {
 							dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n						<center><a href='?src=" ).Ref( this ).str( ";operation=mainmenu'>[Main Menu]</a>     <a href='?src=" ).Ref( this ).str( ";operation=refresh'>[Refresh]</a></center>\n						<br>Current Network: " ).item( this.network ).str( "\n						<br>Selected Server: " ).item( this.SelectedServer.id ).str( "<br><br>\n						<br><a href='?src=" ).Ref( this ).str( ";operation=editcode'>[Edit Code]</a>\n						<br>Signal Execution: " ).ToString();

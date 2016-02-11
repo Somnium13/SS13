@@ -68,9 +68,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( a, "<span class='warning'>Access denied.</span>" );
 				return null;
 			}
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.SOUTHWEST, GlobalVars.SOUTH, GlobalVars.SOUTHEAST }).Contains( Map13.GetDistance( this, Task13.User ) ) );
 
-			if ( !( !this.allowed( a ) ) ) {
+			if ( !new ByTable(new object [] { GlobalVars.SOUTHWEST, GlobalVars.SOUTH, GlobalVars.SOUTHEAST }).Contains( Map13.GetDistance( this, Task13.User ) ) ) {
 				return null;
 			}
 			this.barsigns.len = 0;

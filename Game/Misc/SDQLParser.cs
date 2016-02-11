@@ -31,25 +31,20 @@ namespace Somnium.Game {
 			} else if ( Lang13.Bool( Lang13.IsNumber( String13.ParseNumber( this.token( i ) ) ) ) ) {
 				node.Add( String13.ParseNumber( this.token( i ) ) );
 				i++;
+			} else if ( new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( this.token( i ), 1, 2 ) ) ) {
+				i = this.f_string( i, node );
+			} else if ( String13.SubStr( this.token( i ), 1, 2 ) == "[" ) {
+				i = this.array( i, node );
 			} else {
-				Interface13.Stat( null, new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( this.token( i ), 1, 2 ) ) );
-
-				if ( Lang13.Bool( Lang13.IsNumber( String13.ParseNumber( this.token( i ) ) ) ) ) {
-					i = this.f_string( i, node );
-				} else if ( String13.SubStr( this.token( i ), 1, 2 ) == "[" ) {
-					i = this.array( i, node );
-				} else {
-					i = this.variable( i, node );
-				}
+				i = this.variable( i, node );
 			}
 			return i;
 		}
 
 		// Function from file: SDQL_2_parser.dm
 		public int binary_operator( int i = 0, ByTable node = null ) {
-			Interface13.Stat( null, ( this.binary_operators + this.comparitors ).Contains( this.token( i ) ) );
-
-			if ( false ) {
+			
+			if ( ( this.binary_operators + this.comparitors ).Contains( this.token( i ) ) ) {
 				node.Add( this.token( i ) );
 			} else {
 				this.parse_error( "Unknown binary operator " + this.token( i ) );
@@ -62,15 +57,13 @@ namespace Somnium.Game {
 			ByTable unary_exp = null;
 			ByTable expr = null;
 
-			Interface13.Stat( null, this.unary_operators.Contains( this.token( i ) ) );
-
-			if ( false ) {
+			
+			if ( this.unary_operators.Contains( this.token( i ) ) ) {
 				unary_exp = new ByTable();
 				unary_exp.Add( this.token( i ) );
 				i++;
-				Interface13.Stat( null, this.unary_operators.Contains( this.token( i ) ) );
 
-				if ( false ) {
+				if ( this.unary_operators.Contains( this.token( i ) ) ) {
 					i = this.unary_expression( i, unary_exp );
 				} else if ( this.token( i ) == "(" ) {
 					expr = new ByTable();
@@ -97,9 +90,8 @@ namespace Somnium.Game {
 			ByTable expr = null;
 			ByTable rhs = null;
 
-			Interface13.Stat( null, this.unary_operators.Contains( this.token( i ) ) );
-
-			if ( false ) {
+			
+			if ( this.unary_operators.Contains( this.token( i ) ) ) {
 				i = this.unary_expression( i, node );
 			} else if ( this.token( i ) == "(" ) {
 				expr = new ByTable();
@@ -114,20 +106,15 @@ namespace Somnium.Game {
 			} else {
 				i = this.value( i, node );
 			}
-			Interface13.Stat( null, this.binary_operators.Contains( this.token( i ) ) );
 
-			if ( this.token( i ) == "(" ) {
+			if ( this.binary_operators.Contains( this.token( i ) ) ) {
 				i = this.binary_operator( i, node );
 				i = this.expression( i, node );
-			} else {
-				Interface13.Stat( null, this.comparitors.Contains( this.token( i ) ) );
-
-				if ( this.token( i ) == "(" ) {
-					i = this.binary_operator( i, node );
-					rhs = new ByTable();
-					i = this.expression( i, rhs );
-					node[++node.len] = rhs;
-				}
+			} else if ( this.comparitors.Contains( this.token( i ) ) ) {
+				i = this.binary_operator( i, node );
+				rhs = new ByTable();
+				i = this.expression( i, rhs );
+				node[++node.len] = rhs;
 			}
 			return i;
 		}
@@ -205,9 +192,8 @@ namespace Somnium.Game {
 		// Function from file: SDQL_2_parser.dm
 		[VerbInfo( name: "string" )]
 		public int f_string( int i = 0, ByTable node = null ) {
-			Interface13.Stat( null, new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( this.token( i ), 1, 2 ) ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( this.token( i ), 1, 2 ) ) ) {
 				node.Add( this.token( i ) );
 			} else {
 				this.parse_error( "Expected string but found '" + this.token( i ) + "'" );
@@ -217,9 +203,8 @@ namespace Somnium.Game {
 
 		// Function from file: SDQL_2_parser.dm
 		public int bool_operator( int i = 0, ByTable node = null ) {
-			Interface13.Stat( null, new ByTable(new object [] { "and", "or", "&&", "||" }).Contains( this.tokenl( i ) ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { "and", "or", "&&", "||" }).Contains( this.tokenl( i ) ) ) {
 				node.Add( this.token( i ) );
 			} else {
 				this.parse_error( "Unknown comparitor " + this.token( i ) );
@@ -229,9 +214,8 @@ namespace Somnium.Game {
 
 		// Function from file: SDQL_2_parser.dm
 		public int comparitor( int i = 0, dynamic node = null ) {
-			Interface13.Stat( null, new ByTable(new object [] { "=", "==", "!=", "<>", "<", "<=", ">", ">=" }).Contains( this.token( i ) ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { "=", "==", "!=", "<>", "<", "<=", ">", ">=" }).Contains( this.token( i ) ) ) {
 				node += this.token( i );
 			} else {
 				this.parse_error( "Unknown comparitor " + this.token( i ) );
@@ -293,9 +277,8 @@ namespace Somnium.Game {
 			_bool = new ByTable();
 			i = this.expression( i, _bool );
 			node[++node.len] = _bool;
-			Interface13.Stat( null, this.boolean_operators.Contains( this.tokenl( i ) ) );
 
-			if ( false ) {
+			if ( this.boolean_operators.Contains( this.tokenl( i ) ) ) {
 				i = this.bool_operator( i, node );
 				i = this.bool_expression( i, node );
 			}
@@ -320,14 +303,10 @@ namespace Somnium.Game {
 			if ( this.token( i ) == "*" ) {
 				node.Add( "*" );
 				i++;
+			} else if ( this.select_functions.Contains( this.tokenl( i ) ) ) {
+				i = this.select_function( i, node );
 			} else {
-				Interface13.Stat( null, this.select_functions.Contains( this.tokenl( i ) ) );
-
-				if ( this.token( i ) == "*" ) {
-					i = this.select_function( i, node );
-				} else {
-					i = this.object_type( i, node );
-				}
+				i = this.object_type( i, node );
 			}
 			return i;
 		}
@@ -385,9 +364,8 @@ namespace Somnium.Game {
 			node.Add( "on" );
 			node["on"] = select;
 			from = new ByTable();
-			Interface13.Stat( null, new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) );
 
-			if ( this.tokenl( i ) != "on" ) {
+			if ( new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) ) {
 				i = this.from_list( i + 1, from );
 			} else {
 				from.Add( "world" );
@@ -416,9 +394,8 @@ namespace Somnium.Game {
 			node.Add( "update" );
 			node["update"] = select;
 			from = new ByTable();
-			Interface13.Stat( null, new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) ) {
 				i = this.from_list( i + 1, from );
 			} else {
 				from.Add( "world" );
@@ -454,9 +431,8 @@ namespace Somnium.Game {
 			node.Add( "delete" );
 			node["delete"] = select;
 			from = new ByTable();
-			Interface13.Stat( null, new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) ) {
 				i = this.from_list( i + 1, from );
 			} else {
 				from.Add( "world" );
@@ -484,9 +460,8 @@ namespace Somnium.Game {
 			node.Add( "select" );
 			node["select"] = select;
 			from = new ByTable();
-			Interface13.Stat( null, new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { "from", "in" }).Contains( this.tokenl( i ) ) ) {
 				i = this.from_list( i + 1, from );
 			} else {
 				from.Add( "world" );

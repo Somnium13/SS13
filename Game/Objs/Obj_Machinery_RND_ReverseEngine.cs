@@ -216,12 +216,11 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( !( design is Design ) || !false ) {
+			if ( !( design is Design ) || !this.research_queue.Contains( design ) ) {
 				return false;
 			}
-			Interface13.Stat( null, this.ready_queue.Contains( design ) );
 
-			if ( !( design is Design ) || !false ) {
+			if ( this.ready_queue.Contains( design ) ) {
 				this.visible_message( new Txt( "<span class='notice'> " ).icon( this ).str( " " ).The( this ).item().str( " beeps:'The " ).item( design.name ).str( " is already researched.'</span>" ).ToString() );
 				this.research_queue.Remove( design );
 				return false;
@@ -233,9 +232,8 @@ namespace Somnium.Game {
 			this.research_queue.Remove( design );
 			this.busy = false;
 			this.overlays.Remove( "" + this.base_state + "_ani" );
-			Interface13.Stat( null, this.ready_queue.Contains( design ) );
 
-			if ( !( !( design is Design ) || !false ) ) {
+			if ( !this.ready_queue.Contains( design ) ) {
 				this.ready_queue.Add( design );
 				this.visible_message( new Txt( "<span class='notice'> " ).icon( this ).str( " " ).The( this ).item().str( " beeps: 'Successfully researched " ).the( design.name ).item().str( ".'</span>" ).ToString() );
 				return true;
@@ -357,9 +355,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( user, "<span class='notice'>The " + this + "'s research queue is full. Research some designs first before adding more.</span>" );
 				return false;
 			}
-			Interface13.Stat( null, design_list.Contains( design ) );
 
-			if ( this.research_queue.len >= this.max_queue_len ) {
+			if ( design_list.Contains( design ) ) {
 				this.research_queue.Add( design );
 				design_list.Remove( design );
 				GlobalFuncs.to_chat( user, "<span class='notice'>The " + design.name + " was successfully loaded onto the " + this + ".</span>" );

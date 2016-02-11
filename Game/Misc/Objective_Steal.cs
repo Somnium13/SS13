@@ -84,9 +84,8 @@ namespace Somnium.Game {
 				loopSanity--;
 				pickedObjective = Rand13.PickFromTable( possibleObjectives );
 				objective = Lang13.Call( pickedObjective );
-				Interface13.Stat( null, objective.protected_jobs.Contains( this.owner != null && Lang13.Bool( ((dynamic)this.owner).assigned_role ) ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( objective.protected_jobs.Contains( this.owner != null && Lang13.Bool( ((dynamic)this.owner).assigned_role ) ) ) ) {
 					continue;
 				}
 				this.steal_target = objective;

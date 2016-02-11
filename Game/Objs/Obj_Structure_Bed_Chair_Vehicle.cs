@@ -96,7 +96,7 @@ namespace Somnium.Game {
 		// Function from file: vehicle.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.health -= 100;
 					break;

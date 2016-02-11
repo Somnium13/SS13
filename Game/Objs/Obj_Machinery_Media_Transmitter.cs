@@ -22,9 +22,8 @@ namespace Somnium.Game {
 			Obj_Machinery_Media_Receiver R = null;
 
 			freq = String13.NumberToString( Convert.ToDouble( this.media_frequency ) );
-			Interface13.Stat( null, GlobalVars.media_receivers.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_receivers.Contains( freq ) ) {
 				
 				foreach (dynamic _a in Lang13.Enumerate( GlobalVars.media_receivers[freq], typeof(Obj_Machinery_Media_Receiver) )) {
 					R = _a;
@@ -45,9 +44,8 @@ namespace Somnium.Game {
 
 			transmitters = new ByTable();
 			freq = String13.NumberToString( Convert.ToDouble( this.media_frequency ) );
-			Interface13.Stat( null, GlobalVars.media_transmitters.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_transmitters.Contains( freq ) ) {
 				transmitters = GlobalVars.media_transmitters[freq];
 			}
 			transmitters.Remove( this );
@@ -63,9 +61,8 @@ namespace Somnium.Game {
 
 			transmitters = new ByTable();
 			freq = String13.NumberToString( Convert.ToDouble( this.media_frequency ) );
-			Interface13.Stat( null, GlobalVars.media_transmitters.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_transmitters.Contains( freq ) ) {
 				transmitters = GlobalVars.media_transmitters[freq];
 			}
 			transmitters.Add( this );

@@ -61,65 +61,55 @@ namespace Somnium.Game {
 				return false;
 			}
 			handled = false;
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power" ) ) ) {
 				this.on = String13.ParseNumber( ((dynamic)signal).data["power"] );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power_toggle" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power_toggle" ) ) ) {
 				this.on = !Lang13.Bool( this.on ) ?1:0;
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "direction" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "direction" ) ) ) {
 				this.pump_direction = String13.ParseNumber( ((dynamic)signal).data["direction"] );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "checks" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "checks" ) ) ) {
 				this.pressure_checks = String13.ParseNumber( ((dynamic)signal).data["checks"] );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "purge" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "purge" ) ) ) {
 				this.pressure_checks = ((int)( this.pressure_checks )) & ( 65534 );
 				this.pump_direction = 0;
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "stabilize" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "stabilize" ) ) ) {
 				this.pressure_checks = ((int)( this.pressure_checks )) | ( 1 );
 				this.pump_direction = 1;
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_input_pressure" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_input_pressure" ) ) ) {
 				this.input_pressure_min = ( ( String13.ParseNumber( ((dynamic)signal).data["set_input_pressure"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( ((dynamic)signal).data["set_input_pressure"] ) ??0) >= 5066.25 ? 5066.25 : String13.ParseNumber( ((dynamic)signal).data["set_input_pressure"] ) ) );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_output_pressure" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_output_pressure" ) ) ) {
 				this.output_pressure_max = ( ( String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ??0) >= 5066.25 ? 5066.25 : String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ) );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_external_pressure" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_external_pressure" ) ) ) {
 				this.external_pressure_bound = ( ( String13.ParseNumber( ((dynamic)signal).data["set_external_pressure"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( ((dynamic)signal).data["set_external_pressure"] ) ??0) >= 5066.25 ? 5066.25 : String13.ParseNumber( ((dynamic)signal).data["set_external_pressure"] ) ) );
 				handled = true;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "status" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "status" ) ) ) {
 				Task13.Schedule( 2, (Task13.Closure)(() => {
 					this.broadcast_status();
 					return;

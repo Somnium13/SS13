@@ -54,9 +54,8 @@ namespace Somnium.Game {
 
 		// Function from file: docking_port.dm
 		public override bool can_shuttle_move( Shuttle S = null ) {
-			Interface13.Stat( null, S.docking_ports_aboard.Contains( this ) );
-
-			if ( false ) {
+			
+			if ( S.docking_ports_aboard.Contains( this ) ) {
 				return true;
 			}
 			return false;

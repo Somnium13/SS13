@@ -220,9 +220,8 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( M3 ) ) {
 							break;
 						}
-						Interface13.Stat( null, GlobalFuncs.view_or_range( this.range, user, this.selection_type ).Contains( M3 ) );
 
-						if ( !Lang13.Bool( M3 ) ) {
+						if ( GlobalFuncs.view_or_range( this.range, user, this.selection_type ).Contains( M3 ) ) {
 							targets.Add( M3 );
 							possible_targets2.Remove( M3 );
 						}
@@ -250,7 +249,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( !( ( this.spell_flags & 64 ) != 0 ) && false ) {
+			if ( !( ( this.spell_flags & 64 ) != 0 ) && targets.Contains( user ) ) {
 				targets.Remove( user );
 			}
 

@@ -386,9 +386,8 @@ namespace Somnium.Game {
 								
 
 								if ( new_gun2.loaded.len > ( num_bullets ??0) ) {
-									Interface13.Stat( null, new_gun2.loaded.Contains( I ) );
-
-									if ( false ) {
+									
+									if ( new_gun2.loaded.Contains( I ) ) {
 										new_gun2.loaded.Remove( I );
 										I.loc = null;
 									}
@@ -402,9 +401,8 @@ namespace Somnium.Game {
 						foreach (dynamic _c in Lang13.Enumerate( new_gun2, typeof(Obj_Item) )) {
 							I2 = _c;
 							
-							Interface13.Stat( null, new_gun2.loaded.Contains( I2 ) );
 
-							if ( I2 is Obj_Item ) {
+							if ( new_gun2.loaded.Contains( I2 ) ) {
 								new_gun2.loaded.Remove( I2 );
 								I2.loc = null;
 							}

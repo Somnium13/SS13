@@ -69,9 +69,8 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( ((dynamic)p).part ) ) {
-				Interface13.Stat( null, ((dynamic)p).part.Contains( target_zone ) );
-
-				if ( !false ) {
+				
+				if ( !Lang13.Bool( ((dynamic)p).part.Contains( target_zone ) ) ) {
 					return 0;
 				}
 			}

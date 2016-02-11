@@ -61,9 +61,8 @@ namespace Somnium.Game {
 				if ( recipe.id == "" ) {
 					continue;
 				}
-				Interface13.Stat( null, this.recipe_categories.Contains( recipe.category ) );
 
-				if ( !( recipe.id == "" ) ) {
+				if ( !this.recipe_categories.Contains( recipe.category ) ) {
 					this.recipe_categories[recipe.category] = new ByTable();
 				}
 				this.recipe_categories[recipe.category] += recipe.id;
@@ -109,9 +108,8 @@ namespace Somnium.Game {
 			if ( !( recipe != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, ( recipe.other_amounts + 1 ).Contains( num ) );
 
-			if ( !( !( recipe != null ) ) ) {
+			if ( !( recipe.other_amounts + 1 ).Contains( num ) ) {
 				return false;
 			}
 

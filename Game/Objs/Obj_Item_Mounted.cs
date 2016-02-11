@@ -27,9 +27,8 @@ namespace Somnium.Game {
 			if ( proximity_flag != true ) {
 				return false;
 			}
-			Interface13.Stat( null, GlobalVars.cardinal.Contains( Map13.GetDistance( user, on_wall ) ) );
 
-			if ( !( proximity_flag != true ) ) {
+			if ( !GlobalVars.cardinal.Contains( Map13.GetDistance( user, on_wall ) ) ) {
 				GlobalFuncs.to_chat( user, new Txt( "<span class='rose'>You need to be standing next to a wall to place " ).the( this ).item().str( ".</span>" ).ToString() );
 				return false;
 			}

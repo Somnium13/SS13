@@ -68,9 +68,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this, typeof(Obj_Item_AmmoCasing_Shotgun) )) {
 				shell = _a;
 				
-				Interface13.Stat( null, this.loaded.Contains( shell ) );
 
-				if ( shell is Obj_Item_AmmoCasing_Shotgun ) {
+				if ( this.loaded.Contains( shell ) ) {
 					this.loaded.Remove( shell );
 				}
 				shell.loc = GlobalFuncs.get_turf( this.loc );

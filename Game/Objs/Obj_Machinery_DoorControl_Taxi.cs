@@ -84,9 +84,8 @@ namespace Somnium.Game {
 
 				if ( this.id_tag == TS.id_tag ) {
 					this.connected_computer = TS;
-					Interface13.Stat( null, this.connected_computer.connected_buttons.Contains( this ) );
 
-					if ( !false ) {
+					if ( !this.connected_computer.connected_buttons.Contains( this ) ) {
 						this.connected_computer.connected_buttons.Add( this );
 					}
 					break;

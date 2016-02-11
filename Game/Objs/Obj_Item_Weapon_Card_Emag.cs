@@ -107,9 +107,8 @@ namespace Somnium.Game {
 				this.energy -= cost;
 
 				if ( Convert.ToDouble( this.energy ) < Convert.ToDouble( this.max_energy ) && Lang13.Bool( this.recharge_rate ) && Lang13.Bool( this.recharge_ticks ) ) {
-					Interface13.Stat( null, GlobalVars.processing_objects.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.processing_objects.Contains( this ) ) {
 						GlobalVars.processing_objects.Add( this );
 					}
 				}

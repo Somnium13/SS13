@@ -24,7 +24,7 @@ namespace Somnium.Game {
 
 			C = this.holder;
 
-			switch ((int?)(index)) {
+			switch ((int?)( index )) {
 				case 1:
 					
 					if ( Lang13.Bool( ((dynamic)C).active ) == !mended ) {
@@ -60,7 +60,7 @@ namespace Somnium.Game {
 
 			C = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)C).toggle_power();
 					break;

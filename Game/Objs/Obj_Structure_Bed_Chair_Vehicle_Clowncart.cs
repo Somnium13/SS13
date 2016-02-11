@@ -338,7 +338,7 @@ namespace Somnium.Game {
 				this.max_health += 20;
 				this.health += 20;
 
-				switch ((double)( this.max_health )) {
+				switch ((int)( this.max_health )) {
 					case 120:
 						GlobalFuncs.to_chat( b, "You can now recharge your water flower using " + this + "'s HONKTech pump." );
 						break;

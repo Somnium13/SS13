@@ -76,9 +76,8 @@ namespace Somnium.Game {
 				
 
 				if ( ( this.range ??0) >= 0 ) {
-					Interface13.Stat( null, GlobalFuncs.view_or_range( this.range, this.holder, this.selection_type ).Contains( target ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalFuncs.view_or_range( this.range, this.holder, this.selection_type ).Contains( target ) ) {
 						targets.Remove( target );
 						continue;
 					}
@@ -223,9 +222,8 @@ namespace Somnium.Game {
 						}
 
 						if ( this.range != -2 ) {
-							Interface13.Stat( null, GlobalFuncs.view_or_range( this.range, this.holder, this.selection_type ).Contains( M2 ) );
-
-							if ( !false ) {
+							
+							if ( !GlobalFuncs.view_or_range( this.range, this.holder, this.selection_type ).Contains( M2 ) ) {
 								i++;
 								continue;
 							}
@@ -256,7 +254,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( !( ( this.spell_flags & 64 ) != 0 ) && false ) {
+			if ( !( ( this.spell_flags & 64 ) != 0 ) && targets.Contains( user ) ) {
 				targets.Remove( user );
 			}
 

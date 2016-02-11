@@ -99,9 +99,8 @@ namespace Somnium.Game {
 				return _default;
 			}
 			((Mob)a).set_machine( this );
-			Interface13.Stat( null, this.has_sprites.Contains( a.client ) );
 
-			if ( !Lang13.Bool( _default ) ) {
+			if ( !this.has_sprites.Contains( a.client ) ) {
 				Task13.Schedule( 0, (Task13.Closure)(() => {
 					this.has_sprites.Add( a.client );
 
@@ -521,7 +520,7 @@ namespace Somnium.Game {
 		// Function from file: Chemistry-Machinery.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

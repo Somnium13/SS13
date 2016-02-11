@@ -90,9 +90,8 @@ namespace Somnium.Game {
 						i++;
 					}
 					target.pixel_y = 0;
-					Interface13.Stat( null, ((dynamic)( target.mutations != null && Rand13.PercentChance( 66 ) )).Contains( 6 ) );
 
-					if ( ( i ??0) < ( this.duration ??0) ) {
+					if ( Lang13.Bool( ((dynamic)( target.mutations != null && Rand13.PercentChance( 66 ) )).Contains( 6 ) ) ) {
 						target.visible_message( "<span class='warning'><b>" + target.name + "</b> crashes due to their heavy weight!</span>" );
 						target.weakened += 10;
 						target.stunned += 5;

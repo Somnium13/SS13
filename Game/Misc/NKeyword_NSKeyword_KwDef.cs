@@ -37,7 +37,7 @@ namespace Somnium.Game {
 				if ( _a=="," ) {
 					parser.NextToken();
 				} else if ( _a==")" ) {
-					// goto 89;
+					throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 				} else {
 					parser.errors.Add( new ScriptError_BadToken( parser.curToken ) );
 					return GlobalVars.KW_ERR;
@@ -49,7 +49,7 @@ namespace Somnium.Game {
 				parser.errors.Add( new ScriptError_InvalidID( parser.curToken ) );
 				return GlobalVars.KW_ERR;
 			}
-			// goto 42;
+			throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 
 			if ( !Lang13.Bool( ((dynamic)parser).CheckToken( ")", typeof(Token_Symbol) ) ) ) {
 				return GlobalVars.KW_FAIL ?1:0;

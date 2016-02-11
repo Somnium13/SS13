@@ -90,7 +90,7 @@ namespace Somnium.Game {
 				player = _b;
 				
 
-				if ( this.mixed && false ) {
+				if ( this.mixed && GlobalVars.ticker.mode.modePlayer.Contains( player ) ) {
 					possible_vampires.Remove( player );
 					continue;
 				}

@@ -167,9 +167,8 @@ namespace Somnium.Game {
 					W = D.organs_scanned[wound_idx];
 					total_hits += W.hits;
 					wname = W.pretend_weapon;
-					Interface13.Stat( null, weapon_chances.Contains( wname ) );
 
-					if ( false ) {
+					if ( weapon_chances.Contains( wname ) ) {
 						weapon_chances[wname] += W.damage;
 					} else {
 						weapon_chances[wname] = Num13.MaxInt( ((int)( W.damage )), 1 );

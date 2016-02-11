@@ -64,27 +64,29 @@ namespace Somnium.Game {
 
 			if ( T != null ) {
 				
-				if (T.type == typeof(JsonToken_Text) || T.type == typeof(JsonToken_Number)) {
-						this.next_token();
-						return ((dynamic)T).value;
-				} else if (T.type == typeof(JsonToken_Word)) {
-						this.next_token();
+				dynamic _c = T.type; // Was a switch-case, sorry for the mess.
+				if ( _c==typeof(JsonToken_Text) || _c==typeof(JsonToken_Number) ) {
+					this.next_token();
+					return ((dynamic)T).value;
+				} else if ( _c==typeof(JsonToken_Word) ) {
+					this.next_token();
 
-						dynamic _a = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
-						if ( _a=="true" ) {
-							return GlobalVars.TRUE;
-						} else if ( _a=="false" ) {
-							return GlobalVars.FALSE;
-						} else if ( _a=="null" ) {
-							return null;
-						}
-				} else if (T.type == typeof(JsonToken_Symbol)) {
-						dynamic _b = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
-						if ( _b=="[" ) {
-							return this.read_array();
-						} else if ( _b=="{" ) {
-							return this.ReadObject( this.tokens.Copy( this.i ) );
-						}
+					dynamic _a = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
+					if ( _a=="true" ) {
+						return GlobalVars.TRUE;
+					} else if ( _a=="false" ) {
+						return GlobalVars.FALSE;
+					} else if ( _a=="null" ) {
+						return null;
+					}
+				} else if ( _c==typeof(JsonToken_Symbol) ) {
+					
+					dynamic _b = ((dynamic)T).value; // Was a switch-case, sorry for the mess.
+					if ( _b=="[" ) {
+						return this.read_array();
+					} else if ( _b=="{" ) {
+						return this.ReadObject( this.tokens.Copy( this.i ) );
+					}
 				}
 			}
 			this.die();

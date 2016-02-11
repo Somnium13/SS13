@@ -77,8 +77,7 @@ namespace Somnium.Game {
 			}
 
 			if ( !( turfs.len != 0 ) ) {
-				Interface13.Stat( null, Map13.FetchInRangeExcludeThis( null, 6 ).Contains( typeof(Tile) ) );
-				turfs.Add( Rand13.PickFromTable( null ) );
+				turfs.Add( Rand13.PickFromTable( Map13.FetchInRangeExcludeThis( null, 6 ).Contains( typeof(Tile) ) ) );
 			}
 			picked = Rand13.PickFromTable( turfs );
 

@@ -41,7 +41,7 @@ namespace Somnium.Game {
 						this.stop_automated_movement = false;
 					}
 
-					if ( !( this.movement_target != null ) || !false ) {
+					if ( !( this.movement_target != null ) || !Map13.FetchInViewExcludeThis( 3, this ).Contains( this.movement_target.loc ) ) {
 						this.movement_target = null;
 						this.stop_automated_movement = false;
 

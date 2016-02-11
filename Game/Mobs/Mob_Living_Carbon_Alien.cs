@@ -292,9 +292,8 @@ namespace Somnium.Game {
 		public void handle_mutations_and_radiation(  ) {
 			
 			if ( this.getFireLoss() != 0 ) {
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-				if ( false || Rand13.PercentChance( 5 ) ) {
+				
+				if ( this.mutations.Contains( 106 ) || Rand13.PercentChance( 5 ) ) {
 					this.adjustFireLoss( -1 );
 				}
 			}

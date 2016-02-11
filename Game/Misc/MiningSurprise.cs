@@ -197,9 +197,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( ((Tile)floor).AdjacentTurfs() )) {
 					T = _a;
 					
-					Interface13.Stat( null, room.turfs.Contains( T ) );
 
-					if ( false ) {
+					if ( room.turfs.Contains( T ) ) {
 						
 						if ( T.density ) {
 							continue;

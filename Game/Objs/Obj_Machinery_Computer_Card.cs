@@ -118,9 +118,8 @@ namespace Somnium.Game {
 					if ( this.is_authenticated() ) {
 						access_type = String13.ParseNumber( href_list["access_target"] );
 						access_allowed = String13.ParseNumber( href_list["allowed"] );
-						Interface13.Stat( null, ( this.is_centcom() ? GlobalFuncs.get_all_centcom_access() : GlobalFuncs.get_all_accesses() ).Contains( access_type ) );
 
-						if ( this.is_centcom() ) {
+						if ( ( this.is_centcom() ? GlobalFuncs.get_all_centcom_access() : GlobalFuncs.get_all_accesses() ).Contains( access_type ) ) {
 							this.modify.access -= access_type;
 
 							if ( !Lang13.Bool( access_allowed ) ) {
@@ -289,9 +288,12 @@ namespace Somnium.Game {
 					
 
 					if ( Lang13.Bool( GlobalFuncs.get_centcom_access_desc( access ) ) ) {
-						Interface13.Stat( "allowed", this.modify.access.Contains( access ) );
 						all_centcom_access.Add( new ByTable(new object [] { 
-							new ByTable().Set( null, "desc" ).Set( GlobalFuncs.replacetext( GlobalFuncs.get_centcom_access_desc( access ), " ", "&nbsp" ), "ref" ).Set( access, ( false ? true : false ) )
+							new ByTable()
+								.Set( "desc", GlobalFuncs.replacetext( GlobalFuncs.get_centcom_access_desc( access ), " ", "&nbsp" ) )
+								.Set( "ref", access )
+								.Set( "allowed", ( Lang13.Bool( this.modify.access.Contains( access ) ) ? true : false ) )
+							
 						 }) );
 					}
 				}
@@ -309,8 +311,13 @@ namespace Somnium.Game {
 						
 
 						if ( Lang13.Bool( GlobalFuncs.get_access_desc( access2 ) ) ) {
-							Interface13.Stat( "allowed", this.modify.access.Contains( access2 ) );
-							accesses.Add( new ByTable(new object [] { new ByTable().Set( null, "desc" ).Set( GlobalFuncs.replacetext( GlobalFuncs.get_access_desc( access2 ), " ", "&nbsp" ), "ref" ).Set( access2, ( false ? true : false ) ) }) );
+							accesses.Add( new ByTable(new object [] { 
+								new ByTable()
+									.Set( "desc", GlobalFuncs.replacetext( GlobalFuncs.get_access_desc( access2 ), " ", "&nbsp" ) )
+									.Set( "ref", access2 )
+									.Set( "allowed", ( Lang13.Bool( this.modify.access.Contains( access2 ) ) ? true : false ) )
+								
+							 }) );
 						}
 					}
 					regions.Add( new ByTable(new object [] { new ByTable().Set( "name", GlobalFuncs.get_region_accesses_name( i ) ).Set( "accesses", accesses ) }) );
@@ -359,12 +366,12 @@ namespace Somnium.Game {
 				return base.attackby( (object)(a), (object)(b), (object)(c) );
 			}
 
-			if ( !this.is_centcom() && !Lang13.Bool( this.scan ) && false ) {
+			if ( !this.is_centcom() && !Lang13.Bool( this.scan ) && Lang13.Bool( a.access.Contains( GlobalVars.access_change_ids ) ) ) {
 				
 				if ( Lang13.Bool( b.drop_item( a, this ) ) ) {
 					this.scan = a;
 				}
-			} else if ( this.is_centcom() && !Lang13.Bool( this.scan ) && ( false || false ) ) {
+			} else if ( this.is_centcom() && !Lang13.Bool( this.scan ) && ( Lang13.Bool( a.access.Contains( GlobalVars.access_cent_creed ) ) || Lang13.Bool( a.access.Contains( GlobalVars.access_cent_captain ) ) ) ) {
 				
 				if ( Lang13.Bool( b.drop_item( a, this ) ) ) {
 					this.scan = a;

@@ -36,9 +36,8 @@ namespace Somnium.Game {
 
 				if ( user is Mob_Living_Carbon_Human ) {
 					H = user;
-					Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-					if ( ( false || H.mind.vampire != null ) && !false ) {
+					if ( ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) && !H.mind.vampire.powers.Contains( 16 ) ) {
 						H.mind.vampire.smitecounter += 60;
 						GlobalFuncs.to_chat( H, "<span class='danger'>You feel an unwanted presence as you pick up the rod. Your body feels like it is burning from the inside!</span>" );
 					}
@@ -76,13 +75,12 @@ namespace Somnium.Game {
 			}
 			GlobalFuncs.msg_admin_attack( "" + user.name + " (" + user.ckey + ") attacked " + M.name + " (" + M.ckey + ") with " + this.name + " (INTENT: " + String13.ToUpper( user.a_intent ) + ") (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=" + user.x + ";Y=" + user.y + ";Z=" + user.z + "'>JMP</a>)" );
 
-			if ( !( user is Mob_Living_Carbon_Human ) && !false ) {
+			if ( !( user is Mob_Living_Carbon_Human ) && !GlobalVars.ticker.mode.infected_monkeys.Contains( Lang13.Bool( user.viruses.Contains( typeof(Disease_JungleFever) ) ) || Lang13.Bool( user.mind ) ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You don't have the dexterity to do this!</span>" );
 				return null;
 			}
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
 
-			if ( !( user is Mob_Living_Carbon_Human ) && !false && Rand13.PercentChance( 50 ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				((Ent_Static)user).visible_message( new Txt( "<span class='warning'>" ).The( this ).item().str( " slips out of " ).item( user ).str( "'s hands and hits " ).his_her_its_their().str( " head.</span>" ).ToString(), new Txt( "<span class='warning'>" ).The( this ).item().str( " slips out of your hands and hits your head.</span>" ).ToString() );
 				((Mob_Living)user).apply_damage( 10, "brute", "head" );
 				((Mob)user).Stun( 5 );
@@ -91,12 +89,10 @@ namespace Somnium.Game {
 
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-				if ( ( false || H.mind.vampire != null ) && Lang13.Bool( user.mind ) && user.mind.assigned_role == "Chaplain" ) {
-					Interface13.Stat( null, H.mind.vampire.powers.Contains( 13 ) );
-
-					if ( !false ) {
+				if ( ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) && Lang13.Bool( user.mind ) && user.mind.assigned_role == "Chaplain" ) {
+					
+					if ( !H.mind.vampire.powers.Contains( 13 ) ) {
 						GlobalFuncs.to_chat( H, new Txt( "<span class='warning'>" ).The( this ).item().str( "'s power violently interferes with your own!</span>" ).ToString() );
 
 						if ( H.mind.vampire.nullified < 5 ) {

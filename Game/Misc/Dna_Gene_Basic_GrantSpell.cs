@@ -19,9 +19,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( M.spell_list, typeof(Spell) )) {
 					S = _a;
 					
-					Interface13.Stat( null, this.granted_spells.Contains( S ) );
 
-					if ( S is Spell ) {
+					if ( this.granted_spells.Contains( S ) ) {
 						((Mob)M).remove_spell( S );
 						this.granted_spells.Remove( S );
 						GlobalFuncs.qdel( S );

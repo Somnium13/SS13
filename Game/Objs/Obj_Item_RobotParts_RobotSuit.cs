@@ -165,9 +165,8 @@ namespace Somnium.Game {
 						GlobalFuncs.to_chat( b, "<span class='warning'>Sticking a dead " + a + " into the frame would sort of defeat the purpose.</span>" );
 						return null;
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( M.brainmob.mind ) );
 
-					if ( Convert.ToInt32( M.brainmob.stat ) == 2 ) {
+					if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( M.brainmob.mind ) ) {
 						GlobalFuncs.to_chat( b, "<span class='warning'>The frame's firmware lets out a shrill sound, and flashes 'Abnormal Memory Engram'. It refuses to accept the " + a + ".</span>" );
 						return null;
 					}

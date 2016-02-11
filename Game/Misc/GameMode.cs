@@ -530,9 +530,8 @@ namespace Somnium.Game {
 				head = vampire_mind;
 			}
 			_ref = new Txt().Ref( head ).ToString();
-			Interface13.Stat( null, this.thralls.Contains( _ref ) );
 
-			if ( !( head is Mind ) ) {
+			if ( this.thralls.Contains( _ref ) ) {
 				this.thralls[_ref] -= vampire_mind;
 			}
 			this.enthralled.Remove( vampire_mind );
@@ -626,9 +625,8 @@ namespace Somnium.Game {
 			Image I4 = null;
 
 			_ref = new Txt().Ref( vampire_mind ).ToString();
-			Interface13.Stat( null, this.thralls.Contains( _ref ) );
 
-			if ( false ) {
+			if ( this.thralls.Contains( _ref ) ) {
 				
 				if ( Lang13.Bool( vampire_mind.current ) ) {
 					
@@ -978,9 +976,8 @@ namespace Somnium.Game {
 			string _ref = null;
 
 			_ref = new Txt().Ref( head ).ToString();
-			Interface13.Stat( null, this.implanter.Contains( _ref ) );
 
-			if ( false ) {
+			if ( this.implanter.Contains( _ref ) ) {
 				this.implanter[_ref] -= traitor_mind;
 			}
 			this.implanted.Remove( traitor_mind );
@@ -1074,9 +1071,8 @@ namespace Somnium.Game {
 			Image I4 = null;
 
 			_ref = new Txt().Ref( traitor_mind ).ToString();
-			Interface13.Stat( null, this.implanter.Contains( _ref ) );
 
-			if ( false ) {
+			if ( this.implanter.Contains( _ref ) ) {
 				
 				if ( Lang13.Bool( traitor_mind.current ) ) {
 					
@@ -1308,20 +1304,17 @@ namespace Somnium.Game {
 					}
 
 					if ( traitorwin ) {
-						Interface13.Stat( null, this.implanted.Contains( traitor ) );
-						text += "<br><font color='green'><B>The " + ( false ? "greytide" : special_role_text ) + " was successful!</B></font>";
+						text += "<br><font color='green'><B>The " + ( this.implanted.Contains( traitor ) ? "greytide" : special_role_text ) + " was successful!</B></font>";
 						GlobalFuncs.feedback_add_details( "traitor_success", "SUCCESS" );
 					} else {
-						Interface13.Stat( null, this.implanted.Contains( traitor ) );
-						text += "<br><font color='red'><B>The " + ( traitorwin ? "greytide" : special_role_text ) + " has failed!</B></font>";
+						text += "<br><font color='red'><B>The " + ( this.implanted.Contains( traitor ) ? "greytide" : special_role_text ) + " has failed!</B></font>";
 						GlobalFuncs.feedback_add_details( "traitor_success", "FAIL" );
 					}
 
 					if ( traitor.total_TC != 0 ) {
 						
 						if ( traitor.spent_TC != 0 ) {
-							Interface13.Stat( traitor.total_TC, this.implanted.Contains( traitor ) );
-							text += "<br><span class='sinister'>TC Remaining : " + null + "/" + ( traitor.total_TC - traitor.spent_TC ) + " - The tools used by the " + ( false ? "greytide" : special_role_text ) + " were:";
+							text += "<br><span class='sinister'>TC Remaining : " + ( traitor.total_TC - traitor.spent_TC ) + "/" + traitor.total_TC + " - The tools used by the " + ( this.implanted.Contains( traitor ) ? "greytide" : special_role_text ) + " were:";
 
 							foreach (dynamic _b in Lang13.Enumerate( traitor.uplink_items_bought )) {
 								entry = _b;
@@ -1330,8 +1323,7 @@ namespace Somnium.Game {
 							}
 							text += "</span>";
 						} else {
-							Interface13.Stat( null, this.implanted.Contains( traitor ) );
-							text += "<br><span class='sinister'>The " + ( traitor.spent_TC != 0 ? "greytide" : special_role_text ) + " was a smooth operator this round (did not purchase any uplink items)</span>";
+							text += "<br><span class='sinister'>The " + ( this.implanted.Contains( traitor ) ? "greytide" : special_role_text ) + " was a smooth operator this round (did not purchase any uplink items)</span>";
 						}
 					}
 				}
@@ -1638,8 +1630,7 @@ namespace Somnium.Game {
 				foreach (dynamic _e in Lang13.Enumerate( heads, typeof(Mind) )) {
 					head = _e;
 					
-					Interface13.Stat( null, targets.Contains( head ) );
-					target = head is Mind;
+					target = targets.Contains( head );
 
 					if ( target ) {
 						text += "<font color='red'>";
@@ -1985,9 +1976,8 @@ namespace Somnium.Game {
 		public void remove_revolutionary( Mind rev_mind = null, bool? beingborged = null ) {
 			Mob_Living M = null;
 
-			Interface13.Stat( null, this.revolutionaries.Contains( rev_mind ) );
-
-			if ( false ) {
+			
+			if ( this.revolutionaries.Contains( rev_mind ) ) {
 				this.revolutionaries.Remove( rev_mind );
 				rev_mind.special_role = null;
 
@@ -2018,9 +2008,8 @@ namespace Somnium.Game {
 			dynamic H = null;
 			Obj_Item_Weapon_Implant_Loyalty L = null;
 
-			Interface13.Stat( null, GlobalVars.command_positions.Contains( rev_mind.assigned_role ) );
-
-			if ( false ) {
+			
+			if ( GlobalVars.command_positions.Contains( rev_mind.assigned_role ) ) {
 				return -1;
 			}
 			H = rev_mind.current;
@@ -2037,9 +2026,8 @@ namespace Somnium.Game {
 					return -3;
 				}
 			}
-			Interface13.Stat( null, this.revolutionaries.Contains( rev_mind ) );
 
-			if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( H, "revolutionary" ) ) || false ) {
+			if ( this.revolutionaries.Contains( rev_mind ) || this.head_revolutionaries.Contains( rev_mind ) ) {
 				return -4;
 			}
 			this.revolutionaries.Add( rev_mind );
@@ -2823,9 +2811,8 @@ Once done, you will be able to interface with all systems, notably the onboard n
 
 			dynamic M = null;
 
-			Interface13.Stat( null, this.cult.Contains( cult_mind ) );
-
-			if ( log == null ) {
+			
+			if ( this.cult.Contains( cult_mind ) ) {
 				this.update_cult_icons_removed( cult_mind );
 				this.cult.Remove( cult_mind );
 				GlobalFuncs.to_chat( cult_mind.current, "<span class='danger'><FONT size = 3>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and removing all of the memories of your time as his servant, except the one who converted you, with it.</FONT></span>" );
@@ -2862,9 +2849,8 @@ Once done, you will be able to interface with all systems, notably the onboard n
 			if ( !( cult_mind is Mind ) ) {
 				return false;
 			}
-			Interface13.Stat( null, this.cult.Contains( cult_mind ) );
 
-			if ( !( !( cult_mind is Mind ) ) && GlobalFuncs.is_convertable_to_cult( cult_mind ) ) {
+			if ( !this.cult.Contains( cult_mind ) && GlobalFuncs.is_convertable_to_cult( cult_mind ) ) {
 				this.cult.Add( cult_mind );
 
 				if ( this.mixed ) {
@@ -3380,7 +3366,7 @@ Once done, you will be able to interface with all systems, notably the onboard n
 				player = _a;
 				
 
-				if ( Lang13.Bool( player.mind ) && false ) {
+				if ( Lang13.Bool( player.mind ) && GlobalVars.command_positions.Contains( player.mind.assigned_role ) ) {
 					heads.Add( player.mind );
 				}
 			}
@@ -3398,7 +3384,7 @@ Once done, you will be able to interface with all systems, notably the onboard n
 				player = _a;
 				
 
-				if ( player.stat != 2 && player.mind != null && false ) {
+				if ( player.stat != 2 && player.mind != null && GlobalVars.command_positions.Contains( player.mind.assigned_role ) ) {
 					heads.Add( player.mind );
 				}
 			}
@@ -3750,9 +3736,8 @@ Once done, you will be able to interface with all systems, notably the onboard n
 						
 						if ( !Lang13.Bool( M.stat ) ) {
 							surviving_humans++;
-							Interface13.Stat( null, escape_locations.Contains( M.loc != null && M.loc.loc != null && M.loc.loc.type != null ) );
 
-							if ( false ) {
+							if ( escape_locations.Contains( M.loc != null && M.loc.loc != null && M.loc.loc.type != null ) ) {
 								escaped_humans++;
 							}
 						}
@@ -3760,9 +3745,8 @@ Once done, you will be able to interface with all systems, notably the onboard n
 
 					if ( !Lang13.Bool( M.stat ) ) {
 						surviving_total++;
-						Interface13.Stat( null, escape_locations.Contains( M.loc != null && M.loc.loc != null && M.loc.loc.type != null ) );
 
-						if ( false ) {
+						if ( escape_locations.Contains( M.loc != null && M.loc.loc != null && M.loc.loc.type != null ) ) {
 							escaped_total++;
 						}
 

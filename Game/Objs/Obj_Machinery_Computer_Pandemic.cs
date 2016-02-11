@@ -266,12 +266,8 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( vaccine_type ) ) {
 							D = GlobalVars.archive_diseases[path];
 							vaccine_type = path;
-						} else {
-							Interface13.Stat( null, GlobalVars.diseases.Contains( vaccine_type ) );
-
-							if ( !Lang13.Bool( vaccine_type ) ) {
-								D = Lang13.Call( vaccine_type, 0, null );
-							}
+						} else if ( Lang13.Bool( GlobalVars.diseases.Contains( vaccine_type ) ) ) {
+							D = Lang13.Call( vaccine_type, 0, null );
 						}
 
 						if ( Lang13.Bool( D ) ) {
@@ -316,12 +312,8 @@ namespace Somnium.Game {
 						if ( A != null ) {
 							D2 = Lang13.Call( A.type, 0, A );
 						}
-					} else {
-						Interface13.Stat( null, GlobalVars.diseases.Contains( type ) );
-
-						if ( !( type != null ) ) {
-							D2 = Lang13.Call( type, 0, null );
-						}
+					} else if ( Lang13.Bool( GlobalVars.diseases.Contains( type ) ) ) {
+						D2 = Lang13.Call( type, 0, null );
 					}
 					data = new ByTable().Set( "viruses", new ByTable(new object [] { D2 }) );
 					name = GlobalFuncs.sanitize( Interface13.Input( Task13.User, "Name:", "Name the culture", D2.name, null, InputType.Any ) );
@@ -355,7 +347,7 @@ namespace Somnium.Game {
 				this.updateUsrDialog();
 				return null;
 			} else if ( Lang13.Bool( href_list["name_disease"] ) ) {
-				norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && false;
+				norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && Task13.User.mutations.Contains( 1 );
 				new_name = GlobalFuncs.stripped_input( Task13.User, "Name the Disease", "New Name", "", 26 );
 
 				if ( ( this.stat & 3 ) != 0 ) {

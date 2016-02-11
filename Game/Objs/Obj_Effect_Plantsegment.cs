@@ -304,7 +304,7 @@ namespace Somnium.Game {
 		// Function from file: spreading.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.die_off();
 					break;

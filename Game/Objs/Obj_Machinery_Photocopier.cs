@@ -184,7 +184,7 @@ namespace Somnium.Game {
 			Game_Data O2 = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					break;

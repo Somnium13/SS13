@@ -107,9 +107,8 @@ namespace Somnium.Game {
 				this.update_icon();
 				return 1;
 			} else if ( a is Obj_Item_Toy_Crayon || a is Obj_Item_Weapon_Stamp ) {
-				Interface13.Stat( null, new ByTable(new object [] { 1, 3, 6 }).Contains( this.wash_state ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { 1, 3, 6 }).Contains( this.wash_state ) ) {
 					
 					if ( !Lang13.Bool( this.crayon ) ) {
 						
@@ -183,9 +182,8 @@ namespace Somnium.Game {
 				}
 
 				if ( this.contents.len < 5 ) {
-					Interface13.Stat( null, new ByTable(new object [] { 1, 3 }).Contains( this.wash_state ) );
-
-					if ( false ) {
+					
+					if ( new ByTable(new object [] { 1, 3 }).Contains( this.wash_state ) ) {
 						
 						if ( Lang13.Bool( b.drop_item( a, this ) ) ) {
 							this.wash_state = 3;
@@ -241,9 +239,8 @@ namespace Somnium.Game {
 		[VerbInfo( name: "Climb out", group: "Object", access: VerbAccess.InUserLocation, range: 127 )]
 		public void climb_out(  ) {
 			Task13.Sleep( 20 );
-			Interface13.Stat( null, new ByTable(new object [] { 1, 3, 6 }).Contains( this.wash_state ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { 1, 3, 6 }).Contains( this.wash_state ) ) {
 				Task13.User.loc = this.loc;
 			}
 			return;

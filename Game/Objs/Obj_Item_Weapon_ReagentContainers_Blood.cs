@@ -99,7 +99,7 @@ namespace Somnium.Game {
 					A = _a;
 					
 
-					if ( ( A.volume ??0) > ( the_volume ??0) && false ) {
+					if ( ( A.volume ??0) > ( the_volume ??0) && Lang13.Bool( A.data.Contains( "blood_type" ) ) ) {
 						the_volume = A.volume;
 						target_type = A.data["blood_type"];
 					}

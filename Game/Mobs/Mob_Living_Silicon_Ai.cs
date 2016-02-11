@@ -133,7 +133,7 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( this, "To use something, simply click on it." );
 					GlobalFuncs.to_chat( this, "Use say :b to speak to your cyborgs through binary." );
 
-					if ( !( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && false ) ) {
+					if ( !( GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && GlobalVars.ticker.mode.malf_ai.Contains( this.mind ) ) ) {
 						this.show_laws();
 						GlobalFuncs.to_chat( this, "<b>These laws may be changed by other players, or by you being the traitor.</b>" );
 					}
@@ -854,9 +854,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					srcs = alarm[3];
-					Interface13.Stat( null, srcs.Contains( origin ) );
 
-					if ( false ) {
+					if ( srcs.Contains( origin ) ) {
 						srcs.Remove( origin );
 					}
 
@@ -902,9 +901,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					sources = alarm[3];
-					Interface13.Stat( null, sources.Contains( alarmsource ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( sources.Contains( alarmsource ) ) ) {
 						sources += alarmsource;
 					}
 					return true;
@@ -1100,7 +1098,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( href_list["switchcamera"] ) ) {
-				Interface13.Stat( null, GlobalVars.cameranet.cameras.Contains( this.switchCamera( Lang13.FindObj( href_list["switchcamera"] ) ) ) );
+				
 			}
 
 			if ( Lang13.Bool( href_list["showalerts"] ) ) {
@@ -1212,7 +1210,7 @@ namespace Somnium.Game {
 				Icon13.Flick( "flash", this.flash );
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( this.stat != 2 ) {
@@ -1771,9 +1769,8 @@ namespace Somnium.Game {
 					if ( !C2.can_use() ) {
 						continue;
 					}
-					Interface13.Stat( null, C2.network.Contains( this.network ) );
 
-					if ( !C2.can_use() ) {
+					if ( Lang13.Bool( C2.network.Contains( this.network ) ) ) {
 						((Ent_Dynamic)((dynamic)U).eyeobj).forceMove( GlobalFuncs.get_turf( C2 ) );
 						break;
 					}
@@ -1983,9 +1980,8 @@ namespace Somnium.Game {
 					continue;
 				}
 				name = ((dynamic)P).owner;
-				Interface13.Stat( null, names.Contains( name ) );
 
-				if ( P == this.aiPDA ) {
+				if ( names.Contains( name ) ) {
 					namecounts[name]++;
 					name = "" + name + " (" + namecounts[name] + ")";
 				} else {
@@ -2202,9 +2198,8 @@ namespace Somnium.Game {
 					continue;
 				}
 				name = M.name;
-				Interface13.Stat( null, this.track.names.Contains( name ) );
 
-				if ( !GlobalFuncs.near_camera( M ) ) {
+				if ( this.track.names.Contains( name ) ) {
 					this.track.namecounts[name]++;
 					name = "" + name + " (" + this.track.namecounts[name] + ")";
 				} else {
@@ -2757,9 +2752,8 @@ namespace Somnium.Game {
 					incorrect_words.Add( word );
 				}
 				wordlen = true;
-				Interface13.Stat( null, GlobalVars.vox_wordlen.Contains( word ) );
 
-				if ( !Lang13.Bool( GlobalVars.vox_sounds[word] ) ) {
+				if ( GlobalVars.vox_wordlen.Contains( word ) ) {
 					wordlen = Lang13.Bool( GlobalVars.vox_wordlen[word] );
 				}
 

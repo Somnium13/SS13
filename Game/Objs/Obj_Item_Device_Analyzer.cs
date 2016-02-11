@@ -81,7 +81,7 @@ namespace Somnium.Game {
 				if ( unknown_concentration > 0.01 ) {
 					message += "<br><span class='notice'>Unknown: " + Num13.Floor( unknown_concentration * 100 ) + "%</span>";
 				}
-				message += "<br>" + ( human_standard == true && !false ? "<span class='bad'>" : "<span class='notice'>" ) + " Temperature: " + Num13.Floor( ( scanned.temperature ??0) - 273.41 ) + "&deg;C";
+				message += "<br>" + ( human_standard == true && !Map13.FetchInRange( 360.41, 220.41 ).Contains( scanned.temperature ) ? "<span class='bad'>" : "<span class='notice'>" ) + " Temperature: " + Num13.Floor( ( scanned.temperature ??0) - 273.41 ) + "&deg;C";
 			} else {
 				message += "<br><span class='warning'>No gasses detected" + ( Lang13.Bool( container ) && !( container is Tile ) ? new Txt( " in " ).the( container ).item().str( "." ).ToString() : "" ) + "!</span>";
 			}

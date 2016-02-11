@@ -38,6 +38,8 @@ namespace Somnium.Game {
 		// Function from file: new_player.dm
 		public override bool Move( dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0 ) {
 			Dir = Dir ?? 0;
+			step_x = step_x ?? 0;
+			step_y = step_y ?? 0;
 
 			return false;
 		}
@@ -79,8 +81,8 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( href_list["ready"] ) ) {
-
-				switch ((int?)(String13.ParseNumber(href_list["ready"]))) {
+				
+				switch ((int?)( String13.ParseNumber( href_list["ready"] ) )) {
 					case 1:
 						this.ready = true;
 						break;
@@ -892,9 +894,8 @@ namespace Somnium.Game {
 							if ( Lang13.Bool( O2.optionid ) && Lang13.Bool( O2.optiontext ) ) {
 								
 								if ( voted4 ) {
-									Interface13.Stat( null, votedfor.Contains( O2.optionid ) );
-
-									if ( false ) {
+									
+									if ( votedfor.Contains( O2.optionid ) ) {
 										output4 += "<b>" + O2.optiontext + "</b><br>";
 									} else {
 										output4 += "" + O2.optiontext + "<br>";
@@ -1386,9 +1387,8 @@ namespace Somnium.Game {
 			this.sight |= GlobalVars.SEE_TURFS;
 			GlobalVars.player_list.Or( this );
 			this.new_player_panel();
-			Interface13.Stat( null, GlobalVars.deadmins.Contains( this.ckey ) );
 
-			if ( Lang13.Length( GlobalVars.newplayer_start ) != 0 ) {
+			if ( GlobalVars.deadmins.Contains( this.ckey ) ) {
 				this.client.verbs.Add( typeof(Client).GetMethod( "readmin" ) );
 			}
 			Task13.Schedule( 0, (Task13.Closure)(() => {

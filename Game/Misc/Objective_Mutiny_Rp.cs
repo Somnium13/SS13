@@ -24,9 +24,8 @@ namespace Somnium.Game {
 				}
 
 				if ( GlobalVars.ticker.mode is GameMode_Revolution ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this.target ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( this.target ) ) {
 						return 1;
 					}
 				}

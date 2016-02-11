@@ -173,146 +173,112 @@ namespace Somnium.Game {
 			}
 			valid = false;
 
-			switch ((Type)( item_to_add.type )) {
-				case typeof(Obj_Item_Clothing_Glasses_Sunglasses):
-				case typeof(Obj_Item_Clothing_Head_That):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Paper):
-				case typeof(Obj_Item_Clothing_Head_Hardhat):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Hardhat):
-				case typeof(Obj_Item_Clothing_Head_Hardhat_White):
-				case typeof(Obj_Item_Weapon_Paper):
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Helmet):
-					this.name = "Sergeant " + this.real_name;
-					this.desc = "The ever-loyal, the ever-vigilant.";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Chefhat):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Chef):
-					this.name = "Sous chef " + this.real_name;
-					this.desc = "Your food will be taste-tested.  All of it.";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Caphat):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Captain):
-					this.name = "Captain " + this.real_name;
-					this.desc = "Probably better than the last captain.";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Kitty):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Kitty):
-					this.name = "Runtime";
-					this.emote_see = new ByTable(new object [] { "coughs up a furball", "stretches" });
-					this.emote_hear = new ByTable(new object [] { "purrs" });
-					this.speak = new ByTable(new object [] { "Purrr", "Meow!", "MAOOOOOW!", "HISSSSS", "MEEEEEEW" });
-					this.desc = "It's a cute little kitty-cat! ... wait ... what the hell?";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Rabbitears):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Rabbitears):
-					this.name = "Hoppy";
-					this.emote_see = new ByTable(new object [] { "twitches its nose", "hops around a bit" });
-					this.desc = "This is Hoppy. It's a corgi-...urmm... bunny rabbit";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Beret):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Beret):
-					this.name = "Yann";
-					this.desc = "Mon dieu! C'est un chien!";
-					this.speak = new ByTable(new object [] { "le woof!", "le bark!", "JAPPE!!" });
-					this.emote_see = new ByTable(new object [] { "cowers in fear", "surrenders", "plays dead", "looks as though there is a wall in front of him" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_DetHat):
-					this.name = "Detective " + this.real_name;
-					this.desc = "" + this.name + " sees through your lies...";
-					this.emote_see = new ByTable(new object [] { "investigates the area", "sniffs around for clues", "searches for scooby snacks" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Nursehat):
-					this.name = "Nurse " + this.real_name;
-					this.desc = "" + this.name + " needs 100cc of beef jerky...STAT!";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Pirate):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Pirate):
-					this.name = "" + Rand13.Pick(new object [] { "Ol'", "Scurvy", "Black", "Rum", "Gammy", "Bloody", "Gangrene", "Death", "Long-John" }) + " " + Rand13.Pick(new object [] { "kibble", "leg", "beard", "tooth", "poop-deck", "Threepwood", "Le Chuck", "corsair", "Silver", "Crusoe" });
-					this.desc = "Yaarghh!! Thar' be a scurvy dog!";
-					this.emote_see = new ByTable(new object [] { "hunts for treasure", "stares coldly...", "gnashes his tiny corgi teeth" });
-					this.emote_hear = new ByTable(new object [] { "growls ferociously", "snarls" });
-					this.speak = new ByTable(new object [] { "Arrrrgh!!", "Grrrrrr!" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Ushanka):
-					this.name = "" + Rand13.Pick(new object [] { "Comrade", "Commissar", "Glorious Leader" }) + " " + this.real_name;
-					this.desc = "A follower of Karl Barx.";
-					this.emote_see = new ByTable(new object [] { "contemplates the failings of the capitalist economic model", "ponders the pros and cons of vangaurdism" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Collectable_Police):
-					this.name = "Officer " + this.real_name;
-					this.emote_see = new ByTable(new object [] { "drools", "looks for donuts" });
-					this.desc = "Stop right there criminal scum!";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Wizard_Fake):
-				case typeof(Obj_Item_Clothing_Head_Wizard):
-				case typeof(Obj_Item_Clothing_Head_Collectable_Wizard):
-					this.name = "Grandwizard " + this.real_name;
-					this.speak = new ByTable(new object [] { "YAP", "Woof!", "Bark!", "AUUUUUU", "EI  NATH!" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Cardborg):
-					this.name = "Borgi";
-					this.speak = new ByTable(new object [] { "Ping!", "Beep!", "Woof!" });
-					this.emote_see = new ByTable(new object [] { "goes rogue", "sniffs out non-humans" });
-					this.desc = "Result of robotics budget cuts.";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Weapon_Bedsheet):
-					this.name = "ÿGhost";
-					this.speak = new ByTable(new object [] { "WoooOOOooo~", "AUUUUUUUUUUUUUUUUUU" });
-					this.emote_see = new ByTable(new object [] { "stumbles around", "shivers" });
-					this.emote_hear = new ByTable(new object [] { "howls", "groans" });
-					this.desc = "Spooky!";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Helmet_Space_Santahat):
-					this.name = "Santa's Corgi Helper";
-					this.emote_hear = new ByTable(new object [] { "barks christmas songs", "yaps merrily" });
-					this.emote_see = new ByTable(new object [] { "looks for presents", "checks his list" });
-					this.desc = "He's very fond of milk and cookies.";
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Soft):
-					this.name = "Corgi Tech " + this.real_name;
-					this.desc = "The reason your yellow gloves have chew-marks.";
-					this.emote_see = new ByTable(new object [] { "Orders emitter crates and goes full blown cargonia." });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Fedora):
-					this.name = "Autistic " + this.real_name;
-					this.desc = "His paws seem to be covered in what looks like Cheezy Honker dust.";
-					this.emote_hear = new ByTable(new object [] { "barks ironicly", "makes you cringe" });
-					this.emote_see = new ByTable(new object [] { "unsheathes katana", "tips fedora" });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Fez):
-					this.name = "Doctor Whom";
-					this.desc = "A time-dog from the planet barkifray.";
-					this.emote_hear = new ByTable(new object [] { "barks cleverly." });
-					this.emote_see = new ByTable(new object [] { "fiddles around with a sonic-bone", "builds something amazing- thats a poop. He just pooped." });
-					valid = true;
-					break;
-				case typeof(Obj_Item_Clothing_Head_Helmet_Space_Rig):
-					this.name = "Spessman " + this.real_name;
-					this.desc = "Boldly going where no Corgi has gone before!";
-					valid = true;
-					this.min_oxy = 0;
-					this.minbodytemp = 0;
-					this.maxbodytemp = 999;
-					break;
+			dynamic _a = item_to_add.type; // Was a switch-case, sorry for the mess.
+			if ( _a==typeof(Obj_Item_Clothing_Glasses_Sunglasses) || _a==typeof(Obj_Item_Clothing_Head_That) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Paper) || _a==typeof(Obj_Item_Clothing_Head_Hardhat) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Hardhat) || _a==typeof(Obj_Item_Clothing_Head_Hardhat_White) || _a==typeof(Obj_Item_Weapon_Paper) ) {
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Helmet) ) {
+				this.name = "Sergeant " + this.real_name;
+				this.desc = "The ever-loyal, the ever-vigilant.";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Chefhat) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Chef) ) {
+				this.name = "Sous chef " + this.real_name;
+				this.desc = "Your food will be taste-tested.  All of it.";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Caphat) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Captain) ) {
+				this.name = "Captain " + this.real_name;
+				this.desc = "Probably better than the last captain.";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Kitty) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Kitty) ) {
+				this.name = "Runtime";
+				this.emote_see = new ByTable(new object [] { "coughs up a furball", "stretches" });
+				this.emote_hear = new ByTable(new object [] { "purrs" });
+				this.speak = new ByTable(new object [] { "Purrr", "Meow!", "MAOOOOOW!", "HISSSSS", "MEEEEEEW" });
+				this.desc = "It's a cute little kitty-cat! ... wait ... what the hell?";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Rabbitears) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Rabbitears) ) {
+				this.name = "Hoppy";
+				this.emote_see = new ByTable(new object [] { "twitches its nose", "hops around a bit" });
+				this.desc = "This is Hoppy. It's a corgi-...urmm... bunny rabbit";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Beret) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Beret) ) {
+				this.name = "Yann";
+				this.desc = "Mon dieu! C'est un chien!";
+				this.speak = new ByTable(new object [] { "le woof!", "le bark!", "JAPPE!!" });
+				this.emote_see = new ByTable(new object [] { "cowers in fear", "surrenders", "plays dead", "looks as though there is a wall in front of him" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_DetHat) ) {
+				this.name = "Detective " + this.real_name;
+				this.desc = "" + this.name + " sees through your lies...";
+				this.emote_see = new ByTable(new object [] { "investigates the area", "sniffs around for clues", "searches for scooby snacks" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Nursehat) ) {
+				this.name = "Nurse " + this.real_name;
+				this.desc = "" + this.name + " needs 100cc of beef jerky...STAT!";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Pirate) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Pirate) ) {
+				this.name = "" + Rand13.Pick(new object [] { "Ol'", "Scurvy", "Black", "Rum", "Gammy", "Bloody", "Gangrene", "Death", "Long-John" }) + " " + Rand13.Pick(new object [] { "kibble", "leg", "beard", "tooth", "poop-deck", "Threepwood", "Le Chuck", "corsair", "Silver", "Crusoe" });
+				this.desc = "Yaarghh!! Thar' be a scurvy dog!";
+				this.emote_see = new ByTable(new object [] { "hunts for treasure", "stares coldly...", "gnashes his tiny corgi teeth" });
+				this.emote_hear = new ByTable(new object [] { "growls ferociously", "snarls" });
+				this.speak = new ByTable(new object [] { "Arrrrgh!!", "Grrrrrr!" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Ushanka) ) {
+				this.name = "" + Rand13.Pick(new object [] { "Comrade", "Commissar", "Glorious Leader" }) + " " + this.real_name;
+				this.desc = "A follower of Karl Barx.";
+				this.emote_see = new ByTable(new object [] { "contemplates the failings of the capitalist economic model", "ponders the pros and cons of vangaurdism" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Collectable_Police) ) {
+				this.name = "Officer " + this.real_name;
+				this.emote_see = new ByTable(new object [] { "drools", "looks for donuts" });
+				this.desc = "Stop right there criminal scum!";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Wizard_Fake) || _a==typeof(Obj_Item_Clothing_Head_Wizard) || _a==typeof(Obj_Item_Clothing_Head_Collectable_Wizard) ) {
+				this.name = "Grandwizard " + this.real_name;
+				this.speak = new ByTable(new object [] { "YAP", "Woof!", "Bark!", "AUUUUUU", "EI  NATH!" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Cardborg) ) {
+				this.name = "Borgi";
+				this.speak = new ByTable(new object [] { "Ping!", "Beep!", "Woof!" });
+				this.emote_see = new ByTable(new object [] { "goes rogue", "sniffs out non-humans" });
+				this.desc = "Result of robotics budget cuts.";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Weapon_Bedsheet) ) {
+				this.name = "ÿGhost";
+				this.speak = new ByTable(new object [] { "WoooOOOooo~", "AUUUUUUUUUUUUUUUUUU" });
+				this.emote_see = new ByTable(new object [] { "stumbles around", "shivers" });
+				this.emote_hear = new ByTable(new object [] { "howls", "groans" });
+				this.desc = "Spooky!";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Helmet_Space_Santahat) ) {
+				this.name = "Santa's Corgi Helper";
+				this.emote_hear = new ByTable(new object [] { "barks christmas songs", "yaps merrily" });
+				this.emote_see = new ByTable(new object [] { "looks for presents", "checks his list" });
+				this.desc = "He's very fond of milk and cookies.";
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Soft) ) {
+				this.name = "Corgi Tech " + this.real_name;
+				this.desc = "The reason your yellow gloves have chew-marks.";
+				this.emote_see = new ByTable(new object [] { "Orders emitter crates and goes full blown cargonia." });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Fedora) ) {
+				this.name = "Autistic " + this.real_name;
+				this.desc = "His paws seem to be covered in what looks like Cheezy Honker dust.";
+				this.emote_hear = new ByTable(new object [] { "barks ironicly", "makes you cringe" });
+				this.emote_see = new ByTable(new object [] { "unsheathes katana", "tips fedora" });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Fez) ) {
+				this.name = "Doctor Whom";
+				this.desc = "A time-dog from the planet barkifray.";
+				this.emote_hear = new ByTable(new object [] { "barks cleverly." });
+				this.emote_see = new ByTable(new object [] { "fiddles around with a sonic-bone", "builds something amazing- thats a poop. He just pooped." });
+				valid = true;
+			} else if ( _a==typeof(Obj_Item_Clothing_Head_Helmet_Space_Rig) ) {
+				this.name = "Spessman " + this.real_name;
+				this.desc = "Boldly going where no Corgi has gone before!";
+				valid = true;
+				this.min_oxy = 0;
+				this.minbodytemp = 0;
+				this.maxbodytemp = 999;
 			}
 
 			if ( valid ) {
@@ -441,9 +407,8 @@ namespace Somnium.Game {
 							typeof(Obj_Item_Weapon_Extinguisher), 
 							typeof(Obj_Item_Clothing_Suit_Space_Rig)
 						 });
-						Interface13.Stat( null, allowed_types.Contains( item_to_add.type ) );
 
-						if ( !( item_to_add is Obj_Item_Weapon_Plastique ) ) {
+						if ( !allowed_types.Contains( item_to_add.type ) ) {
 							GlobalFuncs.to_chat( Task13.User, new Txt( "You set " ).item( item_to_add ).str( " on " ).item( this ).str( "'s back, but " ).he_she_it_they().str( " shakes it off!" ).ToString() );
 							Task13.User.drop_item( item_to_add, GlobalFuncs.get_turf( this ) );
 

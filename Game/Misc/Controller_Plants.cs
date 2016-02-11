@@ -148,11 +148,9 @@ namespace Somnium.Game {
 			while (gene_tags != null && gene_tags.len != 0) {
 				gene_tag = Rand13.PickFromTable( gene_tags );
 				gene_mask = "" + GlobalFuncs.num2hex( Rand13.Int( 0, 255 ) );
-				Interface13.Stat( null, used_masks.Contains( gene_mask ) );
 
-				if ( false ) {
+				while (used_masks.Contains( gene_mask )) {
 					gene_mask = "" + GlobalFuncs.num2hex( Rand13.Int( 0, 255 ) );
-					// goto 78;
 				}
 				used_masks.Add( gene_mask );
 				gene_tags.Remove( gene_tag );

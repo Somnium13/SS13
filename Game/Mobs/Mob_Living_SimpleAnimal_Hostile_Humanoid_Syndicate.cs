@@ -30,9 +30,8 @@ namespace Somnium.Game {
 			
 			if ( target is Mob ) {
 				M = target;
-				Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( M.mind ) );
 
-				if ( false ) {
+				if ( GlobalVars.ticker.mode.syndicates.Contains( M.mind ) ) {
 					return false;
 				}
 			}

@@ -724,9 +724,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( ((dynamic)this.GetJob( "Assistant" )).IsInstanceOfType( job ) ) ) {
 					continue;
 				}
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( job ) );
 
-				if ( Lang13.Bool( ((dynamic)this.GetJob( "Assistant" )).IsInstanceOfType( job ) ) ) {
+				if ( GlobalVars.command_positions.Contains( job ) ) {
 					continue;
 				}
 

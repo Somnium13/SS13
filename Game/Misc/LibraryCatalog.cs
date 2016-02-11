@@ -15,9 +15,8 @@ namespace Somnium.Game {
 			ByTable results = null;
 			Cachedbook CB = null;
 
-			Interface13.Stat( null, this.cached_books.Contains( "" + id ) );
-
-			if ( false ) {
+			
+			if ( this.cached_books.Contains( "" + id ) ) {
 				return this.cached_books["" + id];
 			}
 			sqlid = String13.ParseNumber( id );
@@ -45,9 +44,8 @@ namespace Somnium.Game {
 			double? sqlid = null;
 			DBQuery query = null;
 
-			Interface13.Stat( null, this.cached_books.Contains( "" + id ) );
-
-			if ( false ) {
+			
+			if ( this.cached_books.Contains( "" + id ) ) {
 				CB = this.cached_books["" + id];
 
 				if ( CB.programmatic ) {

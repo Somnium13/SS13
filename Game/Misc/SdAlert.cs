@@ -40,14 +40,10 @@ namespace Somnium.Game {
 						} else {
 							validated = true;
 						}
+					} else if ( this.validation.Contains( this.response ) ) {
+						validated = true;
 					} else {
-						Interface13.Stat( null, this.validation.Contains( this.response ) );
-
-						if ( this.response is ByTable ) {
-							validated = true;
-						} else {
-							this.response = null;
-						}
+						this.response = null;
 					}
 				} else {
 					validated = true;

@@ -136,9 +136,8 @@ namespace Somnium.Game {
 					this.stance_step++;
 
 					if ( this.stance_step >= 10 ) {
-						Interface13.Stat( null, this.ListTargets().Contains( Lang13.Bool( this.target ) && Lang13.Bool( this.target ) ) );
-
-						if ( false ) {
+						
+						if ( this.ListTargets().Contains( Lang13.Bool( this.target ) && Lang13.Bool( this.target ) ) ) {
 							this.stance = 3;
 						} else {
 							this.stance = 1;
@@ -148,18 +147,16 @@ namespace Somnium.Game {
 				case 2:
 					this.stop_automated_movement = true;
 					found_mob = false;
-					Interface13.Stat( null, this.ListTargets().Contains( Lang13.Bool( this.target ) && Lang13.Bool( this.target ) ) );
 
-					if ( false ) {
+					if ( this.ListTargets().Contains( Lang13.Bool( this.target ) && Lang13.Bool( this.target ) ) ) {
 						
 						if ( this.CanAttack( this.target ) ) {
 							this.stance_step = Num13.MaxInt( 0, this.stance_step );
 							this.stance_step++;
 							found_mob = true;
 							this.dir = Map13.GetDistance( this, this.target );
-							Interface13.Stat( null, new ByTable(new object [] { 1, 4, 7 }).Contains( this.stance_step ) );
 
-							if ( false ) {
+							if ( new ByTable(new object [] { 1, 4, 7 }).Contains( this.stance_step ) ) {
 								action = Rand13.PickFromTable( new ByTable(new object [] { "growls at " + this.target, "stares angrily at " + this.target, "prepares to attack " + this.target, "closely watches " + this.target }) );
 
 								if ( Lang13.Bool( action ) ) {

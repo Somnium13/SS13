@@ -468,9 +468,8 @@ namespace Somnium.Game {
 									t1 += new Txt( " <A href='?src=" ).Ref( this ).str( ";make=" ).item( i ).str( ";multiplier=" ).item( n ).str( "'>" ).item( n * R.res_amount ).str( "x</A>" ).ToString();
 								}
 							}
-							Interface13.Stat( null, multipliers.Contains( max_multiplier ) );
 
-							if ( !false ) {
+							if ( !multipliers.Contains( max_multiplier ) ) {
 								t1 += new Txt( " <A href='?src=" ).Ref( this ).str( ";make=" ).item( i ).str( ";multiplier=" ).item( max_multiplier ).str( "'>" ).item( max_multiplier * ( R.res_amount ??0) ).str( "x</A>" ).ToString();
 							}
 						}

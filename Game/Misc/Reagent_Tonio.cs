@@ -24,9 +24,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( ((dynamic)this.holder).reagent_list, typeof(Reagent) )) {
 				reagent = _a;
 				
-				Interface13.Stat( null, GlobalVars.tonio_doesnt_remove.Contains( reagent.id ) );
 
-				if ( reagent is Reagent ) {
+				if ( GlobalVars.tonio_doesnt_remove.Contains( reagent.id ) ) {
 					continue;
 				}
 				((dynamic)this.holder).remove_reagent( reagent.id, 1.5 );

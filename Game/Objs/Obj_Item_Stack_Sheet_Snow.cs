@@ -40,7 +40,7 @@ namespace Somnium.Game {
 			if ( hit_atom is Mob_Living_Carbon ) {
 				C = hit_atom;
 
-				if ( Convert.ToDouble( C.stuttering ) < 1 && !false ) {
+				if ( Convert.ToDouble( C.stuttering ) < 1 && !Lang13.Bool( C.mutations.Contains( 4 ) ) ) {
 					C.stuttering = 1;
 				}
 				((Mob)C).Weaken( 1 );

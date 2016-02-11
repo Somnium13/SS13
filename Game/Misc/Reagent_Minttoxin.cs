@@ -22,9 +22,8 @@ namespace Somnium.Game {
 			if ( base.on_mob_life( M, alien ) ) {
 				return true;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 6 ) );
 
-			if ( base.on_mob_life( M, alien ) ) {
+			if ( M.mutations.Contains( 6 ) ) {
 				M.gib();
 			}
 			return false;

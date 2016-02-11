@@ -245,9 +245,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.holographic_items )) {
 				item = _a;
 				
-				Interface13.Stat( null, this.linkedholodeck.Contains( GlobalFuncs.get_turf( item ) ) );
 
-				if ( !false ) {
+				if ( !Lang13.Bool( this.linkedholodeck.Contains( GlobalFuncs.get_turf( item ) ) ) ) {
 					this.derez( item, false );
 				}
 			}

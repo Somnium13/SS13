@@ -377,7 +377,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.affected_mob ) ) {
 				id = "" + this.GetDiseaseID();
 
-				if ( resistance == true && !false ) {
+				if ( resistance == true && !this.affected_mob.resistances.Contains( id ) ) {
 					this.affected_mob.resistances[id] = id;
 				}
 				this.affected_mob.viruses -= this;

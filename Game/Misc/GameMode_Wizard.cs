@@ -138,7 +138,7 @@ namespace Somnium.Game {
 			while (possible_wizards.len != 0) {
 				wizard = Rand13.PickFromTable( possible_wizards );
 
-				if ( Lang13.Bool( wizard.special_role ) || this.mixed && false ) {
+				if ( Lang13.Bool( wizard.special_role ) || this.mixed && GlobalVars.ticker.mode.modePlayer.Contains( wizard ) ) {
 					possible_wizards.Remove( wizard );
 					wizard = null;
 					continue;

@@ -63,9 +63,8 @@ namespace Somnium.Game {
 			dynamic olddir = null;
 			int conflictingdir = 0;
 
-			Interface13.Stat( null, href_list.Contains( "changedir" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "changedir" ) ) {
 				changingdir = String13.ParseNumber( href_list["changedir"] );
 				changingdir = ( ( changingdir ??0) <= 1 ? 1 : ( ( changingdir ??0) >= 2 ? 2 : changingdir ) );
 				newdir = Interface13.Input( "Select the new direction", this.name, "North", null, new ByTable(new object [] { "North", "South", "East", "West" }), InputType.Null | InputType.Any );
@@ -179,9 +178,8 @@ namespace Somnium.Game {
 			Game_Data stacked = null;
 			int release_amount = 0;
 
-			Interface13.Stat( null, this.stacks.Contains( typepath ) );
-
-			if ( !( forced == null ) ) {
+			
+			if ( !this.stacks.Contains( typepath ) ) {
 				return;
 			}
 			out_T = Map13.GetStep( this, this.out_dir );
@@ -231,9 +229,8 @@ namespace Somnium.Game {
 
 				if ( A is Obj_Item_Stack ) {
 					stackA = A;
-					Interface13.Stat( null, this.stacks.Contains( "" + stackA.type ) );
 
-					if ( !false ) {
+					if ( !this.stacks.Contains( "" + stackA.type ) ) {
 						stack = GlobalFuncs.getFromPool( stackA.type, this );
 						((dynamic)stack).amount = ((dynamic)stackA).amount;
 					} else {

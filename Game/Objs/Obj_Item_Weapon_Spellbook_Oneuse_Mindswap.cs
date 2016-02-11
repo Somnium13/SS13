@@ -29,9 +29,8 @@ namespace Somnium.Game {
 			dynamic V4 = null;
 
 			base.recoil( (object)(user) );
-			Interface13.Stat( null, GlobalVars.dead_mob_list.Contains( this.stored_swap ) );
 
-			if ( false ) {
+			if ( GlobalVars.dead_mob_list.Contains( this.stored_swap ) ) {
 				this.stored_swap = null;
 			}
 

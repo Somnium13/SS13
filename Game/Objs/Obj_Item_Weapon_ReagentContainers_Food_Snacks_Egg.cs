@@ -40,9 +40,8 @@ namespace Somnium.Game {
 			} else if ( a is Obj_Item_Toy_Crayon ) {
 				C = a;
 				clr = C.colourName;
-				Interface13.Stat( null, new ByTable(new object [] { "blue", "green", "mime", "orange", "purple", "rainbow", "red", "yellow" }).Contains( clr ) );
 
-				if ( !false ) {
+				if ( !new ByTable(new object [] { "blue", "green", "mime", "orange", "purple", "rainbow", "red", "yellow" }).Contains( clr ) ) {
 					GlobalFuncs.to_chat( b, "<span class='notice'>" + this + " refuses to take on this colour!</span>" );
 					return null;
 				}

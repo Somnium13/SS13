@@ -61,7 +61,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: airlock_controllers.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
+		public override bool isLinkedWith( Base_Data O = null ) {
 			Base_Data D = null;
 			Base_Data S = null;
 			dynamic DP = null;
@@ -95,7 +95,7 @@ namespace Somnium.Game {
 			if ( UV is Obj_Machinery_Atmospherics_Unary_VentPump && UV.id_tag == this.tag_airpump ) {
 				return true;
 			}
-			return null;
+			return false;
 		}
 
 		// Function from file: airlock_controllers.dm
@@ -146,9 +146,8 @@ namespace Somnium.Game {
 		public override bool canLink( Base_Data O = null, ByTable context = null ) {
 			
 			if ( O is Obj_Machinery_Door ) {
-				Interface13.Stat( null, new ByTable(new object [] { "int", "ext" }).Contains( context["slot"] ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { "int", "ext" }).Contains( context["slot"] ) ) {
 					return true;
 				}
 			}

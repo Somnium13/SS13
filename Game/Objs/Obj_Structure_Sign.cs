@@ -46,8 +46,8 @@ namespace Somnium.Game {
 
 		// Function from file: signs.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

@@ -153,7 +153,7 @@ namespace Somnium.Game {
 			dynamic x2 = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

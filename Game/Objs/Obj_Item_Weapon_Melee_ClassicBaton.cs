@@ -28,9 +28,8 @@ namespace Somnium.Game {
 			dynamic O = null;
 			dynamic O2 = null;
 
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You club yourself over the head.</span>" );
 				((Mob)user).Weaken( this.force * 3 );
 
@@ -50,7 +49,7 @@ namespace Somnium.Game {
 				}
 				GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "swing_hit", 50, 1, -1 );
 
-				if ( Convert.ToDouble( M.stuttering ) < 8 && !false ) {
+				if ( Convert.ToDouble( M.stuttering ) < 8 && !Lang13.Bool( M.mutations.Contains( 4 ) ) ) {
 					M.stuttering = 8;
 				}
 				((Mob)M).Stun( 8 );

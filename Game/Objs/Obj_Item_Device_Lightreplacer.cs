@@ -534,7 +534,7 @@ namespace Somnium.Game {
 				L = a;
 
 				switch ((bool)( this.insert_if_possible( L ) )) {
-					case 0:
+					case false:
 						
 						if ( ( Lang13.Bool( L.status ) ? this.waste is Obj_Item_Weapon_Storage_Box_Lights : this.supply is Obj_Item_Weapon_Storage_Box_Lights ) ) {
 							GlobalFuncs.to_chat( b, new Txt( "<span class='warning'>" ).The( this ).item().str( "'s " ).item( ( Lang13.Bool( L.status ) ? "waste" : "supply" ) ).str( " container is full!</span>" ).ToString() );
@@ -542,7 +542,7 @@ namespace Somnium.Game {
 							GlobalFuncs.to_chat( b, new Txt( "<span class='warning'>" ).The( this ).item().str( " has no " ).item( ( Lang13.Bool( L.status ) ? "waste" : "supply" ) ).str( " container!</span>" ).ToString() );
 						}
 						break;
-					case 1:
+					case true:
 						((Ent_Static)b).visible_message( new Txt().item( b ).str( " inserts " ).a( L ).item().str( " into " ).the( this ).item().ToString(), new Txt( "You insert " ).the( L ).item().str( " into " ).the( this ).item().str( "'s " ).item( ( Lang13.Bool( L.status ) ? "waste" : "supply" ) ).str( " container." ).ToString() );
 						break;
 					default:

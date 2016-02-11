@@ -19,10 +19,13 @@ namespace Somnium.Game {
 		// Function from file: explosive.dm
 		public override void UpdateCut( double? index = null, bool mended = false ) {
 			
-			if (index == 1) {
-				if ( !mended ) {
-					this.explode();
-				}
+			switch ((int?)( index )) {
+				case 1:
+					
+					if ( !mended ) {
+						this.explode();
+					}
+					break;
 			}
 			return;
 		}
@@ -30,9 +33,11 @@ namespace Somnium.Game {
 		// Function from file: explosive.dm
 		public override void UpdatePulsed( double? index = null ) {
 			
-			if (index == 1)
-				this.explode();
-			
+			switch ((int?)( index )) {
+				case 1:
+					this.explode();
+					break;
+			}
 			return;
 		}
 

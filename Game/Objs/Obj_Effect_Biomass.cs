@@ -61,53 +61,44 @@ namespace Somnium.Game {
 				return null;
 			}
 
-			switch ((Type)( a.type )) {
-				case typeof(Obj_Item_Weapon_CircularSaw):
+			dynamic _a = a.type; // Was a switch-case, sorry for the mess.
+			if ( _a==typeof(Obj_Item_Weapon_CircularSaw) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Kitchen_Utensil_Knife) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Fireaxe) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Hatchet) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Melee_Energy) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Pickaxe_Plasmacutter) ) {
+				GlobalFuncs.qdel( this );
+			} else if ( _a==typeof(Obj_Item_Weapon_Wirecutters) ) {
+				
+				if ( Rand13.PercentChance( 25 ) ) {
 					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Kitchen_Utensil_Knife):
+				}
+			} else if ( _a==typeof(Obj_Item_Weapon_Shard) ) {
+				
+				if ( Rand13.PercentChance( 25 ) ) {
 					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Fireaxe):
+				}
+			} else {
+				
+				if ( a is Obj_Item_Weapon_Melee_Energy_Sword ) {
 					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Hatchet):
+				} else if ( a is Obj_Item_Weapon_Scalpel ) {
 					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Melee_Energy):
-					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Pickaxe_Plasmacutter):
-					GlobalFuncs.qdel( this );
-					break;
-				case typeof(Obj_Item_Weapon_Wirecutters):
-					
-					if ( Rand13.PercentChance( 25 ) ) {
-						GlobalFuncs.qdel( this );
-					}
-					break;
-				case typeof(Obj_Item_Weapon_Shard):
-					
-					if ( Rand13.PercentChance( 25 ) ) {
-						GlobalFuncs.qdel( this );
-					}
-					break;
-				default:
-					
-					if ( a is Obj_Item_Weapon_Melee_Energy_Sword ) {
-						GlobalFuncs.qdel( this );
-					} else if ( a is Obj_Item_Weapon_Scalpel ) {
-						GlobalFuncs.qdel( this );
-					} else if ( a is Obj_Item_Weapon_Weldingtool ) {
-						WeldingTool = a;
+				} else if ( a is Obj_Item_Weapon_Weldingtool ) {
+					WeldingTool = a;
 
-						if ( Lang13.Bool( WeldingTool.remove_fuel( 0, b ) ) ) {
-							GlobalFuncs.qdel( this );
-						}
-					} else {
-						return null;
+					if ( Lang13.Bool( WeldingTool.remove_fuel( 0, b ) ) ) {
+						GlobalFuncs.qdel( this );
 					}
-					break;
+				} else {
+					return null;
+				}
 			}
 			base.attackby( (object)(a), (object)(b), (object)(c) );
 			return null;

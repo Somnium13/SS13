@@ -90,7 +90,7 @@ namespace Somnium.Game {
 			this.labyrinthwalls = new ByTable();
 			this.labyrinth = lab_type;
 
-			switch ((int?)(lab_type)) {
+			switch ((int?)( lab_type )) {
 				case 0:
 					return;
 					break;
@@ -582,7 +582,7 @@ namespace Somnium.Game {
 			afternext_x = this.head.x;
 			afternext_y = this.head.y;
 
-			switch ((double?)( this.head.dir )) {
+			switch ((int?)( this.head.dir )) {
 				case 1:
 					next_x = this.head.x;
 					next_y = ( this.head.y ??0) + 1;
@@ -617,7 +617,7 @@ namespace Somnium.Game {
 				next_y = 9;
 			}
 
-			switch ((int?)(this.head.dir)) {
+			switch ((int?)( this.head.dir )) {
 				case 1:
 					afternext_x = next_x;
 					afternext_y = ( next_y ??0) + 1;
@@ -758,7 +758,7 @@ namespace Somnium.Game {
 			this.eggs_eaten = 0;
 			this.snakescore = 0;
 
-			switch ((int?)(this.labyrinth)) {
+			switch ((int?)( this.labyrinth )) {
 				case 3:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this.snakeparts, typeof(Snake_Body) )) {

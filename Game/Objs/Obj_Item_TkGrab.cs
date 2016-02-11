@@ -104,9 +104,8 @@ namespace Somnium.Game {
 				GlobalFuncs.qdel( this );
 				return false;
 			}
-			Interface13.Stat( null, this.host.mutations.Contains( 1 ) );
 
-			if ( !( !( this.host != null ) || this.host != user ) ) {
+			if ( !this.host.mutations.Contains( 1 ) ) {
 				GlobalFuncs.qdel( this );
 				return false;
 			}

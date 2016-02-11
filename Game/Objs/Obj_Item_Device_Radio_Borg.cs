@@ -122,9 +122,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.keyslot.channels )) {
 					ch_name = _a;
 					
-					Interface13.Stat( null, this.channels.Contains( ch_name ) );
 
-					if ( false ) {
+					if ( this.channels.Contains( ch_name ) ) {
 						continue;
 					}
 					this.channels.Add( ch_name );

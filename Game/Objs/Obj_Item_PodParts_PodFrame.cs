@@ -98,9 +98,8 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( ((dynamic)linked.link_to).IsInstanceOfType( pointer ) ) && pointer.dir == linked.dir && Lang13.Bool( pointer.anchored ) ) {
-					Interface13.Stat( null, connectedparts.Contains( pointer ) );
-
-					if ( !false ) {
+					
+					if ( !connectedparts.Contains( pointer ) ) {
 						connectedparts.Add( pointer );
 					}
 					linked = pointer;
@@ -117,9 +116,8 @@ namespace Somnium.Game {
 					return 0;
 				}
 				F = connectedparts[i2];
-				Interface13.Stat( null, neededparts.Contains( F.type ) );
 
-				if ( ( i2 ??0) > connectedparts.len ) {
+				if ( neededparts.Contains( F.type ) ) {
 					neededparts.Remove( F.type );
 					GlobalFuncs.log_admin( "Found " + F.type );
 				} else {

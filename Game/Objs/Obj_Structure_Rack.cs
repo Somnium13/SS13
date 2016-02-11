@@ -46,9 +46,8 @@ namespace Somnium.Game {
 
 		// Function from file: tables_racks.dm
 		public override dynamic attack_paw( Mob a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( a.mutations.Contains( 4 ) ) {
 				a.say( Rand13.Pick(new object [] { ";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" }) );
 				this.visible_message( "<span class='danger'>" + a + " smashes " + this + " apart!</span>" );
 				this.destroy();
@@ -159,8 +158,8 @@ namespace Somnium.Game {
 
 		// Function from file: tables_racks.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					break;

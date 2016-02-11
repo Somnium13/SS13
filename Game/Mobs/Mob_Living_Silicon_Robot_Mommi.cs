@@ -1326,9 +1326,8 @@ namespace Somnium.Game {
 
 		// Function from file: inventory.dm
 		public override void toggle_module( dynamic module = null ) {
-			Interface13.Stat( null, ((dynamic)"tool_slot").Contains( module ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( ((dynamic)"tool_slot").Contains( module ) ) ) {
 				return;
 			}
 
@@ -1344,9 +1343,8 @@ namespace Somnium.Game {
 
 		// Function from file: inventory.dm
 		public override void deselect_module( dynamic module = null ) {
-			Interface13.Stat( null, ((dynamic)"tool_slot").Contains( module ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( ((dynamic)"tool_slot").Contains( module ) ) ) {
 				return;
 			}
 
@@ -1360,9 +1358,8 @@ namespace Somnium.Game {
 
 		// Function from file: inventory.dm
 		public override void select_module( dynamic module = null ) {
-			Interface13.Stat( null, ((dynamic)"tool_slot").Contains( module ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( ((dynamic)"tool_slot").Contains( module ) ) ) {
 				return;
 			}
 
@@ -1390,9 +1387,8 @@ namespace Somnium.Game {
 		// Function from file: inventory.dm
 		[VerbInfo( name: "module active" )]
 		public override bool f_module_active( dynamic module = null ) {
-			Interface13.Stat( null, ((dynamic)"tool_slot").Contains( module ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( ((dynamic)"tool_slot").Contains( module ) ) ) {
 				return false;
 			}
 
@@ -1434,9 +1430,8 @@ namespace Somnium.Game {
 			if ( this.module_active == null ) {
 				return;
 			}
-			Interface13.Stat( null, this.contents.Contains( this.module_active ) );
 
-			if ( this.module_active == null && !false && this.module_active != this.module.emag && this.candrop ) {
+			if ( this.contents.Contains( this.module_active ) && !this.module.modules.Contains( this.module_active ) && this.module_active != this.module.emag && this.candrop ) {
 				TS = this.tool_state;
 				this.drop_item( TS );
 			}
@@ -1475,9 +1470,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.tool_state ) ) {
 				
 				if ( Lang13.Bool( this.is_in_modules( this.tool_state ) ) ) {
-					Interface13.Stat( null, this.contents.Contains( this.tool_state ) );
-
-					if ( false && false ) {
+					
+					if ( this.contents.Contains( this.tool_state ) && this.module.modules.Contains( this.tool_state ) ) {
 						GlobalFuncs.to_chat( this, "<span class='warning'>This item cannot be dropped.</span>" );
 						return false;
 					}
@@ -1647,9 +1641,8 @@ namespace Somnium.Game {
 					continue;
 				}
 				chosen = null;
-				Interface13.Stat( null, living.static_overlays.Contains( this.static_choice ) );
 
-				if ( living is Mob_Living_Silicon ) {
+				if ( living.static_overlays.Contains( this.static_choice ) ) {
 					chosen = living.static_overlays[this.static_choice];
 				} else {
 					chosen = living.static_overlays[1];
@@ -1730,8 +1723,7 @@ namespace Somnium.Game {
 					}
 				}
 			} else {
-				Interface13.Stat( null, this.module.modules.Contains( W ) );
-				return W is Obj_Item_Stack_Sheet;
+				return this.module.modules.Contains( W );
 			}
 			return null;
 		}
@@ -2415,9 +2407,8 @@ namespace Somnium.Game {
 				return;
 			}
 			selected_style = Interface13.Input( "Select a vision filter", "Vision Filter", null, null, this.static_choices, InputType.Null | InputType.Any );
-			Interface13.Stat( null, this.static_choices.Contains( selected_style ) );
 
-			if ( !this.can_see_static() ) {
+			if ( this.static_choices.Contains( selected_style ) ) {
 				this.static_choice = selected_style;
 				this.add_static_overlays();
 			}

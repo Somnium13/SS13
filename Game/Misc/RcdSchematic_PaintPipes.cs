@@ -59,9 +59,8 @@ namespace Somnium.Game {
 		public override dynamic Topic( string href = null, ByTable href_list = null, dynamic hclient = null, HtmlInterface currui = null ) {
 			
 			if ( Lang13.Bool( href_list["set_color"] ) ) {
-				Interface13.Stat( null, this.available_colors.Contains( href_list["set_color"] ) );
-
-				if ( false ) {
+				
+				if ( this.available_colors.Contains( href_list["set_color"] ) ) {
 					this.selected_color = href_list["set_color"];
 					this.master.update_options_menu();
 				}
@@ -87,9 +86,8 @@ namespace Somnium.Game {
 			}
 			O = A;
 			GlobalFuncs.playsound( GlobalFuncs.get_turf( this.master ), "sound/machines/click.ogg", 50, 1 );
-			Interface13.Stat( null, this.available_colors.Contains( this.selected_color ) );
 
-			if ( !( A is Obj_Machinery_Atmospherics ) ) {
+			if ( this.available_colors.Contains( this.selected_color ) ) {
 				this.selected_color = this.available_colors[this.selected_color];
 			}
 

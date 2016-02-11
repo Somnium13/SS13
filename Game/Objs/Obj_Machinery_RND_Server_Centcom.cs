@@ -35,9 +35,9 @@ namespace Somnium.Game {
 
 			foreach (dynamic _b in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_RND_Server) )) {
 				S = _b;
+				
 
-
-				switch ((int?)(S.server_id)) {
+				switch ((int?)( S.server_id )) {
 					case -1:
 						continue;
 						break;
@@ -56,9 +56,8 @@ namespace Somnium.Game {
 				num = 1;
 
 				while (!Lang13.Bool( S2.server_id )) {
-					Interface13.Stat( null, server_ids.Contains( num ) );
-
-					if ( false ) {
+					
+					if ( server_ids.Contains( num ) ) {
 						num++;
 					} else {
 						S2.server_id = num;

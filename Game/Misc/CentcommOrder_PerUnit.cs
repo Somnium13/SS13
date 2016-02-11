@@ -52,12 +52,10 @@ namespace Somnium.Game {
 			if ( !( O != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, this.requested.Contains( O.type ) );
 
-			if ( !( O != null ) ) {
-				Interface13.Stat( null, this.fulfilled.Contains( O.type ) );
-
-				if ( !false ) {
+			if ( this.requested.Contains( O.type ) ) {
+				
+				if ( !this.fulfilled.Contains( O.type ) ) {
 					this.fulfilled[O.type] = 0;
 				}
 				this.fulfilled[O.type] = this.fulfilled[O.type] + 1;

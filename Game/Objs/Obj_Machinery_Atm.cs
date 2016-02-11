@@ -399,7 +399,7 @@ namespace Somnium.Game {
 					dat += "<span class='alert'>Maximum number of pin attempts exceeded! Access to this ATM has been temporarily disabled.</span>";
 				} else if ( Lang13.Bool( this.authenticated_account ) ) {
 					
-					switch ((double?)( this.view_screen )) {
+					switch ((int?)( this.view_screen )) {
 						case 1:
 							dat += "Select a new security level for this account:<br><hr>";
 							text = "Zero - Either the account number or card is required to access this account. Vendor transactions will pay from your bank account if your virtual wallet has insufficient funds.";

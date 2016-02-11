@@ -311,14 +311,13 @@ namespace Somnium.Game {
 					cData = _a;
 					
 
-					if ( cData == null || !false ) {
+					if ( cData == null || !cData.Contains( "type" ) ) {
 						Game13.log.WriteMsg( "## TESTING: " + "AAC: Null cData in root JS array." );
 						continue;
 					}
 					Atype = Lang13.FindClass( cData["type"] );
-					Interface13.Stat( null, GlobalVars.automation_types.Contains( Atype ) );
 
-					if ( !( cData == null || !false ) ) {
+					if ( !Lang13.Bool( GlobalVars.automation_types.Contains( Atype ) ) ) {
 						Game13.log.WriteMsg( "## TESTING: " + ( "AAC: Unrecognized Atype " + Atype + "." ) );
 						continue;
 					}
@@ -392,9 +391,8 @@ namespace Somnium.Game {
 				if ( A.returntype == null ) {
 					continue;
 				}
-				Interface13.Stat( null, valid_returntypes.Contains( A.returntype ) );
 
-				if ( !( A.returntype == null ) ) {
+				if ( !valid_returntypes.Contains( A.returntype ) ) {
 					continue;
 				}
 				choices[A.name] = A;

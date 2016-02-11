@@ -57,7 +57,7 @@ namespace Somnium.Game {
 
 			A = this.holder;
 
-			switch ((int?)(index)) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)A).locked = 0;
 					Task13.Schedule( 300, (Task13.Closure)(() => {

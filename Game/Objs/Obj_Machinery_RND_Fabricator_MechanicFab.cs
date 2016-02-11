@@ -235,9 +235,8 @@ namespace Somnium.Game {
 		public override bool remove_materials( dynamic part = null ) {
 			
 			if ( this.plastic_added ) {
-				Interface13.Stat( null, part.materials.Contains( "$plastic" ) );
-
-				if ( !false && !( ( this.research_flags & 256 ) != 0 ) ) {
+				
+				if ( !Lang13.Bool( part.materials.Contains( "$plastic" ) ) && !( ( this.research_flags & 256 ) != 0 ) ) {
 					
 					if ( Convert.ToDouble( ((dynamic)this.materials).getAmount( "$plastic" ) ) < this.get_resource_cost_w_coeff( part, "$plastic" ) ) {
 						return false;
@@ -248,9 +247,8 @@ namespace Somnium.Game {
 			if ( base.remove_materials( (object)(part) ) ) {
 				
 				if ( this.plastic_added ) {
-					Interface13.Stat( null, part.materials.Contains( "$plastic" ) );
-
-					if ( !false && !( ( this.research_flags & 256 ) != 0 ) ) {
+					
+					if ( !Lang13.Bool( part.materials.Contains( "$plastic" ) ) && !( ( this.research_flags & 256 ) != 0 ) ) {
 						((dynamic)this.materials).removeAmount( "$plastic", this.get_resource_cost_w_coeff( part, "$plastic" ) );
 					}
 				}
@@ -264,7 +262,7 @@ namespace Somnium.Game {
 			roundto = roundto ?? 1;
 
 			
-			if ( resource == "$plastic" && !false ) {
+			if ( resource == "$plastic" && !Lang13.Bool( part.materials.Contains( "$plastic" ) ) ) {
 				return Num13.Round( ((Design)part).MatTotal() * ( this.resource_coeff ??0) * 0.1, roundto ??0 );
 			}
 			return Num13.Round( Convert.ToDouble( part.materials[resource] * this.resource_coeff ), roundto ??0 );

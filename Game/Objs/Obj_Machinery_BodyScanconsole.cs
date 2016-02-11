@@ -50,9 +50,8 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( this.connected ) || Convert.ToDouble( this.connected.scanning ) < 3 ) {
 				return null;
 			}
-			Interface13.Stat( null, ((dynamic)( Map13.FetchInRange( 3, this ) != null && String13.FindIgnoreCase( _args[1].message, "scanner, print", 1, 0 ) != 0 )).Contains( _args[1].speaker != null && _args[1].speaker != null ) );
 
-			if ( !Lang13.Bool( this.connected ) || Convert.ToDouble( this.connected.scanning ) < 3 ) {
+			if ( Lang13.Bool( ((dynamic)( Map13.FetchInRange( 3, this ) != null && String13.FindIgnoreCase( _args[1].message, "scanner, print", 1, 0 ) != 0 )).Contains( _args[1].speaker != null && _args[1].speaker != null ) ) ) {
 				
 				if ( !Lang13.Bool( this.connected.occupant ) || !( this.connected.occupant is Mob_Living_Carbon_Human ) ) {
 					return null;
@@ -423,7 +422,7 @@ namespace Somnium.Game {
 		// Function from file: adv_med.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

@@ -43,19 +43,19 @@ namespace Somnium.Game {
 			if ( a is Obj_Item_Weapon_Screwdriver ) {
 				
 				switch ((int)( this.det_time )) {
-					case "1":
+					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
 						this.det_time = 10;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 1 second detonation time.</span>" );
 						break;
-					case "10":
+					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
 						this.det_time = 30;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 3 second detonation time.</span>" );
 						break;
-					case "30":
+					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
 						this.det_time = 50;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 5 second detonation time.</span>" );
 						break;
-					case "50":
+					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
 						this.det_time = 1;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for instant detonation.</span>" );
 						break;
@@ -148,9 +148,8 @@ namespace Somnium.Game {
 
 		// Function from file: grenade.dm
 		public bool clown_check( dynamic user = null ) {
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>Huh? How does this thing work?</span>" );
 				this.activate( user );
 				this.add_fingerprint( user );

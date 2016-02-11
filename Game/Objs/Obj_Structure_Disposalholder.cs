@@ -206,9 +206,8 @@ namespace Somnium.Game {
 
 				if ( AM is Mob_Living_Carbon_Human ) {
 					H = AM;
-					Interface13.Stat( null, ((dynamic)H).mutations.Contains( 6 ) );
 
-					if ( false && Lang13.Bool( ((dynamic)H).species ) && Lang13.Bool( ((dynamic)H).species.flags & 8192 ) ) {
+					if ( Lang13.Bool( ((dynamic)H).mutations.Contains( 6 ) ) && Lang13.Bool( ((dynamic)H).species ) && Lang13.Bool( ((dynamic)H).species.flags & 8192 ) ) {
 						this.has_fat_guy = true;
 					}
 				}

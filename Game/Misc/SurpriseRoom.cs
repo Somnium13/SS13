@@ -72,14 +72,12 @@ namespace Somnium.Game {
 				dir = _a;
 				
 				AT = Map13.GetStep( T, Convert.ToInt32( dir ) );
-				Interface13.Stat( null, this.turfs.Contains( AT ) );
 
-				if ( !false ) {
+				if ( !this.turfs.Contains( AT ) ) {
 					return;
 				}
-				Interface13.Stat( null, this.turf_info.Contains( AT ) );
 
-				if ( !( !false ) ) {
+				if ( !this.turf_info.Contains( AT ) ) {
 					this.UpdateTurf( AT, true );
 				}
 				ATi = this.turf_info[AT];
@@ -129,9 +127,8 @@ namespace Somnium.Game {
 		public SurpriseTurfInfo GetTurfInfo( dynamic T = null ) {
 			SurpriseTurfInfo sti = null;
 
-			Interface13.Stat( null, this.turf_info.Contains( T ) );
-
-			if ( !false ) {
+			
+			if ( !this.turf_info.Contains( T ) ) {
 				sti = new SurpriseTurfInfo();
 				this.turf_info[T] = sti;
 			} else {

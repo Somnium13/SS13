@@ -23,9 +23,8 @@ namespace Somnium.Game {
 
 			receivers = new ByTable();
 			freq = String13.NumberToString( Convert.ToDouble( this.media_frequency ) );
-			Interface13.Stat( null, GlobalVars.media_receivers.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_receivers.Contains( freq ) ) {
 				receivers = GlobalVars.media_receivers[freq];
 			}
 			receivers.Remove( this );
@@ -42,16 +41,14 @@ namespace Somnium.Game {
 
 			receivers = new ByTable();
 			freq = String13.NumberToString( Convert.ToDouble( this.media_frequency ) );
-			Interface13.Stat( null, GlobalVars.media_receivers.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_receivers.Contains( freq ) ) {
 				receivers = GlobalVars.media_receivers[freq];
 			}
 			receivers.Add( this );
 			GlobalVars.media_receivers[freq] = receivers;
-			Interface13.Stat( null, GlobalVars.media_transmitters.Contains( freq ) );
 
-			if ( false ) {
+			if ( GlobalVars.media_transmitters.Contains( freq ) ) {
 				B = Rand13.PickFromTable( GlobalVars.media_transmitters[freq] );
 
 				if ( B.media_crypto == this.media_crypto ) {

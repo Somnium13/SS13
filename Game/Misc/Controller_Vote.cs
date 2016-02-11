@@ -536,9 +536,8 @@ namespace Somnium.Game {
 							greatest_votes = Convert.ToInt32( this.choices["Continue Playing"] );
 						}
 					} else if ( this.mode == "gamemode" ) {
-						Interface13.Stat( null, this.choices.Contains( GlobalVars.master_mode ) );
-
-						if ( false ) {
+						
+						if ( Lang13.Bool( this.choices.Contains( GlobalVars.master_mode ) ) ) {
 							this.choices[GlobalVars.master_mode] += non_voters;
 
 							if ( Convert.ToDouble( this.choices[GlobalVars.master_mode] ) >= greatest_votes ) {

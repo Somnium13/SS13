@@ -556,7 +556,7 @@ namespace Somnium.Game {
 					}
 
 					if ( Lang13.Bool( href_list["search"] ) ) {
-						norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && false;
+						norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && Task13.User.mutations.Contains( 1 );
 						t116 = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( "Search String: (Name, DNA, or ID)", "Med. records", null, null, null, InputType.Str ) ), 1, 1024 );
 
 						if ( !Lang13.Bool( t116 ) || Lang13.Bool( Task13.User.stat ) || !Lang13.Bool( this.authenticated ) || Task13.User.restrained() || !GlobalFuncs.in_range( this, Task13.User ) && !( Task13.User is Mob_Living_Silicon ) && !norange ) {
@@ -653,7 +653,7 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( this.authenticated ) ) {
 					
-					switch ((double?)( this.screen )) {
+					switch ((int?)( this.screen )) {
 						case 1:
 							dat += new Txt( "\n<A href='?src=" ).Ref( this ).str( ";search=1'>Search Records</A>\n<BR><A href='?src=" ).Ref( this ).str( ";screen=2'>List Records</A>\n<BR>\n<BR><A href='?src=" ).Ref( this ).str( ";screen=5'>Virus Database</A>\n<BR><A href='?src=" ).Ref( this ).str( ";screen=6'>Medbot Tracking</A>\n<BR>\n<BR><A href='?src=" ).Ref( this ).str( ";screen=3'>Record Maintenance</A>\n<BR><A href='?src=" ).Ref( this ).str( ";logout=1'>{Log Out}</A><BR>\n" ).ToString();
 							break;

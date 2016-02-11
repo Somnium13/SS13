@@ -35,9 +35,8 @@ namespace Somnium.Game {
 			if ( this.department == "Unknown" ) {
 				this.department = "Fax #" + GlobalVars.allfaxes.len;
 			}
-			Interface13.Stat( null, GlobalVars.alldepartments.Contains( "" + this.department ) );
 
-			if ( !( this.department == "Unknown" ) ) {
+			if ( !GlobalVars.alldepartments.Contains( "" + this.department ) ) {
 				GlobalVars.alldepartments.Add( this.department );
 			}
 			return;
@@ -163,9 +162,8 @@ namespace Somnium.Game {
 					
 					if ( this.check_access( this.scan ) ) {
 						this.authenticated = true;
-						Interface13.Stat( null, this.scan.access.Contains( GlobalVars.access_lawyer ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( this.scan.access.Contains( GlobalVars.access_lawyer ) ) ) {
 							GlobalVars.alldepartments.Add( "Nanotrasen HR" );
 						}
 					}
@@ -174,9 +172,8 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( href_list["logout"] ) ) {
 				this.authenticated = false;
-				Interface13.Stat( null, this.scan.access.Contains( GlobalVars.access_lawyer ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( this.scan.access.Contains( GlobalVars.access_lawyer ) ) ) {
 					GlobalVars.alldepartments.Remove( "Nanotrasen HR" );
 				}
 			}

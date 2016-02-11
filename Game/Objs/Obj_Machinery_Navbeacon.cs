@@ -212,7 +212,7 @@ namespace Somnium.Game {
 
 			request = ((dynamic)signal).data["findbeacon"];
 
-			if ( Lang13.Bool( request ) && ( false || request == "any" || request == this.location ) ) {
+			if ( Lang13.Bool( request ) && ( this.codes.Contains( request ) || request == "any" || request == this.location ) ) {
 				Task13.Schedule( 1, (Task13.Closure)(() => {
 					this.post_signal();
 					return;

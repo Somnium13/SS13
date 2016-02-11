@@ -81,24 +81,20 @@ namespace Somnium.Game {
 				return false;
 			}
 			old_on = this.on;
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power" ) ) ) {
 				this.on = String13.ParseNumber( ((dynamic)signal).data["power"] );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power_toggle" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power_toggle" ) ) ) {
 				this.on = !Lang13.Bool( this.on ) ?1:0;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_transfer_rate" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_transfer_rate" ) ) ) {
 				this.transfer_rate = ( ( String13.ParseNumber( ((dynamic)signal).data["set_transfer_rate"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( ((dynamic)signal).data["set_transfer_rate"] ) ??0) >= ( this.air1.volume ??0) ? this.air1.volume : String13.ParseNumber( ((dynamic)signal).data["set_transfer_rate"] ) ) );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "status" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "status" ) ) ) {
 				Task13.Schedule( 2, (Task13.Closure)(() => {
 					this.broadcast_status();
 					return;

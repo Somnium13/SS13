@@ -30,14 +30,12 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( sti.adjacents[di] )) {
 					_type = _a;
 					
-					Interface13.Stat( null, opt_nnt[di].Contains( _type ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( opt_nnt[di].Contains( _type ) ) ) {
 						return false;
 					}
-					Interface13.Stat( null, opt_nt[di].Contains( _type ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( opt_nt[di].Contains( _type ) ) ) {
 						return true;
 					}
 				}
@@ -66,9 +64,8 @@ namespace Somnium.Game {
 				dir = _c;
 				
 				di = "" + dir;
-				Interface13.Stat( null, opt_nt.Contains( !Lang13.Bool( di ) ) );
 
-				if ( false ) {
+				if ( opt_nt.Contains( !Lang13.Bool( di ) ) ) {
 					opt_nt[di] = new ByTable();
 					opt_nnt[di] = new ByTable();
 				}
@@ -76,9 +73,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.next_to )) {
 					t = _a;
 					
-					Interface13.Stat( null, this.next_to[t].Contains( dir ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( this.next_to[t].Contains( dir ) ) ) {
 						tl = opt_nt[di];
 						tl |= t;
 					}
@@ -87,9 +83,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( this.not_next_to )) {
 					t2 = _b;
 					
-					Interface13.Stat( null, this.not_next_to[t2].Contains( dir ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( this.not_next_to[t2].Contains( dir ) ) ) {
 						tl2 = opt_nnt[di];
 						tl2 |= t2;
 					}

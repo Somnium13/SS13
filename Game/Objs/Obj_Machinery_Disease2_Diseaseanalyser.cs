@@ -57,9 +57,8 @@ namespace Somnium.Game {
 					B = _b;
 					
 					ID = B.virus2.uniqueID;
-					Interface13.Stat( null, GlobalVars.virusDB.Contains( "" + ID ) );
 
-					if ( B is Obj_Item_Weapon_Virusdish ) {
+					if ( GlobalVars.virusDB.Contains( "" + ID ) ) {
 						v = GlobalVars.virusDB["" + ID];
 						dat += "<tr><td>" + v.fields["name"] + "</td>";
 					} else {

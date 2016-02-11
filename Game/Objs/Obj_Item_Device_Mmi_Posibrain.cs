@@ -115,9 +115,8 @@ namespace Somnium.Game {
 		public override dynamic Topic( string href = null, ByTable href_list = null, dynamic hclient = null, HtmlInterface currui = null ) {
 			dynamic O = null;
 
-			Interface13.Stat( null, href_list.Contains( "signup" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "signup" ) ) {
 				O = Lang13.FindObj( href_list["signup"] );
 
 				if ( !Lang13.Bool( O ) ) {
@@ -140,9 +139,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( O, "<span class='warning'>NO.</span>" );
 				return;
 			}
-			Interface13.Stat( null, this.ghost_volunteers.Contains( O ) );
 
-			if ( !( O is Mob_Dead_Observer ) ) {
+			if ( this.ghost_volunteers.Contains( O ) ) {
 				GlobalFuncs.to_chat( O, "<span class='notice'>Removed from registration list.</span>" );
 				this.ghost_volunteers.Remove( O );
 				return;

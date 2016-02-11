@@ -139,9 +139,8 @@ namespace Somnium.Game {
 						if ( !this.bumped && !( this.original is Tile ) ) {
 							
 							if ( this.loc == this.target ) {
-								Interface13.Stat( null, this.permutated.Contains( this.original ) );
-
-								if ( !false ) {
+								
+								if ( !this.permutated.Contains( this.original ) ) {
 									this.draw_ray( this.target );
 									this.Bump( this.original );
 								}
@@ -194,9 +193,8 @@ namespace Somnium.Game {
 						if ( !this.bumped && !( this.original is Tile ) ) {
 							
 							if ( this.loc == GlobalFuncs.get_turf( this.original ) ) {
-								Interface13.Stat( null, this.permutated.Contains( this.original ) );
-
-								if ( !false ) {
+								
+								if ( !this.permutated.Contains( this.original ) ) {
 									this.draw_ray( this.target );
 									this.Bump( this.original );
 								}

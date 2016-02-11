@@ -36,15 +36,13 @@ namespace Somnium.Game {
 
 			if ( user is Mob_Living_Carbon_Human ) {
 				H = user;
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-				if ( ( false || H.mind.vampire != null ) && false ) {
+				if ( ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) && H.mind.vampire.powers.Contains( 0 ) ) {
 					GlobalFuncs.to_chat( H, new Txt( "<span class ='danger'>" ).item( this.deity_name ).str( "'s power channels through " ).the( this ).item().str( ". You feel extremely uneasy as you grab it!</span>" ).ToString() );
 					H.mind.vampire.smitecounter += 10;
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( H.mind ) );
 
-				if ( ( false || H.mind.vampire != null ) && false ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( H.mind ) ) ) {
 					GlobalFuncs.to_chat( H, new Txt( "<span class ='danger'>" ).item( this.deity_name ).str( "'s power channels through " ).the( this ).item().str( ". You feel uneasy as you grab it, but Nar'Sie protects you from its influence!</span>" ).ToString() );
 				}
 			}
@@ -135,31 +133,25 @@ namespace Somnium.Game {
 			}
 
 			if ( !chaplain ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( user.mind ) );
-
-				if ( false || user.mind.vampire != null ) {
+				
+				if ( GlobalVars.ticker.mode.vampires.Contains( user.mind ) || user.mind.vampire != null ) {
 					GlobalFuncs.to_chat( user, new Txt( "<span class='danger'>" ).item( this.deity_name ).str( " channels through " ).the( this ).item().str( " and sets you ablaze for your blasphemy!</span>" ).ToString() );
 					user.fire_stacks += 5;
 					((Mob_Living)user).IgniteMob();
 					((Mob)user).emote( "scream", null, null, true );
 					M.mind.vampire.smitecounter += 50;
+				} else if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( user.mind ) ) ) {
+					GlobalFuncs.to_chat( user, new Txt( "<span class='danger'>" ).item( this.deity_name ).str( " channels through " ).the( this ).item().str( " and sets you ablaze for your blasphemy!</span>" ).ToString() );
+					user.fire_stacks += 5;
+					((Mob_Living)user).IgniteMob();
+					((Mob)user).emote( "scream", null, null, true );
 				} else {
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( user.mind ) );
-
-					if ( false || user.mind.vampire != null ) {
-						GlobalFuncs.to_chat( user, new Txt( "<span class='danger'>" ).item( this.deity_name ).str( " channels through " ).the( this ).item().str( " and sets you ablaze for your blasphemy!</span>" ).ToString() );
-						user.fire_stacks += 5;
-						((Mob_Living)user).IgniteMob();
-						((Mob)user).emote( "scream", null, null, true );
-					} else {
-						base.attack( (object)(M), (object)(user), def_zone, eat_override );
-					}
+					base.attack( (object)(M), (object)(user), def_zone, eat_override );
 				}
 				return null;
 			}
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
 
-			if ( !chaplain && Rand13.PercentChance( 50 ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				((Ent_Static)user).visible_message( new Txt( "<span class='warning'>" ).The( this ).item().str( " slips out of " ).item( user ).str( "'s hands and hits " ).his_her_its_their().str( " head.</span>" ).ToString(), new Txt( "<span class='warning'>" ).The( this ).item().str( " slips out of your hands and hits your head.</span>" ).ToString() );
 				((Mob_Living)user).apply_damage( 10, "brute", "head" );
 				((Mob)user).Stun( 5 );
@@ -189,9 +181,8 @@ namespace Somnium.Game {
 
 			if ( M is Mob_Living_Carbon_Human ) {
 				H2 = M;
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H2.mind ) );
 
-				if ( ( false || H2.mind.vampire != null ) && !false ) {
+				if ( ( GlobalVars.ticker.mode.vampires.Contains( H2.mind ) || H2.mind.vampire != null ) && !H2.mind.vampire.powers.Contains( 13 ) ) {
 					GlobalFuncs.to_chat( H2, "<span class='warning'>" + this.deity_name + "'s power nullifies your own!</span>" );
 
 					if ( H2.mind.vampire.nullified < 5 ) {
@@ -199,9 +190,8 @@ namespace Somnium.Game {
 					}
 					H2.mind.vampire.smitecounter += 10;
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( H2.mind ) );
 
-				if ( ( false || H2.mind.vampire != null ) && !false ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( H2.mind ) ) ) {
 					
 					if ( Rand13.PercentChance( 20 ) ) {
 						GlobalFuncs.to_chat( H2, "<span class='notice'>The power of " + this.deity_name + " suddenly clears your mind of heresy. Your allegiance to Nar'Sie wanes!</span>" );

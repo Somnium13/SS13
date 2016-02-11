@@ -249,9 +249,8 @@ namespace Somnium.Game {
 					pda = a;
 					id_card = pda.id;
 				}
-				Interface13.Stat( null, id_card.access.Contains( GlobalVars.access_robotics ) );
 
-				if ( a is Obj_Item_Weapon_Card_Id ) {
+				if ( Lang13.Bool( id_card.access.Contains( GlobalVars.access_robotics ) ) ) {
 					GlobalFuncs.to_chat( b, "<span class='notice'>You swipe your access card and pop the brain out of " + this + ".</span>" );
 					this.eject_brain();
 

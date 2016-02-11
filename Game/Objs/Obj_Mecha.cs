@@ -436,9 +436,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( access_list )) {
 					req = _a;
 					
-					Interface13.Stat( null, I.access.Contains( req ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( I.access.Contains( req ) ) ) {
 						return false;
 					}
 				}
@@ -447,9 +446,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( access_list )) {
 					req2 = _b;
 					
-					Interface13.Stat( null, I.access.Contains( req2 ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( I.access.Contains( req2 ) ) ) {
 						return true;
 					}
 				}
@@ -773,7 +771,7 @@ namespace Somnium.Game {
 				this.log_append_to_last( "Armor saved, changing severity to " + severity + "." );
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.destroy();
 					break;
@@ -866,9 +864,8 @@ namespace Somnium.Game {
 		// Function from file: mecha.dm
 		public override dynamic attack_hand( dynamic a = null, dynamic b = null, dynamic c = null ) {
 			this.log_message( "Attack by hand/paw. Attacker - " + a + ".", true );
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-			if ( false && !Rand13.PercentChance( Convert.ToInt32( this.deflect_chance ) ) ) {
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) && !Rand13.PercentChance( Convert.ToInt32( this.deflect_chance ) ) ) {
 				this.take_damage( 15 );
 				this.check_for_internal_damage( new ByTable(new object [] { 2, 8, 16 }) );
 				((Ent_Static)a).visible_message( "<font color='red'><b>" + a + " hits " + this.name + ", doing some damage.</b></font>", "<font color='red'><b>You hit " + this.name + " with all your might. The metal creaks and bends.</b></font>" );
@@ -1197,9 +1194,8 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( id_card.access )) {
 				a2 = _b;
 				
-				Interface13.Stat( null, this.operation_req_access.Contains( a2 ) );
 
-				if ( false ) {
+				if ( this.operation_req_access.Contains( a2 ) ) {
 					continue;
 				}
 				a_name = GlobalFuncs.get_access_desc( a2 );
@@ -1274,22 +1270,19 @@ namespace Somnium.Game {
 		public virtual string get_commands(  ) {
 			string output = null;
 
-			Interface13.Stat( this, this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "disconnect_from_port" ) ) );
-			Interface13.Stat( ( Lang13.Bool( this.radio.listening ) ? new Txt( "<a href='?src=" ).Ref( this ).str( ";port_disconnect=1'>Disconnect from port</a><br>" ).ToString() : null ), this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "connect_to_port" ) ) );
-			Interface13.Stat( this.get_equipment_menu(), this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "eject" ) ) );
-			output = new Txt( "<div class='wr'>\n						<div class='header'>Electronics</div>\n						<div class='links'>\n						<a href='?src=" ).Ref( null ).str( ";toggle_lights=1'>Toggle Lights</a><br>\n						<b>Radio settings:</b><br>\n						Microphone: <a href='?src=" ).Ref( null ).str( ";rmictoggle=1'><span id=\"rmicstate\">" ).item( null ).str( "</span></a><br>\n						Speaker: <a href='?src=" ).Ref( this ).str( ";rspktoggle=1'><span id=\"rspkstate\">" ).item( this ).str( "</span></a><br>\n						Frequency:\n						<a href='?src=" ).Ref( ( Lang13.Bool( this.radio.broadcasting ) ? "Engaged" : "Disengaged" ) ).str( ";rfreq=-10'>-</a>\n						<a href='?src=" ).Ref( this ).str( ";rfreq=-2'>-</a>\n						<span id=\"rfreq\">" ).item( ( Lang13.Bool( this.radio.listening ) ? "Engaged" : "Disengaged" ) ).str( "</span>\n						<a href='?src=" ).Ref( this ).str( ";rfreq=2'>+</a>\n						<a href='?src=" ).Ref( this ).str( @";rfreq=10'>+</a><br>
+			output = new Txt( "<div class='wr'>\n						<div class='header'>Electronics</div>\n						<div class='links'>\n						<a href='?src=" ).Ref( this ).str( ";toggle_lights=1'>Toggle Lights</a><br>\n						<b>Radio settings:</b><br>\n						Microphone: <a href='?src=" ).Ref( this ).str( ";rmictoggle=1'><span id=\"rmicstate\">" ).item( ( Lang13.Bool( this.radio.broadcasting ) ? "Engaged" : "Disengaged" ) ).str( "</span></a><br>\n						Speaker: <a href='?src=" ).Ref( this ).str( ";rspktoggle=1'><span id=\"rspkstate\">" ).item( ( Lang13.Bool( this.radio.listening ) ? "Engaged" : "Disengaged" ) ).str( "</span></a><br>\n						Frequency:\n						<a href='?src=" ).Ref( this ).str( ";rfreq=-10'>-</a>\n						<a href='?src=" ).Ref( this ).str( ";rfreq=-2'>-</a>\n						<span id=\"rfreq\">" ).item( GlobalFuncs.format_frequency( this.radio.frequency ) ).str( "</span>\n						<a href='?src=" ).Ref( this ).str( ";rfreq=2'>+</a>\n						<a href='?src=" ).Ref( this ).str( @";rfreq=10'>+</a><br>
 						</div>
 						</div>
 						<div class='wr'>
 						<div class='header'>Airtank</div>
 						<div class='links'>
-						<a href='?src=" ).Ref( GlobalFuncs.format_frequency( this.radio.frequency ) ).str( ";toggle_airtank=1'>Toggle Internal Airtank Usage</a><br>\n						" ).item( this ).str( "\n						" ).item( this ).str( @"
+						<a href='?src=" ).Ref( this ).str( ";toggle_airtank=1'>Toggle Internal Airtank Usage</a><br>\n						" ).item( ( this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "disconnect_from_port" ) ) ? new Txt( "<a href='?src=" ).Ref( this ).str( ";port_disconnect=1'>Disconnect from port</a><br>" ).ToString() : null ) ).str( "\n						" ).item( ( this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "connect_to_port" ) ) ? new Txt( "<a href='?src=" ).Ref( this ).str( ";port_connect=1'>Connect to port</a><br>" ).ToString() : null ) ).str( @"
 						</div>
 						</div>
 						<div class='wr'>
 						<div class='header'>Permissions & Logging</div>
 						<div class='links'>
-						<a href='?src=" ).Ref( ( Lang13.Bool( this.radio.listening ) ? new Txt( "<a href='?src=" ).Ref( this ).str( ";port_connect=1'>Connect to port</a><br>" ).ToString() : null ) ).str( ";toggle_id_upload=1'><span id='t_id_upload'>" ).item( this ).str( "ock ID upload panel</span></a><br>\n						<a href='?src=" ).Ref( ( this.add_req_access ? "L" : "Unl" ) ).str( ";toggle_maint_access=1'><span id='t_maint_access'>" ).item( this ).str( " maintenance protocols</span></a><br>\n						<a href='?src=" ).Ref( ( this.maint_access ? "Forbid" : "Permit" ) ).str( ";dna_lock=1'>DNA-lock</a><br>\n						<a href='?src=" ).Ref( this ).str( ";view_log=1'>View internal log</a><br>\n						<a href='?src=" ).Ref( this ).str( ";change_name=1'>Change exosuit name</a><br>\n						</div>\n						</div>\n						<div id='equipment_menu'>" ).item( this ).str( "</div>\n						<hr>\n						" ).item( ( this.maint_access ? new Txt( "<a href='?src=" ).Ref( this ).str( ";eject=1'>Eject</a><br>" ).ToString() : null ) ).str( "\n						" ).ToString();
+						<a href='?src=" ).Ref( this ).str( ";toggle_id_upload=1'><span id='t_id_upload'>" ).item( ( this.add_req_access ? "L" : "Unl" ) ).str( "ock ID upload panel</span></a><br>\n						<a href='?src=" ).Ref( this ).str( ";toggle_maint_access=1'><span id='t_maint_access'>" ).item( ( this.maint_access ? "Forbid" : "Permit" ) ).str( " maintenance protocols</span></a><br>\n						<a href='?src=" ).Ref( this ).str( ";dna_lock=1'>DNA-lock</a><br>\n						<a href='?src=" ).Ref( this ).str( ";view_log=1'>View internal log</a><br>\n						<a href='?src=" ).Ref( this ).str( ";change_name=1'>Change exosuit name</a><br>\n						</div>\n						</div>\n						<div id='equipment_menu'>" ).item( this.get_equipment_menu() ).str( "</div>\n						<hr>\n						" ).item( ( this.verbs.Contains( typeof(Obj_Mecha).GetMethod( "eject" ) ) ? new Txt( "<a href='?src=" ).Ref( this ).str( ";eject=1'>Eject</a><br>" ).ToString() : null ) ).str( "\n						" ).ToString();
 			return output;
 		}
 
@@ -1494,24 +1487,20 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( ((dynamic)this.occupant).mind ) ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( ((dynamic)this.occupant).mind ) );
-
-					if ( false || false ) {
+					
+					if ( GlobalVars.ticker.mode.revolutionaries.Contains( ((dynamic)this.occupant).mind ) || GlobalVars.ticker.mode.head_revolutionaries.Contains( ((dynamic)this.occupant).mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_rev_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( ((dynamic)this.occupant).mind ) );
 
-					if ( false || false ) {
+					if ( GlobalVars.ticker.mode.syndicates.Contains( ((dynamic)this.occupant).mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_synd_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( ((dynamic)this.occupant).mind ) );
 
-					if ( false || false ) {
+					if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( ((dynamic)this.occupant).mind ) ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_cult_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( ((dynamic)this.occupant).mind ) );
 
-					if ( false || false ) {
+					if ( GlobalVars.ticker.mode.wizards.Contains( ((dynamic)this.occupant).mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_wizard_icons();
 					}
 				}
@@ -1542,9 +1531,8 @@ namespace Somnium.Game {
 		public virtual bool mmi_moved_inside( dynamic mmi_as_oc = null, dynamic user = null ) {
 			Ent_Static brainmob = null;
 
-			Interface13.Stat( null, Map13.FetchInRange( null, 1 ).Contains( !( this.loc == null ) && Lang13.Bool( mmi_as_oc ) && Lang13.Bool( user ) ) );
-
-			if ( false ) {
+			
+			if ( Map13.FetchInRange( null, 1 ).Contains( !( this.loc == null ) && Lang13.Bool( mmi_as_oc ) && Lang13.Bool( user ) ) ) {
 				
 				if ( !Lang13.Bool( mmi_as_oc.brainmob ) || !Lang13.Bool( mmi_as_oc.brainmob.client ) ) {
 					GlobalFuncs.to_chat( user, "Consciousness matrix not detected." );
@@ -1610,9 +1598,8 @@ namespace Somnium.Game {
 
 		// Function from file: mecha.dm
 		public virtual bool moved_inside( Mob H = null ) {
-			Interface13.Stat( null, Map13.FetchInRange( null, 1 ).Contains( !( this.loc == null ) && H != null && H.client != null && H != null ) );
-
-			if ( false ) {
+			
+			if ( Map13.FetchInRange( null, 1 ).Contains( !( this.loc == null ) && H != null && H.client != null && H != null ) ) {
 				H.reset_view( this );
 				H.stop_pulling();
 				H.forceMove( this );
@@ -1629,24 +1616,20 @@ namespace Somnium.Game {
 				}
 
 				if ( H.mind != null ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) );
-
-					if ( false || false ) {
+					
+					if ( GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) || GlobalVars.ticker.mode.head_revolutionaries.Contains( H.mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_rev_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( H.mind ) );
 
-					if ( false || false ) {
+					if ( GlobalVars.ticker.mode.syndicates.Contains( H.mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_synd_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( H.mind ) );
 
-					if ( false || false ) {
+					if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( H.mind ) ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_cult_icons();
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( H.mind ) );
 
-					if ( false || false ) {
+					if ( GlobalVars.ticker.mode.wizards.Contains( H.mind ) ) {
 						((GameMode)GlobalVars.ticker.mode).update_all_wizard_icons();
 					}
 				}
@@ -1691,7 +1674,7 @@ namespace Somnium.Game {
 			this.connected_port.connected_device = this;
 			network = this.connected_port.return_network( this );
 
-			if ( Lang13.Bool( network ) && !false ) {
+			if ( Lang13.Bool( network ) && !network.gases.Contains( this.internal_tank.return_air() ) ) {
 				network.gases.Add( this.internal_tank.return_air() );
 				network.update = 1;
 			}

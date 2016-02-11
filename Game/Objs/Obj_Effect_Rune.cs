@@ -248,7 +248,7 @@ namespace Somnium.Game {
 						C = L;
 						Icon13.Flick( "e_flash", C.flash );
 
-						if ( Convert.ToDouble( C.stuttering ) < 1 && !false ) {
+						if ( Convert.ToDouble( C.stuttering ) < 1 && !C.mutations.Contains( 4 ) ) {
 							C.stuttering = 1;
 						}
 						C.Weaken( 1 );
@@ -586,9 +586,8 @@ namespace Somnium.Game {
 					
 
 					if ( L.stat != 2 ) {
-						Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( L.mind ) );
-
-						if ( false ) {
+						
+						if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( L.mind ) ) ) {
 							text += "<br><b>" + L + "</b>";
 						}
 					}

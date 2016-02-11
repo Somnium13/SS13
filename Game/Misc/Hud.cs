@@ -1434,7 +1434,7 @@ namespace Somnium.Game {
 				if ( !( R is Obj_Item_Device_Rcd ) ) {
 					
 					switch ((bool?)( L.hand )) {
-						case 1:
+						case true:
 							R = L.l_hand;
 
 							if ( !( R is Obj_Item_Device_Rcd ) ) {

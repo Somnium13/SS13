@@ -115,9 +115,8 @@ namespace Somnium.Game {
 						calc *= R.sport;
 					}
 				}
-				Interface13.Stat( null, ((dynamic)runner).mutations.Contains( 4 ) );
 
-				if ( Lang13.Bool( runner.reagents ) ) {
+				if ( Lang13.Bool( ((dynamic)runner).mutations.Contains( 4 ) ) ) {
 					calc *= 5;
 				}
 				this.count_power += calc;

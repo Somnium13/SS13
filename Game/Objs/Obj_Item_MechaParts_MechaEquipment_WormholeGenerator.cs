@@ -42,9 +42,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( this.chassis, 100 ) )) {
 				AR = _a;
 				
-				Interface13.Stat( null, theareas.Contains( AR ) );
 
-				if ( false ) {
+				if ( theareas.Contains( AR ) ) {
 					continue;
 				}
 				theareas.Add( AR );

@@ -1392,7 +1392,7 @@ namespace Somnium.Game {
 
 					if ( Lang13.Bool( A ) && A.anti_ethereal && !GlobalFuncs.isAdminGhost( this.mob ) ) {
 						GlobalFuncs.to_chat( this.mob, "<span class='sinister'>A dark forcefield prevents you from entering the area.</span>" );
-					} else if ( T != null && T.holy && this.mob is Mob_Dead_Observer && ( this.mob.invisibility == 0 || Lang13.Bool( GlobalVars.ticker.mode ) && false ) ) {
+					} else if ( T != null && T.holy && this.mob is Mob_Dead_Observer && ( this.mob.invisibility == 0 || Lang13.Bool( GlobalVars.ticker.mode ) && Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mob.mind ) ) ) ) {
 						GlobalFuncs.to_chat( this.mob, "<span class='warning'>You cannot get past holy grounds while you are in this plane of existence!</span>" );
 					} else {
 						this.mob.forceEnter( Map13.GetStep( this.mob, direct ) );
@@ -1932,7 +1932,7 @@ namespace Somnium.Game {
 			http = Game13.Export( "http://www.byond.com/members/" + this.key + "?format=text" );
 			Joined = 2548;
 
-			if ( Lang13.Bool( http ) && http.len != 0 && false ) {
+			if ( Lang13.Bool( http ) && http.len != 0 && Lang13.Bool( http.Contains( "CONTENT" ) ) ) {
 				String = File13.Read( http["CONTENT"] );
 				JoinPos = String13.FindIgnoreCase( String, "joined", 1, 0 ) + 10;
 				Joined = String13.SubStr( String, JoinPos, JoinPos + 10 );
@@ -2076,9 +2076,8 @@ namespace Somnium.Game {
 				GlobalFuncs.SDQL_testout( query_tree["explain"] );
 				return;
 			} else if ( _a=="call" ) {
-				Interface13.Stat( null, query_tree.Contains( "on" ) );
-
-				if ( false ) {
+				
+				if ( query_tree.Contains( "on" ) ) {
 					select_types = query_tree["on"];
 				} else {
 					return;
@@ -2105,9 +2104,8 @@ namespace Somnium.Game {
 					objs.Add( Lang13.FindObj( String13.SubStr( type, 2, Lang13.Length( type ) ) ) );
 				}
 			}
-			Interface13.Stat( null, query_tree.Contains( "where" ) );
 
-			if ( query_tree.len < 1 ) {
+			if ( query_tree.Contains( "where" ) ) {
 				objs_temp = objs;
 				objs = new ByTable();
 
@@ -2183,9 +2181,8 @@ namespace Somnium.Game {
 				}
 				Interface13.Browse( Task13.User, text, "window=SDQL-result" );
 			} else if ( _m=="update" ) {
-				Interface13.Stat( null, query_tree.Contains( "set" ) );
-
-				if ( false ) {
+				
+				if ( query_tree.Contains( "set" ) ) {
 					set_list = query_tree["set"];
 
 					foreach (dynamic _l in Lang13.Enumerate( objs, typeof(Game_Data) )) {
@@ -3596,9 +3593,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInView( null, null ) )) {
 				M = _a;
 				
-				Interface13.Stat( null, GlobalVars.player_list.Contains( M ) );
 
-				if ( false ) {
+				if ( GlobalVars.player_list.Contains( M ) ) {
 					GlobalFuncs.to_chat( M, msg );
 				}
 			}
@@ -3965,14 +3961,13 @@ namespace Somnium.Game {
 			var_value = null;
 
 			if ( Lang13.Bool( param_var_name ) ) {
-				Interface13.Stat( null, O.vars.Contains( !Lang13.Bool( param_var_name ) ) );
-
-				if ( false ) {
+				
+				if ( O.vars.Contains( !Lang13.Bool( param_var_name ) ) ) {
 					GlobalFuncs.to_chat( this, "A variable with this name (" + param_var_name + ") doesn't exist in this atom (" + O + ")" );
 					return;
 				}
 
-				if ( param_var_name == "holder" || false ) {
+				if ( param_var_name == "holder" || locked.Contains( param_var_name ) ) {
 					
 					if ( !GlobalFuncs.check_rights( 32 ) ) {
 						return;
@@ -4031,7 +4026,7 @@ namespace Somnium.Game {
 				}
 				var_value = O.vars[variable];
 
-				if ( variable == "holder" || false ) {
+				if ( variable == "holder" || locked.Contains( variable ) ) {
 					
 					if ( !GlobalFuncs.check_rights( 32 ) ) {
 						return;
@@ -4308,9 +4303,8 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( variable ) ) {
 				return;
 			}
-			Interface13.Stat( null, locked.Contains( variable ) );
 
-			if ( !Lang13.Bool( variable ) ) {
+			if ( locked.Contains( variable ) ) {
 				
 				if ( !GlobalFuncs.check_rights( 32 ) ) {
 					return;
@@ -4756,7 +4750,7 @@ namespace Somnium.Game {
 			var_value = O.vars[variable];
 			dir = null;
 
-			if ( variable == "holder" || false ) {
+			if ( variable == "holder" || locked.Contains( variable ) ) {
 				
 				if ( !GlobalFuncs.check_rights( 32 ) ) {
 					return;
@@ -6245,14 +6239,10 @@ namespace Somnium.Game {
 					dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=red><b>UNCONVERTABLE</b></font></br>";
 				} else if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M, "cultist" ) ) ) {
 					dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=red><b>JOBBANNED</b></font></br>";
+				} else if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( M.mind ) ) ) {
+					dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=blue><b>CULTIST</b></font></br>";
 				} else {
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( M.mind ) );
-
-					if ( Lang13.Bool( GlobalFuncs.jobban_isbanned( M, "cultist" ) ) ) {
-						dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=blue><b>CULTIST</b></font></br>";
-					} else {
-						dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=green><b>CONVERTABLE</b></font></br>";
-					}
+					dat += "" + M.real_name + "/(" + String13.CKey( M.key ) + "): <font color=green><b>CONVERTABLE</b></font></br>";
 				}
 			}
 			GlobalFuncs.to_chat( Task13.User, dat );
@@ -6585,16 +6575,14 @@ namespace Somnium.Game {
 				return;
 			} else if ( _f=="Close Arena(space)" ) {
 				arena_target.close();
-				Interface13.Stat( null, GlobalVars.arenas.Contains( arena_target ) );
 
-				if ( false ) {
+				if ( GlobalVars.arenas.Contains( arena_target ) ) {
 					GlobalVars.arenas.Remove( arena_target );
 				}
 			} else if ( _f=="Close Arena(floors)" ) {
 				arena_target.close( 0 );
-				Interface13.Stat( null, GlobalVars.arenas.Contains( arena_target ) );
 
-				if ( false ) {
+				if ( GlobalVars.arenas.Contains( arena_target ) ) {
 					GlobalVars.arenas.Remove( arena_target );
 				}
 			} else if ( _f=="Reset Arena" ) {
@@ -6672,9 +6660,8 @@ namespace Somnium.Game {
 				target = _a;
 				
 				target.close();
-				Interface13.Stat( null, GlobalVars.arenas.Contains( target ) );
 
-				if ( target is BombermanArena ) {
+				if ( GlobalVars.arenas.Contains( target ) ) {
 					GlobalVars.arenas.Remove( target );
 				}
 			}
@@ -6778,14 +6765,14 @@ namespace Somnium.Game {
 			}
 
 			switch ((bool)( isinvuln )) {
-				case 0:
+				case false:
 					
 					if ( Interface13.Alert( Task13.User, "Make the target atom invulnerable to all form of damage?", "Toggle Invulnerability", "Yes", "No" ) != "Yes" ) {
 						return;
 					}
 					M.flags |= 128;
 					break;
-				case 1:
+				case true:
 					
 					if ( Interface13.Alert( Task13.User, "Make the target atom vulnerable again?", "Toggle Invulnerability", "Yes", "No" ) != "Yes" ) {
 						return;
@@ -7131,9 +7118,8 @@ h1.alert, h2.alert		{color: #000000;}
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.machines, typeof(Ent_Static) )) {
 				typepath = _a;
 				
-				Interface13.Stat( null, machineinstances.Contains( !( typepath.type != null ) ) );
 
-				if ( typepath is Ent_Static ) {
+				if ( machineinstances.Contains( !( typepath.type != null ) ) ) {
 					machineinstances["" + typepath.type] = 0;
 				}
 				machineinstances["" + typepath.type] += 1;
@@ -7154,9 +7140,8 @@ h1.alert, h2.alert		{color: #000000;}
 			foreach (dynamic _c in Lang13.Enumerate( GlobalVars.power_machines, typeof(Ent_Static) )) {
 				typepath2 = _c;
 				
-				Interface13.Stat( null, machineinstances.Contains( !( typepath2.type != null ) ) );
 
-				if ( typepath2 is Ent_Static ) {
+				if ( machineinstances.Contains( !( typepath2.type != null ) ) ) {
 					machineinstances["" + typepath2.type] = 0;
 				}
 				machineinstances["" + typepath2.type] += 1;
@@ -8024,9 +8009,8 @@ h1.alert, h2.alert		{color: #000000;}
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.areas )) {
 				A = _a;
 				
-				Interface13.Stat( null, areas_all.Contains( A.type ) );
 
-				if ( !false ) {
+				if ( !areas_all.Contains( A.type ) ) {
 					areas_all.Add( A.type );
 				}
 			}
@@ -8035,9 +8019,8 @@ h1.alert, h2.alert		{color: #000000;}
 				APC = _b;
 				
 				A2 = GlobalFuncs.get_area( APC );
-				Interface13.Stat( null, areas_with_APC.Contains( A2.type ) );
 
-				if ( !( APC is Obj_Machinery_Power_Apc ) ) {
+				if ( !areas_with_APC.Contains( A2.type ) ) {
 					areas_with_APC.Add( A2.type );
 				}
 			}
@@ -8046,9 +8029,8 @@ h1.alert, h2.alert		{color: #000000;}
 				alarm = _c;
 				
 				A3 = GlobalFuncs.get_area( alarm );
-				Interface13.Stat( null, areas_with_air_alarm.Contains( A3.type ) );
 
-				if ( !( alarm is Obj_Machinery_Alarm ) ) {
+				if ( !areas_with_air_alarm.Contains( A3.type ) ) {
 					areas_with_air_alarm.Add( A3.type );
 				}
 			}
@@ -8057,9 +8039,8 @@ h1.alert, h2.alert		{color: #000000;}
 				RC = _d;
 				
 				A4 = GlobalFuncs.get_area( RC );
-				Interface13.Stat( null, areas_with_RC.Contains( A4.type ) );
 
-				if ( !( RC is Obj_Machinery_RequestsConsole ) ) {
+				if ( !areas_with_RC.Contains( A4.type ) ) {
 					areas_with_RC.Add( A4.type );
 				}
 			}
@@ -8068,9 +8049,8 @@ h1.alert, h2.alert		{color: #000000;}
 				L = _e;
 				
 				A5 = GlobalFuncs.get_area( L );
-				Interface13.Stat( null, areas_with_light.Contains( A5.type ) );
 
-				if ( !( L is Obj_Machinery_Light ) ) {
+				if ( !areas_with_light.Contains( A5.type ) ) {
 					areas_with_light.Add( A5.type );
 				}
 			}
@@ -8079,9 +8059,8 @@ h1.alert, h2.alert		{color: #000000;}
 				LS = _f;
 				
 				A6 = GlobalFuncs.get_area( LS );
-				Interface13.Stat( null, areas_with_LS.Contains( A6.type ) );
 
-				if ( !( LS is Obj_Machinery_LightSwitch ) ) {
+				if ( !areas_with_LS.Contains( A6.type ) ) {
 					areas_with_LS.Add( A6.type );
 				}
 			}
@@ -8090,9 +8069,8 @@ h1.alert, h2.alert		{color: #000000;}
 				I = _g;
 				
 				A7 = GlobalFuncs.get_area( I );
-				Interface13.Stat( null, areas_with_intercom.Contains( A7.type ) );
 
-				if ( !( I is Obj_Item_Device_Radio_Intercom ) ) {
+				if ( !areas_with_intercom.Contains( A7.type ) ) {
 					areas_with_intercom.Add( A7.type );
 				}
 			}
@@ -8101,9 +8079,8 @@ h1.alert, h2.alert		{color: #000000;}
 				C = _h;
 				
 				A8 = GlobalFuncs.get_area( C );
-				Interface13.Stat( null, areas_with_camera.Contains( A8.type ) );
 
-				if ( !( C is Obj_Machinery_Camera ) ) {
+				if ( !areas_with_camera.Contains( A8.type ) ) {
 					areas_with_camera.Add( A8.type );
 				}
 			}
@@ -10894,9 +10871,8 @@ h1.alert, h2.alert		{color: #000000;}
 				GlobalFuncs.to_chat( this, "<span class='warning'>You're not an admin, go away.</span>" );
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.investigations.Contains( subject ) );
 
-			if ( !( !( this.holder != null ) ) ) {
+			if ( !GlobalVars.investigations.Contains( subject ) ) {
 				GlobalFuncs.to_chat( this, "<span class='warning'>Unable to find that subject.</span>" );
 				return;
 			}
@@ -11054,9 +11030,8 @@ h1.alert, h2.alert		{color: #000000;}
 					foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRange( outer_tele_radius, Task13.User ) )) {
 						T = _a;
 						
-						Interface13.Stat( null, Map13.FetchInRange( inner_tele_radius, Task13.User ).Contains( T ) );
 
-						if ( false ) {
+						if ( Map13.FetchInRange( inner_tele_radius, Task13.User ).Contains( T ) ) {
 							continue;
 						}
 
@@ -11232,15 +11207,14 @@ h1.alert, h2.alert		{color: #000000;}
 				return;
 			}
 			((Ent_Static)M.current).visible_message( "<span class='warning'>" + M.current.name + " bites " + C.name + "'s neck!</span>", "<span class='warning'>You bite " + C.name + "'s neck and begin the flow of power.</span>" );
-			Interface13.Stat( C, ((dynamic)( M.vampire.powers != null ? "aggressively" : "slowly" )).Contains( 15 ) );
-			GlobalFuncs.to_chat( null, "<span class='sinister'>You feel the tendrils of evil " + M.vampire.powers + " invade your mind.</span>" );
+			GlobalFuncs.to_chat( C, "<span class='sinister'>You feel the tendrils of evil " + ((dynamic)( M.vampire.powers != null ? "aggressively" : "slowly" )).Contains( 15 ) + " invade your mind.</span>" );
 
 			if ( !( C is Mob_Living_Carbon_Human ) ) {
 				GlobalFuncs.to_chat( M.current, "<span class='warning'>You can only enthrall humanoids.</span>" );
 				return;
 			}
 
-			if ( ((Mob)M.current).can_enthrall( C ) && GlobalFuncs.do_mob( null, M.current, ( false ? 150 : 300 ) ) ) {
+			if ( ((Mob)M.current).can_enthrall( C ) && GlobalFuncs.do_mob( M.current, C, ( M.vampire.powers.Contains( 15 ) ? 150 : 300 ) ) ) {
 				
 				if ( !((Mob)M.current).can_enthrall( C ) ) {
 					GlobalFuncs.to_chat( M.current, "<span class='warning'>Either you or your target moved, and you couldn't finish enthralling them!</span>" );
@@ -11250,8 +11224,7 @@ h1.alert, h2.alert		{color: #000000;}
 				if ( ((Mob)M.current).vampire_power( 300, 0 ) ) {
 					((Mob)M.current).handle_enthrall( C );
 					M.current.verbs -= typeof(Client).GetMethod( "vampire_enthrall" );
-					Interface13.Stat( null, M.vampire.powers.Contains( 15 ) );
-					Task13.Sleep( ( false ? 600 : 1800 ) );
+					Task13.Sleep( ( M.vampire.powers.Contains( 15 ) ? 600 : 1800 ) );
 					M.current.verbs += typeof(Client).GetMethod( "vampire_enthrall" );
 					return;
 				}
@@ -11427,8 +11400,7 @@ h1.alert, h2.alert		{color: #000000;}
 					if ( distance_value > 1 ) {
 						C4.Weaken( distance_value );
 					}
-					Interface13.Stat( distance_value, M.vampire.powers.Contains( 15 ) );
-					C4.stuttering += null * ( distance_value > 1 ? 2 : 1 ) + 5;
+					C4.stuttering += distance_value * ( M.vampire.powers.Contains( 15 ) ? 2 : 1 ) + 5;
 
 					if ( !Lang13.Bool( C4.blinded ) ) {
 						C4.blinded = 1;
@@ -11845,9 +11817,8 @@ h1.alert, h2.alert		{color: #000000;}
 			M.mind.original = M;
 			M.mind.assigned_role = "MODE";
 			M.mind.special_role = "Response Team";
-			Interface13.Stat( null, GlobalVars.ticker.minds.Contains( M.mind ) );
 
-			if ( !( !( leader_selected == true ) ) ) {
+			if ( !GlobalVars.ticker.minds.Contains( M.mind ) ) {
 				GlobalVars.ticker.minds.Add( M.mind );
 			}
 			M.loc = spawn_location;
@@ -12033,9 +12004,8 @@ h1.alert, h2.alert		{color: #000000;}
 					GlobalFuncs.to_chat( Task13.User, "This can only be used on instances of types /client or /datum" );
 					return;
 				}
-				Interface13.Stat( null, D2.vars.Contains( href_list["var"] ) );
 
-				if ( !( !( D2 is Game_Data ) && !Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( D2 ) ) ) ) {
+				if ( !D2.vars.Contains( href_list["var"] ) ) {
 					GlobalFuncs.to_chat( Task13.User, "Unable to find variable specified." );
 					return;
 				}
@@ -12611,7 +12581,7 @@ h1.alert, h2.alert		{color: #000000;}
 					return;
 				}
 
-				if ( Lang13.Bool( ((Mob)H10).remove_language( rem_language.name ) ) ) {
+				if ( ((Mob)H10).remove_language( rem_language.name ) ) {
 					GlobalFuncs.to_chat( Task13.User, "Removed " + rem_language + " from " + H10 + "." );
 				} else {
 					GlobalFuncs.to_chat( Task13.User, "Mob doesn't know that language." );
@@ -13382,7 +13352,7 @@ body
 			}
 			extension = String13.SubStr( path, -4, 0 );
 
-			if ( !File13.Exists( path ) || !false ) {
+			if ( !File13.Exists( path ) || !valid_extensions.Contains( extension ) ) {
 				GlobalFuncs.to_chat( this, "<font color='red'>Error: browse_files(): File not found/Invalid file(" + path + ").</font>" );
 				return null;
 			}
@@ -13671,12 +13641,8 @@ Admin:
 					if ( Machine.editingcode == this.mob ) {
 						Machine.storedcode = "" + Interface13.WindowGet( this.mob, "tcscode", "text" );
 						Machine.editingcode = null;
-					} else {
-						Interface13.Stat( null, Machine.viewingcode.Contains( this.mob ) );
-
-						if ( Machine.editingcode == this.mob ) {
-							Machine.viewingcode.Remove( this.mob );
-						}
+					} else if ( Machine.viewingcode.Contains( this.mob ) ) {
+						Machine.viewingcode.Remove( this.mob );
 					}
 				}
 			}
@@ -14672,9 +14638,8 @@ Admin:
 				word3 = String13.CKey( original_word );
 
 				if ( Lang13.Bool( word3 ) ) {
-					Interface13.Stat( null, GlobalVars.adminhelp_ignored_words.Contains( word3 ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.adminhelp_ignored_words.Contains( word3 ) ) {
 						
 						if ( word3 == "ai" ) {
 							ai_found = true;
@@ -14690,9 +14655,8 @@ Admin:
 							}
 
 							if ( Lang13.Bool( found ) ) {
-								Interface13.Stat( null, mobs_found.Contains( found ) );
-
-								if ( !false ) {
+								
+								if ( !mobs_found.Contains( found ) ) {
 									mobs_found.Add( found );
 
 									if ( !ai_found && found is Mob_Living_Silicon_Ai ) {
@@ -15034,9 +14998,8 @@ Admin:
 					continue;
 				}
 				C = M.client;
-				Interface13.Stat( null, GlobalVars.admins.Contains( C ) );
 
-				if ( !Lang13.Bool( M.client ) ) {
+				if ( GlobalVars.admins.Contains( C ) ) {
 					continue;
 				}
 
@@ -15076,9 +15039,8 @@ Admin:
 
 				if ( Lang13.Bool( C2.prefs.toggles & 4096 ) ) {
 					prefix = "(R)LOOC";
-					Interface13.Stat( null, heard.Contains( C2.mob ) );
 
-					if ( false ) {
+					if ( heard.Contains( C2.mob ) ) {
 						prefix = "LOOC";
 					}
 					GlobalFuncs.to_chat( C2, "<font color='#6699CC'><span class='ooc'><span class='prefix'>" + prefix + ":</span> <EM>" + this.key + ":</EM> <span class='message'>" + msg + "</span></span></font>" );
@@ -15087,9 +15049,8 @@ Admin:
 
 			if ( AI is Mob_Living_Silicon_Ai ) {
 				C3 = AI.client;
-				Interface13.Stat( null, GlobalVars.admins.Contains( C3 ) );
 
-				if ( false ) {
+				if ( GlobalVars.admins.Contains( C3 ) ) {
 					return;
 				}
 

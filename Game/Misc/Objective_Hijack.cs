@@ -45,18 +45,16 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.player_list, typeof(Mob_Living) )) {
 				player = _a;
 				
-				Interface13.Stat( null, protected_mobs.Contains( player.type ) );
 
-				if ( player is Mob_Living ) {
+				if ( protected_mobs.Contains( player.type ) ) {
 					continue;
 				}
 
 				if ( player.mind != null && player.mind != this.owner ) {
 					
 					if ( player.stat != 2 ) {
-						Interface13.Stat( null, shuttle.Contains( GlobalFuncs.get_turf( player ) ) );
-
-						if ( false ) {
+						
+						if ( Lang13.Bool( shuttle.Contains( GlobalFuncs.get_turf( player ) ) ) ) {
 							return 0;
 						}
 					}

@@ -40,9 +40,8 @@ namespace Somnium.Game {
 				if ( this.conf_access == null ) {
 					this.conf_access = new ByTable();
 				}
-				Interface13.Stat( null, this.conf_access.Contains( req ) );
 
-				if ( !( this.conf_access == null ) ) {
+				if ( !Lang13.Bool( this.conf_access.Contains( req ) ) ) {
 					this.conf_access += req;
 				} else {
 					this.conf_access -= req;
@@ -158,7 +157,7 @@ namespace Somnium.Game {
 					
 					aname = GlobalFuncs.get_access_desc( acc );
 
-					if ( !Lang13.Bool( this.conf_access ) || !( this.conf_access.len != 0 ) || !false ) {
+					if ( !Lang13.Bool( this.conf_access ) || !( this.conf_access.len != 0 ) || !Lang13.Bool( this.conf_access.Contains( acc ) ) ) {
 						t1 += new Txt( "<a href='?src=" ).Ref( this ).str( ";access=" ).item( acc ).str( "'>" ).item( aname ).str( "</a><br>" ).ToString();
 					} else if ( this.one_access ) {
 						t1 += new Txt( "<a style='color: green' href='?src=" ).Ref( this ).str( ";access=" ).item( acc ).str( "'>" ).item( aname ).str( "</a><br>" ).ToString();

@@ -23,9 +23,8 @@ namespace Somnium.Game {
 
 		// Function from file: splitter.dm
 		public override ByTable get_deflections( int in_dir = 0 ) {
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 				
 				switch ((int)( in_dir )) {
 					case 1:

@@ -638,7 +638,7 @@ namespace Somnium.Game {
 				if ( this.targetdirection != null ) {
 					T = Map13.GetStep( this, this.targetdirection ??0 );
 
-					if ( T is Tile_Space && !false ) {
+					if ( T is Tile_Space && !GlobalVars.floorbot_targets.Contains( T ) ) {
 						this.oldtarget = T;
 						this.target = T;
 						GlobalVars.floorbot_targets.Add( T );
@@ -652,9 +652,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( shitICanSee, typeof(Tile_Space) )) {
 						D = _a;
 						
-						Interface13.Stat( null, floorbottargets.Contains( D ) );
 
-						if ( !( D is Tile_Space ) && D != this.oldtarget && !( D.loc.type == typeof(Zone) ) && !false ) {
+						if ( !floorbottargets.Contains( D ) && D != this.oldtarget && !( D.loc.type == typeof(Zone) ) && !GlobalVars.floorbot_targets.Contains( D ) ) {
 							this.oldtarget = D;
 							this.target = D;
 							GlobalVars.floorbot_targets.Add( D );
@@ -669,9 +668,8 @@ namespace Somnium.Game {
 					foreach (dynamic _b in Lang13.Enumerate( shitICanSee, typeof(Tile_Simulated_Floor) )) {
 						F = _b;
 						
-						Interface13.Stat( null, floorbottargets.Contains( F ) );
 
-						if ( !( F is Tile_Simulated_Floor ) && F != this.oldtarget && F.is_plating() && !( F is Tile_Simulated_Wall ) && !false ) {
+						if ( !floorbottargets.Contains( F ) && F != this.oldtarget && F.is_plating() && !( F is Tile_Simulated_Wall ) && !GlobalVars.floorbot_targets.Contains( F ) ) {
 							
 							if ( !Lang13.Bool( ((dynamic)F).broken ) && !Lang13.Bool( ((dynamic)F).burnt ) ) {
 								this.oldtarget = F;
@@ -681,9 +679,8 @@ namespace Somnium.Game {
 								return true;
 							}
 						}
-						Interface13.Stat( null, floorbottargets.Contains( F ) );
 
-						if ( !( !( F is Tile_Simulated_Floor ) && F != this.oldtarget && F.is_plating() && !( F is Tile_Simulated_Wall ) && !false ) && !false && F != this.oldtarget && F.is_plasteel_floor() && ( Lang13.Bool( ((dynamic)F).broken ) || Lang13.Bool( ((dynamic)F).burnt ) ) ) {
+						if ( !floorbottargets.Contains( F ) && !GlobalVars.floorbot_targets.Contains( F ) && F != this.oldtarget && F.is_plasteel_floor() && ( Lang13.Bool( ((dynamic)F).broken ) || Lang13.Bool( ((dynamic)F).burnt ) ) ) {
 							this.oldtarget = F;
 							this.target = F;
 							GlobalVars.floorbot_targets.Add( F );
@@ -699,9 +696,8 @@ namespace Somnium.Game {
 				foreach (dynamic _c in Lang13.Enumerate( shitICanSee, typeof(Tile_Simulated_Floor) )) {
 					D2 = _c;
 					
-					Interface13.Stat( null, floorbottargets.Contains( D2 ) );
 
-					if ( !( D2 is Tile_Simulated_Floor ) && D2 != this.oldtarget && D2.is_plasteel_floor() && !false ) {
+					if ( !floorbottargets.Contains( D2 ) && D2 != this.oldtarget && D2.is_plasteel_floor() && !GlobalVars.floorbot_targets.Contains( D2 ) ) {
 						this.oldtarget = D2;
 						this.target = D2;
 						GlobalVars.floorbot_targets.Add( D2 );
@@ -828,9 +824,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( shit_in_view, typeof(Obj_Item_Stack_Sheet_Metal) )) {
 				M = _a;
 				
-				Interface13.Stat( null, GlobalVars.floorbot_targets.Contains( M ) );
 
-				if ( !( M is Obj_Item_Stack_Sheet_Metal ) && this.is_obj_valid_target( M ) && M.amount == 1 ) {
+				if ( !GlobalVars.floorbot_targets.Contains( M ) && this.is_obj_valid_target( M ) && M.amount == 1 ) {
 					this.oldtarget = M;
 					this.target = M;
 					GlobalVars.floorbot_targets.Add( M );
@@ -849,9 +844,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( shit_in_view, typeof(Obj_Item_Stack_Tile_Plasteel) )) {
 				T = _a;
 				
-				Interface13.Stat( null, GlobalVars.floorbot_targets.Contains( T ) );
 
-				if ( !( T is Obj_Item_Stack_Tile_Plasteel ) && this.is_obj_valid_target( T, floorbottargets ) ) {
+				if ( !GlobalVars.floorbot_targets.Contains( T ) && this.is_obj_valid_target( T, floorbottargets ) ) {
 					this.oldtarget = T;
 					this.target = T;
 					GlobalVars.floorbot_targets.Add( T );
@@ -864,9 +858,8 @@ namespace Somnium.Game {
 
 		// Function from file: floorbot.dm
 		public bool is_obj_valid_target( Obj_Item_Stack T = null, ByTable floorbottargets = null ) {
-			Interface13.Stat( null, floorbottargets.Contains( T ) );
-
-			if ( false ) {
+			
+			if ( floorbottargets.Contains( T ) ) {
 				return false;
 			}
 

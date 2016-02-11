@@ -250,7 +250,7 @@ namespace Somnium.Game {
 
 			
 			switch ((bool?)( this.buildstage )) {
-				case 0:
+				case false:
 					
 					if ( a is Obj_Item_Weapon_Crowbar ) {
 						GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/items/Deconstruct.ogg", 50, 1 );
@@ -270,7 +270,7 @@ namespace Somnium.Game {
 						this.buildstage = true;
 					}
 					break;
-				case 1:
+				case true:
 					
 					if ( a is Obj_Item_Weapon_Screwdriver && !( ( this.stat & 1 ) != 0 ) ) {
 						((Ent_Static)b).visible_message( "<span class='notice'>" + b + " unscrews the " + this + "!</span>", "<span class='notice'>You unscrew the " + this + "</span>" );
@@ -424,7 +424,7 @@ namespace Somnium.Game {
 						}
 					}
 
-					if ( this.channel_name == "" || this.channel_name == "[REDACTED]" || this.scanned_user == "Unknown" || check || false ) {
+					if ( this.channel_name == "" || this.channel_name == "[REDACTED]" || this.scanned_user == "Unknown" || check || existing_authors.Contains( this.scanned_user ) ) {
 						this.screen = 7;
 					} else {
 						choice = Interface13.Alert( "Please confirm Feed channel creation", "Network Channel Handler", "Confirm", "Cancel" );
@@ -917,7 +917,7 @@ namespace Somnium.Game {
 				dat = "<HEAD><TITLE>Newscaster</TITLE></HEAD><H3>Newscaster Unit #" + this.unit_no + "</H3>";
 				this.scan_user( M );
 
-				switch ((double?)( this.screen )) {
+				switch ((int?)( this.screen )) {
 					case 0:
 						dat += "Welcome to Newscasting Unit #" + this.unit_no + ".<BR> Interface & News networks Operational.\n					<BR><FONT SIZE=1>property of Nanotrasen Inc</FONT>";
 
@@ -1000,9 +1000,8 @@ namespace Somnium.Game {
 								existing_authors.Add( FC.author );
 							}
 						}
-						Interface13.Stat( null, existing_authors.Contains( this.scanned_user ) );
 
-						if ( false ) {
+						if ( existing_authors.Contains( this.scanned_user ) ) {
 							dat += "<FONT COLOR='maroon'>ï¿½There already exists a Feed channel under your name.</FONT><BR>";
 						}
 
@@ -1236,8 +1235,8 @@ namespace Somnium.Game {
 
 		// Function from file: newscaster.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

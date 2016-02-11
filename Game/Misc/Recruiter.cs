@@ -79,9 +79,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( O, "<span class='warning'>You cannot be " + this.display_name + ".</span>" );
 				return;
 			}
-			Interface13.Stat( null, this.currently_querying.Contains( O ) );
 
-			if ( !Lang13.Bool( this.check_observer( O ) ) ) {
+			if ( this.currently_querying.Contains( O ) ) {
 				GlobalFuncs.to_chat( O, "<span class='notice'>Removed from registration list.</span>" );
 				this.currently_querying.Remove( O );
 			} else {

@@ -272,7 +272,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Convert.ToDouble( breath.temperature - 310.41 ) > 50 && !false ) {
+			if ( Convert.ToDouble( breath.temperature - 310.41 ) > 50 && !H.mutations.Contains( 106 ) ) {
 				
 				if ( ( H.status_flags & 4096 ) != 0 ) {
 					return true;

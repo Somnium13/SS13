@@ -184,7 +184,7 @@ namespace Somnium.Game {
 					this.selected_ui_target++;
 					this.selected_ui_target_hex = this.selected_ui_target;
 
-					switch ((double)( this.selected_ui_target )) {
+					switch ((int)( this.selected_ui_target )) {
 						case 10:
 							this.selected_ui_target_hex = "A";
 							break;
@@ -217,7 +217,7 @@ namespace Somnium.Game {
 					this.selected_ui_target--;
 					this.selected_ui_target_hex = this.selected_ui_target;
 
-					switch ((double)( this.selected_ui_target )) {
+					switch ((int)( this.selected_ui_target )) {
 						case 10:
 							this.selected_ui_target_hex = "A";
 							break;
@@ -470,7 +470,7 @@ namespace Somnium.Game {
 
 				if ( bufferOption == "transfer" ) {
 					
-					if ( !Lang13.Bool( this.connected.occupant ) || false || !Lang13.Bool( this.connected.occupant.dna ) ) {
+					if ( !Lang13.Bool( this.connected.occupant ) || Lang13.Bool( this.connected.occupant.mutations.Contains( 8 ) ) || !Lang13.Bool( this.connected.occupant.dna ) ) {
 						return null;
 					}
 					this.irradiating = 2;
@@ -637,9 +637,8 @@ namespace Somnium.Game {
 				occupantData["name"] = this.connected.occupant.name;
 				occupantData["stat"] = this.connected.occupant.stat;
 				occupantData["isViableSubject"] = 1;
-				Interface13.Stat( null, ((dynamic)( Lang13.Bool( this.connected.occupant.mutations ) || !Lang13.Bool( this.connected.occupant.dna ) )).Contains( 8 ) );
 
-				if ( !Lang13.Bool( this.connected.occupant ) || !Lang13.Bool( this.connected.occupant.dna ) ) {
+				if ( Lang13.Bool( ((dynamic)( Lang13.Bool( this.connected.occupant.mutations ) || !Lang13.Bool( this.connected.occupant.dna ) )).Contains( 8 ) ) ) {
 					occupantData["isViableSubject"] = 0;
 				}
 				occupantData["health"] = this.connected.occupant.health;
@@ -785,7 +784,7 @@ namespace Somnium.Game {
 		// Function from file: dna_modifier.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

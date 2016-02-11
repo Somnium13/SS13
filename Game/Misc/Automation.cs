@@ -51,9 +51,8 @@ namespace Somnium.Game {
 				norange = false;
 
 				if ( Task13.User.mutations != null && Task13.User.mutations.len != 0 ) {
-					Interface13.Stat( null, Task13.User.mutations.Contains( 1 ) );
-
-					if ( false ) {
+					
+					if ( Task13.User.mutations.Contains( 1 ) ) {
 						norange = true;
 					}
 				}
@@ -150,19 +149,16 @@ namespace Somnium.Game {
 
 		// Function from file: statements.dm
 		public virtual void Import( ByTable json = null ) {
-			Interface13.Stat( null, json.Contains( "label" ) );
-
-			if ( false ) {
+			
+			if ( json.Contains( "label" ) ) {
 				this.label = json["label"];
 			}
-			Interface13.Stat( null, json.Contains( "desc" ) );
 
-			if ( false ) {
+			if ( json.Contains( "desc" ) ) {
 				this.desc = json["desc"];
 			}
-			Interface13.Stat( null, json.Contains( "children" ) );
 
-			if ( false ) {
+			if ( json.Contains( "children" ) ) {
 				this.children = this.unpackChildren( json["children"] );
 			}
 			return;
@@ -208,14 +204,13 @@ namespace Somnium.Game {
 					cData = _a;
 					
 
-					if ( cData == null || !false ) {
+					if ( cData == null || !cData.Contains( "type" ) ) {
 						_default.Add( null );
 						continue;
 					}
 					Atype = Lang13.FindClass( cData["type"] );
-					Interface13.Stat( null, GlobalVars.automation_types.Contains( Atype ) );
 
-					if ( !( cData == null || !false ) ) {
+					if ( !Lang13.Bool( GlobalVars.automation_types.Contains( Atype ) ) ) {
 						continue;
 					}
 					A = Lang13.Call( Atype, this.parent );
@@ -232,13 +227,12 @@ namespace Somnium.Game {
 			dynamic A = null;
 
 			
-			if ( cData == null || !false ) {
+			if ( cData == null || !cData.Contains( "type" ) ) {
 				return null;
 			}
 			Atype = Lang13.FindClass( cData["type"] );
-			Interface13.Stat( null, GlobalVars.automation_types.Contains( Atype ) );
 
-			if ( !( cData == null || !false ) ) {
+			if ( !Lang13.Bool( GlobalVars.automation_types.Contains( Atype ) ) ) {
 				return null;
 			}
 			A = Lang13.Call( Atype, this.parent );

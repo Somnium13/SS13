@@ -122,7 +122,7 @@ namespace Somnium.Game {
 			this.overlays = 0;
 			this.move_self = false;
 
-			switch ((double?)( this.current_size )) {
+			switch ((int?)( this.current_size )) {
 				case 1:
 					this.overlays.Add( new Image( "icons/obj/singularity.dmi", "chain_s1" ) );
 					break;
@@ -336,8 +336,8 @@ namespace Somnium.Game {
 			steps = 0;
 
 			if ( !Lang13.Bool( step ) ) {
-
-				switch ((int?)(this.current_size)) {
+				
+				switch ((int?)( this.current_size )) {
 					case 1:
 						steps = 1;
 						break;

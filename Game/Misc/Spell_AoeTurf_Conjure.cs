@@ -88,9 +88,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.newVars )) {
 					varName = _a;
 					
-					Interface13.Stat( null, summoned_object.vars.Contains( varName ) );
 
-					if ( false ) {
+					if ( summoned_object.vars.Contains( varName ) ) {
 						summoned_object.vars[varName] = this.newVars[varName];
 					}
 				}

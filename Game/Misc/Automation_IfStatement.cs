@@ -222,19 +222,16 @@ namespace Somnium.Game {
 		// Function from file: statements.dm
 		public override void Import( ByTable json = null ) {
 			base.Import( json );
-			Interface13.Stat( null, json.Contains( "then" ) );
 
-			if ( false ) {
+			if ( json.Contains( "then" ) ) {
 				this.children_then = this.unpackChildren( json["then"] );
 			}
-			Interface13.Stat( null, json.Contains( "else" ) );
 
-			if ( false ) {
+			if ( json.Contains( "else" ) ) {
 				this.children_else = this.unpackChildren( json["else"] );
 			}
-			Interface13.Stat( null, json.Contains( "condition" ) );
 
-			if ( false ) {
+			if ( json.Contains( "condition" ) ) {
 				this.condition = this.unpackChild( json["condition"] );
 			}
 			return;

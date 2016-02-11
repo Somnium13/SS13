@@ -67,9 +67,8 @@ namespace Somnium.Game {
 					}));
 				}
 			} else {
-				Interface13.Stat( null, Task13.User.mutations.Contains( 5 ) );
-
-				if ( this is Obj_Item_Weapon_Handcuffs_Cyborg && user is Mob_Living_Silicon_Robot && Rand13.PercentChance( 50 ) ) {
+				
+				if ( Task13.User.mutations.Contains( 5 ) && Rand13.PercentChance( 50 ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Uh ... how do those things work?!</span>" );
 
 					if ( M is Mob_Living_Carbon_Human ) {

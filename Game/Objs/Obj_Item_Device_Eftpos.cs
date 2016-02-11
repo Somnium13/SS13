@@ -134,11 +134,8 @@ namespace Somnium.Game {
 
 					if ( I2 is Obj_Item_Weapon_Card ) {
 						C = I2;
-						Interface13.Stat( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0, ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_hop != 0 )).Contains( GlobalVars.access_cent_captain ) );
-						Interface13.Stat( null, C.access.Contains( null ) );
-						Interface13.Stat( null, null.Contains( null ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( C.access.Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0 )).Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_hop != 0 )).Contains( GlobalVars.access_cent_captain ) ) ) ) ) {
 							this.access_code = 0;
 							GlobalFuncs.to_chat( Task13.User, new Txt().icon( this ).str( "<span class='info'>Access code reset to 0.</span>" ).ToString() );
 						}

@@ -126,9 +126,8 @@ namespace Somnium.Game {
 						
 						console_turf = GlobalFuncs.get_turf( C );
 						dat += new Txt( "* <A href='?src=" ).Ref( this ).str( ";upload_toggle=" ).item( C.id ).str( "'>" ).item( console_turf.loc ).ToString();
-						Interface13.Stat( null, this.temp_server.id_with_upload.Contains( C.id ) );
 
-						if ( C is Obj_Machinery_Computer_Rdconsole ) {
+						if ( this.temp_server.id_with_upload.Contains( C.id ) ) {
 							dat += " (Remove)</A><BR>";
 						} else {
 							dat += " (Add)</A><BR>";
@@ -141,9 +140,8 @@ namespace Somnium.Game {
 						
 						console_turf2 = GlobalFuncs.get_turf( C2 );
 						dat += new Txt( "* <A href='?src=" ).Ref( this ).str( ";download_toggle=" ).item( C2.id ).str( "'>" ).item( console_turf2.loc ).ToString();
-						Interface13.Stat( null, this.temp_server.id_with_download.Contains( C2.id ) );
 
-						if ( C2 is Obj_Machinery_Computer_Rdconsole ) {
+						if ( this.temp_server.id_with_download.Contains( C2.id ) ) {
 							dat += " (Remove)</A><BR>";
 						} else {
 							dat += " (Add)</A><BR>";
@@ -253,18 +251,16 @@ namespace Somnium.Game {
 				}
 			} else if ( Lang13.Bool( href_list["upload_toggle"] ) ) {
 				num = String13.ParseNumber( href_list["upload_toggle"] );
-				Interface13.Stat( null, this.temp_server.id_with_upload.Contains( num ) );
 
-				if ( false ) {
+				if ( this.temp_server.id_with_upload.Contains( num ) ) {
 					this.temp_server.id_with_upload.Remove( num );
 				} else {
 					this.temp_server.id_with_upload.Add( num );
 				}
 			} else if ( Lang13.Bool( href_list["download_toggle"] ) ) {
 				num2 = String13.ParseNumber( href_list["download_toggle"] );
-				Interface13.Stat( null, this.temp_server.id_with_download.Contains( num2 ) );
 
-				if ( false ) {
+				if ( this.temp_server.id_with_download.Contains( num2 ) ) {
 					this.temp_server.id_with_download.Remove( num2 );
 				} else {
 					this.temp_server.id_with_download.Add( num2 );

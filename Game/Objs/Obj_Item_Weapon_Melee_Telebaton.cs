@@ -29,9 +29,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.on ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( false && Rand13.PercentChance( 50 ) ) {
+				
+				if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 					((Mob)user).simple_message( "<span class='warning'>You club yourself over the head.</span>", "<span class='danger'>The fishing rod goes mad!</span>" );
 					((Mob)user).Weaken( this.force * 3 );
 

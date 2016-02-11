@@ -35,9 +35,8 @@ namespace Somnium.Game {
 				return true;
 			}
 			Task13.Schedule( 0, (Task13.Closure)(() => {
-				Interface13.Stat( null, H.mutations.Contains( 5 ) );
-
-				if ( false || Rand13.PercentChance( 25 ) ) {
+				
+				if ( H.mutations.Contains( 5 ) || Rand13.PercentChance( 25 ) ) {
 					
 					if ( H.drop_item() ) {
 						user.visible_message( "<span class='warning'>" + this + " escapes from " + H + "'s hands!</span>", "<span class='warning'>" + this + " escapes from your grasp!</span>" );

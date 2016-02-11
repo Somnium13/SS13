@@ -31,13 +31,12 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: atmo_control.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
+		public override bool isLinkedWith( Base_Data O = null ) {
 			
 			if ( O is Obj_Machinery_AirSensor || O is Obj_Machinery_Meter ) {
-				Interface13.Stat( null, this.sensors.Contains( ((dynamic)O).id_tag ) );
-				return null;
+				return this.sensors.Contains( ((dynamic)O).id_tag );
 			}
-			return null;
+			return false;
 		}
 
 		// Function from file: atmo_control.dm
@@ -55,7 +54,7 @@ namespace Somnium.Game {
 
 			dat = "";
 
-			if ( ( O is Obj_Machinery_AirSensor || O is Obj_Machinery_Meter ) && !( this.isLinkedWith( O ) == true ) ) {
+			if ( ( O is Obj_Machinery_AirSensor || O is Obj_Machinery_Meter ) && !this.isLinkedWith( O ) ) {
 				dat += new Txt( " <a href='?src=" ).Ref( this ).str( ";link=1'>[New Sensor]</a> " ).ToString();
 			}
 			return dat;
@@ -64,9 +63,8 @@ namespace Somnium.Game {
 		// Function from file: atmo_control.dm
 		public override bool unlinkFrom( Mob user = null, Base_Data buffer = null ) {
 			base.unlinkFrom( user, buffer );
-			Interface13.Stat( null, ((dynamic)( buffer.vars != null && ( buffer is Obj_Machinery_AirSensor || buffer is Obj_Machinery_Meter ) )).Contains( "id_tag" ) );
 
-			if ( false ) {
+			if ( Lang13.Bool( ((dynamic)( buffer.vars != null && ( buffer is Obj_Machinery_AirSensor || buffer is Obj_Machinery_Meter ) )).Contains( "id_tag" ) ) ) {
 				this.sensors.Remove( ((dynamic)buffer).id_tag );
 				return true;
 			}
@@ -93,9 +91,8 @@ namespace Somnium.Game {
 			if ( _default != 0 ) {
 				return _default;
 			}
-			Interface13.Stat( null, href_list.Contains( "add_sensor" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "add_sensor" ) ) {
 				sensor_list = new ByTable();
 
 				foreach (dynamic _a in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_AirSensor) )) {
@@ -133,9 +130,8 @@ namespace Somnium.Game {
 				this.sensors[sensor] = label;
 				return 1;
 			}
-			Interface13.Stat( null, href_list.Contains( "edit_sensor" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "edit_sensor" ) ) {
 				sensor_list2 = new ByTable();
 
 				foreach (dynamic _c in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_AirSensor) )) {
@@ -224,9 +220,8 @@ namespace Somnium.Game {
 
 					if ( Lang13.Bool( data ) ) {
 						sensor_part += "<table>";
-						Interface13.Stat( null, data.Contains( "pressure" ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( data.Contains( "pressure" ) ) ) {
 							sensor_part += "<tr><th>Pressure:</th><td>" + data["pressure"] + " kPa</td></tr>";
 						}
 

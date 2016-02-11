@@ -465,9 +465,8 @@ namespace Somnium.Game {
 			if ( this.parrot_state == 1 ) {
 				
 				if ( this.parrot_perch != null && this.parrot_perch.loc != this.loc ) {
-					Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( this.parrot_perch ) );
-
-					if ( false ) {
+					
+					if ( Map13.FetchInView( null, this ).Contains( this.parrot_perch ) ) {
 						this.parrot_state = 34;
 						this.icon_state = "parrot_fly";
 						return false;
@@ -496,9 +495,8 @@ namespace Somnium.Game {
 								if ( Rand13.PercentChance( 50 ) ) {
 									useradio = true;
 								}
-								Interface13.Stat( null, GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase, 1, 3 ) ) );
 
-								if ( Rand13.PercentChance( 50 ) ) {
+								if ( GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase, 1, 3 ) ) ) {
 									possible_phrase = "" + ( useradio ? Rand13.PickFromTable( this.available_channels ) : ((dynamic)( "" )) ) + String13.SubStr( possible_phrase, 3, 0 );
 								} else {
 									possible_phrase = "" + ( useradio ? Rand13.PickFromTable( this.available_channels ) : ((dynamic)( "" )) ) + possible_phrase;
@@ -510,9 +508,8 @@ namespace Somnium.Game {
 							foreach (dynamic _b in Lang13.Enumerate( this.speak )) {
 								possible_phrase2 = _b;
 								
-								Interface13.Stat( null, GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase2, 1, 3 ) ) );
 
-								if ( false ) {
+								if ( GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase2, 1, 3 ) ) ) {
 									possible_phrase2 = "" + String13.SubStr( possible_phrase2, 3, Lang13.Length( possible_phrase2 ) + 1 );
 								}
 								newspeak.Add( possible_phrase2 );
@@ -556,15 +553,13 @@ namespace Somnium.Game {
 					}
 					return false;
 				}
-				Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( Lang13.Bool( this.parrot_interest ) && Lang13.Bool( this.parrot_interest ) ) );
 
-				if ( !Lang13.Bool( this.held_item ) && !( this.parrot_perch != null ) ) {
+				if ( Map13.FetchInView( null, this ).Contains( Lang13.Bool( this.parrot_interest ) && Lang13.Bool( this.parrot_interest ) ) ) {
 					this.parrot_state = 10;
 					return false;
 				}
-				Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( this.parrot_perch != null && this.parrot_perch != null ) );
 
-				if ( !Lang13.Bool( this.held_item ) && !( this.parrot_perch != null ) ) {
+				if ( Map13.FetchInView( null, this ).Contains( this.parrot_perch != null && this.parrot_perch != null ) ) {
 					this.parrot_state = 34;
 					return false;
 				} else {
@@ -582,9 +577,8 @@ namespace Somnium.Game {
 					this.parrot_state = 34;
 					return false;
 				}
-				Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( this.parrot_interest ) );
 
-				if ( !( !Lang13.Bool( this.parrot_interest ) || Lang13.Bool( this.held_item ) ) ) {
+				if ( !Map13.FetchInView( null, this ).Contains( this.parrot_interest ) ) {
 					this.parrot_state = 34;
 					return false;
 				}
@@ -668,9 +662,8 @@ namespace Somnium.Game {
 								this.held_item = this.steal_from_mob();
 							}
 						}
-						Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( this.parrot_perch ) );
 
-						if ( !Lang13.Bool( this.held_item ) ) {
+						if ( Map13.FetchInView( null, this ).Contains( this.parrot_perch ) ) {
 							this.parrot_state = 34;
 						} else {
 							this.parrot_state = 4;
@@ -847,9 +840,8 @@ namespace Somnium.Game {
 							foreach (dynamic _a in Lang13.Enumerate( this.speak )) {
 								possible_phrase = _a;
 								
-								Interface13.Stat( null, GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase, 1, 3 ) ) );
 
-								if ( false ) {
+								if ( GlobalVars.department_radio_keys.Contains( String13.SubStr( possible_phrase, 1, 3 ) ) ) {
 									possible_phrase = String13.SubStr( possible_phrase, 3, 0 );
 								}
 							}
@@ -977,9 +969,8 @@ namespace Somnium.Game {
 					return 3;
 					break;
 			}
-			Interface13.Stat( null, GlobalVars.radiochannels.Contains( message_mode ) );
 
-			if ( _default != 0 ) {
+			if ( GlobalVars.radiochannels.Contains( message_mode ) ) {
 				
 				if ( Lang13.Bool( this.ears ) ) {
 					((Obj_Item)this.ears).talk_into( speech, message_mode );

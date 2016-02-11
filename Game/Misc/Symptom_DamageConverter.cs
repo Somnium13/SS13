@@ -21,8 +21,8 @@ namespace Somnium.Game {
 		public bool Convert( dynamic M = null ) {
 			int get_damage = 0;
 
-
-			if (((Mob_Living)M).getFireLoss() < global::System.Convert.ToDouble(((Mob_Living)M).getMaxHealth()) || ((Mob_Living)M).getBruteLoss() < global::System.Convert.ToDouble(((Mob_Living)M).getMaxHealth())) {
+			
+			if ( ((Mob_Living)M).getFireLoss() < Convert.ToDouble( ((Mob_Living)M).getMaxHealth() ) || ((Mob_Living)M).getBruteLoss() < Convert.ToDouble( ((Mob_Living)M).getMaxHealth() ) ) {
 				get_damage = Rand13.Int( 1, 2 );
 				((Mob_Living)M).adjustFireLoss( -get_damage );
 				((Mob_Living)M).adjustBruteLoss( -get_damage );

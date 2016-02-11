@@ -186,9 +186,8 @@ namespace Somnium.Game {
 
 		// Function from file: autolathe.dm
 		public override bool is_contraband( dynamic part = null ) {
-			Interface13.Stat( null, this.part_sets["Hidden_Items"].Contains( part ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( this.part_sets["Hidden_Items"].Contains( part ) ) ) {
 				return true;
 			}
 			return false;

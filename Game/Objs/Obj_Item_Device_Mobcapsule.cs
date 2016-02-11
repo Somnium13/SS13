@@ -68,9 +68,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( ((dynamic)H).friends )) {
 						things = _a;
 						
-						Interface13.Stat( null, ((dynamic)H).friends.Contains( this.capsuleowner ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( ((dynamic)H).friends.Contains( this.capsuleowner ) ) ) {
 							
 							if ( this.insert( AM, user ) == -1 ) {
 								break;

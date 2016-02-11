@@ -124,7 +124,7 @@ namespace Somnium.Game {
 			dynamic A3 = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this )) {
@@ -559,9 +559,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.contents, typeof(Ent_Dynamic) )) {
 				x = _a;
 				
-				Interface13.Stat( null, this.component_parts.Contains( x ) );
 
-				if ( x is Ent_Dynamic ) {
+				if ( Lang13.Bool( this.component_parts.Contains( x ) ) ) {
 					continue;
 				}
 				x.forceMove( this.loc );
@@ -577,9 +576,8 @@ namespace Somnium.Game {
 		public void cook( dynamic cook_setting = null ) {
 			dynamic cooktime = null;
 
-			Interface13.Stat( null, this.available_options.Contains( cook_setting ) );
-
-			if ( !false ) {
+			
+			if ( !this.available_options.Contains( cook_setting ) ) {
 				return;
 			}
 			cooktime = this.available_options[cook_setting];

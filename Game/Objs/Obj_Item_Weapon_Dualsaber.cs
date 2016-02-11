@@ -39,9 +39,8 @@ namespace Somnium.Game {
 			int? i = null;
 
 			base.attack( (object)(M), (object)(user), def_zone, eat_override );
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
 
-			if ( false && Lang13.Bool( this.wielded ) && Rand13.PercentChance( 40 ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Lang13.Bool( this.wielded ) && Rand13.PercentChance( 40 ) ) {
 				GlobalFuncs.to_chat( user, "<span class='warning'>You twirl around a bit before losing your balance and impaling yourself on the " + this + ".</span>" );
 				((Mob_Living)user).take_organ_damage( 20, 25 );
 				return null;

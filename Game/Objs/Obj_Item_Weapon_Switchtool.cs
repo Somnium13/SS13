@@ -101,9 +101,8 @@ namespace Somnium.Game {
 
 		// Function from file: switchtool.dm
 		public virtual void deploy( dynamic module = null ) {
-			Interface13.Stat( null, this.stored_modules.Contains( module ) );
-
-			if ( !false ) {
+			
+			if ( !this.stored_modules.Contains( module ) ) {
 				return;
 			}
 

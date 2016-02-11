@@ -20,9 +20,8 @@ namespace Somnium.Game {
 
 		// Function from file: door_assembly.dm
 		public Obj_Structure_DoorAssembly_MultiTile ( dynamic loc = null ) : base( (object)(loc) ) {
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 				this.bound_width = ( this.width ?1:0) * Game13.icon_size;
 				this.bound_height = Game13.icon_size;
 			} else {
@@ -38,9 +37,8 @@ namespace Somnium.Game {
 			bool _default = false;
 
 			_default = base.Move( (object)(NewLoc), Dir, step_x, step_y );
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 				this.bound_width = ( this.width ?1:0) * Game13.icon_size;
 				this.bound_height = Game13.icon_size;
 			} else {

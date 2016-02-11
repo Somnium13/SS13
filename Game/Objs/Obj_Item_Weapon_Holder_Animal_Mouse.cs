@@ -21,9 +21,8 @@ namespace Somnium.Game {
 			if ( M is Mob_Living_SimpleAnimal_Mouse ) {
 				mouse = M;
 				this.item_state = Lang13.Initial( mouse, "icon_state" );
-				Interface13.Stat( null, new ByTable(new object [] { "mouse_white", "mouse_brown", "mouse_gray" }).Contains( !Lang13.Bool( this.item_state ) ) );
 
-				if ( false ) {
+				if ( new ByTable(new object [] { "mouse_white", "mouse_brown", "mouse_gray" }).Contains( !Lang13.Bool( this.item_state ) ) ) {
 					this.item_state = "mouse_gray";
 				}
 			}

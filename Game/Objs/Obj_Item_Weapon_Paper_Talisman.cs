@@ -283,9 +283,8 @@ namespace Somnium.Game {
 				} else if ( T is Mob_Living_Carbon ) {
 					C = T;
 					Icon13.Flick( "e_flash", C.flash );
-					Interface13.Stat( null, C.mutations.Contains( 4 ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( C.mutations.Contains( 4 ) ) ) {
 						C.silent += 15;
 					}
 					((Mob)C).Weaken( 25 );

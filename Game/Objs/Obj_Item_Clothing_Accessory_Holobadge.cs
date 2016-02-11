@@ -55,9 +55,8 @@ namespace Somnium.Game {
 					pda = a;
 					id_card = pda.id;
 				}
-				Interface13.Stat( null, ((dynamic)( Lang13.Bool( id_card.access ) || this.emagged )).Contains( GlobalVars.access_security ) );
 
-				if ( a is Obj_Item_Weapon_Card_Id ) {
+				if ( Lang13.Bool( ((dynamic)( Lang13.Bool( id_card.access ) || this.emagged )).Contains( GlobalVars.access_security ) ) ) {
 					GlobalFuncs.to_chat( b, "You imprint your ID details onto the badge." );
 					this.stored_name = id_card.registered_name;
 					this.name = "holobadge (" + this.stored_name + ")";

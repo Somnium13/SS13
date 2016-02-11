@@ -884,9 +884,8 @@ namespace Somnium.Game {
 				dir = _a;
 				
 				T = Map13.GetStep( this, Convert.ToInt32( dir ) );
-				Interface13.Stat( null, closed.Contains( T ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( closed.Contains( T ) ) ) {
 					continue;
 				}
 
@@ -917,9 +916,8 @@ namespace Somnium.Game {
 				dir = _a;
 				
 				T = Map13.GetStep( this, Convert.ToInt32( dir ) );
-				Interface13.Stat( null, closed.Contains( T ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( closed.Contains( T ) ) ) {
 					continue;
 				}
 
@@ -945,9 +943,8 @@ namespace Somnium.Game {
 				dir = _a;
 				
 				T = Map13.GetStep( this, Convert.ToInt32( dir ) );
-				Interface13.Stat( null, closed.Contains( T ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( closed.Contains( T ) ) ) {
 					continue;
 				}
 

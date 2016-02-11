@@ -24,9 +24,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( this, "<big><span class='warning'>You have been risen from the dead by your new master, " + Owner + ". Do his bidding so long as he lives, for when he falls so do you.</span></big>" );
 				}
 				_ref = new Txt().Ref( Owner.mind ).ToString();
-				Interface13.Stat( null, GlobalVars.ticker.mode.necromancer.Contains( Owner.mind ) );
 
-				if ( !( Controller != null ) ) {
+				if ( !GlobalVars.ticker.mode.necromancer.Contains( Owner.mind ) ) {
 					GlobalVars.ticker.mode.necromancer[_ref] = new ByTable();
 				}
 				necromancers = GlobalVars.ticker.mode.necromancer[_ref];

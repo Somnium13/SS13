@@ -57,9 +57,8 @@ namespace Somnium.Game {
 			P = GlobalFuncs.get_multitool( Task13.User );
 
 			if ( Lang13.Bool( P ) ) {
-				Interface13.Stat( null, href_list.Contains( "set_freq" ) );
-
-				if ( false ) {
+				
+				if ( href_list.Contains( "set_freq" ) ) {
 					newfreq = this.frequency;
 
 					if ( href_list["set_freq"] != "-1" ) {

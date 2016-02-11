@@ -174,7 +174,7 @@ namespace Somnium.Game {
 					def_target = null;
 					objective_list = new ByTable(new object [] { typeof(Objective_Assassinate), typeof(Objective_Protect), typeof(Objective_Debrain) });
 
-					if ( Lang13.Bool( objective ) && false && Lang13.Bool( objective.target ) ) {
+					if ( Lang13.Bool( objective ) && objective_list.Contains( objective.type ) && Lang13.Bool( objective.target ) ) {
 						def_target = objective.target.current;
 					}
 					new_target = Interface13.Input( "Select target:", "Objective target", def_target, null, possible_targets, InputType.Null | InputType.Any );
@@ -294,17 +294,15 @@ namespace Somnium.Game {
 				
 				dynamic _e = href_list["revolution"]; // Was a switch-case, sorry for the mess.
 				if ( _e=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.revolutionaries.Contains( this ) ) {
 						GlobalVars.ticker.mode.revolutionaries.Remove( this );
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have been brainwashed! You are no longer a revolutionary!</FONT></span>" );
 						((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( this );
 						this.special_role = null;
 					}
-					Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) );
 
-					if ( false ) {
+					if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) ) {
 						GlobalVars.ticker.mode.head_revolutionaries.Remove( this );
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have been brainwashed! You are no longer a head revolutionary!</FONT></span>" );
 						((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( this );
@@ -312,40 +310,30 @@ namespace Somnium.Game {
 					}
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-rev'ed " + this.current + "." );
 				} else if ( _e=="rev" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) ) {
 						GlobalVars.ticker.mode.head_revolutionaries.Remove( this );
 						((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( this );
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>Revolution has been disappointed of your leader traits! You are a regular revolutionary now!</FONT></span>" );
+					} else if ( !GlobalVars.ticker.mode.revolutionaries.Contains( this ) ) {
+						GlobalFuncs.to_chat( this.current, "<span class='warning'><FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!</FONT></span>" );
 					} else {
-						Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( this ) );
-
-						if ( !false ) {
-							GlobalFuncs.to_chat( this.current, "<span class='warning'><FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!</FONT></span>" );
-						} else {
-							return null;
-						}
+						return null;
 					}
 					GlobalVars.ticker.mode.revolutionaries.Add( this );
 					((GameMode)GlobalVars.ticker.mode).update_rev_icons_added( this );
 					this.special_role = "Revolutionary";
 					GlobalFuncs.log_admin( "" + GlobalFuncs.key_name( Task13.User ) + " has rev'ed " + this.current + "." );
 				} else if ( _e=="headrev" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.revolutionaries.Contains( this ) ) {
 						GlobalVars.ticker.mode.revolutionaries.Remove( this );
 						((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( this );
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have proved your devotion to revoltion! Yea are a head revolutionary now!</FONT></span>" );
+					} else if ( !GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) ) {
+						GlobalFuncs.to_chat( this.current, "<span class='notice'>You are a member of the revolutionaries' leadership now!</span>" );
 					} else {
-						Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) );
-
-						if ( !false ) {
-							GlobalFuncs.to_chat( this.current, "<span class='notice'>You are a member of the revolutionaries' leadership now!</span>" );
-						} else {
-							return null;
-						}
+						return null;
 					}
 
 					if ( GlobalVars.ticker.mode.head_revolutionaries.len > 0 ) {
@@ -412,9 +400,8 @@ namespace Somnium.Game {
 				
 				dynamic _f = href_list["cult"]; // Was a switch-case, sorry for the mess.
 				if ( _f=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this ) ) ) {
 						GlobalVars.ticker.mode.cult -= this;
 						((GameMode)GlobalVars.ticker.mode).update_cult_icons_removed( this );
 						this.special_role = null;
@@ -430,9 +417,8 @@ namespace Somnium.Game {
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-cult'ed " + this.current + "." );
 					}
 				} else if ( _f=="cultist" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this ) ) ) {
 						GlobalVars.ticker.mode.cult += this;
 						((GameMode)GlobalVars.ticker.mode).update_cult_icons_added( this );
 						this.special_role = "Cultist";
@@ -473,9 +459,8 @@ namespace Somnium.Game {
 				
 				dynamic _g = href_list["wizard"]; // Was a switch-case, sorry for the mess.
 				if ( _g=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.wizards.Contains( this ) ) {
 						GlobalVars.ticker.mode.wizards.Remove( this );
 						this.special_role = null;
 						((Mob)this.current).spellremove( this.current );
@@ -484,9 +469,8 @@ namespace Somnium.Game {
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-wizard'ed " + this.current + "." );
 					}
 				} else if ( _g=="wizard" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.wizards.Contains( this ) ) {
 						GlobalVars.ticker.mode.wizards.Add( this );
 						this.special_role = "Wizard";
 						GlobalFuncs.to_chat( this.current, "<span class='danger'>You are the Space Wizard!</span>" );
@@ -510,9 +494,8 @@ namespace Somnium.Game {
 				
 				dynamic _h = href_list["changeling"]; // Was a switch-case, sorry for the mess.
 				if ( _h=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.changelings.Contains( this ) ) {
 						GlobalVars.ticker.mode.changelings.Remove( this );
 						this.special_role = null;
 						((Mob)this.current).remove_changeling_powers();
@@ -526,9 +509,8 @@ namespace Somnium.Game {
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-changeling'ed " + this.current + "." );
 					}
 				} else if ( _h=="changeling" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.changelings.Contains( this ) ) {
 						GlobalVars.ticker.mode.changelings.Add( this );
 						((GameMode)GlobalVars.ticker.mode).grant_changeling_powers( this.current );
 						this.special_role = "Changeling";
@@ -564,9 +546,8 @@ namespace Somnium.Game {
 				
 				dynamic _i = href_list["vampire"]; // Was a switch-case, sorry for the mess.
 				if ( _i=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.vampires.Contains( this ) ) {
 						GlobalVars.ticker.mode.vampires.Remove( this );
 						this.special_role = null;
 						((Mob)this.current).remove_vampire_powers();
@@ -579,9 +560,8 @@ namespace Somnium.Game {
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-vampired " + this.current + "." );
 					}
 				} else if ( _i=="vampire" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.vampires.Contains( this ) ) {
 						GlobalVars.ticker.mode.vampires.Add( this );
 						((GameMode)GlobalVars.ticker.mode).grant_vampire_powers( this.current );
 						this.special_role = "Vampire";
@@ -598,9 +578,8 @@ namespace Somnium.Game {
 				
 				dynamic _l = href_list["nuclear"]; // Was a switch-case, sorry for the mess.
 				if ( _l=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.syndicates.Contains( this ) ) {
 						GlobalVars.ticker.mode.syndicates.Remove( this );
 						((GameMode)GlobalVars.ticker.mode).update_synd_icons_removed( this );
 						this.special_role = null;
@@ -614,9 +593,8 @@ namespace Somnium.Game {
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-nuke op'ed " + this.current + "." );
 					}
 				} else if ( _l=="nuclear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.syndicates.Contains( this ) ) {
 						GlobalVars.ticker.mode.syndicates.Add( this );
 						((GameMode)GlobalVars.ticker.mode).update_synd_icons_added( this );
 
@@ -674,9 +652,8 @@ namespace Somnium.Game {
 				
 				dynamic _m = href_list["traitor"]; // Was a switch-case, sorry for the mess.
 				if ( _m=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.traitors.Contains( this ) ) {
 						GlobalVars.ticker.mode.traitors.Remove( this );
 						this.special_role = null;
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have been brainwashed! You are no longer a traitor!</FONT></span>" );
@@ -774,9 +751,8 @@ namespace Somnium.Game {
 				
 				dynamic _r = href_list["silicon"]; // Was a switch-case, sorry for the mess.
 				if ( _r=="unmalf" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.malf_ai.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.malf_ai.Contains( this ) ) {
 						GlobalVars.ticker.mode.malf_ai.Remove( this );
 						this.special_role = null;
 						A2 = this.current;
@@ -907,9 +883,8 @@ namespace Somnium.Game {
 						}
 					}
 				} else if ( _t=="uplink" ) {
-					Interface13.Stat( this.current, GlobalVars.ticker.mode.traitors.Contains( this ) );
-
-					if ( !((GameMode)GlobalVars.ticker.mode).equip_traitor( null, !false ) ) {
+					
+					if ( !((GameMode)GlobalVars.ticker.mode).equip_traitor( this.current, !GlobalVars.ticker.mode.traitors.Contains( this ) ) ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Equipping a syndicate failed!</span>" );
 					}
 				}
@@ -927,18 +902,16 @@ namespace Somnium.Game {
 				
 				dynamic _v = href_list["resteam"]; // Was a switch-case, sorry for the mess.
 				if ( _v=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.ert.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.ert.Contains( this ) ) {
 						GlobalVars.ticker.mode.ert.Remove( this );
 						this.special_role = null;
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have been demoted! You are no longer an Emergency Responder!</FONT></span>" );
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-ERT'ed " + this.current + "." );
 					}
 				} else if ( _v=="resteam" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.ert.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.ert.Contains( this ) ) {
 						GlobalVars.ticker.mode.ert.Add( this );
 						this.assigned_role = "MODE";
 						this.special_role = "Response Team";
@@ -949,18 +922,16 @@ namespace Somnium.Game {
 				
 				dynamic _w = href_list["dsquad"]; // Was a switch-case, sorry for the mess.
 				if ( _w=="clear" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.deathsquad.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.deathsquad.Contains( this ) ) {
 						GlobalVars.ticker.mode.deathsquad.Remove( this );
 						this.special_role = null;
 						GlobalFuncs.to_chat( this.current, "<span class='danger'><FONT size = 3>You have been demoted! You are no longer a Death Commando!</FONT></span>" );
 						GlobalFuncs.log_admin( "" + GlobalFuncs.key_name_admin( Task13.User ) + " has de-deathsquad'ed " + this.current + "." );
 					}
 				} else if ( _w=="dsquad" ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.deathsquad.Contains( this ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.ticker.mode.deathsquad.Contains( this ) ) {
 						GlobalVars.ticker.mode.deathsquad.Add( this );
 						this.assigned_role = "MODE";
 						this.special_role = "Death Commando";
@@ -992,9 +963,8 @@ namespace Somnium.Game {
 
 		// Function from file: mind.dm
 		public bool? make_traitor(  ) {
-			Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( this ) );
-
-			if ( !false ) {
+			
+			if ( !GlobalVars.ticker.mode.traitors.Contains( this ) ) {
 				GlobalVars.ticker.mode.traitors.Add( this );
 				this.special_role = "traitor";
 				((GameMode)GlobalVars.ticker.mode).forge_traitor_objectives( this );
@@ -1103,9 +1073,8 @@ namespace Somnium.Game {
 			ByTable slots = null;
 			dynamic where = null;
 
-			Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this ) );
-
-			if ( !false ) {
+			
+			if ( !Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this ) ) ) {
 				GlobalVars.ticker.mode.cult += this;
 				((GameMode)GlobalVars.ticker.mode).update_cult_icons_added( this );
 				this.special_role = "Cultist";
@@ -1149,9 +1118,8 @@ namespace Somnium.Game {
 		public void make_Wizard(  ) {
 			Obj_Item_Weapon_Spellbook S = null;
 
-			Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( this ) );
-
-			if ( !false ) {
+			
+			if ( !GlobalVars.ticker.mode.wizards.Contains( this ) ) {
 				GlobalVars.ticker.mode.wizards.Add( this );
 				this.special_role = "Wizard";
 				this.assigned_role = "MODE";
@@ -1180,9 +1148,8 @@ namespace Somnium.Game {
 
 		// Function from file: mind.dm
 		public void make_Changling(  ) {
-			Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( this ) );
-
-			if ( !false ) {
+			
+			if ( !GlobalVars.ticker.mode.changelings.Contains( this ) ) {
 				GlobalVars.ticker.mode.changelings.Add( this );
 				((GameMode)GlobalVars.ticker.mode).grant_changeling_powers( this.current );
 				this.special_role = "Changeling";
@@ -1196,9 +1163,8 @@ namespace Somnium.Game {
 		public void make_Nuke(  ) {
 			dynamic H = null;
 
-			Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( this ) );
-
-			if ( !false ) {
+			
+			if ( !GlobalVars.ticker.mode.syndicates.Contains( this ) ) {
 				GlobalVars.ticker.mode.syndicates.Add( this );
 				((GameMode)GlobalVars.ticker.mode).update_synd_icons_added( this );
 
@@ -1238,9 +1204,8 @@ namespace Somnium.Game {
 			if ( !( this.current is Mob_Living_Silicon_Ai ) ) {
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.malf_ai.Contains( this ) );
 
-			if ( !( !( this.current is Mob_Living_Silicon_Ai ) ) ) {
+			if ( !GlobalVars.ticker.mode.malf_ai.Contains( this ) ) {
 				GlobalVars.ticker.mode.malf_ai.Add( this );
 				A = this.current;
 				A.verbs += typeof(Mob_Living_Silicon_Ai).GetMethod( "choose_modules" );
@@ -1327,48 +1292,35 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( this.assigned_role ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "revolution" ) {
+				if ( GlobalVars.command_positions.Contains( this.assigned_role ) ) {
 					text += "<b>HEAD</b>|officer|employee|headrev|rev";
-				} else {
-					Interface13.Stat( null, new ByTable(new object [] { "Security Officer", "Detective", "Warden" }).Contains( this.assigned_role ) );
+				} else if ( new ByTable(new object [] { "Security Officer", "Detective", "Warden" }).Contains( this.assigned_role ) ) {
+					text += "head|<b>OFFICER</b>|employee|headre|rev";
+				} else if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) ) {
+					text = new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";revolution=clear'>employee</a>|<b>HEADREV</b>|<a href='?src=" ).Ref( this ).str( ";revolution=rev'>rev</a>\n				<br>Flash: <a href='?src=" ).Ref( this ).str( ";revolution=flash'>give</a>" ).ToString();
+					L = this.current.get_contents();
+					flash = Lang13.FindIn( typeof(Obj_Item_Device_Flash), L );
 
-					if ( GlobalVars.ticker.mode.config_tag == "revolution" ) {
-						text += "head|<b>OFFICER</b>|employee|headre|rev";
-					} else {
-						Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) );
-
-						if ( GlobalVars.ticker.mode.config_tag == "revolution" ) {
-							text = new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";revolution=clear'>employee</a>|<b>HEADREV</b>|<a href='?src=" ).Ref( this ).str( ";revolution=rev'>rev</a>\n				<br>Flash: <a href='?src=" ).Ref( this ).str( ";revolution=flash'>give</a>" ).ToString();
-							L = this.current.get_contents();
-							flash = Lang13.FindIn( typeof(Obj_Item_Device_Flash), L );
-
-							if ( Lang13.Bool( flash ) ) {
-								
-								if ( !Lang13.Bool( flash.broken ) ) {
-									text += new Txt( "|<a href='?src=" ).Ref( this ).str( ";revolution=takeflash'>take</a>." ).ToString();
-								} else {
-									text += new Txt( "|<a href='?src=" ).Ref( this ).str( ";revolution=takeflash'>take</a>|<a href='?src=" ).Ref( this ).str( ";revolution=repairflash'>repair</a>." ).ToString();
-								}
-							} else {
-								text += ".";
-							}
-							text += new Txt( " <a href='?src=" ).Ref( this ).str( ";revolution=reequip'>Reequip</a> (gives traitor uplink)." ).ToString();
-
-							if ( this.objectives.len == 0 ) {
-								text += new Txt( "<br>Objectives are empty! <a href='?src=" ).Ref( this ).str( ";revolution=autoobjectives'>Set to kill all heads</a>." ).ToString();
-							}
+					if ( Lang13.Bool( flash ) ) {
+						
+						if ( !Lang13.Bool( flash.broken ) ) {
+							text += new Txt( "|<a href='?src=" ).Ref( this ).str( ";revolution=takeflash'>take</a>." ).ToString();
 						} else {
-							Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( this ) );
-
-							if ( GlobalVars.ticker.mode.config_tag == "revolution" ) {
-								text += new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";revolution=clear'>employee</a>|<a href='?src=" ).Ref( this ).str( ";revolution=headrev'>headrev</a>|<b>REV</b>" ).ToString();
-							} else {
-								text += new Txt( "head|officer|<b>EMPLOYEE</b>|<a href='?src=" ).Ref( this ).str( ";revolution=headrev'>headrev</a>|<a href='?src=" ).Ref( this ).str( ";revolution=rev'>rev</a>" ).ToString();
-							}
+							text += new Txt( "|<a href='?src=" ).Ref( this ).str( ";revolution=takeflash'>take</a>|<a href='?src=" ).Ref( this ).str( ";revolution=repairflash'>repair</a>." ).ToString();
 						}
+					} else {
+						text += ".";
 					}
+					text += new Txt( " <a href='?src=" ).Ref( this ).str( ";revolution=reequip'>Reequip</a> (gives traitor uplink)." ).ToString();
+
+					if ( this.objectives.len == 0 ) {
+						text += new Txt( "<br>Objectives are empty! <a href='?src=" ).Ref( this ).str( ";revolution=autoobjectives'>Set to kill all heads</a>." ).ToString();
+					}
+				} else if ( GlobalVars.ticker.mode.revolutionaries.Contains( this ) ) {
+					text += new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";revolution=clear'>employee</a>|<a href='?src=" ).Ref( this ).str( ";revolution=headrev'>headrev</a>|<b>REV</b>" ).ToString();
+				} else {
+					text += new Txt( "head|officer|<b>EMPLOYEE</b>|<a href='?src=" ).Ref( this ).str( ";revolution=headrev'>headrev</a>|<a href='?src=" ).Ref( this ).str( ";revolution=rev'>rev</a>" ).ToString();
 				}
 				sections["revolution"] = text;
 				text = "cult";
@@ -1377,24 +1329,15 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( this.assigned_role ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "cult" ) {
+				if ( GlobalVars.command_positions.Contains( this.assigned_role ) ) {
 					text += "<b>HEAD</b>|officer|employee|cultist";
+				} else if ( new ByTable(new object [] { "Security Officer", "Detective", "Warden" }).Contains( this.assigned_role ) ) {
+					text += "head|<b>OFFICER</b>|employee|cultist";
+				} else if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this ) ) ) {
+					text += new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";cult=clear'>employee</a>|<b>CULTIST</b>\n				<br>Give <a href='?src=" ).Ref( this ).str( ";cult=tome'>tome</a>|<a href='?src=" ).Ref( this ).str( ";cult=amulet'>amulet</a>." ).ToString();
 				} else {
-					Interface13.Stat( null, new ByTable(new object [] { "Security Officer", "Detective", "Warden" }).Contains( this.assigned_role ) );
-
-					if ( GlobalVars.ticker.mode.config_tag == "cult" ) {
-						text += "head|<b>OFFICER</b>|employee|cultist";
-					} else {
-						Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this ) );
-
-						if ( GlobalVars.ticker.mode.config_tag == "cult" ) {
-							text += new Txt( "head|officer|<a href='?src=" ).Ref( this ).str( ";cult=clear'>employee</a>|<b>CULTIST</b>\n				<br>Give <a href='?src=" ).Ref( this ).str( ";cult=tome'>tome</a>|<a href='?src=" ).Ref( this ).str( ";cult=amulet'>amulet</a>." ).ToString();
-						} else {
-							text += new Txt( "head|officer|<b>EMPLOYEE</b>|<a href='?src=" ).Ref( this ).str( ";cult=cultist'>cultist</a>" ).ToString();
-						}
-					}
+					text += new Txt( "head|officer|<b>EMPLOYEE</b>|<a href='?src=" ).Ref( this ).str( ";cult=cultist'>cultist</a>" ).ToString();
 				}
 				sections["cult"] = text;
 				text = "wizard";
@@ -1403,9 +1346,8 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( this ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "wizard" ) {
+				if ( GlobalVars.ticker.mode.wizards.Contains( this ) ) {
 					text += new Txt( "<b>YES</b>|<a href='?src=" ).Ref( this ).str( ";wizard=clear'>no</a>\n				<br><a href='?src=" ).Ref( this ).str( ";wizard=lair'>To lair</a>, <a href='?src=" ).Ref( this ).str( ";common=undress'>undress</a>, <a href='?src=" ).Ref( this ).str( ";wizard=dressup'>dress up</a>, <a href='?src=" ).Ref( this ).str( ";wizard=name'>let choose name</a>." ).ToString();
 
 					if ( this.objectives.len == 0 ) {
@@ -1421,9 +1363,8 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( this ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "changeling" || GlobalVars.ticker.mode.config_tag == "traitorchan" ) {
+				if ( GlobalVars.ticker.mode.changelings.Contains( this ) ) {
 					text += new Txt( "<b>YES</b>|<a href='?src=" ).Ref( this ).str( ";changeling=clear'>no</a>" ).ToString();
 
 					if ( this.objectives.len == 0 ) {
@@ -1447,9 +1388,8 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( this ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "vampire" ) {
+				if ( GlobalVars.ticker.mode.vampires.Contains( this ) ) {
 					text += new Txt( "<b>YES</b>|<a href='?src=" ).Ref( this ).str( ";vampire=clear'>no</a>" ).ToString();
 
 					if ( this.objectives.len == 0 ) {
@@ -1459,9 +1399,8 @@ namespace Somnium.Game {
 					text += new Txt( "<a href='?src=" ).Ref( this ).str( ";vampire=vampire'>yes</a>|<b>NO</b>" ).ToString();
 				}
 				text += "<br><i><b>enthralled</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.enthralled.Contains( this ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "vampire" ) {
+				if ( GlobalVars.ticker.mode.enthralled.Contains( this ) ) {
 					text += "<b><font color='#FF0000'>YES</font></b>|no";
 				} else {
 					text += "yes|<b>NO</b>";
@@ -1473,9 +1412,8 @@ namespace Somnium.Game {
 					text = String13.ToUpper( text );
 				}
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( this ) );
 
-				if ( GlobalVars.ticker.mode.config_tag == "nuclear" ) {
+				if ( GlobalVars.ticker.mode.syndicates.Contains( this ) ) {
 					text += new Txt( "<b>OPERATIVE</b>|<a href='?src=" ).Ref( this ).str( ";nuclear=clear'>nanotrasen</a>\n				<br><a href='?src=" ).Ref( this ).str( ";nuclear=lair'>To shuttle</a>, <a href='?src=" ).Ref( this ).str( ";common=undress'>undress</a>, <a href='?src=" ).Ref( this ).str( ";nuclear=dressup'>dress up</a>." ).ToString();
 
 					foreach (dynamic _a in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Nuclearbomb) )) {
@@ -1502,9 +1440,8 @@ namespace Somnium.Game {
 				text = String13.ToUpper( text );
 			}
 			text = "<i><b>" + text + "</b></i>: ";
-			Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( this ) );
 
-			if ( GlobalVars.ticker.mode.config_tag == "traitor" || GlobalVars.ticker.mode.config_tag == "traitorchan" ) {
+			if ( GlobalVars.ticker.mode.traitors.Contains( this ) ) {
 				text += new Txt( "<b>TRAITOR</b>|<a href='?src=" ).Ref( this ).str( ";traitor=clear'>loyal</a>" ).ToString();
 
 				if ( this.objectives.len == 0 ) {
@@ -1557,9 +1494,8 @@ namespace Somnium.Game {
 				text = "<i><b>" + text + "</b></i>: ";
 
 				if ( this.current is Mob_Living_Silicon_Ai ) {
-					Interface13.Stat( null, GlobalVars.ticker.mode.malf_ai.Contains( this ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.ticker.mode.malf_ai.Contains( this ) ) {
 						text += new Txt( "<b>MALF</b>|<a href='?src=" ).Ref( this ).str( ";silicon=unmalf'>not malf</a>" ).ToString();
 					} else {
 						text += new Txt( "<a href='?src=" ).Ref( this ).str( ";silicon=malf'>malf</a>|<b>NOT MALF</b>" ).ToString();
@@ -1615,9 +1551,8 @@ namespace Somnium.Game {
 					_out += sections[i] + "<br>";
 				}
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) );
 
-			if ( ( Lang13.Bool( sections[GlobalVars.ticker.mode.config_tag] ) || false || false ) && this.current is Mob_Living_Carbon_Human ) {
+			if ( ( GlobalVars.ticker.mode.head_revolutionaries.Contains( this ) || GlobalVars.ticker.mode.traitors.Contains( this ) || GlobalVars.ticker.mode.syndicates.Contains( this ) ) && this.current is Mob_Living_Carbon_Human ) {
 				text = new Txt( "Uplink: <a href='?src=" ).Ref( this ).str( ";common=uplink'>give</a>" ).ToString();
 				suplink = this.find_syndicate_uplink();
 				crystals = null;
@@ -1642,9 +1577,8 @@ namespace Somnium.Game {
 			if ( this.current is Mob_Living_Carbon ) {
 				text = "Emergency Response Team";
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.ert.Contains( this ) );
 
-				if ( false ) {
+				if ( GlobalVars.ticker.mode.ert.Contains( this ) ) {
 					text += new Txt( "<b>YES</b>|<a href='?src=" ).Ref( this ).str( ";resteam=clear'>no</a>" ).ToString();
 				} else {
 					text += new Txt( "<a href='?src=" ).Ref( this ).str( ";resteam=resteam'>yes</a>|<b>NO</b>" ).ToString();
@@ -1655,9 +1589,8 @@ namespace Somnium.Game {
 			if ( this.current is Mob_Living_Carbon ) {
 				text = "Death Squad";
 				text = "<i><b>" + text + "</b></i>: ";
-				Interface13.Stat( null, GlobalVars.ticker.mode.deathsquad.Contains( this ) );
 
-				if ( false ) {
+				if ( GlobalVars.ticker.mode.deathsquad.Contains( this ) ) {
 					text += new Txt( "<b>YES</b>|<a href='?src=" ).Ref( this ).str( ";dsquad=clear'>no</a>" ).ToString();
 				} else {
 					text += new Txt( "<a href='?src=" ).Ref( this ).str( ";dsquad=dsquad'>yes</a>|<b>NO</b>" ).ToString();

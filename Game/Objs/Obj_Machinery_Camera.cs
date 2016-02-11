@@ -68,7 +68,7 @@ namespace Somnium.Game {
 			}
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
 
-			if ( GlobalVars.adv_camera != null && GlobalVars.adv_camera.initialized && !false ) {
+			if ( GlobalVars.adv_camera != null && GlobalVars.adv_camera.initialized && !Lang13.Bool( GlobalVars.adv_camera.camerasbyzlevel["" + this.z].Contains( this ) ) ) {
 				GlobalVars.adv_camera.update( this.z, false, this, 1 );
 			}
 			this.update_hear();
@@ -587,9 +587,8 @@ namespace Somnium.Game {
 
 		// Function from file: motion.dm
 		public void lostTarget( dynamic target = null ) {
-			Interface13.Stat( null, this.motionTargets.Contains( target ) );
-
-			if ( false ) {
+			
+			if ( this.motionTargets.Contains( target ) ) {
 				this.motionTargets.Remove( target );
 			}
 
@@ -609,9 +608,8 @@ namespace Somnium.Game {
 			if ( this.detectTime == 0 ) {
 				this.detectTime = Game13.time;
 			}
-			Interface13.Stat( null, this.motionTargets.Contains( target ) );
 
-			if ( !( this.detectTime == 0 ) ) {
+			if ( !this.motionTargets.Contains( target ) ) {
 				this.motionTargets.Add( target );
 			}
 			return true;
@@ -797,16 +795,14 @@ namespace Somnium.Game {
 			basename = A.name;
 			nethash = GlobalFuncs.english_list( this.network );
 			suffix = 0;
-			Interface13.Stat( null, GlobalVars.camera_names.Contains( !( suffix != 0 ) || Lang13.Bool( nethash + this.c_tag ) ) );
 
-			if ( false ) {
+			while (GlobalVars.camera_names.Contains( !( suffix != 0 ) || Lang13.Bool( nethash + this.c_tag ) )) {
 				this.c_tag = "" + basename;
 
 				if ( suffix != 0 ) {
 					this.c_tag += " " + suffix;
 				}
 				suffix++;
-				// goto 16;
 			}
 			GlobalVars.camera_names[nethash + this.c_tag] = this;
 			return;

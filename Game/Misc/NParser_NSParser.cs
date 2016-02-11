@@ -31,69 +31,69 @@ namespace Somnium.Game {
 			while (this.index <= this.tokens.len) {
 				this.curToken = this.tokens[this.index];
 
-				if (this.curToken.type == typeof(Token_Keyword)) {
-						kw = this.options.keywords[((dynamic)this.curToken).value];
-						kw = Lang13.Call( kw );
+				dynamic _a = this.curToken.type; // Was a switch-case, sorry for the mess.
+				if ( _a==typeof(Token_Keyword) ) {
+					kw = this.options.keywords[((dynamic)this.curToken).value];
+					kw = Lang13.Call( kw );
 
-						if ( Lang13.Bool( kw ) ) {
-							
-							if ( !Lang13.Bool( kw.Parse( this ) ) ) {
-								return null;
-							}
-						}
-				} else if (this.curToken.type == typeof(Token_Word)) {
-						ntok = null;
-
-						if ( this.index + 1 > this.tokens.len ) {
-							this.errors.Add( new ScriptError_BadToken( this.curToken ) );
-							this.index++;
-							continue;
-						}
-						ntok = this.tokens[this.index + 1];
-
-						if ( !( ntok is Token_Symbol ) ) {
-							this.errors.Add( new ScriptError_BadToken( ntok ) );
-							this.index++;
-							continue;
-						}
-
-						if ( ((dynamic)ntok).value == "(" ) {
-							this.ParseFunctionStatement();
-						} else if ( this.options.assign_operators.Find( ((dynamic)ntok).value ) != 0 ) {
-							this.ParseAssignment();
-						} else {
-							this.errors.Add( new ScriptError_BadToken( ntok ) );
-							this.index++;
-							continue;
-						}
-
-						if ( !( this.curToken is Token_End ) ) {
-							this.errors.Add( new ScriptError_ExpectedToken( ";", this.curToken ) );
-							this.index++;
-							continue;
-						}
-				} else if (this.curToken.type == typeof(Token_Symbol)) {
+					if ( Lang13.Bool( kw ) ) {
 						
-						if ( ((dynamic)this.curToken).value == "}" ) {
-							
-							if ( !this.EndBlock() ) {
-								this.errors.Add( new ScriptError_BadToken( this.curToken ) );
-								this.index++;
-								continue;
-							}
-						} else {
-							this.errors.Add( new ScriptError_BadToken( this.curToken ) );
-							this.index++;
-							continue;
+						if ( !Lang13.Bool( kw.Parse( this ) ) ) {
+							return null;
 						}
+					}
+				} else if ( _a==typeof(Token_Word) ) {
+					ntok = null;
 
-				} else if (this.curToken.type == typeof(Token_End)) {
-						this.warnings.Add( new ScriptError_BadToken( this.curToken ) );
+					if ( this.index + 1 > this.tokens.len ) {
+						this.errors.Add( new ScriptError_BadToken( this.curToken ) );
 						this.index++;
 						continue;
-				} else {
+					}
+					ntok = this.tokens[this.index + 1];
+
+					if ( !( ntok is Token_Symbol ) ) {
+						this.errors.Add( new ScriptError_BadToken( ntok ) );
+						this.index++;
+						continue;
+					}
+
+					if ( ((dynamic)ntok).value == "(" ) {
+						this.ParseFunctionStatement();
+					} else if ( this.options.assign_operators.Find( ((dynamic)ntok).value ) != 0 ) {
+						this.ParseAssignment();
+					} else {
+						this.errors.Add( new ScriptError_BadToken( ntok ) );
+						this.index++;
+						continue;
+					}
+
+					if ( !( this.curToken is Token_End ) ) {
+						this.errors.Add( new ScriptError_ExpectedToken( ";", this.curToken ) );
+						this.index++;
+						continue;
+					}
+				} else if ( _a==typeof(Token_Symbol) ) {
+					
+					if ( ((dynamic)this.curToken).value == "}" ) {
+						
+						if ( !this.EndBlock() ) {
+							this.errors.Add( new ScriptError_BadToken( this.curToken ) );
+							this.index++;
+							continue;
+						}
+					} else {
 						this.errors.Add( new ScriptError_BadToken( this.curToken ) );
-						return null;
+						this.index++;
+						continue;
+					}
+				} else if ( _a==typeof(Token_End) ) {
+					this.warnings.Add( new ScriptError_BadToken( this.curToken ) );
+					this.index++;
+					continue;
+				} else {
+					this.errors.Add( new ScriptError_BadToken( this.curToken ) );
+					return null;
 				}
 				this.index++;
 			}
@@ -142,7 +142,7 @@ namespace Somnium.Game {
 			if ( this.curToken is Token_Symbol && ((dynamic)this.curToken).value == "," ) {
 				this.NextToken();
 			}
-			// goto 38;
+			throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 			return;
 		}
 
@@ -264,7 +264,7 @@ namespace Somnium.Game {
 					this.errors.Add( new ScriptError_ExpectedToken( ")" ) );
 					return exp;
 				}
-				// goto 18;
+				throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 			}
 			return null;
 		}
@@ -317,7 +317,7 @@ namespace Somnium.Game {
 					if ( this.expecting != 2 ) {
 						this.errors.Add( new ScriptError_ExpectedToken( "operator", this.curToken ) );
 						this.NextToken();
-						// goto 374;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 					}
 					val.Push( this.ParseParenExpression() );
 				} else if ( this.curToken is Token_Symbol ) {
@@ -329,7 +329,7 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( curOperator ) ) {
 							this.errors.Add( new ScriptError_ExpectedToken( "operator", this.curToken ) );
 							this.NextToken();
-							// goto 374;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 					} else {
 						curOperator = this.GetUnaryOperator( this.curToken );
@@ -337,13 +337,13 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( curOperator ) ) {
 							this.errors.Add( new ScriptError_ExpectedToken( "expression", this.curToken ) );
 							this.NextToken();
-							// goto 374;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 					}
 
 					if ( Lang13.Bool( opr.Top() ) && this.Precedence( opr.Top(), curOperator ) ) {
 						this.Reduce( opr, val );
-						// goto 374;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 					}
 					opr.Push( curOperator );
 					this.expecting = 2;
@@ -357,12 +357,12 @@ namespace Somnium.Game {
 						if ( old_expect != 2 ) {
 							this.errors.Add( new ScriptError_ExpectedToken( "operator", preToken ) );
 							this.NextToken();
-							// goto 374;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						val.Push( fex );
 					} else {
 						this.errors.Add( new ScriptError_ParameterFunction( this.curToken ) );
-						// goto 375;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 					}
 				} else if ( this.curToken is Token_Keyword ) {
 					kw = this.options.keywords[((dynamic)this.curToken).value];
@@ -379,19 +379,19 @@ namespace Somnium.Game {
 				} else if ( this.curToken is Token_End ) {
 					this.errors.Add( new ScriptError_BadToken( this.curToken ) );
 					this.NextToken();
-					// goto 374;
+					throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 				} else {
 					
 					if ( this.expecting != 2 ) {
 						this.errors.Add( new ScriptError_ExpectedToken( "operator", this.curToken ) );
 						this.NextToken();
-						// goto 374;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 					}
 					val.Push( this.GetExpression( this.curToken ) );
 					this.expecting = 1;
 				}
 				this.NextToken();
-				// goto 42;
+				throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 			}
 
 			while (Lang13.Bool( opr.Top() )) {
@@ -508,42 +508,38 @@ namespace Somnium.Game {
 				return T;
 			}
 
-			switch ((Type)( T.type )) {
-				case typeof(Token_Word):
-					return new Node_Expression_Value_Variable( ((dynamic)T).value );
-					break;
-				case typeof(Token_Accessor):
-					A = T;
-					E = null;
-					S = new Stack();
+			dynamic _a = T.type; // Was a switch-case, sorry for the mess.
+			if ( _a==typeof(Token_Word) ) {
+				return new Node_Expression_Value_Variable( ((dynamic)T).value );
+			} else if ( _a==typeof(Token_Accessor) ) {
+				A = T;
+				E = null;
+				S = new Stack();
 
-					while (((dynamic)A).v_object is Token_Accessor) {
-						S.Push( A );
-						A = ((dynamic)A).v_object;
+				while (((dynamic)A).v_object is Token_Accessor) {
+					S.Push( A );
+					A = ((dynamic)A).v_object;
+				}
+
+				if ( !( ((dynamic)A).v_object is string ) ) {
+					Task13.Crash( "" + "code/modules/scripting/Parser/Expressions.dm" + ":" + 70 + ":Assertion Failed: " + "istext(A.object)" );
+				}
+
+				while (A != null) {
+					V = new Node_Expression_Value_Variable();
+					V.id = new Node_Identifier( ((dynamic)A).member );
+
+					if ( E != null ) {
+						V.v_object = E;
+					} else {
+						V.v_object = new Node_Identifier( ((dynamic)A).v_object );
 					}
-
-					if ( !( ((dynamic)A).v_object is string ) ) {
-						Task13.Crash( "" + "code/modules/scripting/Parser/Expressions.dm" + ":" + 70 + ":Assertion Failed: " + "istext(A.object)" );
-					}
-
-					while (A != null) {
-						V = new Node_Expression_Value_Variable();
-						V.id = new Node_Identifier( ((dynamic)A).member );
-
-						if ( E != null ) {
-							V.v_object = E;
-						} else {
-							V.v_object = new Node_Identifier( ((dynamic)A).v_object );
-						}
-						E = V;
-						A = S.Pop();
-					}
-					return E;
-					break;
-				case typeof(Token_Number):
-				case typeof(Token_String):
-					return new Node_Expression_Value_Literal( ((dynamic)T).value );
-					break;
+					E = V;
+					A = S.Pop();
+				}
+				return E;
+			} else if ( _a==typeof(Token_Number) || _a==typeof(Token_String) ) {
+				return new Node_Expression_Value_Literal( ((dynamic)T).value );
 			}
 			return null;
 		}

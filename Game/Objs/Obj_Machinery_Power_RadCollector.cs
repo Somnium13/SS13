@@ -98,8 +98,8 @@ namespace Somnium.Game {
 
 		// Function from file: collector.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 2:
 				case 3:
 					this.eject();

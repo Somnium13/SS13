@@ -34,14 +34,12 @@ namespace Somnium.Game {
 			dynamic sure = null;
 			dynamic sure2 = null;
 
-			Interface13.Stat( null, href_list.Contains( "changevar" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "changevar" ) ) {
 				this.ChangeSetting( Task13.User, href_list["changevar"] );
 			}
-			Interface13.Stat( null, href_list.Contains( "save" ) );
 
-			if ( false ) {
+			if ( href_list.Contains( "save" ) ) {
 				sure = Interface13.Input( Task13.User, "Are you sure?  This will overwrite your ZAS configuration!", "Overwrite ZAS.txt?", "No", new ByTable(new object [] { "Yes", "No" }), InputType.Any );
 
 				if ( sure == "Yes" ) {
@@ -49,9 +47,8 @@ namespace Somnium.Game {
 					GlobalFuncs.message_admins( "" + GlobalFuncs.key_name( Task13.User ) + " saved ZAS settings to disk." );
 				}
 			}
-			Interface13.Stat( null, href_list.Contains( "load" ) );
 
-			if ( false ) {
+			if ( href_list.Contains( "load" ) ) {
 				sure2 = Interface13.Input( Task13.User, "Are you sure?", "Reload ZAS.txt?", "No", new ByTable(new object [] { "Yes", "No" }), InputType.Any );
 
 				if ( sure2 == "Yes" ) {

@@ -52,11 +52,10 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: core_control.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			bool? _default = null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			bool _default = false;
 
-			Interface13.Stat( null, this.connected_devices.Contains( O ) );
-			_default = null;
+			_default = this.connected_devices.Contains( O );
 			return _default;
 		}
 

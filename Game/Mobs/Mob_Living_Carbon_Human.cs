@@ -464,9 +464,8 @@ namespace Somnium.Game {
 			double thermal_protection = 0;
 			int max_protection = 0;
 
-			Interface13.Stat( null, this.mutations.Contains( 2 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 2 ) ) {
 				return 1;
 			}
 			thermal_protection = 0;
@@ -500,9 +499,8 @@ namespace Somnium.Game {
 
 		// Function from file: life_helpers.dm
 		public override int get_heat_protection( int thermal_protection_flags = 0 ) {
-			Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 106 ) ) {
 				return 1;
 			}
 			return this.get_thermal_protection( thermal_protection_flags );
@@ -904,9 +902,8 @@ namespace Somnium.Game {
 				this.back.screen_loc = "CENTER-2:14,SOUTH:5";
 				standing = new Image( ( Lang13.Bool( this.back.icon_override ) ? this.back.icon_override : "icons/mob/back.dmi" ), null, "" + this.back.icon_state );
 				I = this.back;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.back.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.back_icons ) ) {
 						standing.icon = this.species.back_icons;
@@ -952,9 +949,8 @@ namespace Somnium.Game {
 				this.wear_mask.screen_loc = "WEST+1:8,SOUTH+2:9";
 				standing = new Image( ( Lang13.Bool( this.wear_mask.icon_override ) ? this.wear_mask.icon_override : "icons/mob/mask.dmi" ), null, "" + this.wear_mask.icon_state );
 				I = this.wear_mask;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.wear_mask.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.wear_mask_icons ) ) {
 						standing.icon = this.species.wear_mask_icons;
@@ -1029,9 +1025,8 @@ namespace Somnium.Game {
 					this.drop_hands();
 				}
 				I = this.wear_suit;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( this.wear_suit is Obj_Item_Clothing_Suit_StraightJacket ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.wear_suit_icons ) ) {
 						standing.icon = this.species.wear_suit_icons;
@@ -1088,9 +1083,8 @@ namespace Somnium.Game {
 				}
 				standing = new Image( ( Lang13.Bool( this.belt.icon_override ) ? this.belt.icon_override : "icons/mob/belt.dmi" ), null, "" + t_state );
 				I = this.belt;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.belt.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.belt_icons ) ) {
 						standing.icon = this.species.belt_icons;
@@ -1141,9 +1135,8 @@ namespace Somnium.Game {
 					standing = new Image( ( Lang13.Bool( this.head.icon_override ) ? this.head.icon_override : "icons/mob/head.dmi" ), null, "" + this.head.icon_state );
 				}
 				I = this.head;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.head.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.head_icons ) ) {
 						standing.icon = this.species.head_icons;
@@ -1230,9 +1223,8 @@ namespace Somnium.Game {
 				O.icon = ( Lang13.Bool( this.shoes.icon_override ) ? this.shoes.icon_override : "icons/mob/feet.dmi" );
 				O.icon_state = this.shoes.icon_state;
 				I = this.shoes;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.shoes.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.shoes_icons ) ) {
 						O.icon = this.species.shoes_icons;
@@ -1277,9 +1269,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.ears ) && !this.check_hidden_head_flags( 8192 ) ) {
 				standing = new Image( ( Lang13.Bool( this.ears.icon_override ) ? this.ears.icon_override : "icons/mob/ears.dmi" ), null, "" + this.ears.icon_state );
 				I = this.ears;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.ears.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.ears_icons ) ) {
 						standing.icon = this.species.ears_icons;
@@ -1324,9 +1315,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.glasses ) && !this.check_hidden_head_flags( 2048 ) ) {
 				standing = new Image( ( Lang13.Bool( this.glasses.icon_override ) ? this.glasses.icon_override : "icons/mob/eyes.dmi" ), null, "" + this.glasses.icon_state );
 				I = this.glasses;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.glasses.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.glasses_icons ) ) {
 						standing.icon = this.species.glasses_icons;
@@ -1396,9 +1386,8 @@ namespace Somnium.Game {
 				}
 				standing = new Image( ( Lang13.Bool( this.gloves.icon_override ) ? this.gloves.icon_override : "icons/mob/hands.dmi" ), null, "" + t_state );
 				I = this.gloves;
-				Interface13.Stat( null, I.species_fit.Contains( this.species.name ) );
 
-				if ( Lang13.Bool( this.gloves.icon_override ) ) {
+				if ( I.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.gloves_icons ) ) {
 						standing.icon = this.species.gloves_icons;
@@ -1504,9 +1493,8 @@ namespace Somnium.Game {
 					t_color = this.icon_state;
 				}
 				standing = new Image( null, null, "" + t_color + "_s" );
-				Interface13.Stat( null, this.mutations.Contains( 6 ) );
 
-				if ( !Lang13.Bool( t_color ) && Lang13.Bool( this.species.flags & 8192 ) ) {
+				if ( this.mutations.Contains( 6 ) && Lang13.Bool( this.species.flags & 8192 ) ) {
 					
 					if ( Lang13.Bool( this.w_uniform.flags & 8192 ) ) {
 						standing.icon = "icons/mob/uniform_fat.dmi";
@@ -1519,9 +1507,8 @@ namespace Somnium.Game {
 					standing.icon = "icons/mob/uniform.dmi";
 				}
 				under_uniform = this.w_uniform;
-				Interface13.Stat( null, under_uniform.species_fit.Contains( this.species.name ) );
 
-				if ( !Lang13.Bool( t_color ) && Lang13.Bool( this.species.flags & 8192 ) ) {
+				if ( under_uniform.species_fit.Contains( this.species.name ) ) {
 					
 					if ( Lang13.Bool( this.species.uniform_icons ) ) {
 						standing.icon = this.species.uniform_icons;
@@ -1685,9 +1672,8 @@ namespace Somnium.Game {
 			dynamic underlay = null;
 			dynamic mut = null;
 
-			Interface13.Stat( null, this.mutations.Contains( 6 ) );
-
-			if ( update_icons == null ) {
+			
+			if ( this.mutations.Contains( 6 ) ) {
 				fat = "fat";
 			}
 			standing = new Image( "icons/effects/genetics.dmi" );
@@ -1744,9 +1730,8 @@ namespace Somnium.Game {
 					add_image = true;
 				}
 			}
-			Interface13.Stat( null, this.mutations.Contains( 2 ) );
 
-			if ( this.gender == GlobalVars.FEMALE && false ) {
+			if ( this.mutations.Contains( 2 ) && this.mutations.Contains( 106 ) ) {
 				O.underlays -= "cold" + fat + "_s";
 				O.underlays -= "fire" + fat + "_s";
 				O.underlays += "coldfire" + fat + "_s";
@@ -1892,9 +1877,8 @@ namespace Somnium.Game {
 					return 3;
 					break;
 			}
-			Interface13.Stat( null, GlobalVars.radiochannels.Contains( message_mode ) );
 
-			if ( _default != 0 ) {
+			if ( GlobalVars.radiochannels.Contains( message_mode ) ) {
 				
 				if ( Lang13.Bool( this.ears ) ) {
 					((Obj_Item)this.ears).talk_into( speech, message_mode );
@@ -1982,9 +1966,8 @@ namespace Somnium.Game {
 					((Obj_Item_Clothing_Mask)this.wear_mask).treat_mask_speech( speech );
 				}
 			}
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
 
-			if ( Lang13.Bool( this.wear_mask ) && this.wear_mask is Obj_Item_Clothing_Mask && Convert.ToDouble( this.health ) >= 25 && Lang13.Length( ((dynamic)speech).message ) != 0 ) {
+			if ( this.mutations.Contains( 4 ) && Convert.ToDouble( this.health ) >= 25 && Lang13.Length( ((dynamic)speech).message ) != 0 ) {
 				((dynamic)speech).message = "" + String13.ToUpper( GlobalFuncs.replacetext( ((dynamic)speech).message, ".", "!" ) ) + "!!";
 			}
 
@@ -2656,9 +2639,8 @@ namespace Somnium.Game {
 			if ( ((Reagents)this.reagents).has_reagent( "nuka_cola" ) ) {
 				tally -= 10;
 			}
-			Interface13.Stat( null, this.mutations.Contains( 103 ) );
 
-			if ( ((Reagents)this.reagents).has_reagent( "nuka_cola" ) ) {
+			if ( this.mutations.Contains( 103 ) ) {
 				tally -= 10;
 			}
 
@@ -2723,9 +2705,8 @@ namespace Somnium.Game {
 			if ( this.shock_stage >= 50 ) {
 				tally += 3;
 			}
-			Interface13.Stat( null, this.mutations.Contains( 6 ) );
 
-			if ( this.shock_stage >= 50 ) {
+			if ( this.mutations.Contains( 6 ) ) {
 				tally += 1.5;
 			}
 
@@ -2800,7 +2781,7 @@ namespace Somnium.Game {
 			b_loss = null;
 			f_loss = null;
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					b_loss += 500;
 
@@ -3007,9 +2988,8 @@ namespace Somnium.Game {
 				
 				if ( Proj is Obj_Item_Projectile_Energy || Proj is Obj_Item_Projectile_Beam || Proj is Obj_Item_Projectile_Forcebolt || Proj is Obj_Item_Projectile_Change ) {
 					reflectchance = 60 - Num13.Floor( Convert.ToDouble( Proj.damage / 3 ) );
-					Interface13.Stat( null, new ByTable(new object [] { "chest", "groin" }).Contains( def_zone ) );
 
-					if ( !false ) {
+					if ( !new ByTable(new object [] { "chest", "groin" }).Contains( def_zone ) ) {
 						reflectchance /= 2;
 					}
 
@@ -3333,9 +3313,8 @@ namespace Somnium.Game {
 
 		// Function from file: human_damage.dm
 		public override void Paralyse( dynamic amount = null ) {
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 4 ) ) {
 				return;
 			}
 			base.Paralyse( (object)(amount) );
@@ -3344,9 +3323,8 @@ namespace Somnium.Game {
 
 		// Function from file: human_damage.dm
 		public override void Weaken( dynamic amount = null ) {
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 4 ) ) {
 				return;
 			}
 			base.Weaken( (object)(amount) );
@@ -3355,9 +3333,8 @@ namespace Somnium.Game {
 
 		// Function from file: human_damage.dm
 		public override void Stun( dynamic amount = null ) {
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 4 ) ) {
 				return;
 			}
 			base.Stun( (object)(amount) );
@@ -3623,9 +3600,8 @@ namespace Somnium.Game {
 					}
 					affecting = this.get_organ( GlobalFuncs.ran_zone( ((dynamic)a.zone_sel).selecting ) );
 					armor_block = this.run_armor_check( affecting, "melee" );
-					Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-					if ( !Lang13.Bool( damage ) ) {
+					if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 						damage += 5;
 					}
 					GlobalFuncs.playsound( this.loc, "punch", 25, 1, -1 );
@@ -3700,7 +3676,7 @@ namespace Somnium.Game {
 				
 				if ( a.zone_sel != null && ((dynamic)a.zone_sel).selecting == "head" && this != a ) {
 					
-					if ( Lang13.Bool( a.mind ) && a.mind.vampire != null && false && !( a.mind.vampire.draining != null ) ) {
+					if ( Lang13.Bool( a.mind ) && a.mind.vampire != null && GlobalVars.ticker.mode.vampires.Contains( a.mind ) && !( a.mind.vampire.draining != null ) ) {
 						
 						if ( this.check_body_part_coverage( 4096 ) ) {
 							GlobalFuncs.to_chat( a, "<span class='warning'>Remove their mask!</span>" );
@@ -3717,7 +3693,7 @@ namespace Somnium.Game {
 							}
 						}
 
-						if ( this.mind != null && this.mind.vampire != null && false ) {
+						if ( this.mind != null && this.mind.vampire != null && GlobalVars.ticker.mode.vampires.Contains( this.mind ) ) {
 							GlobalFuncs.to_chat( a, "<span class='warning'>Your fangs fail to pierce " + this.name + "'s cold flesh.</span>" );
 							return 0;
 						}
@@ -3789,15 +3765,13 @@ namespace Somnium.Game {
 				}
 				affecting2 = this.get_organ( GlobalFuncs.ran_zone( ((dynamic)a.zone_sel).selecting ) );
 				armor_block2 = this.run_armor_check( affecting2, "melee" );
-				Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-				if ( !Lang13.Bool( damage3 ) ) {
+				if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 					damage3 += 5;
 				}
 				knockout = damage3;
-				Interface13.Stat( null, a.mutations.Contains( 10 ) );
 
-				if ( !Lang13.Bool( damage3 ) && !( a.gloves is Obj_Item ) ) {
+				if ( Lang13.Bool( a.mutations.Contains( 10 ) ) && !( a.gloves is Obj_Item ) ) {
 					damage3 += 3;
 				}
 
@@ -3842,9 +3816,8 @@ namespace Somnium.Game {
 
 					if ( H.zone_sel != null && ((dynamic)H.zone_sel).selecting == "mouth" ) {
 						chance = ( damage3 ??0) * 0.5;
-						Interface13.Stat( null, H.mutations.Contains( 4 ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( H.mutations.Contains( 4 ) ) ) {
 							chance += 50;
 						}
 
@@ -4248,7 +4221,7 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( ((dynamic)judgebot).weaponscheck ) ) {
 				
-				if ( !Lang13.Bool( idcard ) || !false ) {
+				if ( !Lang13.Bool( idcard ) || !Lang13.Bool( idcard.access.Contains( GlobalVars.access_weapons ) ) ) {
 					
 					if ( Lang13.Bool( ((dynamic)judgebot).check_for_weapons( this.l_hand ) ) ) {
 						threatcount += 4;
@@ -4740,9 +4713,8 @@ namespace Somnium.Game {
 						obscured_slots.Add( slot_name );
 					}
 				}
-				Interface13.Stat( null, obscured_slots.Contains( slot ) );
 
-				if ( !able ) {
+				if ( obscured_slots.Contains( slot ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You can't reach that. Something is covering it.</span>" );
 					return null;
 				} else {
@@ -5336,9 +5308,8 @@ namespace Somnium.Game {
 			Organ_External affected_organ = null;
 			double? siemens_coeff = null;
 
-			Interface13.Stat( null, this.mutations.Contains( ( this.status_flags & 4096 ) != 0 || 109 != 0 ) );
-
-			if ( def_zone == null ) {
+			
+			if ( this.mutations.Contains( ( this.status_flags & 4096 ) != 0 || 109 != 0 ) ) {
 				return 0;
 			}
 
@@ -5393,23 +5364,20 @@ namespace Somnium.Game {
 			}
 			dat += "<BR>";
 			dat += new Txt( "<BR><B>Head:</B> <A href='?src=" ).Ref( this ).str( ";item=head'>				" ).item( ( Lang13.Bool( this.head ) && !Lang13.Bool( this.head.v_abstract ) ? this.head : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
-			Interface13.Stat( null, obscured.Contains( 2 ) );
 
-			if ( Lang13.Bool( this.head ) && !Lang13.Bool( this.head.v_abstract ) ) {
+			if ( obscured.Contains( 2 ) ) {
 				dat += "<BR><font color=grey><B>Mask:</B> Obscured by " + this.head + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Mask:</B> <A href='?src=" ).Ref( this ).str( ";item=mask'>		" ).item( ( Lang13.Bool( this.wear_mask ) && !Lang13.Bool( this.wear_mask.v_abstract ) ? this.wear_mask : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
 			}
-			Interface13.Stat( null, obscured.Contains( 9 ) );
 
-			if ( Lang13.Bool( this.wear_mask ) && !Lang13.Bool( this.wear_mask.v_abstract ) ) {
+			if ( obscured.Contains( 9 ) ) {
 				dat += "<BR><font color=grey><B>Eyes:</B> Obscured by " + this.head + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Eyes:</B> <A href='?src=" ).Ref( this ).str( ";item=eyes'>			" ).item( ( Lang13.Bool( this.glasses ) && !Lang13.Bool( this.glasses.v_abstract ) ? this.glasses : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
 			}
-			Interface13.Stat( null, obscured.Contains( 8 ) );
 
-			if ( Lang13.Bool( this.glasses ) && !Lang13.Bool( this.glasses.v_abstract ) ) {
+			if ( obscured.Contains( 8 ) ) {
 				dat += "<BR><font color=grey><B>Ears:</B> Obscured by " + this.head + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Ears:</B> <A href='?src=" ).Ref( this ).str( ";item=ears'>				" ).item( ( Lang13.Bool( this.ears ) && !Lang13.Bool( this.ears.v_abstract ) ? this.ears : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
@@ -5424,23 +5392,20 @@ namespace Somnium.Game {
 					dat += new Txt( "<BR>" ).item( TAB ).item( TAB ).str( "&#8627;<A href='?src=" ).Ref( this ).str( ";item=internal2'>" ).item( ( Lang13.Bool( this.v_internal ) ? "Disable Internals" : "Set Internals" ) ).str( "</A>" ).ToString();
 				}
 			}
-			Interface13.Stat( null, obscured.Contains( 12 ) );
 
-			if ( Lang13.Bool( this.wear_suit ) ) {
+			if ( obscured.Contains( 12 ) ) {
 				dat += "<BR><font color=grey><B>Shoes:</B> Obscured by " + this.wear_suit + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Shoes:</B> <A href='?src=" ).Ref( this ).str( ";item=shoes'>			" ).item( ( Lang13.Bool( this.shoes ) && !Lang13.Bool( this.shoes.v_abstract ) ? this.shoes : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
 			}
-			Interface13.Stat( null, obscured.Contains( 10 ) );
 
-			if ( Lang13.Bool( this.shoes ) && !Lang13.Bool( this.shoes.v_abstract ) ) {
+			if ( obscured.Contains( 10 ) ) {
 				dat += "<BR><font color=grey><B>Gloves:</B> Obscured by " + this.wear_suit + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Gloves:</B> <A href='?src=" ).Ref( this ).str( ";item=gloves'>			" ).item( ( Lang13.Bool( this.gloves ) && !Lang13.Bool( this.gloves.v_abstract ) ? this.gloves : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
 			}
-			Interface13.Stat( null, obscured.Contains( 14 ) );
 
-			if ( Lang13.Bool( this.gloves ) && !Lang13.Bool( this.gloves.v_abstract ) ) {
+			if ( obscured.Contains( 14 ) ) {
 				dat += "<BR><font color=grey><B>Uniform:</B> Obscured by " + this.wear_suit + "</font>";
 			} else {
 				dat += new Txt( "<BR><B>Uniform:</B> <A href='?src=" ).Ref( this ).str( ";item=uniform'>	 " ).item( ( Lang13.Bool( this.w_uniform ) && !Lang13.Bool( this.w_uniform.v_abstract ) ? this.w_uniform : ((dynamic)( "<font color=grey>Empty</font>" )) ) ).str( "</A>" ).ToString();
@@ -5795,9 +5760,8 @@ namespace Somnium.Game {
 			t_has = "has";
 			t_is = "is";
 			msg = "<span class='info'>*---------*\nThis is ";
-			Interface13.Stat( null, ((dynamic)( obscured != null && skipface != 0 )).Contains( 14 ) );
 
-			if ( Lang13.Bool( this.wear_mask ) ) {
+			if ( Lang13.Bool( ((dynamic)( obscured != null && skipface != 0 )).Contains( 14 ) ) ) {
 				t_He = "They";
 				t_his = "their";
 				t_him = "them";
@@ -5829,7 +5793,7 @@ namespace Somnium.Game {
 			}
 			msg += "<EM>" + this.name + "</EM>!\n";
 
-			if ( Lang13.Bool( this.w_uniform ) && !false ) {
+			if ( Lang13.Bool( this.w_uniform ) && !obscured.Contains( 14 ) ) {
 				tie_msg = null;
 
 				if ( this.w_uniform is Obj_Item_Clothing_Under ) {
@@ -5903,14 +5867,14 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Lang13.Bool( this.gloves ) && !false ) {
+			if ( Lang13.Bool( this.gloves ) && !obscured.Contains( 10 ) ) {
 				
 				if ( this.gloves.blood_DNA != null && this.gloves.blood_DNA.len != 0 ) {
 					msg += new Txt( "<span class='warning'>" ).item( t_He ).str( " " ).item( t_has ).str( " " ).icon( this.gloves ).str( " " ).item( ( this.gloves.gender == GlobalVars.PLURAL ? "some" : "a" ) ).str( " blood-stained " ).item( this.gloves.name ).str( " on " ).item( t_his ).str( " hands!</span>\n" ).ToString();
 				} else {
 					msg += new Txt().item( t_He ).str( " " ).item( t_has ).str( " " ).icon( this.gloves ).str( " " ).a( this.gloves ).item().str( " on " ).item( t_his ).str( " hands.\n" ).ToString();
 				}
-			} else if ( this.blood_DNA != null && this.blood_DNA.len != 0 && !false ) {
+			} else if ( this.blood_DNA != null && this.blood_DNA.len != 0 && !obscured.Contains( 10 ) ) {
 				msg += "<span class='warning'>" + t_He + " " + t_has + " blood-stained hands!</span>\n";
 			}
 
@@ -5932,7 +5896,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Lang13.Bool( this.shoes ) && !false ) {
+			if ( Lang13.Bool( this.shoes ) && !obscured.Contains( 12 ) ) {
 				
 				if ( this.shoes.blood_DNA != null && this.shoes.blood_DNA.len != 0 ) {
 					msg += new Txt( "<span class='warning'>" ).item( t_He ).str( " " ).item( t_is ).str( " wearing " ).icon( this.shoes ).str( " " ).item( ( this.shoes.gender == GlobalVars.PLURAL ? "some" : "a" ) ).str( " blood-stained " ).item( this.shoes.name ).str( " on " ).item( t_his ).str( " feet!</span>\n" ).ToString();
@@ -5941,7 +5905,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Lang13.Bool( this.wear_mask ) && !false ) {
+			if ( Lang13.Bool( this.wear_mask ) && !obscured.Contains( 2 ) ) {
 				
 				if ( this.wear_mask.blood_DNA != null && this.wear_mask.blood_DNA.len != 0 ) {
 					msg += new Txt( "<span class='warning'>" ).item( t_He ).str( " " ).item( t_has ).str( " " ).icon( this.wear_mask ).str( " " ).item( ( this.wear_mask.gender == GlobalVars.PLURAL ? "some" : "a" ) ).str( " blood-stained " ).item( this.wear_mask.name ).str( " on " ).item( t_his ).str( " face!</span>\n" ).ToString();
@@ -5950,7 +5914,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Lang13.Bool( this.glasses ) && !false ) {
+			if ( Lang13.Bool( this.glasses ) && !obscured.Contains( 9 ) ) {
 				
 				if ( this.glasses.blood_DNA != null && this.glasses.blood_DNA.len != 0 ) {
 					msg += new Txt( "<span class='warning'>" ).item( t_He ).str( " " ).item( t_has ).str( " " ).icon( this.glasses ).str( " " ).item( ( this.glasses.gender == GlobalVars.PLURAL ? "some" : "a" ) ).str( " blood-stained " ).item( this.glasses ).str( " covering " ).item( t_his ).str( " eyes!</span>\n" ).ToString();
@@ -5959,7 +5923,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			if ( Lang13.Bool( this.ears ) && !false ) {
+			if ( Lang13.Bool( this.ears ) && !obscured.Contains( 8 ) ) {
 				msg += new Txt().item( t_He ).str( " " ).item( t_has ).str( " " ).icon( this.ears ).str( " " ).a( this.ears ).item().str( " on " ).item( t_his ).str( " ears.\n" ).ToString();
 			}
 
@@ -5989,9 +5953,8 @@ namespace Somnium.Game {
 			if ( this.suiciding == true ) {
 				msg += "<span class='warning'>" + t_He + " appears to have committed suicide... there is no hope of recovery.</span>\n";
 			}
-			Interface13.Stat( null, this.mutations.Contains( 110 ) );
 
-			if ( this.suiciding == true ) {
+			if ( this.mutations.Contains( 110 ) ) {
 				msg += "" + t_He + " " + t_is + " a short, sturdy creature fond of drink and industry.\n";
 			}
 
@@ -6150,9 +6113,8 @@ namespace Somnium.Game {
 							} else if ( W.germ_level > 330 ) {
 								this_wound_desc = "lightly infected " + this_wound_desc;
 							}
-							Interface13.Stat( null, wound_descriptors.Contains( this_wound_desc ) );
 
-							if ( W.germ_level > 330 ) {
+							if ( wound_descriptors.Contains( this_wound_desc ) ) {
 								wound_descriptors[this_wound_desc] += W.amount;
 								continue;
 							}
@@ -6185,16 +6147,16 @@ namespace Somnium.Game {
 								} else if ( _j==1 ) {
 									
 									if ( !( flavor_text.len != 0 ) ) {
-										flavor_text.Add( "<span class='warning'>" + t_He + " has" + ( Rand13.PercentChance( 10 ) && !false ? " what might be" : "" ) + " a " + wound );
+										flavor_text.Add( "<span class='warning'>" + t_He + " has" + ( Rand13.PercentChance( 10 ) && !no_exclude.Contains( wound ) ? " what might be" : "" ) + " a " + wound );
 									} else {
-										flavor_text.Add( "" + ( Rand13.PercentChance( 10 ) && !false ? " what might be" : "" ) + " a " + wound );
+										flavor_text.Add( "" + ( Rand13.PercentChance( 10 ) && !no_exclude.Contains( wound ) ? " what might be" : "" ) + " a " + wound );
 									}
 								} else if ( _j==2 ) {
 									
 									if ( !( flavor_text.len != 0 ) ) {
-										flavor_text.Add( "<span class='warning'>" + t_He + " has" + ( Rand13.PercentChance( 10 ) && !false ? " what might be" : "" ) + " a pair of " + wound + "s" );
+										flavor_text.Add( "<span class='warning'>" + t_He + " has" + ( Rand13.PercentChance( 10 ) && !no_exclude.Contains( wound ) ? " what might be" : "" ) + " a pair of " + wound + "s" );
 									} else {
-										flavor_text.Add( "" + ( Rand13.PercentChance( 10 ) && !false ? " what might be" : "" ) + " a pair of " + wound + "s" );
+										flavor_text.Add( "" + ( Rand13.PercentChance( 10 ) && !no_exclude.Contains( wound ) ? " what might be" : "" ) + " a pair of " + wound + "s" );
 									}
 								}
 							}
@@ -6780,15 +6742,13 @@ namespace Somnium.Game {
 					type = 2;
 				}
 			} else if ( _o=="deathgasp" ) {
-				Interface13.Stat( null, this.mutations.Contains( 207 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 207 ) ) {
 					this.emote( "fart" );
 					message = "<B>" + this + "</B> has left the building...";
 				}
-				Interface13.Stat( null, this.mutations.Contains( 300 ) );
 
-				if ( false ) {
+				if ( this.mutations.Contains( 300 ) ) {
 					message = "<B>" + this + "</B> whispers with his final breath, <i>'i told u i was hardcore..'</i>";
 				} else {
 					message = new Txt( "<B>" ).item( this ).str( "</B> seizes up and falls limp, " ).his_her_its_their().str( " eyes dead and lifeless..." ).ToString();
@@ -7282,9 +7242,8 @@ namespace Somnium.Game {
 						type = 2;
 						location = GlobalFuncs.get_turf( this );
 						aoe_range = 2;
-						Interface13.Stat( null, this.mutations.Contains( 205 ) );
 
-						if ( !this.miming ) {
+						if ( this.mutations.Contains( 205 ) ) {
 							aoe_range += 3;
 						}
 						wearing_suit = false;
@@ -7297,9 +7256,8 @@ namespace Somnium.Game {
 								wearing_mask = true;
 							}
 						}
-						Interface13.Stat( null, this.mutations.Contains( 201 ) );
 
-						if ( Lang13.Bool( this.wear_suit ) && Lang13.Bool( this.wear_suit.body_parts_covered & 4 ) ) {
+						if ( this.mutations.Contains( 201 ) ) {
 							message = "";
 							GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/effects/superfart.ogg", 50, 1 );
 
@@ -7329,9 +7287,8 @@ namespace Somnium.Game {
 								}
 							}
 						}
-						Interface13.Stat( null, this.mutations.Contains( 205 ) );
 
-						if ( Lang13.Bool( this.wear_suit ) && Lang13.Bool( this.wear_suit.body_parts_covered & 4 ) ) {
+						if ( this.mutations.Contains( 205 ) ) {
 							message = "";
 							GlobalFuncs.playsound( location, "sound/effects/smoke.ogg", 50, 1, -3 );
 							this.visible_message( "<span class = 'warning'><b>" + this.name + "</b> hunches down and grits their teeth!</span>" );
@@ -7369,9 +7326,8 @@ namespace Somnium.Game {
 						B = Lang13.FindIn( typeof(Obj_Item_Weapon_Storage_Bible), this.loc );
 
 						if ( Lang13.Bool( B ) ) {
-							Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this.mind ) );
-
-							if ( false ) {
+							
+							if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) {
 								GlobalFuncs.to_chat( this, "<span class='sinister'>Nar-Sie shields you from " + B.deity_name + "'s wrath!</span>" );
 							} else {
 								
@@ -7431,7 +7387,7 @@ wink, yawn" );
 						continue;
 					}
 
-					if ( Convert.ToInt32( M12.stat ) == 2 && Lang13.Bool( M12.client ) && Lang13.Bool( M12.client.prefs.toggles & 128 ) && !false ) {
+					if ( Convert.ToInt32( M12.stat ) == 2 && Lang13.Bool( M12.client ) && Lang13.Bool( M12.client.prefs.toggles & 128 ) && !Map13.FetchViewers( null, this ).Contains( M12 ) ) {
 						M12.show_message( message );
 					}
 				}
@@ -7523,7 +7479,7 @@ wink, yawn" );
 		// Function from file: death.dm
 		public override dynamic Destroy( dynamic brokenup = null ) {
 			
-			if ( this.mind != null && Lang13.Bool( this.species ) && this.species.name == "Manifested" && false ) {
+			if ( this.mind != null && Lang13.Bool( this.species ) && this.species.name == "Manifested" && Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_cult_icons_removed( this.mind );
 				GlobalVars.ticker.mode.cult -= this.mind;
 			}
@@ -8028,9 +7984,8 @@ wink, yawn" );
 							I2.take_damage( Rand13.Int( 3, 5 ) );
 						}
 					}
-					Interface13.Stat( null, ((dynamic)( E.is_broken() || E.is_malfunctioning() )).Contains( E.name ) );
 
-					if ( E.is_broken() && Lang13.Bool( E.internal_organs ) && Rand13.PercentChance( 15 ) ) {
+					if ( Lang13.Bool( ((dynamic)( E.is_broken() || E.is_malfunctioning() )).Contains( E.name ) ) ) {
 						c_hand = null;
 
 						if ( E.name == "l_hand" || E.name == "l_arm" ) {
@@ -8041,14 +7996,10 @@ wink, yawn" );
 							c_hand = this.r_hand;
 						}
 						E.process_grasp( c_hand, E.name );
-					} else {
-						Interface13.Stat( null, ((dynamic)!( this.lying == true )).Contains( E.name ) );
-
-						if ( E.is_broken() && Lang13.Bool( E.internal_organs ) && Rand13.PercentChance( 15 ) ) {
-							
-							if ( E.is_malfunctioning() || E.is_broken() ) {
-								stand_broken = true;
-							}
+					} else if ( Lang13.Bool( ((dynamic)!( this.lying == true )).Contains( E.name ) ) ) {
+						
+						if ( E.is_malfunctioning() || E.is_broken() ) {
+							stand_broken = true;
 						}
 					}
 				}
@@ -8647,8 +8598,7 @@ wink, yawn" );
 				this.blinded = 1;
 				this.silent = 0;
 			} else {
-				Interface13.Stat( null, this.mutations.Contains( 203 ) );
-				sober_str = ( !( this.stat == 2 ) ? 1 : 4 );
+				sober_str = ( !this.mutations.Contains( 203 ) ? 1 : 4 );
 				this.updatehealth();
 
 				if ( !this.in_stasis ) {
@@ -9028,9 +8978,8 @@ wink, yawn" );
 							break;
 					}
 				}
-				Interface13.Stat( null, this.mutations.Contains( 3 ) );
 
-				if ( this.dna != null ) {
+				if ( this.mutations.Contains( 3 ) ) {
 					this.sight |= 28;
 					this.see_in_dark = 8;
 
@@ -9360,18 +9309,16 @@ wink, yawn" );
 					}
 				} else {
 					isRemoteObserve = false;
-					Interface13.Stat( null, this.mutations.Contains( 101 ) );
 
-					if ( Lang13.Bool( this.machine ) && Lang13.Bool( this.remoteview_target ) ) {
+					if ( this.mutations.Contains( 101 ) && Lang13.Bool( this.remoteview_target ) ) {
 						isRemoteObserve = true;
 
 						if ( Lang13.Bool( this.remoteview_target.stat ) != false ) {
 							GlobalFuncs.to_chat( this, "<span class='warning'>Your psy-connection grows too faint to maintain!</span>" );
 							isRemoteObserve = false;
 						}
-						Interface13.Stat( null, this.remoteview_target.mutations.Contains( 204 ) );
 
-						if ( Lang13.Bool( this.remoteview_target.stat ) != false ) {
+						if ( Lang13.Bool( this.remoteview_target.mutations.Contains( 204 ) ) ) {
 							GlobalFuncs.to_chat( this, "<span class='warning'>Your mind is shut out!</span>" );
 							isRemoteObserve = false;
 						}
@@ -9510,30 +9457,26 @@ wink, yawn" );
 			foreach (dynamic _a in Lang13.Enumerate( this.reagents.reagent_list, typeof(Reagent) )) {
 				R = _a;
 				
-				Interface13.Stat( null, GlobalVars.bradycardics.Contains( R.id ) );
 
-				if ( R is Reagent ) {
+				if ( GlobalVars.bradycardics.Contains( R.id ) ) {
 					
 					if ( temp <= 6 && temp >= 3 ) {
 						temp--;
 					}
 				}
-				Interface13.Stat( null, GlobalVars.tachycardics.Contains( R.id ) );
 
-				if ( R is Reagent ) {
+				if ( GlobalVars.tachycardics.Contains( R.id ) ) {
 					
 					if ( temp <= 4 && temp >= 0 ) {
 						temp++;
 					}
 				}
-				Interface13.Stat( null, GlobalVars.heartstopper.Contains( R.id ) );
 
-				if ( R is Reagent ) {
+				if ( GlobalVars.heartstopper.Contains( R.id ) ) {
 					temp = 0;
 				}
-				Interface13.Stat( null, GlobalVars.cheartstopper.Contains( R.id ) );
 
-				if ( R is Reagent ) {
+				if ( GlobalVars.cheartstopper.Contains( R.id ) ) {
 					
 					if ( ( R.volume ??0) >= ( R.overdose ??0) ) {
 						temp = 0;
@@ -9557,9 +9500,8 @@ wink, yawn" );
 			}
 
 			if ( this.getFireLoss() != 0 ) {
-				Interface13.Stat( null, this.mutations.Contains( 106 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 106 ) ) {
 					this.heal_organ_damage( 0, 1 );
 				}
 			}
@@ -9689,9 +9631,8 @@ wink, yawn" );
 				foreach (dynamic _b in Lang13.Enumerate( this.virus2 )) {
 					ID = _b;
 					
-					Interface13.Stat( null, GlobalVars.virusDB.Contains( ID ) );
 
-					if ( false ) {
+					if ( GlobalVars.virusDB.Contains( ID ) ) {
 						foundVirus = 1;
 						break;
 					}
@@ -9982,19 +9923,15 @@ wink, yawn" );
 				this.pressure_alert = 0;
 			} else if ( Convert.ToDouble( adjusted_pressure ) >= this.species.hazard_low_pressure ) {
 				this.pressure_alert = -1;
-			} else {
-				Interface13.Stat( null, this.mutations.Contains( 2 ) );
+			} else if ( !this.mutations.Contains( 2 ) ) {
+				this.adjustBruteLoss( 2 );
 
-				if ( !( Convert.ToDouble( adjusted_pressure ) >= this.species.hazard_low_pressure ) ) {
+				if ( this.loc is Tile_Space ) {
 					this.adjustBruteLoss( 2 );
-
-					if ( this.loc is Tile_Space ) {
-						this.adjustBruteLoss( 2 );
-					}
-					this.pressure_alert = -2;
-				} else {
-					this.pressure_alert = -1;
 				}
+				this.pressure_alert = -2;
+			} else {
+				this.pressure_alert = -1;
 			}
 
 			if ( Convert.ToDouble( environment.toxins ) > 061 ) {
@@ -10140,16 +10077,13 @@ wink, yawn" );
 
 				if ( Lang13.Bool( this.species ) ) {
 					
-					switch ((Type)( this.species.type )) {
-						case typeof(Species_Diona):
-							alien = 1;
-							break;
-						case typeof(Species_Vox):
-							alien = 2;
-							break;
-						case typeof(Species_Plasmaman):
-							alien = 3;
-							break;
+					dynamic _a = this.species.type; // Was a switch-case, sorry for the mess.
+					if ( _a==typeof(Species_Diona) ) {
+						alien = 1;
+					} else if ( _a==typeof(Species_Vox) ) {
+						alien = 2;
+					} else if ( _a==typeof(Species_Plasmaman) ) {
+						alien = 3;
 					}
 				}
 				((Reagents)this.reagents).metabolize( this, alien );
@@ -10220,9 +10154,8 @@ wink, yawn" );
 			}
 
 			if ( Lang13.Bool( this.species.flags & 8192 ) ) {
-				Interface13.Stat( null, this.mutations.Contains( 6 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 6 ) ) {
 					
 					if ( this.overeatduration < 100 ) {
 						GlobalFuncs.to_chat( this, "<span class='notice'>You feel fit again!</span>" );
@@ -10257,9 +10190,8 @@ wink, yawn" );
 					this.overeatduration++;
 				}
 			} else if ( this.overeatduration > 1 ) {
-				Interface13.Stat( null, this.mutations.Contains( 200 ) );
-
-				if ( false ) {
+				
+				if ( this.mutations.Contains( 200 ) ) {
 					this.overeatduration -= 1;
 				} else {
 					this.overeatduration -= 2;
@@ -10402,9 +10334,8 @@ wink, yawn" );
 			if ( this.undergoing_hypothermia() == 4 ) {
 				return;
 			}
-			Interface13.Stat( null, this.mutations.Contains( 100 ) );
 
-			if ( this.undergoing_hypothermia() == 4 ) {
+			if ( this.mutations.Contains( 100 ) ) {
 				return;
 			}
 
@@ -10667,13 +10598,11 @@ wink, yawn" );
 			bool skeleton = false;
 			dynamic O = null;
 
-			Interface13.Stat( null, this.mutations.Contains( 6 ) );
-
-			if ( update_icons == null ) {
+			
+			if ( this.mutations.Contains( 6 ) ) {
 				fat = "fat";
 			}
-			Interface13.Stat( null, this.mutations.Contains( 29 ) );
-			skeleton = update_icons == null;
+			skeleton = this.mutations.Contains( 29 );
 
 			if ( skeleton ) {
 				this.race_icon = "icons/mob/human_races/r_skeleton.dmi";
@@ -10703,7 +10632,7 @@ wink, yawn" );
 				}
 			}
 
-			if ( !( this.dna != null ) || !false ) {
+			if ( !( this.dna != null ) || !new ByTable(new object [] { "golem", "metroid" }).Contains( this.dna.mutantrace ) ) {
 				this.update_body( false );
 			}
 			this.update_hair( false );
@@ -10750,7 +10679,7 @@ wink, yawn" );
 			if ( Lang13.Bool( this.f_style ) && !this.check_hidden_head_flags( 32768 ) ) {
 				facial_hair_style = GlobalVars.facial_hair_styles_list[this.f_style];
 
-				if ( facial_hair_style != null && false ) {
+				if ( facial_hair_style != null && facial_hair_style.species_allowed.Contains( this.species.name ) ) {
 					facial_s = new Icon( facial_hair_style.icon, "" + facial_hair_style.icon_state + "_s" );
 
 					if ( facial_hair_style.do_colouration ) {
@@ -10765,7 +10694,7 @@ wink, yawn" );
 			if ( Lang13.Bool( this.h_style ) && !this.check_hidden_head_flags( 8193 ) ) {
 				hair_style = GlobalVars.hair_styles_list[this.h_style];
 
-				if ( hair_style != null && false ) {
+				if ( hair_style != null && hair_style.species_allowed.Contains( this.species.name ) ) {
 					hair_s = new Icon( hair_style.icon, "" + hair_style.icon_state + "_s" );
 
 					if ( hair_style.do_colouration ) {
@@ -10820,14 +10749,10 @@ wink, yawn" );
 			husk_color_mod = "#605850";
 			hulk_color_mod = "#30e028";
 			necrosis_color_mod = "#0a3200";
-			Interface13.Stat( null, this.mutations.Contains( 7 ) );
-			husk = update_icons == null;
-			Interface13.Stat( null, this.mutations.Contains( 6 ) );
-			fat = update_icons == null && Lang13.Bool( this.species ) && Lang13.Bool( this.species.flags & 8192 );
-			Interface13.Stat( null, this.mutations.Contains( 4 ) );
-			hulk = update_icons == null && this.species.name == "Horror";
-			Interface13.Stat( null, this.mutations.Contains( 29 ) );
-			skeleton = update_icons == null;
+			husk = this.mutations.Contains( 7 );
+			fat = this.mutations.Contains( 6 ) && Lang13.Bool( this.species ) && Lang13.Bool( this.species.flags & 8192 );
+			hulk = this.mutations.Contains( 4 ) && this.species.name == "Horror";
+			skeleton = this.mutations.Contains( 29 );
 			g = "m";
 
 			if ( this.gender == GlobalVars.FEMALE ) {
@@ -11112,9 +11037,8 @@ wink, yawn" );
 				foreach (dynamic _a in Lang13.Enumerate( globalspecies.default_mutations )) {
 					mutation = _a;
 					
-					Interface13.Stat( null, this.mutations.Contains( mutation ) );
 
-					if ( !false ) {
+					if ( !this.mutations.Contains( mutation ) ) {
 						this.mutations.Add( mutation );
 						mut_update = true;
 					}
@@ -11406,9 +11330,8 @@ wink, yawn" );
 				return;
 			}
 			amount = Rand13.Int( 1, 3 );
-			Interface13.Stat( null, L.mutations.Contains( Lang13.Bool( L ) && 4 != 0 ) );
 
-			if ( !( T is ButcheringProduct_Teeth ) || Lang13.Bool( T.amount ) == false ) {
+			if ( Lang13.Bool( L.mutations.Contains( Lang13.Bool( L ) && 4 != 0 ) ) ) {
 				amount += 8;
 			}
 			teeth = T.spawn_result( GlobalFuncs.get_turf( this ), this, amount );
@@ -11778,9 +11701,8 @@ wink, yawn" );
 			if ( !Lang13.Bool( zone ) ) {
 				zone = "chest";
 			}
-			Interface13.Stat( null, new ByTable(new object [] { "eyes", "mouth" }).Contains( zone ) );
 
-			if ( !Lang13.Bool( zone ) ) {
+			if ( new ByTable(new object [] { "eyes", "mouth" }).Contains( zone ) ) {
 				zone = "head";
 			}
 			return this.organs_by_name[zone];
@@ -11860,9 +11782,8 @@ wink, yawn" );
 			if ( Lang13.Bool( this.species ) && this.species.burn_mod != 0 ) {
 				amount = amount * this.species.burn_mod;
 			}
-			Interface13.Stat( null, this.organs_by_name.Contains( organ_name ) );
 
-			if ( Lang13.Bool( this.species ) && this.species.burn_mod != 0 ) {
+			if ( this.organs_by_name.Contains( organ_name ) ) {
 				O = this.get_organ( organ_name );
 
 				if ( amount > 0 ) {
@@ -11883,9 +11804,8 @@ wink, yawn" );
 			if ( Lang13.Bool( this.species ) && this.species.brute_mod != 0 ) {
 				amount = amount * this.species.brute_mod;
 			}
-			Interface13.Stat( null, this.organs_by_name.Contains( organ_name ) );
 
-			if ( Lang13.Bool( this.species ) && this.species.brute_mod != 0 ) {
+			if ( this.organs_by_name.Contains( organ_name ) ) {
 				O = this.get_organ( organ_name );
 
 				if ( amount > 0 ) {
@@ -12185,9 +12105,8 @@ wink, yawn" );
 				}
 				return false;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 204 ) );
 
-			if ( temp_turf.z != our_turf.z || M.stat != 0 ) {
+			if ( M.mutations.Contains( 204 ) ) {
 				GlobalFuncs.to_chat( this, "The mind of " + M + " is resisting!" );
 				return false;
 			}
@@ -12224,9 +12143,8 @@ wink, yawn" );
 				this.remoteview_target = null;
 				return;
 			}
-			Interface13.Stat( null, this.mutations.Contains( 105 ) );
 
-			if ( !( this.stat != 0 ) ) {
+			if ( !this.mutations.Contains( 105 ) ) {
 				this.verbs.Remove( typeof(Mob_Living_Carbon_Human).GetMethod( "morph" ) );
 				return;
 			}
@@ -12451,7 +12369,7 @@ wink, yawn" );
 
 			head = this.get_organ( "head" );
 
-			if ( !( head != null ) || head.disfigured || ( head.status & 64 ) != 0 || !Lang13.Bool( this.real_name ) || false ) {
+			if ( !( head != null ) || head.disfigured || ( head.status & 64 ) != 0 || !Lang13.Bool( this.real_name ) || this.mutations.Contains( 7 ) ) {
 				return "Unknown";
 			}
 			return this.real_name;
@@ -12471,7 +12389,7 @@ wink, yawn" );
 				return this.get_id_name( "Unknown" );
 			}
 
-			if ( this.mind != null && this.mind.vampire != null && false && this.mind.vampire.ismenacing ) {
+			if ( this.mind != null && this.mind.vampire != null && this.mind.vampire.powers.Contains( 14 ) && this.mind.vampire.ismenacing ) {
 				return this.get_id_name( "Unknown" );
 			}
 			face_name = this.get_face_name();
@@ -12557,9 +12475,8 @@ wink, yawn" );
 					foreach (dynamic _a in Lang13.Enumerate( M.organs, typeof(Organ_External) )) {
 						O = _a;
 						
-						Interface13.Stat( null, O.implants.Contains( L ) );
 
-						if ( O is Organ_External ) {
+						if ( O.implants.Contains( L ) ) {
 							return true;
 						}
 					}
@@ -12577,9 +12494,8 @@ wink, yawn" );
 
 		// Function from file: death.dm
 		public void ChangeToHusk(  ) {
-			Interface13.Stat( null, this.mutations.Contains( 7 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 7 ) ) {
 				return;
 			}
 
@@ -12601,9 +12517,8 @@ wink, yawn" );
 
 		// Function from file: death.dm
 		public void makeSkeleton(  ) {
-			Interface13.Stat( null, this.mutations.Contains( 29 ) );
-
-			if ( false ) {
+			
+			if ( this.mutations.Contains( 29 ) ) {
 				return;
 			}
 
@@ -13207,11 +13122,11 @@ wink, yawn" );
 			} else {
 				
 				switch ((bool?)( act_on_fail )) {
-					case 1:
+					case true:
 						GlobalFuncs.qdel( W );
 						W = null;
 						break;
-					case 2:
+					case 2 != 0:
 						W.loc = GlobalFuncs.get_turf( this );
 						break;
 				}
@@ -13471,9 +13386,8 @@ wink, yawn" );
 					GlobalFuncs.to_chat( this, "<span class='danger'>This ground is blessed. Get away, or splatter it with blood to make it safe for you.</span>" );
 				}
 			}
-			Interface13.Stat( null, this.mind.vampire.powers.Contains( 13 ) );
 
-			if ( !GlobalFuncs.check_holy( this ) && GlobalFuncs.get_area( this ) == typeof(Zone_Chapel) ) {
+			if ( !this.mind.vampire.powers.Contains( 13 ) && GlobalFuncs.get_area( this ) == typeof(Zone_Chapel) ) {
 				this.mind.vampire.nullified = Num13.MaxInt( 5, this.mind.vampire.nullified + 2 );
 
 				if ( Rand13.PercentChance( 35 ) ) {
@@ -13482,23 +13396,20 @@ wink, yawn" );
 			}
 
 			if ( !( this.mind.vampire.nullified != 0 ) ) {
-				Interface13.Stat( null, this.mind.vampire.powers.Contains( 13 ) );
-
-				if ( false ) {
+				
+				if ( this.mind.vampire.powers.Contains( 13 ) ) {
 					smitetemp -= 1;
 				}
-				Interface13.Stat( null, this.mind.vampire.powers.Contains( 14 ) );
 
-				if ( false ) {
+				if ( this.mind.vampire.powers.Contains( 14 ) ) {
 					T = GlobalFuncs.get_turf( this );
 
 					if ( ((Tile)T).get_lumcount() * 10 < 2 ) {
 						smitetemp -= 1;
 					}
 				}
-				Interface13.Stat( null, this.mind.vampire.powers.Contains( 16 ) );
 
-				if ( false ) {
+				if ( this.mind.vampire.powers.Contains( 16 ) ) {
 					smitetemp -= 1;
 				}
 			}
@@ -13813,16 +13724,11 @@ wink, yawn" );
 			}
 
 			if ( this.mutations.len != 0 ) {
-				Interface13.Stat( null, this.mutations.Contains( 9 ) );
-
-				if ( false && this.a_intent == "hurt" ) {
+				
+				if ( this.mutations.Contains( 9 ) && this.a_intent == "hurt" ) {
 					this.LaserEyes( A );
-				} else {
-					Interface13.Stat( null, this.mutations.Contains( 1 ) );
-
-					if ( false && this.a_intent == "hurt" ) {
-						A.attack_tk( this );
-					}
+				} else if ( this.mutations.Contains( 1 ) ) {
+					A.attack_tk( this );
 				}
 			}
 			return;

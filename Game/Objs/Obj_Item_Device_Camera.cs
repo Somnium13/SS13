@@ -156,9 +156,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRange( target, 1 ) )) {
 				T = _a;
 				
-				Interface13.Stat( null, seen.Contains( T ) );
 
-				if ( false ) {
+				if ( seen.Contains( T ) ) {
 					
 					if ( user is Mob_Living_Silicon_Ai && !GlobalVars.cameranet.checkTurfVis( T ) ) {
 						continue;

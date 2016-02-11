@@ -48,13 +48,13 @@ namespace Somnium.Game {
 					GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/items/Ratchet.ogg", 50, 1 );
 
 					switch ((bool)( this.rating )) {
-						case 1:
+						case true:
 							new Obj_Item_Weapon_StockParts_ScanningModule( this.loc );
 							break;
-						case 2:
+						case 2 != 0:
 							new Obj_Item_Weapon_StockParts_ScanningModule_Adv( this.loc );
 							break;
-						case 3:
+						case 3 != 0:
 							new Obj_Item_Weapon_StockParts_ScanningModule_Adv_Phasic( this.loc );
 							break;
 					}
@@ -210,9 +210,8 @@ namespace Somnium.Game {
 
 		// Function from file: OpTable.dm
 		public override dynamic attack_hand( dynamic a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, Task13.User.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( Task13.User.mutations.Contains( 4 ) ) {
 				GlobalFuncs.to_chat( Task13.User, "<span class='notice'>You destroy the table.</span>" );
 				this.visible_message( "<span class='warning'>" + Task13.User + " destroys the operating table!</span>" );
 				this.density = false;
@@ -223,9 +222,8 @@ namespace Somnium.Game {
 
 		// Function from file: OpTable.dm
 		public override dynamic attack_paw( Mob a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, Task13.User.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( Task13.User.mutations.Contains( 4 ) ) {
 				GlobalFuncs.to_chat( Task13.User, "<span class='notice'>You destroy the operating table.</span>" );
 				this.visible_message( "<span class='warning'>" + Task13.User + " destroys the operating table!</span>" );
 				this.density = false;
@@ -256,7 +254,7 @@ namespace Somnium.Game {
 		// Function from file: OpTable.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

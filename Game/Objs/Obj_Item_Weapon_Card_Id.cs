@@ -106,14 +106,12 @@ namespace Somnium.Game {
 
 		// Function from file: cards_ids.dm
 		public dynamic GetJobRealName(  ) {
-			Interface13.Stat( null, GlobalFuncs.get_all_jobs().Contains( this.rank ) );
-
-			if ( false ) {
+			
+			if ( GlobalFuncs.get_all_jobs().Contains( this.rank ) ) {
 				return this.rank;
 			}
-			Interface13.Stat( null, GlobalFuncs.get_all_jobs().Contains( this.assignment ) );
 
-			if ( false ) {
+			if ( GlobalFuncs.get_all_jobs().Contains( this.assignment ) ) {
 				return this.assignment;
 			}
 			return "Unknown";
@@ -126,20 +124,16 @@ namespace Somnium.Game {
 
 			jobName = this.assignment;
 			alt_jobName = this.rank;
-			Interface13.Stat( null, GlobalFuncs.get_all_job_icons().Contains( jobName ) );
 
-			if ( false ) {
+			if ( GlobalFuncs.get_all_job_icons().Contains( jobName ) ) {
 				return jobName;
 			}
-			Interface13.Stat( null, GlobalFuncs.get_all_job_icons().Contains( alt_jobName ) );
 
-			if ( false ) {
+			if ( GlobalFuncs.get_all_job_icons().Contains( alt_jobName ) ) {
 				return alt_jobName;
 			}
-			Interface13.Stat( GlobalFuncs.get_all_centcom_jobs(), ((dynamic)( GlobalFuncs.get_all_centcom_jobs() != null || Lang13.Bool( alt_jobName ) )).Contains( jobName ) );
-			Interface13.Stat( null, null.Contains( null ) );
 
-			if ( false ) {
+			if ( GlobalFuncs.get_all_centcom_jobs().Contains( ((dynamic)( GlobalFuncs.get_all_centcom_jobs() != null || Lang13.Bool( alt_jobName ) )).Contains( jobName ) ) ) {
 				return "Centcom";
 			}
 			return "Unknown";

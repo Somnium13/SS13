@@ -239,23 +239,19 @@ Your orders are as follows:
 						
 						if ( M.stat == 2 ) {
 							numDead += 1;
+						} else if ( this.pre_escapees.Contains( M ) ) {
+							continue;
 						} else {
-							Interface13.Stat( null, this.pre_escapees.Contains( M ) );
+							T = M.loc;
 
-							if ( M.stat == 2 ) {
-								continue;
-							} else {
-								T = M.loc;
-
-								if ( T is Tile_Space ) {
-									numSpace += 1;
-								} else if ( T is Tile ) {
-									
-									if ( M.z != 1 ) {
-										numOffStation += 1;
-									} else {
-										numAlive += 1;
-									}
+							if ( T is Tile_Space ) {
+								numSpace += 1;
+							} else if ( T is Tile ) {
+								
+								if ( M.z != 1 ) {
+									numOffStation += 1;
+								} else {
+									numAlive += 1;
 								}
 							}
 						}

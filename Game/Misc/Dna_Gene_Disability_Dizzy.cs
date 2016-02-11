@@ -29,9 +29,8 @@ namespace Somnium.Game {
 			if ( !( M is Mob_Living_Carbon_Human ) ) {
 				return;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 210 ) );
 
-			if ( !( M is Mob_Living_Carbon_Human ) ) {
+			if ( M.mutations.Contains( 210 ) ) {
 				M.Dizzy( 300 );
 			}
 			return;

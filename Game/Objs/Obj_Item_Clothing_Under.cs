@@ -114,7 +114,7 @@ namespace Somnium.Game {
 			dynamic H = null;
 
 			
-			if ( !Lang13.Bool( accessory ) || !false ) {
+			if ( !Lang13.Bool( accessory ) || !this.accessories.Contains( accessory ) ) {
 				return;
 			}
 			((Obj_Item_Clothing_Accessory)accessory).on_removed( user );
@@ -275,9 +275,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_Crew) )) {
 				C = _a;
 				
-				Interface13.Stat( null, C.tracked.Contains( C != null && this != null ) );
 
-				if ( C is Obj_Machinery_Computer_Crew ) {
+				if ( C.tracked.Contains( C != null && this != null ) ) {
 					C.tracked.Remove( this );
 				}
 			}

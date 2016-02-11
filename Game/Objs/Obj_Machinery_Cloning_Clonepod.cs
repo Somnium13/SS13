@@ -54,8 +54,8 @@ namespace Somnium.Game {
 			dynamic A2 = null;
 			dynamic A3 = null;
 
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this )) {
@@ -392,40 +392,33 @@ namespace Somnium.Game {
 			((Mind)clonemind).transfer_to( H );
 			H.ckey = R.ckey;
 			GlobalFuncs.to_chat( H, "<span class='notice'><b>Consciousness slowly creeps over you as your body regenerates.</b><br><i>So this is what cloning feels like?</i></span>" );
-			Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) );
 
-			if ( H.dna.species != "Human" || false ) {
+			if ( GlobalVars.ticker.mode.revolutionaries.Contains( H.mind ) || GlobalVars.ticker.mode.head_revolutionaries.Contains( H.mind ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_all_rev_icons();
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( H.mind ) );
 
-			if ( H.dna.species != "Human" || false ) {
+			if ( GlobalVars.ticker.mode.syndicates.Contains( H.mind ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_all_synd_icons();
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( H.mind ) );
 
-			if ( H.dna.species != "Human" || false ) {
+			if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( H.mind ) ) ) {
 				((GameMode)GlobalVars.ticker.mode).add_cultist( this.occupant.mind );
 				((GameMode)GlobalVars.ticker.mode).update_all_cult_icons();
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( H.mind ) );
 
-			if ( H.dna.species != "Human" || false ) {
+			if ( GlobalVars.ticker.mode.wizards.Contains( H.mind ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_all_wizard_icons();
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.necromancer.Contains( new Txt().Ref( H.mind ).ToString() ) );
 
-			if ( H.dna.species != "Human" || false || false ) {
+			if ( GlobalVars.ticker.mode.necromancer.Contains( new Txt().Ref( H.mind ).ToString() ) || GlobalVars.ticker.mode.risen.Contains( H.mind ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_all_necro_icons();
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.implanter.Contains( new Txt().Ref( H.mind ).ToString() ) );
 
-			if ( H.dna.species != "Human" || false || false || false ) {
+			if ( GlobalVars.ticker.mode.implanter.Contains( new Txt().Ref( H.mind ).ToString() ) || Lang13.Bool( GlobalVars.ticker.mode.implanted.Contains( H.mind ) ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_traitor_icons_added( H.mind );
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.thralls.Contains( new Txt().Ref( H.mind ).ToString() ) );
 
-			if ( H.dna.species != "Human" || false || false || false || false ) {
+			if ( GlobalVars.ticker.mode.thralls.Contains( new Txt().Ref( H.mind ).ToString() ) || GlobalVars.ticker.mode.enthralled.Contains( H.mind ) ) {
 				((GameMode)GlobalVars.ticker.mode).update_vampire_icons_added( H.mind );
 			}
 

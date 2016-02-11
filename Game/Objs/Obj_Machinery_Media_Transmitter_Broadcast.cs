@@ -40,9 +40,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: broadcast.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
-			Interface13.Stat( null, this.sources.Contains( O ) );
-			return null;
+		public override bool isLinkedWith( Base_Data O = null ) {
+			return this.sources.Contains( O );
 		}
 
 		// Function from file: broadcast.dm
@@ -52,9 +51,8 @@ namespace Somnium.Game {
 
 		// Function from file: broadcast.dm
 		public override bool unlinkFrom( Mob user = null, Base_Data buffer = null ) {
-			Interface13.Stat( null, this.sources.Contains( buffer ) );
-
-			if ( false ) {
+			
+			if ( this.sources.Contains( buffer ) ) {
 				this.unhook_media_sources();
 				this.sources.Remove( buffer );
 
@@ -160,9 +158,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( base.Topic( href, href_list, (object)(hclient) ) ) ) {
 				return null;
 			}
-			Interface13.Stat( null, href_list.Contains( "power" ) );
 
-			if ( Lang13.Bool( base.Topic( href, href_list, (object)(hclient) ) ) ) {
+			if ( href_list.Contains( "power" ) ) {
 				
 				if ( !( this.power_connection.powernet != null ) ) {
 					this.power_connection.connect();
@@ -176,9 +173,8 @@ namespace Somnium.Game {
 				this.update_on();
 				return null;
 			}
-			Interface13.Stat( null, href_list.Contains( "set_freq" ) );
 
-			if ( Lang13.Bool( base.Topic( href, href_list, (object)(hclient) ) ) ) {
+			if ( href_list.Contains( "set_freq" ) ) {
 				newfreq = this.media_frequency;
 
 				if ( href_list["set_freq"] != "-1" ) {
@@ -360,9 +356,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( this, 20 ), typeof(Obj_Machinery_Media) )) {
 					source = _a;
 					
-					Interface13.Stat( null, this.autolink.Contains( source.id_tag ) );
 
-					if ( source is Obj_Machinery_Media ) {
+					if ( this.autolink.Contains( source.id_tag ) ) {
 						this.sources.Add( source );
 						Game13.log.WriteMsg( "## TESTING: " + ( "Autolinked " + source + " -> " + this ) );
 					}

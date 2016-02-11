@@ -24,9 +24,8 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( spawned ) || !Lang13.Bool( L ) ) {
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( L.mind ) );
 
-			if ( !( !Lang13.Bool( spawned ) || !Lang13.Bool( L ) ) ) {
+			if ( !GlobalVars.ticker.mode.syndicates.Contains( L.mind ) ) {
 				spawned.faction = new Txt().Ref( L ).ToString();
 			}
 			return;

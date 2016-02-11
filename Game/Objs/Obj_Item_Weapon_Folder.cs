@@ -48,9 +48,8 @@ namespace Somnium.Game {
 						GlobalVars.admin_log.Add( message );
 						return null;
 					}
-					Interface13.Stat( null, this.contents.Contains( P ) );
 
-					if ( !( !( P is Obj_Item_Weapon_Paper ) && !( P is Obj_Item_Weapon_Photo ) ) ) {
+					if ( !this.contents.Contains( P ) ) {
 						message2 = "<span class='warning'>" + Task13.User + "(" + Task13.User.key + ") has tried to remove a paper/photo from a folder that didn't contain it.<span>";
 						GlobalFuncs.message_admins( message2 );
 						message2 += "" + P;

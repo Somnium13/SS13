@@ -42,9 +42,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( user ) ) {
 				((Mob)user).update_inv_l_hand();
 				((Mob)user).update_inv_r_hand();
-				Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( user.mind ) );
 
-				if ( false ) {
+				if ( GlobalVars.ticker.mode.wizards.Contains( user.mind ) ) {
 					user.flying = ( Lang13.Bool( this.wielded ) ? true : false );
 
 					if ( Lang13.Bool( this.wielded ) ) {

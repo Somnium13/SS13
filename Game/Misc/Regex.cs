@@ -188,7 +188,7 @@ namespace Somnium.Game {
 								if ( modify != 0 || Convert.ToDouble( this.index ) > Convert.ToDouble( this.start + 2 ) ) {
 									this.MarkError( first, this.index, "Unexpected char:", ch2 );
 								}
-								// goto 1320;
+								throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 							}
 
 							if ( ch2 == 122 || ch2 == 90 ) {
@@ -196,11 +196,11 @@ namespace Somnium.Game {
 								if ( Convert.ToDouble( this.index ) < Convert.ToDouble( this.end ) ) {
 									this.MarkError( first, this.index, "Unexpected char:", ch2 );
 								}
-								// goto 1320;
+								throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 							}
 
 							if ( ch2 == 98 || ch2 == 66 ) {
-								// goto 1320;
+								throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 							}
 						}
 						modify = 1;
@@ -214,7 +214,7 @@ namespace Somnium.Game {
 						if ( modify != 0 || Convert.ToDouble( this.index ) > Convert.ToDouble( this.start + 1 ) ) {
 							this.MarkError( first, this.index, "Unexpected char:", ch ); return;
 						}
-						// goto 1320;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 36:
 						
@@ -227,7 +227,7 @@ namespace Somnium.Game {
 						}
 
 						if ( Convert.ToDouble( this.index ) >= Convert.ToDouble( this.end ) ) {
-							// goto 1320;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						ch2 = this.Advance();
 
@@ -249,7 +249,7 @@ namespace Somnium.Game {
 						} else {
 							this.MarkError( first, this.index - 1, "Unexpected char:", 36 ); return;
 						}
-						// goto 1320;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 46:
 						
@@ -287,7 +287,7 @@ namespace Somnium.Game {
 							
 							if ( modify > 1 ) {
 								this.greedy = false;
-								// goto 1320;
+								throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 							}
 							this.n = 0;
 							this.m = 1;
@@ -376,7 +376,7 @@ namespace Somnium.Game {
 							if ( this.LookAhead() != endchar ) {
 								this.MarkError( first, ( Lang13.Bool( ch2 ) ? this.index + 1 : this.index ), "Expected", endchar ); return;
 							}
-							// goto 1320;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 
 						if ( modify != 0 || Convert.ToDouble( this.index ) > Convert.ToDouble( this.start + 1 ) ) {
@@ -425,7 +425,7 @@ namespace Somnium.Game {
 								this.MarkError( first, i, "" + ch2 + " does not exist" ); return;
 							}
 							this.child = new Regex( this, this.index, first );
-							// goto 1320;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 
 						if ( modify != 0 || Convert.ToDouble( this.index ) > Convert.ToDouble( this.start + 1 ) ) {
@@ -450,7 +450,7 @@ namespace Somnium.Game {
 						if ( !( last != null ) ) {
 							this.MarkError( first, this.index, "Unexpected char:", ch ); return;
 						}
-						// goto 1320;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 44:
 						
@@ -467,7 +467,7 @@ namespace Somnium.Game {
 									if ( Convert.ToDouble( this.index ) > Convert.ToDouble( this.start + 1 ) ) {
 										this.BreakOff( p, first ); return;
 									}
-									// goto 1320;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 							}
 							continue;
@@ -771,20 +771,19 @@ namespace Somnium.Game {
 									
 									if ( Convert.ToDouble( p.pattern ) < 1 || Convert.ToDouble( p.pattern ) > first.groups.len ) {
 										i = 0;
-										// goto 687;
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									str = first.groups[first.groups[p.pattern]];
 
 									if ( str == null ) {
-										// goto 687;
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									break;
 								case 14:
-									Interface13.Stat( null, first.namedvars.Contains( p.pattern ) );
-
-									if ( !false ) {
+									
+									if ( !first.namedvars.Contains( p.pattern ) ) {
 										i = 0;
-										// goto 687;
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									str = Lang13.Bool( first.namedvars[p.pattern] ) || Lang13.Bool( "" );
 									break;
@@ -809,7 +808,7 @@ namespace Somnium.Game {
 
 								if ( Convert.ToDouble( i ) > Convert.ToDouble( stop ) ) {
 									i = 0;
-									// goto 687;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 
 								if ( Convert.ToDouble( i + p.n ) > ( e ??0) ) {
@@ -818,7 +817,7 @@ namespace Somnium.Game {
 								j = p.Span( txt, i + 1, i + p.n );
 
 								if ( Convert.ToDouble( j ) >= Convert.ToDouble( i + p.n ) ) {
-									// goto 687;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 								i = j + 1;
 							}
@@ -839,7 +838,7 @@ namespace Somnium.Game {
 
 								if ( Convert.ToDouble( i ) > Convert.ToDouble( stop ) ) {
 									i = 0;
-									// goto 687;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 
 								if ( Convert.ToDouble( i + p.n ) > ( e ??0) ) {
@@ -848,7 +847,7 @@ namespace Somnium.Game {
 								j = p.NonSpan( txt, i + 1, i + p.n );
 
 								if ( Convert.ToDouble( j ) >= Convert.ToDouble( i + p.n ) ) {
-									// goto 687;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 								i = j + 1;
 							}
@@ -918,7 +917,7 @@ namespace Somnium.Game {
 							ch2 = ( ch2 < 48 || ch2 > 122 || ch2 > 57 && ch2 < 65 || ch2 > 90 && ch2 < 95 || ch2 == 96 ? false : true ) ?1:0;
 
 							if ( ( ch ^ ch2 ^ Convert.ToInt32( j ) ) != 0 ) {
-								// goto 687;
+								throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 							}
 							i++;
 							ch = ch2;
@@ -1020,19 +1019,18 @@ namespace Somnium.Game {
 								case 13:
 									
 									if ( Convert.ToDouble( this.pattern ) < 1 || Convert.ToDouble( this.pattern ) > first.groups.len ) {
-										// goto 792;
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									str = first.groups[first.groups[this.pattern]];
 
 									if ( str == null ) {
-										// goto 792;
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									break;
 								case 14:
-									Interface13.Stat( null, first.namedvars.Contains( this.pattern ) );
-
-									if ( !false ) {
-										// goto 792;
+									
+									if ( !first.namedvars.Contains( this.pattern ) ) {
+										throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 									}
 									str = Lang13.Bool( first.namedvars[this.pattern] ) || Lang13.Bool( "" );
 									break;
@@ -1114,7 +1112,7 @@ namespace Somnium.Game {
 							if ( Convert.ToDouble( times ) >= Convert.ToDouble( this.n ) && !( ( first.flags & 2 ) != 0 ) ) {
 								e = String13.Find( txt, "\n", Convert.ToInt32( i ), 0 ) != 0 || Lang13.Bool( ee ) ?1:0;
 							}
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						maxtimes = times;
 						times = this.n;
@@ -1134,43 +1132,43 @@ namespace Somnium.Game {
 						
 						if ( Convert.ToDouble( i + this.n ) > ( e ??0) ) {
 							times = -1;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						times = this.Span( txt, i, i + this.n ) - i;
 
 						if ( Convert.ToDouble( times ) < Convert.ToDouble( this.n ) ) {
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 
 						if ( this.n == this.m ) {
 							i += this.n;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						maxtimes = ( Convert.ToDouble( this.m ) < 0 ? ( e ??0) - Convert.ToDouble( i ) : Num13.MinInt( Convert.ToInt32( this.m ), ((int)( ( e ??0) - Convert.ToDouble( i ) )) ) );
 						times = this.Span( txt, i + this.n, i + maxtimes ) - i;
 						maxtimes = times;
-						// goto 866;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 3:
 						
 						if ( Convert.ToDouble( i + this.n ) > ( e ??0) ) {
 							times = -1;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						times = this.NonSpan( txt, i, i + this.n ) - i;
 
 						if ( Convert.ToDouble( times ) < Convert.ToDouble( this.n ) ) {
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 
 						if ( this.n == this.m ) {
 							i += this.n;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						maxtimes = ( Convert.ToDouble( this.m ) < 0 ? ( e ??0) - Convert.ToDouble( i ) : Num13.MinInt( Convert.ToInt32( this.m ), ((int)( ( e ??0) - Convert.ToDouble( i ) )) ) );
 						times = this.NonSpan( txt, i + this.n, i + maxtimes ) - i;
 						maxtimes = times;
-						// goto 866;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 4:
 						
@@ -1205,16 +1203,16 @@ namespace Somnium.Game {
 						
 						if ( Convert.ToDouble( i + this.n ) > ( e ??0) ) {
 							times = -1;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 
 						if ( this.n == this.m ) {
 							i += this.n;
 							times = this.n;
-							// goto 792;
+							throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						}
 						maxtimes = ( Convert.ToDouble( this.m ) < 0 ? ( e ??0) - Convert.ToDouble( i ) : Num13.MinInt( Convert.ToInt32( this.m ), ((int)( ( e ??0) - Convert.ToDouble( i ) )) ) );
-						// goto 866;
+						throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 						break;
 					case 10:
 					case 11:
@@ -1304,7 +1302,7 @@ namespace Somnium.Game {
 					times = j - i;
 					i = j;
 				}
-				// goto 792;
+				throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 			}
 			return _default;
 		}
@@ -1603,7 +1601,7 @@ namespace Somnium.Game {
 								}
 
 								if ( ch == 47 ) {
-									// goto 306;
+									throw new Exception("Failed to remove goto!"); // FIXME, GOTO;
 								}
 								p.pattern = String13.GetCharFromCode( ch );
 								p = p.next;
@@ -1842,9 +1840,8 @@ namespace Somnium.Game {
 			switch ((int)( String13.GetCharCode( this.pattern, Lang13.IntNullable( this.start ) ) )) {
 				case 92:
 					ch = String13.GetCharCode( this.pattern, Lang13.IntNullable( this.start + 1 ) );
-					Interface13.Stat( null, GlobalVars.regex_classes.Contains( ch | 32 ) );
 
-					if ( false ) {
+					if ( GlobalVars.regex_classes.Contains( ch | 32 ) ) {
 						return ( ( ch & 32 ) != 0 ? 2 : 3 );
 					}
 
@@ -2012,19 +2009,15 @@ namespace Somnium.Game {
 							ch2 = 48;
 						} else if ( this.NumAdvance() ) {
 							ch2 = 48;
-						} else {
-							Interface13.Stat( null, GlobalVars.regex_classes.Contains( ch2 | 32 ) );
-
-							if ( !this.NumAdvance() ) {
-								
-								if ( Lang13.Bool( rangechar ) ) {
-									rangechar = this.index - 1;
-								} else {
-									lastch = i;
-								}
-							} else if ( Lang13.Bool( rangechar ) ) {
-								return this.MarkError( first, this.index, "Invalid chracter range: " + String13.SubStr( this.pattern, Convert.ToInt32( rangechar ), Convert.ToInt32( this.index ) ) );
+						} else if ( !GlobalVars.regex_classes.Contains( ch2 | 32 ) ) {
+							
+							if ( Lang13.Bool( rangechar ) ) {
+								rangechar = this.index - 1;
+							} else {
+								lastch = i;
 							}
+						} else if ( Lang13.Bool( rangechar ) ) {
+							return this.MarkError( first, this.index, "Invalid chracter range: " + String13.SubStr( this.pattern, Convert.ToInt32( rangechar ), Convert.ToInt32( this.index ) ) );
 						}
 						break;
 					case 45:

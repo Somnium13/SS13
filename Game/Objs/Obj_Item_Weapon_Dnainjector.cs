@@ -176,9 +176,8 @@ namespace Somnium.Game {
 				if ( M is Mob_Living ) {
 					M.radiation += Rand13.Int( 5, 20 );
 				}
-				Interface13.Stat( null, M.mutations.Contains( 8 ) );
 
-				if ( !( M is Mob_Living ) ) {
+				if ( !Lang13.Bool( M.mutations.Contains( 8 ) ) ) {
 					
 					if ( ( this.buf.types & 1 ) != 0 ) {
 						

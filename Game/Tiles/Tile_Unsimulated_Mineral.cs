@@ -538,7 +538,7 @@ namespace Somnium.Game {
 		// Function from file: mine_turfs.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 3:
 					
 					if ( Rand13.PercentChance( 75 ) ) {

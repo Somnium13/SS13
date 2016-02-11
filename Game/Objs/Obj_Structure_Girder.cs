@@ -56,8 +56,8 @@ namespace Somnium.Game {
 
 		// Function from file: girders.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 25 ) && this.state == 2 ) {
@@ -282,109 +282,106 @@ namespace Somnium.Game {
 			} else if ( a is Obj_Item_Stack_Sheet ) {
 				S = a;
 
-				switch ((Type)( S.type )) {
-					case typeof(Obj_Item_Stack_Sheet_Metal):
-					case typeof(Obj_Item_Stack_Sheet_Metal_Cyborg):
+				dynamic _a = S.type; // Was a switch-case, sorry for the mess.
+				if ( _a==typeof(Obj_Item_Stack_Sheet_Metal) || _a==typeof(Obj_Item_Stack_Sheet_Metal_Cyborg) ) {
+					
+					if ( this.state != 0 ) {
+						return null;
+					}
+
+					if ( !Lang13.Bool( this.anchored ) ) {
 						
-						if ( this.state != 0 ) {
+						if ( Convert.ToDouble( S.amount ) < 2 ) {
 							return null;
 						}
+						pdiff = GlobalFuncs.performWallPressureCheck( this.loc );
 
-						if ( !Lang13.Bool( this.anchored ) ) {
-							
-							if ( Convert.ToDouble( S.amount ) < 2 ) {
-								return null;
-							}
-							pdiff = GlobalFuncs.performWallPressureCheck( this.loc );
-
-							if ( !( pdiff != 0 ) ) {
-								S.use( 2 );
-								((Ent_Static)b).visible_message( "<span class='warning'>" + b + " creates a false wall!</span>", "<span class='notice'>You create a false wall. Push on it to open or close the passage.</span>" );
-								FW = new Obj_Structure_Falsewall( this.loc );
-								FW.add_hiddenprint( b );
-								FW.add_fingerprint( b );
-								GlobalFuncs.qdel( this );
-							} else {
-								GlobalFuncs.to_chat( b, "<span class='warning'>There is too much air moving through the gap!  The door wouldn't stay closed if you built it.</span>" );
-								GlobalFuncs.message_admins( "Attempted false wall made by " + b.real_name + " (" + GlobalFuncs.formatPlayerPanel( b, b.ckey ) + ") at " + GlobalFuncs.formatJumpTo( this.loc ) + " had a pressure difference of " + pdiff + "!" );
-								GlobalFuncs.log_admin( "Attempted false wall made by " + b.real_name + " (user.ckey) at " + this.loc + " had a pressure difference of " + pdiff + "!" );
-								return null;
-							}
+						if ( !( pdiff != 0 ) ) {
+							S.use( 2 );
+							((Ent_Static)b).visible_message( "<span class='warning'>" + b + " creates a false wall!</span>", "<span class='notice'>You create a false wall. Push on it to open or close the passage.</span>" );
+							FW = new Obj_Structure_Falsewall( this.loc );
+							FW.add_hiddenprint( b );
+							FW.add_fingerprint( b );
+							GlobalFuncs.qdel( this );
 						} else {
-							
-							if ( Convert.ToDouble( S.amount ) < 2 ) {
-								return base.attackby( (object)(a), (object)(b), (object)(c) );
-							}
-							((Ent_Static)b).visible_message( new Txt( "<span class='notice'>" ).item( b ).str( " starts installing plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You start installing plating to " ).the( this ).item().str( ".</span>" ).ToString() );
-
-							if ( GlobalFuncs.do_after( b, this, 40 ) ) {
-								
-								if ( Convert.ToDouble( S.amount ) < 2 ) {
-									return null;
-								}
-								S.use( 2 );
-								((Ent_Static)b).visible_message( new Txt( "<span class='notice'>" ).item( b ).str( " finishes installing plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You finish installing plating to " ).the( this ).item().str( ".</span>" ).ToString() );
-								Tsrc = GlobalFuncs.get_turf( this );
-
-								if ( !( Tsrc is Tile ) ) {
-									return 0;
-								}
-								X = ((Tile)Tsrc).ChangeTurf( typeof(Tile_Simulated_Wall) );
-
-								if ( Lang13.Bool( X ) ) {
-									((Ent_Static)X).add_hiddenprint( b );
-									((Ent_Static)X).add_fingerprint( b );
-								}
-								GlobalFuncs.qdel( this );
-							}
+							GlobalFuncs.to_chat( b, "<span class='warning'>There is too much air moving through the gap!  The door wouldn't stay closed if you built it.</span>" );
+							GlobalFuncs.message_admins( "Attempted false wall made by " + b.real_name + " (" + GlobalFuncs.formatPlayerPanel( b, b.ckey ) + ") at " + GlobalFuncs.formatJumpTo( this.loc ) + " had a pressure difference of " + pdiff + "!" );
+							GlobalFuncs.log_admin( "Attempted false wall made by " + b.real_name + " (user.ckey) at " + this.loc + " had a pressure difference of " + pdiff + "!" );
 							return null;
 						}
-						break;
-					case typeof(Obj_Item_Stack_Sheet_Plasteel):
+					} else {
 						
-						if ( !Lang13.Bool( this.anchored ) ) {
+						if ( Convert.ToDouble( S.amount ) < 2 ) {
+							return base.attackby( (object)(a), (object)(b), (object)(c) );
+						}
+						((Ent_Static)b).visible_message( new Txt( "<span class='notice'>" ).item( b ).str( " starts installing plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You start installing plating to " ).the( this ).item().str( ".</span>" ).ToString() );
+
+						if ( GlobalFuncs.do_after( b, this, 40 ) ) {
 							
 							if ( Convert.ToDouble( S.amount ) < 2 ) {
 								return null;
 							}
-							pdiff2 = GlobalFuncs.performWallPressureCheck( this.loc );
+							S.use( 2 );
+							((Ent_Static)b).visible_message( new Txt( "<span class='notice'>" ).item( b ).str( " finishes installing plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You finish installing plating to " ).the( this ).item().str( ".</span>" ).ToString() );
+							Tsrc = GlobalFuncs.get_turf( this );
 
-							if ( !( pdiff2 != 0 ) ) {
-								S.use( 2 );
-								((Ent_Static)b).visible_message( "<span class='warning'>" + b + " creates a false reinforced wall!</span>", "<span class='notice'>You create a false reinforced wall. Push on it to open or close the passage.</span>" );
-								FW2 = new Obj_Structure_Falserwall( this.loc );
-								FW2.add_hiddenprint( b );
-								FW2.add_fingerprint( b );
-								GlobalFuncs.qdel( this );
-							} else {
-								GlobalFuncs.to_chat( b, "<span class='warning'>There is too much air moving through the gap!  The door wouldn't stay closed if you built it.</span>" );
-								GlobalFuncs.message_admins( "Attempted false rwall made by " + b.real_name + " (" + GlobalFuncs.formatPlayerPanel( b, b.ckey ) + ") at " + GlobalFuncs.formatJumpTo( this.loc ) + " had a pressure difference of " + pdiff2 + "!" );
-								GlobalFuncs.log_admin( "Attempted false rwall made by " + b.real_name + " (" + b.ckey + ") at " + this.loc + " had a pressure difference of " + pdiff2 + "!" );
-								return null;
+							if ( !( Tsrc is Tile ) ) {
+								return 0;
 							}
-						}
+							X = ((Tile)Tsrc).ChangeTurf( typeof(Tile_Simulated_Wall) );
 
-						if ( this.state != 2 ) {
-							return null;
-						}
-						((Ent_Static)b).visible_message( new Txt( "<span class='warning'>" ).item( b ).str( " starts installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You start installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString() );
-
-						if ( GlobalFuncs.do_after( b, this, 50 ) ) {
-							S.use( 1 );
-							((Ent_Static)b).visible_message( new Txt( "<span class='warning'>" ).item( b ).str( " finishes installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You finish installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString() );
-							Tsrc2 = GlobalFuncs.get_turf( this );
-							X2 = ((Tile)Tsrc2).ChangeTurf( typeof(Tile_Simulated_Wall_RWall) );
-
-							if ( Lang13.Bool( X2 ) ) {
-								((Ent_Static)X2).add_hiddenprint( b );
-								((Ent_Static)X2).add_fingerprint( b );
-								X2.d_state = 4;
-								X2.update_icon();
+							if ( Lang13.Bool( X ) ) {
+								((Ent_Static)X).add_hiddenprint( b );
+								((Ent_Static)X).add_fingerprint( b );
 							}
 							GlobalFuncs.qdel( this );
 						}
 						return null;
-						break;
+					}
+				} else if ( _a==typeof(Obj_Item_Stack_Sheet_Plasteel) ) {
+					
+					if ( !Lang13.Bool( this.anchored ) ) {
+						
+						if ( Convert.ToDouble( S.amount ) < 2 ) {
+							return null;
+						}
+						pdiff2 = GlobalFuncs.performWallPressureCheck( this.loc );
+
+						if ( !( pdiff2 != 0 ) ) {
+							S.use( 2 );
+							((Ent_Static)b).visible_message( "<span class='warning'>" + b + " creates a false reinforced wall!</span>", "<span class='notice'>You create a false reinforced wall. Push on it to open or close the passage.</span>" );
+							FW2 = new Obj_Structure_Falserwall( this.loc );
+							FW2.add_hiddenprint( b );
+							FW2.add_fingerprint( b );
+							GlobalFuncs.qdel( this );
+						} else {
+							GlobalFuncs.to_chat( b, "<span class='warning'>There is too much air moving through the gap!  The door wouldn't stay closed if you built it.</span>" );
+							GlobalFuncs.message_admins( "Attempted false rwall made by " + b.real_name + " (" + GlobalFuncs.formatPlayerPanel( b, b.ckey ) + ") at " + GlobalFuncs.formatJumpTo( this.loc ) + " had a pressure difference of " + pdiff2 + "!" );
+							GlobalFuncs.log_admin( "Attempted false rwall made by " + b.real_name + " (" + b.ckey + ") at " + this.loc + " had a pressure difference of " + pdiff2 + "!" );
+							return null;
+						}
+					}
+
+					if ( this.state != 2 ) {
+						return null;
+					}
+					((Ent_Static)b).visible_message( new Txt( "<span class='warning'>" ).item( b ).str( " starts installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You start installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString() );
+
+					if ( GlobalFuncs.do_after( b, this, 50 ) ) {
+						S.use( 1 );
+						((Ent_Static)b).visible_message( new Txt( "<span class='warning'>" ).item( b ).str( " finishes installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString(), new Txt( "<span class='notice'>You finish installing reinforced plating to " ).the( this ).item().str( ".</span>" ).ToString() );
+						Tsrc2 = GlobalFuncs.get_turf( this );
+						X2 = ((Tile)Tsrc2).ChangeTurf( typeof(Tile_Simulated_Wall_RWall) );
+
+						if ( Lang13.Bool( X2 ) ) {
+							((Ent_Static)X2).add_hiddenprint( b );
+							((Ent_Static)X2).add_fingerprint( b );
+							X2.d_state = 4;
+							X2.update_icon();
+						}
+						GlobalFuncs.qdel( this );
+					}
+					return null;
 				}
 
 				if ( Lang13.Bool( S.sheettype ) ) {
@@ -449,9 +446,8 @@ namespace Somnium.Game {
 				this.add_hiddenprint( Task13.User );
 			} else if ( a is Obj_Item_Pipe ) {
 				P = a;
-				Interface13.Stat( null, new ByTable(new object [] { 0, 1, 5 }).Contains( P.pipe_type ) );
 
-				if ( false ) {
+				if ( new ByTable(new object [] { 0, 1, 5 }).Contains( P.pipe_type ) ) {
 					
 					if ( Lang13.Bool( b.drop_item( P, this.loc ) ) ) {
 						((Ent_Static)b).visible_message( new Txt( "<span class='warning'>" ).item( b ).str( " fits " ).the( P ).item().str( " into " ).the( this ).item().str( "</span>" ).ToString(), new Txt( "<span class='notice'>You fit " ).the( P ).item().str( " into " ).the( this ).item().str( "</span>" ).ToString() );

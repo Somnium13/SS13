@@ -81,7 +81,7 @@ namespace Somnium.Game {
 
 			A = this.holder;
 
-			switch ((double?)( index )) {
+			switch ((int?)( index )) {
 				case 1:
 					
 					if ( !mended ) {

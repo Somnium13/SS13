@@ -45,7 +45,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( Lang13.Bool( user.client ) && false && !( user.l_hand == A || user.r_hand == A ) ) {
+			if ( Lang13.Bool( user.client ) && Lang13.Bool( user.client.screen.Contains( A ) ) && !( user.l_hand == A || user.r_hand == A ) ) {
 				((Mob)user).simple_message( "<span class='notice'>You need to take that " + A.name + " off before cleaning it.</span>", "<span class='notice'>You need to take that " + A.name + " off before destroying it.</span>" );
 			} else if ( A is Obj_Effect_Decal_Cleanable ) {
 				((Mob)user).simple_message( new Txt( "<span class='notice'>You scrub " ).the( A.name ).item().str( " out.</span>" ).ToString(), "<span class='warning'>You destroy " + Rand13.Pick(new object [] { "an artwork", "a valuable artwork", "a rare piece of art", "a rare piece of modern art" }) + ".</span>" );

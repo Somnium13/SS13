@@ -67,9 +67,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this, typeof(Obj) )) {
 				O = _a;
 				
-				Interface13.Stat( null, this.cargo.Contains( O ) );
 
-				if ( O is Obj ) {
+				if ( this.cargo.Contains( O ) ) {
 					continue;
 				}
 
@@ -110,9 +109,8 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( href_list["drop_from_cargo"] ) ) {
 				O = Lang13.FindObj( href_list["drop_from_cargo"] );
-				Interface13.Stat( null, this.cargo.Contains( Lang13.Bool( O ) && Lang13.Bool( O ) ) );
 
-				if ( false ) {
+				if ( this.cargo.Contains( Lang13.Bool( O ) && Lang13.Bool( O ) ) ) {
 					this.occupant_message( "<span class='notice'>You unload " + O + ".</span>" );
 					((Ent_Dynamic)O).forceMove( GlobalFuncs.get_turf( this ) );
 					this.cargo.Remove( O );
@@ -128,9 +126,8 @@ namespace Somnium.Game {
 
 		// Function from file: ripley.dm
 		public override bool Exit( Ent_Dynamic O = null, Ent_Static newloc = null ) {
-			Interface13.Stat( null, this.cargo.Contains( O ) );
-
-			if ( false ) {
+			
+			if ( this.cargo.Contains( O ) ) {
 				return false;
 			}
 			return base.Exit( O, newloc );

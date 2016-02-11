@@ -137,20 +137,20 @@ namespace Somnium.Game {
 				}
 			}
 
-			switch ((double?)( this.screen )) {
+			switch ((int?)( this.screen )) {
 				case 0:
 					dat += "Updating Database....";
 					break;
-				case 0.1:
+				case ((int)( 0.1 )):
 					dat += "Processing and Updating Database...";
 					break;
-				case 0.2:
+				case ((int)( 0.2 )):
 					dat += new Txt( "SYSTEM LOCKED<BR><BR>\n				<A href='?src=" ).Ref( this ).str( ";lock=1.6'>Unlock</A>" ).ToString();
 					break;
-				case 0.3:
+				case ((int)( 0.3 )):
 					dat += "Constructing Prototypes. Please Wait...";
 					break;
-				case 0.4:
+				case ((int)( 0.4 )):
 					dat += "Imprinting Circuit. Please Wait...";
 					break;
 				case 1:
@@ -181,7 +181,7 @@ namespace Somnium.Game {
 					}
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.6'>Settings</A>" ).ToString();
 					break;
-				case 1.1:
+				case ((int)( 1.1 )):
 					dat += "Current Research Levels:<BR><BR>";
 
 					foreach (dynamic _b in Lang13.Enumerate( this.files.known_tech, typeof(Tech) )) {
@@ -191,7 +191,7 @@ namespace Somnium.Game {
 					}
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A>" ).ToString();
 					break;
-				case 1.2:
+				case ((int)( 1.2 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>\n				Disk Contents: (Technology Data Disk)<BR><BR>" ).ToString();
 
 					if ( this.t_disk.stored == null ) {
@@ -201,7 +201,7 @@ namespace Somnium.Game {
 					}
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";eject_tech=1'>Eject Disk</A>" ).ToString();
 					break;
-				case 121:
+				case ((int)( 121 )):
 					dat += new Txt( "<BR><A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A> ||\n				<A href='?src=" ).Ref( this ).str( ";menu=1.2'>Return to Disk Operations</A><HR>\n				Load Technology to Disk:<BR><BR>" ).ToString();
 
 					foreach (dynamic _c in Lang13.Enumerate( this.files.known_tech, typeof(Tech) )) {
@@ -210,7 +210,7 @@ namespace Somnium.Game {
 						dat += new Txt().item( T2.name ).str( "\n					<A href='?src=" ).Ref( this ).str( ";copy_tech=1;copy_tech_ID=" ).item( T2.id ).str( "'>(Copy to Disk)</A><BR>" ).ToString();
 					}
 					break;
-				case 131:
+				case ((int)( 131 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>" ).ToString();
 
 					if ( this.d_disk.blueprint == null ) {
@@ -245,7 +245,7 @@ namespace Somnium.Game {
 					}
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";eject_design=1'>Eject Disk</A>" ).ToString();
 					break;
-				case 1.5:
+				case ((int)( 1.5 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A> ||\n				<A href='?src=" ).Ref( this ).str( ";menu=1.4'>Return to Disk Operations</A><HR>\n				Load Design to Disk:<BR><BR>" ).ToString();
 
 					foreach (dynamic _f in Lang13.Enumerate( this.files.known_designs, typeof(Design) )) {
@@ -254,7 +254,7 @@ namespace Somnium.Game {
 						dat += new Txt().item( D.name ).str( "\n					<A href='?src=" ).Ref( this ).str( ";copy_design=1;copy_design_ID=" ).item( D.id ).str( "'>(Copy to Disk)</A><BR>" ).ToString();
 					}
 					break;
-				case 1.6:
+				case ((int)( 1.6 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>\n				R&D Console Setting:<BR><BR>" ).ToString();
 
 					if ( this.sync ) {
@@ -264,7 +264,7 @@ namespace Somnium.Game {
 					}
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.7'>Device Linkage Menu</A><BR>\n				<A href='?src=" ).Ref( this ).str( ";lock=0.2'>Lock Console</A><BR>\n				<A href='?src=" ).Ref( this ).str( ";reset=1'>Reset R&D Database.</A><BR>" ).ToString();
 					break;
-				case 1.7:
+				case ((int)( 1.7 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A> ||\n				<A href='?src=" ).Ref( this ).str( ";menu=1.6'>Settings Menu</A><HR>\n				R&D Console Device Linkage Menu:<BR><BR>\n				<A href='?src=" ).Ref( this ).str( ";find_device=1'>Re-sync with Nearby Devices</A><BR>\n				Linked Devices:<BR>" ).ToString();
 					remain_link = this.linked_machines;
 
@@ -301,10 +301,10 @@ namespace Somnium.Game {
 				case 2:
 					dat += new Txt( "NO DESTRUCTIVE ANALYZER LINKED TO CONSOLE<BR><BR>\n				<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A>" ).ToString();
 					break;
-				case 201:
+				case ((int)( 201 )):
 					dat += new Txt( "No Item Loaded. Standing-by...<BR><HR>\n				<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A>" ).ToString();
 					break;
-				case 2.2:
+				case ((int)( 2.2 )):
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>\n				Deconstruction Menu<HR>\n				Name: " ).item( ((dynamic)this.linked_destroy).loaded_item.name ).str( "<BR>\n				Origin Tech:<BR>" ).ToString();
 					temp_tech = ((dynamic)this.linked_destroy).ConvertReqString2List( ((dynamic)this.linked_destroy).loaded_item.origin_tech );
 
@@ -318,16 +318,15 @@ namespace Somnium.Game {
 				case 3:
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>\n				NO PROTOLATHE LINKED TO CONSOLE<BR><BR>" ).ToString();
 					break;
-				case 301:
+				case ((int)( 301 )):
 					dat += this.protolathe_header() + new Txt( "Protolathe Construction Menu [<A href='?src=" ).Ref( this ).str( ";toggleAutoRefresh=1'>Auto-Refresh: " ).item( ( this.autorefresh ? "ON" : "OFF" ) ).str( "</A>]<HR>" ).ToString();
 					dat += "Filter: ";
 
 					foreach (dynamic _i in Lang13.Enumerate( ((dynamic)this.linked_lathe).part_sets )) {
 						name_set = _i;
 						
-						Interface13.Stat( null, this.filtered["protolathe"].Contains( name_set ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( this.filtered["protolathe"].Contains( name_set ) ) ) {
 							dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";toggleCategory=" ).item( name_set ).str( ";machine=" ).item( "protolathe" ).str( "' style='color: #A66300'>" ).item( name_set ).str( "</a> / " ).ToString();
 						} else {
 							dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";toggleCategory=" ).item( name_set ).str( ";machine=" ).item( "protolathe" ).str( "' style='color: #0066CC'>" ).item( name_set ).str( "</a> / " ).ToString();
@@ -338,9 +337,8 @@ namespace Somnium.Game {
 					foreach (dynamic _l in Lang13.Enumerate( ((dynamic)this.linked_lathe).part_sets )) {
 						name_set2 = _l;
 						
-						Interface13.Stat( null, this.filtered["protolathe"].Contains( name_set2 ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( this.filtered["protolathe"].Contains( name_set2 ) ) ) {
 							continue;
 						}
 						dat += "<h2>" + name_set2 + "</h2><ul>";
@@ -386,7 +384,7 @@ namespace Somnium.Game {
 						dat += "</ul>";
 					}
 					break;
-				case 3.2:
+				case ((int)( 3.2 )):
 					dat += this.protolathe_header() + "Material Storage<ul>";
 
 					foreach (dynamic _m in Lang13.Enumerate( ((dynamic)this.linked_lathe.materials).storage )) {
@@ -409,7 +407,7 @@ namespace Somnium.Game {
 					}
 					dat += "</ul>";
 					break;
-				case 321:
+				case ((int)( 321 )):
 					dat += this.protolathe_header() + "Chemical Storage<BR><HR>";
 
 					foreach (dynamic _n in Lang13.Enumerate( this.linked_lathe.reagents.reagent_list, typeof(Reagent) )) {
@@ -418,7 +416,7 @@ namespace Somnium.Game {
 						dat += new Txt( "Name: " ).item( R2.name ).str( " | Units: " ).item( R2.volume ).str( "\n					<A href='?src=" ).Ref( this ).str( ";disposep=" ).item( R2.id ).str( "'>(Purge)</A><BR>\n					<A href='?src=" ).Ref( this ).str( ";disposeallP=1'><U>Disposal All Chemicals in Storage</U></A><BR>" ).ToString();
 					}
 					break;
-				case 3.4:
+				case ((int)( 3.4 )):
 					dat += this.protolathe_header() + "Production Queue<BR><HR><ul>";
 					i = null;
 					i = 1;
@@ -443,16 +441,15 @@ namespace Somnium.Game {
 				case 4:
 					dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";menu=1.0'>Main Menu</A><HR>\n				NO CIRCUIT IMPRINTER LINKED TO CONSOLE<BR><BR>" ).ToString();
 					break;
-				case 401:
+				case ((int)( 401 )):
 					dat += new Txt().item( this.CircuitImprinterHeader() ).str( "\n				Circuit Imprinter Menu [<A href='?src=" ).Ref( this ).str( ";toggleAutoRefresh=1'>Auto-Refresh: " ).item( ( this.autorefresh ? "ON" : "OFF" ) ).str( "</A>]<BR>\n				<b>Material Amount:</b> " ).item( this.linked_imprinter.TotalMaterials() ).str( " cm<sup>3</sup><BR>\n				<b>Chemical Volume:</b> " ).item( this.linked_imprinter.reagents.total_volume ).str( "<HR>" ).ToString();
 					dat += "Filter: ";
 
 					foreach (dynamic _o in Lang13.Enumerate( ((dynamic)this.linked_imprinter).part_sets )) {
 						name_set3 = _o;
 						
-						Interface13.Stat( null, this.filtered["imprinter"].Contains( name_set3 ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( this.filtered["imprinter"].Contains( name_set3 ) ) ) {
 							dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";toggleCategory=" ).item( name_set3 ).str( ";machine=" ).item( "imprinter" ).str( "' style='color: #A66300'>" ).item( name_set3 ).str( "</a> / " ).ToString();
 						} else {
 							dat += new Txt( "<A href='?src=" ).Ref( this ).str( ";toggleCategory=" ).item( name_set3 ).str( ";machine=" ).item( "imprinter" ).str( "' style='color: #0066CC'>" ).item( name_set3 ).str( "</a> / " ).ToString();
@@ -463,9 +460,8 @@ namespace Somnium.Game {
 					foreach (dynamic _r in Lang13.Enumerate( ((dynamic)this.linked_imprinter).part_sets )) {
 						name_set4 = _r;
 						
-						Interface13.Stat( null, this.filtered["imprinter"].Contains( name_set4 ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( this.filtered["imprinter"].Contains( name_set4 ) ) ) {
 							continue;
 						}
 						dat += "<h2>" + name_set4 + "</h2><ul>";
@@ -511,7 +507,7 @@ namespace Somnium.Game {
 						dat += "</ul>";
 					}
 					break;
-				case 411:
+				case ((int)( 411 )):
 					dat += "" + this.CircuitImprinterHeader() + "\n				Chemical Storage<HR>";
 
 					foreach (dynamic _s in Lang13.Enumerate( this.linked_imprinter.reagents.reagent_list, typeof(Reagent) )) {
@@ -520,16 +516,15 @@ namespace Somnium.Game {
 						dat += new Txt( "Name: " ).item( R3.name ).str( " | Units: " ).item( R3.volume ).str( "\n					<A href='?src=" ).Ref( this ).str( ";disposeI=" ).item( R3.id ).str( "'>(Purge)</A><BR>\n					<A href='?src=" ).Ref( this ).str( ";disposeallI=1'><U>Disposal All Chemicals in Storage</U></A><BR>" ).ToString();
 					}
 					break;
-				case 4.3:
+				case ((int)( 4.3 )):
 					dat += "" + this.CircuitImprinterHeader() + "\n				Material Storage<HR><ul>";
 
 					foreach (dynamic _t in Lang13.Enumerate( ((dynamic)this.linked_imprinter.materials).storage )) {
 						matID2 = _t;
 						
 						M5 = ((dynamic)this.linked_imprinter.materials).getMaterial( matID2 );
-						Interface13.Stat( null, this.linked_imprinter.allowed_materials.Contains( matID2 ) );
 
-						if ( !false ) {
+						if ( !this.linked_imprinter.allowed_materials.Contains( matID2 ) ) {
 							continue;
 						}
 						dat += "<li>" + ((dynamic)this.linked_imprinter.materials).storage[matID2] + " cm<sup>3</sup> of " + M5.processed_name;
@@ -548,7 +543,7 @@ namespace Somnium.Game {
 					}
 					dat += "</ul>";
 					break;
-				case 4.4:
+				case ((int)( 4.4 )):
 					dat += this.CircuitImprinterHeader() + "Production Queue<BR><HR><ul>";
 					i2 = null;
 					i2 = 1;
@@ -649,7 +644,7 @@ namespace Somnium.Game {
 					this.screen = 1.2;
 					this.files.AddTech2Known( this.t_disk.stored );
 
-					if ( Lang13.Bool( this.t_disk.stored.new_category ) && !false ) {
+					if ( Lang13.Bool( this.t_disk.stored.new_category ) && !this.part_sets.Contains( this.t_disk.stored.new_category ) ) {
 						this.part_sets.Add( this.t_disk.stored.new_category );
 						this.part_sets[this.t_disk.stored.new_category] = new ByTable();
 
@@ -812,14 +807,10 @@ namespace Somnium.Game {
 											S = null;
 											this.linked_destroy.icon_state = "d_analyzer";
 										}
-									} else {
-										Interface13.Stat( null, this.linked_destroy.component_parts.Contains( I ) );
-
-										if ( !( I is Obj_Item_Stack_Sheet ) ) {
-											GlobalFuncs.qdel( I );
-											I = null;
-											this.linked_destroy.icon_state = "d_analyzer";
-										}
+									} else if ( !Lang13.Bool( this.linked_destroy.component_parts.Contains( I ) ) ) {
+										GlobalFuncs.qdel( I );
+										I = null;
+										this.linked_destroy.icon_state = "d_analyzer";
 									}
 								}
 								this.f_use_power( 250 );
@@ -857,9 +848,8 @@ namespace Somnium.Game {
 								if ( S2.disabled ) {
 									continue;
 								}
-								Interface13.Stat( null, S2.id_with_upload.Contains( this.id ) );
 
-								if ( S2.disabled || S2 is Obj_Machinery_RND_Server_Centcom ) {
+								if ( S2.id_with_upload.Contains( this.id ) || S2 is Obj_Machinery_RND_Server_Centcom ) {
 									
 									foreach (dynamic _g in Lang13.Enumerate( this.files.known_tech, typeof(Tech) )) {
 										T3 = _g;
@@ -875,9 +865,8 @@ namespace Somnium.Game {
 									S2.files.RefreshResearch();
 									server_processed = true;
 								}
-								Interface13.Stat( null, S2.id_with_download.Contains( this.id ) );
 
-								if ( ( S2.disabled || S2 is Obj_Machinery_RND_Server_Centcom ) && !( S2 is Obj_Machinery_RND_Server_Centcom ) || S2.hacked ) {
+								if ( S2.id_with_download.Contains( this.id ) && !( S2 is Obj_Machinery_RND_Server_Centcom ) || S2.hacked ) {
 									
 									foreach (dynamic _i in Lang13.Enumerate( S2.files.known_tech, typeof(Tech) )) {
 										T4 = _i;
@@ -1177,9 +1166,8 @@ namespace Somnium.Game {
 			} else if ( Lang13.Bool( href_list["toggleCategory"] ) ) {
 				cat = href_list["toggleCategory"];
 				machine = href_list["machine"];
-				Interface13.Stat( null, this.filtered[machine].Contains( cat ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( this.filtered[machine].Contains( cat ) ) ) {
 					this.filtered[machine] -= cat;
 				} else {
 					this.filtered[machine] += cat;
@@ -1360,9 +1348,8 @@ namespace Somnium.Game {
 				if ( D.linked_console != null || D.disabled || D.panel_open || !Lang13.Bool( D.areaMaster ) || D.areaMaster != this.areaMaster ) {
 					continue;
 				}
-				Interface13.Stat( null, this.research_machines.Contains( D.type ) );
 
-				if ( D.linked_console != null || D.disabled || D.panel_open || !Lang13.Bool( D.areaMaster ) || D.areaMaster != this.areaMaster ) {
+				if ( this.research_machines.Contains( D.type ) ) {
 					this.linked_machines.Add( D );
 					D.linked_console = this;
 					D.update_icon();
@@ -1377,25 +1364,22 @@ namespace Somnium.Game {
 					break;
 				}
 
-				switch ((Type)( D2.type )) {
-					case typeof(Obj_Machinery_RND_Fabricator_Protolathe):
-						
-						if ( !( this.linked_lathe != null ) ) {
-							this.linked_lathe = D2;
-						}
-						break;
-					case typeof(Obj_Machinery_RND_DestructiveAnalyzer):
-						
-						if ( !( this.linked_destroy != null ) ) {
-							this.linked_destroy = D2;
-						}
-						break;
-					case typeof(Obj_Machinery_RND_Fabricator_CircuitImprinter):
-						
-						if ( !( this.linked_imprinter != null ) ) {
-							this.linked_imprinter = D2;
-						}
-						break;
+				dynamic _b = D2.type; // Was a switch-case, sorry for the mess.
+				if ( _b==typeof(Obj_Machinery_RND_Fabricator_Protolathe) ) {
+					
+					if ( !( this.linked_lathe != null ) ) {
+						this.linked_lathe = D2;
+					}
+				} else if ( _b==typeof(Obj_Machinery_RND_DestructiveAnalyzer) ) {
+					
+					if ( !( this.linked_destroy != null ) ) {
+						this.linked_destroy = D2;
+					}
+				} else if ( _b==typeof(Obj_Machinery_RND_Fabricator_CircuitImprinter) ) {
+					
+					if ( !( this.linked_imprinter != null ) ) {
+						this.linked_imprinter = D2;
+					}
 				}
 			}
 

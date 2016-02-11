@@ -46,9 +46,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( A.anchored ) ) {
 					continue;
 				}
-				Interface13.Stat( null, new ByTable(new object [] { 0, 3 }).Contains( A.w_type ) );
 
-				if ( !Lang13.Bool( A.anchored ) ) {
+				if ( !new ByTable(new object [] { 0, 3 }).Contains( A.w_type ) ) {
 					
 					if ( A.recycle( this.ore ) != 0 ) {
 						GlobalFuncs.qdel( A );

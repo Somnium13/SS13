@@ -136,9 +136,8 @@ namespace Somnium.Game {
 				if ( ( L is Mob_Living_SimpleAnimal_Corgi_Ian || L is Mob_Living_Carbon_Human_Dummy ) && this.faction == "adminbus mob" ) {
 					return false;
 				}
-				Interface13.Stat( null, this.friends.Contains( L ) );
 
-				if ( ( L is Mob_Living_SimpleAnimal_Corgi_Ian || L is Mob_Living_Carbon_Human_Dummy ) && this.faction == "adminbus mob" ) {
+				if ( this.friends.Contains( L ) ) {
 					return false;
 				}
 				return true;
@@ -369,9 +368,8 @@ namespace Somnium.Game {
 				this.LoseTarget();
 				return false;
 			}
-			Interface13.Stat( null, this.ListTargets().Contains( this.target ) );
 
-			if ( !( !Lang13.Bool( this.target ) || !this.CanAttack( this.target ) ) ) {
+			if ( !this.ListTargets().Contains( this.target ) ) {
 				this.LostTarget();
 				return false;
 			}
@@ -400,9 +398,8 @@ namespace Somnium.Game {
 				this.LoseTarget();
 				return;
 			}
-			Interface13.Stat( null, this.ListTargets().Contains( this.target ) );
 
-			if ( !Lang13.Bool( this.target ) || !this.CanAttack( this.target ) ) {
+			if ( this.ListTargets().Contains( this.target ) ) {
 				target_distance = Map13.GetDistance( this, this.target );
 
 				if ( this.ranged ) {

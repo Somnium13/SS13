@@ -31,7 +31,7 @@ namespace Somnium.Game {
 				severity = 1;
 			}
 
-			switch ((int?)(severity)) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 66 ) ) {

@@ -76,9 +76,8 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( this.loc, typeof(Obj_Structure_TransitTubePod) )) {
 				pod = _b;
 				
-				Interface13.Stat( null, this.directions().Contains( !pod.moving && pod.dir != 0 ) );
 
-				if ( pod is Obj_Structure_TransitTubePod ) {
+				if ( this.directions().Contains( !pod.moving && pod.dir != 0 ) ) {
 					Task13.Schedule( 5, (Task13.Closure)(() => {
 						this.pod_moving = true;
 						this.close_animation();
@@ -154,9 +153,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.loc, typeof(Obj_Structure_TransitTubePod) )) {
 					pod = _a;
 					
-					Interface13.Stat( null, this.directions().Contains( !pod.moving && pod.dir != 0 ) );
 
-					if ( pod is Obj_Structure_TransitTubePod ) {
+					if ( this.directions().Contains( !pod.moving && pod.dir != 0 ) ) {
 						
 						if ( this.icon_state == "closed" ) {
 							this.open_animation();
@@ -179,9 +177,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.loc, typeof(Obj_Structure_TransitTubePod) )) {
 					pod = _a;
 					
-					Interface13.Stat( null, this.directions().Contains( !pod.moving && pod.dir != 0 ) );
 
-					if ( pod is Obj_Structure_TransitTubePod ) {
+					if ( this.directions().Contains( !pod.moving && pod.dir != 0 ) ) {
 						AM.loc = pod;
 						return false;
 					}

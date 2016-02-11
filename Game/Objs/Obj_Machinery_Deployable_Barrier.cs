@@ -84,8 +84,8 @@ namespace Somnium.Game {
 
 		// Function from file: deployable.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					this.explode();
 					return false;

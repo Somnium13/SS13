@@ -29,9 +29,8 @@ namespace Somnium.Game {
 				return false;
 			}
 			M = this.loc;
-			Interface13.Stat( null, ((dynamic)M).get_equipped_items().Contains( this ) );
 
-			if ( !( this.loc is Mob ) ) {
+			if ( Lang13.Bool( ((dynamic)M).get_equipped_items().Contains( this ) ) ) {
 				return true;
 			} else {
 				return false;

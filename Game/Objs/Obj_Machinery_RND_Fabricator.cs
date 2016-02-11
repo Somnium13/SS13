@@ -536,9 +536,8 @@ namespace Somnium.Game {
 				
 
 				if ( ( D.build_type & this.build_number ) != 0 ) {
-					Interface13.Stat( null, this.part_sets.Contains( D.category ) );
-
-					if ( false ) {
+					
+					if ( this.part_sets.Contains( D.category ) ) {
 						
 						if ( this.add_part_to_set( D.category, D ) ) {
 							i++;
@@ -595,9 +594,8 @@ namespace Somnium.Game {
 			bool D = false;
 
 			set_parts = this.part_sets[set_name];
-			Interface13.Stat( null, this.part_sets.Contains( set_name ) );
 
-			if ( false ) {
+			if ( this.part_sets.Contains( set_name ) ) {
 				i = null;
 				i = 1;
 
@@ -927,7 +925,7 @@ namespace Somnium.Game {
 				return 0;
 			}
 
-			switch ((double)( this.emagged )) {
+			switch ((int)( this.emagged )) {
 				case 0:
 					this.emagged = 0.5;
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"DB error [Code 0x00F1]\"" ).ToString() );
@@ -940,7 +938,7 @@ namespace Somnium.Game {
 					this.req_access = null;
 					this.emagged = 1;
 					break;
-				case 0.5:
+				case ((int)( 0.5 )):
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"DB not responding [Code 0x0003]...\"" ).ToString() );
 					break;
 				case 1:

@@ -90,9 +90,8 @@ namespace Somnium.Game {
 
 							if ( M is Obj_Machinery ) {
 								time_end = Game13.timeofday;
-								Interface13.Stat( null, GlobalVars.power_machinery_profiling.Contains( M.type ) );
 
-								if ( !false ) {
+								if ( !GlobalVars.power_machinery_profiling.Contains( M.type ) ) {
 									GlobalVars.power_machinery_profiling[M.type] = 0;
 								}
 								GlobalVars.power_machinery_profiling[M.type] += time_end - time_start;
@@ -125,9 +124,8 @@ namespace Somnium.Game {
 
 						if ( C is PowerConnection ) {
 							time_end2 = Game13.timeofday;
-							Interface13.Stat( null, GlobalVars.power_machinery_profiling.Contains( C.type ) );
 
-							if ( !false ) {
+							if ( !GlobalVars.power_machinery_profiling.Contains( C.type ) ) {
 								GlobalVars.power_machinery_profiling[C.type] = 0;
 							}
 							GlobalVars.power_machinery_profiling[C.type] += time_end2 - time_start2;

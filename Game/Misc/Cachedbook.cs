@@ -23,9 +23,8 @@ namespace Somnium.Game {
 			this.title = row["title"];
 			this.category = row["category"];
 			this.ckey = row["ckey"];
-			Interface13.Stat( null, row.Contains( "content" ) );
 
-			if ( false ) {
+			if ( row.Contains( "content" ) ) {
 				this.content = row["content"];
 			}
 			this.programmatic = false;

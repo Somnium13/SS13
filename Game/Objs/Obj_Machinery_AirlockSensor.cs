@@ -73,9 +73,8 @@ namespace Somnium.Game {
 					return null;
 				}
 			}
-			Interface13.Stat( null, href_list.Contains( "set_freq" ) );
 
-			if ( !( Task13.User is Mob_Living_Silicon ) ) {
+			if ( href_list.Contains( "set_freq" ) ) {
 				newfreq = this.frequency;
 
 				if ( href_list["set_freq"] != "-1" ) {

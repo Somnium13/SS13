@@ -399,9 +399,8 @@ namespace Somnium.Game {
 					O2 = _b;
 					
 					N = Lang13.Bool( items_counts[O2] );
-					Interface13.Stat( null, items_measures.Contains( O2 ) );
 
-					if ( !false ) {
+					if ( !items_measures.Contains( O2 ) ) {
 						dat += new Txt( "<B>" ).item( GlobalFuncs.capitalize( O2 ) ).str( ":</B> " ).item( N ).str( " " ).item( String13.ToLower( O2 ) ).s().str( "<BR>" ).ToString();
 					} else if ( N ) {
 						dat += "<B>" + GlobalFuncs.capitalize( O2 ) + ":</B> " + N + " " + items_measures[O2] + "<BR>";
@@ -591,9 +590,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( a.reagents.reagent_list, typeof(Reagent) )) {
 					R2 = _b;
 					
-					Interface13.Stat( null, GlobalVars.acceptable_reagents.Contains( R2.id ) );
 
-					if ( !( R2 is Reagent ) ) {
+					if ( !GlobalVars.acceptable_reagents.Contains( R2.id ) ) {
 						GlobalFuncs.to_chat( b, "<span class='warning'>Your " + a + " contains components unsuitable for cookery.</span>" );
 						return 1;
 					}

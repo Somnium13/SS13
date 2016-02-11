@@ -27,9 +27,8 @@ namespace Somnium.Game {
 			if ( !( port != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, GlobalFuncs.get_turf( ((dynamic)port).recharge_floor ).Contains( Lang13.Bool( mecha ) && Lang13.Bool( mecha ) ) );
 
-			if ( !( port != null ) ) {
+			if ( Lang13.Bool( GlobalFuncs.get_turf( ((dynamic)port).recharge_floor ).Contains( Lang13.Bool( mecha ) && Lang13.Bool( mecha ) ) ) ) {
 				
 				if ( !Lang13.Bool( mecha.cell ) ) {
 					return false;

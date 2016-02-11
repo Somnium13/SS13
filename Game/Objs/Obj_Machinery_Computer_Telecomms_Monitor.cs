@@ -108,7 +108,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( href_list["network"] ) ) {
 				newnet = Interface13.Input( Task13.User, "Which network do you want to view?", "Comm Monitor", this.network, null, InputType.Str | InputType.Null );
 
-				if ( Lang13.Bool( newnet ) && false ) {
+				if ( Lang13.Bool( newnet ) && Lang13.Bool( ((dynamic)( Map13.FetchInRange( this, 1 ) != null || Task13.User is Mob_Living_Silicon )).Contains( Task13.User ) ) ) {
 					
 					if ( Lang13.Length( newnet ) > 15 ) {
 						this.temp = "<font color = #D70B00>- FAILED: NETWORK TAG STRING TOO LENGHTLY -</font color>";
@@ -138,7 +138,7 @@ namespace Somnium.Game {
 			dat = "<TITLE>Telecommunications Monitor</TITLE><center><b>Telecommunications Monitor</b></center>";
 
 			switch ((bool)( this.screen )) {
-				case 0:
+				case false:
 					dat += new Txt( "<br>" ).item( this.temp ).str( "<br><br>\n				<br>Current Network: <a href='?src=" ).Ref( this ).str( ";network=1'>" ).item( this.network ).str( "</a><br>" ).ToString();
 
 					if ( this.machinelist.len != 0 ) {
@@ -154,7 +154,7 @@ namespace Somnium.Game {
 						dat += new Txt( "<a href='?src=" ).Ref( this ).str( ";operation=probe'>[Probe Network]</a>" ).ToString();
 					}
 					break;
-				case 1:
+				case true:
 					dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n				<center><a href='?src=" ).Ref( this ).str( ";operation=mainmenu'>[Main Menu]</a></center>\n				<br>Current Network: " ).item( this.network ).str( "<br>\n				Selected Network Entity: " ).item( this.SelectedMachine.name ).str( " (" ).item( this.SelectedMachine.id ).str( ")<br>\n				Linked Entities: <ol>" ).ToString();
 
 					foreach (dynamic _b in Lang13.Enumerate( this.SelectedMachine.links, typeof(Obj_Machinery_Telecomms) )) {

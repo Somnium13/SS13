@@ -42,7 +42,7 @@ namespace Somnium.Game {
 				
 				if ( !( user is Mob_Living_Silicon ) && !GlobalFuncs.isAdminGhost( user ) ) {
 					
-					if ( !Lang13.Bool( user.mutations ) || user.mutations.len != 0 || !false ) {
+					if ( !Lang13.Bool( user.mutations ) || user.mutations.len != 0 || !Lang13.Bool( user.mutations.Contains( 1 ) ) ) {
 						((Mob)user).unset_machine();
 						Interface13.Browse( user, null, "window=pacontrol" );
 						return null;

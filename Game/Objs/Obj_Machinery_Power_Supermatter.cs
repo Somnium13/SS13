@@ -358,7 +358,7 @@ namespace Somnium.Game {
 		// Function from file: supermatter.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 3:
 					return false;
 					break;
@@ -390,9 +390,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRange( null, 10 ), typeof(Mob_Living) )) {
 				l = _a;
 				
-				Interface13.Stat( null, Map13.FetchInView( null, null ).Contains( l ) );
 
-				if ( l is Mob_Living ) {
+				if ( Map13.FetchInView( null, null ).Contains( l ) ) {
 					l.show_message( new Txt( "<span class=\"warning\">As " ).the( this ).item().str( " slowly stops resonating, you find your skin covered in new radiation burns.</span>" ).ToString(), 1, "<span class=\"warning\">The unearthly ringing subsides and you notice you have new radiation burns.</span>", 2 );
 				} else {
 					l.show_message( "<span class=\"warning\">You hear an uneartly ringing and notice your skin is covered in fresh radiation burns.</span>", 2 );

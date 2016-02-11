@@ -41,9 +41,8 @@ namespace Somnium.Game {
 
 			if ( A is Obj_Item_Device_Assembly_Math ) {
 				M = A;
-				Interface13.Stat( null, M.values.Contains( this ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( M.values.Contains( this ) ) ) {
 					return;
 				}
 			}
@@ -385,9 +384,8 @@ namespace Somnium.Game {
 			} else if ( _a=="MOD" ) {
 				operation_sign = "MOD";
 			}
-			Interface13.Stat( null, new ByTable(new object [] { "SIN", "COS", "ASIN", "ACOS", "TG", "COTG" }).Contains( this.operation ) );
 
-			if ( false ) {
+			if ( new ByTable(new object [] { "SIN", "COS", "ASIN", "ACOS", "TG", "COTG" }).Contains( this.operation ) ) {
 				last_written_value = 1;
 			}
 

@@ -34,7 +34,7 @@ namespace Somnium.Game {
 				possible_target = _a;
 				
 
-				if ( possible_target != this.owner && possible_target.current is Mob_Living_Carbon_Human && Convert.ToInt32( possible_target.current.z ) != GlobalVars.map.zCentcomm && ( role_type == true ? ((dynamic)( possible_target.special_role )) : possible_target.assigned_role ) == role && !false ) {
+				if ( possible_target != this.owner && possible_target.current is Mob_Living_Carbon_Human && Convert.ToInt32( possible_target.current.z ) != GlobalVars.map.zCentcomm && ( role_type == true ? ((dynamic)( possible_target.special_role )) : possible_target.assigned_role ) == role && !this.bad_targets.Contains( possible_target.assigned_role ) ) {
 					this.target = possible_target;
 					break;
 				}
@@ -53,7 +53,7 @@ namespace Somnium.Game {
 				possible_target = _a;
 				
 
-				if ( possible_target != this.owner && possible_target.current is Mob_Living_Carbon_Human && Convert.ToInt32( possible_target.current.z ) != GlobalVars.map.zCentcomm && Convert.ToInt32( possible_target.current.stat ) != 2 && !false ) {
+				if ( possible_target != this.owner && possible_target.current is Mob_Living_Carbon_Human && Convert.ToInt32( possible_target.current.z ) != GlobalVars.map.zCentcomm && Convert.ToInt32( possible_target.current.stat ) != 2 && !this.bad_targets.Contains( possible_target.assigned_role ) ) {
 					possible_targets.Add( possible_target );
 				}
 			}

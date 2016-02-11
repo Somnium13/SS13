@@ -505,7 +505,7 @@ namespace Somnium.Game {
 					} else if ( _f=="species" ) {
 						
 						if ( this.active1 is Data_Record ) {
-							norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && false;
+							norange = Task13.User.mutations != null && Task13.User.mutations.len != 0 && Task13.User.mutations.Contains( 1 );
 							t112 = String13.SubStr( GlobalFuncs.sanitize( Interface13.Input( "Please enter race:", "General records", this.active1.fields["species"], null, null, InputType.StrMultiline ) ), 1, 1024 );
 
 							if ( !Lang13.Bool( t112 ) || !( this.authenticated == true ) || Lang13.Bool( Task13.User.stat ) || Task13.User.restrained() || !GlobalFuncs.in_range( this, Task13.User ) && !( Task13.User is Mob_Living_Silicon ) && !norange || this.active1 != a1 ) {
@@ -522,9 +522,8 @@ namespace Somnium.Game {
 						
 						if ( Lang13.Bool( this.active1 ) ) {
 							this.active1.fields["rank"] = href_list["rank"];
-							Interface13.Stat( null, GlobalFuncs.get_all_jobs().Contains( href_list["rank"] ) );
 
-							if ( false ) {
+							if ( GlobalFuncs.get_all_jobs().Contains( href_list["rank"] ) ) {
 								this.active1.fields["real_rank"] = href_list["real_rank"];
 							}
 						}

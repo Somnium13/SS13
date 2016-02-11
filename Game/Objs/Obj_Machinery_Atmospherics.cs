@@ -256,10 +256,10 @@ namespace Somnium.Game {
 					node_type = this.getNodeType( node_id );
 
 					switch ((bool)( node_type )) {
-						case 0:
+						case false:
 							found = this.findConnecting( direction );
 							break;
-						case 1:
+						case true:
 							found = this.findConnectingHE( direction );
 							break;
 						default:
@@ -272,9 +272,8 @@ namespace Somnium.Game {
 						continue;
 					}
 					node_var = "node" + node_id;
-					Interface13.Stat( null, this.vars.Contains( node_var ) );
 
-					if ( !( !( found != null ) ) ) {
+					if ( !this.vars.Contains( node_var ) ) {
 						Game13.log.WriteMsg( "## TESTING: " + ( "" + node_var + " not in vars." ) );
 						return;
 					}

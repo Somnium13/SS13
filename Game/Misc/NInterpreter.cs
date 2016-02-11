@@ -683,64 +683,45 @@ namespace Somnium.Game {
 
 				try {
 					
-					switch ((Type)( bin.type )) {
-						case typeof(Node_Expression_Operator_Binary_Equal):
-							return this.Equal( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_NotEqual):
-							return this.NotEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Greater):
-							return this.Greater( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Less):
-							return this.Less( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_GreaterOrEqual):
-							return this.GreaterOrEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_LessOrEqual):
-							return this.LessOrEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_LogicalAnd):
-							return this.LogicalAnd( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_LogicalOr):
-							return this.LogicalOr( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_LogicalXor):
-							return this.LogicalXor( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_BitwiseAnd):
-							return this.BitwiseAnd( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_BitwiseOr):
-							return this.BitwiseOr( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_BitwiseXor):
-							return this.BitwiseXor( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Add):
-							return this.Add( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Subtract):
-							return this.Subtract( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Multiply):
-							return this.Multiply( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Divide):
-							return this.Divide( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Power):
-							return this.Power( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						case typeof(Node_Expression_Operator_Binary_Modulo):
-							return this.Modulo( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
-							break;
-						default:
-							this.RaiseError( new RuntimeError_UnknownInstruction() );
-							break;
+					dynamic _a = bin.type; // Was a switch-case, sorry for the mess.
+					if ( _a==typeof(Node_Expression_Operator_Binary_Equal) ) {
+						return this.Equal( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_NotEqual) ) {
+						return this.NotEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Greater) ) {
+						return this.Greater( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Less) ) {
+						return this.Less( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_GreaterOrEqual) ) {
+						return this.GreaterOrEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_LessOrEqual) ) {
+						return this.LessOrEqual( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_LogicalAnd) ) {
+						return this.LogicalAnd( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_LogicalOr) ) {
+						return this.LogicalOr( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_LogicalXor) ) {
+						return this.LogicalXor( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_BitwiseAnd) ) {
+						return this.BitwiseAnd( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_BitwiseOr) ) {
+						return this.BitwiseOr( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_BitwiseXor) ) {
+						return this.BitwiseXor( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Add) ) {
+						return this.Add( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Subtract) ) {
+						return this.Subtract( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Multiply) ) {
+						return this.Multiply( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Divide) ) {
+						return this.Divide( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Power) ) {
+						return this.Power( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else if ( _a==typeof(Node_Expression_Operator_Binary_Modulo) ) {
+						return this.Modulo( this.Eval( bin.exp ), this.Eval( bin.exp2 ) );
+					} else {
+						this.RaiseError( new RuntimeError_UnknownInstruction() );
 					}
 				} catch (Exception __) {
 					this.RaiseError( new RuntimeError_TypeMismatch( bin.token, this.Eval( bin.exp ), this.Eval( bin.exp2 ) ) );
@@ -749,22 +730,17 @@ namespace Somnium.Game {
 				
 				try {
 					
-					switch ((Type)( exp.type )) {
-						case typeof(Node_Expression_Operator_Unary_Minus):
-							return this.Minus( this.Eval( exp.exp ) );
-							break;
-						case typeof(Node_Expression_Operator_Unary_LogicalNot):
-							return this.LogicalNot( this.Eval( exp.exp ) );
-							break;
-						case typeof(Node_Expression_Operator_Unary_BitwiseNot):
-							return this.BitwiseNot( this.Eval( exp.exp ) );
-							break;
-						case typeof(Node_Expression_Operator_Unary_Group):
-							return this.Eval( exp.exp );
-							break;
-						default:
-							this.RaiseError( new RuntimeError_UnknownInstruction() );
-							break;
+					dynamic _b = exp.type; // Was a switch-case, sorry for the mess.
+					if ( _b==typeof(Node_Expression_Operator_Unary_Minus) ) {
+						return this.Minus( this.Eval( exp.exp ) );
+					} else if ( _b==typeof(Node_Expression_Operator_Unary_LogicalNot) ) {
+						return this.LogicalNot( this.Eval( exp.exp ) );
+					} else if ( _b==typeof(Node_Expression_Operator_Unary_BitwiseNot) ) {
+						return this.BitwiseNot( this.Eval( exp.exp ) );
+					} else if ( _b==typeof(Node_Expression_Operator_Unary_Group) ) {
+						return this.Eval( exp.exp );
+					} else {
+						this.RaiseError( new RuntimeError_UnknownInstruction() );
 					}
 				} catch (Exception __) {
 					this.RaiseError( new RuntimeError_TypeMismatch_Unary( exp.token, this.Eval( exp.exp ) ) );

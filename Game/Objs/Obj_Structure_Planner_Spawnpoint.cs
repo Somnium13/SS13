@@ -66,9 +66,8 @@ namespace Somnium.Game {
 			}
 
 			if ( this.spawnpoint.availability ) {
-				Interface13.Stat( null, GlobalVars.never_gladiators.Contains( user.client ) );
-
-				if ( !false && !false ) {
+				
+				if ( !GlobalVars.never_gladiators.Contains( user.client ) && !GlobalVars.ready_gladiators.Contains( user.client ) ) {
 					this.ghost_subscribe( user );
 				}
 			} else if ( this.spawnpoint.player_client == user.client ) {

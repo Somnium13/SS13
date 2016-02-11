@@ -44,8 +44,8 @@ namespace Somnium.Game {
 
 		// Function from file: control.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					break;
@@ -164,7 +164,7 @@ namespace Somnium.Game {
 			((Mob)user).set_machine( this );
 			t = "<TT><B>Solar Generator Control</B><HR><PRE>\n<B>Generated power</B> : " + Num13.Floor( this.lastgen ) + " W<BR>\nStation Orbital Period : " + 60 / Math.Abs( GlobalVars.sun.rotationRate ) + " minutes<BR>\nStation Orbital Direction : " + ( GlobalVars.sun.rotationRate < 0 ? "CCW" : "CW" ) + "<BR>\nStar Orientation : " + GlobalVars.sun.angle + "&deg (" + GlobalFuncs.angle2text( GlobalVars.sun.angle ) + ")<BR>\nArray Orientation : " + GlobalFuncs.rate_control( this, "cdir", "" + this.cdir + "&deg", true, 10, 60 ) + " (" + GlobalFuncs.angle2text( this.cdir ) + ")<BR>\n<BR><HR><BR>\nTracking :";
 
-			switch ((int?)(this.track)) {
+			switch ((int?)( this.track )) {
 				case 0:
 					t += new Txt( "<B>Off</B> <A href='?src=" ).Ref( this ).str( ";track=1'>Manual</A> <A href='?src=" ).Ref( this ).str( ";track=2'>Automatic</A><BR>" ).ToString();
 					break;
@@ -177,7 +177,7 @@ namespace Somnium.Game {
 			}
 			t += "Manual Tracking Rate: " + GlobalFuncs.rate_control( this, "tdir", "" + this.trackrate / 10 + "&deg/min (" + ( ( this.trackdir ??0) < 0 ? "CCW" : "CW" ) + ")", true, 10 ) + "<BR>\nManual Tracking Direction:";
 
-			switch ((double?)( this.trackdir )) {
+			switch ((int?)( this.trackdir )) {
 				case -1:
 					t += new Txt( "<A href='?src=" ).Ref( this ).str( ";trackdir=1'>CW</A> <B>CCW</B><BR>" ).ToString();
 					break;

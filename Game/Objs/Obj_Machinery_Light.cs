@@ -102,7 +102,7 @@ namespace Somnium.Game {
 		// Function from file: lighting.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;
@@ -162,7 +162,7 @@ namespace Somnium.Game {
 					prot = true;
 				}
 
-				if ( ( prot ?1:0) > 0 || false ) {
+				if ( ( prot ?1:0) > 0 || Lang13.Bool( a.mutations.Contains( 106 ) ) ) {
 					GlobalFuncs.to_chat( a, "You remove the light " + this.fitting );
 				} else {
 					GlobalFuncs.to_chat( a, "You try to remove the light " + this.fitting + ", but it's too hot and you don't want to burn your hand." );

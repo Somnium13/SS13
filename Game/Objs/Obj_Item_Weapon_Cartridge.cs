@@ -75,9 +75,8 @@ namespace Somnium.Game {
 				M = Lang13.FindObj( href_list["target"] );
 				((dynamic)this.loc).mode = 441;
 				this.mode = 441;
-				Interface13.Stat( null, GlobalVars.data_core.general.Contains( R ) );
 
-				if ( false ) {
+				if ( GlobalVars.data_core.general.Contains( R ) ) {
 					
 					foreach (dynamic _a in Lang13.Enumerate( GlobalVars.data_core.medical, typeof(Data_Record) )) {
 						E = _a;
@@ -96,9 +95,8 @@ namespace Somnium.Game {
 				S = Lang13.FindObj( href_list["target"] );
 				((dynamic)this.loc).mode = 451;
 				this.mode = 451;
-				Interface13.Stat( null, GlobalVars.data_core.general.Contains( R2 ) );
 
-				if ( false ) {
+				if ( GlobalVars.data_core.general.Contains( R2 ) ) {
 					
 					foreach (dynamic _b in Lang13.Enumerate( GlobalVars.data_core.security, typeof(Data_Record) )) {
 						E2 = _b;
@@ -368,14 +366,14 @@ namespace Somnium.Game {
 				case 441:
 					this.menu = "<h4><img src=pda_medical.png> Medical Record</h4>";
 
-					if ( this.active1 is Data_Record && false ) {
+					if ( this.active1 is Data_Record && GlobalVars.data_core.general.Contains( this.active1 ) ) {
 						this.menu += "Name: " + this.active1.fields["name"] + " ID: " + this.active1.fields["id"] + "<br>\n					Sex: " + this.active1.fields["sex"] + "<br>\n					Age: " + this.active1.fields["age"] + "<br>\n					Rank: " + this.active1.fields["rank"] + "<br>\n					Fingerprint: " + this.active1.fields["fingerprint"] + "<br>\n					Physical Status: " + this.active1.fields["p_stat"] + "<br>\n					Mental Status: " + this.active1.fields["m_stat"] + "<br>";
 					} else {
 						this.menu += "<b>Record Lost!</b><br>";
 					}
 					this.menu += "<br>\n				<h4><img src=pda_medical.png> Medical Data</h4>";
 
-					if ( this.active2 is Data_Record && false ) {
+					if ( this.active2 is Data_Record && GlobalVars.data_core.medical.Contains( this.active2 ) ) {
 						this.menu += "Blood Type: " + this.active2.fields["b_type"] + "<br><br>\n					Minor Disabilities: " + this.active2.fields["mi_dis"] + "<br>\n					Details: " + this.active2.fields["mi_dis_d"] + "<br><br>\n					Major Disabilities: " + this.active2.fields["ma_dis"] + "<br>\n					Details: " + this.active2.fields["ma_dis_d"] + "<br><br>\n					Allergies: " + this.active2.fields["alg"] + "<br>\n					Details: " + this.active2.fields["alg_d"] + "<br><br>\n					Current Diseases: " + this.active2.fields["cdi"] + "<br>\n					Details: " + this.active2.fields["cdi_d"] + "<br><br>\n					Important Notes: " + this.active2.fields["notes"] + "<br>";
 					} else {
 						this.menu += "<b>Record Lost!</b><br>";
@@ -398,14 +396,14 @@ namespace Somnium.Game {
 				case 451:
 					this.menu = "<h4><img src=pda_cuffs.png> Security Record</h4>";
 
-					if ( this.active1 is Data_Record && false ) {
+					if ( this.active1 is Data_Record && GlobalVars.data_core.general.Contains( this.active1 ) ) {
 						this.menu += "Name: " + this.active1.fields["name"] + " ID: " + this.active1.fields["id"] + "<br>\n					Sex: " + this.active1.fields["sex"] + "<br>\n					Age: " + this.active1.fields["age"] + "<br>\n					Rank: " + this.active1.fields["rank"] + "<br>\n					Fingerprint: " + this.active1.fields["fingerprint"] + "<br>\n					Physical Status: " + this.active1.fields["p_stat"] + "<br>\n					Mental Status: " + this.active1.fields["m_stat"] + "<br>";
 					} else {
 						this.menu += "<b>Record Lost!</b><br>";
 					}
 					this.menu += "<br>\n				<h4><img src=pda_cuffs.png> Security Data</h4>";
 
-					if ( this.active3 is Data_Record && false ) {
+					if ( this.active3 is Data_Record && GlobalVars.data_core.security.Contains( this.active3 ) ) {
 						this.menu += "Criminal Status: " + this.active3.fields["criminal"] + "<br>\n					Minor Crimes: " + this.active3.fields["mi_crim"] + "<br>\n					Details: " + this.active3.fields["mi_crim"] + "<br><br>\n					Major Crimes: " + this.active3.fields["ma_crim"] + "<br>\n					Details: " + this.active3.fields["ma_crim_d"] + "<br><br>\n					Important Notes:<br>\n					" + this.active3.fields["notes"];
 					} else {
 						this.menu += "<b>Record Lost!</b><br>";

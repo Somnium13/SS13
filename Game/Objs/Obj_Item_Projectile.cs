@@ -181,9 +181,8 @@ namespace Somnium.Game {
 
 				if ( this.shot_from is Obj_Item_Weapon_Gun ) {
 					daddy = this.shot_from;
-					Interface13.Stat( null, daddy.target.Contains( Lang13.Bool( daddy.target ) && Lang13.Bool( this.original ) ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( daddy.target.Contains( Lang13.Bool( daddy.target ) && Lang13.Bool( this.original ) ) ) ) {
 						miss_modifier += -30;
 					}
 				}
@@ -426,7 +425,7 @@ namespace Somnium.Game {
 			}
 			this.last_bump = orientation;
 
-			switch ((double?)( orientation )) {
+			switch ((int?)( orientation )) {
 				case 1:
 					this.dy = GlobalVars.SOUTH;
 					this.override_starting_Y = Convert.ToInt32( W.y * 2 - this.override_starting_Y );
@@ -483,9 +482,8 @@ namespace Somnium.Game {
 			this.target_angle = Num13.Floor( newangle ??0 );
 
 			if ( this.linear_movement ) {
-				Interface13.Stat( null, GlobalVars.bullet_master.Contains( "" + this.icon_state + this.target_angle ) );
-
-				if ( !false ) {
+				
+				if ( !GlobalVars.bullet_master.Contains( "" + this.icon_state + this.target_angle ) ) {
 					I = new Icon( Lang13.Initial( this, "icon" ), "" + this.icon_state + "_pixel" );
 					I.Turn( this.target_angle + 45 );
 					GlobalVars.bullet_master["" + this.icon_state + "_angle" + this.target_angle] = I;
@@ -528,9 +526,8 @@ namespace Somnium.Game {
 					if ( !this.bumped && !( this.original is Tile ) ) {
 						
 						if ( this.loc == GlobalFuncs.get_turf( this.original ) ) {
-							Interface13.Stat( null, this.permutated.Contains( this.original ) );
-
-							if ( !false ) {
+							
+							if ( !this.permutated.Contains( this.original ) ) {
 								this.Bump( this.original );
 								Task13.Sleep( 1 );
 							}
@@ -559,9 +556,8 @@ namespace Somnium.Game {
 			if ( !this.bumped && !( this.original is Tile ) ) {
 				
 				if ( this.loc == GlobalFuncs.get_turf( this.original ) ) {
-					Interface13.Stat( null, this.permutated.Contains( this.original ) );
-
-					if ( !false ) {
+					
+					if ( !this.permutated.Contains( this.original ) ) {
 						this.Bump( this.original );
 						return true;
 					}
@@ -598,7 +594,7 @@ namespace Somnium.Game {
 				this.PixelX = Num13.Floor( BX + ( BX - AX ) * XX );
 				this.PixelY = Num13.Floor( BY + ( BY - AY ) * XX );
 
-				switch ((double?)( this.last_bump )) {
+				switch ((int?)( this.last_bump )) {
 					case 1:
 						this.PixelY -= 16;
 						break;
@@ -718,9 +714,8 @@ namespace Somnium.Game {
 			this.target_angle = Num13.Floor( GlobalFuncs.Get_Angle( this.starting, this.target ) );
 
 			if ( this.linear_movement ) {
-				Interface13.Stat( null, GlobalVars.bullet_master.Contains( "" + this.icon_state + "_angle" + this.target_angle ) );
-
-				if ( !false ) {
+				
+				if ( !GlobalVars.bullet_master.Contains( "" + this.icon_state + "_angle" + this.target_angle ) ) {
 					I = new Icon( this.icon, "" + this.icon_state + "_pixel" );
 					I.Turn( this.target_angle + 45 );
 					GlobalVars.bullet_master["" + this.icon_state + "_angle" + this.target_angle] = I;

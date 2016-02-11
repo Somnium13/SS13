@@ -48,7 +48,7 @@ namespace Somnium.Game {
 								break;
 							}
 
-							if ( add_this_turf && !false && !false ) {
+							if ( add_this_turf && !open.Contains( O ) && !closed.Contains( O ) ) {
 								open.Add( O );
 							}
 						}

@@ -167,7 +167,7 @@ namespace Somnium.Game {
 			}
 			base.Read( F, (object)(__id), (object)(locorner) );
 
-			if ( !Lang13.Bool( this.icon ) && false ) {
+			if ( !Lang13.Bool( this.icon ) && F.dir.Contains( "icon" ) ) {
 				ic = F.ReadItem( "icon", ic );
 
 				if ( ic is string ) {
@@ -609,7 +609,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( M.wear_suit ) ) {
 				fibertext = new Txt( "Material from " ).a( M.wear_suit ).item().str( "." ).ToString();
 
-				if ( Rand13.PercentChance( ((int)( item_multiplier * 10 )) ) && !false ) {
+				if ( Rand13.PercentChance( ((int)( item_multiplier * 10 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 					this.suit_fibers.Add( fibertext );
 				}
 
@@ -618,7 +618,7 @@ namespace Somnium.Game {
 					if ( Lang13.Bool( M.w_uniform ) ) {
 						fibertext = new Txt( "Fibers from " ).a( M.w_uniform ).item().str( "." ).ToString();
 
-						if ( Rand13.PercentChance( ((int)( item_multiplier * 12 )) ) && !false ) {
+						if ( Rand13.PercentChance( ((int)( item_multiplier * 12 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 							this.suit_fibers.Add( fibertext );
 						}
 					}
@@ -629,7 +629,7 @@ namespace Somnium.Game {
 					if ( Lang13.Bool( M.gloves ) ) {
 						fibertext = "Material from a pair of " + M.gloves.name + ".";
 
-						if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !false ) {
+						if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 							this.suit_fibers.Add( fibertext );
 						}
 					}
@@ -637,21 +637,21 @@ namespace Somnium.Game {
 			} else if ( Lang13.Bool( M.w_uniform ) ) {
 				fibertext = new Txt( "Fibers from " ).a( M.w_uniform ).item().str( "." ).ToString();
 
-				if ( Rand13.PercentChance( ((int)( item_multiplier * 15 )) ) && !false ) {
+				if ( Rand13.PercentChance( ((int)( item_multiplier * 15 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 					this.suit_fibers.Add( fibertext );
 				}
 
 				if ( Lang13.Bool( M.gloves ) ) {
 					fibertext = "Material from a pair of " + M.gloves.name + ".";
 
-					if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !false ) {
+					if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 						this.suit_fibers.Add( "Material from a pair of " + M.gloves.name + "." );
 					}
 				}
 			} else if ( Lang13.Bool( M.gloves ) ) {
 				fibertext = "Material from a pair of " + M.gloves.name + ".";
 
-				if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !false ) {
+				if ( Rand13.PercentChance( ((int)( item_multiplier * 20 )) ) && !this.suit_fibers.Contains( fibertext ) ) {
 					this.suit_fibers.Add( "Material from a pair of " + M.gloves.name + "." );
 				}
 			}
@@ -712,8 +712,7 @@ namespace Somnium.Game {
 
 			signal = this.telecomms_process();
 			position = GlobalFuncs.get_turf( this );
-			Interface13.Stat( null, ((dynamic)( Lang13.Bool( ((dynamic)signal).data["level"] ) && Lang13.Bool( ((dynamic)signal).data["done"] ) )).Contains( position.z ) );
-			return null;
+			return ((dynamic)( Lang13.Bool( ((dynamic)signal).data["level"] ) && Lang13.Bool( ((dynamic)signal).data["done"] ) )).Contains( position.z );
 		}
 
 		// Function from file: camera.dm
@@ -1026,9 +1025,8 @@ namespace Somnium.Game {
 					this.fingerprintshidden = new ByTable();
 				}
 				this.add_fibers( M );
-				Interface13.Stat( null, M.mutations.Contains( 108 ) );
 
-				if ( !( this.fingerprintshidden != null ) ) {
+				if ( Lang13.Bool( M.mutations.Contains( 108 ) ) ) {
 					
 					if ( this.fingerprintslast != M.key ) {
 						this.fingerprintshidden.Add( "(Has no fingerprints) Real name: " + M.real_name + ", Key: " + M.key );
@@ -1548,12 +1546,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( ((dynamic)container).IsInstanceOfType( this.loc ) ) ) {
 					return true;
 				}
-			} else {
-				Interface13.Stat( null, ((dynamic)container).Contains( this ) );
-
-				if ( container is Type ) {
-					return true;
-				}
+			} else if ( Lang13.Bool( ((dynamic)container).Contains( this ) ) ) {
+				return true;
 			}
 			return false;
 		}
@@ -1634,9 +1628,8 @@ namespace Somnium.Game {
 
 		// Function from file: atoms.dm
 		public void DeleteFromProfiler(  ) {
-			Interface13.Stat( null, GlobalVars.type_instances.Contains( this.type ) );
-
-			if ( false ) {
+			
+			if ( GlobalVars.type_instances.Contains( this.type ) ) {
 				GlobalVars.type_instances[this.type] = GlobalVars.type_instances[this.type] - 1;
 			} else {
 				GlobalVars.type_instances[this.type] = 0;
@@ -1647,9 +1640,8 @@ namespace Somnium.Game {
 
 		// Function from file: atoms.dm
 		public void AddToProfiler(  ) {
-			Interface13.Stat( null, GlobalVars.type_instances.Contains( this.type ) );
-
-			if ( false ) {
+			
+			if ( GlobalVars.type_instances.Contains( this.type ) ) {
 				GlobalVars.type_instances[this.type] = GlobalVars.type_instances[this.type] + 1;
 			} else {
 				GlobalVars.type_instances[this.type] = 1;
@@ -1698,13 +1690,13 @@ namespace Somnium.Game {
 		public void shake( bool xy = false, int intensity = 0, dynamic user = null ) {
 			
 			switch ((bool)( xy )) {
-				case 1:
+				case true:
 					this.pixel_x = Rand13.Int( -intensity, intensity );
 					break;
-				case 2:
+				case 2 != 0:
 					this.pixel_y = Rand13.Int( -intensity, intensity );
 					break;
-				case 3:
+				case 3 != 0:
 					this.pixel_x = Rand13.Int( -intensity, intensity );
 					this.pixel_y = Rand13.Int( -intensity, intensity );
 					break;
@@ -1743,9 +1735,8 @@ namespace Somnium.Game {
 			if ( !( this.beams != null ) ) {
 				this.beams = new ByTable();
 			}
-			Interface13.Stat( null, this.beams.Contains( B ) );
 
-			if ( !( !( this.beams != null ) ) ) {
+			if ( !this.beams.Contains( B ) ) {
 				this.beams.Add( B );
 			}
 			return true;

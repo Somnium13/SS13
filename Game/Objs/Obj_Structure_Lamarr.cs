@@ -122,7 +122,7 @@ namespace Somnium.Game {
 		// Function from file: lamarr_cage.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.getFromPool( typeof(Obj_Item_Weapon_Shard), this.loc );
 					this.Break();

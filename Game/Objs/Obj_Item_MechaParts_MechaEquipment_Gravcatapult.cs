@@ -77,9 +77,8 @@ namespace Somnium.Game {
 						GlobalFuncs.send_byjax( this.chassis.occupant, "exosuit.browser", new Txt().Ref( this ).ToString(), this.get_equip_info() );
 						return false;
 					} else if ( target != this.locked ) {
-						Interface13.Stat( null, Map13.FetchInView( null, this.chassis ).Contains( this.locked ) );
-
-						if ( false ) {
+						
+						if ( Map13.FetchInView( null, this.chassis ).Contains( this.locked ) ) {
 							((Ent_Dynamic)this.locked).throw_at( target, 14, 1.5 );
 							this.locked = null;
 							GlobalFuncs.send_byjax( this.chassis.occupant, "exosuit.browser", new Txt().Ref( this ).ToString(), this.get_equip_info() );

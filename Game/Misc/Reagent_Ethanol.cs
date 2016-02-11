@@ -70,8 +70,7 @@ namespace Somnium.Game {
 			if ( base.on_mob_life( M, alien ) ) {
 				return true;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 203 ) );
-			sober_str = ( !base.on_mob_life( M, alien ) ? 1 : 2 );
+			sober_str = ( !M.mutations.Contains( 203 ) ? 1 : 2 );
 			M.nutrition += this.nutriment_factor * 0.5;
 			this.data++;
 			this.data /= sober_str;

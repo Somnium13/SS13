@@ -410,18 +410,14 @@ namespace Somnium.Game {
 					this.set_status( 1, push_update );
 				} else if ( this.src_object is Obj_Item_Device_Uplink_Hidden ) {
 					this.set_status( 2, push_update );
-				} else {
-					Interface13.Stat( null, Map13.FetchInView( this.user, 4 ).Contains( this.src_object ) );
-
-					if ( !( this.src_object is Obj_Item_Device_Uplink_Hidden ) ) {
-						this.set_status( 0, push_update );
-					} else if ( dist <= 1 ) {
-						this.set_status( 2, push_update );
-					} else if ( dist <= 2 ) {
-						this.set_status( 1, push_update );
-					} else if ( dist <= 4 ) {
-						this.set_status( 0, push_update );
-					}
+				} else if ( !Map13.FetchInView( this.user, 4 ).Contains( this.src_object ) ) {
+					this.set_status( 0, push_update );
+				} else if ( dist <= 1 ) {
+					this.set_status( 2, push_update );
+				} else if ( dist <= 2 ) {
+					this.set_status( 1, push_update );
+				} else if ( dist <= 4 ) {
+					this.set_status( 0, push_update );
 				}
 			}
 			return;
@@ -431,17 +427,15 @@ namespace Somnium.Game {
 		public bool check_interactive(  ) {
 			
 			if ( Lang13.Bool( this.user.mutations ) && this.user.mutations.len != 0 ) {
-				Interface13.Stat( null, this.user.mutations.Contains( 1 ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( this.user.mutations.Contains( 1 ) ) ) {
 					return true;
 				}
 			}
 
 			if ( this.user is Mob_Living_Silicon_Robot ) {
-				Interface13.Stat( null, Map13.FetchInView( this.user, 7 ).Contains( this.src_object ) );
-
-				if ( false ) {
+				
+				if ( Map13.FetchInView( this.user, 7 ).Contains( this.src_object ) ) {
 					return true;
 				}
 			}

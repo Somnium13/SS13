@@ -103,9 +103,8 @@ namespace Somnium.Game {
 				O = _a;
 				
 				this.ore_eaten++;
-				Interface13.Stat( null, this.ore_types_eaten.Contains( O.type ) );
 
-				if ( !( O is Obj_Item_Weapon_Ore ) ) {
+				if ( !this.ore_types_eaten.Contains( O.type ) ) {
 					this.ore_types_eaten.Add( O.type );
 				}
 				GlobalFuncs.qdel( O );

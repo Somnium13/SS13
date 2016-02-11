@@ -47,9 +47,8 @@ namespace Somnium.Game {
 			hclient2 = this.getClient( Task13.User.client );
 
 			if ( hclient2 is HtmlInterfaceClient ) {
-				Interface13.Stat( null, href_list.Contains( "html_interface_action" ) );
-
-				if ( false ) {
+				
+				if ( href_list.Contains( "html_interface_action" ) ) {
 					
 					dynamic _a = href_list["html_interface_action"]; // Was a switch-case, sorry for the mess.
 					if ( _a=="onload" ) {
@@ -79,7 +78,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( hclient ) && ( ignore_loaded == true || hclient.is_loaded == true ) ) {
 				html = this.content_elements[id];
 
-				if ( ignore_cache == true || !false || html != hclient.content_elements[id] ) {
+				if ( ignore_cache == true || !Lang13.Bool( hclient.content_elements.Contains( id ) ) || html != hclient.content_elements[id] ) {
 					hclient.content_elements[id] = html;
 					Interface13.Output( hclient.client, String13.MakeUrlParams( new ByTable(new object [] { id, html }) ), new Txt( "browser_" ).Ref( this ).str( ".browser:updateContent" ).ToString() );
 				}
@@ -228,19 +227,18 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( ((dynamic)typeof(Client)).IsInstanceOfType( client ) ) ) {
 				
-				if ( create_if_not_exist == true && ( !( this.clients != null ) || !false ) ) {
+				if ( create_if_not_exist == true && ( !( this.clients != null ) || !this.clients.Contains( client ) ) ) {
 					
 					if ( !( this.clients != null ) ) {
 						this.clients = new ByTable();
 					}
-					Interface13.Stat( null, this.clients.Contains( client ) );
 
-					if ( !( !( this.clients != null ) ) ) {
+					if ( !this.clients.Contains( client ) ) {
 						this.clients[client] = new HtmlInterfaceClient( client );
 					}
 				}
 
-				if ( this.clients != null && false ) {
+				if ( this.clients != null && this.clients.Contains( client ) ) {
 					return this._getClient( this.clients[client] );
 				} else {
 					return null;

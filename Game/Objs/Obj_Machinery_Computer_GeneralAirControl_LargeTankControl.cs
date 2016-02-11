@@ -195,7 +195,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: atmo_control.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
+		public override bool isLinkedWith( Base_Data O = null ) {
 			
 			if ( ((dynamic)O).id_tag == this.input_tag ) {
 				return true;
@@ -230,9 +230,8 @@ namespace Somnium.Game {
 
 		// Function from file: atmo_control.dm
 		public override bool unlinkFrom( Mob user = null, Base_Data buffer = null ) {
-			Interface13.Stat( null, buffer.vars.Contains( "id_tag" ) );
-
-			if ( false ) {
+			
+			if ( buffer.vars.Contains( "id_tag" ) ) {
 				
 				if ( ((dynamic)buffer).id_tag == this.input_tag ) {
 					this.input_tag = null;

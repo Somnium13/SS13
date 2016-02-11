@@ -41,9 +41,8 @@ namespace Somnium.Game {
 
 		// Function from file: tables_racks.dm
 		public override dynamic attack_hand( dynamic a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 				this.visible_message( "<span class='danger'>" + a + " smashes " + this + " apart!</span>" );
 				((Ent_Dynamic)a).say( Rand13.Pick(new object [] { ";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" }) );
 				this.destroy();
@@ -223,9 +222,8 @@ namespace Somnium.Game {
 
 		// Function from file: tables_racks.dm
 		public override dynamic attack_paw( Mob a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( a.mutations.Contains( 4 ) ) {
 				a.say( Rand13.Pick(new object [] { ";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" }) );
 				this.visible_message( "<span class='danger'>" + a + " smashes the " + this + " apart!</span>" );
 				a.delayNextAttack( 8 );
@@ -245,8 +243,8 @@ namespace Somnium.Game {
 
 		// Function from file: tables_racks.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;
@@ -403,15 +401,13 @@ namespace Somnium.Game {
 					}
 				}
 				table_type = 0;
-				Interface13.Stat( null, GlobalVars.cardinal.Contains( dir_sum % 16 ) );
 
-				if ( this.flipped ) {
+				if ( GlobalVars.cardinal.Contains( dir_sum % 16 ) ) {
 					table_type = 1;
 					dir_sum %= 16;
 				}
-				Interface13.Stat( null, new ByTable(new object [] { 3, 12 }).Contains( dir_sum % 16 ) );
 
-				if ( this.flipped ) {
+				if ( new ByTable(new object [] { 3, 12 }).Contains( dir_sum % 16 ) ) {
 					table_type = 2;
 
 					if ( dir_sum % 16 == 3 ) {
@@ -422,9 +418,8 @@ namespace Somnium.Game {
 						dir_sum = 4;
 					}
 				}
-				Interface13.Stat( null, new ByTable(new object [] { 5, 6, 9, 10 }).Contains( dir_sum % 16 ) );
 
-				if ( this.flipped ) {
+				if ( new ByTable(new object [] { 5, 6, 9, 10 }).Contains( dir_sum % 16 ) ) {
 					
 					if ( Lang13.Bool( Lang13.FindIn( typeof(Obj_Structure_Table), Map13.GetStep( this.loc, ((int)( dir_sum % 16 )) ) ) ) ) {
 						table_type = 3;
@@ -433,12 +428,11 @@ namespace Somnium.Game {
 					}
 					dir_sum %= 16;
 				}
-				Interface13.Stat( null, new ByTable(new object [] { 13, 14, 7, 11 }).Contains( dir_sum % 16 ) );
 
-				if ( this.flipped ) {
+				if ( new ByTable(new object [] { 13, 14, 7, 11 }).Contains( dir_sum % 16 ) ) {
 					table_type = 5;
 
-					switch ((double)( dir_sum % 16 )) {
+					switch ((int)( dir_sum % 16 )) {
 						case 7:
 							
 							if ( dir_sum == 23 ) {
@@ -529,9 +523,8 @@ namespace Somnium.Game {
 						this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "_dir3";
 						break;
 				}
-				Interface13.Stat( null, GlobalVars.alldirs.Contains( dir_sum ) );
 
-				if ( dir_sum % 16 == 15 ) {
+				if ( GlobalVars.alldirs.Contains( dir_sum ) ) {
 					this.dir = ((int)( dir_sum ));
 				} else {
 					this.dir = 2;

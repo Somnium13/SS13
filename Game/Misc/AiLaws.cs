@@ -33,9 +33,8 @@ namespace Somnium.Game {
 			if ( !( Task13.User.client != null ) || !( Task13.User.client.holder != null ) ) {
 				return null;
 			}
-			Interface13.Stat( null, href_list.Contains( "rm_law" ) );
 
-			if ( !( Task13.User.client != null ) || !( Task13.User.client.holder != null ) ) {
+			if ( href_list.Contains( "rm_law" ) ) {
 				lawtype = String13.ParseNumber( href_list["rm_law"] );
 				index = String13.ParseNumber( href_list["index"] );
 				S = Lang13.FindObj( href_list["mob"] );
@@ -43,7 +42,7 @@ namespace Somnium.Game {
 				this.rm_law( lawtype, index );
 				lawtype_str = "law #" + index;
 
-				switch ((int?)(lawtype)) {
+				switch ((int?)( lawtype )) {
 					case 0:
 						lawtype_str = "law zero";
 						break;
@@ -60,9 +59,8 @@ namespace Somnium.Game {
 				Task13.User.client.holder.show_player_panel( S );
 				return 1;
 			}
-			Interface13.Stat( null, href_list.Contains( "set_law" ) );
 
-			if ( !( Task13.User.client != null ) || !( Task13.User.client.holder != null ) ) {
+			if ( href_list.Contains( "set_law" ) ) {
 				lawtype2 = String13.ParseNumber( href_list["set_law"] );
 				index2 = String13.ParseNumber( href_list["index"] );
 				S2 = Lang13.FindObj( href_list["mob"] );
@@ -75,7 +73,7 @@ namespace Somnium.Game {
 				this.set_law( lawtype2, index2, newlaw );
 				lawtype_str2 = "law #" + index2;
 
-				switch ((double?)( lawtype2 )) {
+				switch ((int?)( lawtype2 )) {
 					case 0:
 						lawtype_str2 = "law zero";
 						break;
@@ -104,8 +102,8 @@ namespace Somnium.Game {
 
 		// Function from file: ai_laws.dm
 		public void rm_law( double? law_type = null, double? idx = null ) {
-
-			switch ((int?)(law_type)) {
+			
+			switch ((int?)( law_type )) {
 				case -2:
 					this.ion.Cut( ((int?)( idx )), ((int)( ( idx ??0) + 1 )) );
 					break;
@@ -125,7 +123,7 @@ namespace Somnium.Game {
 		// Function from file: ai_laws.dm
 		public void set_law( double? law_type = null, double? idx = null, string law = null ) {
 			
-			switch ((double?)( law_type )) {
+			switch ((int?)( law_type )) {
 				case -2:
 					this.ion[idx] = law;
 					break;
@@ -145,7 +143,7 @@ namespace Somnium.Game {
 		// Function from file: ai_laws.dm
 		public dynamic get_law( double? law_type = null, double? idx = null ) {
 			
-			switch ((double?)( law_type )) {
+			switch ((int?)( law_type )) {
 				case -2:
 					return this.ion[idx];
 					break;
@@ -382,9 +380,8 @@ namespace Somnium.Game {
 
 		// Function from file: ai_laws.dm
 		public void add_inherent_law( dynamic law = null ) {
-			Interface13.Stat( null, this.inherent.Contains( law ) );
-
-			if ( !false ) {
+			
+			if ( !this.inherent.Contains( law ) ) {
 				this.inherent.Add( law );
 			}
 			return;

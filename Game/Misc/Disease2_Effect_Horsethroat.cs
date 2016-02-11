@@ -17,9 +17,8 @@ namespace Somnium.Game {
 		public override bool activate( Mob_Living mob = null, bool multiplier = false ) {
 			Obj_Item_Clothing_Mask_Horsehead_Magic magichead = null;
 
-			Interface13.Stat( null, GlobalVars.compatible_mobs.Contains( mob.type ) );
-
-			if ( !false ) {
+			
+			if ( !GlobalVars.compatible_mobs.Contains( mob.type ) ) {
 				return false;
 			}
 			magichead = new Obj_Item_Clothing_Mask_Horsehead_Magic();

@@ -11,8 +11,8 @@ namespace Somnium.Game {
 			aprecision = aprecision ?? false;
 			afteleport = afteleport ?? true;
 
-			// wat
-			if ( Lang13.Bool( base() ) ) { // no, seriously, what the fuck. I know why this was generated, but in what context was this ever a good idea? how was it even supposed to work?
+			
+			if ( Lang13.Bool( base() ) ) {
 				this.teleport();
 			}
 			return;

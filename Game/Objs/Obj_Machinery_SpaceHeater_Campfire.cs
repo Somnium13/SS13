@@ -74,9 +74,8 @@ namespace Somnium.Game {
 
 				if ( GlobalFuncs.do_after( user, this, 50 ) ) {
 					M = user;
-					Interface13.Stat( null, M.mutations.Contains( 5 ) );
 
-					if ( false && Rand13.PercentChance( 50 ) ) {
+					if ( Lang13.Bool( M.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 						((Ent_Static)user).visible_message( new Txt( "<span class='danger'>" ).item( user ).str( " slides " ).his_her_its_their().str( " hands straight into " ).the( this ).item().str( "!</span>" ).ToString(), new Txt( "<span class='danger'>You accidentally slide your hands into " ).the( this ).item().str( "!</span>" ).ToString() );
 						((Mob_Living)M).apply_damage( 10, "fire", Rand13.Pick(new object [] { "l_hand", "r_hand" }) );
 					} else {

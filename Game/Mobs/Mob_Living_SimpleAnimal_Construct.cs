@@ -256,7 +256,7 @@ namespace Somnium.Game {
 					M = _a;
 					
 
-					if ( ((Mob)M).construct_chat_check( 2 ) || false && !( M is Mob_NewPlayer ) ) {
+					if ( ((Mob)M).construct_chat_check( 2 ) || GlobalVars.dead_mob_list.Contains( M ) && !( M is Mob_NewPlayer ) ) {
 						GlobalFuncs.to_chat( M, "<span class='sinister'><b>" + this.name + ":</b> " + String13.HtmlEncode( ((dynamic)speech).message ) + "</span>" );
 					}
 				}
@@ -271,9 +271,8 @@ namespace Somnium.Game {
 			if ( !( this.mind != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( this.mind ) );
 
-			if ( !( this.mind != null ) ) {
+			if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) {
 				return true;
 			}
 			return false;

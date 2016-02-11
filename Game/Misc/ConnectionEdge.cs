@@ -76,32 +76,22 @@ namespace Somnium.Game {
 						if ( repelled ) {
 							
 							if ( flipped == true ) {
-								Interface13.Stat( null, this.A.contents.Contains( M.loc ) );
-
-								if ( !false ) {
+								
+								if ( !this.A.contents.Contains( M.loc ) ) {
 									continue;
 								}
-							} else {
-								Interface13.Stat( null, ((dynamic)this).B.contents.Contains( M.loc ) );
-
-								if ( !( flipped == true ) ) {
-									continue;
-								}
+							} else if ( !Lang13.Bool( ((dynamic)this).B.contents.Contains( M.loc ) ) ) {
+								continue;
 							}
 							M.RepelAirflowDest( differential / 5 );
 						} else if ( flipped == true ) {
-							Interface13.Stat( null, ((dynamic)this).B.contents.Contains( M.loc ) );
-
-							if ( !false ) {
+							
+							if ( !Lang13.Bool( ((dynamic)this).B.contents.Contains( M.loc ) ) ) {
 								continue;
 							}
-						} else {
-							Interface13.Stat( null, this.A.contents.Contains( M.loc ) );
-
-							if ( !( flipped == true ) ) {
-								continue;
-								M.GotoAirflowDest( differential / 10 );
-							}
+						} else if ( !this.A.contents.Contains( M.loc ) ) {
+							continue;
+							M.GotoAirflowDest( differential / 10 );
 						}
 					}
 				}

@@ -210,9 +210,8 @@ namespace Somnium.Game {
 			dynamic O6 = null;
 
 			this.send_items_flying();
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
 
-			if ( false && Rand13.PercentChance( 50 ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( M, "<span class='warning'>You accidentally slam yourself with the " + this + "!</span>" );
 				((Mob)M).Weaken( 1 );
 				((Mob_Living)user).take_organ_damage( 2 );

@@ -280,7 +280,7 @@ namespace Somnium.Game {
 			Mob H = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					H = this.occupant;
 
@@ -375,9 +375,8 @@ namespace Somnium.Game {
 
 		// Function from file: spacepods.dm
 		public bool moved_inside( Mob H = null ) {
-			Interface13.Stat( null, Map13.FetchInRange( null, 1 ).Contains( H != null && H.client != null && H != null ) );
-
-			if ( false ) {
+			
+			if ( Map13.FetchInRange( null, 1 ).Contains( H != null && H.client != null && H != null ) ) {
 				H.reset_view( this );
 				H.stop_pulling();
 				H.forceMove( this );

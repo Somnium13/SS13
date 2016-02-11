@@ -203,10 +203,10 @@ namespace Somnium.Game {
 					node_type = this.getNodeType( node_id );
 
 					switch ((bool)( node_type )) {
-						case 0:
+						case false:
 							found = this.findConnecting( direction );
 							break;
-						case 1:
+						case true:
 							found = this.findConnectingHE( direction );
 							break;
 						default:

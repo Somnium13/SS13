@@ -28,9 +28,8 @@ namespace Somnium.Game {
 			if ( make_from != null ) {
 				this.dir = make_from.dir;
 				this.pipename = make_from.name;
-				Interface13.Stat( null, GlobalVars.bent_dirs.Contains( make_from.initialize_directions ) );
 
-				if ( false ) {
+				if ( GlobalVars.bent_dirs.Contains( make_from.initialize_directions ) ) {
 					is_bent = false;
 				} else {
 					is_bent = true;
@@ -138,16 +137,11 @@ namespace Somnium.Game {
 			if ( !( this.loc is Tile ) ) {
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.straight_pipes.Contains( this.pipe_type ) );
 
-			if ( !( this.loc is Tile ) ) {
+			if ( GlobalVars.straight_pipes.Contains( this.pipe_type ) ) {
 				this.dir = ((int)( GlobalFuncs.rotate_pipe_straight( this.dir ) ??0 ));
-			} else {
-				Interface13.Stat( null, GlobalVars.manifold_pipes.Contains( this.pipe_type ) );
-
-				if ( !( this.loc is Tile ) ) {
-					this.dir = 2;
-				}
+			} else if ( GlobalVars.manifold_pipes.Contains( this.pipe_type ) ) {
+				this.dir = 2;
 			}
 			pipe_dir = this.get_pipe_dir();
 
@@ -155,7 +149,7 @@ namespace Somnium.Game {
 				M = _a;
 				
 
-				if ( M.piping_layer != this.piping_layer && !( ( M.pipe_flags & 2 ) != 0 || false ) ) {
+				if ( M.piping_layer != this.piping_layer && !( ( M.pipe_flags & 2 ) != 0 || GlobalVars.unstackable_pipes.Contains( this.pipe_type ) ) ) {
 					continue;
 				}
 
@@ -280,16 +274,11 @@ namespace Somnium.Game {
 		// Function from file: construction.dm
 		public override bool Move( dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0 ) {
 			base.Move( (object)(NewLoc), Dir, step_x, step_y );
-			Interface13.Stat( null, GlobalVars.bent_pipes.Contains( this.pipe_type ) );
 
-			if ( false && false ) {
+			if ( GlobalVars.bent_pipes.Contains( this.pipe_type ) && GlobalVars.cardinal.Contains( this.dir ) ) {
 				this.dir = this.dir | Num13.Rotate( this.dir, 90 );
-			} else {
-				Interface13.Stat( null, GlobalVars.straight_pipes.Contains( this.pipe_type ) );
-
-				if ( false && false ) {
-					this.dir = ((int)( GlobalFuncs.rotate_pipe_straight( this.dir ) ??0 ));
-				}
+			} else if ( GlobalVars.straight_pipes.Contains( this.pipe_type ) ) {
+				this.dir = ((int)( GlobalFuncs.rotate_pipe_straight( this.dir ) ??0 ));
 			}
 			return false;
 		}
@@ -319,9 +308,8 @@ namespace Somnium.Game {
 			int flip = 0;
 
 			flip = Num13.Rotate( this.dir, 180 );
-			Interface13.Stat( null, GlobalVars.heat_pipes.Contains( this.pipe_type ) );
 
-			if ( !false ) {
+			if ( !GlobalVars.heat_pipes.Contains( this.pipe_type ) ) {
 				return this.get_pipe_dir();
 			}
 
@@ -453,8 +441,8 @@ namespace Somnium.Game {
 
 		// Function from file: construction.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.returnToPool( this );
 					break;
@@ -483,16 +471,11 @@ namespace Somnium.Game {
 				return;
 			}
 			this.dir = Num13.Rotate( this.dir, -90 );
-			Interface13.Stat( null, GlobalVars.straight_pipes.Contains( this.pipe_type ) );
 
-			if ( Task13.User.isUnconscious() || Task13.User.restrained() ) {
+			if ( GlobalVars.straight_pipes.Contains( this.pipe_type ) ) {
 				this.dir = ((int)( GlobalFuncs.rotate_pipe_straight( this.dir ) ??0 ));
-			} else {
-				Interface13.Stat( null, GlobalVars.manifold_pipes.Contains( this.pipe_type ) );
-
-				if ( Task13.User.isUnconscious() || Task13.User.restrained() ) {
-					this.dir = 2;
-				}
+			} else if ( GlobalVars.manifold_pipes.Contains( this.pipe_type ) ) {
+				this.dir = 2;
 			}
 			return;
 		}

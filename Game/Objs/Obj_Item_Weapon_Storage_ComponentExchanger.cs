@@ -115,9 +115,8 @@ namespace Somnium.Game {
 						foreach (dynamic _b in Lang13.Enumerate( this.contents, typeof(Obj_Item_Weapon_StockParts_Capacitor) )) {
 							R = _b;
 							
-							Interface13.Stat( null, M.component_parts.Contains( R.rating > P2.rating && P2 != null ) );
 
-							if ( R is Obj_Item_Weapon_StockParts_Capacitor ) {
+							if ( Lang13.Bool( M.component_parts.Contains( R.rating > P2.rating && P2 != null ) ) ) {
 								Task13.Sleep( 5 );
 								this.perform_indiv_replace( P2, R, M );
 							}
@@ -129,9 +128,8 @@ namespace Somnium.Game {
 						foreach (dynamic _c in Lang13.Enumerate( this.contents, typeof(Obj_Item_Weapon_StockParts_ScanningModule) )) {
 							R2 = _c;
 							
-							Interface13.Stat( null, M.component_parts.Contains( R2.rating > P2.rating && P2 != null ) );
 
-							if ( R2 is Obj_Item_Weapon_StockParts_ScanningModule ) {
+							if ( Lang13.Bool( M.component_parts.Contains( R2.rating > P2.rating && P2 != null ) ) ) {
 								Task13.Sleep( 5 );
 								this.perform_indiv_replace( P2, R2, M );
 							}
@@ -143,9 +141,8 @@ namespace Somnium.Game {
 						foreach (dynamic _d in Lang13.Enumerate( this.contents, typeof(Obj_Item_Weapon_StockParts_Manipulator) )) {
 							R3 = _d;
 							
-							Interface13.Stat( null, M.component_parts.Contains( R3.rating > P2.rating && P2 != null ) );
 
-							if ( R3 is Obj_Item_Weapon_StockParts_Manipulator ) {
+							if ( Lang13.Bool( M.component_parts.Contains( R3.rating > P2.rating && P2 != null ) ) ) {
 								Task13.Sleep( 5 );
 								this.perform_indiv_replace( P2, R3, M );
 							}
@@ -157,9 +154,8 @@ namespace Somnium.Game {
 						foreach (dynamic _e in Lang13.Enumerate( this.contents, typeof(Obj_Item_Weapon_StockParts_MicroLaser) )) {
 							R4 = _e;
 							
-							Interface13.Stat( null, M.component_parts.Contains( R4.rating > P2.rating && P2 != null ) );
 
-							if ( R4 is Obj_Item_Weapon_StockParts_MicroLaser ) {
+							if ( Lang13.Bool( M.component_parts.Contains( R4.rating > P2.rating && P2 != null ) ) ) {
 								Task13.Sleep( 5 );
 								this.perform_indiv_replace( P2, R4, M );
 							}
@@ -171,9 +167,8 @@ namespace Somnium.Game {
 						foreach (dynamic _f in Lang13.Enumerate( this.contents, typeof(Obj_Item_Weapon_StockParts_MatterBin) )) {
 							R5 = _f;
 							
-							Interface13.Stat( null, M.component_parts.Contains( R5.rating > P2.rating && P2 != null ) );
 
-							if ( R5 is Obj_Item_Weapon_StockParts_MatterBin ) {
+							if ( Lang13.Bool( M.component_parts.Contains( R5.rating > P2.rating && P2 != null ) ) ) {
 								Task13.Sleep( 5 );
 								this.perform_indiv_replace( P2, R5, M );
 							}

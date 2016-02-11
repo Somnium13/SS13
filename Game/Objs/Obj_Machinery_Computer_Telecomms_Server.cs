@@ -129,7 +129,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( href_list["network"] ) ) {
 				newnet = Interface13.Input( Task13.User, "Which network do you want to view?", "Comm Monitor", this.network, null, InputType.Str | InputType.Null );
 
-				if ( Lang13.Bool( newnet ) && false ) {
+				if ( Lang13.Bool( newnet ) && Lang13.Bool( ((dynamic)( Map13.FetchInRange( this, 1 ) != null || Task13.User is Mob_Living_Silicon )).Contains( Task13.User ) ) ) {
 					
 					if ( Lang13.Length( newnet ) > 15 ) {
 						this.temp = "<font color = #D70B00>- FAILED: NETWORK TAG STRING TOO LENGHTLY -</font color>";
@@ -167,7 +167,7 @@ namespace Somnium.Game {
 			((Mob)a).set_machine( this );
 			dat = "<TITLE>Telecommunication Server Monitor</TITLE><center><b>Telecommunications Server Monitor</b></center>";
 
-			switch ( this.screen ) {
+			switch ((bool)( this.screen )) {
 				case false:
 					dat += new Txt( "<br>" ).item( this.temp ).str( "<br>\n				<br>Current Network: <a href='?src=" ).Ref( this ).str( ";network=1'>" ).item( this.network ).str( "</a><br>" ).ToString();
 
@@ -210,44 +210,27 @@ namespace Somnium.Game {
 							silicons = Lang13.GetTypes( typeof(Mob_Living_Silicon) );
 							slimes = Lang13.GetTypes( typeof(Mob_Living_Carbon_Slime) );
 							animals = Lang13.GetTypes( typeof(Mob_Living_SimpleAnimal) );
-							Interface13.Stat( null, humans.Contains( mobtype ) );
 
-							if ( false ) {
+							if ( Lang13.Bool( humans.Contains( mobtype ) ) ) {
 								race = "Human";
 								language = race;
+							} else if ( Lang13.Bool( monkeys.Contains( mobtype ) ) ) {
+								race = "Monkey";
+								language = race;
+							} else if ( Lang13.Bool( ((dynamic)( Lang13.Bool( silicons ) || C.parameters["job"] == "AI" )).Contains( mobtype ) ) ) {
+								race = "Artificial Life";
+							} else if ( Lang13.Bool( slimes.Contains( mobtype ) ) ) {
+								race = "slime";
+								language = race;
+							} else if ( mobtype is Obj ) {
+								race = "Machinery";
+								language = race;
+							} else if ( Lang13.Bool( animals.Contains( mobtype ) ) ) {
+								race = "Domestic Animal";
+								language = race;
 							} else {
-								Interface13.Stat( null, monkeys.Contains( mobtype ) );
-
-								if ( false ) {
-									race = "Monkey";
-									language = race;
-								} else {
-									Interface13.Stat( null, ((dynamic)( Lang13.Bool( silicons ) || C.parameters["job"] == "AI" )).Contains( mobtype ) );
-
-									if ( false ) {
-										race = "Artificial Life";
-									} else {
-										Interface13.Stat( null, slimes.Contains( mobtype ) );
-
-										if ( false ) {
-											race = "slime";
-											language = race;
-										} else if ( mobtype is Obj ) {
-											race = "Machinery";
-											language = race;
-										} else {
-											Interface13.Stat( null, animals.Contains( mobtype ) );
-
-											if ( mobtype is Obj ) {
-												race = "Domestic Animal";
-												language = race;
-											} else {
-												race = "<i>Unidentifiable</i>";
-												language = race;
-											}
-										}
-									}
-								}
+								race = "<i>Unidentifiable</i>";
+								language = race;
 							}
 
 							if ( language == "Human" || this.universal_translate || Lang13.Bool( C.parameters["uspeech"] ) ) {

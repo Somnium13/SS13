@@ -43,9 +43,8 @@ namespace Somnium.Game {
 				if ( A.type == typeof(Zone) ) {
 					continue;
 				}
-				Interface13.Stat( null, this.localareas.Contains( A ) );
 
-				if ( !( A.type == typeof(Zone) ) ) {
+				if ( !this.localareas.Contains( A ) ) {
 					this.localareas.Add( A );
 				}
 			}

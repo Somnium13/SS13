@@ -119,9 +119,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( gather_location, typeof(Obj_Item) )) {
 						I = _a;
 						
-						Interface13.Stat( null, rejections.Contains( I.type ) );
 
-						if ( I is Obj_Item ) {
+						if ( rejections.Contains( I.type ) ) {
 							continue;
 						}
 
@@ -600,14 +599,10 @@ namespace Somnium.Game {
 
 						if ( M == Task13.User ) {
 							GlobalFuncs.to_chat( Task13.User, new Txt( "<span class='notice'>You put " ).the( W ).item().str( " into " ).the( this ).item().str( ".</span>" ).ToString() );
-						} else {
-							Interface13.Stat( null, Map13.FetchInRange( null, 1 ).Contains( M ) );
-
-							if ( M == Task13.User ) {
-								M.show_message( new Txt( "<span class='notice'>" ).item( Task13.User ).str( " puts " ).the( W ).item().str( " into " ).the( this ).item().str( ".</span>" ).ToString() );
-							} else if ( Lang13.Bool( W ) && Convert.ToDouble( W.w_class ) >= 3 ) {
-								M.show_message( new Txt( "<span class='notice'>" ).item( Task13.User ).str( " puts " ).the( W ).item().str( " into " ).the( this ).item().str( ".</span>" ).ToString() );
-							}
+						} else if ( Map13.FetchInRange( null, 1 ).Contains( M ) ) {
+							M.show_message( new Txt( "<span class='notice'>" ).item( Task13.User ).str( " puts " ).the( W ).item().str( " into " ).the( this ).item().str( ".</span>" ).ToString() );
+						} else if ( Lang13.Bool( W ) && Convert.ToDouble( W.w_class ) >= 3 ) {
+							M.show_message( new Txt( "<span class='notice'>" ).item( Task13.User ).str( " puts " ).the( W ).item().str( " into " ).the( this ).item().str( ".</span>" ).ToString() );
 						}
 					}
 				}
@@ -1008,10 +1003,10 @@ namespace Somnium.Game {
 			this.collection_mode = !this.collection_mode;
 
 			switch ((bool)( this.collection_mode )) {
-				case 1:
+				case true:
 					GlobalFuncs.to_chat( Task13.User, new Txt().The( this ).item().str( " will now pick up all items on a tile at once." ).ToString() );
 					break;
-				case 0:
+				case false:
 					GlobalFuncs.to_chat( Task13.User, new Txt().The( this ).item().str( " will now pick up one item at a time." ).ToString() );
 					break;
 			}

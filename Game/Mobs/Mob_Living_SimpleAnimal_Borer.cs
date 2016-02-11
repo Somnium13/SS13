@@ -614,9 +614,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( this, "That is not an appropriate target." );
 				return;
 			}
-			Interface13.Stat( null, Map13.FetchInView( this, 1 ).Contains( M ) );
 
-			if ( Convert.ToInt32( M.stat ) == 2 ) {
+			if ( Map13.FetchInView( this, 1 ).Contains( M ) ) {
 				GlobalFuncs.to_chat( this, "You wiggle into " + M + "'s ear." );
 				this.perform_infestation( M );
 				return;

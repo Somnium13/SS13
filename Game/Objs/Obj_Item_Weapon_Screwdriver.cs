@@ -110,9 +110,8 @@ namespace Somnium.Game {
 			if ( ((dynamic)user.zone_sel).selecting != "eyes" && ((dynamic)user.zone_sel).selecting != "head" ) {
 				return base.attack( (object)(M), (object)(user), def_zone, eat_override );
 			}
-			Interface13.Stat( null, user.mutations.Contains( 5 ) );
 
-			if ( ((dynamic)user.zone_sel).selecting != "eyes" && ((dynamic)user.zone_sel).selecting != "head" && Rand13.PercentChance( 50 ) ) {
+			if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				M = user;
 			}
 			this.eyestab( M, user ); return null;

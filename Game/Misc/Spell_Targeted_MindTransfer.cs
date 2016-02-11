@@ -55,9 +55,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( user, "They appear to be catatonic. Not even magic can affect their vacant mind." );
 					continue;
 				}
-				Interface13.Stat( null, this.protected_roles.Contains( target.mind.special_role ) );
 
-				if ( !Lang13.Bool( target.key ) || !( target.mind != null ) ) {
+				if ( this.protected_roles.Contains( target.mind.special_role ) ) {
 					GlobalFuncs.to_chat( user, "Their mind is resisting your spell." );
 					continue;
 				}

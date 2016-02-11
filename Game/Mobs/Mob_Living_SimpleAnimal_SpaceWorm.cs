@@ -221,7 +221,7 @@ namespace Somnium.Game {
 		public override bool Life(  ) {
 			base.Life();
 
-			if ( this.next != null && !false ) {
+			if ( this.next != null && !Map13.FetchInView( 1, this ).Contains( this.next ) ) {
 				this.Detach();
 			}
 

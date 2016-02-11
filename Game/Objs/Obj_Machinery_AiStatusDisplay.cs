@@ -51,9 +51,8 @@ namespace Somnium.Game {
 					this.overlays = new ByTable();
 					break;
 				case 1:
-					Interface13.Stat( null, GlobalVars.status_display_images.Contains( this.emotion ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.status_display_images.Contains( this.emotion ) ) {
 						this.set_picture( GlobalVars.status_display_images[this.emotion] );
 					} else {
 						this.set_picture( "ai_bsod" );

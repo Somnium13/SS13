@@ -175,9 +175,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.syringes.len != 0 ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( user.mutations.Contains( 5 ) ) ) {
 					
 					if ( Rand13.PercentChance( 50 ) ) {
 						GlobalFuncs.to_chat( user, "<span class='warning'>You accidentally shoot yourself!</span>" );

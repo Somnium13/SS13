@@ -44,9 +44,8 @@ namespace Somnium.Game {
 				this.update_icon();
 				GlobalFuncs.to_chat( user, "<span class='notice'>You shock " + target + " with the paddles.</span>" );
 				head = ((Mob_Living_Carbon_Human)target).get_organ( "head" );
-				Interface13.Stat( null, ((dynamic)( Lang13.Bool( target.mutations ) || !((Mob_Living)target).has_brain() || target.suiciding == true )).Contains( !Lang13.Bool( head ) || Lang13.Bool( head.status & 64 ) || 8 != 0 ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( ((dynamic)( Lang13.Bool( target.mutations ) || !((Mob_Living)target).has_brain() || target.suiciding == true )).Contains( !Lang13.Bool( head ) || Lang13.Bool( head.status & 64 ) || 8 != 0 ) ) ) {
 					((Ent_Static)target).visible_message( "<span class='warning'>" + this + " buzzes: Defibrillation failed. Patient's condition does not allow reviving.</span>" );
 					return;
 				}
@@ -207,9 +206,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.charges != 0 || this.ready ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( false && Rand13.PercentChance( 50 ) && this.charges != 0 ) {
+				
+				if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) && this.charges != 0 ) {
 					GlobalFuncs.to_chat( user, "<span class='warning'>You touch the paddles together, shorting the device.</span>" );
 					this.sparks.start();
 					GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/items/defib.ogg", 50, 1 );

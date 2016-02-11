@@ -85,7 +85,7 @@ namespace Somnium.Game {
 			
 			if ( Lang13.Bool( this.affected_mob ) ) {
 				
-				if ( resistance == true && !false ) {
+				if ( resistance == true && !this.affected_mob.resistances.Contains( this.type ) ) {
 					saved_type = "" + this.type;
 					this.affected_mob.resistances.Add( Lang13.FindClass( saved_type ) );
 				}

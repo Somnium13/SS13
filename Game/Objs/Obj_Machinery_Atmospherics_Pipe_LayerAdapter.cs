@@ -87,7 +87,7 @@ namespace Somnium.Game {
 						found = null;
 						node_type = this.getNodeType( direction );
 
-						switch ( node_type ) {
+						switch ((bool)( node_type )) {
 							case false:
 								found = this.findConnecting( direction, 3 );
 								break;
@@ -107,7 +107,7 @@ namespace Somnium.Game {
 						found2 = null;
 						node_type2 = this.getNodeType( direction );
 
-						switch ( node_type2 ) {
+						switch ((bool)( node_type2 )) {
 							case false:
 								found2 = this.findConnecting( direction, this.piping_layer );
 								break;

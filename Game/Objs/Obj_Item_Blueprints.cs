@@ -77,7 +77,7 @@ namespace Somnium.Game {
 					}
 					NT = Map13.GetStep( T, Convert.ToInt32( dir ) );
 
-					if ( !( NT is Tile ) || false || false ) {
+					if ( !( NT is Tile ) || found.Contains( NT ) || pending.Contains( NT ) ) {
 						continue;
 					}
 
@@ -390,25 +390,22 @@ namespace Somnium.Game {
 
 			dynamic _a = href_list["action"]; // Was a switch-case, sorry for the mess.
 			if ( _a=="create_area" ) {
-				Interface13.Stat( null, this.can_create_areas_in.Contains( this.get_area_type() ) );
-
-				if ( !false ) {
+				
+				if ( !this.can_create_areas_in.Contains( this.get_area_type() ) ) {
 					this.interact();
 					return 1;
 				}
 				this.create_area();
 			} else if ( _a=="edit_area" ) {
-				Interface13.Stat( null, this.can_rename_areas.Contains( this.get_area_type() ) );
-
-				if ( !false ) {
+				
+				if ( !this.can_rename_areas.Contains( this.get_area_type() ) ) {
 					this.interact();
 					return 1;
 				}
 				this.edit_area();
 			} else if ( _a=="delete_area" ) {
-				Interface13.Stat( null, this.can_delete_areas.Contains( this.get_area_type() ) );
-
-				if ( !false ) {
+				
+				if ( !this.can_delete_areas.Contains( this.get_area_type() ) ) {
 					this.interact();
 					return 1;
 				}

@@ -215,9 +215,8 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( z ) ) {
 				z = mob.z;
 			}
-			Interface13.Stat( null, this.zlevels.Contains( z ) );
 
-			if ( !( !Lang13.Bool( z ) ) ) {
+			if ( !this.zlevels.Contains( z ) ) {
 				GlobalFuncs.to_chat( mob, "zlevel(" + z + ") good levels: " + GlobalFuncs.list2text( this.zlevels, " " ) );
 				GlobalFuncs.to_chat( mob, "<span class='danger'>Unable to establish a connection: </span>You're too far away from the station!" );
 				return;

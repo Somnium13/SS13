@@ -691,9 +691,8 @@ namespace Somnium.Game {
 
 			if ( Task13.User != null ) {
 				user = Task13.User;
-				Interface13.Stat( null, Task13.User.mutations.Contains( 4 ) );
 
-				if ( false ) {
+				if ( Task13.User.mutations.Contains( 4 ) ) {
 					this.throwing = 2;
 				}
 			}
@@ -968,9 +967,8 @@ namespace Somnium.Game {
 		public virtual bool unlock_atom( dynamic AM = null ) {
 			dynamic M = null;
 
-			Interface13.Stat( null, this.locked_atoms.Contains( AM ) );
-
-			if ( !false ) {
+			
+			if ( !this.locked_atoms.Contains( AM ) ) {
 				return false;
 			}
 			this.locked_atoms.Remove( AM );
@@ -992,9 +990,8 @@ namespace Somnium.Game {
 		public virtual bool lock_atom( dynamic AM = null ) {
 			dynamic M = null;
 
-			Interface13.Stat( null, ((dynamic)( this.locked_atoms != null || Lang13.Bool( AM.locked_to ) || !( AM is Ent_Dynamic ) )).Contains( AM ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( ((dynamic)( this.locked_atoms != null || Lang13.Bool( AM.locked_to ) || !( AM is Ent_Dynamic ) )).Contains( AM ) ) ) {
 				return false;
 			}
 			AM.locked_to = this;

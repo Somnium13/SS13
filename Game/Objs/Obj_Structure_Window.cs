@@ -316,9 +316,8 @@ namespace Somnium.Game {
 
 		// Function from file: window.dm
 		public override dynamic attack_hand( dynamic a = null, dynamic b = null, dynamic c = null ) {
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 				((Ent_Dynamic)a).say( Rand13.Pick(new object [] { ";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" }) );
 				((Ent_Static)a).visible_message( new Txt( "<span class='danger'>" ).item( a ).str( " smashes " ).the( this ).item().str( "!</span>" ).ToString() );
 				this.health -= 25;
@@ -395,7 +394,7 @@ namespace Somnium.Game {
 		// Function from file: window.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.health -= Rand13.Int( 100, 150 );
 					this.healthcheck();

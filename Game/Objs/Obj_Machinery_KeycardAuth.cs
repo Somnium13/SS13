@@ -212,9 +212,8 @@ namespace Somnium.Game {
 
 			if ( a is Obj_Item_Weapon_Card_Id ) {
 				ID = a;
-				Interface13.Stat( null, ID.access.Contains( GlobalVars.access_keycard_auth ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( ID.access.Contains( GlobalVars.access_keycard_auth ) ) ) {
 					
 					if ( this.active ) {
 						

@@ -50,9 +50,8 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( href_list["toggle_dest"] ) ) {
 				idx = ( ( String13.ParseNumber( href_list["toggle_dest"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( href_list["toggle_dest"] ) ??0) >= this.destinations.len ? this.destinations.len : String13.ParseNumber( href_list["toggle_dest"] ) ) );
-				Interface13.Stat( null, this.sorting.Contains( this.destinations[idx] ) );
 
-				if ( ( String13.ParseNumber( href_list["toggle_dest"] ) ??0) <= 0 ) {
+				if ( this.sorting.Contains( this.destinations[idx] ) ) {
 					this.sorting.Remove( this.destinations[idx] );
 				} else {
 					this.sorting.Add( this.destinations[idx] );
@@ -85,21 +84,19 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: sortingmachinery.dm
-		public override bool? sort( Ent_Dynamic A = null ) {
+		public override bool sort( Ent_Dynamic A = null ) {
 			Ent_Dynamic B = null;
 			Ent_Dynamic B2 = null;
 
 			
 			if ( A is Obj_Item_Delivery_Large ) {
 				B = A;
-				Interface13.Stat( null, this.sorting.Contains( ((dynamic)B).sortTag ) );
-				return null;
+				return this.sorting.Contains( ((dynamic)B).sortTag );
 			}
 
 			if ( A is Obj_Item_Delivery ) {
 				B2 = A;
-				Interface13.Stat( null, this.sorting.Contains( ((dynamic)B2).sortTag ) );
-				return null;
+				return this.sorting.Contains( ((dynamic)B2).sortTag );
 			}
 			return this.unwrapped;
 		}
@@ -108,7 +105,7 @@ namespace Somnium.Game {
 		public override dynamic interact( dynamic user = null, bool? flag1 = null ) {
 			string dat = null;
 			int? i = null;
-			dynamic selected = null;
+			bool selected = false;
 			string cssclass = null;
 			Browser popup = null;
 
@@ -126,9 +123,8 @@ namespace Somnium.Game {
 			i = 1;
 
 			while (( i ??0) <= this.destinations.len) {
-				Interface13.Stat( null, this.sorting.Contains( this.destinations[i] ) );
-				selected = null;
-				cssclass = ( Lang13.Bool( selected ) ? "linkOn" : "linkDanger" );
+				selected = this.sorting.Contains( this.destinations[i] );
+				cssclass = ( selected ? "linkOn" : "linkDanger" );
 				dat += new Txt( "<a href='?src=" ).Ref( this ).str( ";toggle_dest=" ).item( i ).str( "' class='" ).item( cssclass ).str( "'>" ).item( this.destinations[i] ).str( "</a> <a href='?src=" ).Ref( this ).str( ";remove_dest=" ).item( i ).str( "' class='linkDanger'>[X]</a><br>" ).ToString();
 				i++;
 			}

@@ -31,26 +31,20 @@ namespace Somnium.Game {
 				wearable = null;
 				exclusive = null;
 				H = M;
-				Interface13.Stat( null, this.species_restricted.Contains( "exclude" ) );
 
-				if ( false ) {
+				if ( this.species_restricted.Contains( "exclude" ) ) {
 					exclusive = true;
 				}
 
 				if ( Lang13.Bool( H.species ) ) {
 					
 					if ( exclusive == true ) {
-						Interface13.Stat( null, this.species_restricted.Contains( H.species.name ) );
-
-						if ( !false ) {
+						
+						if ( !this.species_restricted.Contains( H.species.name ) ) {
 							wearable = true;
 						}
-					} else {
-						Interface13.Stat( null, this.species_restricted.Contains( H.species.name ) );
-
-						if ( exclusive == true ) {
-							wearable = true;
-						}
+					} else if ( this.species_restricted.Contains( H.species.name ) ) {
+						wearable = true;
 					}
 
 					if ( _default != 0 ) {

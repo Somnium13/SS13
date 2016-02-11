@@ -43,22 +43,17 @@ namespace Somnium.Game {
 						if ( !Lang13.Bool( ((dynamic)L).stat ) ) {
 							((dynamic)L).playsound_local( this, ( this.theworld ? "sound/effects/theworld2.ogg" : "sound/effects/fall2.ogg" ), 100, 0, 0, 0, 0 );
 						}
-						Interface13.Stat( null, this.ourspell.affected.Contains( L ) );
 
-						if ( !( !Lang13.Bool( ((dynamic)L).stat ) ) ) {
+						if ( !this.ourspell.affected.Contains( L ) ) {
 							GlobalFuncs.invertcolor( L );
 							this.ourspell.affected.Add( L );
 							this.ourspell.recursive_timestop( L );
 						}
 					}
-				} else {
-					Interface13.Stat( null, this.ourspell.affected.Contains( O ) );
-
-					if ( !( O is Mob ) ) {
-						GlobalFuncs.invertcolor( O );
-						this.ourspell.affected.Add( O );
-						this.ourspell.recursive_timestop( O );
-					}
+				} else if ( !this.ourspell.affected.Contains( O ) ) {
+					GlobalFuncs.invertcolor( O );
+					this.ourspell.affected.Add( O );
+					this.ourspell.recursive_timestop( O );
 				}
 			}
 			return null;

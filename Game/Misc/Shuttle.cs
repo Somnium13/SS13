@@ -273,13 +273,12 @@ namespace Somnium.Game {
 					return false;
 				}
 
-				if ( !this.destroy_everything && !false ) {
+				if ( !this.destroy_everything && !new ByTable(new object [] { typeof(Zone), typeof(Zone_Station_Custom) }).Contains( A.type ) ) {
 					GlobalFuncs.message_admins( "<span class='notice'>WARNING: " + this.name + " (" + this.type + ") attempted to destroy " + A + " (" + A.type + ").</span> If you want " + this.name + " to be able to move freely and destroy areas, change its \"destroy_everything\" variable to 1." );
 					return false;
 				}
-				Interface13.Stat( null, our_own_turfs.Contains( "" + new_coords.x_pos + ";" + new_coords.y_pos + ";" + new_center.z ) );
 
-				if ( !this.destroy_everything && !false ) {
+				if ( our_own_turfs.Contains( "" + new_coords.x_pos + ";" + new_coords.y_pos + ";" + new_center.z ) ) {
 					Game13.log.WriteMsg( "## WARNING: " + ( "Shuttle (" + this.name + "; " + this.type + ") has attempted to move to a location which overlaps with its current position. Offending turf: " + new_coords.x_pos + ";" + new_coords.y_pos + ";" + new_center.z ) );
 					GlobalFuncs.message_admins( "WARNING: A shuttle (" + this.name + "; " + this.type + ") has attempted to move to a location which overlaps with its current position. The shuttle will not be moved." );
 					return false;
@@ -299,9 +298,8 @@ namespace Somnium.Game {
 					GlobalFuncs.message_admins( "ERROR when moving " + this.name + " (" + this.type + ") - failed to get original turf at " + old_C.x_pos + ";" + old_C.y_pos + ";" + our_center.z );
 					continue;
 				} else if ( !old_turf.preserve_underlay && old_turf is Tile_Simulated_Shuttle_Wall ) {
-					Interface13.Stat( null, GlobalVars.transparent_icons.Contains( old_turf.icon_state ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.transparent_icons.Contains( old_turf.icon_state ) ) {
 						add_underlay = true;
 
 						if ( old_turf.underlays.len != 0 ) {
@@ -360,9 +358,8 @@ namespace Somnium.Game {
 				foreach (dynamic _e in Lang13.Enumerate( old_turf.vars )) {
 					key = _e;
 					
-					Interface13.Stat( null, GlobalVars.ignored_keys.Contains( key ) );
 
-					if ( false ) {
+					if ( GlobalVars.ignored_keys.Contains( key ) ) {
 						continue;
 					}
 
@@ -428,9 +425,8 @@ namespace Somnium.Game {
 				foreach (dynamic _g in Lang13.Enumerate( GlobalVars.moved_landmarks, typeof(ByTable) )) {
 					L2 = _g;
 					
-					Interface13.Stat( null, L2.Contains( old_turf ) );
 
-					if ( L2 is ByTable ) {
+					if ( L2.Contains( old_turf ) ) {
 						L2.Remove( old_turf );
 						L2.Add( new_turf );
 					}
@@ -662,9 +658,8 @@ namespace Somnium.Game {
 					foreach (dynamic _c in Lang13.Enumerate( docked_shuttles, typeof(Shuttle) )) {
 						S2 = _c;
 						
-						Interface13.Stat( null, moved_shuttles.Contains( S2 ) );
 
-						if ( S2 is Shuttle ) {
+						if ( moved_shuttles.Contains( S2 ) ) {
 							continue;
 						}
 						our_moved_dock = docked_shuttles[S2];

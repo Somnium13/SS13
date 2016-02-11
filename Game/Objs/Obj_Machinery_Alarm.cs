@@ -521,9 +521,8 @@ namespace Somnium.Game {
 				return false;
 			}
 			dev_type = ((dynamic)signal).data["device"];
-			Interface13.Stat( null, this.areaMaster.air_scrub_names.Contains( id_tag ) );
 
-			if ( !( ((dynamic)signal).data["sigtype"] != "status" ) && !false ) {
+			if ( !this.areaMaster.air_scrub_names.Contains( id_tag ) && !this.areaMaster.air_vent_names.Contains( id_tag ) ) {
 				this.register_env_machine( id_tag, dev_type );
 			}
 
@@ -641,7 +640,7 @@ namespace Somnium.Game {
 				this.apply_mode();
 			}
 
-			switch ((double?)( this.rcon_setting )) {
+			switch ((int?)( this.rcon_setting )) {
 				case 1:
 					this.remote_control = false;
 					break;
@@ -937,7 +936,7 @@ namespace Somnium.Game {
 			current_pressures = this.TLV["pressure"];
 			target_pressure = ( current_pressures[2] + current_pressures[3] ) / 2;
 
-			switch ((double?)( this.mode )) {
+			switch ((int?)( this.mode )) {
 				case 1:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this.areaMaster.air_scrub_names )) {
@@ -1205,7 +1204,7 @@ namespace Somnium.Game {
 			this.TLV["temperature"] = new ByTable(new object [] { 243.41, 273.41, 313.41, 343.41 });
 			this.target_temperature = 293.41;
 
-			switch ((double?)( this.preset )) {
+			switch ((int?)( this.preset )) {
 				case 2:
 					this.TLV["nitrogen"] = new ByTable(new object [] { 16, 19, 135, 140 });
 					this.TLV["oxygen"] = new ByTable(new object [] { -1, -1, 0.5, 1 });

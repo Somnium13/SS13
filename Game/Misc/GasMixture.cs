@@ -868,9 +868,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( sharer.trace_gases, typeof(Gas) )) {
 					trace_gas2 = _b;
 					
-					Interface13.Stat( null, trace_types_considered.Contains( trace_gas2.type ) );
 
-					if ( trace_gas2 is Gas ) {
+					if ( trace_types_considered.Contains( trace_gas2.type ) ) {
 						continue;
 					} else {
 						corresponding2 = null;

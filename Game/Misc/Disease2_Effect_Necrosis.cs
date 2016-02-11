@@ -16,7 +16,7 @@ namespace Somnium.Game {
 		public override bool activate( Mob_Living mob = null, bool multiplier = false ) {
 			Mob_Living H = null;
 			dynamic inst = null;
-			int totalslabs;
+			bool totalslabs = false;
 			ByTable allmeat = null;
 			dynamic sourcename = null;
 			dynamic sourcejob = null;
@@ -37,7 +37,7 @@ namespace Somnium.Game {
 				dynamic _d = inst; // Was a switch-case, sorry for the mess.
 				if ( _d==1 ) {
 					GlobalFuncs.to_chat( H, "<span class='warning'>A chunk of meat falls off of you!</span>" );
-					totalslabs = 1;
+					totalslabs = true;
 					allmeat = null;
 					allmeat = new ByTable( totalslabs );
 					sourcename = H.real_name;
@@ -51,7 +51,7 @@ namespace Somnium.Game {
 						newmeat.name = sourcename + newmeat.name;
 						newmeat.subjectname = sourcename;
 						newmeat.subjectjob = sourcejob;
-						((Reagents)newmeat.reagents).add_reagent( "nutriment", sourcenutriment / totalslabs );
+						((Reagents)newmeat.reagents).add_reagent( "nutriment", sourcenutriment / ( totalslabs ?1:0) );
 						allmeat[i] = newmeat;
 						meatslab = allmeat[i];
 						Tx = Map13.GetTile( mob.x, mob.y, mob.z );

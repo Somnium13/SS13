@@ -41,9 +41,8 @@ namespace Somnium.Game {
 			Tile T = null;
 
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
-			Interface13.Stat( null, GlobalVars.alert_overlays_global.Contains( "" + this.type ) );
 
-			if ( !false ) {
+			if ( !GlobalVars.alert_overlays_global.Contains( "" + this.type ) ) {
 				GlobalVars.alert_overlays_global.Add( new ByTable().Set( "" + this.type, new ByTable().Set( "alert_hot", new ByTable() ).Set( "alert_cold", new ByTable() ) ) );
 				type_states = GlobalVars.alert_overlays_global["" + this.type];
 

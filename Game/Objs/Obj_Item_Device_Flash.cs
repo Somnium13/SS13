@@ -227,7 +227,7 @@ namespace Somnium.Game {
 					((Mob)Subject).Weaken( 10 );
 					Icon13.Flick( "e_flash", Subject.flash );
 
-					if ( Lang13.Bool( user.mind ) && false ) {
+					if ( Lang13.Bool( user.mind ) && GlobalVars.ticker.mode.head_revolutionaries.Contains( user.mind ) ) {
 						
 						if ( Subject is Mob_Living_Carbon_Human ) {
 							
@@ -311,7 +311,7 @@ namespace Somnium.Game {
 		// Function from file: flash.dm
 		public bool clown_check( dynamic user = null ) {
 			
-			if ( Lang13.Bool( user ) && false && Rand13.PercentChance( 50 ) ) {
+			if ( Lang13.Bool( user ) && Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 				GlobalFuncs.to_chat( user, new Txt( "<span class='warning'>" ).The( this ).item().str( " slips out of your hand.</span>" ).ToString() );
 				user.drop_item();
 				return false;

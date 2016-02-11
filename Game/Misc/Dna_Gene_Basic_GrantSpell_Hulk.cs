@@ -34,9 +34,8 @@ namespace Somnium.Game {
 			if ( !( M is Mob_Living_Carbon_Human ) ) {
 				return;
 			}
-			Interface13.Stat( null, M.mutations.Contains( 4 ) );
 
-			if ( !( M is Mob_Living_Carbon_Human ) ) {
+			if ( M.mutations.Contains( 4 ) ) {
 				timeleft = Lang13.Bool( ((dynamic)M).hulk_time - Game13.time );
 
 				if ( Convert.ToDouble( M.health ) <= 25 || ( timeleft ?1:0) <= 0 ) {
@@ -54,9 +53,8 @@ namespace Somnium.Game {
 
 		// Function from file: vg_powers.dm
 		public override dynamic OnDrawUnderlays( Mob_Living_Carbon_Human M = null, string g = null, string fat = null ) {
-			Interface13.Stat( null, M.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( M.mutations.Contains( 4 ) ) {
 				
 				if ( Lang13.Bool( fat ) ) {
 					return "hulk_" + fat + "_s";
@@ -69,9 +67,8 @@ namespace Somnium.Game {
 
 		// Function from file: vg_powers.dm
 		public override bool can_activate( dynamic M = null, bool? flags = null ) {
-			Interface13.Stat( null, M.mutations.Contains( 110 ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( M.mutations.Contains( 110 ) ) ) {
 				return false;
 			}
 			return base.can_activate( (object)(M), flags );

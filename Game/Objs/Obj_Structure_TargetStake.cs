@@ -68,9 +68,8 @@ namespace Somnium.Game {
 		// Function from file: target_stake.dm
 		public override bool Move( dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0 ) {
 			base.Move( (object)(NewLoc), Dir, step_x, step_y );
-			Interface13.Stat( null, Map13.FetchInView( this, 3 ).Contains( this.pinned_target ) );
 
-			if ( false ) {
+			if ( Map13.FetchInView( this, 3 ).Contains( this.pinned_target ) ) {
 				this.pinned_target.loc = this.loc;
 			} else {
 				this.pinned_target = null;

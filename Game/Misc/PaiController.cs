@@ -201,9 +201,8 @@ namespace Somnium.Game {
 			dynamic t = null;
 			Obj_Item_Device_Paicard p = null;
 
-			Interface13.Stat( null, href_list.Contains( "signup" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "signup" ) ) {
 				O = Lang13.FindObj( href_list["signup"] );
 
 				if ( !Lang13.Bool( O ) ) {

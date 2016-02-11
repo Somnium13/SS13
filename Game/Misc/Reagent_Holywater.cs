@@ -44,12 +44,10 @@ namespace Somnium.Game {
 
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-				if ( false || H.mind.vampire != null ) {
-					Interface13.Stat( null, H.mind.vampire.powers.Contains( 16 ) );
-
-					if ( !false ) {
+				if ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) {
+					
+					if ( !H.mind.vampire.powers.Contains( 16 ) ) {
 						
 						if ( method == GlobalVars.TOUCH ) {
 							
@@ -69,9 +67,8 @@ namespace Somnium.Game {
 									affecting = ((Mob_Living_Carbon_Human)H).get_organ( "head" );
 
 									if ( Lang13.Bool( affecting ) ) {
-										Interface13.Stat( null, H.mind.vampire.powers.Contains( 13 ) );
-
-										if ( !false ) {
+										
+										if ( !H.mind.vampire.powers.Contains( 13 ) ) {
 											GlobalFuncs.to_chat( H, "<span class='danger'>A freezing liquid covers your face. Its melting!</span>" );
 											H.mind.vampire.smitecounter += 60;
 
@@ -85,17 +82,13 @@ namespace Somnium.Game {
 											H.mind.vampire.smitecounter += 12;
 										}
 									}
+								} else if ( !H.mind.vampire.powers.Contains( 13 ) ) {
+									GlobalFuncs.to_chat( H, "<span class='danger'>You are doused with a freezing liquid. You're melting!</span>" );
+									((Mob_Living)H).take_organ_damage( Num13.MinInt( 15, ((int)( volume * 2 )) ) );
+									H.mind.vampire.smitecounter += volume * 2;
 								} else {
-									Interface13.Stat( null, H.mind.vampire.powers.Contains( 13 ) );
-
-									if ( !( Rand13.PercentChance( 15 ) && volume >= 30 ) ) {
-										GlobalFuncs.to_chat( H, "<span class='danger'>You are doused with a freezing liquid. You're melting!</span>" );
-										((Mob_Living)H).take_organ_damage( Num13.MinInt( 15, ((int)( volume * 2 )) ) );
-										H.mind.vampire.smitecounter += volume * 2;
-									} else {
-										GlobalFuncs.to_chat( H, "<span class='warning'>You are doused with a freezing liquid. Your vampiric powers protect you!</span>" );
-										H.mind.vampire.smitecounter += volume * 0.4;
-									}
+									GlobalFuncs.to_chat( H, "<span class='warning'>You are doused with a freezing liquid. Your vampiric powers protect you!</span>" );
+									H.mind.vampire.smitecounter += volume * 0.4;
 								}
 							}
 						} else if ( !Lang13.Bool( H.unacidable ) ) {
@@ -119,9 +112,8 @@ namespace Somnium.Game {
 
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( H.mind ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( H.mind ) ) ) {
 					
 					if ( Rand13.PercentChance( 10 ) ) {
 						((GameMode)GlobalVars.ticker.mode).remove_cultist( H.mind );
@@ -130,12 +122,10 @@ namespace Somnium.Game {
 						GlobalFuncs.to_chat( H, "<span class='danger'>A freezing liquid permeates your bloodstream. Your arcane knowledge is becoming osbscure again.</span>" );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-				if ( false || H.mind.vampire != null ) {
-					Interface13.Stat( null, H.mind.vampire.powers.Contains( 13 ) );
-
-					if ( !false ) {
+				if ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) {
+					
+					if ( !H.mind.vampire.powers.Contains( 13 ) ) {
 						GlobalFuncs.to_chat( H, "<span class='danger'>A freezing liquid permeates your bloodstream. Your vampiric powers fade and your insides burn.</span>" );
 						H.take_organ_damage( 0, 5 );
 						H.mind.vampire.smitecounter += 10;

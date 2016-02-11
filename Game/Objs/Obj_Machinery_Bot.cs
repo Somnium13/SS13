@@ -104,7 +104,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.explode();
 					return false;

@@ -68,9 +68,8 @@ namespace Somnium.Game {
 						}
 						key += ")";
 					}
-					Interface13.Stat( null, L.Contains( key ) );
 
-					if ( !Lang13.Bool( item.args ) ) {
+					if ( !L.Contains( key ) ) {
 						
 						if ( Lang13.Bool( item.args ) ) {
 							item.args.Apply( Lang13.BindFunc( item.v_ref, item.procname ) );

@@ -144,9 +144,8 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( pet_app ) && pet_app.game_state == 2 && !pet_app.isvisiting && ( !Lang13.Bool( this.visited[pet_app.petID] ) || Game13.time - Convert.ToDouble( this.visited[pet_app.petID] ) >= 6000 ) ) {
 					T2 = GlobalFuncs.get_turf( check_pda );
-					Interface13.Stat( null, Map13.FetchInRange( 3, T ).Contains( T2 ) );
 
-					if ( false ) {
+					if ( Map13.FetchInRange( 3, T ).Contains( T2 ) ) {
 						possible_visitors.Add( pet_app );
 					}
 				}
@@ -218,9 +217,8 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( pet_app ) && pet_app.game_state == 2 && !pet_app.isfighting && ( !Lang13.Bool( this.challenged[pet_app.petID] ) || Game13.time - Convert.ToDouble( this.challenged[pet_app.petID] ) >= 6000 ) ) {
 					T2 = GlobalFuncs.get_turf( check_pda );
-					Interface13.Stat( null, Map13.FetchInRange( 3, T ).Contains( T2 ) );
 
-					if ( false ) {
+					if ( Map13.FetchInRange( 3, T ).Contains( T2 ) ) {
 						possible_challengers.Add( pet_app );
 					}
 				}

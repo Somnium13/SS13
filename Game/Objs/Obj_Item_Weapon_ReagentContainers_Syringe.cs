@@ -226,9 +226,8 @@ namespace Somnium.Game {
 						Game13.log.WriteMsg( "## WARNING: " + new Txt( "Tried to draw blood or equivalent from " ).item( target ).str( " (" ).Ref( target ).str( ") but it's missing their DNA datum!" ).ToString() );
 						return;
 					}
-					Interface13.Stat( null, T.mutations.Contains( 8 ) );
 
-					if ( !Lang13.Bool( T.dna ) ) {
+					if ( Lang13.Bool( T.mutations.Contains( 8 ) ) ) {
 						GlobalFuncs.to_chat( user, "<span class='warning'>You are unable to locate any blood.</span>" );
 						return;
 					}
@@ -326,9 +325,8 @@ namespace Somnium.Game {
 			}
 
 			if ( user.a_intent == "hurt" && A is Mob ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( false && Rand13.PercentChance( 50 ) ) {
+				
+				if ( Lang13.Bool( user.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 ) ) {
 					A = user;
 				}
 

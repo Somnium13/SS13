@@ -307,9 +307,8 @@ namespace Somnium.Game {
 				R3.receive_signal( signal2 );
 			}
 			Task13.Schedule( Rand13.Int( 10, 25 ), (Task13.Closure)(() => {
-				Interface13.Stat( null, ((dynamic)signal2).data["level"].Contains( Lang13.Bool( ((dynamic)signal2).data["done"] ) && Lang13.Bool( position.z ) ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( ((dynamic)signal2).data["level"].Contains( Lang13.Bool( ((dynamic)signal2).data["done"] ) && Lang13.Bool( position.z ) ) ) ) {
 					GlobalFuncs.returnToPool( speech2 );
 					return;
 				}
@@ -519,12 +518,11 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( this.listening ) ) {
 				return -1;
 			}
-			Interface13.Stat( null, level.Contains( 0 ) );
 
-			if ( !( !Lang13.Bool( this.listening ) ) ) {
+			if ( !Lang13.Bool( level.Contains( 0 ) ) ) {
 				position = GlobalFuncs.get_turf( this );
 
-				if ( !Lang13.Bool( position ) || !false ) {
+				if ( !Lang13.Bool( position ) || !Lang13.Bool( level.Contains( position.z ) ) ) {
 					return -1;
 				}
 			}

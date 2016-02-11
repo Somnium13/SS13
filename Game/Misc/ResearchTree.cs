@@ -19,9 +19,8 @@ namespace Somnium.Game {
 			dynamic viewer = null;
 			dynamic unlock = null;
 
-			Interface13.Stat( null, href_list.Contains( "unlock" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "unlock" ) ) {
 				viewer = Lang13.FindObj( href_list["user"] );
 				unlock = Lang13.FindObj( this.usable_unlocks[href_list["unlock"]] );
 

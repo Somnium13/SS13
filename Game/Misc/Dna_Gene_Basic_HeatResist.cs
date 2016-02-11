@@ -34,13 +34,11 @@ namespace Somnium.Game {
 
 			
 			if ( ( ( flags == true ?1:0) & 1 ) != 0 ) {
-				Interface13.Stat( null, M.active_genes.Contains( typeof(Dna_Gene_Basic_ColdResist) ) );
-				return !false;
+				return !M.active_genes.Contains( typeof(Dna_Gene_Basic_ColdResist) );
 			}
 			_prob = 15;
-			Interface13.Stat( null, M.mutations.Contains( 2 ) );
 
-			if ( ( ( flags == true ?1:0) & 1 ) != 0 ) {
+			if ( Lang13.Bool( M.mutations.Contains( 2 ) ) ) {
 				_prob = 5;
 			}
 

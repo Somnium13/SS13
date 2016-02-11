@@ -98,9 +98,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( B2 ) ) {
 					virus = GlobalFuncs.virus_copylist( B2.data["virus2"] );
 					choice = href_list["isolate"];
-					Interface13.Stat( null, virus.Contains( choice ) );
 
-					if ( false ) {
+					if ( virus.Contains( choice ) ) {
 						this.virus2 = virus[choice];
 						this.isolating = this.general_process_time * 2;
 						this.update_icon();

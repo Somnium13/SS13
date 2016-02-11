@@ -93,9 +93,8 @@ namespace Somnium.Game {
 						if ( Convert.ToDouble( ((dynamic)H).hulk_time ) < Game13.time && !this.has_been_hulk ) {
 							((dynamic)H).hulk_time = Game13.time + 300;
 							this.hulked_at = Lang13.Bool( ((dynamic)H).hulk_time );
-							Interface13.Stat( null, H.mutations.Contains( 4 ) );
 
-							if ( !false ) {
+							if ( !H.mutations.Contains( 4 ) ) {
 								this.has_been_hulk = true;
 								this.has_ripped_and_torn = false;
 								H.mutations.Add( 4 );
@@ -134,7 +133,7 @@ namespace Somnium.Game {
 			if ( M is Mob_Living_Carbon_Human ) {
 				H = M;
 
-				if ( !this.has_been_hulk || this.has_ripped_and_torn || !false ) {
+				if ( !this.has_been_hulk || this.has_ripped_and_torn || !H.mutations.Contains( 4 ) ) {
 					return false;
 				}
 				timedmg = ( 300 - ( H.hulk_time - Game13.time ) ) / 10;

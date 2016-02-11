@@ -90,7 +90,7 @@ namespace Somnium.Game {
 					Living = _a;
 					
 
-					if ( Living == user || Living == this.holder || false ) {
+					if ( Living == user || Living == this.holder || zapped.Contains( Living ) ) {
 						continue;
 					}
 					zappanic.Or( Living );
@@ -122,9 +122,8 @@ namespace Somnium.Game {
 					
 
 					if ( M != this.holder && M != Task13.User && M != user ) {
-						Interface13.Stat( null, zapped.Contains( M ) );
-
-						if ( !false && target == otarget ) {
+						
+						if ( !zapped.Contains( M ) && target == otarget ) {
 							continue;
 						}
 						dist = Map13.GetDistance( M, user );

@@ -12,13 +12,13 @@ namespace Somnium.Game {
 		// Function from file: modules.dm
 		public Module ( Base_Data O = null ) {
 			Type type = null;
-			dynamic mneed = null;
+			bool mneed = false;
 			double needed = 0;
 
 			type = O.type;
 			mneed = GlobalVars.mods.inmodlist( type );
 
-			if ( !Lang13.Bool( mneed ) ) {
+			if ( !mneed ) {
 				GlobalFuncs.qdel( this );
 				return;
 			}

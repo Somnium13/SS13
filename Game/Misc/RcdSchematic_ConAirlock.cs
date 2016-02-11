@@ -166,9 +166,8 @@ namespace Somnium.Game {
 					href_key = _a;
 					
 					access = String13.ParseNumber( href_key );
-					Interface13.Stat( null, access_levels.Contains( access ) );
 
-					if ( !false ) {
+					if ( !access_levels.Contains( access ) ) {
 						continue;
 					}
 					new_access.Or( access );

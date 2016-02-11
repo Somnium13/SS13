@@ -80,9 +80,8 @@ namespace Somnium.Game {
 				if ( !( M != null ) ) {
 					continue;
 				}
-				Interface13.Stat( null, M.beams.Contains( ourselves ) );
 
-				if ( !( M != null ) ) {
+				if ( M.beams.Contains( ourselves ) ) {
 					M.beams.Remove( ourselves );
 				}
 			}
@@ -94,9 +93,8 @@ namespace Somnium.Game {
 				if ( !( F != null ) ) {
 					continue;
 				}
-				Interface13.Stat( null, F.beams.Contains( ourselves ) );
 
-				if ( !( F != null ) ) {
+				if ( F.beams.Contains( ourselves ) ) {
 					F.beams.Remove( ourselves );
 				}
 			}
@@ -108,9 +106,8 @@ namespace Somnium.Game {
 				if ( ourselves == P.beam ) {
 					P.beam = null;
 				}
-				Interface13.Stat( null, P.beams.Contains( ourselves ) );
 
-				if ( ourselves == P.beam ) {
+				if ( P.beams.Contains( ourselves ) ) {
 					P.beams.Remove( ourselves );
 				}
 			}
@@ -118,9 +115,8 @@ namespace Somnium.Game {
 			foreach (dynamic _d in Lang13.Enumerate( GlobalVars.photocollector_list, typeof(Obj_Machinery_Power_Photocollector) )) {
 				PC = _d;
 				
-				Interface13.Stat( null, PC.beams.Contains( ourselves ) );
 
-				if ( PC is Obj_Machinery_Power_Photocollector ) {
+				if ( PC.beams.Contains( ourselves ) ) {
 					PC.beams.Remove( ourselves );
 				}
 			}
@@ -332,8 +328,7 @@ namespace Somnium.Game {
 
 		// Function from file: beam.dm
 		public dynamic HasSource( Obj source = null ) {
-			Interface13.Stat( null, this.sources.Contains( source ) );
-			return null;
+			return this.sources.Contains( source );
 		}
 
 		// Function from file: beam.dm

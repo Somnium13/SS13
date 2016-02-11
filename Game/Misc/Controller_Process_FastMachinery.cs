@@ -59,9 +59,8 @@ namespace Somnium.Game {
 
 						if ( M is Obj_Machinery ) {
 							time_end = Game13.timeofday;
-							Interface13.Stat( null, GlobalVars.machine_profiling.Contains( M.type ) );
 
-							if ( !false ) {
+							if ( !GlobalVars.machine_profiling.Contains( M.type ) ) {
 								GlobalVars.machine_profiling[M.type] = 0;
 							}
 							GlobalVars.machine_profiling[M.type] += time_end - time_start;

@@ -23,9 +23,8 @@ namespace Somnium.Game {
 
 		// Function from file: mine_items.dm
 		public override bool afterattack( dynamic A = null, dynamic user = null, bool? flag = null, dynamic _params = null, bool? struggle = null ) {
-			Interface13.Stat( null, user.contents.Contains( A ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( user.contents.Contains( A ) ) ) {
 				return false;
 			}
 

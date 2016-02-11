@@ -33,9 +33,8 @@ namespace Somnium.Game {
 
 			
 			if ( user != null && user.client != null ) {
-				Interface13.Stat( null, user.client.screen.Contains( this ) );
-
-				if ( !false ) {
+				
+				if ( !user.client.screen.Contains( this ) ) {
 					user.client.screen.Add( this );
 				}
 			}
@@ -85,9 +84,8 @@ namespace Somnium.Game {
 			}
 
 			if ( spell.connected_button != null ) {
-				Interface13.Stat( null, this.spell_objects.Contains( spell.connected_button ) );
-
-				if ( false ) {
+				
+				if ( this.spell_objects.Contains( spell.connected_button ) ) {
 					return;
 				} else {
 					this.spell_objects.Add( spell.connected_button );

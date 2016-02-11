@@ -69,9 +69,8 @@ namespace Somnium.Game {
 				} else if ( _c==3 ) {
 					locked = new ByTable(new object [] { "vars", "key", "ckey", "client", "firemut", "ishulk", "telekinesis", "xray", "virus", "viruses", "cuffed", "ka", "last_eaten", "urine" });
 					((dynamic)this.master).buildmode.varholder = Interface13.Input( Task13.User, "Enter variable name:", "Name", "name", null, InputType.Any );
-					Interface13.Stat( null, ((dynamic)( locked != null && !GlobalFuncs.check_rights( 32, false ) )).Contains( ((dynamic)this.master).buildmode.varholder ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( ((dynamic)( locked != null && !GlobalFuncs.check_rights( 32, false ) )).Contains( ((dynamic)this.master).buildmode.varholder ) ) ) {
 						return true;
 					}
 					thetype = Interface13.Input( Task13.User, "Select variable type:", "Type", null, new ByTable(new object [] { "text", "number", "mob-reference", "obj-reference", "turf-reference" }), InputType.Any );

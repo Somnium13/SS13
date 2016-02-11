@@ -117,9 +117,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.reagents ) && Lang13.Bool( this.reagents.total_volume ) ) {
 				
 				if ( M is Mob_Living_Carbon && this == ((dynamic)M).wear_mask ) {
-					Interface13.Stat( null, ((dynamic)( Lang13.Bool( ((dynamic)M).mutations ) || M.loc is Obj_Machinery_Atmospherics_Unary_CryoCell )).Contains( ((Reagents)M.reagents).has_reagent( "lexorin" ) || 100 != 0 ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( ((dynamic)( Lang13.Bool( ((dynamic)M).mutations ) || M.loc is Obj_Machinery_Atmospherics_Unary_CryoCell )).Contains( ((Reagents)M.reagents).has_reagent( "lexorin" ) || 100 != 0 ) ) ) {
 						((Reagents)this.reagents).remove_any( 0.2 );
 					} else {
 						
@@ -324,13 +323,13 @@ namespace Somnium.Game {
 		public override bool? update_icon( dynamic location = null, dynamic target = null ) {
 			
 			switch ((bool)( this.lit )) {
-				case 1:
+				case true:
 					this.name = "lit " + Lang13.Initial( this, "name" );
 					this.item_state = "" + Lang13.Initial( this, "item_state" ) + "on";
 					this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "on";
 					this.damtype = "fire";
 					break;
-				case 0:
+				case false:
 					this.name = "" + Lang13.Initial( this, "name" );
 					this.item_state = "" + Lang13.Initial( this, "item_state" ) + "off";
 					this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "off";

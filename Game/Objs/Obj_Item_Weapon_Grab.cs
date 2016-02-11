@@ -86,7 +86,7 @@ namespace Somnium.Game {
 
 			if ( M == this.assailant && this.state >= 2 ) {
 				
-				if ( user is Mob_Living_Carbon_Human && false && this.affecting is Mob_Living_Carbon_Monkey || user is Mob_Living_Carbon_Alien && this.affecting is Mob_Living_Carbon ) {
+				if ( user is Mob_Living_Carbon_Human && Lang13.Bool( user.mutations.Contains( 6 ) ) && this.affecting is Mob_Living_Carbon_Monkey || user is Mob_Living_Carbon_Alien && this.affecting is Mob_Living_Carbon ) {
 					attacker = user;
 					((Ent_Static)user).visible_message( "<span class='danger'>" + user + " is attempting to devour " + this.affecting + "!</span>", null, null, "<span class='danger'>" + user + " is attempting to kiss " + this.affecting + "! Ew!</span>" );
 

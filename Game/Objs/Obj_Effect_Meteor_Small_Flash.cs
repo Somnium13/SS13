@@ -43,9 +43,8 @@ namespace Somnium.Game {
 						if ( Lang13.Bool( ((dynamic)H).earprot() ) ) {
 							ear_safety += 2;
 						}
-						Interface13.Stat( null, H.mutations.Contains( 4 ) );
 
-						if ( Lang13.Bool( ((dynamic)H).earprot() ) ) {
+						if ( H.mutations.Contains( 4 ) ) {
 							ear_safety += 1;
 						}
 

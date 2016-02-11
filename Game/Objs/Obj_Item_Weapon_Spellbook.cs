@@ -74,9 +74,8 @@ namespace Somnium.Game {
 					
 					if ( href_list["spell_choice"] == "rememorize" ) {
 						A = Lang13.FindObj( typeof(Zone_WizardStation) );
-						Interface13.Stat( null, A.contents.Contains( Task13.User ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( A.contents.Contains( Task13.User ) ) ) {
 							this.uses = this.max_uses;
 							H.spellremove( Task13.User );
 							this.temp = "All spells have been removed. You may now memorize a new set of spells.";
@@ -346,9 +345,8 @@ namespace Somnium.Game {
 							} else if ( _c=="scrying" ) {
 								GlobalFuncs.feedback_add_details( "wizard_spell_learned", "SO" );
 								new Obj_Item_Weapon_Scrying( GlobalFuncs.get_turf( H ) );
-								Interface13.Stat( null, H.mutations.Contains( 3 ) );
 
-								if ( !false ) {
+								if ( !H.mutations.Contains( 3 ) ) {
 									H.mutations.Add( 3 );
 									H.sight |= 28;
 									H.see_in_dark = 8;

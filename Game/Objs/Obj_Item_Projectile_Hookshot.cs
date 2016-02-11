@@ -234,9 +234,8 @@ namespace Somnium.Game {
 					this.length++;
 
 					if ( ( this.length ??0) < ( hookshot2.maxlength ??0) ) {
-						Interface13.Stat( null, GlobalVars.bullet_master.Contains( "hookshot_chain_angle" + this.target_angle ) );
-
-						if ( !false ) {
+						
+						if ( !GlobalVars.bullet_master.Contains( "hookshot_chain_angle" + this.target_angle ) ) {
 							I = new Icon( "icons/obj/projectiles_experimental.dmi", "hookshot_chain" );
 							I.Turn( this.target_angle + 45 );
 							GlobalVars.bullet_master["hookshot_chain_angle" + this.target_angle] = I;
@@ -246,9 +245,8 @@ namespace Somnium.Game {
 						}
 						HC.icon = GlobalVars.bullet_master["hookshot_head_angle" + this.target_angle];
 					} else {
-						Interface13.Stat( null, GlobalVars.bullet_master.Contains( "hookshot_head_angle" + this.target_angle ) );
-
-						if ( !( ( this.length ??0) < ( hookshot2.maxlength ??0) ) ) {
+						
+						if ( !GlobalVars.bullet_master.Contains( "hookshot_head_angle" + this.target_angle ) ) {
 							I2 = new Icon( "icons/obj/projectiles_experimental.dmi", "hookshot_pixel" );
 							I2.Turn( this.target_angle + 45 );
 							GlobalVars.bullet_master["hookshot_head_angle" + this.target_angle] = I2;

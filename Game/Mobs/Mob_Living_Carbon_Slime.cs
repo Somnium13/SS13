@@ -446,9 +446,8 @@ namespace Somnium.Game {
 				this.attacked += 10;
 
 				if ( Rand13.PercentChance( 90 ) ) {
-					Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 						damage += 5;
 
 						if ( Lang13.Bool( this.Victim ) ) {
@@ -666,7 +665,7 @@ namespace Somnium.Game {
 			b_loss = null;
 			f_loss = null;
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					b_loss += 500;
 					return false;
@@ -915,9 +914,8 @@ namespace Somnium.Game {
 				if ( speaker != null ) {
 					speaker = speaker.GetSource();
 				}
-				Interface13.Stat( null, this.Friends.Contains( speaker ) );
 
-				if ( speaker != null ) {
+				if ( this.Friends.Contains( speaker ) ) {
 					this.speech_buffer = new ByTable();
 					this.speech_buffer.Add( _args[1].name );
 					this.speech_buffer.Add( String13.ToLower( String13.HtmlEncode( _args[2] ) ) );
@@ -1186,9 +1184,8 @@ namespace Somnium.Game {
 
 			while (Lang13.Bool( this.Victim ) && Convert.ToDouble( M.health ) > -70 && this.stat != 2) {
 				this.canmove = false;
-				Interface13.Stat( null, Map13.FetchInView( this, 1 ).Contains( M ) );
 
-				if ( false ) {
+				if ( Map13.FetchInView( this, 1 ).Contains( M ) ) {
 					this.loc = M.loc;
 
 					if ( Rand13.PercentChance( 15 ) && Lang13.Bool( M.client ) && M is Mob_Living_Carbon ) {
@@ -1277,9 +1274,8 @@ namespace Somnium.Game {
 							if ( Lang13.Bool( this.Victim.LAssailant ) && this.Victim.LAssailant != this.Victim ) {
 								
 								if ( Rand13.PercentChance( 50 ) ) {
-									Interface13.Stat( null, this.Friends.Contains( this.Victim.LAssailant ) );
-
-									if ( !false ) {
+									
+									if ( !this.Friends.Contains( this.Victim.LAssailant ) ) {
 										this.Friends.Add( this.Victim.LAssailant );
 									}
 								}
@@ -1459,9 +1455,8 @@ namespace Somnium.Game {
 										continue;
 									}
 								}
-								Interface13.Stat( null, this.Friends.Contains( L ) );
 
-								if ( !( this is Mob_Living_Carbon_Slime_Adult ) ) {
+								if ( this.Friends.Contains( L ) ) {
 									continue;
 								}
 
@@ -1887,9 +1882,8 @@ namespace Somnium.Game {
 					if ( !this.AIproc ) {
 						break;
 					}
-					Interface13.Stat( null, Map13.FetchInView( this, 1 ).Contains( this.Target ) );
 
-					if ( !this.AIproc ) {
+					if ( Map13.FetchInView( this, 1 ).Contains( this.Target ) ) {
 						
 						if ( this.Target is Mob_Living_Silicon ) {
 							
@@ -1934,19 +1928,15 @@ namespace Somnium.Game {
 						} else if ( !this.Atkcool && this.Target.Adjacent( this ) ) {
 							this.Feedon( this.Target );
 						}
-					} else {
-						Interface13.Stat( null, Map13.FetchInView( this, 7 ).Contains( this.Target ) );
-
-						if ( !this.AIproc ) {
-							
-							if ( this.Target.Adjacent( this ) ) {
-								Map13.StepTowards( this, this.Target, 0 );
-							}
-						} else {
-							this.Target = null;
-							this.AIproc = false;
-							break;
+					} else if ( Map13.FetchInView( this, 7 ).Contains( this.Target ) ) {
+						
+						if ( this.Target.Adjacent( this ) ) {
+							Map13.StepTowards( this, this.Target, 0 );
 						}
+					} else {
+						this.Target = null;
+						this.AIproc = false;
+						break;
 					}
 				}
 				sleeptime = this.movement_delay();
@@ -2370,9 +2360,8 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( M ) ) {
 				return;
 			}
-			Interface13.Stat( null, Map13.FetchInView( this, 1 ).Contains( M ) );
 
-			if ( !Lang13.Bool( M ) ) {
+			if ( Map13.FetchInView( this, 1 ).Contains( M ) ) {
 				
 				if ( !( this is Mob_Living_Carbon_Brain ) ) {
 					

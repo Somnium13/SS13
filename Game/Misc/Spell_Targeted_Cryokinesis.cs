@@ -32,9 +32,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( targets, typeof(Mob_Living_Carbon) )) {
 				target = _a;
 				
-				Interface13.Stat( null, target.mutations.Contains( 2 ) );
 
-				if ( target is Mob_Living_Carbon ) {
+				if ( target.mutations.Contains( 2 ) ) {
 					target.visible_message( "<span class='warning'>A cloud of fine ice crystals engulfs " + target.name + ", but disappears almost instantly!</span>" );
 					return false;
 				}

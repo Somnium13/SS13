@@ -60,9 +60,8 @@ namespace Somnium.Game {
 		public bool press_button( dynamic button_id = null, dynamic user = null ) {
 			Obj_Item_Device_RemoteButton button = null;
 
-			Interface13.Stat( null, this.pressed.Contains( button_id ) );
-
-			if ( false ) {
+			
+			if ( this.pressed.Contains( button_id ) ) {
 				return false;
 			}
 			button = this.get_button_by_id( button_id );
@@ -95,7 +94,7 @@ namespace Somnium.Game {
 		// Function from file: remote.dm
 		public dynamic get_button_by_id( dynamic button_id = null ) {
 			
-			if ( Lang13.Bool( button_id ) && false ) {
+			if ( Lang13.Bool( button_id ) && this.buttons.Contains( button_id ) ) {
 				return this.buttons[button_id];
 			}
 			return null;
@@ -107,14 +106,12 @@ namespace Somnium.Game {
 
 			Obj_Item_Device_RemoteButton old_button = null;
 
-			Interface13.Stat( null, this.buttons.Contains( button_id ) );
-
-			if ( !( _override == null ) ) {
+			
+			if ( !this.buttons.Contains( button_id ) ) {
 				return 0;
 			}
-			Interface13.Stat( null, this.removable_buttons.Contains( button_id ) );
 
-			if ( !( !( _override == null ) ) && !( _override == true ) ) {
+			if ( !this.removable_buttons.Contains( button_id ) && !( _override == true ) ) {
 				return null;
 			}
 			old_button = this.buttons[button_id];
@@ -135,7 +132,7 @@ namespace Somnium.Game {
 		// Function from file: remote.dm
 		public bool add_button( dynamic button = null, dynamic button_id = null ) {
 			
-			if ( !Lang13.Bool( button ) || !( button is Obj_Item_Device_RemoteButton ) || !false || Lang13.Bool( this.buttons[button_id] ) ) {
+			if ( !Lang13.Bool( button ) || !( button is Obj_Item_Device_RemoteButton ) || !this.buttons.Contains( button_id ) || Lang13.Bool( this.buttons[button_id] ) ) {
 				return false;
 			}
 

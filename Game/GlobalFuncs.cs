@@ -552,9 +552,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( req_access )) {
 				req = _a;
 				
-				Interface13.Stat( null, L.Contains( req ) );
 
-				if ( !false ) {
+				if ( !Lang13.Bool( L.Contains( req ) ) ) {
 					return false;
 				}
 			}
@@ -564,9 +563,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( req_one_access )) {
 					req2 = _b;
 					
-					Interface13.Stat( null, L.Contains( req2 ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( L.Contains( req2 ) ) ) {
 						return true;
 					}
 				}
@@ -990,7 +988,7 @@ namespace Somnium.Game {
 		// Function from file: access.dm
 		public static ByTable get_region_accesses( double? code = null ) {
 			
-			switch ((double?)( code )) {
+			switch ((int?)( code )) {
 				case 0:
 					return GlobalFuncs.get_all_accesses();
 					break;
@@ -1084,7 +1082,7 @@ namespace Somnium.Game {
 		// Function from file: access.dm
 		public static string get_region_accesses_name( double? code = null ) {
 			
-			switch ((double?)( code )) {
+			switch ((int?)( code )) {
 				case 0:
 					return "All";
 					break;
@@ -1530,54 +1528,48 @@ namespace Somnium.Game {
 			if ( !( M is Mob ) ) {
 				return 0;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( GlobalVars.ticker.mode.revolutionaries.Contains( M.mind ) || GlobalVars.ticker.mode.head_revolutionaries.Contains( M.mind ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "revolution" ) {
 					return 2;
 				}
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( M.mind ) ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "cult" ) {
 					return 2;
 				}
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.malf_ai.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( GlobalVars.ticker.mode.malf_ai.Contains( M.mind ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "malfunction" ) {
 					return 2;
 				}
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( GlobalVars.ticker.mode.syndicates.Contains( M.mind ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "nuclear" ) {
 					return 2;
 				}
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( GlobalVars.ticker.mode.wizards.Contains( M.mind ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "wizard" ) {
 					return 2;
 				}
 				return 1;
 			}
-			Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( M.mind ) );
 
-			if ( !( M is Mob ) || false ) {
+			if ( GlobalVars.ticker.mode.changelings.Contains( M.mind ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "changeling" ) {
 					return 2;
@@ -1592,10 +1584,8 @@ namespace Somnium.Game {
 				}
 				return 1;
 			}
-			Interface13.Stat( GlobalVars.ticker.mode.infected_monkeys, M.viruses.Contains( typeof(Disease_JungleFever) ) );
-			Interface13.Stat( null, null.Contains( M is Mob_Living_SimpleAnimal_Borer || Lang13.Bool( M.mind ) ) );
 
-			if ( M is Mob_Living_SimpleAnimal_Borer ) {
+			if ( GlobalVars.ticker.mode.infected_monkeys.Contains( Lang13.Bool( M.viruses.Contains( typeof(Disease_JungleFever) ) ) || Lang13.Bool( M.mind ) ) ) {
 				
 				if ( GlobalVars.ticker.mode.config_tag == "monkey" ) {
 					return 2;
@@ -1860,9 +1850,8 @@ namespace Somnium.Game {
 
 			dynamic _i = choice; // Was a switch-case, sorry for the mess.
 			if ( _i=="traitor" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.traitors.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.traitors.Add( M.mind );
@@ -1902,9 +1891,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "Your previous belongings have been stored in your backpack." );
 				return true;
 			} else if ( _i=="changeling" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.changelings.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.changelings.Add( M.mind );
@@ -1916,9 +1904,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "<span class='danger'>You have been gifted a total of 100 evolution points to spend!</span>" );
 				return true;
 			} else if ( _i=="vampire" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( M.mind ) );
-
-				if ( false || M.mind.vampire != null ) {
+				
+				if ( GlobalVars.ticker.mode.vampires.Contains( M.mind ) || M.mind.vampire != null ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.vampires.Add( M.mind );
@@ -1958,9 +1945,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "<span class='danger'>You have been gifted a total of 666 usable units of blood!</span>" );
 				return true;
 			} else if ( _i=="cult" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( M.mind ) ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.cult += M.mind;
@@ -2063,9 +2049,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "<span class='sinister'>You have a talisman in your backpack, one that will help you start the cult on this station. Use it well and remember - there are others...or maybe not...</span>" );
 				return true;
 			} else if ( _i=="rev" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.head_revolutionaries.Add( M.mind );
@@ -2108,9 +2093,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "The flash in your pocket will help you to persuade the crew to join your cause." );
 				return true;
 			} else if ( _i=="nuke" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.syndicates.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.syndicates.Add( M.mind );
@@ -2155,9 +2139,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "You have been provided with a code breaker to decipher the nuke's code, it has been placed in your backpack." );
 				return true;
 			} else if ( _i=="deathsquad" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.deathsquads.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.deathsquads.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.deathsquad.Add( M.mind );
@@ -2216,9 +2199,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M, "Your previous belongings have been stored in your backpack." );
 				return true;
 			} else if ( _i=="wizard" ) {
-				Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( M.mind ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.ticker.mode.wizards.Contains( M.mind ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.wizards.Add( M.mind );
@@ -2301,10 +2283,8 @@ namespace Somnium.Game {
 				if ( M.monkeyizing ) {
 					return false;
 				}
-				Interface13.Stat( GlobalVars.ticker.mode.infected_monkeys, M.viruses.Contains( typeof(Disease_JungleFever) ) );
-				Interface13.Stat( null, null.Contains( M.monkeyizing || Lang13.Bool( M.mind ) ) );
 
-				if ( M.monkeyizing ) {
+				if ( GlobalVars.ticker.mode.infected_monkeys.Contains( Lang13.Bool( M.viruses.Contains( typeof(Disease_JungleFever) ) ) || Lang13.Bool( M.mind ) ) ) {
 					return false;
 				}
 				GlobalVars.ticker.mode.infected_monkeys.Add( M.mind );
@@ -2687,23 +2667,20 @@ namespace Somnium.Game {
 			}
 
 			if ( code == 0 ) {
-				Interface13.Stat( null, GlobalVars.del_profiling.Contains( "" + type ) );
-
-				if ( !false ) {
+				
+				if ( !GlobalVars.del_profiling.Contains( "" + type ) ) {
 					GlobalVars.del_profiling["" + type] = 0;
 				}
 				GlobalVars.del_profiling["" + type] += 1;
 			} else if ( code == 1 ) {
-				Interface13.Stat( null, GlobalVars.ghdel_profiling.Contains( "" + type ) );
-
-				if ( !false ) {
+				
+				if ( !GlobalVars.ghdel_profiling.Contains( "" + type ) ) {
 					GlobalVars.ghdel_profiling["" + type] = 0;
 				}
 				GlobalVars.ghdel_profiling["" + type] += 1;
 			} else {
-				Interface13.Stat( null, GlobalVars.gdel_profiling.Contains( "" + type ) );
-
-				if ( !( code == 1 ) ) {
+				
+				if ( !GlobalVars.gdel_profiling.Contains( "" + type ) ) {
 					GlobalVars.gdel_profiling["" + type] = 0;
 				}
 				GlobalVars.gdel_profiling["" + type] += 1;
@@ -3109,9 +3086,8 @@ namespace Somnium.Game {
 				foreach (dynamic _c in Lang13.Enumerate( protagonist_list, typeof(Mind) )) {
 					current_mind = _c;
 					
-					Interface13.Stat( null, antagonist_list.Contains( current_mind ) );
 
-					if ( current_mind is Mind ) {
+					if ( antagonist_list.Contains( current_mind ) ) {
 						protagonist_list.Remove( current_mind );
 					}
 				}
@@ -3337,9 +3313,8 @@ namespace Somnium.Game {
 							radios.Add( R3 );
 						}
 					}
-					Interface13.Stat( null, GlobalVars.radiochannelsreverse.Contains( String13.NumberToString( Convert.ToDouble( speech.frequency ) ) ) );
 
-					if ( false ) {
+					if ( GlobalVars.radiochannelsreverse.Contains( String13.NumberToString( Convert.ToDouble( speech.frequency ) ) ) ) {
 						
 						foreach (dynamic _d in Lang13.Enumerate( GlobalVars.all_radios["" + GlobalVars.SYND_FREQ], typeof(Obj_Item_Device_Radio) )) {
 							R4 = _d;
@@ -4960,7 +4935,7 @@ namespace Somnium.Game {
 
 		// Function from file: cult.dm
 		public static bool iscultist( dynamic M = null ) {
-			return M is Mob_Living && Lang13.Bool( M.mind ) && GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && false;
+			return M is Mob_Living && Lang13.Bool( M.mind ) && GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( M.mind ) );
 		}
 
 		// Function from file: data_huds.dm
@@ -4980,9 +4955,8 @@ namespace Somnium.Game {
 			if ( !( M.client != null ) ) {
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.med_hud_users.Contains( M ) );
 
-			if ( !( !( M.client != null ) ) ) {
+			if ( !GlobalVars.med_hud_users.Contains( M ) ) {
 				GlobalVars.med_hud_users.Add( M );
 			}
 			C = M.client;
@@ -5067,9 +5041,8 @@ namespace Somnium.Game {
 			if ( !( M.client != null ) ) {
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.sec_hud_users.Contains( M ) );
 
-			if ( !( !( M.client != null ) ) ) {
+			if ( !GlobalVars.sec_hud_users.Contains( M ) ) {
 				GlobalVars.sec_hud_users.Add( M );
 			}
 			C = M.client;
@@ -5739,7 +5712,7 @@ namespace Somnium.Game {
 			flags = flags ?? false;
 
 			int gene_active = 0;
-			int gene_prior_status = 0;
+			dynamic gene_prior_status = null;
 			bool changed = false;
 			int? tempflag = null;
 
@@ -5752,8 +5725,7 @@ namespace Somnium.Game {
 			if ( !( gene_active != 0 ) ) {
 				gene_active = ((Dna)M.dna).GetSEState( gene.block ) ?1:0;
 			}
-			Interface13.Stat( null, M.active_genes.Contains( gene.type ) );
-			gene_prior_status = !( gene_active != 0 ) ?1:0;
+			gene_prior_status = M.active_genes.Contains( gene.type );
 			changed = gene_active != gene_prior_status || ( gene.flags & 1 ) != 0;
 
 			if ( changed ) {
@@ -5773,8 +5745,7 @@ namespace Somnium.Game {
 					tempflag = Lang13.IntNullable( flags );
 
 					if ( M is Mob_Living_Carbon_Human ) {
-						Interface13.Stat( null, M.species.default_blocks.Contains( M is Mob_Living_Carbon_Human && Lang13.Bool( M.species ) && Lang13.Bool( gene.block ) ) );
-						tempflag |= ( false ? 4 : 0 );
+						tempflag |= ( M.species.default_blocks.Contains( M is Mob_Living_Carbon_Human && Lang13.Bool( M.species ) && Lang13.Bool( gene.block ) ) ? 4 : 0 );
 					}
 					gene.deactivate( M, connected, tempflag );
 
@@ -6363,32 +6334,28 @@ namespace Somnium.Game {
 				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "engineering robot module" ) {
 					active_with_role["Engineer"]++;
 				}
-				Interface13.Stat( null, GlobalVars.engineering_positions.Contains( M.mind.assigned_role ) );
 
-				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "engineering robot module" ) {
+				if ( GlobalVars.engineering_positions.Contains( M.mind.assigned_role ) ) {
 					active_with_role["Engineer"]++;
 				}
 
 				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "medical robot module" ) {
 					active_with_role["Medical"]++;
 				}
-				Interface13.Stat( null, GlobalVars.medical_positions.Contains( M.mind.assigned_role ) );
 
-				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "medical robot module" ) {
+				if ( GlobalVars.medical_positions.Contains( M.mind.assigned_role ) ) {
 					active_with_role["Medical"]++;
 				}
 
 				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "security robot module" ) {
 					active_with_role["Security"]++;
 				}
-				Interface13.Stat( null, GlobalVars.security_positions.Contains( M.mind.assigned_role ) );
 
-				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "security robot module" ) {
+				if ( GlobalVars.security_positions.Contains( M.mind.assigned_role ) ) {
 					active_with_role["Security"]++;
 				}
-				Interface13.Stat( null, GlobalVars.science_positions.Contains( M.mind.assigned_role ) );
 
-				if ( M is Mob_Living_Silicon_Robot && M.module != null && M.module.name == "security robot module" ) {
+				if ( GlobalVars.science_positions.Contains( M.mind.assigned_role ) ) {
 					active_with_role["Scientist"]++;
 				}
 
@@ -6673,7 +6640,7 @@ namespace Somnium.Game {
 						newEpicentre = _a;
 						
 
-						if ( newEpicentre.name == "lightsout" && !false ) {
+						if ( newEpicentre.name == "lightsout" && !epicentreList.Contains( newEpicentre ) ) {
 							possibleEpicentres.Add( newEpicentre );
 						}
 					}
@@ -7052,9 +7019,8 @@ namespace Somnium.Game {
 					
 
 					if ( M2.z == epicenter.z ) {
-						Interface13.Stat( null, close.Contains( M2 ) );
-
-						if ( !false ) {
+						
+						if ( !close.Contains( M2 ) ) {
 							
 							if ( M2.ear_deaf <= 0 || !( M2.ear_deaf != 0 ) ) {
 								
@@ -7529,112 +7495,112 @@ namespace Somnium.Game {
 		public static string get_responsive_reagent( bool? find_type = null ) {
 			
 			switch ((bool?)( find_type )) {
-				case 1:
+				case true:
 					return "mercury";
 					break;
-				case 2:
+				case 2 != 0:
 					return "mercury";
 					break;
-				case 3:
+				case 3 != 0:
 					return "mercury";
 					break;
-				case 4:
+				case 4 != 0:
 					return "mercury";
 					break;
-				case 5:
+				case 5 != 0:
 					return "mercury";
 					break;
-				case 7:
+				case 7 != 0:
 					return "iron";
 					break;
-				case 6:
+				case 6 != 0:
 					return "iron";
 					break;
-				case 8:
+				case 8 != 0:
 					return "mercury";
 					break;
-				case 9:
+				case 9 != 0:
 					return "mercury";
 					break;
-				case 10:
+				case 10 != 0:
 					return "mercury";
 					break;
-				case 11:
+				case 11 != 0:
 					return "mercury";
 					break;
-				case 12:
+				case 12 != 0:
 					return "mercury";
 					break;
-				case 13:
+				case 13 != 0:
 					return "iron";
 					break;
-				case 14:
+				case 14 != 0:
 					return "iron";
 					break;
-				case 15:
+				case 15 != 0:
 					return "mercury";
 					break;
-				case 16:
+				case 16 != 0:
 					return "nitrogen";
 					break;
-				case 17:
+				case 17 != 0:
 					return "potassium";
 					break;
-				case 18:
+				case 18 != 0:
 					return "potassium";
 					break;
-				case 19:
+				case 19 != 0:
 					return "iron";
 					break;
-				case 20:
+				case 20 != 0:
 					return "potassium";
 					break;
-				case 21:
+				case 21 != 0:
 					return "nitrogen";
 					break;
-				case 22:
+				case 22 != 0:
 					return "nitrogen";
 					break;
-				case 23:
+				case 23 != 0:
 					return "iron";
 					break;
-				case 24:
+				case 24 != 0:
 					return "potassium";
 					break;
-				case 25:
+				case 25 != 0:
 					return "iron";
 					break;
-				case 26:
+				case 26 != 0:
 					return "iron";
 					break;
-				case 27:
+				case 27 != 0:
 					return "iron";
 					break;
-				case 28:
+				case 28 != 0:
 					return "mercury";
 					break;
-				case 29:
+				case 29 != 0:
 					return "carbon";
 					break;
-				case 30:
+				case 30 != 0:
 					return "carbon";
 					break;
-				case 31:
+				case 31 != 0:
 					return "carbon";
 					break;
-				case 32:
+				case 32 != 0:
 					return "carbon";
 					break;
-				case 33:
+				case 33 != 0:
 					return "carbon";
 					break;
-				case 34:
+				case 34 != 0:
 					return "carbon";
 					break;
-				case 35:
+				case 35 != 0:
 					return "mercury";
 					break;
-				case 36:
+				case 36 != 0:
 					return "mercury";
 					break;
 			}
@@ -8210,9 +8176,8 @@ namespace Somnium.Game {
 			if ( ((Ent_Static)source).Adjacent( user ) ) {
 				return true;
 			} else if ( user is Mob && Lang13.Bool( user.mutations ) && user.mutations.len != 0 ) {
-				Interface13.Stat( null, user.mutations.Contains( 1 ) );
-
-				if ( false && Map13.GetDistance( user, source ) < GlobalVars.tk_maxrange ) {
+				
+				if ( Lang13.Bool( user.mutations.Contains( 1 ) ) && Map13.GetDistance( user, source ) < GlobalVars.tk_maxrange ) {
 					return true;
 				}
 			}
@@ -8323,9 +8288,8 @@ namespace Somnium.Game {
 				GlobalVars.garbageCollector.dels_count++;
 				return;
 			}
-			Interface13.Stat( null, GlobalVars.masterdatumPool.Contains( "" + D.type ) );
 
-			if ( D is Ent_Static && !( D is Ent_Dynamic ) && !( ignore_pooling == true ) ) {
+			if ( GlobalVars.masterdatumPool.Contains( "" + D.type ) && !( ignore_pooling == true ) ) {
 				GlobalFuncs.returnToPool( D );
 				return;
 			}
@@ -8460,9 +8424,8 @@ namespace Somnium.Game {
 				hash = Num13.Md5( hash );
 
 				if ( cache != 2 ) {
-					Interface13.Stat( null, GlobalVars._flatIcons.Contains( hash ) );
-
-					if ( false && Lang13.Bool( GlobalVars._flatIcons[hash] ) ) {
+					
+					if ( GlobalVars._flatIcons.Contains( hash ) && Lang13.Bool( GlobalVars._flatIcons[hash] ) ) {
 						return GlobalVars._flatIcons[hash];
 					}
 				}
@@ -8481,7 +8444,7 @@ namespace Somnium.Game {
 			foreach (dynamic _c in Lang13.Enumerate( layers )) {
 				I2 = _c;
 				
-				add = new Icon( Lang13.Bool( I2.icon ) || Lang13.Bool( A.icon ), Lang13.Bool( I2.icon_state ) || Lang13.Bool( I2.icon ) && false && Lang13.Bool( A.icon_state ), dir, 1, false );
+				add = new Icon( Lang13.Bool( I2.icon ) || Lang13.Bool( A.icon ), Lang13.Bool( I2.icon_state ) || Lang13.Bool( I2.icon ) && Icon13.States( I2.icon, 0 ).Contains( A.icon_state ) && Lang13.Bool( A.icon_state ), dir, 1, false );
 
 				if ( I2.name == "damage layer" ) {
 					H = A;
@@ -8969,9 +8932,8 @@ namespace Somnium.Game {
 			if ( !( M is Mob_Living_Carbon ) ) {
 				return false;
 			}
-			Interface13.Stat( null, M.virus2.Contains( "" + disease.uniqueID ) );
 
-			if ( !( M is Mob_Living_Carbon ) ) {
+			if ( Lang13.Bool( M.virus2.Contains( "" + disease.uniqueID ) ) ) {
 				return false;
 			}
 
@@ -9237,10 +9199,10 @@ namespace Somnium.Game {
 			MM = String13.ParseNumber( String13.FormatTime( Game13.timeofday, "MM" ) );
 			DD = String13.ParseNumber( String13.FormatTime( Game13.timeofday, "DD" ) );
 
-			switch ((double?)( MM )) {
+			switch ((int?)( MM )) {
 				case 1:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 1:
 							GlobalVars.Holiday = "New Year's Day";
 							break;
@@ -9248,7 +9210,7 @@ namespace Somnium.Game {
 					break;
 				case 2:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 2:
 							GlobalVars.Holiday = "Groundhog Day";
 							break;
@@ -9262,7 +9224,7 @@ namespace Somnium.Game {
 					break;
 				case 3:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 14:
 							GlobalVars.Holiday = "Pi Day";
 							break;
@@ -9285,7 +9247,7 @@ namespace Somnium.Game {
 					break;
 				case 4:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 1:
 							GlobalVars.Holiday = "April Fool's Day";
 
@@ -9322,7 +9284,7 @@ namespace Somnium.Game {
 					break;
 				case 5:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 1:
 							GlobalVars.Holiday = "Labour Day";
 							break;
@@ -9336,7 +9298,7 @@ namespace Somnium.Game {
 					break;
 				case 6:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 18:
 							GlobalVars.Holiday = "International Picnic Day";
 							break;
@@ -9347,7 +9309,7 @@ namespace Somnium.Game {
 					break;
 				case 7:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 1:
 							GlobalVars.Holiday = "Doctor's Day";
 							break;
@@ -9364,7 +9326,7 @@ namespace Somnium.Game {
 					break;
 				case 8:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 5:
 							GlobalVars.Holiday = "Beer Day";
 							break;
@@ -9372,7 +9334,7 @@ namespace Somnium.Game {
 					break;
 				case 9:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 19:
 							GlobalVars.Holiday = "Talk-Like-a-Pirate Day";
 							break;
@@ -9383,7 +9345,7 @@ namespace Somnium.Game {
 					break;
 				case 10:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 4:
 							GlobalVars.Holiday = "Animal's Day";
 							break;
@@ -9400,7 +9362,7 @@ namespace Somnium.Game {
 					break;
 				case 11:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 1:
 							GlobalVars.Holiday = "Vegan Day";
 							break;
@@ -9417,7 +9379,7 @@ namespace Somnium.Game {
 					break;
 				case 12:
 					
-					switch ((double?)( DD )) {
+					switch ((int?)( DD )) {
 						case 10:
 							GlobalVars.Holiday = "Human-Rights Day";
 							break;
@@ -11176,15 +11138,13 @@ namespace Somnium.Game {
 					alt_blocked = false;
 
 					if ( Lang13.Bool( M.mind.role_alt_title ) ) {
-						Interface13.Stat( null, allowed_jobs.Contains( M.mind.role_alt_title ) );
-
-						if ( !false ) {
+						
+						if ( !allowed_jobs.Contains( M.mind.role_alt_title ) ) {
 							alt_blocked = true;
 						}
 					}
-					Interface13.Stat( null, allowed_jobs.Contains( M.mind.assigned_role ) );
 
-					if ( !Lang13.Bool( M.mind.role_alt_title ) || alt_blocked ) {
+					if ( !allowed_jobs.Contains( M.mind.assigned_role ) || alt_blocked ) {
 						Game13.log.WriteMsg( "## TESTING: " + ( "Failed to apply custom item for " + M.ckey + ": Role(s) " + M.mind.assigned_role + ( Lang13.Bool( M.mind.role_alt_title ) ? " (nor " + M.mind.role_alt_title + ")" : "" ) + " are not in allowed_jobs (" + GlobalFuncs.english_list( allowed_jobs ) + ")" ) );
 						continue;
 					}
@@ -11361,9 +11321,8 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( response ) ) {
 					json = File13.Read( response["CONTENT"] );
-					Interface13.Stat( null, ((dynamic)json).Contains( "/>" ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( ((dynamic)json).Contains( "/>" ) ) ) {
 						continue;
 					}
 					reader = new JsonReader();
@@ -11543,9 +11502,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( first )) {
 					e = _a;
 					
-					Interface13.Stat( null, result.Contains( e ) );
 
-					if ( !false && !false ) {
+					if ( !Lang13.Bool( result.Contains( e ) ) && !second.Contains( e ) ) {
 						result += e;
 					}
 				}
@@ -11674,12 +11632,8 @@ namespace Somnium.Game {
 					if ( GlobalFuncs.IsInRange( index, 1, L.len ) ) {
 						return L[index];
 					}
-				} else {
-					Interface13.Stat( null, L.Contains( index ) );
-
-					if ( Lang13.Bool( Lang13.IsNumber( index ) ) ) {
-						return L[index];
-					}
+				} else if ( Lang13.Bool( L.Contains( index ) ) ) {
+					return L[index];
 				}
 			}
 			return null;
@@ -11916,9 +11870,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( L )) {
 				item = _a;
 				
-				Interface13.Stat( null, K.Contains( item ) );
 
-				if ( !false ) {
+				if ( !K.Contains( item ) ) {
 					K.Add( item );
 				}
 			}
@@ -12733,9 +12686,8 @@ namespace Somnium.Game {
 						if ( T.finds.len != 0 ) {
 							continue;
 						}
-						Interface13.Stat( null, processed_turfs.Contains( T ) );
 
-						if ( T.finds.len != 0 ) {
+						if ( processed_turfs.Contains( T ) ) {
 							continue;
 						}
 
@@ -13311,7 +13263,7 @@ namespace Somnium.Game {
 			while (( p ??0) <= Convert.ToDouble( n )) {
 				n_letter = String13.SubStr( te, p ??0, ( p ??0) + 1 );
 
-				if ( Rand13.PercentChance( 80 ) && false ) {
+				if ( Rand13.PercentChance( 80 ) && new ByTable(new object [] { "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z" }).Contains( String13.CKey( n_letter ) ) ) {
 					
 					if ( Rand13.PercentChance( 10 ) ) {
 						n_letter = "" + n_letter + "-" + n_letter + "-" + n_letter + "-" + n_letter;
@@ -13435,9 +13387,8 @@ namespace Somnium.Game {
 				if ( gender == GlobalVars.FEMALE && S.gender == GlobalVars.MALE ) {
 					continue;
 				}
-				Interface13.Stat( null, S.species_allowed.Contains( species ) );
 
-				if ( !( gender == GlobalVars.FEMALE && S.gender == GlobalVars.MALE ) ) {
+				if ( !S.species_allowed.Contains( species ) ) {
 					continue;
 				}
 				valid_facialhairstyles[facialhairstyle] = GlobalVars.facial_hair_styles_list[facialhairstyle];
@@ -13474,9 +13425,8 @@ namespace Somnium.Game {
 				if ( gender == GlobalVars.FEMALE && S.gender == GlobalVars.MALE ) {
 					continue;
 				}
-				Interface13.Stat( null, S.species_allowed.Contains( species ) );
 
-				if ( !( gender == GlobalVars.FEMALE && S.gender == GlobalVars.MALE ) ) {
+				if ( !S.species_allowed.Contains( species ) ) {
 					continue;
 				}
 				valid_hairstyles[hairstyle] = GlobalVars.hair_styles_list[hairstyle];
@@ -13685,7 +13635,7 @@ namespace Somnium.Game {
 
 			while (words > 0) {
 				
-				if ( words == 1 && false && false ) {
+				if ( words == 1 && safety.Contains( 1 ) && safety.Contains( 2 ) ) {
 					safety = new ByTable(new object [] { Rand13.Pick(new object [] { 1, 2 }) });
 				} else if ( words == 1 && maxwords == 2 ) {
 					safety = new ByTable(new object [] { 3 });
@@ -13915,9 +13865,8 @@ namespace Somnium.Game {
 				appeal = "\nFor more information on your ban, or to appeal, head to <a href='" + GlobalVars.config.banappeals + "'>" + GlobalVars.config.banappeals + "</a>";
 			}
 			GlobalVars.Banlist.cd = "/base";
-			Interface13.Stat( null, GlobalVars.Banlist.dir.Contains( "" + ckey + id ) );
 
-			if ( GlobalVars.config != null && Lang13.Bool( GlobalVars.config.banappeals ) ) {
+			if ( GlobalVars.Banlist.dir.Contains( "" + ckey + id ) ) {
 				GlobalVars.Banlist.cd = "" + ckey + id;
 
 				if ( Lang13.Bool( GlobalVars.Banlist["temp"] ) ) {
@@ -15560,9 +15509,8 @@ namespace Somnium.Game {
 
 		// Function from file: sanitize_values.dm
 		public static dynamic sanitize_inlist( dynamic value = null, ByTable List = null, dynamic __default = null ) {
-			Interface13.Stat( null, List.Contains( value ) );
-
-			if ( false ) {
+			
+			if ( List.Contains( value ) ) {
 				return value;
 			}
 
@@ -15811,9 +15759,8 @@ namespace Somnium.Game {
 			message = "";
 
 			if ( !( skip_checks == true ) ) {
-				Interface13.Stat( null, user.mutations.Contains( 5 ) );
-
-				if ( ( false || ((Mob_Living)user).getBrainLoss() >= 60 ) && Rand13.PercentChance( 50 ) ) {
+				
+				if ( ( Lang13.Bool( user.mutations.Contains( 5 ) ) || ((Mob_Living)user).getBrainLoss() >= 60 ) && Rand13.PercentChance( 50 ) ) {
 					((Ent_Static)user).visible_message( "<span class='warning'>" + user + " analyzes the floor's vitals!</span>", "<span class='warning'>You analyze the floor's vitals!</span>" );
 					GlobalFuncs.playsound( user, "sound/items/healthanalyzer.ogg", 50, 1 );
 					GlobalFuncs.to_chat( user, "<span class='notice'>Analyzing Results for the floor:<br>Overall Status: Healthy</span>\nKey: <font color='blue'>Suffocation</font>/<font color='green'>Toxin</font>/<font color='#FFA500'>Burns</font>/<font color='red'>Brute</font>\nDamage Specifics: <font color='blue'>0</font> - <font color='green'>0</font> - <font color='#FFA500'>0</font> - <font color='red'>0</font>\n" + ( ((Mob_Living)M).undergoing_hypothermia() != 0 ? "<span class='warning'>" : "<span class='notice'>" ) + @"Body Temperature: ???&deg;C (???&deg;F)</span>
@@ -15913,9 +15860,8 @@ Subject's pulse: ??? BPM" );
 					foreach (dynamic _b in Lang13.Enumerate( C.virus2 )) {
 						ID = _b;
 						
-						Interface13.Stat( null, GlobalVars.virusDB.Contains( ID ) );
 
-						if ( false ) {
+						if ( GlobalVars.virusDB.Contains( ID ) ) {
 							V = GlobalVars.virusDB[ID];
 							message += "<br><span class='warning'>Warning: Pathogen " + V.fields["name"] + " detected in subject's blood. Known antigen : " + V.fields["antigen"] + "</span>";
 						}
@@ -16127,9 +16073,8 @@ Subject's pulse: ??? BPM" );
 			dynamic type = null;
 			string _char = null;
 
-			Interface13.Stat( null, tree.Contains( "world" ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( tree.Contains( "world" ) ) ) {
 				return new ByTable(new object [] { typeof(Game13) });
 			}
 			_out = new ByTable();
@@ -16327,24 +16272,20 @@ Subject's pulse: ??? BPM" );
 				val = null;
 			} else if ( Lang13.Bool( Lang13.IsNumber( expression[i] ) ) ) {
 				val = expression[i];
-			} else {
-				Interface13.Stat( null, new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( expression[i], 1, 2 ) ) );
+			} else if ( new ByTable(new object [] { "'", "\"" }).Contains( String13.SubStr( expression[i], 1, 2 ) ) ) {
+				val = String13.SubStr( expression[i], 2, Lang13.Length( expression[i] ) );
+			} else if ( expression[i] == "[" ) {
+				expressions_list = expression[++i];
+				val = new ByTable();
 
-				if ( Lang13.Bool( Lang13.IsNumber( expression[i] ) ) ) {
-					val = String13.SubStr( expression[i], 2, Lang13.Length( expression[i] ) );
-				} else if ( expression[i] == "[" ) {
-					expressions_list = expression[++i];
-					val = new ByTable();
-
-					foreach (dynamic _a in Lang13.Enumerate( expressions_list, typeof(ByTable) )) {
-						expression_list = _a;
-						
-						val += GlobalFuncs.SDQL_expression( _object, expression_list );
-					}
-				} else {
-					val = GlobalFuncs.SDQL_var( _object, expression, i );
-					i = expression.len;
+				foreach (dynamic _a in Lang13.Enumerate( expressions_list, typeof(ByTable) )) {
+					expression_list = _a;
+					
+					val += GlobalFuncs.SDQL_expression( _object, expression_list );
 				}
+			} else {
+				val = GlobalFuncs.SDQL_var( _object, expression, i );
+				i = expression.len;
 			}
 			return new ByTable().Set( "val", val ).Set( "i", i );
 		}
@@ -16353,9 +16294,8 @@ Subject's pulse: ??? BPM" );
 		public static dynamic SDQL_var( Game_Data _object = null, dynamic expression = null, int? start = null ) {
 			start = start ?? 1;
 
-			Interface13.Stat( null, _object.vars.Contains( expression[start] ) );
-
-			if ( start == null ) {
+			
+			if ( _object.vars.Contains( expression[start] ) ) {
 				
 				if ( ( start ??0) < expression.len && expression[( start ??0) + 1] == "." ) {
 					return GlobalFuncs.SDQL_var( _object.vars[expression[start]], expression[( start ??0) + 2] );
@@ -16396,110 +16336,100 @@ Subject's pulse: ??? BPM" );
 
 			while (( i ??0) <= ( len ??0)) {
 				_char = String13.SubStr( query_text, i ??0, ( i ??0) + 1 );
-				Interface13.Stat( null, whitespace.Contains( _char ) );
 
-				if ( false ) {
+				if ( whitespace.Contains( _char ) ) {
 					
 					if ( word != "" ) {
 						query_list.Add( word );
 						word = "";
 					}
-				} else {
-					Interface13.Stat( null, single.Contains( _char ) );
+				} else if ( single.Contains( _char ) ) {
+					
+					if ( word != "" ) {
+						query_list.Add( word );
+						word = "";
+					}
+					query_list.Add( _char );
+				} else if ( multi.Contains( _char ) ) {
+					
+					if ( word != "" ) {
+						query_list.Add( word );
+						word = "";
+					}
+					char2 = String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 );
 
-					if ( false ) {
-						
-						if ( word != "" ) {
-							query_list.Add( word );
-							word = "";
-						}
-						query_list.Add( _char );
+					if ( Lang13.Bool( multi[_char].Contains( char2 ) ) ) {
+						query_list.Add( "" + _char + char2 );
+						i++;
 					} else {
-						Interface13.Stat( null, multi.Contains( _char ) );
+						query_list.Add( _char );
+					}
+				} else if ( _char == "'" ) {
+					
+					if ( word != "" ) {
+						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" + query_text + "</font>\" following \"<font color=gray>" + word + "</font>\". Please check your syntax, and try again.</span>" );
+						return null;
+					}
+					word = "'";
+					i++;
 
-						if ( false ) {
+					while (( i ??0) <= ( len ??0)) {
+						_char = String13.SubStr( query_text, i ??0, ( i ??0) + 1 );
+
+						if ( _char == "'" ) {
 							
-							if ( word != "" ) {
-								query_list.Add( word );
-								word = "";
-							}
-							char2 = String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 );
-							Interface13.Stat( null, multi[_char].Contains( char2 ) );
-
-							if ( word != "" ) {
-								query_list.Add( "" + _char + char2 );
+							if ( String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 ) == "'" ) {
+								word += "'";
 								i++;
 							} else {
-								query_list.Add( _char );
+								break;
 							}
-						} else if ( _char == "'" ) {
-							
-							if ( word != "" ) {
-								GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>" + query_text + "</font>\" following \"<font color=gray>" + word + "</font>\". Please check your syntax, and try again.</span>" );
-								return null;
-							}
-							word = "'";
-							i++;
-
-							while (( i ??0) <= ( len ??0)) {
-								_char = String13.SubStr( query_text, i ??0, ( i ??0) + 1 );
-
-								if ( _char == "'" ) {
-									
-									if ( String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 ) == "'" ) {
-										word += "'";
-										i++;
-									} else {
-										break;
-									}
-								} else {
-									word += _char;
-								}
-								i++;
-							}
-
-							if ( ( i ??0) > ( len ??0) ) {
-								GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" + query_text + "</font>\". Please check your syntax, and try again.</span>" );
-								return null;
-							}
-							query_list.Add( "" + word + "'" );
-							word = "";
-						} else if ( _char == "\"" ) {
-							
-							if ( word != "" ) {
-								GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" + query_text + "</font>\" following \"<font color=gray>" + word + "</font>\". Please check your syntax, and try again.</span>" );
-								return null;
-							}
-							word = "\"";
-							i++;
-
-							while (( i ??0) <= ( len ??0)) {
-								_char = String13.SubStr( query_text, i ??0, ( i ??0) + 1 );
-
-								if ( _char == "\"" ) {
-									
-									if ( String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 ) == "'" ) {
-										word += "\"";
-										i++;
-									} else {
-										break;
-									}
-								} else {
-									word += _char;
-								}
-								i++;
-							}
-
-							if ( ( i ??0) > ( len ??0) ) {
-								GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" + query_text + "</font>\". Please check your syntax, and try again.</span>" );
-								return null;
-							}
-							query_list.Add( "" + word + "\"" );
-							word = "";
 						} else {
 							word += _char;
 						}
+						i++;
 					}
+
+					if ( ( i ??0) > ( len ??0) ) {
+						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>" + query_text + "</font>\". Please check your syntax, and try again.</span>" );
+						return null;
+					}
+					query_list.Add( "" + word + "'" );
+					word = "";
+				} else if ( _char == "\"" ) {
+					
+					if ( word != "" ) {
+						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>" + query_text + "</font>\" following \"<font color=gray>" + word + "</font>\". Please check your syntax, and try again.</span>" );
+						return null;
+					}
+					word = "\"";
+					i++;
+
+					while (( i ??0) <= ( len ??0)) {
+						_char = String13.SubStr( query_text, i ??0, ( i ??0) + 1 );
+
+						if ( _char == "\"" ) {
+							
+							if ( String13.SubStr( query_text, ( i ??0) + 1, ( i ??0) + 2 ) == "'" ) {
+								word += "\"";
+								i++;
+							} else {
+								break;
+							}
+						} else {
+							word += _char;
+						}
+						i++;
+					}
+
+					if ( ( i ??0) > ( len ??0) ) {
+						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>" + query_text + "</font>\". Please check your syntax, and try again.</span>" );
+						return null;
+					}
+					query_list.Add( "" + word + "\"" );
+					word = "";
+				} else {
+					word += _char;
 				}
 				i++;
 			}
@@ -16691,9 +16621,8 @@ Subject's pulse: ??? BPM" );
 					block = 1;
 
 					while (( block ??0) < 54) {
-						Interface13.Stat( null, species.default_block_names.Contains( GlobalVars.assigned_blocks[block] ) );
-
-						if ( false ) {
+						
+						if ( species.default_block_names.Contains( GlobalVars.assigned_blocks[block] ) ) {
 							Game13.log.WriteMsg( "## TESTING: " + ( "  Found " + GlobalVars.assigned_blocks[block] + " (" + block + ")" ) );
 							species.default_blocks.Add( block );
 						}
@@ -16830,9 +16759,8 @@ Subject's pulse: ??? BPM" );
 				G = Lang13.Call( gene_type );
 
 				if ( Lang13.Bool( G.block ) ) {
-					Interface13.Stat( null, blocks_assigned.Contains( G.block ) );
-
-					if ( false ) {
+					
+					if ( blocks_assigned.Contains( G.block ) ) {
 						Game13.log.WriteMsg( "## WARNING: " + ( "DNA2: Gene " + G.name + " trying to use already-assigned block " + G.block + " (used by " + GlobalFuncs.english_list( blocks_assigned[G.block] ) + ")" ) );
 					}
 					GlobalVars.dna_genes[G.type] = G;
@@ -16858,9 +16786,8 @@ Subject's pulse: ??? BPM" );
 					gene = GlobalVars.dna_genes[gene_type2];
 
 					if ( gene.name == name || Lang13.IntNullable( gene.block ) == block ) {
-						Interface13.Stat( null, GlobalVars.assigned_gene_blocks.Contains( gene.block ) );
-
-						if ( false ) {
+						
+						if ( GlobalVars.assigned_gene_blocks.Contains( gene.block ) ) {
 							Game13.log.WriteMsg( "## WARNING: " + ( "DNA2: Gene " + gene.name + " trying to add to already assigned gene block list (used by " + GlobalFuncs.english_list( GlobalVars.assigned_gene_blocks[block] ) + ")" ) );
 						}
 						GlobalVars.assigned_gene_blocks[block] = gene;
@@ -16916,19 +16843,16 @@ Subject's pulse: ??? BPM" );
 				
 
 				if ( Lang13.Bool( omit_shuttles ) ) {
-					Interface13.Stat( null, omit_shuttles.Contains( S.type ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( omit_shuttles.Contains( S.type ) ) ) {
 						continue;
 					}
-					Interface13.Stat( null, omit_shuttles.Contains( S ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( omit_shuttles.Contains( S ) ) ) {
 						continue;
 					}
-					Interface13.Stat( null, omit_shuttles.Contains( S.name ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( omit_shuttles.Contains( S.name ) ) ) {
 						continue;
 					}
 				}
@@ -17370,9 +17294,8 @@ Subject's pulse: ??? BPM" );
 
 				if ( announcer != null ) {
 					rounded_time_left = Num13.Floor( GlobalVars.specops_shuttle_timeleft );
-					Interface13.Stat( null, message_tracker.Contains( rounded_time_left ) );
 
-					if ( false ) {
+					if ( message_tracker.Contains( rounded_time_left ) ) {
 						message = "\"ALERT: " + rounded_time_left + " SECOND" + ( rounded_time_left != 1 ? "S" : "" ) + " REMAIN\"";
 
 						if ( rounded_time_left == 0 ) {
@@ -17599,9 +17522,8 @@ Subject's pulse: ??? BPM" );
 
 				if ( announcer != null ) {
 					rounded_time_left = Num13.Floor( GlobalVars.specops_shuttle_timeleft );
-					Interface13.Stat( null, message_tracker.Contains( rounded_time_left ) );
 
-					if ( false ) {
+					if ( message_tracker.Contains( rounded_time_left ) ) {
 						message = "\"ALERT: " + rounded_time_left + " SECOND" + ( rounded_time_left != 1 ? "S" : "" ) + " REMAIN\"";
 
 						if ( rounded_time_left == 0 ) {
@@ -17944,8 +17866,7 @@ Subject's pulse: ??? BPM" );
 
 			if ( user is Mob_Living_Carbon_Human ) {
 				H = user;
-				Interface13.Stat( null, H.mutations.Contains( 5 ) );
-				clumsy = false && Rand13.PercentChance( 50 );
+				clumsy = Lang13.Bool( H.mutations.Contains( 5 ) ) && Rand13.PercentChance( 50 );
 			}
 
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.surgery_steps, typeof(SurgeryStep) )) {
@@ -17960,7 +17881,7 @@ Subject's pulse: ??? BPM" );
 						sleep_fail = true;
 					}
 
-					if ( canuse != 0 && S.is_valid_mutantrace( M ) && !false ) {
+					if ( canuse != 0 && S.is_valid_mutantrace( M ) && !S.doing_surgery.Contains( M ) ) {
 						
 						if ( !S.can_operate( user, M, ((dynamic)user.zone_sel).selecting, tool ) ) {
 							return true;
@@ -17977,20 +17898,16 @@ Subject's pulse: ??? BPM" );
 							user.attack_log.Add( new Txt( "[" ).item( GlobalFuncs.time_stamp() ).str( "] <font color='red'>Successfully completed surgery " ).item( S.type ).str( " with " ).the( tool ).item().str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() );
 							GlobalVars.diaryofmeanpeople.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + new Txt( "<font color='red'>" ).item( user.name ).str( " (" ).item( user.ckey ).str( ") used " ).the( tool ).item().str( " to successfully complete surgery type " ).item( S.type ).str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() ) );
 							S.end_step( user, M, ((dynamic)user.zone_sel).selecting, tool );
-						} else {
-							Interface13.Stat( null, user.contents.Contains( tool ) );
-
-							if ( GlobalFuncs.do_mob( user, M, Rand13.Int( S.min_duration, S.max_duration ) * tool.surgery_speed ) && Rand13.PercentChance( ((int)( ( S.tool_quality( tool ) ?1:0) / ( ( sleep_fail ?1:0) + ( clumsy ?1:0) + 1 ) )) ) && selection == ((dynamic)user.zone_sel).selecting && ((Ent_Static)user).Adjacent( M ) ) {
-								
-								if ( sleep_fail ) {
-									GlobalFuncs.to_chat( user, "<span class='warning'>The patient is squirming around in pain!</span>" );
-									((Mob)M).emote( "scream", null, null, true );
-								}
-								M.attack_log.Add( new Txt( "[" ).item( GlobalFuncs.time_stamp() ).str( "] <font color='orange'>Has had surgery " ).item( S.type ).str( " with " ).the( tool ).item().str( " failed by " ).item( user.name ).str( " (" ).item( user.ckey ).str( ")</font>" ).ToString() );
-								user.attack_log.Add( new Txt( "[" ).item( GlobalFuncs.time_stamp() ).str( "] <font color='red'>Failed surgery " ).item( S.type ).str( " with " ).the( tool ).item().str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() );
-								GlobalVars.diaryofmeanpeople.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + new Txt( "<font color='red'>" ).item( user.name ).str( " (" ).item( user.ckey ).str( ") used " ).the( tool ).item().str( " to fail the surgery type " ).item( S.type ).str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() ) );
-								S.fail_step( user, M, ((dynamic)user.zone_sel).selecting, tool );
+						} else if ( Lang13.Bool( user.contents.Contains( tool ) ) && ((Ent_Static)user).Adjacent( M ) ) {
+							
+							if ( sleep_fail ) {
+								GlobalFuncs.to_chat( user, "<span class='warning'>The patient is squirming around in pain!</span>" );
+								((Mob)M).emote( "scream", null, null, true );
 							}
+							M.attack_log.Add( new Txt( "[" ).item( GlobalFuncs.time_stamp() ).str( "] <font color='orange'>Has had surgery " ).item( S.type ).str( " with " ).the( tool ).item().str( " failed by " ).item( user.name ).str( " (" ).item( user.ckey ).str( ")</font>" ).ToString() );
+							user.attack_log.Add( new Txt( "[" ).item( GlobalFuncs.time_stamp() ).str( "] <font color='red'>Failed surgery " ).item( S.type ).str( " with " ).the( tool ).item().str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() );
+							GlobalVars.diaryofmeanpeople.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + new Txt( "<font color='red'>" ).item( user.name ).str( " (" ).item( user.ckey ).str( ") used " ).the( tool ).item().str( " to fail the surgery type " ).item( S.type ).str( " on " ).item( M.name ).str( " (" ).item( M.ckey ).str( ")</font>" ).ToString() ) );
+							S.fail_step( user, M, ((dynamic)user.zone_sel).selecting, tool );
 						}
 
 						if ( Lang13.Bool( M ) ) {
@@ -18146,9 +18063,8 @@ Subject's pulse: ??? BPM" );
 
 				if ( Lang13.Bool( announcer ) ) {
 					rounded_time_left = Num13.Floor( GlobalVars.syndicate_elite_shuttle_timeleft );
-					Interface13.Stat( null, message_tracker.Contains( rounded_time_left ) );
 
-					if ( false ) {
+					if ( message_tracker.Contains( rounded_time_left ) ) {
 						message = "ALERT: " + rounded_time_left + " SECOND" + ( rounded_time_left != 1 ? "S" : "" ) + " REMAIN";
 
 						if ( rounded_time_left == 0 ) {
@@ -19025,9 +18941,8 @@ Subject's pulse: ??? BPM" );
 			F = new SaveFile( "data/ToR_ban.bdb" );
 
 			if ( F != null ) {
-				Interface13.Stat( null, F.dir.Contains( ip_address ) );
-
-				if ( false ) {
+				
+				if ( F.dir.Contains( ip_address ) ) {
 					return true;
 				}
 			}
@@ -19978,9 +19893,8 @@ Subject's pulse: ??? BPM" );
 					foreach (dynamic _a in Lang13.Enumerate( original.vars )) {
 						V = _a;
 						
-						Interface13.Stat( null, new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key", "group" }).Contains( V ) );
 
-						if ( !false ) {
+						if ( !new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key", "group" }).Contains( V ) ) {
 							O.vars[V] = original.vars[V];
 						}
 					}
@@ -20205,9 +20119,8 @@ Subject's pulse: ??? BPM" );
 				return null;
 			}
 			direc = Map13.GetDistance( T1, T2 );
-			Interface13.Stat( null, GlobalVars.cardinal.Contains( direc ) );
 
-			if ( !Lang13.Bool( T1 ) || !Lang13.Bool( T2 ) ) {
+			if ( GlobalVars.cardinal.Contains( direc ) ) {
 				return direc;
 			}
 
@@ -20488,9 +20401,8 @@ Subject's pulse: ??? BPM" );
 				M = _a;
 				
 				name = M.name;
-				Interface13.Stat( null, names.Contains( name ) );
 
-				if ( false ) {
+				if ( names.Contains( name ) ) {
 					namecounts[name]++;
 					name = "" + name + " (" + namecounts[name] + ")";
 				} else {
@@ -21107,7 +21019,7 @@ Subject's pulse: ??? BPM" );
 						}
 					}
 
-					switch ((double?)( movement_dir )) {
+					switch ((int?)( movement_dir )) {
 						case 1:
 							pointer_y++;
 							break;
@@ -21142,7 +21054,7 @@ Subject's pulse: ??? BPM" );
 						}
 					}
 
-					switch ((double?)( movement_dir )) {
+					switch ((int?)( movement_dir )) {
 						case 1:
 							pointer_y++;
 							break;
@@ -21159,7 +21071,7 @@ Subject's pulse: ??? BPM" );
 
 					if ( sstep2 % Convert.ToDouble( segment_length ) == 0 ) {
 						
-						switch ((double?)( movement_dir )) {
+						switch ((int?)( movement_dir )) {
 							case 1:
 								movement_dir = GlobalVars.EAST;
 								break;
@@ -21288,7 +21200,7 @@ Subject's pulse: ??? BPM" );
 						continue;
 					}
 
-					if ( I.gamemodes.len != 0 && GlobalVars.ticker != null && !false ) {
+					if ( I.gamemodes.len != 0 && GlobalVars.ticker != null && !I.gamemodes.Contains( GlobalVars.ticker.mode.name ) ) {
 						continue;
 					}
 
@@ -21341,9 +21253,8 @@ Subject's pulse: ??? BPM" );
 			Icon I5 = null;
 
 			lookup = "" + symbol_bits + "-" + animated;
-			Interface13.Stat( null, GlobalVars.uristrune_cache.Contains( lookup ) );
 
-			if ( animated == null ) {
+			if ( GlobalVars.uristrune_cache.Contains( lookup ) ) {
 				return GlobalVars.uristrune_cache[lookup];
 			}
 			I = new Icon( "icons/effects/uristrunes.dmi", "blank" );
@@ -21792,21 +21703,16 @@ Subject's pulse: ??? BPM" );
 			if ( !( GlobalVars.alien_whitelist != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, GlobalVars.alien_whitelist[species].Contains( "*" ) );
 
-			if ( !( GlobalVars.alien_whitelist != null ) ) {
+			if ( Lang13.Bool( GlobalVars.alien_whitelist[species].Contains( "*" ) ) ) {
 				return true;
 			}
-			Interface13.Stat( GlobalVars.alien_whitelist["all"], ((dynamic)( Lang13.Bool( GlobalVars.alien_whitelist[species] ) || Lang13.Bool( ((dynamic)M).ckey ) )).Contains( ((dynamic)M).ckey ) );
-			Interface13.Stat( null, null.Contains( !( GlobalVars.alien_whitelist != null ) ) );
 
-			if ( !( GlobalVars.alien_whitelist != null ) ) {
+			if ( Lang13.Bool( GlobalVars.alien_whitelist["all"].Contains( ((dynamic)( Lang13.Bool( GlobalVars.alien_whitelist[species] ) || Lang13.Bool( ((dynamic)M).ckey ) )).Contains( ((dynamic)M).ckey ) ) ) ) {
 				return true;
 			}
-			Interface13.Stat( GlobalVars.alien_whitelist["all"], ((dynamic)( Lang13.Bool( GlobalVars.alien_whitelist[species] ) || Lang13.Bool( "job=" + String13.ToLower( ((dynamic)M).mind.assigned_role ) ) )).Contains( "job=" + String13.ToLower( ((dynamic)M).mind.assigned_role ) ) );
-			Interface13.Stat( null, null.Contains( !( GlobalVars.alien_whitelist != null ) ) );
 
-			if ( !( GlobalVars.alien_whitelist != null ) ) {
+			if ( Lang13.Bool( GlobalVars.alien_whitelist["all"].Contains( ((dynamic)( Lang13.Bool( GlobalVars.alien_whitelist[species] ) || Lang13.Bool( "job=" + String13.ToLower( ((dynamic)M).mind.assigned_role ) ) )).Contains( "job=" + String13.ToLower( ((dynamic)M).mind.assigned_role ) ) ) ) ) {
 				return true;
 			}
 			return false;
@@ -21848,14 +21754,12 @@ Subject's pulse: ??? BPM" );
 						species = _a;
 						
 						species = String13.ToLower( GlobalFuncs.trim( species ) );
-						Interface13.Stat( null, GlobalVars.alien_whitelist.Contains( species ) );
 
-						if ( !false ) {
+						if ( !GlobalVars.alien_whitelist.Contains( species ) ) {
 							GlobalVars.alien_whitelist[species] = new ByTable();
 						}
-						Interface13.Stat( null, GlobalVars.alien_whitelist[species].Contains( ckey ) );
 
-						if ( !( !false ) ) {
+						if ( !Lang13.Bool( GlobalVars.alien_whitelist[species].Contains( ckey ) ) ) {
 							GlobalVars.alien_whitelist[species] += ckey;
 						}
 					}

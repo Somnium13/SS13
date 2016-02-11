@@ -42,9 +42,8 @@ namespace Somnium.Game {
 			if ( !( user is Mob_Living_Carbon_Human ) ) {
 				return false;
 			}
-			Interface13.Stat( null, ((dynamic)( user.contents != null || GlobalFuncs.in_range( U.loc, user ) && U.loc.loc is Tile )).Contains( U.loc ) );
 
-			if ( !( user is Mob_Living_Carbon_Human ) ) {
+			if ( Lang13.Bool( ((dynamic)( user.contents != null || GlobalFuncs.in_range( U.loc, user ) && U.loc.loc is Tile )).Contains( U.loc ) ) ) {
 				user.set_machine( U );
 
 				if ( this.cost > Convert.ToDouble( ((dynamic)U).uses ) ) {

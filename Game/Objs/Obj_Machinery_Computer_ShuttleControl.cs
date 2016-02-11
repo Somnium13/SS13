@@ -91,7 +91,7 @@ namespace Somnium.Game {
 					this.selected_port = Rand13.PickFromTable( ((dynamic)this.shuttle).docking_ports - ((dynamic)this.shuttle).current_port );
 				}
 
-				if ( !this.allow_selecting_all && !false ) {
+				if ( !this.allow_selecting_all && !Lang13.Bool( ((dynamic)this.shuttle).docking_ports.Contains( this.selected_port ) ) ) {
 					return null;
 				}
 
@@ -419,9 +419,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.shuttle != null ) {
-				Interface13.Stat( null, ((dynamic)this.shuttle).control_consoles.Contains( this ) );
-
-				if ( false ) {
+				
+				if ( Lang13.Bool( ((dynamic)this.shuttle).control_consoles.Contains( this ) ) ) {
 					((dynamic)this.shuttle).control_consoles -= this;
 				}
 			}

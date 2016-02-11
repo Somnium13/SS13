@@ -35,7 +35,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( href_list["mode"] ) ) {
 				this.mode = String13.ParseNumber( href_list["mode"] );
 
-				switch ((int?)(this.mode)) {
+				switch ((int?)( this.mode )) {
 					case 0:
 						this.occupant_message( "Switched RCD to Deconstruct." );
 						break;
@@ -70,7 +70,7 @@ namespace Somnium.Game {
 			}
 			GlobalFuncs.playsound( this.chassis, "sound/machines/click.ogg", 50, 1 );
 
-			switch ((double?)( this.mode )) {
+			switch ((int?)( this.mode )) {
 				case 0:
 					
 					if ( target is Tile_Simulated_Wall ) {

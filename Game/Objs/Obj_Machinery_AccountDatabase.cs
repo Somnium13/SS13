@@ -208,17 +208,11 @@ namespace Somnium.Game {
 								this.held_card = C;
 
 								if ( this.access_level < 3 ) {
-									Interface13.Stat( null, C.access.Contains( GlobalVars.access_cent_captain ) );
-
-									if ( false ) {
+									
+									if ( Lang13.Bool( C.access.Contains( GlobalVars.access_cent_captain ) ) ) {
 										this.access_level = 2;
-									} else {
-										Interface13.Stat( C.access, ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) );
-										Interface13.Stat( null, null.Contains( null ) );
-
-										if ( false ) {
-											this.access_level = 1;
-										}
+									} else if ( Lang13.Bool( C.access.Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) ) ) ) {
+										this.access_level = 1;
 									}
 								}
 							}
@@ -250,17 +244,11 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( this.held_card ) ) {
 					C = this.held_card;
-					Interface13.Stat( null, C.access.Contains( GlobalVars.access_cent_captain ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( C.access.Contains( GlobalVars.access_cent_captain ) ) ) {
 						this.access_level = 2;
-					} else {
-						Interface13.Stat( C.access, ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) );
-						Interface13.Stat( null, null.Contains( null ) );
-
-						if ( false ) {
-							this.access_level = 1;
-						}
+					} else if ( Lang13.Bool( C.access.Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) ) ) ) {
+						this.access_level = 1;
 					}
 				}
 				this.attack_hand( user );
@@ -294,17 +282,11 @@ namespace Somnium.Game {
 					
 					if ( Task13.User.drop_item( a, this ) ) {
 						this.held_card = idcard;
-						Interface13.Stat( null, idcard.access.Contains( GlobalVars.access_cent_captain ) );
 
-						if ( false ) {
+						if ( Lang13.Bool( idcard.access.Contains( GlobalVars.access_cent_captain ) ) ) {
 							this.access_level = 2;
-						} else {
-							Interface13.Stat( idcard.access, ((dynamic)( Lang13.Bool( idcard.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) );
-							Interface13.Stat( null, null.Contains( null ) );
-
-							if ( false ) {
-								this.access_level = 1;
-							}
+						} else if ( Lang13.Bool( idcard.access.Contains( ((dynamic)( Lang13.Bool( idcard.access ) || GlobalVars.access_captain != 0 )).Contains( GlobalVars.access_hop ) ) ) ) {
+							this.access_level = 1;
 						}
 					}
 				}

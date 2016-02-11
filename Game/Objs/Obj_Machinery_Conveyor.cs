@@ -65,17 +65,15 @@ namespace Somnium.Game {
 			if ( _default != 0 ) {
 				return _default;
 			}
-			Interface13.Stat( null, href_list.Contains( "setdir" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "setdir" ) ) {
 				this.operating = 0;
 				this.dir = ((int)( String13.ParseNumber( href_list["setdir"] ) ??0 ));
 				this.updateConfig();
 				return 1;
 			}
-			Interface13.Stat( null, href_list.Contains( "reverse" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "reverse" ) ) {
 				this.operating = 0;
 				this.in_reverse = !this.in_reverse;
 				this.updateConfig();

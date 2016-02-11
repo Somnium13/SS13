@@ -28,8 +28,8 @@ namespace Somnium.Game {
 			Obj O = null;
 			Obj O2 = null;
 
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					
 					foreach (dynamic _a in Lang13.Enumerate( this.contents, typeof(Obj) )) {

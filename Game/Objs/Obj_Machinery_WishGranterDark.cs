@@ -52,27 +52,23 @@ namespace Somnium.Game {
 				if ( _c=="Power" ) {
 					GlobalFuncs.to_chat( a, "<B>Your wish is granted, but at a terrible cost...</B>" );
 					GlobalFuncs.to_chat( a, "The Wish Granter punishes you for your selfishness, claiming your soul and warping your body to match the darkness in your heart." );
-					Interface13.Stat( null, a.mutations.Contains( 9 ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 9 ) ) ) {
 						a.mutations.Add( 9 );
 						GlobalFuncs.to_chat( a, "ÿ!You feel pressure building behind your eyes." );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 2 ) );
 
-					if ( !( !false ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 2 ) ) ) {
 						a.mutations.Add( 2 );
 						GlobalFuncs.to_chat( a, "ÿ!Your body feels warm." );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 106 ) );
 
-					if ( !( !( !false ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 106 ) ) ) {
 						a.mutations.Add( 106 );
 						GlobalFuncs.to_chat( a, "ÿ!Your skin feels icy to the touch." );
 					}
-					Interface13.Stat( null, a.mutations.Contains( 3 ) );
 
-					if ( !( !( !( !false ) ) ) ) {
+					if ( !Lang13.Bool( a.mutations.Contains( 3 ) ) ) {
 						a.mutations.Add( 3 );
 						a.sight |= 28;
 						a.see_in_dark = 8;

@@ -261,7 +261,7 @@ namespace Somnium.Game {
 		// Function from file: control.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.stability -= 60;
 					break;

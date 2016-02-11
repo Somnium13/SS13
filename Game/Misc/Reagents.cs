@@ -277,9 +277,8 @@ namespace Somnium.Game {
 		public bool has_reagent( dynamic reagent = null, int? amount = null ) {
 			amount = amount ?? -1;
 
-			Interface13.Stat( null, this.amount_cache.Contains( reagent ) );
-
-			if ( amount == null ) {
+			
+			if ( this.amount_cache.Contains( reagent ) ) {
 				return Convert.ToDouble( this.amount_cache[reagent] ) >= Num13.MaxInt( 0, amount ??0 );
 			}
 			return false;

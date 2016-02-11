@@ -96,9 +96,8 @@ namespace Somnium.Game {
 			dynamic O2 = null;
 
 			Task13.User.delayNextAttack( 10 );
-			Interface13.Stat( null, Task13.User.mutations.Contains( 4 ) );
 
-			if ( false ) {
+			if ( Task13.User.mutations.Contains( 4 ) ) {
 				GlobalFuncs.to_chat( Task13.User, "<span class='notice'>You easily destroy the " + this.name + ".</span>" );
 
 				foreach (dynamic _a in Lang13.Enumerate( Map13.FetchViewersExcludeThis( null, this ) )) {
@@ -157,7 +156,7 @@ namespace Somnium.Game {
 		// Function from file: aliens.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.health -= 50;
 					break;

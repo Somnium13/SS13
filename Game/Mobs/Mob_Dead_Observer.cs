@@ -118,9 +118,8 @@ namespace Somnium.Game {
 			source_turf = GlobalFuncs.get_turf( source );
 
 			if ( Map13.GetDistance( source_turf, this ) <= Convert.ToDouble( Game13.view ) ) {
-				Interface13.Stat( null, Map13.FetchInView( null, this ).Contains( source_turf ) );
-
-				if ( false ) {
+				
+				if ( Map13.FetchInView( null, this ).Contains( source_turf ) ) {
 					_args[2] = "<B>" + _args[2] + "</B>";
 				}
 			} else if ( this.client != null && this.client.prefs != null ) {
@@ -373,7 +372,7 @@ namespace Somnium.Game {
 					return;
 				}
 
-				if ( Lang13.Bool( targetloc ) && targetloc.holy && ( !( this.invisibility != 0 ) || false ) ) {
+				if ( Lang13.Bool( targetloc ) && targetloc.holy && ( !( this.invisibility != 0 ) || Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>You cannot follow a mob standing on holy grounds!</span>" );
 					return;
 				}
@@ -428,7 +427,7 @@ namespace Somnium.Game {
 			L = new ByTable();
 			holyblock = false;
 
-			if ( Task13.User.invisibility == 0 || GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && GlobalVars.ticker.mode.name == "cult" && false ) {
+			if ( Task13.User.invisibility == 0 || GlobalVars.ticker != null && Lang13.Bool( GlobalVars.ticker.mode ) && GlobalVars.ticker.mode.name == "cult" && Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( Task13.User.mind ) ) ) {
 				
 				foreach (dynamic _a in Lang13.Enumerate( GlobalFuncs.get_area_turfs( thearea.type ) )) {
 					T = _a;
@@ -658,7 +657,7 @@ namespace Somnium.Game {
 
 			if ( this.can_reenter_corpse != 0 && this.mind != null && Lang13.Bool( this.mind.current ) ) {
 				
-				if ( A == this.mind.current || false ) {
+				if ( A == this.mind.current || Lang13.Bool( ((dynamic)A).Contains( this.mind.current ) ) ) {
 					this.reenter_corpse();
 					return;
 				}
@@ -695,7 +694,7 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( targetarea ) && targetarea.anti_ethereal && !GlobalFuncs.isAdminGhost( Task13.User ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='sinister'>A dark forcefield prevents you from entering the area.<span>" );
-				} else if ( targetloc.holy && ( this.invisibility == 0 || false ) ) {
+				} else if ( targetloc.holy && ( this.invisibility == 0 || Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>These are sacred grounds, you cannot go there!</span>" );
 				} else {
 					this.forceEnter( targetloc );
@@ -1026,7 +1025,7 @@ namespace Somnium.Game {
 						return;
 					}
 
-					if ( Lang13.Bool( targetloc ) && targetloc.holy && ( this.invisibility == 0 || false ) ) {
+					if ( Lang13.Bool( targetloc ) && targetloc.holy && ( this.invisibility == 0 || Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( this.mind ) ) ) ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>The mob that you are trying to follow is standing on holy grounds, you cannot reach him!</span>" );
 						return;
 					}

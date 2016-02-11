@@ -158,9 +158,8 @@ namespace Somnium.Game {
 						splitdir = deflections[i];
 						diridx = GlobalVars.cardinal.Find( splitdir );
 						dirdata = beam_dirs[diridx];
-						Interface13.Stat( null, dirdata.Contains( B.type ) );
 
-						if ( !false ) {
+						if ( !Lang13.Bool( dirdata.Contains( B.type ) ) ) {
 							dirdata[B.type] = splitpower;
 						} else {
 							dirdata[B.type] = dirdata[B.type] + splitpower;
@@ -263,9 +262,8 @@ namespace Somnium.Game {
 
 		// Function from file: mirror.dm
 		public virtual ByTable get_deflections( int in_dir = 0 ) {
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) );
-
-			if ( false ) {
+			
+			if ( new ByTable(new object [] { GlobalVars.EAST, GlobalVars.WEST }).Contains( this.dir ) ) {
 				
 				switch ((int)( in_dir )) {
 					case 1:

@@ -77,8 +77,8 @@ namespace Somnium.Game {
 
 		// Function from file: effects.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					break;

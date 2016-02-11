@@ -94,9 +94,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( this.prerequisites )) {
 					prereq = _a;
 					
-					Interface13.Stat( null, this.tree.unlocked.Contains( prereq ) );
 
-					if ( !false ) {
+					if ( !this.tree.unlocked.Contains( prereq ) ) {
 						return false;
 					}
 				}

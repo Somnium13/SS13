@@ -371,9 +371,8 @@ namespace Somnium.Game {
 					P = GlobalFuncs.get_multitool( Task13.User );
 
 					if ( Lang13.Bool( P ) && P is Obj_Item_Device_Multitool ) {
-						Interface13.Stat( null, href_list.Contains( "set_id" ) );
-
-						if ( false ) {
+						
+						if ( href_list.Contains( "set_id" ) ) {
 							newid = String13.SubStr( GlobalFuncs.reject_bad_text( Interface13.Input( Task13.User, "Specify the new ID tag for this machine", this, this.id_tag, null, InputType.Str | InputType.Null ) ), 1, 1024 );
 
 							if ( Lang13.Bool( newid ) ) {
@@ -381,9 +380,8 @@ namespace Somnium.Game {
 								this.initialize();
 							}
 						}
-						Interface13.Stat( null, href_list.Contains( "set_freq" ) );
 
-						if ( false ) {
+						if ( href_list.Contains( "set_freq" ) ) {
 							newfreq = this.frequency;
 
 							if ( href_list["set_freq"] != "-1" ) {
@@ -415,7 +413,7 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( href_list["aiDisable"] ) ) {
 					code = String13.ParseNumber( href_list["aiDisable"] );
 
-					switch ((double?)( code )) {
+					switch ((int?)( code )) {
 						case 1:
 							
 							if ( this.isWireCut( GlobalVars.AIRLOCK_WIRE_IDSCAN ) != 0 ) {
@@ -569,7 +567,7 @@ namespace Somnium.Game {
 				} else if ( Lang13.Bool( href_list["aiEnable"] ) ) {
 					code2 = String13.ParseNumber( href_list["aiEnable"] );
 
-					switch ((int?)(code2)) {
+					switch ((int?)( code2 )) {
 						case 1:
 							
 							if ( this.isWireCut( GlobalVars.AIRLOCK_WIRE_IDSCAN ) != 0 ) {

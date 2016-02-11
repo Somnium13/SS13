@@ -155,9 +155,8 @@ namespace Somnium.Game {
 			Icon I2 = null;
 
 			T = P.loc;
-			Interface13.Stat( null, GlobalVars.portal_cache.Contains( "icon" + Lang13.Initial( T, "icon" ) + "_iconstate" + T.icon_state ) );
 
-			if ( !false ) {
+			if ( !GlobalVars.portal_cache.Contains( "icon" + Lang13.Initial( T, "icon" ) + "_iconstate" + T.icon_state ) ) {
 				I1 = new Icon( this.icon, "portal_mask" );
 				I2 = new Icon( Lang13.Initial( T, "icon" ), T.icon_state );
 				I1.Blend( I2, 2 );

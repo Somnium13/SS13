@@ -21,9 +21,8 @@ namespace Somnium.Game {
 		public override bool linkWith( Mob user = null, Base_Data buffer = null, ByTable context = null ) {
 			Base_Data D = null;
 
-			Interface13.Stat( null, buffer.vars.Contains( "id_tag" ) );
-
-			if ( !false ) {
+			
+			if ( !buffer.vars.Contains( "id_tag" ) ) {
 				return false;
 			}
 			D = buffer;
@@ -44,12 +43,11 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: airlock_controllers.dm
-		public override bool? isLinkedWith( Base_Data O = null ) {
+		public override bool isLinkedWith( Base_Data O = null ) {
 			Base_Data D = null;
 
-			Interface13.Stat( null, O.vars.Contains( "id_tag" ) );
-
-			if ( !false ) {
+			
+			if ( !O.vars.Contains( "id_tag" ) ) {
 				return false;
 			}
 			D = O;
@@ -64,16 +62,15 @@ namespace Somnium.Game {
 					return true;
 				}
 			}
-			return null;
+			return false;
 		}
 
 		// Function from file: airlock_controllers.dm
 		public override bool unlinkFrom( Mob user = null, Base_Data buffer = null ) {
 			Base_Data D = null;
 
-			Interface13.Stat( null, buffer.vars.Contains( "id_tag" ) );
-
-			if ( !false ) {
+			
+			if ( !buffer.vars.Contains( "id_tag" ) ) {
 				return false;
 			}
 			D = buffer;
@@ -95,9 +92,8 @@ namespace Somnium.Game {
 		public override bool canLink( Base_Data O = null, ByTable context = null ) {
 			
 			if ( O is Obj_Machinery_Door ) {
-				Interface13.Stat( null, new ByTable(new object [] { "int", "ext" }).Contains( context["slot"] ) );
-
-				if ( false ) {
+				
+				if ( new ByTable(new object [] { "int", "ext" }).Contains( context["slot"] ) ) {
 					return true;
 				}
 			}

@@ -42,9 +42,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( Task13.User, "<span class='warning'>This machine is way above your pay-grade.</span>" );
 				return 0;
 			}
-			Interface13.Stat( null, href_list.Contains( "act" ) );
 
-			if ( !( !( Task13.User is Mob_Living_Silicon_Ai ) ) ) {
+			if ( !href_list.Contains( "act" ) ) {
 				return 0;
 			}
 

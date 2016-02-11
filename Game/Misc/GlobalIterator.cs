@@ -81,9 +81,8 @@ namespace Somnium.Game {
 
 		// Function from file: global_iterator.dm
 		public bool has_null_args(  ) {
-			Interface13.Stat( null, this.arg_list.Contains( null ) );
-
-			if ( false ) {
+			
+			if ( this.arg_list.Contains( null ) ) {
 				return true;
 			}
 			return false;

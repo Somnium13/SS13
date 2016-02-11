@@ -103,9 +103,8 @@ namespace Somnium.Game {
 			if ( this.stat == 0 ) {
 				M = this.target;
 				sting_prob = 100;
-				Interface13.Stat( null, Map13.FetchInView( 1, this ).Contains( M ) );
 
-				if ( false ) {
+				if ( Map13.FetchInView( 1, this ).Contains( M ) ) {
 					
 					if ( Rand13.PercentChance( Num13.MaxInt( this.feral * 10, 0 ) ) ) {
 						
@@ -217,9 +216,8 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( this.target ) ) {
-					Interface13.Stat( null, Map13.FetchInView( 7, this ).Contains( this.target ) );
-
-					if ( false ) {
+					
+					if ( Map13.FetchInView( 7, this ).Contains( this.target ) ) {
 						this.target_turf = GlobalFuncs.get_turf( this.target );
 						this.wander = false;
 					} else {

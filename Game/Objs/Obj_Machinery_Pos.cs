@@ -149,9 +149,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( base.Topic( href, href_list, (object)(hclient) ) ) ) {
 				return null;
 			}
-			Interface13.Stat( null, href_list.Contains( "logout" ) );
 
-			if ( Lang13.Bool( base.Topic( href, href_list, (object)(hclient) ) ) ) {
+			if ( href_list.Contains( "logout" ) ) {
 				
 				if ( Interface13.Alert( this, "You sure you want to log out?", "Confirm", "Yes", "No" ) != "Yes" ) {
 					return null;
@@ -170,9 +169,8 @@ namespace Somnium.Game {
 				}
 				return null;
 			}
-			Interface13.Stat( null, href_list.Contains( "act" ) );
 
-			if ( Task13.User != this.logged_in ) {
+			if ( href_list.Contains( "act" ) ) {
 				
 				dynamic _b = href_list["act"]; // Was a switch-case, sorry for the mess.
 				if ( _b=="Reset" ) {
@@ -233,69 +231,45 @@ namespace Somnium.Game {
 					}
 					this.screen = 6;
 				}
-			} else {
-				Interface13.Stat( null, href_list.Contains( "screen" ) );
+			} else if ( href_list.Contains( "screen" ) ) {
+				this.screen = String13.ParseNumber( href_list["screen"] );
+			} else if ( href_list.Contains( "rmproduct" ) ) {
+				this.products.Remove( href_list["rmproduct"] );
+			} else if ( href_list.Contains( "removefromorder" ) ) {
+				this.RemoveFromOrder( String13.ParseNumber( href_list["removefromorder"] ) );
+			} else if ( href_list.Contains( "setunits" ) ) {
+				lid = String13.ParseNumber( href_list["setunits"] );
+				newunits = Interface13.Input( Task13.User, "Enter the units sold.", null, null, null, InputType.Num );
 
-				if ( Task13.User != this.logged_in ) {
-					this.screen = String13.ParseNumber( href_list["screen"] );
-				} else {
-					Interface13.Stat( null, href_list.Contains( "rmproduct" ) );
-
-					if ( Task13.User != this.logged_in ) {
-						this.products.Remove( href_list["rmproduct"] );
-					} else {
-						Interface13.Stat( null, href_list.Contains( "removefromorder" ) );
-
-						if ( Task13.User != this.logged_in ) {
-							this.RemoveFromOrder( String13.ParseNumber( href_list["removefromorder"] ) );
-						} else {
-							Interface13.Stat( null, href_list.Contains( "setunits" ) );
-
-							if ( Task13.User != this.logged_in ) {
-								lid = String13.ParseNumber( href_list["setunits"] );
-								newunits = Interface13.Input( Task13.User, "Enter the units sold.", null, null, null, InputType.Num );
-
-								if ( !Lang13.Bool( newunits ) ) {
-									return null;
-								}
-								LI4 = this.line_items[lid];
-								LI4.units = newunits;
-								this.line_items[lid] = LI4;
-							} else {
-								Interface13.Stat( null, href_list.Contains( "setpname" ) );
-
-								if ( Task13.User != this.logged_in ) {
-									newtext = GlobalFuncs.sanitize( Interface13.Input( Task13.User, "Enter the product's name.", null, null, null, InputType.Any ) );
-
-									if ( !Lang13.Bool( newtext ) ) {
-										return null;
-									}
-									pid = href_list["setpname"];
-									LI5 = this.products[pid];
-
-									if ( Lang13.Bool( LI5 ) ) {
-										LI5.name = newtext;
-										this.products[pid] = LI5;
-									}
-								} else {
-									Interface13.Stat( null, href_list.Contains( "setprice" ) );
-
-									if ( Task13.User != this.logged_in ) {
-										newprice = Interface13.Input( Task13.User, "Enter the product's price.", null, null, null, InputType.Num );
-
-										if ( !Lang13.Bool( newprice ) ) {
-											return null;
-										}
-										pid2 = href_list["setprice"];
-										LI6 = this.products[pid2];
-										LI6.price = newprice;
-										this.products[pid2] = LI6;
-									}
-								}
-							}
-						}
-					}
+				if ( !Lang13.Bool( newunits ) ) {
+					return null;
 				}
+				LI4 = this.line_items[lid];
+				LI4.units = newunits;
+				this.line_items[lid] = LI4;
+			} else if ( href_list.Contains( "setpname" ) ) {
+				newtext = GlobalFuncs.sanitize( Interface13.Input( Task13.User, "Enter the product's name.", null, null, null, InputType.Any ) );
+
+				if ( !Lang13.Bool( newtext ) ) {
+					return null;
+				}
+				pid = href_list["setpname"];
+				LI5 = this.products[pid];
+
+				if ( Lang13.Bool( LI5 ) ) {
+					LI5.name = newtext;
+					this.products[pid] = LI5;
+				}
+			} else if ( href_list.Contains( "setprice" ) ) {
+				newprice = Interface13.Input( Task13.User, "Enter the product's price.", null, null, null, InputType.Num );
+
+				if ( !Lang13.Bool( newprice ) ) {
+					return null;
+				}
+				pid2 = href_list["setprice"];
+				LI6 = this.products[pid2];
+				LI6.price = newprice;
+				this.products[pid2] = LI6;
 			}
 			this.attack_hand( Task13.User );
 			return null;
@@ -314,7 +288,7 @@ namespace Somnium.Game {
 			}
 			dat = GlobalVars.POS_HEADER + new Txt( "\n	<div class=\"navbar\">\n		" ).item( GlobalFuncs.worldtime2text() ).str( ", " ).item( GlobalVars.current_date_string ).str( "<br />\n		" ).item( logindata ).str( "\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 1 ).str( "\">Order</a> |\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 3 ).str( "\">Products</a> |\n		<a href=\"?src=" ).Ref( this ).str( ";screen=" ).item( 6 ).str( "\">Settings</a>\n	</div>" ).ToString();
 
-			switch ((int?)(this.screen)) {
+			switch ((int?)( this.screen )) {
 				case 0:
 					dat += this.LoginScreen();
 					break;
@@ -592,9 +566,8 @@ namespace Somnium.Game {
 			dynamic LI = null;
 			LineItem LIC = null;
 
-			Interface13.Stat( null, this.products.Contains( name ) );
-
-			if ( !false ) {
+			
+			if ( !this.products.Contains( name ) ) {
 				return false;
 			}
 			LI = this.products[name];

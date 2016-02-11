@@ -284,9 +284,8 @@ namespace Somnium.Game {
 			this.update_icon();
 
 			if ( this.beams.len == 0 ) {
-				Interface13.Stat( null, GlobalVars.processing_objects.Contains( !this.custom_process && this != null ) );
-
-				if ( false ) {
+				
+				if ( GlobalVars.processing_objects.Contains( !this.custom_process && this != null ) ) {
 					GlobalVars.processing_objects.Remove( this );
 				}
 			}
@@ -299,7 +298,7 @@ namespace Somnium.Game {
 			this.last_beamchecks[new Txt().Ref( B ).ToString()] = Game13.time + 1;
 			this.apply_beam_damage( B );
 
-			if ( !this.custom_process && !false ) {
+			if ( !this.custom_process && !GlobalVars.processing_objects.Contains( this ) ) {
 				GlobalVars.processing_objects.Add( this );
 			}
 			return false;

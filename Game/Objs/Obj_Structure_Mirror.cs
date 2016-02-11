@@ -152,12 +152,10 @@ namespace Somnium.Game {
 
 			if ( a is Mob_Living_Carbon_Human ) {
 				H = a;
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( H.mind ) );
 
-				if ( false || H.mind.vampire != null ) {
-					Interface13.Stat( null, H.mind.vampire.powers.Contains( 13 ) );
-
-					if ( !false ) {
+				if ( GlobalVars.ticker.mode.vampires.Contains( H.mind ) || H.mind.vampire != null ) {
+					
+					if ( !H.mind.vampire.powers.Contains( 13 ) ) {
 						GlobalFuncs.to_chat( H, "<span class='notice'>You don't see anything.</span>" );
 						return null;
 					}
@@ -191,9 +189,8 @@ namespace Somnium.Game {
 							i = _b;
 							
 							tmp_facial = GlobalVars.facial_hair_styles_list[i];
-							Interface13.Stat( null, tmp_facial.species_allowed.Contains( H.species.name ) );
 
-							if ( false ) {
+							if ( tmp_facial.species_allowed.Contains( H.species.name ) ) {
 								species_facial_hair.Add( i );
 							}
 						}
@@ -218,9 +215,8 @@ namespace Somnium.Game {
 						i2 = _c;
 						
 						tmp_hair = GlobalVars.hair_styles_list[i2];
-						Interface13.Stat( null, tmp_hair.species_allowed.Contains( H.species.name ) );
 
-						if ( false ) {
+						if ( tmp_hair.species_allowed.Contains( H.species.name ) ) {
 							species_hair.Add( i2 );
 						}
 					}

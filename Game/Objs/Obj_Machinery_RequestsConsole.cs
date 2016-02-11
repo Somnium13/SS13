@@ -288,7 +288,7 @@ namespace Somnium.Game {
 				}
 			}
 
-			switch ((double?)( String13.ParseNumber( href_list["setScreen"] ) )) {
+			switch ((int?)( String13.ParseNumber( href_list["setScreen"] ) )) {
 				case null:
 					
 					break;
@@ -531,94 +531,79 @@ namespace Somnium.Game {
 			this.department = name;
 			this.departmentType = D;
 			name = "" + this.department + " Requests Console";
-			Interface13.Stat( null, GlobalVars.req_console_assistance.Contains( "" + this.department ) );
 
-			if ( false ) {
+			if ( GlobalVars.req_console_assistance.Contains( "" + this.department ) ) {
 				GlobalVars.req_console_assistance.Remove( this.department );
 			}
-			Interface13.Stat( null, GlobalVars.req_console_supplies.Contains( "" + this.department ) );
 
-			if ( false ) {
+			if ( GlobalVars.req_console_supplies.Contains( "" + this.department ) ) {
 				GlobalVars.req_console_supplies.Remove( this.department );
 			}
-			Interface13.Stat( null, GlobalVars.req_console_information.Contains( "" + this.department ) );
 
-			if ( false ) {
+			if ( GlobalVars.req_console_information.Contains( "" + this.department ) ) {
 				GlobalVars.req_console_information.Remove( this.department );
 			}
 
-			switch ((double?)( this.departmentType )) {
+			switch ((int?)( this.departmentType )) {
 				case 1:
-					Interface13.Stat( null, GlobalVars.req_console_assistance.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_assistance.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_assistance.Add( this.department );
 					}
 					break;
 				case 2:
-					Interface13.Stat( null, GlobalVars.req_console_supplies.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_supplies.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_supplies.Add( this.department );
 					}
 					break;
 				case 3:
-					Interface13.Stat( null, GlobalVars.req_console_information.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_information.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_information.Add( this.department );
 					}
 					break;
 				case 4:
-					Interface13.Stat( null, GlobalVars.req_console_assistance.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_assistance.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_assistance.Add( this.department );
 					}
-					Interface13.Stat( null, GlobalVars.req_console_supplies.Contains( "" + this.department ) );
 
-					if ( !( !false ) ) {
+					if ( !GlobalVars.req_console_supplies.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_supplies.Add( this.department );
 					}
 					break;
 				case 5:
-					Interface13.Stat( null, GlobalVars.req_console_assistance.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_assistance.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_assistance.Add( this.department );
 					}
-					Interface13.Stat( null, GlobalVars.req_console_information.Contains( "" + this.department ) );
 
-					if ( !( !false ) ) {
+					if ( !GlobalVars.req_console_information.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_information.Add( this.department );
 					}
 					break;
 				case 6:
-					Interface13.Stat( null, GlobalVars.req_console_supplies.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_supplies.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_supplies.Add( this.department );
 					}
-					Interface13.Stat( null, GlobalVars.req_console_information.Contains( "" + this.department ) );
 
-					if ( !( !false ) ) {
+					if ( !GlobalVars.req_console_information.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_information.Add( this.department );
 					}
 					break;
 				case 7:
-					Interface13.Stat( null, GlobalVars.req_console_assistance.Contains( "" + this.department ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.req_console_assistance.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_assistance.Add( this.department );
 					}
-					Interface13.Stat( null, GlobalVars.req_console_supplies.Contains( "" + this.department ) );
 
-					if ( !( !false ) ) {
+					if ( !GlobalVars.req_console_supplies.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_supplies.Add( this.department );
 					}
-					Interface13.Stat( null, GlobalVars.req_console_information.Contains( "" + this.department ) );
 
-					if ( !( !( !false ) ) ) {
+					if ( !GlobalVars.req_console_information.Contains( "" + this.department ) ) {
 						GlobalVars.req_console_information.Add( this.department );
 					}
 					break;

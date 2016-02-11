@@ -33,7 +33,7 @@ namespace Somnium.Game {
 					newEpicentre = _a;
 					
 
-					if ( newEpicentre.name == "lightsout" && !false ) {
+					if ( newEpicentre.name == "lightsout" && !epicentreList.Contains( newEpicentre ) ) {
 						possibleEpicentres.Add( newEpicentre );
 					}
 				}

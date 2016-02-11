@@ -426,9 +426,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.contents, typeof(Ent_Dynamic) )) {
 				x = _a;
 				
-				Interface13.Stat( null, ( this.upgrade_holder | this.component_parts ).Contains( x ) );
 
-				if ( !( x is Ent_Dynamic ) ) {
+				if ( !( this.upgrade_holder | this.component_parts ).Contains( x ) ) {
 					x.forceMove( this.loc );
 				}
 			}
@@ -565,7 +564,7 @@ namespace Somnium.Game {
 		// Function from file: rechargestation.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

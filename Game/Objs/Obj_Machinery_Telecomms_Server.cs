@@ -158,9 +158,8 @@ namespace Somnium.Game {
 							log.input_type = "Corrupt File";
 						}
 						this.log_entries.Add( log );
-						Interface13.Stat( null, this.stored_names.Contains( ((dynamic)signal).data["name"] ) );
 
-						if ( !( Convert.ToDouble( ((dynamic)signal).data["compression"] ) > 0 ) ) {
+						if ( !this.stored_names.Contains( ((dynamic)signal).data["name"] ) ) {
 							this.stored_names.Add( ((dynamic)signal).data["name"] );
 						}
 						this.logs++;

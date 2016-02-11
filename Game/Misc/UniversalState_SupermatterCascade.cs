@@ -124,25 +124,22 @@ namespace Somnium.Game {
 						GlobalFuncs.qdel( R );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.revolutionaries.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.revolutionaries.Contains( M ) ) {
 					GlobalVars.ticker.mode.revolutionaries.Remove( M );
 					GlobalFuncs.to_chat( M, "<span class='danger'><FONT size = 3>The massive pulse of energy clears your mind.  You are no longer a revolutionary.</FONT></span>" );
 					((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( M );
 					M.special_role = null;
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.head_revolutionaries.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.head_revolutionaries.Contains( M ) ) {
 					GlobalVars.ticker.mode.head_revolutionaries.Remove( M );
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>The massive pulse of energy clears your mind.  You are no longer a head revolutionary.</FONT></span>" );
 					((GameMode)GlobalVars.ticker.mode).update_rev_icons_removed( M );
 					M.special_role = null;
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.cult.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( Lang13.Bool( GlobalVars.ticker.mode.cult.Contains( M ) ) ) {
 					GlobalVars.ticker.mode.cult -= M;
 					((GameMode)GlobalVars.ticker.mode).update_cult_icons_removed( M );
 					M.special_role = null;
@@ -156,18 +153,16 @@ namespace Somnium.Game {
 					((Mob)M.current).remove_language( "Cult" );
 					M.memory = "";
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.wizards.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.wizards.Contains( M ) ) {
 					GlobalVars.ticker.mode.wizards.Remove( M );
 					M.special_role = null;
 					((Mob)M.current).spellremove( M.current );
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>Your powers ebb and you feel weak. You are no longer a wizard.</FONT></span>" );
 					((GameMode)GlobalVars.ticker.mode).update_wizard_icons_removed( M );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.changelings.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.changelings.Contains( M ) ) {
 					GlobalVars.ticker.mode.changelings.Remove( M );
 					M.special_role = null;
 					((Mob)M.current).remove_changeling_powers();
@@ -179,9 +174,8 @@ namespace Somnium.Game {
 					}
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>You grow weak and lose your powers. You are no longer a changeling and are stuck in your current form.</FONT></span>" );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.vampires.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.vampires.Contains( M ) ) {
 					GlobalVars.ticker.mode.vampires.Remove( M );
 					M.special_role = null;
 					((Mob)M.current).remove_vampire_powers();
@@ -192,17 +186,15 @@ namespace Somnium.Game {
 					}
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>You grow weak and lose your powers. You are no longer a vampire and are stuck in your current form.</FONT></span>" );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.syndicates.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.syndicates.Contains( M ) ) {
 					GlobalVars.ticker.mode.syndicates.Remove( M );
 					((GameMode)GlobalVars.ticker.mode).update_synd_icons_removed( M );
 					M.special_role = null;
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>Your masters are likely dead or dying. You are no longer a syndicate operative.</FONT></span>" );
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.traitors.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.traitors.Contains( M ) ) {
 					GlobalVars.ticker.mode.traitors.Remove( M );
 					M.special_role = null;
 					GlobalFuncs.to_chat( M.current, "<span class='danger'><FONT size = 3>Your masters are likely dead or dying.  You are no longer a traitor.</FONT></span>" );
@@ -213,9 +205,8 @@ namespace Somnium.Game {
 						A.show_laws();
 					}
 				}
-				Interface13.Stat( null, GlobalVars.ticker.mode.malf_ai.Contains( M ) );
 
-				if ( failed_objectives ) {
+				if ( GlobalVars.ticker.mode.malf_ai.Contains( M ) ) {
 					GlobalVars.ticker.mode.malf_ai.Remove( M );
 					M.special_role = null;
 					A2 = M.current;

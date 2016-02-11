@@ -89,34 +89,29 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
 				return false;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power" ) ) ) {
 				this.on = String13.ParseNumber( ((dynamic)signal).data["power"] );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power_toggle" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power_toggle" ) ) ) {
 				this.on = !Lang13.Bool( this.on ) ?1:0;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "inject" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "inject" ) ) ) {
 				Task13.Schedule( 0, (Task13.Closure)(() => {
 					this.inject();
 					return;
 				}));
 				return false;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_volume_rate" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_volume_rate" ) ) ) {
 				number = String13.ParseNumber( ((dynamic)signal).data["set_volume_rate"] );
 				this.volume_rate = ( ( number ??0) <= 0 ? 0 : ( ( number ??0) >= ( this.air_contents.volume ??0) ? this.air_contents.volume : number ) );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "status" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" || Lang13.Bool( ((dynamic)signal).data["type"] ) && ((dynamic)signal).data["type"] != "injector" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "status" ) ) ) {
 				Task13.Schedule( 2, (Task13.Closure)(() => {
 					this.broadcast_status();
 					return;

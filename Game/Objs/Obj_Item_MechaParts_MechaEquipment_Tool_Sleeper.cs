@@ -98,7 +98,7 @@ namespace Somnium.Game {
 			double? to_inject = null;
 
 			
-			if ( !Lang13.Bool( R ) || !Lang13.Bool( this.occupant ) || !Lang13.Bool( SG ) || !false ) {
+			if ( !Lang13.Bool( R ) || !Lang13.Bool( this.occupant ) || !Lang13.Bool( SG ) || !this.chassis.equipment.Contains( SG ) ) {
 				return false;
 			}
 			to_inject = Num13.MinInt( Convert.ToInt32( R.volume ), this.inject_amount );

@@ -338,7 +338,7 @@ namespace Somnium.Game {
 
 			
 			switch ((bool)( this.welding )) {
-				case 0:
+				case false:
 					
 					if ( this.icon_state != "welder" ) {
 						this.force = 3;
@@ -350,7 +350,7 @@ namespace Somnium.Game {
 					GlobalVars.processing_objects.Remove( this );
 					return null;
 					break;
-				case 1:
+				case true:
 					
 					if ( this.icon_state != "welder1" ) {
 						this.force = 15;
@@ -363,7 +363,7 @@ namespace Somnium.Game {
 						this.remove_fuel( 1 );
 					}
 					break;
-				case 2:
+				case 2 != 0:
 					
 					if ( Rand13.PercentChance( 75 ) ) {
 						this.remove_fuel( 1 );

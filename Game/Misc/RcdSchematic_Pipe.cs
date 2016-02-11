@@ -75,9 +75,8 @@ namespace Somnium.Game {
 			
 			if ( Lang13.Bool( href_list["set_dir"] ) ) {
 				dir = String13.ParseNumber( href_list["set_dir"] );
-				Interface13.Stat( null, GlobalVars.alldirs.Contains( dir ) );
 
-				if ( !false || this.selected_dir == dir ) {
+				if ( !GlobalVars.alldirs.Contains( dir ) || this.selected_dir == dir ) {
 					return 1;
 				}
 				this.selected_dir = dir;

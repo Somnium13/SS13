@@ -46,7 +46,7 @@ namespace Somnium.Game {
 		// Function from file: disabilities.dm
 		public override bool activate( dynamic M = null, dynamic connected = null, bool? flags = null ) {
 			
-			if ( this.mutation != 0 && !false ) {
+			if ( this.mutation != 0 && !Lang13.Bool( M.mutations.Contains( this.mutation ) ) ) {
 				M.mutations.Add( this.mutation );
 			}
 

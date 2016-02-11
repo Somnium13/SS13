@@ -30,7 +30,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: sortingmachinery.dm
-		public virtual bool? sort( Ent_Dynamic A = null ) {
+		public virtual bool sort( Ent_Dynamic A = null ) {
 			return Rand13.PercentChance( 50 );
 		}
 
@@ -49,9 +49,8 @@ namespace Somnium.Game {
 			if ( _default != 0 ) {
 				return _default;
 			}
-			Interface13.Stat( null, href_list.Contains( "changedir" ) );
 
-			if ( _default != 0 ) {
+			if ( href_list.Contains( "changedir" ) ) {
 				changingdir = String13.ParseNumber( href_list["changedir"] );
 				changingdir = ( ( changingdir ??0) <= 1 ? 1 : ( ( changingdir ??0) >= 3 ? 3 : changingdir ) );
 				newdir = Interface13.Input( "Select the new direction", "MinerX SortMaster 5000", "North", null, new ByTable(new object [] { "North", "South", "East", "West" }), InputType.Null | InputType.Any );
@@ -146,7 +145,7 @@ namespace Somnium.Game {
 					continue;
 				}
 
-				if ( this.sort( A ) == true ) {
+				if ( this.sort( A ) ) {
 					A.forceMove( filter_T );
 				} else {
 					A.forceMove( out_T );

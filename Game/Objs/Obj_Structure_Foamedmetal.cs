@@ -90,9 +90,8 @@ namespace Somnium.Game {
 			dynamic O = null;
 
 			((Mob)a).delayNextAttack( 10 );
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-			if ( false || Rand13.PercentChance( ((int)( 75 - Convert.ToDouble( this.metal * 25 ) )) ) ) {
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) || Rand13.PercentChance( ((int)( 75 - Convert.ToDouble( this.metal * 25 ) )) ) ) {
 				GlobalFuncs.to_chat( a, "<span class='notice'>You smash through the metal foam wall.</span>" );
 
 				foreach (dynamic _a in Lang13.Enumerate( Map13.FetchViewersExcludeThis( null, a ) )) {

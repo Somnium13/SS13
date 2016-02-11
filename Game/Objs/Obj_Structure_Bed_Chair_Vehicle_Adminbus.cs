@@ -1269,7 +1269,7 @@ namespace Somnium.Game {
 				return;
 			}
 
-			switch ( doorstate ) {
+			switch ((bool?)( doorstate )) {
 				case false:
 					((dynamic)bususer.gui_icons.adminbus_door_0).icon_state = "icon_door_0-on";
 					((dynamic)bususer.gui_icons.adminbus_door_1).icon_state = "icon_door_1-off";

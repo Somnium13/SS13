@@ -61,9 +61,8 @@ namespace Somnium.Game {
 				if ( !( this.botlist != null ) ) {
 					this.botlist = new ByTable();
 				}
-				Interface13.Stat( null, this.botlist.Contains( ((dynamic)signal).source ) );
 
-				if ( !( !( this.botlist != null ) ) ) {
+				if ( !this.botlist.Contains( ((dynamic)signal).source ) ) {
 					this.botlist.Add( ((dynamic)signal).source );
 				}
 

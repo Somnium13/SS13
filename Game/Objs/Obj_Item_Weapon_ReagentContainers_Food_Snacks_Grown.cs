@@ -291,8 +291,7 @@ namespace Somnium.Game {
 						turfs_to_pick_from.Add( T2 );
 					}
 				}
-				Interface13.Stat( null, turfs_to_pick_from.Contains( typeof(Tile) ) );
-				turfs.Add( Rand13.PickFromTable( null ) );
+				turfs.Add( Rand13.PickFromTable( turfs_to_pick_from.Contains( typeof(Tile) ) ) );
 			}
 			picked = Rand13.PickFromTable( turfs );
 

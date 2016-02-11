@@ -35,9 +35,8 @@ namespace Somnium.Game {
 			if ( !( this.syllables != null ) || !( this.syllables.len != 0 ) ) {
 				return GlobalFuncs.stars( input );
 			}
-			Interface13.Stat( null, this.scramble_cache.Contains( input ) );
 
-			if ( !( this.syllables != null ) || !( this.syllables.len != 0 ) ) {
+			if ( this.scramble_cache.Contains( input ) ) {
 				n = this.scramble_cache[input];
 				this.scramble_cache.Remove( input );
 				this.scramble_cache[input] = n;
@@ -71,9 +70,8 @@ namespace Somnium.Game {
 				scrambled_text = String13.SubStr( scrambled_text, 1, Lang13.Length( scrambled_text ) - 1 );
 			}
 			input_ending = String13.SubStr( input, input_size, 0 );
-			Interface13.Stat( null, new ByTable(new object [] { "!", "?", "." }).Contains( input_ending ) );
 
-			if ( ending == "." ) {
+			if ( new ByTable(new object [] { "!", "?", "." }).Contains( input_ending ) ) {
 				scrambled_text += input_ending;
 			}
 			this.scramble_cache[input] = scrambled_text;
@@ -107,10 +105,10 @@ namespace Somnium.Game {
 
 			
 			switch ((bool)( mode )) {
-				case 2:
+				case 2 != 0:
 					return "" + this.whisper_verb;
 					break;
-				case 3:
+				case 3 != 0:
 					return "" + this.whisper_verb + " with their final breath";
 					break;
 			}

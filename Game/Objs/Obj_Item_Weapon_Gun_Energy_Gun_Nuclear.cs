@@ -99,9 +99,8 @@ namespace Somnium.Game {
 				foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRange( this, 0 ), typeof(Mob_Living) )) {
 					M = _a;
 					
-					Interface13.Stat( null, M.contents.Contains( this ) );
 
-					if ( M is Mob_Living ) {
+					if ( M.contents.Contains( this ) ) {
 						GlobalFuncs.to_chat( M, "<span class='warning'>Your gun feels pleasantly warm for a moment.</span>" );
 					} else {
 						GlobalFuncs.to_chat( M, "<span class='warning'>You feel a warm sensation.</span>" );
@@ -114,9 +113,8 @@ namespace Somnium.Game {
 				foreach (dynamic _b in Lang13.Enumerate( Map13.FetchInRange( this, Rand13.Int( 1, 4 ) ), typeof(Mob_Living) )) {
 					M2 = _b;
 					
-					Interface13.Stat( null, M2.contents.Contains( this ) );
 
-					if ( M2 is Mob_Living ) {
+					if ( M2.contents.Contains( this ) ) {
 						GlobalFuncs.to_chat( M2, "<span class='warning'>Your gun's reactor overloads!</span>" );
 					}
 					GlobalFuncs.to_chat( M2, "<span class='warning'>You feel a wave of heat wash over you.</span>" );

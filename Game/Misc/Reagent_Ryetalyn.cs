@@ -42,7 +42,7 @@ namespace Somnium.Game {
 					gene = GlobalVars.dna_genes[gene_type];
 					tempflag = 0;
 
-					if ( Lang13.Bool( ((dynamic)H).species ) && false ) {
+					if ( Lang13.Bool( ((dynamic)H).species ) && ((dynamic)H).species.default_blocks.Contains( gene.block ) ) {
 						tempflag |= 4;
 					}
 

@@ -341,10 +341,8 @@ namespace Somnium.Game {
 				if ( this is Mob_Living_Carbon_Human ) {
 					H = this;
 					throw_mult = ((dynamic)H).species.throw_mult;
-					Interface13.Stat( H.mutations, ((dynamic)( H.mutations != null || 202 != 0 )).Contains( 4 ) );
-					Interface13.Stat( null, null.Contains( null ) );
 
-					if ( false ) {
+					if ( H.mutations.Contains( ((dynamic)( H.mutations != null || 202 != 0 )).Contains( 4 ) ) ) {
 						throw_mult += 0.5;
 					}
 				}
@@ -455,9 +453,8 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( this )) {
 				M = _b;
 				
-				Interface13.Stat( null, this.stomach_contents.Contains( M ) );
 
-				if ( false ) {
+				if ( this.stomach_contents.Contains( M ) ) {
 					this.stomach_contents.Remove( M );
 				}
 				M.loc = this.loc;
@@ -486,9 +483,8 @@ namespace Somnium.Game {
 			dynamic M3 = null;
 			Ent_Dynamic A = null;
 
-			Interface13.Stat( null, this.stomach_contents.Contains( M ) );
-
-			if ( false ) {
+			
+			if ( this.stomach_contents.Contains( M ) ) {
 				
 				if ( Rand13.PercentChance( 40 ) ) {
 					
@@ -1399,9 +1395,8 @@ namespace Somnium.Game {
 						}
 						this.show_message( "	 " + ( status == "OK" ? "<span class='notice'></span>" : "<span class='danger'></span>" ) + "My " + org.display_name + " is " + status + ".", 1 );
 					}
-					Interface13.Stat( null, H.mutations.Contains( 29 ) );
 
-					if ( this.gender == GlobalVars.MALE && !Lang13.Bool( ((dynamic)H).w_uniform ) && !Lang13.Bool( ((dynamic)H).wear_suit ) ) {
+					if ( H.mutations.Contains( 29 ) && !Lang13.Bool( ((dynamic)H).w_uniform ) && !Lang13.Bool( ((dynamic)H).wear_suit ) ) {
 						((dynamic)H).play_xylophone();
 					}
 				} else if ( this.lying == true ) {

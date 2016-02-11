@@ -666,7 +666,7 @@ namespace Somnium.Game {
 		// Function from file: suit_storage_unit.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( Rand13.PercentChance( 50 ) ) {

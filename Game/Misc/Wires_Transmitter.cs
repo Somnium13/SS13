@@ -25,7 +25,7 @@ namespace Somnium.Game {
 
 			T = this.holder;
 
-			switch ((int?)(index)) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)T).power_change();
 					((dynamic)T).shock( Task13.User, 50 );
@@ -44,7 +44,7 @@ namespace Somnium.Game {
 
 			T = this.holder;
 
-			switch ((int?)(index)) {
+			switch ((int?)( index )) {
 				case 1:
 					((dynamic)T).on = !Lang13.Bool( ((dynamic)T).on );
 					((dynamic)T).update_on();

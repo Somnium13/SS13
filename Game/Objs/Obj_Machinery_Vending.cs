@@ -295,7 +295,7 @@ namespace Somnium.Game {
 				this.shake( true, 3 );
 				this.health -= 4;
 
-				if ( !this.Adjacent( a ) && false ) {
+				if ( !this.Adjacent( a ) && Task13.User.mutations.Contains( 1 ) ) {
 					GlobalFuncs.to_chat( a, "<span class='danger'>You slam the " + this + " with your mind.</span>" );
 					this.visible_message( "<span class='danger'>" + this + " dents slightly as if struck.</span>" );
 				} else {
@@ -376,9 +376,8 @@ namespace Somnium.Game {
 					
 
 					if ( Lang13.Bool( R.subcategory ) ) {
-						Interface13.Stat( null, category_names.Contains( R.subcategory ) );
-
-						if ( !false ) {
+						
+						if ( !category_names.Contains( R.subcategory ) ) {
 							category_names.Add( R.subcategory );
 							this.categories[R.subcategory] = new ByTable();
 						}
@@ -738,7 +737,7 @@ namespace Somnium.Game {
 			}
 			this.vend_ready = false;
 
-			if ( !( by_voucher == true ) && false ) {
+			if ( !( by_voucher == true ) && this.coin_records.Contains( R ) ) {
 				
 				if ( this.coin == null ) {
 					GlobalFuncs.to_chat( user, "<SPAN CLASS='notice'>You need to insert a coin to get this item.</SPAN>" );
@@ -872,7 +871,7 @@ namespace Somnium.Game {
 		// Function from file: vending.dm
 		public dynamic GetProductByID( double? pid = null, double? category = null ) {
 			
-			switch ((double?)( category )) {
+			switch ((int?)( category )) {
 				case 1:
 					return this.product_records[pid];
 					break;
@@ -1111,7 +1110,7 @@ namespace Somnium.Game {
 		// Function from file: vending.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					GlobalFuncs.qdel( this );
 					return false;

@@ -112,9 +112,8 @@ namespace Somnium.Game {
 					if ( !( T.dna != null ) ) {
 						return null;
 					}
-					Interface13.Stat( null, T.mutations.Contains( 8 ) );
 
-					if ( !( T.dna != null ) ) {
+					if ( T.mutations.Contains( 8 ) ) {
 						return null;
 					}
 

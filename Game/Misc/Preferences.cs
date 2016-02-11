@@ -1873,9 +1873,8 @@ AND players.player_slot = ? ;", ckey, slot );
 				this.backbag = 1;
 			}
 			character.backbag = this.backbag;
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.PLURAL, GlobalVars.NEUTER }).Contains( character.gender ) );
 
-			if ( Convert.ToDouble( this.backbag ) > 4 || Convert.ToDouble( this.backbag ) < 1 ) {
+			if ( new ByTable(new object [] { GlobalVars.PLURAL, GlobalVars.NEUTER }).Contains( character.gender ) ) {
 				
 				if ( this is Mob_Living ) {
 					GlobalFuncs.message_admins( "" + character + " (" + character.ckey + ") has spawned with their gender as plural or neuter. Please notify coders." );
@@ -2181,9 +2180,8 @@ AND players.player_slot = ? ;", ckey, slot );
 							if ( this.gender == GlobalVars.FEMALE && S2.gender == GlobalVars.MALE ) {
 								continue;
 							}
-							Interface13.Stat( null, S2.species_allowed.Contains( this.species ) );
 
-							if ( !( this.gender == GlobalVars.FEMALE && S2.gender == GlobalVars.MALE ) ) {
+							if ( !S2.species_allowed.Contains( this.species ) ) {
 								continue;
 							}
 							valid_hairstyles[hairstyle] = GlobalVars.hair_styles_list[hairstyle];
@@ -2208,9 +2206,8 @@ AND players.player_slot = ? ;", ckey, slot );
 							if ( this.gender == GlobalVars.FEMALE && S3.gender == GlobalVars.MALE ) {
 								continue;
 							}
-							Interface13.Stat( null, S3.species_allowed.Contains( this.species ) );
 
-							if ( !( this.gender == GlobalVars.FEMALE && S3.gender == GlobalVars.MALE ) ) {
+							if ( !S3.species_allowed.Contains( this.species ) ) {
 								continue;
 							}
 							valid_facialhairstyles[facialhairstyle] = GlobalVars.facial_hair_styles_list[facialhairstyle];
@@ -2289,9 +2286,8 @@ AND players.player_slot = ? ;", ckey, slot );
 						hairstyle2 = _i;
 						
 						S4 = GlobalVars.hair_styles_list[hairstyle2];
-						Interface13.Stat( null, S4.species_allowed.Contains( this.species ) );
 
-						if ( !false ) {
+						if ( !S4.species_allowed.Contains( this.species ) ) {
 							continue;
 						}
 						valid_hairstyles2[hairstyle2] = GlobalVars.hair_styles_list[hairstyle2];
@@ -2324,9 +2320,8 @@ AND players.player_slot = ? ;", ckey, slot );
 						if ( this.gender == GlobalVars.FEMALE && S5.gender == GlobalVars.MALE ) {
 							continue;
 						}
-						Interface13.Stat( null, S5.species_allowed.Contains( this.species ) );
 
-						if ( !( this.gender == GlobalVars.FEMALE && S5.gender == GlobalVars.MALE ) ) {
+						if ( !S5.species_allowed.Contains( this.species ) ) {
 							continue;
 						}
 						valid_facialhairstyles2[facialhairstyle2] = GlobalVars.facial_hair_styles_list[facialhairstyle2];
@@ -2632,9 +2627,8 @@ AND players.player_slot = ? ;", ckey, slot );
 			int newval = 0;
 
 			role_id = href_list["role_id"];
-			Interface13.Stat( null, GlobalVars.special_roles.Contains( role_id ) );
 
-			if ( !false ) {
+			if ( !GlobalVars.special_roles.Contains( role_id ) ) {
 				GlobalFuncs.to_chat( user, "<span class='danger'>BUG: Unable to find role " + role_id + ".</span>" );
 				return false;
 			}
@@ -2676,9 +2670,8 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 			dynamic role_id = null;
 
 			role_id = href_list["role_id"];
-			Interface13.Stat( null, GlobalVars.special_roles.Contains( role_id ) );
 
-			if ( !false ) {
+			if ( !GlobalVars.special_roles.Contains( role_id ) ) {
 				GlobalFuncs.to_chat( user, "<span class='danger'>BUG: Unable to find role " + role_id + ".</span>" );
 				return false;
 			}
@@ -2700,9 +2693,8 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 			foreach (dynamic _a in Lang13.Enumerate( GlobalVars.special_roles )) {
 				role_id = _a;
 				
-				Interface13.Stat( null, href_list.Contains( role_id ) );
 
-				if ( !false ) {
+				if ( !href_list.Contains( role_id ) ) {
 					GlobalFuncs.to_chat( user, "<span class='danger'>BUG: Unable to find role " + role_id + ".</span>" );
 					continue;
 				}
@@ -2805,7 +2797,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 			switch ((int)( job.department_flag )) {
 				case 4:
 					
-					switch ((double)( level )) {
+					switch ((int)( level )) {
 						case 1:
 							return this.job_civilian_high;
 							break;
@@ -2819,7 +2811,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 					break;
 				case 2:
 					
-					switch ((double)( level )) {
+					switch ((int)( level )) {
 						case 1:
 							return this.job_medsci_high;
 							break;
@@ -2833,7 +2825,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 					break;
 				case 1:
 					
-					switch ((double)( level )) {
+					switch ((int)( level )) {
 						case 1:
 							return this.job_engsec_high;
 							break;
@@ -3005,7 +2997,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 				dat += "<b>You are banned from using custom names and appearances. You can continue to adjust your characters, but you will be randomised once you join the game.</b><br>";
 			}
 
-			switch ((double?)( this.current_tab )) {
+			switch ((int?)( this.current_tab )) {
 				case 0:
 					dat = this.setup_character_options( dat, user );
 					break;
@@ -3074,7 +3066,7 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 				
 				index += 1;
 
-				if ( ( index ??0) >= ( limit ??0) || false ) {
+				if ( ( index ??0) >= ( limit ??0) || splitJobs.Contains( job.title ) ) {
 					width += widthPerColumn ??0;
 
 					if ( ( index ??0) < ( limit ??0) && lastJob != null ) {
@@ -3108,9 +3100,8 @@ NOTE:  The change will take effect AFTER any current recruiting periods." ).ToSt
 					HTML += "<font color=orange>" + rank + "</font></td><td></td></tr>";
 					continue;
 				}
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( rank ) );
 
-				if ( Lang13.Bool( this.job_civilian_low & 8192 ) && rank != "Assistant" || rank == "AI" ) {
+				if ( GlobalVars.command_positions.Contains( rank ) || rank == "AI" ) {
 					
 					if ( job.alt_titles != null ) {
 						HTML += new Txt( "<b><span class='dark'><a href=\"byond://?src=" ).Ref( user ).str( ";preference=job;task=alt_title;job=" ).Ref( job ).str( "\">" ).item( this.GetPlayerAltTitle( job ) ).str( "</a></span></b>" ).ToString();

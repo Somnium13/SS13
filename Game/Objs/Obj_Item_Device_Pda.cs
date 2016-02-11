@@ -196,17 +196,14 @@ namespace Somnium.Game {
 			int loop_count = 0;
 
 			loop_count = 0;
-			Interface13.Stat( null, GlobalVars.PDAs.Contains( null ) );
 
-			if ( false ) {
+			while (GlobalVars.PDAs.Contains( null )) {
 				GlobalVars.PDAs.Remove( null );
 
 				if ( loop_count > 10 ) {
-					
-				} else {
-					loop_count++;
-					// goto 5;
+					break;
 				}
+				loop_count++;
 			}
 			GlobalVars.PDAs.Remove( this );
 			base.Del();
@@ -396,9 +393,8 @@ namespace Somnium.Game {
 					this.name = "PDA-" + this.owner + " (" + this.ownjob + ")";
 					GlobalFuncs.to_chat( b, "<span class='notice'>Card scanned.</span>" );
 				} else {
-					Interface13.Stat( null, b.contents.Contains( this ) );
-
-					if ( !Lang13.Bool( this.owner ) && false || this.loc is Tile && GlobalFuncs.in_range( this, b ) && false ) {
+					
+					if ( Lang13.Bool( b.contents.Contains( this ) ) && Lang13.Bool( b.contents.Contains( a ) ) || this.loc is Tile && GlobalFuncs.in_range( this, b ) && Lang13.Bool( b.contents.Contains( a ) ) ) {
 						
 						if ( this.can_use( b ) ) {
 							this.id_check( b, 2 );
@@ -1233,7 +1229,7 @@ namespace Somnium.Game {
 				dat += new Txt( "Warning: No owner information entered.  Please swipe card.<br><br>\n			<a href='byond://?src=" ).Ref( this ).str( ";choice=Refresh'><img src=pda_refresh.png> Retry</a>" ).ToString();
 			} else {
 				
-				switch ((double?)( this.mode )) {
+				switch ((int?)( this.mode )) {
 					case 0:
 						
 						if ( Lang13.Bool( user.client ) ) {
@@ -1692,7 +1688,7 @@ namespace Somnium.Game {
 
 									if ( B.life == 1 ) {
 										
-										switch ((double?)( B.dir )) {
+										switch ((int?)( B.dir )) {
 											case 4:
 												body_dir = "pda_snake_bodytail_east";
 												break;
@@ -1710,10 +1706,10 @@ namespace Somnium.Game {
 										
 										if ( Lang13.Bool( B.corner ) ) {
 											
-											switch ((double?)( B.dir )) {
+											switch ((int?)( B.dir )) {
 												case 4:
 													
-													switch ((double?)( B.corner )) {
+													switch ((int?)( B.corner )) {
 														case 2:
 															body_dir = "pda_snake_bodycorner_eastsouth2";
 															break;
@@ -1724,7 +1720,7 @@ namespace Somnium.Game {
 													break;
 												case 8:
 													
-													switch ((double?)( B.corner )) {
+													switch ((int?)( B.corner )) {
 														case 2:
 															body_dir = "pda_snake_bodycorner_westsouth2";
 															break;
@@ -1735,7 +1731,7 @@ namespace Somnium.Game {
 													break;
 												case 1:
 													
-													switch ((double?)( B.corner )) {
+													switch ((int?)( B.corner )) {
 														case 4:
 															body_dir = "pda_snake_bodycorner_eastnorth";
 															break;
@@ -1746,7 +1742,7 @@ namespace Somnium.Game {
 													break;
 												case 2:
 													
-													switch ((double?)( B.corner )) {
+													switch ((int?)( B.corner )) {
 														case 4:
 															body_dir = "pda_snake_bodycorner_eastsouth";
 															break;
@@ -1758,7 +1754,7 @@ namespace Somnium.Game {
 											}
 										} else {
 											
-											switch ((double?)( B.dir )) {
+											switch ((int?)( B.dir )) {
 												case 4:
 													body_dir = "pda_snake_body_east";
 													break;
@@ -1797,7 +1793,7 @@ namespace Somnium.Game {
 								dat += "<img src=\"snake_" + app6.snake_game.snakescore % 10 + ".png\" style=\"position: absolute; top: " + -30 + "px; left: " + 42 + "px;\"/>";
 								head_dir = "";
 
-								switch ((double?)( app6.snake_game.head.dir )) {
+								switch ((int?)( app6.snake_game.head.dir )) {
 									case 4:
 										head_dir = "pda_snake_head_east";
 										break;
@@ -2128,9 +2124,8 @@ namespace Somnium.Game {
 					continue;
 				}
 				name = P.owner;
-				Interface13.Stat( null, names.Contains( name ) );
 
-				if ( P.toff ) {
+				if ( names.Contains( name ) ) {
 					namecounts[name]++;
 					name = "" + name + " (" + namecounts[name] + ")";
 				} else {
@@ -2267,9 +2262,8 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( ((dynamic)signal).data["done"] ) ) {
 					useTC = 1;
 					pos = GlobalFuncs.get_turf( P );
-					Interface13.Stat( null, ((dynamic)signal).data["level"].Contains( pos.z ) );
 
-					if ( false ) {
+					if ( Lang13.Bool( ((dynamic)signal).data["level"].Contains( pos.z ) ) ) {
 						useTC = 2;
 
 						if ( Convert.ToDouble( ((dynamic)signal).data["compression"] ) > 0 ) {

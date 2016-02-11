@@ -320,9 +320,8 @@ namespace Somnium.Game {
 					if ( !this.bumped && !( this.original is Tile ) ) {
 						
 						if ( this.loc == GlobalFuncs.get_turf( this.original ) ) {
-							Interface13.Stat( null, this.permutated.Contains( this.original ) );
-
-							if ( !false ) {
+							
+							if ( !this.permutated.Contains( this.original ) ) {
 								this.icon = GlobalVars.endicon;
 							}
 

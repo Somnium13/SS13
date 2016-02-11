@@ -63,7 +63,7 @@ namespace Somnium.Game {
 				return null;
 			}
 
-			if ( !Lang13.Bool( this.mode ) || !( this.target != null ) || !false ) {
+			if ( !Lang13.Bool( this.mode ) || !( this.target != null ) || !Map13.FetchInView( this, 7 ).Contains( this.target ) ) {
 				this.mode = 0;
 				this.target = null;
 

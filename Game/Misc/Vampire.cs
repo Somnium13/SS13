@@ -35,18 +35,13 @@ namespace Somnium.Game {
 			if ( !( this.owner.druggy != 0 ) ) {
 				this.owner.see_invisible = 45;
 			}
-			Interface13.Stat( null, this.powers.Contains( 13 ) );
 
-			if ( !( this.owner.druggy != 0 ) ) {
+			if ( this.powers.Contains( 13 ) ) {
 				this.owner.sight |= 28;
 				this.owner.see_in_dark = 8;
 				this.owner.see_invisible = 5;
-			} else {
-				Interface13.Stat( null, this.powers.Contains( 5 ) );
-
-				if ( !( this.owner.druggy != 0 ) ) {
-					this.owner.sight |= GlobalVars.SEE_MOBS;
-				}
+			} else if ( this.powers.Contains( 5 ) ) {
+				this.owner.sight |= GlobalVars.SEE_MOBS;
 			}
 			return;
 		}

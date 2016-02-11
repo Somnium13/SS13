@@ -813,157 +813,139 @@ namespace Somnium.Game {
 			} else {
 				E = Lang13.Call( this.installation );
 
-				switch ((Type)( E.type )) {
-					case typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Blue);
-						this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Omni);
-						this.iconholder = null;
-						this.reqpower = 100;
-						this.lasercolor = "b";
-						this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels });
-						this.check_records = false;
-						this.criminals = false;
-						this.auth_weapons = true;
-						this.stun_all = false;
-						this.check_anomalies = false;
-						this.shot_delay = 30;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Red);
-						this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Omni);
-						this.iconholder = null;
-						this.reqpower = 100;
-						this.lasercolor = "r";
-						this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels });
-						this.check_records = false;
-						this.criminals = false;
-						this.auth_weapons = true;
-						this.stun_all = false;
-						this.check_anomalies = false;
-						this.shot_delay = 30;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Laser_Practice):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Practice);
-						this.eprojectile = typeof(Obj_Item_Projectile_Beam);
-						this.iconholder = null;
-						this.reqpower = 100;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_PulseRifle):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Pulse);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 700;
-						this.fire_sound = "sound/weapons/pulse.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Staff):
-						this.projectile = typeof(Obj_Item_Projectile_Change);
-						this.eprojectile = this.projectile;
-						this.iconholder = true;
-						this.reqpower = 700;
-						this.fire_sound = "sound/weapons/radgun.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Ionrifle):
-						this.projectile = typeof(Obj_Item_Projectile_Ion);
-						this.eprojectile = this.projectile;
-						this.iconholder = true;
-						this.reqpower = 700;
-						this.fire_sound = "sound/weapons/ion.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Taser):
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
-						this.eprojectile = this.projectile;
-						this.iconholder = true;
-						this.reqpower = 200;
-						this.fire_sound = "sound/weapons/Taser.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Stunrevolver):
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
-						this.eprojectile = this.projectile;
-						this.iconholder = true;
-						this.reqpower = 200;
-						this.fire_sound = "sound/weapons/Gunshot.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Lasercannon):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Heavylaser);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 600;
-						this.fire_sound = "sound/weapons/lasercannonfire.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Decloner):
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Declone);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 600;
-						this.fire_sound = "sound/weapons/pulse3.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Crossbow_Largecrossbow):
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Bolt_Large);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 125;
-						this.fire_sound = "sound/weapons/ebow.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Crossbow):
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Bolt);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 50;
-						this.fire_sound = "sound/weapons/ebow.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Laser):
-						this.projectile = typeof(Obj_Item_Projectile_Beam);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 500;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Ricochet):
-						this.projectile = typeof(Obj_Item_Projectile_Ricochet);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 500;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Bison):
-						this.projectile = typeof(Obj_Item_Projectile_Beam_Bison);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 250;
-						this.fire_sound = "sound/weapons/bison_fire.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Polarstar_Spur):
-						this.projectile = typeof(Obj_Item_Projectile_Spur);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 700;
-						this.fire_sound = "sound/weapons/spur_high.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					case typeof(Obj_Item_Weapon_Gun_Energy_Polarstar):
-						this.projectile = typeof(Obj_Item_Projectile_Spur_Polarstar);
-						this.eprojectile = this.projectile;
-						this.iconholder = null;
-						this.reqpower = 400;
-						this.fire_sound = "sound/weapons/spur_high.ogg";
-						this.efire_sound = this.fire_sound;
-						break;
-					default:
-						this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
-						this.eprojectile = typeof(Obj_Item_Projectile_Beam);
-						this.iconholder = true;
-						this.egun = true;
-						this.reqpower = 200;
-						this.fire_sound = "sound/weapons/Taser.ogg";
-						break;
+				dynamic _a = E.type; // Was a switch-case, sorry for the mess.
+				if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Blue);
+					this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Omni);
+					this.iconholder = null;
+					this.reqpower = 100;
+					this.lasercolor = "b";
+					this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels });
+					this.check_records = false;
+					this.criminals = false;
+					this.auth_weapons = true;
+					this.stun_all = false;
+					this.check_anomalies = false;
+					this.shot_delay = 30;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Red);
+					this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lastertag_Omni);
+					this.iconholder = null;
+					this.reqpower = 100;
+					this.lasercolor = "r";
+					this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels });
+					this.check_records = false;
+					this.criminals = false;
+					this.auth_weapons = true;
+					this.stun_all = false;
+					this.check_anomalies = false;
+					this.shot_delay = 30;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Practice) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Practice);
+					this.eprojectile = typeof(Obj_Item_Projectile_Beam);
+					this.iconholder = null;
+					this.reqpower = 100;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_PulseRifle) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Pulse);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 700;
+					this.fire_sound = "sound/weapons/pulse.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Staff) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Change);
+					this.eprojectile = this.projectile;
+					this.iconholder = true;
+					this.reqpower = 700;
+					this.fire_sound = "sound/weapons/radgun.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Ionrifle) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Ion);
+					this.eprojectile = this.projectile;
+					this.iconholder = true;
+					this.reqpower = 700;
+					this.fire_sound = "sound/weapons/ion.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Taser) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
+					this.eprojectile = this.projectile;
+					this.iconholder = true;
+					this.reqpower = 200;
+					this.fire_sound = "sound/weapons/Taser.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Stunrevolver) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
+					this.eprojectile = this.projectile;
+					this.iconholder = true;
+					this.reqpower = 200;
+					this.fire_sound = "sound/weapons/Gunshot.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Lasercannon) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Heavylaser);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 600;
+					this.fire_sound = "sound/weapons/lasercannonfire.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Decloner) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Declone);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 600;
+					this.fire_sound = "sound/weapons/pulse3.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Crossbow_Largecrossbow) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Bolt_Large);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 125;
+					this.fire_sound = "sound/weapons/ebow.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Crossbow) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Bolt);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 50;
+					this.fire_sound = "sound/weapons/ebow.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 500;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Ricochet) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Ricochet);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 500;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Bison) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Beam_Bison);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 250;
+					this.fire_sound = "sound/weapons/bison_fire.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Polarstar_Spur) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Spur);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 700;
+					this.fire_sound = "sound/weapons/spur_high.ogg";
+					this.efire_sound = this.fire_sound;
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Polarstar) ) {
+					this.projectile = typeof(Obj_Item_Projectile_Spur_Polarstar);
+					this.eprojectile = this.projectile;
+					this.iconholder = null;
+					this.reqpower = 400;
+					this.fire_sound = "sound/weapons/spur_high.ogg";
+					this.efire_sound = this.fire_sound;
+				} else {
+					this.projectile = typeof(Obj_Item_Projectile_Energy_Electrode);
+					this.eprojectile = typeof(Obj_Item_Projectile_Beam);
+					this.iconholder = true;
+					this.egun = true;
+					this.reqpower = 200;
+					this.fire_sound = "sound/weapons/Taser.ogg";
 				}
 
 				if ( !( this.eprojectile != null ) || !( this.projectile != null ) ) {

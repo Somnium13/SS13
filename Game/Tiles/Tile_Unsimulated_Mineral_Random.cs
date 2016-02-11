@@ -23,9 +23,8 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( mineral_name ) ) {
-					Interface13.Stat( null, GlobalVars.name_to_mineral.Contains( mineral_name ) );
-
-					if ( false ) {
+					
+					if ( GlobalVars.name_to_mineral.Contains( mineral_name ) ) {
 						this.mineral = GlobalVars.name_to_mineral[mineral_name];
 						this.mineral.UpdateTurf( this );
 					} else {

@@ -127,9 +127,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					srcs = alarm[3];
-					Interface13.Stat( null, srcs.Contains( origin ) );
 
-					if ( false ) {
+					if ( srcs.Contains( origin ) ) {
 						srcs.Remove( origin );
 					}
 
@@ -164,9 +163,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					sources = alarm[3];
-					Interface13.Stat( null, sources.Contains( alarmsource ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( sources.Contains( alarmsource ) ) ) {
 						sources += alarmsource;
 					}
 					return true;

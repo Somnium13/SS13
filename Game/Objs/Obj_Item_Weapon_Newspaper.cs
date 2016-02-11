@@ -61,9 +61,8 @@ namespace Somnium.Game {
 			Mob U = null;
 
 			U = Task13.User;
-			Interface13.Stat( null, U.contents.Contains( this ) );
 
-			if ( false || this.loc is Tile && GlobalFuncs.in_range( this, U ) ) {
+			if ( U.contents.Contains( this ) || this.loc is Tile && GlobalFuncs.in_range( this, U ) ) {
 				U.set_machine( this );
 
 				if ( Lang13.Bool( href_list["next_page"] ) ) {

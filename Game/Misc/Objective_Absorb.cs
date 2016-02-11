@@ -54,7 +54,7 @@ namespace Somnium.Game {
 						P2 = _b;
 						
 
-						if ( P2.client != null && !false && P2.mind != this.owner ) {
+						if ( P2.client != null && !GlobalVars.ticker.mode.changelings.Contains( P2.mind ) && P2.mind != this.owner ) {
 							n_p++;
 						}
 					}

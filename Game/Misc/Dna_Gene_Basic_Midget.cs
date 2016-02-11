@@ -39,9 +39,8 @@ namespace Somnium.Game {
 
 		// Function from file: powers.dm
 		public override bool can_activate( dynamic M = null, bool? flags = null ) {
-			Interface13.Stat( null, M.mutations.Contains( 4 ) );
-
-			if ( false ) {
+			
+			if ( Lang13.Bool( M.mutations.Contains( 4 ) ) ) {
 				return false;
 			}
 			return base.can_activate( (object)(M), flags );

@@ -43,9 +43,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.requested )) {
 				typepath = _a;
 				
-				Interface13.Stat( null, this.fulfilled.Contains( typepath ) );
 
-				if ( !false || Convert.ToDouble( this.fulfilled[typepath] ) < Convert.ToDouble( this.requested[typepath] ) ) {
+				if ( !this.fulfilled.Contains( typepath ) || Convert.ToDouble( this.fulfilled[typepath] ) < Convert.ToDouble( this.requested[typepath] ) ) {
 					return false;
 				}
 			}
@@ -62,12 +61,10 @@ namespace Somnium.Game {
 			if ( !( O != null ) ) {
 				return false;
 			}
-			Interface13.Stat( null, this.requested.Contains( O.type ) );
 
-			if ( !( O != null ) ) {
-				Interface13.Stat( null, this.fulfilled.Contains( O.type ) );
-
-				if ( !false ) {
+			if ( this.requested.Contains( O.type ) ) {
+				
+				if ( !this.fulfilled.Contains( O.type ) ) {
 					this.fulfilled[O.type] = 0;
 				}
 

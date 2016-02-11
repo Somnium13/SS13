@@ -75,7 +75,7 @@ namespace Somnium.Game {
 		// Function from file: life.dm
 		public bool handle_regular_hud_updates(  ) {
 			
-			if ( this.stat == 2 || false ) {
+			if ( this.stat == 2 || this.mutations.Contains( 3 ) ) {
 				this.sight |= GlobalVars.SEE_TURFS;
 				this.sight |= GlobalVars.SEE_MOBS;
 				this.sight |= GlobalVars.SEE_OBJS;
@@ -515,7 +515,7 @@ namespace Somnium.Game {
 						continue;
 					}
 
-					if ( Convert.ToInt32( M.stat ) == 2 && Lang13.Bool( M.client.prefs.toggles & 128 ) && !false ) {
+					if ( Convert.ToInt32( M.stat ) == 2 && Lang13.Bool( M.client.prefs.toggles & 128 ) && !Map13.FetchViewers( null, this ).Contains( M ) ) {
 						M.show_message( message );
 					}
 				}

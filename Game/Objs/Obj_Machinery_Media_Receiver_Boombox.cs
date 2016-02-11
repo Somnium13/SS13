@@ -30,15 +30,13 @@ namespace Somnium.Game {
 				return null;
 			}
 			base.Topic( href, href_list, (object)(hclient) );
-			Interface13.Stat( null, href_list.Contains( "power" ) );
 
-			if ( Task13.User is Mob_Dead_Observer && !GlobalFuncs.isAdminGhost( Task13.User ) ) {
+			if ( href_list.Contains( "power" ) ) {
 				this.on = !this.on;
 				this.update_on();
 			}
-			Interface13.Stat( null, href_list.Contains( "set_freq" ) );
 
-			if ( Task13.User is Mob_Dead_Observer && !GlobalFuncs.isAdminGhost( Task13.User ) ) {
+			if ( href_list.Contains( "set_freq" ) ) {
 				newfreq = this.media_frequency;
 
 				if ( href_list["set_freq"] != "-1" ) {
@@ -62,9 +60,8 @@ namespace Somnium.Game {
 					}
 				}
 			}
-			Interface13.Stat( null, href_list.Contains( "set_volume" ) );
 
-			if ( Task13.User is Mob_Dead_Observer && !GlobalFuncs.isAdminGhost( Task13.User ) ) {
+			if ( href_list.Contains( "set_volume" ) ) {
 				vol = this.volume;
 
 				if ( href_list["set_volume"] != "-1" ) {

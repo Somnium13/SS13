@@ -94,9 +94,8 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( M.current, "This is awkward.  Changeling power purchase failed, please report this bug to a coder!" );
 				return;
 			}
-			Interface13.Stat( null, this.purchasedpowers.Contains( Thepower ) );
 
-			if ( Thepower == null ) {
+			if ( this.purchasedpowers.Contains( Thepower ) ) {
 				GlobalFuncs.to_chat( M.current, "We have already evolved this ability!" );
 				return;
 			}
@@ -342,9 +341,8 @@ namespace Somnium.Game {
 				P2 = _b;
 				
 				ownsthis = false;
-				Interface13.Stat( null, this.purchasedpowers.Contains( P2 ) );
 
-				if ( P2 is Power_Changeling ) {
+				if ( this.purchasedpowers.Contains( P2 ) ) {
 					ownsthis = true;
 				}
 				color = "#e6e6e6";

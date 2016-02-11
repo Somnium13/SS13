@@ -72,9 +72,8 @@ namespace Somnium.Game {
 
 		// Function from file: events.dm
 		public bool addEventType( string event_type = null ) {
-			Interface13.Stat( null, this.events.Contains( event_type ) );
-
-			if ( !false || !GlobalFuncs.islist( this.events[event_type] ) ) {
+			
+			if ( !this.events.Contains( event_type ) || !GlobalFuncs.islist( this.events[event_type] ) ) {
 				this.events[event_type] = new ByTable();
 				return true;
 			}

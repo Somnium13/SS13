@@ -24,7 +24,7 @@ namespace Somnium.Game {
 		// Function from file: nuclear.dm
 		public override dynamic attack_self( dynamic user = null, dynamic flag = null, bool? emp = null ) {
 			
-			switch ( this.mode ) {
+			switch ((bool)( this.mode )) {
 				case false:
 					this.mode = true;
 					this.charge_cost = 100;

@@ -644,9 +644,8 @@ namespace Somnium.Game {
 				damage = Rand13.Int( 1, 9 );
 
 				if ( Rand13.PercentChance( 90 ) ) {
-					Interface13.Stat( null, a.mutations.Contains( 4 ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 						damage += 14;
 						Task13.Schedule( 0, (Task13.Closure)(() => {
 							this.Weaken( damage );
@@ -842,7 +841,7 @@ namespace Somnium.Game {
 			b_loss = null;
 			f_loss = null;
 
-			switch ((int?)(severity)) {
+			switch ((int?)( severity )) {
 				case 1:
 					b_loss += 500;
 					this.gib();
@@ -1174,7 +1173,7 @@ namespace Somnium.Game {
 		// Function from file: life.dm
 		public virtual bool handle_regular_hud_updates(  ) {
 			
-			if ( this.stat == 2 || false ) {
+			if ( this.stat == 2 || this.mutations.Contains( 3 ) ) {
 				this.sight |= GlobalVars.SEE_TURFS;
 				this.sight |= GlobalVars.SEE_MOBS;
 				this.sight |= GlobalVars.SEE_OBJS;
@@ -1371,9 +1370,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.reagents ) ) {
 				((Reagents)this.reagents).metabolize( this );
 			}
-			Interface13.Stat( null, this.mutations.Contains( 6 ) );
 
-			if ( Lang13.Bool( this.reagents ) ) {
+			if ( this.mutations.Contains( 6 ) ) {
 				
 				if ( this.nutrition < 100 ) {
 					
@@ -1471,7 +1469,7 @@ namespace Somnium.Game {
 			breath.toxins -= toxins_used;
 			breath.oxygen += toxins_used;
 
-			if ( Convert.ToDouble( breath.temperature ) > 339.41 && !false ) {
+			if ( Convert.ToDouble( breath.temperature ) > 339.41 && !this.mutations.Contains( 106 ) ) {
 				
 				if ( Rand13.PercentChance( 20 ) ) {
 					GlobalFuncs.to_chat( this, "<span class='warning'>You feel a searing heat in your lungs !</span>" );
@@ -1732,9 +1730,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.powerc( 200 ) ) {
-				Interface13.Stat( null, Map13.FetchInViewExcludeThis( null, 1 ).Contains( O ) );
-
-				if ( false ) {
+				
+				if ( Map13.FetchInViewExcludeThis( null, 1 ).Contains( O ) ) {
 					
 					if ( O is Obj ) {
 						I = O;
@@ -1789,9 +1786,8 @@ namespace Somnium.Game {
 					foreach (dynamic _a in Lang13.Enumerate( this )) {
 						M = _a;
 						
-						Interface13.Stat( null, this.stomach_contents.Contains( M ) );
 
-						if ( false ) {
+						if ( this.stomach_contents.Contains( M ) ) {
 							this.stomach_contents.Remove( M );
 							M.loc = this.loc;
 						}

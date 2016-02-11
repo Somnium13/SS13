@@ -41,9 +41,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( this, 2 ), typeof(Obj_Effect_StepTrigger_Thrower) )) {
 				T = _a;
 				
-				Interface13.Stat( null, T.affecting.Contains( AM ) );
 
-				if ( T is Obj_Effect_StepTrigger_Thrower ) {
+				if ( T.affecting.Contains( AM ) ) {
 					return false;
 				}
 			}

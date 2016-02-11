@@ -1227,9 +1227,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					srcs = alarm[3];
-					Interface13.Stat( null, srcs.Contains( origin ) );
 
-					if ( false ) {
+					if ( srcs.Contains( origin ) ) {
 						srcs.Remove( origin );
 					}
 
@@ -1268,9 +1267,8 @@ namespace Somnium.Game {
 				if ( I == A.name ) {
 					alarm = L[I];
 					sources = alarm[3];
-					Interface13.Stat( null, sources.Contains( alarmsource ) );
 
-					if ( !false ) {
+					if ( !Lang13.Bool( sources.Contains( alarmsource ) ) ) {
 						sources += alarmsource;
 					}
 					return true;
@@ -1316,7 +1314,7 @@ namespace Somnium.Game {
 				Icon13.Flick( "flash", this.flash );
 			}
 
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					
 					if ( this.stat != 2 ) {
@@ -2489,9 +2487,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( this.v_req_access )) {
 				req = _a;
 				
-				Interface13.Stat( null, I.access.Contains( req ) );
 
-				if ( !false ) {
+				if ( !Lang13.Bool( I.access.Contains( req ) ) ) {
 					return false;
 				}
 			}
@@ -2744,9 +2741,8 @@ namespace Somnium.Game {
 			} else if ( _a=="Miner" ) {
 				this.module = new Obj_Item_Weapon_RobotModule_Miner( this );
 				this.v_radio.insert_key( new Obj_Item_Device_Encryptionkey_HeadsetCargo( this.v_radio ) );
-				Interface13.Stat( null, this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) ) ) {
 					this.camera.network.Add( "MINE" );
 				}
 				module_sprites["Basic"] = "Miner_old";
@@ -2760,9 +2756,8 @@ namespace Somnium.Game {
 			} else if ( _a=="Medical" ) {
 				this.module = new Obj_Item_Weapon_RobotModule_Medical( this );
 				this.v_radio.insert_key( new Obj_Item_Device_Encryptionkey_HeadsetMed( this.v_radio ) );
-				Interface13.Stat( null, this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) ) ) {
 					this.camera.network.Add( "Medical" );
 				}
 				module_sprites["Basic"] = "Medbot";
@@ -2789,9 +2784,8 @@ namespace Somnium.Game {
 			} else if ( _a=="Engineering" ) {
 				this.module = new Obj_Item_Weapon_RobotModule_Engineering( this );
 				this.v_radio.insert_key( new Obj_Item_Device_Encryptionkey_HeadsetEng( this.v_radio ) );
-				Interface13.Stat( null, this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( this.camera.network.Contains( this.camera != null && Lang13.Bool( "Robots" ) ) ) ) {
 					this.camera.network.Add( "Engineering" );
 				}
 				module_sprites["Basic"] = "Engineering";
@@ -3096,9 +3090,8 @@ namespace Somnium.Game {
 				this.see_in_dark = 8;
 				this.see_invisible = 45;
 			} else {
-				Interface13.Stat( null, ((dynamic)( this.mutations != null || ( ( this.sight_mode ?1:0) & 4 ) != 0 )).Contains( 3 ) );
-
-				if ( this.stat == 2 ) {
+				
+				if ( Lang13.Bool( ((dynamic)( this.mutations != null || ( ( this.sight_mode ?1:0) & 4 ) != 0 )).Contains( 3 ) ) ) {
 					this.sight |= 28;
 					this.see_in_dark = 8;
 					this.see_invisible = 45;
@@ -3957,7 +3950,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( A == this.loc || false || false ) {
+			if ( A == this.loc || Lang13.Bool( ((dynamic)this.loc).Contains( A ) ) || this.contents.Contains( A ) ) {
 				resolved = ((Obj_Item)W).preattack( A, this, true, _params );
 
 				if ( !Lang13.Bool( resolved ) ) {

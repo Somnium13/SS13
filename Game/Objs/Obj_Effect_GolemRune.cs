@@ -38,9 +38,8 @@ namespace Somnium.Game {
 		public override dynamic Topic( string href = null, ByTable href_list = null, dynamic hclient = null, HtmlInterface currui = null ) {
 			dynamic O = null;
 
-			Interface13.Stat( null, href_list.Contains( "signup" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "signup" ) ) {
 				O = Lang13.FindObj( href_list["signup"] );
 				this.volunteer( O );
 			}
@@ -49,9 +48,8 @@ namespace Somnium.Game {
 
 		// Function from file: slime.dm
 		public void volunteer( dynamic O = null ) {
-			Interface13.Stat( null, this.ghosts.Contains( O ) );
-
-			if ( false ) {
+			
+			if ( this.ghosts.Contains( O ) ) {
 				this.ghosts.Remove( O );
 				GlobalFuncs.to_chat( O, "<span class='warning'>You are no longer signed up to be a golem.</span>" );
 			} else {

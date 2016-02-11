@@ -63,8 +63,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.needs_power ) {
-
-				switch ((int?)(severity)) {
+				
+				switch ((int?)( severity )) {
 					case 1:
 						
 						if ( Rand13.PercentChance( 50 ) ) {

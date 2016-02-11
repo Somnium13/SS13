@@ -55,9 +55,8 @@ namespace Somnium.Game {
 					original.data["level"] = ((dynamic)signal).data["level"];
 				}
 				signal_message = "" + ((dynamic)signal).frequency + ":" + ((dynamic)signal).data["message"] + ":" + ((dynamic)signal).data["realname"];
-				Interface13.Stat( null, GlobalVars.recentmessages.Contains( signal_message ) );
 
-				if ( Lang13.Bool( original ) ) {
+				if ( GlobalVars.recentmessages.Contains( signal_message ) ) {
 					return;
 				}
 				GlobalVars.recentmessages.Add( signal_message );

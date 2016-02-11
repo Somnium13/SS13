@@ -140,7 +140,7 @@ namespace Somnium.Game {
 					player2 = _c;
 					
 
-					if ( this.mixed && false ) {
+					if ( this.mixed && GlobalVars.ticker.mode.modePlayer.Contains( player2 ) ) {
 						possible_traitors.Remove( player2 );
 						continue;
 					}
@@ -229,7 +229,7 @@ namespace Somnium.Game {
 				player = _b;
 				
 
-				if ( this.mixed && false ) {
+				if ( this.mixed && GlobalVars.ticker.mode.modePlayer.Contains( player ) ) {
 					this.possible_traitors.Remove( player );
 					continue;
 				}

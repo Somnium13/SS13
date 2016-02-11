@@ -34,10 +34,10 @@ namespace Somnium.Game {
 			}
 
 			switch ((bool)( this.use )) {
-				case 1:
+				case true:
 					this.use_power( this.idle_usage, this.channel );
 					break;
-				case 2:
+				case 2 != 0:
 					this.use_power( this.active_usage, this.channel );
 					break;
 			}

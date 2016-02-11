@@ -60,9 +60,8 @@ namespace Somnium.Game {
 		public bool add_known_reagent( string r_id = null, string r_name = null ) {
 			this.set_ready_state( false );
 			this.do_after_cooldown();
-			Interface13.Stat( null, this.known_reagents.Contains( r_id ) );
 
-			if ( !false ) {
+			if ( !this.known_reagents.Contains( r_id ) ) {
 				this.known_reagents.Add( r_id );
 				this.known_reagents[r_id] = r_name;
 				return true;
@@ -166,15 +165,15 @@ namespace Somnium.Game {
 		// Function from file: medical_tools.dm
 		public dynamic get_reagents_list(  ) {
 			dynamic output = null;
-
+			double i = 0;
 			dynamic reagent_id = null;
 
 			
-			foreach (double i in Lang13.IterateRange( 1, this.known_reagents.len )) {
+			foreach (dynamic _a in Lang13.IterateRange( 1, this.known_reagents.len )) {
+				i = _a;
 				
 				reagent_id = this.known_reagents[i];
-
-				output += "<input type=\"checkbox\" value=\"" + reagent_id + "\" name=\"reagent_" + i + "\" " + (this.processed_reagents.Contains(reagent_id) ? "checked=\"1\"" : "") + "> " + this.known_reagents[reagent_id] + "<br />";
+				output += "<input type=\"checkbox\" value=\"" + reagent_id + "\" name=\"reagent_" + i + "\" " + ( this.processed_reagents.Contains( reagent_id ) ? "checked=\"1\"" : null ) + "> " + this.known_reagents[reagent_id] + "<br />";
 			}
 			return output;
 		}
@@ -257,7 +256,7 @@ namespace Somnium.Game {
 					}
 					reagent = filter.get( "reagent_" + i );
 
-					if ( Lang13.Bool( reagent ) && false ) {
+					if ( Lang13.Bool( reagent ) && this.known_reagents.Contains( reagent ) ) {
 						message = "" + ( m != 0 ? ", " : null ) + this.known_reagents[reagent];
 						this.processed_reagents.Add( reagent );
 						m++;

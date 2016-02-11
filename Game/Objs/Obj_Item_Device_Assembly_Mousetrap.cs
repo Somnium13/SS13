@@ -74,9 +74,8 @@ namespace Somnium.Game {
 
 			
 			if ( this.armed ) {
-				Interface13.Stat( null, a.mutations.Contains( ((Mob_Living)a).getBrainLoss() >= 60 || 5 != 0 ) );
-
-				if ( false && Rand13.PercentChance( 50 ) ) {
+				
+				if ( Lang13.Bool( a.mutations.Contains( ((Mob_Living)a).getBrainLoss() >= 60 || 5 != 0 ) ) && Rand13.PercentChance( 50 ) ) {
 					which_hand = "l_hand";
 
 					if ( !( a.hand == true ) ) {
@@ -100,7 +99,7 @@ namespace Somnium.Game {
 				GlobalFuncs.to_chat( user, "<span class='notice'>You arm " + this + ".</span>" );
 			} else {
 				
-				if ( ( ((Mob_Living)user).getBrainLoss() >= 60 || false ) && Rand13.PercentChance( 50 ) ) {
+				if ( ( ((Mob_Living)user).getBrainLoss() >= 60 || Lang13.Bool( user.mutations.Contains( 5 ) ) ) && Rand13.PercentChance( 50 ) ) {
 					which_hand = "l_hand";
 
 					if ( !( user.hand == true ) ) {

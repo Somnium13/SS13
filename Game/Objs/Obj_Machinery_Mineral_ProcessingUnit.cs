@@ -69,9 +69,8 @@ namespace Somnium.Game {
 			dynamic olddir = null;
 			int conflictingdir = 0;
 
-			Interface13.Stat( null, href_list.Contains( "changedir" ) );
-
-			if ( false ) {
+			
+			if ( href_list.Contains( "changedir" ) ) {
 				changingdir = String13.ParseNumber( href_list["changedir"] );
 				changingdir = ( ( changingdir ??0) <= 1 ? 1 : ( ( changingdir ??0) >= 2 ? 2 : changingdir ) );
 				newdir = Interface13.Input( "Select the new direction", this.name, "North", null, new ByTable(new object [] { "North", "South", "East", "West" }), InputType.Null | InputType.Any );

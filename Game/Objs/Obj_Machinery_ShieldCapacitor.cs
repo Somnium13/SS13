@@ -187,11 +187,8 @@ namespace Somnium.Game {
 				return 1;
 			} else if ( a is Obj_Item_Weapon_Card_Id ) {
 				C = a;
-				Interface13.Stat( Lang13.Bool( C.access ) || GlobalVars.access_engine != 0, ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_security )).Contains( GlobalVars.access_captain ) );
-				Interface13.Stat( null, C.access.Contains( null ) );
-				Interface13.Stat( null, null.Contains( null ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( C.access.Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_engine != 0 )).Contains( ((dynamic)( Lang13.Bool( C.access ) || GlobalVars.access_security )).Contains( GlobalVars.access_captain ) ) ) ) ) {
 					this.locked = !this.locked;
 					GlobalFuncs.to_chat( b, "Controls are now " + ( this.locked ? "locked." : "unlocked." ) );
 					this.updateDialog();

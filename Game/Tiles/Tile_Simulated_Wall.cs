@@ -325,9 +325,8 @@ namespace Somnium.Game {
 		// Function from file: walls.dm
 		public override dynamic attack_hand( dynamic a = null, dynamic b = null, dynamic c = null ) {
 			((Mob)a).delayNextAttack( 8 );
-			Interface13.Stat( null, a.mutations.Contains( 4 ) );
 
-			if ( false ) {
+			if ( Lang13.Bool( a.mutations.Contains( 4 ) ) ) {
 				
 				if ( Rand13.PercentChance( 100 - this.hardness ) || this.rotting ) {
 					this.dismantle_wall( true );
@@ -398,7 +397,7 @@ namespace Somnium.Game {
 				severity = 1;
 			}
 
-			switch ((int?)(severity)) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.ChangeTurf( GlobalFuncs.get_base_turf( this.z ) );
 					return false;

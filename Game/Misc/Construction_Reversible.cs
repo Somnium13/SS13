@@ -43,7 +43,7 @@ namespace Somnium.Game {
 				return false;
 			}
 
-			if ( Lang13.Bool( current_step ) && false && false && Convert.ToDouble( current_step["amount"] ) < Convert.ToDouble( current_step["max_amount"] ) ) {
+			if ( Lang13.Bool( current_step ) && Lang13.Bool( current_step.Contains( "amount" ) ) && Lang13.Bool( current_step.Contains( "max_amount" ) ) && Convert.ToDouble( current_step["amount"] ) < Convert.ToDouble( current_step["max_amount"] ) ) {
 				
 				if ( Lang13.Bool( this.used_atoms["" + index + ( diff == -1 ? "+" : "-" )] ) ) {
 					
@@ -57,7 +57,7 @@ namespace Somnium.Game {
 					working_type = ( GlobalFuncs.islist( current_step["key"] ) ? Rand13.PickFromTable( current_step["key"] ) : current_step["key"] );
 					S = Lang13.Call( working_type, this.holder.loc );
 
-					if ( S is Obj_Item_Stack && !false ) {
+					if ( S is Obj_Item_Stack && !Lang13.Bool( current_step.Contains( "keep" ) ) ) {
 						S.amount = current_step["max_amount"] - current_step["amount"];
 						S.update_icon();
 					} else {
@@ -73,9 +73,8 @@ namespace Somnium.Game {
 				current_step["amount"] = current_step["max_amount"];
 			}
 			delay = false;
-			Interface13.Stat( null, given_step.Contains( "delay" ) );
 
-			if ( Lang13.Bool( current_step ) && false && false && Convert.ToDouble( current_step["amount"] ) < Convert.ToDouble( current_step["max_amount"] ) ) {
+			if ( Lang13.Bool( given_step.Contains( "delay" ) ) ) {
 				
 				if ( Lang13.Bool( used_atom.construction_delay_mult ) ) {
 					delay = Lang13.Bool( given_step["delay"] * used_atom.construction_delay_mult[( diff == -1 ? "construct" : "deconstruct" )] );
@@ -92,15 +91,14 @@ namespace Somnium.Game {
 				}
 			}
 			amount = 0;
-			Interface13.Stat( null, given_step.Contains( "amount" ) );
 
-			if ( ( delay ?1:0) > 0 ) {
+			if ( Lang13.Bool( given_step.Contains( "amount" ) ) ) {
 				amount = Lang13.DoubleNullable( given_step["amount"] );
 			}
 
 			if ( ( amount ??0) > 0 ) {
 				
-				if ( used_atom is Obj_Item_Stack && !false ) {
+				if ( used_atom is Obj_Item_Stack && !Lang13.Bool( given_step.Contains( "take" ) ) ) {
 					stack = used_atom;
 
 					if ( Convert.ToDouble( stack.amount ) < ( amount ??0) ) {
@@ -110,7 +108,7 @@ namespace Somnium.Game {
 						return false;
 					}
 					((Obj_Item_Stack)stack).use( amount );
-				} else if ( used_atom is Obj_Item_Weapon_Weldingtool && !false ) {
+				} else if ( used_atom is Obj_Item_Weapon_Weldingtool && !Lang13.Bool( given_step.Contains( "take" ) ) ) {
 					welder = used_atom;
 
 					if ( !((Obj_Item_Weapon_Weldingtool)welder).isOn() ) {
@@ -125,12 +123,11 @@ namespace Somnium.Game {
 				} else {
 					atom_name = used_atom.name;
 
-					if ( this.permanence || false ) {
+					if ( this.permanence || Lang13.Bool( given_step.Contains( "keep" ) ) ) {
 						
 						if ( ((Mob)user).drop_item( used_atom, this.holder ) ) {
-							Interface13.Stat( null, this.used_atoms.Contains( "" + index + ( diff == -1 ? "+" : "-" ) ) );
-
-							if ( !( diff == -1 ) ) {
+							
+							if ( !this.used_atoms.Contains( "" + index + ( diff == -1 ? "+" : "-" ) ) ) {
 								this.used_atoms.Add( new ByTable().Set( "" + index + ( diff == -1 ? "+" : "-" ), new ByTable() ) );
 							}
 							this.used_atoms["" + index + ( diff == -1 ? "+" : "-" )] += used_atom;
@@ -162,33 +159,28 @@ namespace Somnium.Game {
 					spawn_step = this.get_forward_step( new_index );
 				}
 				to_drop = new ByTable();
-				Interface13.Stat( null, this.used_atoms.Contains( "" + new_index + ( diff == -1 ? "-" : "+" ) ) );
 
-				if ( diff == -1 && Lang13.Bool( this.used_atoms["" + new_index + ( diff == -1 ? "-" : "+" )] ) ) {
+				if ( this.used_atoms.Contains( "" + new_index + ( diff == -1 ? "-" : "+" ) ) && Lang13.Bool( this.used_atoms["" + new_index + ( diff == -1 ? "-" : "+" )] ) ) {
 					to_drop = this.used_atoms["" + new_index + ( diff == -1 ? "-" : "+" )];
 					this.used_atoms.Remove( "" + new_index + ( diff == -1 ? "-" : "+" ) );
-				} else {
-					Interface13.Stat( null, spawn_step.Contains( "amount" ) );
+				} else if ( Lang13.Bool( spawn_step.Contains( "amount" ) ) ) {
+					to_create = ( GlobalFuncs.islist( spawn_step["key"] ) ? Rand13.PickFromTable( spawn_step["key"] ) : spawn_step["key"] );
+					test = Lang13.Call( to_create );
 
-					if ( diff == -1 && Lang13.Bool( this.used_atoms["" + new_index + ( diff == -1 ? "-" : "+" )] ) ) {
-						to_create = ( GlobalFuncs.islist( spawn_step["key"] ) ? Rand13.PickFromTable( spawn_step["key"] ) : spawn_step["key"] );
-						test = Lang13.Call( to_create );
+					if ( test is Obj_Item_Weapon_Weldingtool && !Lang13.Bool( spawn_step.Contains( "take" ) ) ) {
+						GlobalFuncs.qdel( test );
+					} else if ( test is Obj_Item_Stack && !Lang13.Bool( spawn_step.Contains( "take" ) ) ) {
+						S2 = test;
+						S2.amount = spawn_step["amount"];
+						to_drop.Add( S2 );
+					} else {
+						to_drop.Add( test );
+						i2 = null;
+						i2 = 1;
 
-						if ( test is Obj_Item_Weapon_Weldingtool && !false ) {
-							GlobalFuncs.qdel( test );
-						} else if ( test is Obj_Item_Stack && !false ) {
-							S2 = test;
-							S2.amount = spawn_step["amount"];
-							to_drop.Add( S2 );
-						} else {
-							to_drop.Add( test );
-							i2 = null;
-							i2 = 1;
-
-							while (( i2 ??0) <= Convert.ToDouble( spawn_step["amount"] - 1 )) {
-								to_drop.Add( Lang13.Call( to_create ) );
-								i2++;
-							}
+						while (( i2 ??0) <= Convert.ToDouble( spawn_step["amount"] - 1 )) {
+							to_drop.Add( Lang13.Call( to_create ) );
+							i2++;
 						}
 					}
 				}
@@ -219,15 +211,13 @@ namespace Somnium.Game {
 
 			while (( i ??0) <= this.steps.len) {
 				dir_step = this.get_forward_step( i );
-				Interface13.Stat( null, dir_step.Contains( "amount" ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( dir_step.Contains( "amount" ) ) ) {
 					dir_step.Add( new ByTable().Set( "max_amount", dir_step["amount"] ) );
 				}
 				dir_step = this.get_backward_step( i );
-				Interface13.Stat( null, dir_step.Contains( "amount" ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( dir_step.Contains( "amount" ) ) ) {
 					dir_step.Add( new ByTable().Set( "max_amount", dir_step["amount"] ) );
 				}
 				i++;
@@ -250,14 +240,10 @@ namespace Somnium.Game {
 				return;
 			}
 
-			if ( diff == -1 && false ) {
+			if ( diff == -1 && Lang13.Bool( step.Contains( "nextstep" ) ) ) {
 				message_step = step["nextstep"];
-			} else {
-				Interface13.Stat( null, step.Contains( "backstep" ) );
-
-				if ( diff == -1 && false ) {
-					message_step = step["backstep"];
-				}
+			} else if ( Lang13.Bool( step.Contains( "backstep" ) ) ) {
+				message_step = step["backstep"];
 			}
 
 			if ( Lang13.Bool( message_step ) ) {
@@ -340,9 +326,8 @@ namespace Somnium.Game {
 				return null;
 			}
 			S = this.steps[index];
-			Interface13.Stat( null, S.Contains( "backstep" ) );
 
-			if ( ( index ??0) < 0 || ( index ??0) > this.steps.len ) {
+			if ( Lang13.Bool( S.Contains( "backstep" ) ) ) {
 				return S["backstep"];
 			}
 			return null;
@@ -357,9 +342,8 @@ namespace Somnium.Game {
 				return null;
 			}
 			S = this.steps[index];
-			Interface13.Stat( null, S.Contains( "nextstep" ) );
 
-			if ( ( index ??0) < 0 || ( index ??0) > this.steps.len ) {
+			if ( Lang13.Bool( S.Contains( "nextstep" ) ) ) {
 				return S["nextstep"];
 			}
 			return null;

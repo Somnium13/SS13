@@ -268,9 +268,8 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( base.attack_hand( (object)(a), (object)(b), (object)(c) ) ) ) {
 				return null;
 			}
-			Interface13.Stat( null, new ByTable(new object [] { 1, 2 }).Contains( this.z ) );
 
-			if ( !Lang13.Bool( base.attack_hand( (object)(a), (object)(b), (object)(c) ) ) ) {
+			if ( !new ByTable(new object [] { 1, 2 }).Contains( this.z ) ) {
 				GlobalFuncs.to_chat( a, "<span class='danger'>Unable to establish a connection: </span>You're too far away from the station!" );
 				return null;
 			}
@@ -328,9 +327,8 @@ namespace Somnium.Game {
 				}
 				return 1;
 			}
-			Interface13.Stat( null, new ByTable(new object [] { 1, 2 }).Contains( this.z ) );
 
-			if ( !Lang13.Bool( href_list["close"] ) ) {
+			if ( !new ByTable(new object [] { 1, 2 }).Contains( this.z ) ) {
 				GlobalFuncs.to_chat( Task13.User, "<span class='danger'>Unable to establish a connection: </span>You're too far away from the station!" );
 				return null;
 			}
@@ -361,9 +359,8 @@ namespace Somnium.Game {
 					if ( this.check_access( I ) ) {
 						this.authenticated = 1;
 					}
-					Interface13.Stat( null, I.access.Contains( 20 ) );
 
-					if ( this.check_access( I ) ) {
+					if ( Lang13.Bool( I.access.Contains( 20 ) ) ) {
 						this.authenticated = 2;
 					}
 				}
@@ -387,10 +384,8 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( I2 ) && I2 is Obj_Item_Weapon_Card_Id ) {
-					Interface13.Stat( I2.access, ((dynamic)( Lang13.Bool( I2.access ) || GlobalVars.access_heads != 0 )).Contains( GlobalVars.access_captain ) );
-					Interface13.Stat( null, null.Contains( null ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( I2.access.Contains( ((dynamic)( Lang13.Bool( I2.access ) || GlobalVars.access_heads != 0 )).Contains( GlobalVars.access_captain ) ) ) ) {
 						old_level = GlobalVars.security_level;
 
 						if ( !Lang13.Bool( this.tmp_alertlevel ) ) {
@@ -437,7 +432,7 @@ namespace Somnium.Game {
 					}
 					input = GlobalFuncs.stripped_input( Task13.User, "Please choose a message to announce to the station crew.", "What?" );
 
-					if ( !Lang13.Bool( input ) || !false ) {
+					if ( !Lang13.Bool( input ) || !Map13.FetchInView( this, 1 ).Contains( Task13.User ) ) {
 						return null;
 					}
 					GlobalFuncs.captain_announce( input );
@@ -460,9 +455,8 @@ namespace Somnium.Game {
 				}
 
 				if ( Lang13.Bool( I3 ) && I3 is Obj_Item_Weapon_Card_Id ) {
-					Interface13.Stat( null, I3.access.Contains( GlobalVars.access_captain ) );
-
-					if ( false ) {
+					
+					if ( Lang13.Bool( I3.access.Contains( GlobalVars.access_captain ) ) ) {
 						this.authenticated = 2;
 					}
 				}
@@ -503,9 +497,8 @@ namespace Somnium.Game {
 					GlobalFuncs.to_chat( Task13.User, "The emergency shuttle is already on its way." );
 					return null;
 				}
-				Interface13.Stat( null, new ByTable(new object [] { "red", "delta" }).Contains( GlobalFuncs.get_security_level() ) );
 
-				if ( !GlobalVars.emergency_shuttle.online ) {
+				if ( !new ByTable(new object [] { "red", "delta" }).Contains( GlobalFuncs.get_security_level() ) ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='notice'>The station must be in an emergency to request a Response Team.</span>" );
 					return null;
 				}
@@ -535,7 +528,7 @@ namespace Somnium.Game {
 					if ( response2 == "Yes" ) {
 						justification = GlobalFuncs.stripped_input( Task13.User, "Please input a concise justification for the shuttle call. Note that failure to properly justify a shuttle call may lead to recall or termination", "Nanotrasen Anti-Comdom Systems" );
 
-						if ( !Lang13.Bool( justification ) || !false ) {
+						if ( !Lang13.Bool( justification ) || !Map13.FetchInView( this, 1 ).Contains( Task13.User ) ) {
 							return null;
 						}
 						GlobalFuncs.call_shuttle_proc( Task13.User, justification );
@@ -631,7 +624,7 @@ namespace Somnium.Game {
 					}
 					input2 = GlobalFuncs.stripped_input( Task13.User, "Please choose a message to transmit to Centcomm via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "" );
 
-					if ( !Lang13.Bool( input2 ) || !false ) {
+					if ( !Lang13.Bool( input2 ) || !Map13.FetchInView( this, 1 ).Contains( Task13.User ) ) {
 						return null;
 					}
 					GlobalFuncs.Centcomm_announce( input2, Task13.User );
@@ -655,7 +648,7 @@ namespace Somnium.Game {
 					}
 					input3 = GlobalFuncs.stripped_input( Task13.User, "Please choose a message to transmit to [ABNORMAL ROUTING CORDINATES] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "" );
 
-					if ( !Lang13.Bool( input3 ) || !false ) {
+					if ( !Lang13.Bool( input3 ) || !Map13.FetchInView( this, 1 ).Contains( Task13.User ) ) {
 						return null;
 					}
 					GlobalFuncs.Syndicate_announce( input3, Task13.User );

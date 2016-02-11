@@ -108,9 +108,8 @@ namespace Somnium.Game {
 					} else if ( _a=="sacrifice" ) {
 						
 						if ( Lang13.Bool( this.sacrifice_target ) ) {
-							Interface13.Stat( null, this.sacrificed.Contains( this.sacrifice_target ) );
-
-							if ( false ) {
+							
+							if ( this.sacrificed.Contains( this.sacrifice_target ) ) {
 								explanation = "Sacrifice " + this.sacrifice_target.name + ", the " + this.sacrifice_target.assigned_role + ". <font color='green'><B>Success!</B></font>";
 								GlobalFuncs.feedback_add_details( "cult_objective", "cult_sacrifice|SUCCESS" );
 							} else if ( Lang13.Bool( this.sacrifice_target ) && Lang13.Bool( this.sacrifice_target.current ) ) {
@@ -231,9 +230,8 @@ namespace Somnium.Game {
 						
 
 						if ( L.stat != 2 ) {
-							Interface13.Stat( null, this.cult.Contains( L.mind ) );
-
-							if ( !false ) {
+							
+							if ( !this.cult.Contains( L.mind ) ) {
 								T = GlobalFuncs.get_turf( L );
 
 								if ( T.loc is Zone_Shuttle_Escape_Centcom ) {
@@ -255,9 +253,8 @@ namespace Somnium.Game {
 						
 
 						if ( C.stat != 2 ) {
-							Interface13.Stat( null, this.cult.Contains( C.mind ) );
-
-							if ( !false ) {
+							
+							if ( !this.cult.Contains( C.mind ) ) {
 								T2 = GlobalFuncs.get_turf( C );
 
 								if ( Convert.ToInt32( T2.z ) == GlobalVars.map.zMainStation ) {
@@ -330,9 +327,8 @@ namespace Somnium.Game {
 				
 
 				if ( C.stat != 2 ) {
-					Interface13.Stat( null, this.cult.Contains( C.mind ) );
-
-					if ( !false ) {
+					
+					if ( !this.cult.Contains( C.mind ) ) {
 						T = GlobalFuncs.get_turf( C );
 
 						if ( Convert.ToInt32( T.z ) == GlobalVars.map.zMainStation ) {
@@ -396,7 +392,7 @@ namespace Somnium.Game {
 							continue;
 						}
 
-						if ( player2.mind != null && !false ) {
+						if ( player2.mind != null && !this.cult.Contains( player2.mind ) ) {
 							possible_targets.Add( player2.mind );
 						}
 					}
@@ -420,9 +416,8 @@ namespace Somnium.Game {
 					
 
 					if ( L.stat != 2 ) {
-						Interface13.Stat( null, this.cult.Contains( L.mind ) );
-
-						if ( false ) {
+						
+						if ( this.cult.Contains( L.mind ) ) {
 							living_cultists++;
 						} else if ( L is Mob_Living_Carbon ) {
 							living_crew++;
@@ -667,7 +662,7 @@ namespace Somnium.Game {
 				player = _b;
 				
 
-				if ( this.mixed && false ) {
+				if ( this.mixed && GlobalVars.ticker.mode.modePlayer.Contains( player ) ) {
 					cultists_possible.Remove( player );
 					continue;
 				}

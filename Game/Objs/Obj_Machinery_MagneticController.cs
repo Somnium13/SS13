@@ -72,9 +72,8 @@ namespace Somnium.Game {
 
 			while (( i ??0) <= ( maximum_character ??0)) {
 				nextchar = String13.SubStr( this.path, i ??0, ( i ??0) + 1 );
-				Interface13.Stat( null, new ByTable(new object [] { ";", "&", "*", " " }).Contains( nextchar ) );
 
-				if ( !false ) {
+				if ( !new ByTable(new object [] { ";", "&", "*", " " }).Contains( nextchar ) ) {
 					this.rpath.Add( String13.SubStr( this.path, i ??0, ( i ??0) + 1 ) );
 				}
 				i++;
@@ -108,9 +107,8 @@ namespace Somnium.Game {
 					this.pathpos = 1;
 				}
 				nextmove = String13.ToUpper( this.rpath[this.pathpos] );
-				Interface13.Stat( null, new ByTable(new object [] { "N", "S", "E", "W", "C", "R" }).Contains( nextmove ) );
 
-				if ( !( this.pathpos > this.rpath.len ) ) {
+				if ( !new ByTable(new object [] { "N", "S", "E", "W", "C", "R" }).Contains( nextmove ) ) {
 					GlobalFuncs.qdel( signal );
 					signal = null;
 					break;

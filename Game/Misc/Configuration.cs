@@ -238,9 +238,8 @@ h1.alert, h2.alert		{color: #000000;}
 				M = Lang13.Call( T );
 
 				if ( Lang13.Bool( M.config_tag ) ) {
-					Interface13.Stat( null, this.modes.Contains( M.config_tag ) );
-
-					if ( !false ) {
+					
+					if ( !this.modes.Contains( M.config_tag ) ) {
 						GlobalVars.diary.WriteMsg( "Adding game mode " + M.name + " (" + M.config_tag + ") to configuration." );
 						this.modes.Add( M.config_tag );
 						this.mode_names[M.config_tag] = M.name;
@@ -269,9 +268,8 @@ h1.alert, h2.alert		{color: #000000;}
 				T = _a;
 				
 				M = Lang13.Call( T );
-				Interface13.Stat( null, this.modes.Contains( M.config_tag ) );
 
-				if ( !false ) {
+				if ( !this.modes.Contains( M.config_tag ) ) {
 					Lang13.Delete( M );
 					M = null;
 					continue;
@@ -668,9 +666,8 @@ h1.alert, h2.alert		{color: #000000;}
 							if ( prob_pos != 0 ) {
 								prob_name = String13.ToLower( String13.SubStr( value, 1, prob_pos ) );
 								prob_value = String13.SubStr( value, prob_pos + 1, 0 );
-								Interface13.Stat( null, GlobalVars.config.modes.Contains( prob_name ) );
 
-								if ( false ) {
+								if ( GlobalVars.config.modes.Contains( prob_name ) ) {
 									GlobalVars.config.probabilities[prob_name] = String13.ParseNumber( prob_value );
 								} else {
 									GlobalVars.diary.WriteMsg( "Unknown game mode probability configuration definition: " + prob_name + "." );

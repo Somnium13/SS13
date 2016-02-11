@@ -232,9 +232,8 @@ namespace Somnium.Game {
 						Machinery.auto_use_power();
 					}
 					end = Game13.timeofday;
-					Interface13.Stat( null, GlobalVars.machine_profiling.Contains( Machinery.type ) );
 
-					if ( !( Machinery != null && Machinery.use_power != 0 ) ) {
+					if ( !GlobalVars.machine_profiling.Contains( Machinery.type ) ) {
 						GlobalVars.machine_profiling[Machinery.type] = 0;
 					}
 					GlobalVars.machine_profiling[Machinery.type] += end - start;

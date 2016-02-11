@@ -34,9 +34,8 @@ namespace Somnium.Game {
 				this.floor_tile = GlobalFuncs.getFromPool( typeof(Obj_Item_Stack_Tile_Plasteel), null );
 				((dynamic)this.floor_tile).amount = 1;
 			}
-			Interface13.Stat( null, GlobalVars.icons_to_ignore_at_floor_init.Contains( this.icon_state ) );
 
-			if ( !( this.floor_tile != null ) ) {
+			if ( GlobalVars.icons_to_ignore_at_floor_init.Contains( this.icon_state ) ) {
 				this.icon_regular_floor = "floor";
 			} else {
 				this.icon_regular_floor = this.icon_state;
@@ -865,9 +864,8 @@ namespace Somnium.Game {
 			} else if ( this.is_grass_floor() ) {
 				
 				if ( !this.broken && !this.burnt ) {
-					Interface13.Stat( null, new ByTable(new object [] { "grass1", "grass2", "grass3", "grass4" }).Contains( this.icon_state ) );
-
-					if ( !false ) {
+					
+					if ( !new ByTable(new object [] { "grass1", "grass2", "grass3", "grass4" }).Contains( this.icon_state ) ) {
 						this.icon_state = "grass" + Rand13.Pick(new object [] { "1", "2", "3", "4" });
 					}
 				}
@@ -943,9 +941,8 @@ namespace Somnium.Game {
 			} else if ( this.is_wood_floor() ) {
 				
 				if ( !this.broken && !this.burnt ) {
-					Interface13.Stat( null, GlobalVars.wood_icons.Contains( this.icon_state ) );
-
-					if ( !false ) {
+					
+					if ( !GlobalVars.wood_icons.Contains( this.icon_state ) ) {
 						this.icon_state = "wood";
 					}
 				}
@@ -969,7 +966,7 @@ namespace Somnium.Game {
 			Game_Data M2 = null;
 
 			
-			switch ((double?)( severity )) {
+			switch ((int?)( severity )) {
 				case 1:
 					this.ChangeTurf( GlobalFuncs.get_base_turf( this.z ) );
 					break;

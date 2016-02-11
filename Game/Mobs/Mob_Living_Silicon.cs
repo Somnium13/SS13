@@ -70,7 +70,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: silicon.dm
-		public override dynamic remove_language( dynamic rem_language = null ) {
+		public override bool remove_language( dynamic rem_language = null ) {
 			Language L = null;
 
 			base.remove_language( (object)(rem_language) );
@@ -83,7 +83,7 @@ namespace Somnium.Game {
 					this.speech_synthesizer_langs.Remove( L );
 				}
 			}
-			return null;
+			return false;
 		}
 
 		// Function from file: silicon.dm
@@ -99,8 +99,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: silicon.dm
-		public override bool? can_speak_lang( dynamic speaking = null ) {
-			return this.universal_speak || false;
+		public override bool can_speak_lang( dynamic speaking = null ) {
+			return this.universal_speak || this.speech_synthesizer_langs.Contains( speaking );
 		}
 
 		// Function from file: silicon.dm
@@ -531,15 +531,11 @@ namespace Somnium.Game {
 					this.v_radio.talk_into( speech );
 				}
 				return 2;
-			} else {
-				Interface13.Stat( null, GlobalVars.radiochannels.Contains( message_mode ) );
-
-				if ( message_mode == "robot" ) {
-					
-					if ( this.v_radio != null ) {
-						this.v_radio.talk_into( speech, message_mode );
-						return 3;
-					}
+			} else if ( GlobalVars.radiochannels.Contains( message_mode ) ) {
+				
+				if ( this.v_radio != null ) {
+					this.v_radio.talk_into( speech, message_mode );
+					return 3;
 				}
 			}
 			return 0;
@@ -641,8 +637,7 @@ namespace Somnium.Game {
 				} else {
 					default_str = new Txt( " - <a href='byond://?src=" ).Ref( this ).str( ";default_lang=" ).item( L ).str( "'>set default</a>" ).ToString();
 				}
-				Interface13.Stat( null, this.speech_synthesizer_langs.Contains( L ) );
-				synth = L == this.default_language;
+				synth = this.speech_synthesizer_langs.Contains( L );
 				dat += "<b>" + L.name + " (:" + L.key + ")</b>" + ( synth ? default_str : null ) + "<br/>Speech Synthesizer: <i>" + ( synth ? "YES" : "NOT SUPPORTED" ) + "</i><br/>" + L.desc + "<br/><br/>";
 			}
 			Interface13.Browse( this, dat, "window=checklanguage" );

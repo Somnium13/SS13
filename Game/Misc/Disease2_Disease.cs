@@ -35,9 +35,8 @@ namespace Somnium.Game {
 		public bool addToDB(  ) {
 			Data_Record v = null;
 
-			Interface13.Stat( null, GlobalVars.virusDB.Contains( "" + this.uniqueID ) );
-
-			if ( false ) {
+			
+			if ( GlobalVars.virusDB.Contains( "" + this.uniqueID ) ) {
 				return false;
 			}
 			v = new Data_Record();
@@ -76,9 +75,8 @@ namespace Somnium.Game {
 			dynamic V = null;
 
 			_default = "stamm #" + GlobalFuncs.add_zero( "" + this.uniqueID, 4 );
-			Interface13.Stat( null, GlobalVars.virusDB.Contains( "" + this.uniqueID ) );
 
-			if ( false ) {
+			if ( GlobalVars.virusDB.Contains( "" + this.uniqueID ) ) {
 				V = GlobalVars.virusDB["" + this.uniqueID];
 				_default = V.fields["name"];
 			}
@@ -113,9 +111,8 @@ namespace Somnium.Game {
 			foreach (dynamic _c in Lang13.Enumerate( types )) {
 				type = _c;
 				
-				Interface13.Stat( null, types2.Contains( type ) );
 
-				if ( !false ) {
+				if ( !types2.Contains( type ) ) {
 					equal = false;
 				}
 			}

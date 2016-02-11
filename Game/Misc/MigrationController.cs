@@ -54,9 +54,8 @@ namespace Somnium.Game {
 					if ( M.package == "" || M.name == "" || M.dbms != this.id ) {
 						continue;
 					}
-					Interface13.Stat( null, newpacks.Contains( M.package ) );
 
-					if ( !( M.package == "" || M.name == "" || M.dbms != this.id ) ) {
+					if ( !newpacks.Contains( M.package ) ) {
 						newpacks[M.package] = new ByTable();
 					}
 					pack = newpacks[M.package];
@@ -66,9 +65,8 @@ namespace Somnium.Game {
 				foreach (dynamic _d in Lang13.Enumerate( newpacks )) {
 					pkgID = _d;
 					
-					Interface13.Stat( null, this.packages.Contains( pkgID ) );
 
-					if ( !false ) {
+					if ( !this.packages.Contains( pkgID ) ) {
 						this.packages[pkgID] = new ByTable();
 					}
 					prepack = newpacks[pkgID];
@@ -227,9 +225,8 @@ namespace Somnium.Game {
 
 		// Function from file: migration_controller.dm
 		public bool getCurrentVersion( dynamic pkgID = null ) {
-			Interface13.Stat( null, this.db_states.Contains( pkgID ) );
-
-			if ( false ) {
+			
+			if ( this.db_states.Contains( pkgID ) ) {
 				return Lang13.Bool( this.db_states[pkgID] );
 			} else {
 				return false;

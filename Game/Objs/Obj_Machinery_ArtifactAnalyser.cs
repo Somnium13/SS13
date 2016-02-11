@@ -199,139 +199,129 @@ namespace Somnium.Game {
 			string _out = null;
 
 			
-			switch ((Type)( scanned_obj.type )) {
-				case typeof(Obj_Machinery_AutoCloner):
-					return "Automated cloning pod - appears to rely on organic nanomachines with a self perpetuating ecosystem involving self cannibalism and a symbiotic relationship with the contained liquid.<br><br>Structure is composed of a carbo-titanium alloy with interlaced reinforcing energy fields, and the contained liquid resembles proto-plasmic residue supportive of single cellular developmental conditions.";
-					break;
-				case typeof(Obj_Machinery_Power_Supermatter):
-					return "Super dense plasma clump - Appears to have been shaped or hewn, structure is composed of matter 2000% denser than ordinary carbon matter residue.Potential application as unrefined plasma source.";
-					break;
-				case typeof(Obj_Structure_Constructshell):
-					return "Tribal idol - Item resembles statues/emblems built by superstitious pre-warp civilisations to honour their gods. Material appears to be a rock/plastcrete composite.";
-					break;
-				case typeof(Obj_Machinery_GigaDrill):
-					return "Automated mining drill - structure composed of titanium-carbide alloy, with tip and drill lines edged in an alloy of diamond and plasma.";
-					break;
-				case typeof(Obj_Structure_Cult_Pylon):
-					return "Tribal pylon - Item resembles statues/emblems built by cargo cult civilisations to honour energy systems from post-warp civilisations.";
-					break;
-				case typeof(Obj_Mecha_Working_Hoverpod):
-					return "Vacuum capable repair pod - Item is a remarkably intact single man repair craft capable of flight in a vacuum. Outer shell composed of primarily post-warp hull alloys, with internal wiring and circuitry consistent with modern electronics and engineering.";
-					break;
-				case typeof(Obj_Machinery_Replicator):
-					return "Automated construction unit - Item appears to be able to synthesize synthetic items, some with simple internal circuitry. Method unknown, phasing suggested?";
-					break;
-				case typeof(Obj_Structure_Crystal):
-					return "Crystal formation - Pseudo organic crystalline matrix, unlikely to have formed naturally. No known technology exists to synthesize this exact composition.";
-					break;
-				case typeof(Obj_Machinery_Artifact):
-					A = scanned_obj;
-					_out = "Anomalous alien device - Composed of an unknown alloy, ";
+			dynamic _e = scanned_obj.type; // Was a switch-case, sorry for the mess.
+			if ( _e==typeof(Obj_Machinery_AutoCloner) ) {
+				return "Automated cloning pod - appears to rely on organic nanomachines with a self perpetuating ecosystem involving self cannibalism and a symbiotic relationship with the contained liquid.<br><br>Structure is composed of a carbo-titanium alloy with interlaced reinforcing energy fields, and the contained liquid resembles proto-plasmic residue supportive of single cellular developmental conditions.";
+			} else if ( _e==typeof(Obj_Machinery_Power_Supermatter) ) {
+				return "Super dense plasma clump - Appears to have been shaped or hewn, structure is composed of matter 2000% denser than ordinary carbon matter residue.Potential application as unrefined plasma source.";
+			} else if ( _e==typeof(Obj_Structure_Constructshell) ) {
+				return "Tribal idol - Item resembles statues/emblems built by superstitious pre-warp civilisations to honour their gods. Material appears to be a rock/plastcrete composite.";
+			} else if ( _e==typeof(Obj_Machinery_GigaDrill) ) {
+				return "Automated mining drill - structure composed of titanium-carbide alloy, with tip and drill lines edged in an alloy of diamond and plasma.";
+			} else if ( _e==typeof(Obj_Structure_Cult_Pylon) ) {
+				return "Tribal pylon - Item resembles statues/emblems built by cargo cult civilisations to honour energy systems from post-warp civilisations.";
+			} else if ( _e==typeof(Obj_Mecha_Working_Hoverpod) ) {
+				return "Vacuum capable repair pod - Item is a remarkably intact single man repair craft capable of flight in a vacuum. Outer shell composed of primarily post-warp hull alloys, with internal wiring and circuitry consistent with modern electronics and engineering.";
+			} else if ( _e==typeof(Obj_Machinery_Replicator) ) {
+				return "Automated construction unit - Item appears to be able to synthesize synthetic items, some with simple internal circuitry. Method unknown, phasing suggested?";
+			} else if ( _e==typeof(Obj_Structure_Crystal) ) {
+				return "Crystal formation - Pseudo organic crystalline matrix, unlikely to have formed naturally. No known technology exists to synthesize this exact composition.";
+			} else if ( _e==typeof(Obj_Machinery_Artifact) ) {
+				A = scanned_obj;
+				_out = "Anomalous alien device - Composed of an unknown alloy, ";
 
-					if ( Lang13.Bool( ((dynamic)A).my_effect ) ) {
-						
-						switch ((int)( ((dynamic)A).my_effect.effect_type )) {
-							case 1:
-								_out += "concentrated energy emissions";
-								break;
-							case 2:
-								_out += "intermittent psionic wavefront";
-								break;
-							case 3:
-								_out += "electromagnetic energy";
-								break;
-							case 4:
-								_out += "high frequency particles";
-								break;
-							case 5:
-								_out += "organically reactive exotic particles";
-								break;
-							case 6:
-								_out += "interdimensional/bluespace? phasing";
-								break;
-							case 7:
-								_out += "atomic synthesis";
-								break;
-							default:
-								_out += "low level energy emissions";
-								break;
-						}
-						_out += " have been detected ";
+				if ( Lang13.Bool( ((dynamic)A).my_effect ) ) {
+					
+					switch ((int)( ((dynamic)A).my_effect.effect_type )) {
+						case 1:
+							_out += "concentrated energy emissions";
+							break;
+						case 2:
+							_out += "intermittent psionic wavefront";
+							break;
+						case 3:
+							_out += "electromagnetic energy";
+							break;
+						case 4:
+							_out += "high frequency particles";
+							break;
+						case 5:
+							_out += "organically reactive exotic particles";
+							break;
+						case 6:
+							_out += "interdimensional/bluespace? phasing";
+							break;
+						case 7:
+							_out += "atomic synthesis";
+							break;
+						default:
+							_out += "low level energy emissions";
+							break;
+					}
+					_out += " have been detected ";
 
-						dynamic _b = ((dynamic)A).my_effect.effect; // Was a switch-case, sorry for the mess.
-						if ( _b==1 ) {
-							_out += " emitting in an ambient energy field.";
-						} else if ( _b==2 ) {
-							_out += " emitting in periodic bursts.";
-						} else {
-							_out += " interspersed throughout substructure and shell.";
-						}
-
-						if ( ((dynamic)A).my_effect.trigger >= 0 && ((dynamic)A).my_effect.trigger <= 4 ) {
-							_out += " Activation index involves physical interaction with artifact surface.";
-						} else if ( ((dynamic)A).my_effect.trigger >= 5 && ((dynamic)A).my_effect.trigger <= 8 ) {
-							_out += " Activation index involves energetic interaction with artifact surface.";
-						} else if ( ((dynamic)A).my_effect.trigger >= 9 && ((dynamic)A).my_effect.trigger <= 12 ) {
-							_out += " Activation index involves precise local atmospheric conditions.";
-						} else {
-							_out += " Unable to determine any data about activation trigger.";
-						}
+					dynamic _b = ((dynamic)A).my_effect.effect; // Was a switch-case, sorry for the mess.
+					if ( _b==1 ) {
+						_out += " emitting in an ambient energy field.";
+					} else if ( _b==2 ) {
+						_out += " emitting in periodic bursts.";
+					} else {
+						_out += " interspersed throughout substructure and shell.";
 					}
 
-					if ( Lang13.Bool( ((dynamic)A).secondary_effect ) ) {
-						_out += "<br><br>Warning, internal scans indicate ongoing " + Rand13.Pick(new object [] { "subluminous", "subcutaneous", "superstructural" }) + " activity operating independantly from primary systems. Auxiliary activity involves ";
-
-						switch ((int)( ((dynamic)A).secondary_effect.effect_type )) {
-							case 1:
-								_out += "concentrated energy emissions";
-								break;
-							case 2:
-								_out += "intermittent psionic wavefront";
-								break;
-							case 3:
-								_out += "electromagnetic energy";
-								break;
-							case 4:
-								_out += "high frequency particles";
-								break;
-							case 5:
-								_out += "organically reactive exotic particles";
-								break;
-							case 6:
-								_out += "interdimensional/bluespace? phasing";
-								break;
-							case 7:
-								_out += "atomic synthesis";
-								break;
-							default:
-								_out += "low level radiation";
-								break;
-						}
-
-						dynamic _d = ((dynamic)A).secondary_effect.effect; // Was a switch-case, sorry for the mess.
-						if ( _d==1 ) {
-							_out += " emitting in an ambient energy field.";
-						} else if ( _d==2 ) {
-							_out += " emitting in periodic bursts.";
-						} else {
-							_out += " interspersed throughout substructure and shell.";
-						}
-
-						if ( ((dynamic)A).secondary_effect.trigger >= 0 && ((dynamic)A).secondary_effect.trigger <= 4 ) {
-							_out += " Activation index involves physical interaction with artifact surface, but subsystems indicate anomalous interference with standard attempts at triggering.";
-						} else if ( ((dynamic)A).secondary_effect.trigger >= 5 && ((dynamic)A).secondary_effect.trigger <= 8 ) {
-							_out += " Activation index involves energetic interaction with artifact surface, but subsystems indicate anomalous interference with standard attempts at triggering.";
-						} else if ( ((dynamic)A).secondary_effect.trigger >= 9 && ((dynamic)A).secondary_effect.trigger <= 12 ) {
-							_out += " Activation index involves precise local atmospheric conditions, but subsystems indicate anomalous interference with standard attempts at triggering.";
-						} else {
-							_out += " Unable to determine any data about activation trigger.";
-						}
+					if ( ((dynamic)A).my_effect.trigger >= 0 && ((dynamic)A).my_effect.trigger <= 4 ) {
+						_out += " Activation index involves physical interaction with artifact surface.";
+					} else if ( ((dynamic)A).my_effect.trigger >= 5 && ((dynamic)A).my_effect.trigger <= 8 ) {
+						_out += " Activation index involves energetic interaction with artifact surface.";
+					} else if ( ((dynamic)A).my_effect.trigger >= 9 && ((dynamic)A).my_effect.trigger <= 12 ) {
+						_out += " Activation index involves precise local atmospheric conditions.";
+					} else {
+						_out += " Unable to determine any data about activation trigger.";
 					}
-					return _out;
-					break;
-				default:
-					return "" + scanned_obj.name + " - Mundane application, composed of carbo-ferritic alloy composite.";
-					break;
+				}
+
+				if ( Lang13.Bool( ((dynamic)A).secondary_effect ) ) {
+					_out += "<br><br>Warning, internal scans indicate ongoing " + Rand13.Pick(new object [] { "subluminous", "subcutaneous", "superstructural" }) + " activity operating independantly from primary systems. Auxiliary activity involves ";
+
+					switch ((int)( ((dynamic)A).secondary_effect.effect_type )) {
+						case 1:
+							_out += "concentrated energy emissions";
+							break;
+						case 2:
+							_out += "intermittent psionic wavefront";
+							break;
+						case 3:
+							_out += "electromagnetic energy";
+							break;
+						case 4:
+							_out += "high frequency particles";
+							break;
+						case 5:
+							_out += "organically reactive exotic particles";
+							break;
+						case 6:
+							_out += "interdimensional/bluespace? phasing";
+							break;
+						case 7:
+							_out += "atomic synthesis";
+							break;
+						default:
+							_out += "low level radiation";
+							break;
+					}
+
+					dynamic _d = ((dynamic)A).secondary_effect.effect; // Was a switch-case, sorry for the mess.
+					if ( _d==1 ) {
+						_out += " emitting in an ambient energy field.";
+					} else if ( _d==2 ) {
+						_out += " emitting in periodic bursts.";
+					} else {
+						_out += " interspersed throughout substructure and shell.";
+					}
+
+					if ( ((dynamic)A).secondary_effect.trigger >= 0 && ((dynamic)A).secondary_effect.trigger <= 4 ) {
+						_out += " Activation index involves physical interaction with artifact surface, but subsystems indicate anomalous interference with standard attempts at triggering.";
+					} else if ( ((dynamic)A).secondary_effect.trigger >= 5 && ((dynamic)A).secondary_effect.trigger <= 8 ) {
+						_out += " Activation index involves energetic interaction with artifact surface, but subsystems indicate anomalous interference with standard attempts at triggering.";
+					} else if ( ((dynamic)A).secondary_effect.trigger >= 9 && ((dynamic)A).secondary_effect.trigger <= 12 ) {
+						_out += " Activation index involves precise local atmospheric conditions, but subsystems indicate anomalous interference with standard attempts at triggering.";
+					} else {
+						_out += " Unable to determine any data about activation trigger.";
+					}
+				}
+				return _out;
+			} else {
+				return "" + scanned_obj.name + " - Mundane application, composed of carbo-ferritic alloy composite.";
 			}
 			return null;
 		}

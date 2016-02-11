@@ -119,9 +119,8 @@ namespace Somnium.Game {
 		public override dynamic attackby( dynamic a = null, dynamic b = null, dynamic c = null ) {
 			
 			if ( a is Obj_Item_Commstone ) {
-				Interface13.Stat( null, this.allstones.Contains( a ) );
-
-				if ( false && this.remaining < 6 ) {
+				
+				if ( this.allstones.Contains( a ) && this.remaining < 6 ) {
 					
 					if ( Lang13.Bool( b.drop_item( a, this ) ) ) {
 						GlobalFuncs.to_chat( b, "<span class='notice'>You place one of the strange stones back onto the ancient device, it snaps into place.</span>" );

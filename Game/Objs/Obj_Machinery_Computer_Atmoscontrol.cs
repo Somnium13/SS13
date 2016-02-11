@@ -257,8 +257,7 @@ namespace Somnium.Game {
 			if ( !( this.filter != null ) ) {
 				return true;
 			}
-			Interface13.Stat( null, this.filter.Contains( typepath ) );
-			return !( this.filter != null );
+			return this.filter.Contains( typepath );
 		}
 
 		// Function from file: atmos_control.dm

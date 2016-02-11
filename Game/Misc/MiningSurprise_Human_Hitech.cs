@@ -13,7 +13,7 @@ namespace Somnium.Game {
 			this.room_size_max = 7;
 			this.walltypes = new ByTable().Set( typeof(Tile_Simulated_Wall_RWall), 1 );
 			this.floortypes = new ByTable().Set( typeof(Tile_Simulated_Floor_Greengrid), 1 ).Set( typeof(Tile_Simulated_Floor_Bluegrid), 1 );
-			this.spawntypes = new ByTable().Set( typeof(Obj_Item_Weapon_Pickaxe_Plasmacutter), 1 ).Set( typeof(Obj_Machinery_ShieldGen), 1 ).Set( typeof(Obj_Item_Weapon_Cell_Hyper), 1 );
+			this.spawntypes = new ByTable().Set( typeof(Obj_Item_Weapon_Pickaxe_Plasmacutter), 1 ).Set( typeof(Obj_Machinery_Shieldgen), 1 ).Set( typeof(Obj_Item_Weapon_Cell_Hyper), 1 );
 			this.fluffitems = new ByTable()
 				.Set( typeof(Obj_Structure_Table_Reinforced), 2 )
 				.Set( typeof(Obj_Item_Weapon_StockParts_ScanningModule_Adv_Phasic), 3 )

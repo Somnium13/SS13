@@ -292,9 +292,8 @@ namespace Somnium.Game {
 						foreach (dynamic _e in Lang13.Enumerate( T5.vars )) {
 							key = _e;
 							
-							Interface13.Stat( null, GlobalVars.ignored_keys.Contains( key ) );
 
-							if ( false ) {
+							if ( GlobalVars.ignored_keys.Contains( key ) ) {
 								continue;
 							}
 
@@ -459,9 +458,8 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( L )) {
 				T = _b;
 				
-				Interface13.Stat( null, L.Contains( T ) );
 
-				if ( false ) {
+				if ( Lang13.Bool( L.Contains( T ) ) ) {
 					continue;
 				}
 				old_area = GlobalFuncs.get_area( T );
@@ -614,13 +612,13 @@ namespace Somnium.Game {
 		public void use_power( dynamic amount = null, bool? chan = null ) {
 			
 			switch ((bool?)( chan )) {
-				case 1:
+				case true:
 					this.used_equip += Convert.ToDouble( amount );
 					break;
-				case 2:
+				case 2 != 0:
 					this.used_light += Convert.ToDouble( amount );
 					break;
-				case 3:
+				case 3 != 0:
 					this.used_environ += Convert.ToDouble( amount );
 					break;
 			}
@@ -847,9 +845,8 @@ namespace Somnium.Game {
 				foreach (dynamic _c in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_StationAlert) )) {
 					a = _c;
 					
-					Interface13.Stat( null, a.covered_areas.Contains( this ) );
 
-					if ( a is Obj_Machinery_Computer_StationAlert ) {
+					if ( a.covered_areas.Contains( this ) ) {
 						a.cancelAlarm( "Fire", this, this );
 					}
 				}
@@ -904,9 +901,8 @@ namespace Somnium.Game {
 				foreach (dynamic _c in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_StationAlert) )) {
 					a = _c;
 					
-					Interface13.Stat( null, a.covered_areas.Contains( this ) );
 
-					if ( a is Obj_Machinery_Computer_StationAlert ) {
+					if ( a.covered_areas.Contains( this ) ) {
 						a.triggerAlarm( "Fire", this, cameras, this );
 					}
 				}
@@ -1070,9 +1066,8 @@ namespace Somnium.Game {
 					foreach (dynamic _d in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_StationAlert) )) {
 						a = _d;
 						
-						Interface13.Stat( null, a.covered_areas.Contains( this ) );
 
-						if ( a is Obj_Machinery_Computer_StationAlert ) {
+						if ( a.covered_areas.Contains( this ) ) {
 							a.triggerAlarm( "Atmosphere", this, cameras, this );
 						}
 					}
@@ -1095,9 +1090,8 @@ namespace Somnium.Game {
 					foreach (dynamic _g in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_StationAlert) )) {
 						a2 = _g;
 						
-						Interface13.Stat( null, a2.covered_areas.Contains( this ) );
 
-						if ( a2 is Obj_Machinery_Computer_StationAlert ) {
+						if ( a2.covered_areas.Contains( this ) ) {
 							a2.cancelAlarm( "Atmosphere", this, this );
 						}
 					}
@@ -1175,9 +1169,8 @@ namespace Somnium.Game {
 					foreach (dynamic _c in Lang13.Enumerate( GlobalVars.machines, typeof(Obj_Machinery_Computer_StationAlert) )) {
 						a = _c;
 						
-						Interface13.Stat( null, a.covered_areas.Contains( this ) );
 
-						if ( a is Obj_Machinery_Computer_StationAlert ) {
+						if ( a.covered_areas.Contains( this ) ) {
 							
 							if ( state ) {
 								a.cancelAlarm( "Power", this, source );
@@ -1377,9 +1370,8 @@ namespace Somnium.Game {
 						foreach (dynamic _k in Lang13.Enumerate( T5.vars )) {
 							V = _k;
 							
-							Interface13.Stat( null, new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key", "x", "y", "z", "contents", "luminosity" }).Contains( V ) );
 
-							if ( !false ) {
+							if ( !new ByTable(new object [] { "type", "loc", "locs", "vars", "parent", "parent_type", "verbs", "ckey", "key", "x", "y", "z", "contents", "luminosity" }).Contains( V ) ) {
 								X.vars[V] = T5.vars[V];
 							}
 						}

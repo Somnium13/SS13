@@ -95,7 +95,7 @@ namespace Somnium.Game {
 						A.forceMove( newloc );
 						Task13.Schedule( 0, (Task13.Closure)(() => {
 							
-							if ( A is Mob && !false ) {
+							if ( A is Mob && !flashers.Contains( A ) ) {
 								M2 = A;
 
 								if ( Lang13.Bool( ((dynamic)M2).client ) ) {

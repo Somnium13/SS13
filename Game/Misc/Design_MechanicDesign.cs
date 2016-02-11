@@ -157,9 +157,8 @@ namespace Somnium.Game {
 				} else if ( filter_chems == true ) {
 					continue;
 				}
-				Interface13.Stat( null, this.materials.Contains( matID ) );
 
-				if ( !( filter_chems == true ) ) {
+				if ( !this.materials.Contains( matID ) ) {
 					this.materials.Add( new ByTable().Set( "" + matID, 0 ) );
 				}
 				this.materials[matID] += D.materials[matID];

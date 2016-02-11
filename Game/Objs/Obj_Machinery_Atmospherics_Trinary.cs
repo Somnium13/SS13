@@ -232,9 +232,8 @@ namespace Somnium.Game {
 			dynamic mirrored_pipe = null;
 			Ent_Static T = null;
 
-			Interface13.Stat( null, new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST }).Contains( pipe.dir ) );
-
-			if ( !false && this.mirror != null ) {
+			
+			if ( !new ByTable(new object [] { GlobalVars.NORTH, GlobalVars.SOUTH, GlobalVars.EAST, GlobalVars.WEST }).Contains( pipe.dir ) && this.mirror != null ) {
 				mirrored_pipe = Lang13.Call( this.mirror, this.loc );
 				pipe.dir = Num13.Rotate( pipe.dir, -45 );
 				GlobalFuncs.qdel( this );

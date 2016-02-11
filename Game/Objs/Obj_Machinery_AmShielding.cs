@@ -74,9 +74,8 @@ namespace Somnium.Game {
 					if ( machine is Obj_Machinery_AmShielding && ((dynamic)machine).control_unit == this.control_unit && Lang13.Bool( ((dynamic)machine).processing ) ) {
 						this.coredirs |= Convert.ToInt32( direction );
 					}
-					Interface13.Stat( null, GlobalVars.cardinal.Contains( direction ) );
 
-					if ( machine is Obj_Machinery_AmShielding && ((dynamic)machine).control_unit == this.control_unit && Lang13.Bool( ((dynamic)machine).processing ) ) {
+					if ( GlobalVars.cardinal.Contains( direction ) ) {
 						
 						if ( machine is Obj_Machinery_AmShielding && ((dynamic)machine).control_unit == this.control_unit || machine is Obj_Machinery_Power_AmControlUnit && machine == this.control_unit ) {
 							this.dirs |= Convert.ToInt32( direction );
@@ -115,8 +114,8 @@ namespace Somnium.Game {
 
 		// Function from file: shielding.dm
 		public override bool ex_act( double? severity = null, dynamic child = null ) {
-
-			switch ((int?)(severity)) {
+			
+			switch ((int?)( severity )) {
 				case 1:
 					this.stability -= 80;
 					break;

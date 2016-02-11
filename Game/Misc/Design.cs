@@ -60,9 +60,8 @@ namespace Somnium.Game {
 			foreach (dynamic _a in Lang13.Enumerate( temp_techs, typeof(Tech) )) {
 				T = _a;
 				
-				Interface13.Stat( null, this.req_tech.Contains( T.id ) );
 
-				if ( T is Tech ) {
+				if ( this.req_tech.Contains( T.id ) ) {
 					new_reliability += T.level;
 				}
 			}

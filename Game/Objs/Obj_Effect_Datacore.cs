@@ -55,9 +55,8 @@ namespace Somnium.Game {
 				isactive = t.fields["p_stat"];
 				department = false;
 				depthead = false;
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.command_positions.Contains( real_rank ) ) {
 					heads[++heads.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 					depthead = true;
@@ -66,9 +65,8 @@ namespace Somnium.Game {
 						heads.Swap( 1, heads.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.security_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.security_positions.Contains( real_rank ) ) {
 					sec[++sec.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 
@@ -76,9 +74,8 @@ namespace Somnium.Game {
 						sec.Swap( 1, sec.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.engineering_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.engineering_positions.Contains( real_rank ) ) {
 					eng[++eng.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 
@@ -86,9 +83,8 @@ namespace Somnium.Game {
 						eng.Swap( 1, eng.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.medical_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.medical_positions.Contains( real_rank ) ) {
 					med[++med.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 
@@ -96,9 +92,8 @@ namespace Somnium.Game {
 						med.Swap( 1, med.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.science_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.science_positions.Contains( real_rank ) ) {
 					sci[++sci.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 
@@ -106,9 +101,8 @@ namespace Somnium.Game {
 						sci.Swap( 1, sci.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.civilian_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.civilian_positions.Contains( real_rank ) ) {
 					civ[++civ.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 
@@ -116,14 +110,13 @@ namespace Somnium.Game {
 						civ.Swap( 1, civ.len );
 					}
 				}
-				Interface13.Stat( null, GlobalVars.nonhuman_positions.Contains( real_rank ) );
 
-				if ( t is Data_Record ) {
+				if ( GlobalVars.nonhuman_positions.Contains( real_rank ) ) {
 					bot[++bot.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 					department = true;
 				}
 
-				if ( !department && !false ) {
+				if ( !department && !heads.Contains( name ) ) {
 					misc[++misc.len] = new ByTable().Set( "name", name ).Set( "rank", rank ).Set( "active", isactive );
 				}
 			}
@@ -202,50 +195,43 @@ namespace Somnium.Game {
 					isactive[name] = t.fields["p_stat"];
 				}
 				department = false;
-				Interface13.Stat( null, GlobalVars.command_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.command_positions.Contains( real_rank ) ) {
 					heads[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.security_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.security_positions.Contains( real_rank ) ) {
 					sec[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.engineering_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.engineering_positions.Contains( real_rank ) ) {
 					eng[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.medical_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.medical_positions.Contains( real_rank ) ) {
 					med[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.science_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.science_positions.Contains( real_rank ) ) {
 					sci[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.civilian_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.civilian_positions.Contains( real_rank ) ) {
 					civ[name] = rank;
 					department = true;
 				}
-				Interface13.Stat( null, GlobalVars.nonhuman_positions.Contains( real_rank ) );
 
-				if ( OOC == true ) {
+				if ( GlobalVars.nonhuman_positions.Contains( real_rank ) ) {
 					bot[name] = rank;
 					department = true;
 				}
 
-				if ( !department && !false ) {
+				if ( !department && !heads.Contains( name ) ) {
 					misc[name] = rank;
 				}
 			}
@@ -464,9 +450,8 @@ namespace Somnium.Game {
 				if ( !( J != null ) ) {
 					continue;
 				}
-				Interface13.Stat( null, alttitles.Contains( assignment ) );
 
-				if ( !( J != null ) ) {
+				if ( alttitles.Contains( assignment ) ) {
 					real_title = J.title;
 					break;
 				}

@@ -19,7 +19,7 @@ namespace Somnium.Game {
 			Disease D = null;
 
 			
-			if ( !( M != null ) || Lang13.Bool( M.stat ) || !false ) {
+			if ( !( M != null ) || Lang13.Bool( M.stat ) || !Map13.FetchInView( null, M ).Contains( M ) ) {
 				return;
 			}
 

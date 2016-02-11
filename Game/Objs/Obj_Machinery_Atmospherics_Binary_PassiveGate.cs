@@ -81,24 +81,20 @@ namespace Somnium.Game {
 				return false;
 			}
 			old_on = this.on;
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power" ) ) ) {
 				this.on = String13.ParseNumber( ((dynamic)signal).data["power"] );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "power_toggle" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "power_toggle" ) ) ) {
 				this.on = !Lang13.Bool( this.on ) ?1:0;
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "set_output_pressure" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "set_output_pressure" ) ) ) {
 				this.target_pressure = ( ( String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ??0) <= 0 ? 0 : ( ( String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ??0) >= 5066.25 ? 5066.25 : String13.ParseNumber( ((dynamic)signal).data["set_output_pressure"] ) ) );
 			}
-			Interface13.Stat( null, ((dynamic)signal).data.Contains( "status" ) );
 
-			if ( !Lang13.Bool( ((dynamic)signal).data["tag"] ) || ((dynamic)signal).data["tag"] != this.id_tag || ((dynamic)signal).data["sigtype"] != "command" ) {
+			if ( Lang13.Bool( ((dynamic)signal).data.Contains( "status" ) ) ) {
 				Task13.Schedule( 2, (Task13.Closure)(() => {
 					this.broadcast_status();
 					return;

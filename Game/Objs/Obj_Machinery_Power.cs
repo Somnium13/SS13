@@ -49,7 +49,7 @@ namespace Somnium.Game {
 
 		// Function from file: terminal.dm
 		public virtual bool can_attach_terminal( dynamic user = null ) {
-			return user.loc != this.loc && false && !( this.terminal != null );
+			return user.loc != this.loc && GlobalVars.cardinal.Contains( Map13.GetDistance( user, this ) ) && !( this.terminal != null );
 		}
 
 		// Function from file: terminal.dm

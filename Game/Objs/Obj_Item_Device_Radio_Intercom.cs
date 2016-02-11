@@ -194,7 +194,7 @@ namespace Somnium.Game {
 				_args[2] = "";
 			}
 
-			if ( _args[1].speaker != null && !this.anyai && !false ) {
+			if ( _args[1].speaker != null && !this.anyai && !this.ai.Contains( _args[1].speaker ) ) {
 				return null;
 			}
 			base.Hear( (object)(speech), (object)(rendered_speech) );
@@ -209,12 +209,11 @@ namespace Somnium.Game {
 			if ( !Lang13.Bool( this.on ) || this.b_stat || this.isWireCut( GlobalVars.WIRE_RECEIVE ) != 0 ) {
 				return -1;
 			}
-			Interface13.Stat( null, level.Contains( 0 ) );
 
-			if ( !( !Lang13.Bool( this.on ) || this.b_stat || this.isWireCut( GlobalVars.WIRE_RECEIVE ) != 0 ) ) {
+			if ( !Lang13.Bool( level.Contains( 0 ) ) ) {
 				position = GlobalFuncs.get_turf( this );
 
-				if ( position == null || !false ) {
+				if ( position == null || !Lang13.Bool( level.Contains( position.z ) ) ) {
 					return -1;
 				}
 			}
