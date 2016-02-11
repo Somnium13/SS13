@@ -148,6 +148,11 @@ namespace Somnium.Game {
 			}
 			newargs.Apply( Lang13.BindFunc( base, "resetVariables" ) );
 
+			//
+
+			base.resetVariables();
+
+			//
 			if ( !Lang13.Bool( GlobalVars.initial_materials ) ) {
 				GlobalFuncs.initialize_materials();
 			}

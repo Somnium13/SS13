@@ -66,7 +66,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.battery ) && Convert.ToDouble( this.battery.charge ) >= 3 && this.health != 0 ) {
 				this.dir = ((int)( direction ??0 ));
 
-				switch ((double?)( direction )) {
+				switch ((int?)( direction )) {
 					case 1:
 						
 						if ( this.inertia_dir == 2 ) {
