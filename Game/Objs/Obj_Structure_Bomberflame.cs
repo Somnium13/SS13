@@ -88,23 +88,23 @@ namespace Somnium.Game {
 
 		// Function from file: bomberman.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj chained_explosion = null;
-			Obj wall_break = null;
-			Obj table = null;
-			Obj rack = null;
-			Obj grille = null;
+			Obj_Structure_Bomberman chained_explosion = null;
+			Obj_Structure_Softwall wall_break = null;
+			Obj_Structure_Table table = null;
+			Obj_Structure_Rack rack = null;
+			Obj_Structure_Grille grille = null;
 			Ent_Static T = null;
-			Obj T2 = null;
-			Obj canister = null;
-			Obj computer = null;
+			Tile_Simulated_Wall T2 = null;
+			Obj_Machinery_PortableAtmospherics_Canister canister = null;
+			Obj_Machinery_Computer computer = null;
 			dynamic x = null;
 
 			
 			if ( Obstacle is Obj_Structure_Bomberman ) {
-				chained_explosion = Obstacle;
+				chained_explosion = (Obj_Structure_Bomberman)Obstacle;
 				((dynamic)chained_explosion).detonate();
 			} else if ( Obstacle is Obj_Structure_Softwall ) {
-				wall_break = Obstacle;
+				wall_break = (Obj_Structure_Softwall)Obstacle;
 				((Obj_Structure_Softwall)wall_break).pulverized();
 			}
 
@@ -113,13 +113,13 @@ namespace Somnium.Game {
 				if ( Obstacle is Obj_Structure_Closet ) {
 					GlobalFuncs.qdel( Obstacle );
 				} else if ( Obstacle is Obj_Structure_Table ) {
-					table = Obstacle;
+					table = (Obj_Structure_Table)Obstacle;
 					((dynamic)table).destroy();
 				} else if ( Obstacle is Obj_Structure_Rack ) {
-					rack = Obstacle;
+					rack = (Obj_Structure_Rack)Obstacle;
 					((dynamic)rack).destroy();
 				} else if ( Obstacle is Obj_Structure_Grille ) {
-					grille = Obstacle;
+					grille = (Obj_Structure_Grille)Obstacle;
 					((dynamic)grille).broken = 1;
 					grille.icon_state = "" + Lang13.Initial( grille, "icon_state" ) + "-b";
 					grille.density = false;
@@ -131,7 +131,7 @@ namespace Somnium.Game {
 				} else if ( Obstacle is Obj_Structure_Window ) {
 					GlobalFuncs.qdel( Obstacle );
 				} else if ( Obstacle is Tile_Simulated_Wall && !( Obstacle is Tile_Simulated_Wall_RWall ) ) {
-					T2 = Obstacle;
+					T2 = (Tile_Simulated_Wall)Obstacle;
 					((dynamic)T2).ChangeTurf( typeof(Tile_Simulated_Floor_Plating) );
 					T2.icon_state = "wall_thermite";
 
@@ -141,11 +141,11 @@ namespace Somnium.Game {
 				} else if ( Obstacle is Obj_Structure_ReagentDispensers_Fueltank ) {
 					Obstacle.ex_act( 1 );
 				} else if ( Obstacle is Obj_Machinery_PortableAtmospherics_Canister ) {
-					canister = Obstacle;
+					canister = (Obj_Machinery_PortableAtmospherics_Canister)Obstacle;
 					((dynamic)canister).health = 0;
 					((dynamic)canister).healthcheck();
 				} else if ( Obstacle is Obj_Machinery_Computer ) {
-					computer = Obstacle;
+					computer = (Obj_Machinery_Computer)Obstacle;
 
 					foreach (dynamic _a in Lang13.Enumerate( computer.verbs )) {
 						x = _a;

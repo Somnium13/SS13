@@ -337,7 +337,7 @@ namespace Somnium.Game {
 			dynamic M = null;
 
 			
-			switch ((bool)( this.welding )) {
+			switch ( this.welding ) {
 				case false:
 					
 					if ( this.icon_state != "welder" ) {
@@ -363,12 +363,12 @@ namespace Somnium.Game {
 						this.remove_fuel( 1 );
 					}
 					break;
-				case 2 != 0:
+				/*case 2:				//wtf
 					
 					if ( Rand13.PercentChance( 75 ) ) {
 						this.remove_fuel( 1 );
 					}
-					break;
+					break;*/
 			}
 			location = this.loc;
 

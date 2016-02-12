@@ -7367,7 +7367,7 @@ namespace Somnium.Game {
 				potential = _c;
 				
 
-				if ( Lang13.Bool( String13.SubStr( potential, -1, 0 != "/" ?1:0 ) ) ) {
+				if ( String13.SubStr( potential, -1, 0 ) != "/" ) { // whoever wrote this line originally was on CRACK
 					continue;
 				}
 
@@ -7382,9 +7382,9 @@ namespace Somnium.Game {
 
 				foreach (dynamic _b in Lang13.Enumerate( File13.List( path ) )) {
 					binaries = _b;
-					
 
-					if ( Lang13.Bool( String13.SubStr( binaries, -15, 0 == "playercount.txt" ?1:0 ) ) ) {
+
+					if (String13.SubStr(binaries, -15, 0) == "playercount.txt") { // more CRACK
 						lines = GlobalFuncs.file2list( path + binaries );
 
 						foreach (dynamic _a in Lang13.Enumerate( lines )) {
@@ -7492,115 +7492,115 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: finds_defines.dm
-		public static string get_responsive_reagent( bool? find_type = null ) {
+		public static string get_responsive_reagent( int? find_type = null ) {
 			
-			switch ((bool?)( find_type )) {
-				case true:
+			switch ( find_type ) {
+				case 1:
 					return "mercury";
 					break;
-				case 2 != 0:
+				case 2:
 					return "mercury";
 					break;
-				case 3 != 0:
+				case 3:
 					return "mercury";
 					break;
-				case 4 != 0:
+				case 4:
 					return "mercury";
 					break;
-				case 5 != 0:
+				case 5:
 					return "mercury";
 					break;
-				case 7 != 0:
+				case 7:
 					return "iron";
 					break;
-				case 6 != 0:
+				case 6:
 					return "iron";
 					break;
-				case 8 != 0:
+				case 8:
 					return "mercury";
 					break;
-				case 9 != 0:
+				case 9:
 					return "mercury";
 					break;
-				case 10 != 0:
+				case 10:
 					return "mercury";
 					break;
-				case 11 != 0:
+				case 11:
 					return "mercury";
 					break;
-				case 12 != 0:
+				case 12:
 					return "mercury";
 					break;
-				case 13 != 0:
+				case 13:
 					return "iron";
 					break;
-				case 14 != 0:
+				case 14:
 					return "iron";
 					break;
-				case 15 != 0:
+				case 15:
 					return "mercury";
 					break;
-				case 16 != 0:
+				case 16:
 					return "nitrogen";
 					break;
-				case 17 != 0:
+				case 17:
 					return "potassium";
 					break;
-				case 18 != 0:
+				case 18:
 					return "potassium";
 					break;
-				case 19 != 0:
+				case 19:
 					return "iron";
 					break;
-				case 20 != 0:
+				case 20:
 					return "potassium";
 					break;
-				case 21 != 0:
+				case 21:
 					return "nitrogen";
 					break;
-				case 22 != 0:
+				case 22:
 					return "nitrogen";
 					break;
-				case 23 != 0:
+				case 23:
 					return "iron";
 					break;
-				case 24 != 0:
+				case 24:
 					return "potassium";
 					break;
-				case 25 != 0:
+				case 25:
 					return "iron";
 					break;
-				case 26 != 0:
+				case 26:
 					return "iron";
 					break;
-				case 27 != 0:
+				case 27:
 					return "iron";
 					break;
-				case 28 != 0:
+				case 28:
 					return "mercury";
 					break;
-				case 29 != 0:
+				case 29:
 					return "carbon";
 					break;
-				case 30 != 0:
+				case 30:
 					return "carbon";
 					break;
-				case 31 != 0:
+				case 31:
 					return "carbon";
 					break;
-				case 32 != 0:
+				case 32:
 					return "carbon";
 					break;
-				case 33 != 0:
+				case 33:
 					return "carbon";
 					break;
-				case 34 != 0:
+				case 34:
 					return "carbon";
 					break;
-				case 35 != 0:
+				case 35:
 					return "mercury";
 					break;
-				case 36 != 0:
+				case 36:
 					return "mercury";
 					break;
 			}

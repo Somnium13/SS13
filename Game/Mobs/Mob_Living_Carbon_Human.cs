@@ -2878,12 +2878,12 @@ namespace Somnium.Game {
 					case "l_foot":
 						update |= temp.take_damage( Lang13.DoubleNullable( b_loss * 0.05 ), Lang13.DoubleNullable( f_loss * 0.05 ), null, null, weapon_message ) ?1:0;
 						break;
-					case "r_arm":
+					/*case "r_arm":
 						update |= temp.take_damage( Lang13.DoubleNullable( b_loss * 0.05 ), Lang13.DoubleNullable( f_loss * 0.05 ), null, null, weapon_message ) ?1:0;
 						break;
 					case "l_arm":
 						update |= temp.take_damage( Lang13.DoubleNullable( b_loss * 0.05 ), Lang13.DoubleNullable( f_loss * 0.05 ), null, null, weapon_message ) ?1:0;
-						break;
+						break;*/
 				}
 			}
 
@@ -12970,8 +12970,8 @@ wink, yawn" );
 		}
 
 		// Function from file: inventory.dm
-		public bool equip_if_possible( dynamic W = null, int slot = 0, bool? act_on_fail = null ) {
-			act_on_fail = act_on_fail ?? true;
+		public bool equip_if_possible( dynamic W = null, int slot = 0, int? act_on_fail = null ) {
+			act_on_fail = act_on_fail ?? 1;
 
 			bool equipped = false;
 			dynamic B = null;
@@ -13119,12 +13119,12 @@ wink, yawn" );
 				}
 			} else {
 				
-				switch ((bool?)( act_on_fail )) {
-					case true:
+				switch ( act_on_fail ) {
+					case 1:
 						GlobalFuncs.qdel( W );
 						W = null;
 						break;
-					case 2 != 0:
+					case 2:
 						W.loc = GlobalFuncs.get_turf( this );
 						break;
 				}

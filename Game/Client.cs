@@ -3919,7 +3919,7 @@ namespace Somnium.Game {
 			dynamic p = null;
 			dynamic _class = null;
 			dynamic variable = null;
-			string var_value = null;
+			dynamic var_value = null;
 			dynamic names = null;
 			dynamic V = null;
 			dynamic dir = null;
@@ -4071,7 +4071,7 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( dir ) ) {
 					
-					switch ((string)( var_value )) {
+					switch ((int)( var_value )) {
 						case 1:
 							dir = "NORTH";
 							break;
@@ -4652,7 +4652,7 @@ namespace Somnium.Game {
 			dynamic V = null;
 			dynamic variable = null;
 			string __default = null;
-			string var_value = null;
+			dynamic var_value = null;
 			dynamic dir = null;
 			dynamic _class = null;
 			string original_name = null;
@@ -4790,7 +4790,7 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( dir ) ) {
 				
-				switch ((string)( var_value )) {
+				switch ( (int)var_value ) {
 					case 1:
 						dir = "NORTH";
 						break;
@@ -5845,7 +5845,7 @@ namespace Somnium.Game {
 				return;
 			}
 			GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this ) + " accessed file: " + path );
-			Interface13.OpenFile( Task13.User, new File( path ) );
+			Interface13.OpenFile( Task13.User.client, new File( path ) );
 			GlobalFuncs.to_chat( this, "Attempting to send file, this may take a fair few minutes if the file is very large." );
 			return;
 		}

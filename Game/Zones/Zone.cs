@@ -609,16 +609,16 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: areas.dm
-		public void use_power( dynamic amount = null, bool? chan = null ) {
+		public void use_power( dynamic amount = null, int? chan = null ) {
 			
-			switch ((bool?)( chan )) {
-				case true:
+			switch ( chan ) {
+				case 1:
 					this.used_equip += Convert.ToDouble( amount );
 					break;
-				case 2 != 0:
+				case 2:
 					this.used_light += Convert.ToDouble( amount );
 					break;
-				case 3 != 0:
+				case 3:
 					this.used_environ += Convert.ToDouble( amount );
 					break;
 			}

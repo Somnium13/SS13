@@ -1687,16 +1687,16 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: atoms.dm
-		public void shake( bool xy = false, int intensity = 0, dynamic user = null ) {
+		public void shake( int xy = 0, int intensity = 0, dynamic user = null ) {
 			
-			switch ((bool)( xy )) {
-				case true:
+			switch ( xy ) {
+				case 1:
 					this.pixel_x = Rand13.Int( -intensity, intensity );
 					break;
-				case 2 != 0:
+				case 2:
 					this.pixel_y = Rand13.Int( -intensity, intensity );
 					break;
-				case 3 != 0:
+				case 3:
 					this.pixel_x = Rand13.Int( -intensity, intensity );
 					this.pixel_y = Rand13.Int( -intensity, intensity );
 					break;

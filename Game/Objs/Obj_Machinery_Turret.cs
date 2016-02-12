@@ -9,7 +9,7 @@ namespace Somnium.Game {
 		public bool raised = false;
 		public bool enabled = true;
 		public bool lasers = false;
-		public bool lasertype = true;
+		public int lasertype = 1;
 		public double health = 80;
 		public Obj_Machinery_Turretcover cover = null;
 		public int popping = 0;
@@ -313,26 +313,26 @@ namespace Somnium.Game {
 
 			if ( this.lasers ) {
 				
-				switch ((bool)( this.lasertype )) {
-					case true:
+				switch ( this.lasertype ) {
+					case 1:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam), this.loc );
 						break;
-					case 2 != 0:
+					case 2:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Heavylaser), this.loc );
 						fire_sound = "sound/weapons/lasercannonfire.ogg";
 						break;
-					case 3 != 0:
+					case 3:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Pulse), this.loc );
 						fire_sound = "sound/weapons/pulse.ogg";
 						break;
-					case 4 != 0:
+					case 4:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Change), this.loc );
 						fire_sound = "sound/weapons/radgun.ogg";
 						break;
-					case 5 != 0:
+					case 5:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Lastertag_Blue), this.loc );
 						break;
-					case 6 != 0:
+					case 6:
 						A = GlobalFuncs.getFromPool( typeof(Obj_Item_Projectile_Beam_Lastertag_Red), this.loc );
 						break;
 				}

@@ -100,15 +100,15 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: language.dm
-		public string get_spoken_verb( string msg = null, bool silicon = false, bool mode = false ) {
+		public string get_spoken_verb( string msg = null, bool silicon = false, int mode = 0 ) {
 			string msg_end = null;
 
 			
-			switch ((bool)( mode )) {
-				case 2 != 0:
+			switch ( mode ) {
+				case 2:
 					return "" + this.whisper_verb;
 					break;
-				case 3 != 0:
+				case 3:
 					return "" + this.whisper_verb + " with their final breath";
 					break;
 			}

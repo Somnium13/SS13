@@ -13,6 +13,10 @@ namespace Somnium.Engine.ByImpl {
 			Logger.Debug("icon->animate");
 		}
 
+		public static void Animate(Game.Ent_Static ent) {
+			throw new NotImplementedException();
+		}
+
 		// SUPPORTS REVERSED ARGS!
 		public static void Flick(dynamic o, dynamic name) {
 			Logger.Debug("icon->flick");

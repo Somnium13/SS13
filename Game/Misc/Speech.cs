@@ -18,7 +18,7 @@ namespace Somnium.Game {
 		public Ent_Dynamic speaker = null;
 		public dynamic message_classes = new ByTable(new object [] { "message" });
 		public dynamic wrapper_classes = new ByTable(new object [] { "game", "say" });
-		public bool mode = true;
+		public int mode = 1;
 
 		// Function from file: speech.dm
 		public override dynamic resetVariables( string args = null, params object[] _ ) {
@@ -59,7 +59,7 @@ namespace Somnium.Game {
 			this.job = signal.data["job"];
 			this.radio = signal.data["radio"];
 			this.language = signal.data["language"];
-			this.mode = Lang13.Bool( signal.data["mode"] );
+			this.mode = Convert.ToInt32( signal.data["mode"] );
 			this.lquote = signal.data["left_quote"];
 			this.rquote = signal.data["right_quote"];
 			data = signal.data["message_classes"];
