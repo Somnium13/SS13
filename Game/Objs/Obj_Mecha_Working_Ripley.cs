@@ -51,7 +51,7 @@ namespace Somnium.Game {
 				T = GlobalFuncs.get_turf( A );
 
 				if ( Lang13.Bool( T ) ) {
-					((Base_Static)T).Entered( A );
+					((Base_Static)T).Entered( A , null );
 				}
 				Map13.StepRandom( A );
 			}

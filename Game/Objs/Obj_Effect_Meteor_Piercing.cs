@@ -19,7 +19,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: meteors.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( this.pierce_health != 0 ) {
 				GlobalFuncs.explosion( GlobalFuncs.get_turf( Obstacle ), 1, 0, 0, 0, 0, true, false );

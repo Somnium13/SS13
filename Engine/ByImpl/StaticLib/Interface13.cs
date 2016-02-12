@@ -71,7 +71,7 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
-		public static void OpenFile(Game.Admins admins, File file) {
+		public static void OpenFile(Game.Client c, File file) {
 			Logger.Debug("interface->open");
 		}
 	}

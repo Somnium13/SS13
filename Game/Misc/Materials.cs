@@ -134,20 +134,18 @@ namespace Somnium.Game {
 		public override dynamic resetVariables( string args = null, params object[] _ ) {
 			ByTable _args = new ByTable( new object[] { args } ).Extend(_);
 
-			string newargs = null;
+			// This is the dumbest thing ever. Hopefully this is the intended effect...
+			var new_args = new object[_.Length+1];
+			_.CopyTo(new_args,0);
+			new_args[_.Length] = "storage";
 
-			
-			if ( Lang13.Bool( _args[1] ) ) {
-				newargs = _args[1] + "storage";
-			} else {
-				newargs = "storage";
-			}
-			newargs.Apply( Lang13.BindFunc( base, "resetVariables" ) );
+			base.resetVariables(args, new_args);
 
 			if ( !Lang13.Bool( GlobalVars.initial_materials ) ) {
 				GlobalFuncs.initialize_materials();
 			}
 			this.storage = GlobalVars.initial_materials.Copy();
+
 			return null;
 		}
 

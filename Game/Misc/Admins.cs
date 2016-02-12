@@ -6295,7 +6295,7 @@ namespace Somnium.Game {
 			path = "data/logs/" + String13.FormatTime( Game13.realtime, "YYYY/MM-Month/DD-Day" ) + " Attack.log";
 
 			if ( File13.Exists( path ) ) {
-				Interface13.OpenFile( this, new File( path ) );
+				Interface13.OpenFile( Task13.Source, new File( path ) );
 			} else {
 				GlobalFuncs.to_chat( this, "<font color='red'>Error: view_atk_log(): File not found/Invalid path(" + path + ").</font>" );
 				return;
@@ -6313,7 +6313,7 @@ namespace Somnium.Game {
 			path = "data/logs/" + String13.FormatTime( Game13.realtime, "YYYY/MM-Month/DD-Day" ) + ".log";
 
 			if ( File13.Exists( path ) ) {
-				Interface13.OpenFile( this, new File( path ) );
+				Interface13.OpenFile(Task13.Source, new File(path));
 			} else {
 				GlobalFuncs.to_chat( this, "<font color='red'>Error: view_txt_log(): File not found/Invalid path(" + path + ").</font>" );
 				return;

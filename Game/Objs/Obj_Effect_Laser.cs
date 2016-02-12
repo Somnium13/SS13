@@ -26,7 +26,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: teleporter.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump( Ent_Static Obstacle = null, dynamic yes = null) {
 			this.range--;
 			return null;
 		}

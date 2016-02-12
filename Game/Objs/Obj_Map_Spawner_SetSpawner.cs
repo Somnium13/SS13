@@ -16,12 +16,10 @@ namespace Somnium.Game {
 
 			while (this.amount != 0) {
 				
-				foreach (dynamic _a in Lang13.Enumerate( this.toSpawn, typeof(Obj) )) {
-					spawned = _a;
-					
+				foreach (dynamic _a in Lang13.Enumerate( this.toSpawn )) {
 
 					if ( this.subChance != 0 ) {
-						Lang13.Call( spawned, this.loc );
+						Lang13.Call( _a, this.loc );
 
 						if ( this.jiggle != 0 ) {
 							spawned.pixel_x = Rand13.Int( -this.jiggle, this.jiggle );

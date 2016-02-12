@@ -14,7 +14,7 @@ namespace Somnium.Game {
 		public dynamic last_active_sound = null;
 		public int multicast = 1;
 		public int zapzap = 0;
-		public Obj lastbumped = null;
+		public Ent_Static lastbumped = null;
 
 		protected override void __FieldInit() {
 			base.__FieldInit();

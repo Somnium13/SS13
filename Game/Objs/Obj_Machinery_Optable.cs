@@ -8,7 +8,7 @@ namespace Somnium.Game {
 
 		public Ent_Static victim = null;
 		public bool strapped = false;
-		public bool rating = true;
+		public int rating = 1;
 		public dynamic computer = null;
 
 		protected override void __FieldInit() {
@@ -47,14 +47,14 @@ namespace Somnium.Game {
 				if ( GlobalFuncs.do_after( b, this, 40 ) ) {
 					GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/items/Ratchet.ogg", 50, 1 );
 
-					switch ((bool)( this.rating )) {
-						case true:
+					switch ( this.rating ) {
+						case 1:
 							new Obj_Item_Weapon_StockParts_ScanningModule( this.loc );
 							break;
-						case 2 != 0:
+						case 2:
 							new Obj_Item_Weapon_StockParts_ScanningModule_Adv( this.loc );
 							break;
-						case 3 != 0:
+						case 3:
 							new Obj_Item_Weapon_StockParts_ScanningModule_Adv_Phasic( this.loc );
 							break;
 					}

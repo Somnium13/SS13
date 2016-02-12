@@ -26,7 +26,8 @@ namespace Somnium.Game {
 		public override dynamic Destroy( dynamic brokenup = null ) {
 			base.Destroy( (object)(brokenup) );
 			this.cl.screen.Remove( new ByTable(new object [] { this.builddir, this.buildhelp, this.buildmode, this.buildquit }) );
-			this.cl.buildmode_objs.And( ~new ByTable(new object [] { this.builddir, this.buildhelp, this.buildmode, this.buildquit, this }) );
+			//this.cl.buildmode_objs.And( ~new ByTable(new object [] { this.builddir, this.buildhelp, this.buildmode, this.buildquit, this }) );
+			// FUCKING EXCUSE ME??? (FIXME)
 			GlobalVars.buildmodeholders.Remove( this );
 			return null;
 		}

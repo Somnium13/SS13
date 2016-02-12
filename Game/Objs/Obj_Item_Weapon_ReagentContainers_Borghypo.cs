@@ -45,11 +45,10 @@ namespace Somnium.Game {
 
 		// Function from file: borghydro.dm
 		public override dynamic examine( dynamic user = null, string size = null ) {
-			bool contents_count = false;
+			int contents_count = 0;
 			Reagents reagents = null;
 
 			base.examine( (object)(user), size );
-			contents_count = false;
 
 			foreach (dynamic _a in Lang13.Enumerate( this.reagent_list, typeof(Reagents) )) {
 				reagents = _a;

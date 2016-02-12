@@ -23,21 +23,20 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: artifact_gigadrill.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj M = null;
-
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
+			Tile_Unsimulated_Mineral M = null;
 			
 			if ( this.active && !Lang13.Bool( this.drilling_turf ) ) {
 				
 				if ( Obstacle is Tile_Unsimulated_Mineral ) {
-					M = Obstacle;
+					M = (Tile_Unsimulated_Mineral)Obstacle;
 					this.drilling_turf = GlobalFuncs.get_turf( this );
 					this.visible_message( "<span class='danger'>" + this + " begins to drill into " + M + "!</span>" );
 					this.anchored = 1;
 					Task13.Schedule( this.drill_time, (Task13.Closure)(() => {
 						
 						if ( GlobalFuncs.get_turf( this ) == this.drilling_turf && this.active ) {
-							((dynamic)M).GetDrilled();
+							M.GetDrilled();
 							this.loc = M;
 						}
 						this.drilling_turf = null;

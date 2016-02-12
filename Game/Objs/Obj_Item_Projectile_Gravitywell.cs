@@ -59,8 +59,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: gravitywell.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj M = null;
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
+			Mob_Living M = null;
 
 			
 			if ( this.loc == this.target ) {
@@ -68,7 +68,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Obstacle is Mob_Living ) {
-				M = Obstacle;
+				M = (Mob_Living)Obstacle;
 				((dynamic)M).Weaken( 5 );
 			}
 			this.forceMove( Map13.GetStep( this.loc, this.dir ) );

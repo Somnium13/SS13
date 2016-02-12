@@ -111,7 +111,7 @@ namespace Somnium.Game {
 			}
 
 			if ( O is Obj_Effect_Beam ) {
-				this.Bump( O );
+				this.Bump( (Obj)O );
 				return null;
 			}
 			Task13.Schedule( 0, (Task13.Closure)(() => {

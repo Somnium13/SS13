@@ -43,19 +43,19 @@ namespace Somnium.Game {
 			if ( a is Obj_Item_Weapon_Screwdriver ) {
 				
 				switch ((int)( this.det_time )) {
-					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
+					case 1:
 						this.det_time = 10;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 1 second detonation time.</span>" );
 						break;
-					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
+					case 10:
 						this.det_time = 30;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 3 second detonation time.</span>" );
 						break;
-					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
+					case 30:
 						this.det_time = 50;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for 5 second detonation time.</span>" );
 						break;
-					case /*[I CANNOT CONVERT SOME RANDOM SHIT TO AN INT: string]*/ 0:
+					case 50:
 						this.det_time = 1;
 						GlobalFuncs.to_chat( b, "<span class='notice'>You set the " + this.name + " for instant detonation.</span>" );
 						break;

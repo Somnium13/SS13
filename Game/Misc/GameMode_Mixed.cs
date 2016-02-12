@@ -43,7 +43,8 @@ namespace Somnium.Game {
 			cult_round = GlobalFuncs.find_active_mode( "cult" );
 
 			if ( Lang13.Bool( cult_round ) ) {
-				((GameMode)cult_round).remove_cultist( base.remove_cultist( cult_mind, show_message, log ) );
+				base.remove_cultist(cult_mind, show_message, log);
+				((GameMode)cult_round).remove_cultist( cult_mind, show_message, log );
 			} else {
 				base.remove_cultist( cult_mind, show_message, log );
 			}

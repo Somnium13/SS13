@@ -23,7 +23,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: special.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			Obj_Item_Weapon_Gun_Portalgun P = null;
 
 			
@@ -43,7 +43,7 @@ namespace Somnium.Game {
 			}
 
 			if ( !Lang13.Bool( Lang13.FindIn( typeof(Obj_Effect_Portal), this.loc ) ) ) {
-				P.open_portal( this.setting, this.loc, Obstacle );
+				P.open_portal( this.setting, this.loc, (Obj)Obstacle );
 			}
 			this.bullet_die();
 			return null;

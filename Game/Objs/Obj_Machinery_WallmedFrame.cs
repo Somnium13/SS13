@@ -63,7 +63,7 @@ namespace Somnium.Game {
 							emptypack.icon_state = O.icon_state;
 							emptypack.overlays.Add( new Image( "icons/obj/vending_pack.dmi", "emptypack" ) );
 							GlobalFuncs.qdel( O );
-							this.contents = 0;
+							this.contents.len = 0;
 							GlobalFuncs.qdel( this );
 						}
 					} else {

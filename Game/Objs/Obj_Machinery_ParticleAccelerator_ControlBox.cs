@@ -72,7 +72,7 @@ namespace Somnium.Game {
 			}
 			popup = new Browser( user, "pacontrol", this.name, 420, 500 );
 			popup.set_content( dat );
-			popup.set_title_image( ((Mob)user).browse_rsc_icon( this.icon, this.icon_state ) );
+			//popup.set_title_image( ((Mob)user).browse_rsc_icon( this.icon, this.icon_state ) ); wat?
 			popup.open();
 			return null;
 		}

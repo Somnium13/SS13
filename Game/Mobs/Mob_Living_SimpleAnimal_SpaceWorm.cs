@@ -131,11 +131,9 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: worm.dm
-		public bool AttemptToEat( Obj target = null ) {
+		public bool AttemptToEat( Ent_Static target = null ) {
 			Ent_Static wall = null;
 			Game_Data M = null;
-			Obj objectOrMob = null;
-
 			
 			if ( target is Tile_Simulated_Wall ) {
 				
@@ -149,8 +147,7 @@ namespace Somnium.Game {
 			} else if ( target is Ent_Dynamic ) {
 				
 				if ( target is Mob || this.eatingDuration >= 50 ) {
-					objectOrMob = target;
-					this.contents.Add( objectOrMob );
+					this.contents.Add(target);
 					return true;
 				}
 			}
@@ -175,7 +172,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: worm.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( this.currentlyEating != Obstacle ) {
 				this.currentlyEating = Obstacle;

@@ -21,10 +21,10 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: bullets.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			dynamic T = null;
 			Mob_Living_SimpleAnimal_Bee BEE = null;
-			Obj M = null;
+			Mob_Living M = null;
 
 			
 			if ( !( Obstacle != null ) ) {
@@ -49,7 +49,7 @@ namespace Somnium.Game {
 			BEE.icon_state = "bees1-feral";
 
 			if ( Obstacle is Mob_Living ) {
-				M = Obstacle;
+				M = (Mob_Living)Obstacle;
 				this.visible_message( new Txt( "<span class='warning'>" ).the( M.name ).item().str( " is hit by " ).the( this.name ).item().str( " in the " ).item( GlobalFuncs.parse_zone( this.def_zone ) ).str( "!</span>" ).ToString() );
 				M.bullet_act( this, this.def_zone );
 				this.admin_warn( M );

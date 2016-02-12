@@ -31,7 +31,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: mommi.dm
-		public Mob_Living_Silicon_Robot_Mommi ( dynamic loc = null, bool? syndie = null, bool? unfinished = null, string startup_sound = null ) : base( (object)(loc), syndie, unfinished, startup_sound ) {
+		public Mob_Living_Silicon_Robot_Mommi(dynamic loc = null, bool? syndie = null, bool? unfinished = null, string startup_sound = null) : base((object)(loc), syndie, unfinished, "sound/misc/interference.ogg") {
 			this.spark_system = new Effect_Effect_System_SparkSpread();
 			this.spark_system.set_up( 5, 0, this );
 			this.spark_system.attach( this );
@@ -44,7 +44,7 @@ namespace Somnium.Game {
 				this.cell.maxcharge = 7500;
 				this.cell.charge = 7500;
 			}
-			new ByTable().Set( 1, loc ).Set( "startup_sound", "sound/misc/interference.ogg" ).Apply( base );
+
 			this.module = new Obj_Item_Weapon_RobotModule_Mommi( this );
 			this.laws = Lang13.Call( GlobalVars.mommi_base_law_type );
 

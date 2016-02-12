@@ -5845,7 +5845,7 @@ namespace Somnium.Game {
 				return;
 			}
 			GlobalFuncs.message_admins( "" + GlobalFuncs.key_name_admin( this ) + " accessed file: " + path );
-			Interface13.OpenFile( this, new File( path ) );
+			Interface13.OpenFile( Task13.User, new File( path ) );
 			GlobalFuncs.to_chat( this, "Attempting to send file, this may take a fair few minutes if the file is very large." );
 			return;
 		}

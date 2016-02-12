@@ -13,7 +13,8 @@ namespace Somnium.Engine.ByImpl {
 			Logger.Debug("icon->animate");
 		}
 
-		public static void Flick(string name, dynamic o) {
+		// SUPPORTS REVERSED ARGS!
+		public static void Flick(dynamic o, dynamic name) {
 			Logger.Debug("icon->flick");
 		}
 

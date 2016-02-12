@@ -29,7 +29,7 @@ namespace Somnium.Game {
 			base.Destroy( (object)(brokenup) );
 
 			if ( this.master != null && Lang13.Bool( ((dynamic)this.master).cl ) ) {
-				((dynamic)this.master).cl.buildmode_objs.And( ~this );
+				//((dynamic)this.master).cl.buildmode_objs.And( ~this ); // AGAIN: WAT. FIXME
 				((dynamic)this.master).cl.screen -= this;
 			}
 			return null;

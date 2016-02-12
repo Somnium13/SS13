@@ -277,7 +277,7 @@ namespace Somnium.Game {
 				this.appearance_backup = a.appearance;
 				M = Num13.Matrix();
 				M.Scale( 0.625 );
-				M.Translate( false, 6 );
+				M.Translate( 0, 6 );
 				a.transform = M;
 				this.charging = a;
 

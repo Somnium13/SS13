@@ -614,7 +614,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: living.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump( Ent_Static Obstacle = null, dynamic yes = null ) {
 			Obj tmob = null;
 			Mob_Living M = null;
 			bool dense = false;
@@ -748,7 +748,7 @@ namespace Somnium.Game {
 					if ( !this.now_pushing ) {
 						this.now_pushing = true;
 
-						if ( !Lang13.Bool( Obstacle.anchored ) ) {
+						if ( !Lang13.Bool( ((Ent_Dynamic)Obstacle).anchored ) ) {
 							t = Map13.GetDistance( this, Obstacle );
 
 							if ( Lang13.Bool( Obstacle.flags & 512 ) && !( t != 0 ) ) {
@@ -764,7 +764,7 @@ namespace Somnium.Game {
 									return;
 								}
 							}
-							Map13.Step( Obstacle, t );
+							Map13.Step( (Ent_Dynamic)Obstacle, t );
 						}
 						this.now_pushing = false;
 					}

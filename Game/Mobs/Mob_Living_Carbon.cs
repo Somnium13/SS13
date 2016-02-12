@@ -576,8 +576,6 @@ namespace Somnium.Game {
 		// Function from file: carbon.dm
 		public override bool Move( dynamic NewLoc = null, int? Dir = null, int step_x = 0, int step_y = 0 ) {
 			Dir = Dir ?? 0;
-			step_x = step_x ?? 0;
-			step_y = step_y ?? 0;
 
 			bool _default = false;
 
@@ -598,7 +596,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: carbon.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( this.now_pushing || !Lang13.Bool( yes ) ) {
 				return null;

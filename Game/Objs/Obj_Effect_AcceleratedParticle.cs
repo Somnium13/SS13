@@ -52,22 +52,22 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: particle.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj collided_catcher = null;
-			Obj collided_core = null;
+		public override dynamic Bump( Ent_Static Obstacle = null, dynamic yes = null) {
+			Obj_Effect_RustParticleCatcher collided_catcher = null;
+			Obj_Machinery_Power_RustCore collided_core = null;
 			double energy_loss_ratio = 0;
 
 			
 			if ( Obstacle != null ) {
 				
 				if ( Obstacle is Mob ) {
-					this.toxmob( Obstacle );
+					this.toxmob( (Mob)Obstacle );
 				}
 
 				if ( Obstacle is Obj_Machinery_TheSingularitygen || Obstacle is Obj_Machinery_Singularity ) {
 					((dynamic)Obstacle).energy += this.energy;
 				} else if ( Obstacle is Obj_Effect_RustParticleCatcher ) {
-					collided_catcher = Obstacle;
+					collided_catcher = (Obj_Effect_RustParticleCatcher)Obstacle;
 
 					if ( Lang13.Bool( this.particle_type ) && this.particle_type != "neutron" ) {
 						
@@ -77,7 +77,7 @@ namespace Somnium.Game {
 						}
 					}
 				} else if ( Obstacle is Obj_Machinery_Power_RustCore ) {
-					collided_core = Obstacle;
+					collided_core = (Obj_Machinery_Power_RustCore)Obstacle;
 
 					if ( Lang13.Bool( this.particle_type ) && this.particle_type != "neutron" ) {
 						

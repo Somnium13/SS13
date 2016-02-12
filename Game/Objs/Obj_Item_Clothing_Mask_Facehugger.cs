@@ -32,8 +32,6 @@ namespace Somnium.Game {
 		public Obj_Item_Clothing_Mask_Facehugger ( dynamic loc = null ) : base( (object)(loc) ) {
 			
 			if ( GlobalVars.aliens_allowed ) {
-				base();
-
 				if ( this.real ) {
 					GlobalVars.processing_objects.Add( this );
 				}

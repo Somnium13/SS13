@@ -14,15 +14,14 @@ namespace Somnium.Game {
 			this.reagent_state = 2;
 			this.color = "#a00000";
 			this.data = new ByTable()
-				.Set( "donor", null )
-				.Set( "viruses", null )
-				.Set( "blood_DNA", null )
-				.Set( "blood_type", null )
-				.Set( "blood_colour", "#A10808" )
-				.Set( "resistances", null )
-				.Set( "trace_chem", null )
-				.Set( "antibodies", null )
-			.Apply( typeof(ByTable) );
+				.Set("donor", null)
+				.Set("viruses", null)
+				.Set("blood_DNA", null)
+				.Set("blood_type", null)
+				.Set("blood_colour", "#A10808")
+				.Set("resistances", null)
+				.Set("trace_chem", null)
+				.Set("antibodies", null);
 		}
 
 		// Function from file: Chemistry-Reagents.dm

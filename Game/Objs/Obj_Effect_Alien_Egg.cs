@@ -21,7 +21,6 @@ namespace Somnium.Game {
 		public Obj_Effect_Alien_Egg ( dynamic loc = null ) : base( (object)(loc) ) {
 			
 			if ( GlobalVars.aliens_allowed ) {
-				base();
 				Task13.Schedule( Rand13.Int( GlobalVars.MIN_GROWTH_TIME, GlobalVars.MAX_GROWTH_TIME ), (Task13.Closure)(() => {
 					this.Grow();
 					return;

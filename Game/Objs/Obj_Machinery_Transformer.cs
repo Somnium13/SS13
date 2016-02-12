@@ -87,7 +87,7 @@ namespace Somnium.Game {
 				<a href=""?src=" ).Ref( this ).str( ";act=force_class\">" ).item( ( this.force_borg_module == null ? ((dynamic)( "Not Forced" )) : this.force_borg_module ) ).str( "</a>\n			</li>\n		</ul>\n	" ).ToString();
 			popup = new Browser( user, "transformer", this.name, 400, 300 );
 			popup.set_content( data );
-			popup.set_title_image( ((Mob)user).browse_rsc_icon( this.icon, this.icon_state ) );
+			//popup.set_title_image( ((Mob)user).browse_rsc_icon( this.icon, this.icon_state ) );
 			popup.open();
 			return null;
 		}

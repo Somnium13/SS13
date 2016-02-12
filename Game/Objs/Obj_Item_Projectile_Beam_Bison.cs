@@ -25,8 +25,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: beams.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj M = null;
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
+			Mob_Living M = null;
 
 			
 			if ( Obstacle == this.firer ) {
@@ -35,7 +35,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Lang13.Bool( this.firer ) && Obstacle is Mob_Living ) {
-				M = Obstacle;
+				M = (Mob_Living)Obstacle;
 				Obstacle.bullet_act( this, this.def_zone );
 				this.loc = Obstacle.loc;
 				this.permutated.Add( Obstacle );

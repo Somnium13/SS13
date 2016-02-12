@@ -182,7 +182,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: vgstation13.dme
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			Task13.Schedule( 0, (Task13.Closure)(() => {
 				base.Bump( Obstacle );
 				return;

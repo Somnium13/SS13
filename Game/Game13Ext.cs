@@ -112,12 +112,12 @@ namespace Somnium.Engine.ByImpl {
 			GlobalVars.plmaster = new Obj_Effect_Overlay();
 			GlobalVars.plmaster.icon = "icons/effects/tile_effects.dmi";
 			GlobalVars.plmaster.icon_state = "plasma";
-			GlobalVars.plmaster.layer = GlobalVars.FLY_LAYER ??0;
+			GlobalVars.plmaster.layer = GlobalVars.FLY_LAYER;
 			GlobalVars.plmaster.mouse_opacity = 0;
 			GlobalVars.slmaster = new Obj_Effect_Overlay();
 			GlobalVars.slmaster.icon = "icons/effects/tile_effects.dmi";
 			GlobalVars.slmaster.icon_state = "sleeping_agent";
-			GlobalVars.slmaster.layer = GlobalVars.FLY_LAYER ??0;
+			GlobalVars.slmaster.layer = GlobalVars.FLY_LAYER;
 			GlobalVars.slmaster.mouse_opacity = 0;
 			Game13.update_status();
 			Game13.sleep_offline = true;
@@ -155,6 +155,8 @@ namespace Somnium.Engine.ByImpl {
 				}
 				return;
 			}));
+
+			return null;
 		}
 
 		// Function from file: IsBanned.dm

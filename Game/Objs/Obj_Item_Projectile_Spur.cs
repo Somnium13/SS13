@@ -46,7 +46,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: bullets.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			Ent_Static T = null;
 			string impact_icon = null;
 			string impact_sound = null;

@@ -77,7 +77,8 @@ namespace Somnium.Game {
 						GlobalFuncs.qdel( this );
 						return;
 					}));
-					_default; return;
+					//_default; return;
+					return;
 				}
 			}
 			A = GlobalFuncs.get_area( this );

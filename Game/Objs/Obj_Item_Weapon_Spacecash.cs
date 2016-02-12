@@ -18,7 +18,7 @@ namespace Somnium.Game {
 			this.throw_speed = 1;
 			this.throw_range = 2;
 			this.w_class = 1;
-			this.access = 200;
+			//this.access = 200;   // [This appeared to be unused and the types were incorrect. wtf?]
 			this.autoignition_temperature = 519.1500244140625;
 			this.icon = "icons/obj/money.dmi";
 			this.icon_state = "cash1";

@@ -877,7 +877,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: mecha.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			bool breakthrough = false;
 			Obj G = null;
 			Obj T = null;
@@ -950,7 +950,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Obstacle is Obj ) {
-				O = Obstacle;
+				O = (Obj)Obstacle;
 
 				if ( O is Obj_Effect_Portal ) {
 					this.anchored = 0;
@@ -960,12 +960,12 @@ namespace Somnium.Game {
 						return;
 					}));
 				} else if ( !Lang13.Bool( O.anchored ) ) {
-					Map13.Step( Obstacle, this.dir );
+					Map13.Step(O, this.dir);
 				} else {
 					Obstacle.Bumped( this );
 				}
 			} else if ( Obstacle is Mob ) {
-				Map13.Step( Obstacle, this.dir );
+				Map13.Step(O, this.dir);
 			} else {
 				Obstacle.Bumped( this );
 			}

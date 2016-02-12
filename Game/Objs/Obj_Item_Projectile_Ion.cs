@@ -22,7 +22,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: special.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( !this.bumped && ( Obstacle != this.firer || this.reflected ) ) {
 				GlobalFuncs.empulse( GlobalFuncs.get_turf( Obstacle ), 1, 1 );

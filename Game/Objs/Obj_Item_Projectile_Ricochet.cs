@@ -61,8 +61,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: ricochet.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj H = null;
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
+			Mob_Living_Carbon_Human H;
 			Tile T = null;
 
 			
@@ -78,7 +78,7 @@ namespace Somnium.Game {
 				} else if ( Obstacle is Mob_Living ) {
 					
 					if ( Obstacle is Mob_Living_Carbon_Human ) {
-						H = Obstacle;
+						H = (Mob_Living_Carbon_Human)Obstacle;
 
 						if ( ((dynamic)H).wear_suit is Obj_Item_Clothing_Suit_Armor_Laserproof ) {
 							this.visible_message( new Txt( "<span class='warning'>" ).the( this.name ).item().str( " bounces off " ).the( Obstacle.name ).item().str( "'s " ).item( ((dynamic)H).wear_suit ).str( "!</span>" ).ToString() );
@@ -86,19 +86,19 @@ namespace Somnium.Game {
 						} else {
 							this.visible_message( new Txt( "<span class='warning'>" ).the( Obstacle.name ).item().str( " is hit by " ).the( this.name ).item().str( " in the " ).item( GlobalFuncs.parse_zone( this.def_zone ) ).str( "!</span>" ).ToString() );
 							Obstacle.bullet_act( this, this.def_zone );
-							this.admin_warn( Obstacle );
-							this.bulletdies( Obstacle );
+							this.admin_warn( H );
+							this.bulletdies( H );
 						}
 					} else {
 						this.visible_message( new Txt( "<span class='warning'>" ).the( Obstacle.name ).item().str( " is hit by " ).the( this.name ).item().str( " in the " ).item( GlobalFuncs.parse_zone( this.def_zone ) ).str( "!</span>" ).ToString() );
 						Obstacle.bullet_act( this, this.def_zone );
-						this.admin_warn( Obstacle );
-						this.bulletdies( Obstacle );
+						this.admin_warn( (Mob_Living)Obstacle );
+						this.bulletdies( (Mob_Living)Obstacle );
 					}
 				} else if ( GlobalFuncs.is_type_in_list( Obstacle, this.ricochet_bump ) ) {
 					this.visible_message( new Txt( "<span class='warning'>" ).the( Obstacle.name ).item().str( " is hit by " ).the( this.name ).item().str( "!</span>" ).ToString() );
 					Obstacle.bullet_act( this );
-					this.bulletdies( Obstacle );
+					this.bulletdies( (Obj)Obstacle );
 				} else if ( ( Obstacle is Obj_Structure_Window || Obstacle is Obj_Machinery_Door_Window || Obstacle is Obj_Machinery_Door_Firedoor_BorderOnly ) && Obstacle.loc == this.loc ) {
 					T = Map13.GetStep( this, ((int)( this.pos_to ??0 )) );
 

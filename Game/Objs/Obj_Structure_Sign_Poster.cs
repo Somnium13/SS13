@@ -36,7 +36,7 @@ namespace Somnium.Game {
 				this.name += " - " + design.name;
 				this.desc += " " + design.desc;
 				this.icon_state = design.icon_state;
-				base();
+				//base();
 			}
 			return;
 		}

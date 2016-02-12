@@ -33,7 +33,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: spell_projectile.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( this.loc != null ) {
 				this.prox_cast( this.carried.choose_prox_targets( this.carried.holder, this ) );

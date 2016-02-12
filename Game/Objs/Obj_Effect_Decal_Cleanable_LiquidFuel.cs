@@ -36,7 +36,8 @@ namespace Somnium.Game {
 						return;
 					}));
 					GlobalFuncs.returnToPool( this );
-					_default; return;
+					return;
+					//_default; return;
 				}
 			}
 			this.Spread();

@@ -77,16 +77,16 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: vehicle.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( Obstacle == this || this.locked_atoms.len != 0 && Obstacle == this.locked_atoms[1] ) {
 				return null;
 			}
 
 			if ( Obstacle is Obj_Structure ) {
-				
-				if ( !Lang13.Bool( Obstacle.anchored ) ) {
-					Obstacle.Move( Map13.GetStep( Obstacle, this.dir ) );
+
+				if (!Lang13.Bool( ((Obj_Structure)Obstacle).anchored)) {
+					((Obj_Structure)Obstacle).Move(Map13.GetStep(Obstacle, this.dir));
 				}
 			}
 			base.Bump( Obstacle );

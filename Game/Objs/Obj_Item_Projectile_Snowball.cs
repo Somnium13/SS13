@@ -21,10 +21,10 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: snowman.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			dynamic _default = null;
 
-			Obj C = null;
+			Mob_Living_Carbon C = null;
 
 			_default = base.Bump( Obstacle );
 
@@ -32,10 +32,10 @@ namespace Somnium.Game {
 				GlobalFuncs.playsound( Obstacle.loc, "swing_hit", 50, 1 );
 
 				if ( Obstacle is Mob_Living_Carbon ) {
-					C = Obstacle;
+					C = (Mob_Living_Carbon)Obstacle;
 
-					if ( Convert.ToDouble( ((dynamic)C).bodytemperature ) >= 265 ) {
-						((dynamic)C).bodytemperature -= 5;
+					if ( Convert.ToDouble( C.bodytemperature ) >= 265 ) {
+						C.bodytemperature -= 5;
 					}
 				}
 			}

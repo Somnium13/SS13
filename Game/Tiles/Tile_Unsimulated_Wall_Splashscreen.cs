@@ -29,7 +29,7 @@ namespace Somnium.Game {
 					filenames.Remove( filename );
 				}
 			}
-			this.icon = new File( "" + path + Rand13.PickFromTable( filenames ) );
+			this.icon = path + Rand13.PickFromTable( filenames );
 			return;
 		}
 

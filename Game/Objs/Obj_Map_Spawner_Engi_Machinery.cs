@@ -32,7 +32,7 @@ namespace Somnium.Game {
 				typeof(Obj_Machinery_RechargeStation), 
 				typeof(Obj_Machinery_Rust_Gyrotron), 
 				typeof(Obj_Machinery_ShieldGen), 
-				typeof(Obj_Machinery_Shieldgen), 
+				typeof(Obj_Machinery_ShieldGen), 
 				typeof(Obj_Machinery_Shieldwallgen), 
 				typeof(Obj_Machinery_SpaceHeater), 
 				typeof(Obj_Machinery_SuitStorageUnit_Engie), 

@@ -50,7 +50,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: sculpture.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			
 			if ( !( this.G != null ) && !this.observed ) {
 				this.GrabMob( Obstacle );

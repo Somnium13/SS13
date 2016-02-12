@@ -322,7 +322,7 @@ namespace Somnium.Game {
 			if ( this.lying == true ) {
 				M = Num13.Matrix();
 				M.Turn( 90 );
-				M.Translate( true, -6 );
+				M.Translate( 1, -6 );
 				this.transform = M;
 			} else {
 				M2 = Num13.Matrix();

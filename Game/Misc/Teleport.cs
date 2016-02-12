@@ -15,40 +15,15 @@ namespace Somnium.Game {
 		public string soundout = null;
 		public bool force_teleport = true;
 
+		protected bool invalid;
+
 		// Function from file: teleport.dm
 		public Teleport ( dynamic ateleatom = null, dynamic adestination = null, bool? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null, params object[] _ ) {
 			ByTable _args = new ByTable( new object[] { ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout } ).Extend(_);
 
-			
-			if ( _args[3] == null ) {
-				_args[3] = 0;
-			}
-
-			if ( _args[4] == null ) {
-				_args[4] = 1;
-			}
-
-			if ( _args[5] == null ) {
-				_args[5] = null;
-			}
-
-			if ( _args[6] == null ) {
-				_args[6] = null;
-			}
-
-			if ( _args[7] == null ) {
-				_args[7] = null;
-			}
-
-			if ( _args[8] == null ) {
-				_args[8] = null;
-			}
-			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
-
 			if ( !Lang13.Bool( _args.Apply( Lang13.BindFunc( this, "Init" ) ) ) ) {
-				return; // Warning! Attempt to return some other value!
+				invalid = true;
 			}
-			return; // Warning! Attempt to return some other value!
 		}
 
 		// Function from file: teleport.dm
@@ -102,7 +77,7 @@ namespace Somnium.Game {
 			} else if ( this.teleatom.Move( destturf ) ) {
 				this.playSpecials( destturf, this.effectout, this.soundout );
 			}
-			((Base_Static)destarea).Entered( this.teleatom );
+			((Base_Static)destarea).Entered( this.teleatom , null );
 			return true;
 		}
 

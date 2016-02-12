@@ -34,8 +34,8 @@ namespace Somnium.Game {
 			return Num13.Matrix( this, m2, t, 8 );
 		}
 
-		public Matrix Translate( bool x = false, int? y = null ) {
-			y = y ?? x ?1:0;
+		public Matrix Translate( int? x = null, int? y = null ) {
+			y = y ?? x;
 
 			return Num13.Matrix( this, x, y, 135 );
 		}

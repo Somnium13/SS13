@@ -99,7 +99,7 @@ namespace Somnium.Engine.ByImpl {
 			return false;
 		}
 
-		public virtual dynamic Bump(Game.Obj Obstacle = null, dynamic yes = null) {
+		public virtual dynamic Bump(Game.Ent_Static Obstacle = null, dynamic yes = null) {
 			return null;
 		}
 

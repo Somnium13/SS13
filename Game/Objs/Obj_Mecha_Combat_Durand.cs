@@ -85,7 +85,7 @@ namespace Somnium.Game {
 			this.defence = !this.defence;
 
 			if ( this.defence ) {
-				this.icon_state = 0;
+				this.icon_state = "0"; //wut?
 
 				if ( !( this is Obj_Mecha_Combat_Durand_Old ) ) {
 					Icon13.Flick( "durand-lockdown-a", this );

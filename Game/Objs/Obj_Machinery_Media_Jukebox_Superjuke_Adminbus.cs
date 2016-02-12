@@ -98,7 +98,7 @@ namespace Somnium.Game {
 			((Mob)a).set_machine( this );
 			this.popup = new Browser( a, "jukebox", this.name, 420, 700 );
 			this.popup.set_content( t );
-			this.popup.set_title_image( ((Mob)a).browse_rsc_icon( this.icon, this.icon_state ) );
+			//this.popup.set_title_image( ((Mob)a).browse_rsc_icon( this.icon, this.icon_state ) ); wat
 			this.popup.open();
 
 			if ( this.icon_state != "jukebox" ) {

@@ -29,11 +29,12 @@ namespace Somnium.Game {
 
 			Obj_Item_Stack_Sheet_Wood resource = null;
 
-			resource = new Obj_Item_Stack_Sheet_Wood();
+			
 
-			if ( !( devastated == true ) ) {
+			if ( !( devastated == true ) ) { // really have no idea what the fuck was going on here but hopefully this is the intended behavior
+				resource = new Obj_Item_Stack_Sheet_Wood( GlobalFuncs.get_turf(this) );
 				resource.amount = this.oreAmount;
-				Lang13.Call( resource, GlobalFuncs.get_turf( this ) );
+				//Lang13.Call( resource, GlobalFuncs.get_turf( this ) );
 			}
 			GlobalFuncs.qdel( this );
 			return;

@@ -39,9 +39,9 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: hookshot.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			Obj_Item_Weapon_Gun_Hookshot hookshot = null;
-			Obj AM = null;
+			Ent_Dynamic AM = null;
 			Chain chain_datum = null;
 			int? max_chains = null;
 			int? i = null;
@@ -49,7 +49,7 @@ namespace Somnium.Game {
 			Obj_Effect_Overlay_Chain C = null;
 			int? i2 = null;
 			Obj_Effect_Overlay_Chain C2 = null;
-			Obj L = null;
+			Mob_Living L = null;
 
 			
 			if ( this.bumped ) {
@@ -62,7 +62,7 @@ namespace Somnium.Game {
 				if ( Obstacle is Tile ) {
 					hookshot.clockwerk_chain( this.length );
 				} else if ( Obstacle is Ent_Dynamic ) {
-					AM = Obstacle;
+					AM = (Ent_Dynamic)Obstacle;
 
 					if ( Lang13.Bool( AM.anchored ) ) {
 						hookshot.clockwerk_chain( this.length );
@@ -124,7 +124,7 @@ namespace Somnium.Game {
 						}
 
 						if ( this.firer is Mob && AM is Mob_Living ) {
-							L = AM;
+							L = (Mob_Living)AM;
 							GlobalVars.diaryofmeanpeople.WriteMsg( String13.HtmlDecode( "[" + GlobalFuncs.time_stamp() + "]ATTACK: " + ( "<font color='red'>" + GlobalFuncs.key_name( this.firer ) + " hooked " + GlobalFuncs.key_name( L ) + " with a " + this.type + "</font>" ) ) );
 							((dynamic)L).attack_log += "[" + GlobalFuncs.time_stamp() + "] <b>" + GlobalFuncs.key_name( this.firer ) + "</b> hooked <b>" + GlobalFuncs.key_name( L ) + "</b> with a <b>" + this.type + "</b>";
 							this.firer.attack_log.Add( "[" + GlobalFuncs.time_stamp() + "] <b>" + GlobalFuncs.key_name( this.firer ) + "</b> hooked <b>" + GlobalFuncs.key_name( L ) + "</b> with a <b>" + this.type + "</b>" );

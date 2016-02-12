@@ -40,7 +40,7 @@ namespace Somnium.Game {
 			filename_date = String13.FormatTime( this.round_start_time, "YYYY.DD.MM" );
 			roundnum = 1;
 
-			while (File13.Exists( new File( "" + "data/statfiles/" + "statistics_" + filename_date + "." + roundnum + ".txt" ) )) {
+			while (File13.Exists( "data/statfiles/statistics_" + filename_date + "." + roundnum + ".txt"  )) {
 				roundnum++;
 			}
 			statfile = new File( "" + "data/statfiles/" + "statistics_" + filename_date + "." + roundnum + ".txt" );

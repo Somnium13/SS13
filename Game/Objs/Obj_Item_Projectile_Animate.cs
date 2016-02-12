@@ -21,12 +21,12 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: animate.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			Obj O = null;
 
 			
 			if ( Obstacle is Obj_Item || Obstacle is Obj_Structure && !GlobalFuncs.is_type_in_list( Obstacle, GlobalVars.protected_objects ) ) {
-				O = Obstacle;
+				O = (Obj)Obstacle;
 				new Mob_Living_SimpleAnimal_Hostile_Mimic_Copy( O.loc, O, this.firer, null, 1200 );
 			}
 			base.Bump( Obstacle );

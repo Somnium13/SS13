@@ -30,12 +30,12 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: wheelchair.dm
-		public override dynamic Bump( Obj Obstacle = null, dynamic yes = null ) {
-			Obj L = null;
+		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
+			Mob_Living L = null;
 
 			
 			if ( Obstacle is Mob_Living ) {
-				L = Obstacle;
+				L = (Mob_Living)Obstacle;
 
 				if ( L is Mob_Living_Silicon_Robot ) {
 					this.visible_message( "<span class='warning'>" + this + " slams into " + L + "!</span>" );
