@@ -1681,8 +1681,8 @@ namespace Somnium.Game {
 		// Function from file: items.dm
 		[VerbInfo( name: "pickup" )]
 		[VerbArg( 1, InputType.Mob )]
-		public void _internal_pickup( Mob user = null ) {
-			return;
+		public dynamic _internal_pickup( Mob user = null ) {
+			return null;
 		}
 
 		// Function from file: items.dm

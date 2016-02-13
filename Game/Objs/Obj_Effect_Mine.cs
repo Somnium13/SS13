@@ -87,7 +87,7 @@ namespace Somnium.Game {
 					payload = new GasMixture();
 					trace_gas = new Gas_SleepingAgent();
 					trace_gas.moles = 30;
-					payload += trace_gas;
+					payload.trace_gases.Add(trace_gas); // <- this is presumably what was intended? they were trying to use '+='
 					target.zone.air.merge( payload );
 				}
 			}

@@ -311,7 +311,7 @@ namespace Somnium.Game {
 			}
 
 			if ( this.invisibility != 0 ) {
-				this.icon -= "#00000080";
+				//this.icon -= "#00000080"; FIXME wat?
 			}
 			return;
 		}

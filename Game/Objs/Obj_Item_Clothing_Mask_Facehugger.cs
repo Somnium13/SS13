@@ -416,7 +416,7 @@ namespace Somnium.Game {
 						return;
 					}
 				} else {
-					Map13.StepTowardsSimple( this, this.target, 0 );
+					Map13.StepTowardsSimple( this, this.target );
 
 					if ( dist <= 1 ) {
 						

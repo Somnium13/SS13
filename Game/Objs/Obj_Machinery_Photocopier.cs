@@ -223,7 +223,7 @@ namespace Somnium.Game {
 			
 			if ( this.copying ) {
 				
-				if ( !Lang13.Bool( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) ) == "Yes" ) {
+				if ( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) != "Yes" ) {
 					GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Must wait for current print job to finish.</span>" );
 					return null;
 				}
@@ -558,7 +558,7 @@ namespace Somnium.Game {
 				
 				if ( this.copying ) {
 					
-					if ( !Lang13.Bool( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) ) == "Yes" ) {
+					if ( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) != "Yes" ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Must wait for current print job to finish.</span>" );
 						return null;
 					}
@@ -573,7 +573,7 @@ namespace Somnium.Game {
 				
 				if ( this.copying ) {
 					
-					if ( !Lang13.Bool( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) ) == "Yes" ) {
+					if ( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) != "Yes" ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Must wait for current print job to finish.</span>" );
 						return null;
 					}
@@ -588,7 +588,7 @@ namespace Somnium.Game {
 				
 				if ( this.copying ) {
 					
-					if ( !Lang13.Bool( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) ) == "Yes" ) {
+					if ( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) != "Yes" ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Must wait for current print job to finish.</span>" );
 						return null;
 					}
@@ -643,7 +643,7 @@ namespace Somnium.Game {
 				
 				if ( this.copying ) {
 					
-					if ( !Lang13.Bool( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) ) == "Yes" ) {
+					if ( Interface13.Alert( "Cancel current print job?", "", "Yes", "No" ) != "Yes" ) {
 						GlobalFuncs.to_chat( Task13.User, "<span class='warning'>Must wait for current print job to finish.</span>" );
 						return null;
 					}
