@@ -109,7 +109,7 @@ namespace Somnium.Game {
 			Tile location = null;
 			Tile Floor = null;
 
-			location = Map13.GetStepRandom( null );
+			location = Map13.GetStepRandom( );
 
 			if ( location is Tile_Simulated_Floor ) {
 				Floor = location;

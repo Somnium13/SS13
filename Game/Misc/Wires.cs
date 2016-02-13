@@ -342,7 +342,7 @@ namespace Somnium.Game {
 			}
 			popup = new Browser( user, "wires", this.holder.name, this.window_x, this.window_y );
 			popup.set_content( html );
-			popup.set_title_image( ((Mob)user).browse_rsc_icon( this.holder.icon, this.holder.icon_state ) );
+			//popup.set_title_image( ((Mob)user).browse_rsc_icon( this.holder.icon, this.holder.icon_state ) );
 			popup.open();
 			return false;
 		}

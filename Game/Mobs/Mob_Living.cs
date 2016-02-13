@@ -615,7 +615,7 @@ namespace Somnium.Game {
 
 		// Function from file: living.dm
 		public override dynamic Bump( Ent_Static Obstacle = null, dynamic yes = null ) {
-			Obj tmob = null;
+			Mob_Living tmob = null;
 			Mob_Living M = null;
 			bool dense = false;
 			Ent_Dynamic A = null;
@@ -632,7 +632,7 @@ namespace Somnium.Game {
 				this.now_pushing = true;
 
 				if ( Obstacle is Mob_Living ) {
-					tmob = Obstacle;
+					tmob = (Mob_Living)Obstacle;
 
 					foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRange( 1, tmob ), typeof(Mob_Living) )) {
 						M = _a;

@@ -398,7 +398,7 @@ namespace Somnium.Game {
 							new_area = GlobalFuncs.get_area( this.loc );
 
 							if ( Lang13.Bool( new_area ) ) {
-								((Base_Static)new_area).Entered( this );
+								((Base_Static)new_area).Entered( this , null);
 							}
 							this.visible_message( "<span class='danger'>" + this + " suddenly appears from the vent !</span>" );
 							return;

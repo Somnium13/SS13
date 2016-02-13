@@ -1491,7 +1491,7 @@ namespace Somnium.Game {
 
 				if ( Target is Tile ) {
 					T = Target;
-					((Base_Static)T).Entered( this.tool_state );
+					((Base_Static)T).Entered( this.tool_state , null );
 				}
 				((Obj_Item)TS).dropped( this );
 				this.tool_state = null;

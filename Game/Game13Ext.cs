@@ -558,7 +558,7 @@ namespace Somnium.Engine.ByImpl {
 					}
 					filename = String13.SubStr( GlobalVars.vote.chosen_map, lastpos + 1, 0 );
 
-					if ( !Lang13.Bool( File13.Copy( GlobalVars.vote.chosen_map, filename ) ) ) {
+					if ( !File13.Copy( GlobalVars.vote.chosen_map, filename ) ) {
 						File13.Delete( filename );
 						File13.Copy( GlobalVars.vote.chosen_map, filename );
 					}

@@ -422,7 +422,7 @@ namespace Somnium.Game {
 			((Mob)a).set_machine( this );
 			popup = new Browser( a, "jukebox", this.name, 420, 700 );
 			popup.set_content( t );
-			popup.set_title_image( ((Mob)a).browse_rsc_icon( this.icon, this.icon_state ) );
+			//popup.set_title_image( ((Mob)a).browse_rsc_icon( this.icon, this.icon_state ) );
 			popup.open();
 			return null;
 		}

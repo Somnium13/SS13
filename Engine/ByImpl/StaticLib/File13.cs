@@ -19,8 +19,9 @@ namespace Somnium.Engine.ByImpl {
 			return false;
 		}
 
-		public static void Copy(dynamic source, string dest_path) {
+		public static bool Copy(dynamic source, string dest_path) {
 			Logger.Debug("file->copy");
+			return false; // what returns? success?
 		}
 
 		public static ByTable List(string path) {

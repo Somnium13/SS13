@@ -53,7 +53,7 @@ namespace Somnium.Game {
 			int PixelX = 0;
 			int PixelY = 0;
 			Image impact = null;
-			Obj M = null;
+			Tile_Unsimulated_Mineral M = null;
 
 			
 			if ( this.loc != null ) {
@@ -98,8 +98,8 @@ namespace Somnium.Game {
 			}
 
 			if ( Obstacle is Tile_Unsimulated_Mineral ) {
-				M = Obstacle;
-				((dynamic)M).GetDrilled();
+				M = (Tile_Unsimulated_Mineral)Obstacle;
+				M.GetDrilled();
 			}
 
 			if ( Obstacle is Obj_Structure_Boulder ) {

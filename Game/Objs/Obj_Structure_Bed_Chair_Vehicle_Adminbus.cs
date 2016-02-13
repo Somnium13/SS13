@@ -205,11 +205,11 @@ namespace Somnium.Game {
 
 		// Function from file: adminbus.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj H = null;
+			Obj_Machinery_Teleport_Hub H = null;
 
 			
 			if ( Obstacle is Obj_Machinery_Teleport_Hub ) {
-				H = Obstacle;
+				H = (Obj_Machinery_Teleport_Hub)Obstacle;
 				Task13.Schedule( 0, (Task13.Closure)(() => {
 					
 					if ( Lang13.Bool( ((dynamic)H).engaged ) ) {

@@ -146,7 +146,7 @@ namespace Somnium.Game {
 						F = ((dynamic)M).finds[1];
 						D.depth = F.excavation_required * 2;
 						D.clearance = F.clearance_range * 2;
-						D.material = GlobalFuncs.get_responsive_reagent( F.find_type );
+						D.material = GlobalFuncs.get_responsive_reagent( Lang13.IntNullable(F.find_type) );
 					}
 					this.positive_locations.Add( D );
 

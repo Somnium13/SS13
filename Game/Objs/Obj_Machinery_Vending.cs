@@ -292,7 +292,7 @@ namespace Somnium.Game {
 			if ( a.a_intent == "hurt" && a is Mob_Living_Carbon ) {
 				((Mob)a).delayNextAttack( 10 );
 				GlobalFuncs.playsound( GlobalFuncs.get_turf( this ), "sound/effects/grillehit.ogg", 50, 1 );
-				this.shake( true, 3 );
+				this.shake( 1, 3 );
 				this.health -= 4;
 
 				if ( !this.Adjacent( a ) && Task13.User.mutations.Contains( 1 ) ) {

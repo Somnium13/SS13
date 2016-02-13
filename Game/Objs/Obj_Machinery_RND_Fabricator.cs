@@ -925,8 +925,7 @@ namespace Somnium.Game {
 				return 0;
 			}
 
-			switch ((int)( this.emagged )) {
-				case 0:
+			if (this.emagged == 0) {
 					this.emagged = 0.5;
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"DB error [Code 0x00F1]\"" ).ToString() );
 					Task13.Sleep( 10 );
@@ -937,14 +936,11 @@ namespace Somnium.Game {
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"User DB truncated. Please contact your Nanotrasen system operator for future assistance.\"" ).ToString() );
 					this.req_access = null;
 					this.emagged = 1;
-					break;
-				case ((int)( 0.5 )):
+			} else if (this.emagged == .5)
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"DB not responding [Code 0x0003]...\"" ).ToString() );
-					break;
-				case 1:
+			else if (this.emagged == 1)
 					this.visible_message( new Txt().icon( this ).str( " <b>" ).item( this ).str( "</b> beeps: \"No records in User DB\"" ).ToString() );
-					break;
-			}
+			
 			return 0;
 		}
 

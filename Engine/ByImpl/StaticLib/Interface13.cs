@@ -66,7 +66,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		// Similar to above, first FOUR args can be shifted over by one if the user is omitted. The final two will always be in the correct spot.
-		public static dynamic Input(dynamic user, string msg, dynamic title, dynamic _default, dynamic list, InputType types) {
+		public static dynamic Input(dynamic user, dynamic msg, dynamic title, dynamic _default, dynamic list, InputType types) {
 			Logger.Debug("interface->input");
 			return null;
 		}

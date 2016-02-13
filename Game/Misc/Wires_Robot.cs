@@ -113,12 +113,12 @@ namespace Somnium.Game {
 						((dynamic)R).camera.deactivate( Task13.User, 0 );
 					}
 					break;
-				case 16:
+				/*case 16:
 					
 					if ( Lang13.Bool( ((dynamic)R).lawupdate ) ) {
 						((dynamic)R).lawsync();
 					}
-					break;
+					break;*/
 				case 2:
 					((dynamic)R).SetLockdown( !mended );
 					break;

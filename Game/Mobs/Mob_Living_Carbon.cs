@@ -604,7 +604,7 @@ namespace Somnium.Game {
 			base.Bump( Obstacle );
 
 			if ( Obstacle is Mob_Living_Carbon && Rand13.PercentChance( 10 ) ) {
-				this.spread_disease_to( Obstacle, "Contact" );
+				this.spread_disease_to((Mob_Living_Carbon)Obstacle, "Contact");
 			}
 			return null;
 		}

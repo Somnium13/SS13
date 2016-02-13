@@ -497,7 +497,7 @@ namespace Somnium.Game {
 			Ent_Static X = null;
 			int dist = 0;
 			Obj_Machinery_Singularity S = null;
-			string e = null;
+			Exception e = null;
 
 			
 			foreach (dynamic _a in Lang13.Enumerate( Map13.FetchInRangeExcludeThis( this, this.grav_pull ), typeof(Ent_Static) )) {
@@ -524,7 +524,7 @@ namespace Somnium.Game {
 				} catch (Exception __) {
 					e = __;
 					GlobalFuncs.error( "Singularity eat() caught exception:" );
-					GlobalFuncs.error( e );
+					GlobalFuncs.error( e.ToString() );
 					continue;
 				}
 			}

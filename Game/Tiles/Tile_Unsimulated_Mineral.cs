@@ -363,7 +363,7 @@ namespace Somnium.Game {
 			if ( Rand13.PercentChance( F.prob_delicate ) ) {
 				S = Lang13.FindIn( typeof(Obj_Effect_SuspensionField), this );
 
-				if ( !Lang13.Bool( S ) || S.field_type != GlobalFuncs.get_responsive_reagent( F.find_type ) ) {
+				if ( !Lang13.Bool( S ) || S.field_type != GlobalFuncs.get_responsive_reagent( Lang13.IntNullable(F.find_type) ) ) {
 					
 					if ( Lang13.Bool( X ) ) {
 						this.visible_message( "<span class='danger'>" + Rand13.Pick(new object [] { "" + display_name + " crumbles away into dust", "" + display_name + " breaks apart" }) + ".</span>" );

@@ -11,7 +11,7 @@ namespace Somnium.Game {
 		public int stomachProcessProbability = 50;
 		public int digestionProbability = 20;
 		public int? flatPlasmaValue = 5;
-		public Obj currentlyEating = null;
+		public Ent_Static currentlyEating = null;
 		public int eatingDuration = 0;
 
 		protected override void __FieldInit() {

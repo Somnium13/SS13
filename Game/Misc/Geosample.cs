@@ -133,7 +133,7 @@ namespace Somnium.Game {
 			foreach (dynamic _b in Lang13.Enumerate( container.finds, typeof(Find) )) {
 				F = _b;
 				
-				responsive_reagent = GlobalFuncs.get_responsive_reagent( F.find_type );
+				responsive_reagent = GlobalFuncs.get_responsive_reagent( Lang13.IntNullable(F.find_type) );
 				this.find_presence[responsive_reagent] = F.dissonance_spread;
 			}
 			total_presence = 0;

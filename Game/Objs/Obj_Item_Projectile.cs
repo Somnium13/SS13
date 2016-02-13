@@ -133,12 +133,12 @@ namespace Somnium.Game {
 		// Function from file: projectile.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			int? forcedodge = null;
-			Obj M = null;
+			Mob M = null;
 			int distance = 0;
 			double? miss_modifier = null;
 			dynamic daddy = null;
 			dynamic f = null;
-			Obj JC = null;
+			Obj_Structure_Bed_Chair_Vehicle JC = null;
 			Mob BM = null;
 			string impact_icon = null;
 			string impact_sound = null;
@@ -149,7 +149,7 @@ namespace Somnium.Game {
 			Obj O = null;
 			dynamic M2 = null;
 			int reaction_type = 0;
-			Obj T2 = null;
+			Tile T2 = null;
 			Icon I = null;
 			Icon trace = null;
 
@@ -170,7 +170,7 @@ namespace Somnium.Game {
 			this.bumped = true;
 
 			if ( Lang13.Bool( this.firer ) && Obstacle is Mob ) {
-				M = Obstacle;
+				M = (Mob)Obstacle;
 
 				if ( !( Obstacle is Mob_Living ) ) {
 					this.loc = Obstacle.loc;
@@ -239,7 +239,7 @@ namespace Somnium.Game {
 			if ( Obstacle != null ) {
 				
 				if ( Lang13.Bool( this.firer ) && Obstacle is Obj_Structure_Bed_Chair_Vehicle ) {
-					JC = Obstacle;
+					JC = (Obj_Structure_Bed_Chair_Vehicle)Obstacle;
 
 					if ( Lang13.Bool( ((dynamic)JC).occupant ) ) {
 						BM = ((dynamic)JC).occupant;
@@ -371,7 +371,7 @@ namespace Somnium.Game {
 					this.damage -= this.damage / 4;
 
 					if ( !this.destroy ) {
-						T2 = Obstacle;
+						T2 = (Tile)Obstacle;
 						((dynamic)T2).bullet_marks++;
 						I = new Icon( T2.icon, T2.icon_state );
 						trace = new Icon( "icons/effects/96x96.dmi", this.mark_type );
@@ -402,7 +402,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: projectile.dm
-		public void rebound( Obj A = null ) {
+		public void rebound( Ent_Static A = null ) {
 			dynamic T = null;
 			dynamic W = null;
 			double? orientation = null;

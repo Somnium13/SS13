@@ -879,9 +879,9 @@ namespace Somnium.Game {
 		// Function from file: mecha.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
 			bool breakthrough = false;
-			Obj G = null;
-			Obj T = null;
-			Obj C = null;
+			Obj_Structure_Grille G = null;
+			Obj_Structure_Table T = null;
+			Mob_Living_Carbon C = null;
 			ByTable hit_sound = null;
 			Obj O = null;
 
@@ -893,7 +893,7 @@ namespace Somnium.Game {
 					Obstacle.Destroy( 1 );
 					breakthrough = true;
 				} else if ( Obstacle is Obj_Structure_Grille ) {
-					G = Obstacle;
+					G = (Obj_Structure_Grille)Obstacle;
 					((dynamic)G).health = Lang13.Initial( G, "health" ) * 0.25;
 					((dynamic)G).broken = 1;
 					G.icon_state = "" + Lang13.Initial( G, "icon_state" ) + "-b";
@@ -901,7 +901,7 @@ namespace Somnium.Game {
 					GlobalFuncs.getFromPool( typeof(Obj_Item_Stack_Rods), GlobalFuncs.get_turf( G.loc ) );
 					breakthrough = true;
 				} else if ( Obstacle is Obj_Structure_Table ) {
-					T = Obstacle;
+					T = (Obj_Structure_Table)Obstacle;
 					((dynamic)T).destroy();
 					breakthrough = true;
 				} else if ( Obstacle is Obj_Structure_Rack ) {
@@ -911,7 +911,7 @@ namespace Somnium.Game {
 				} else if ( Obstacle is Obj_Structure_ReagentDispensers_Fueltank ) {
 					Obstacle.ex_act( 1 );
 				} else if ( Obstacle is Mob_Living_Carbon ) {
-					C = Obstacle;
+					C = (Mob_Living_Carbon)Obstacle;
 					hit_sound = new ByTable(new object [] { "sound/weapons/genhit1.ogg", "sound/weapons/genhit2.ogg", "sound/weapons/genhit3.ogg" });
 
 					if ( Lang13.Bool( C.flags & 128 ) ) {
@@ -1784,7 +1784,7 @@ namespace Somnium.Game {
 								
 								O.loc = T;
 								((dynamic)R).cargo -= O;
-								((Base_Static)T).Entered( O );
+								((Base_Static)T).Entered( O , null );
 							}
 						}
 					}

@@ -3398,7 +3398,7 @@ namespace Somnium.Game {
 			dynamic F = null;
 
 			
-			if ( !Lang13.Bool( Interface13.Alert( "Are you sure you want to get the broken sprites list?", null, "Yes", "No" ) ) == "Yes" ) {
+			if ( Interface13.Alert( "Are you sure you want to get the broken sprites list?", null, "Yes", "No" ) != "Yes" ) {
 				return;
 			}
 			IL = new Icon( "icons/mob/in-hand/left/items_lefthand.dmi" );
@@ -11167,7 +11167,7 @@ namespace Somnium.Game {
 						I.fingerprint_hash = C.fingerprint_hash;
 						GlobalFuncs.qdel( C );
 						C = null;
-						ok = M.equip_if_possible( I, 7, false );
+						ok = M.equip_if_possible( I, 7, 0 );
 						break;
 					}
 					Game13.log.WriteMsg( "## TESTING: " + "Replaced ID!" );
@@ -18216,35 +18216,12 @@ Subject's pulse: ??? BPM" );
 		}
 
 		// Function from file: teleport.dm
-		public static void do_teleport( dynamic ateleatom = null, dynamic adestination = null, int? aprecision = null, bool? afteleport = null, bool? aeffectin = null, bool? aeffectout = null, string asoundin = null, string asoundout = null, params object[] _ ) {
-			ByTable _args = new ByTable( new object[] { ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout } ).Extend(_);
+		public static void do_teleport( dynamic ateleatom = null, dynamic adestination = null, int? aprecision = null, bool? afteleport = null, bool? aeffectin = null, bool? aeffectout = null, string asoundin = null, string asoundout = null) {
 
-			
-			if ( _args[3] == null ) {
-				_args[3] = 0;
-			}
+			aprecision = aprecision ?? 0;
+			afteleport = afteleport ?? true;
 
-			if ( _args[4] == null ) {
-				_args[4] = 1;
-			}
-
-			if ( _args[5] == null ) {
-				_args[5] = null;
-			}
-
-			if ( _args[6] == null ) {
-				_args[6] = null;
-			}
-
-			if ( _args[7] == null ) {
-				_args[7] = null;
-			}
-
-			if ( _args[8] == null ) {
-				_args[8] = null;
-			}
-			_args.Apply( typeof(Teleport_Instant_Science) );
-			return;
+			new Teleport_Instant_Science(ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout);
 		}
 
 		// Function from file: text.dm
@@ -19951,9 +19928,9 @@ Subject's pulse: ??? BPM" );
 
 			location = reference.loc;
 
-			while (!( location is Tile ) && !Lang13.Bool( null.IsInstanceOfType( location ) )) {
+			while (!( location is Tile ) && location != null ) {
 				
-				if ( Lang13.Bool( ((dynamic)typepath).IsInstanceOfType( location ) ) ) {
+				if ( Lang13.Bool( typepath.IsInstanceOfType( location ) ) ) {
 					return location;
 				}
 				location = location.loc;

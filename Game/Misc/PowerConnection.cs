@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class PowerConnection : Game_Data {
 
 		public Obj_Machinery_Media_Transmitter_Broadcast parent = null;
-		public bool? channel = true;
+		public int? channel = 1;
 		public bool build_status = false;
 		public bool connected = false;
 		public Powernet powernet = null;
@@ -160,7 +160,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: components.dm
-		public virtual bool use_power( dynamic amount = null, bool? chan = null ) {
+		public virtual bool use_power( dynamic amount = null, int? chan = null ) {
 			chan = chan ?? this.channel;
 
 			
@@ -176,7 +176,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: components.dm
-		public virtual bool powered( bool? chan = null ) {
+		public virtual bool powered( int? chan = null ) {
 			chan = chan ?? this.channel;
 
 			

@@ -759,7 +759,7 @@ namespace Somnium.Game {
 		// Function from file: slime.dm
 		public override dynamic Bump( Ent_Static Obstacle = null, dynamic yes = null ) {
 			int probab = 0;
-			Obj tmob = null;
+			Mob tmob = null;
 
 			
 			if ( !Lang13.Bool( yes ) || this.now_pushing ) {
@@ -820,7 +820,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Obstacle is Mob ) {
-				tmob = Obstacle;
+				tmob = (Mob)Obstacle;
 
 				if ( this is Mob_Living_Carbon_Slime_Adult ) {
 					

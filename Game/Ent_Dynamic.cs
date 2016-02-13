@@ -878,7 +878,7 @@ namespace Somnium.Game {
 
 				if ( destination is Tile ) {
 					A = GlobalFuncs.get_area_master( destination );
-					((Base_Static)A).Entered( this );
+					((Base_Static)A).Entered( this , null );
 				}
 
 				foreach (dynamic _a in Lang13.Enumerate( this.locked_atoms, typeof(Ent_Dynamic) )) {
@@ -910,7 +910,7 @@ namespace Somnium.Game {
 
 				if ( destination is Tile ) {
 					A = GlobalFuncs.get_area_master( destination );
-					((Base_Static)A).Entered( this );
+					((Base_Static)A).Entered( this , null );
 				}
 
 				foreach (dynamic _a in Lang13.Enumerate( this.loc, typeof(Ent_Dynamic) )) {

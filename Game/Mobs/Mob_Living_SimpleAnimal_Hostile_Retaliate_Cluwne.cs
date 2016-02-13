@@ -139,7 +139,7 @@ namespace Somnium.Game {
 
 		// Function from file: cluwne.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj M = null;
+			Mob M = null;
 
 			
 			if ( !Lang13.Bool( yes ) || this.now_pushing ) {
@@ -147,7 +147,7 @@ namespace Somnium.Game {
 			}
 
 			if ( Obstacle is Mob ) {
-				M = Obstacle;
+				M = (Mob)Obstacle;
 				GlobalFuncs.to_chat( this, new Txt( "<span class='danger'>You are too depressed to push " ).item( M ).str( " out of " ).the( null ).str( "way.</span>" ).ToString() );
 				((dynamic)M).LAssailant = this;
 				return null;

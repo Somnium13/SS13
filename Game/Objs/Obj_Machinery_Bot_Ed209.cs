@@ -283,11 +283,11 @@ namespace Somnium.Game {
 
 		// Function from file: ed209bot.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj D = null;
+			Obj_Machinery_Door D = null;
 
 			
 			if ( Obstacle is Obj_Machinery_Door && !( this.botcard == null ) ) {
-				D = Obstacle;
+				D = (Obj_Machinery_Door)Obstacle;
 
 				if ( !( D is Obj_Machinery_Door_Firedoor ) && D.check_access( this.botcard ) ) {
 					((dynamic)D).open();

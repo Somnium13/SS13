@@ -211,7 +211,7 @@ namespace Somnium.Game {
 
 		// Function from file: mulebot.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj M = null;
+			Ent_Static M = null;
 
 			
 			if ( !this.wires.MobAvoid() ) {

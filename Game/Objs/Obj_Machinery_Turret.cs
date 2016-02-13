@@ -435,7 +435,7 @@ namespace Somnium.Game {
 				area_T = GlobalFuncs.get_area( T );
 
 				if ( !Lang13.Bool( area_T ) || area_T.type != this.protected_area.type ) {
-					((Base_Static)this.protected_area).Exited( T );
+					((Base_Static)this.protected_area).Exited( T, null );
 					return false;
 				}
 

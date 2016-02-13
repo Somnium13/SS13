@@ -58,7 +58,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: components.dm
-		public override bool use_power( dynamic amount = null, bool? chan = null ) {
+		public override bool use_power( dynamic amount = null, int? chan = null ) {
 			this.add_load( amount );
 			return false;
 		}

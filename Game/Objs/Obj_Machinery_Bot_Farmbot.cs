@@ -697,12 +697,12 @@ namespace Somnium.Game {
 
 		// Function from file: farmbot.dm
 		public override dynamic Bump(Ent_Static Obstacle = null, dynamic yes = null) {
-			Obj D = null;
+			Obj_Machinery_Door D = null;
 
 			Task13.Schedule( 0, (Task13.Closure)(() => {
 				
 				if ( Obstacle is Obj_Machinery_Door && !( this.botcard == null ) ) {
-					D = Obstacle;
+					D = (Obj_Machinery_Door)Obstacle;
 
 					if ( !( D is Obj_Machinery_Door_Firedoor ) && D.check_access( this.botcard ) ) {
 						((dynamic)D).open();
