@@ -18221,7 +18221,7 @@ Subject's pulse: ??? BPM" );
 			aprecision = aprecision ?? 0;
 			afteleport = afteleport ?? true;
 
-			new Teleport_Instant_Science(ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout);
+			//new Teleport_Instant_Science(ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout);
 		}
 
 		// Function from file: text.dm
