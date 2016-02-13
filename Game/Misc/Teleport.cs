@@ -18,7 +18,7 @@ namespace Somnium.Game {
 		protected bool invalid;
 
 		// Function from file: teleport.dm
-		public Teleport ( dynamic ateleatom = null, dynamic adestination = null, int? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null, params object[] _ ) {
+		public Teleport ( dynamic ateleatom = null, dynamic adestination = null, bool? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null, params object[] _ ) {
 			ByTable _args = new ByTable( new object[] { ateleatom, adestination, aprecision, afteleport, aeffectin, aeffectout, asoundin, asoundout } ).Extend(_);
 
 			if ( !Lang13.Bool( _args.Apply( Lang13.BindFunc( this, "Init" ) ) ) ) {

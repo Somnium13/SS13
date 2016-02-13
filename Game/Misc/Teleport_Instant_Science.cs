@@ -6,7 +6,7 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	class Teleport_Instant_Science : Teleport_Instant {
 
-		public Teleport_Instant_Science ( dynamic ateleatom = null, dynamic adestination = null, int? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null ) : base( (object)(ateleatom), (object)(adestination), aprecision, afteleport, (object)(aeffectin), (object)(aeffectout), (object)(asoundin), (object)(asoundout) ) {
+		public Teleport_Instant_Science ( dynamic ateleatom = null, dynamic adestination = null, bool? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null ) : base( (object)(ateleatom), (object)(adestination), aprecision, afteleport, (object)(aeffectin), (object)(aeffectout), (object)(asoundin), (object)(asoundout) ) {
 			
 		}
 

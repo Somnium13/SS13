@@ -7,8 +7,8 @@ namespace Somnium.Game {
 	class Teleport_Instant : Teleport {
 
 		// Function from file: teleport.dm
-		public Teleport_Instant ( dynamic ateleatom = null, dynamic adestination = null, int? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null ) : base( (object)(ateleatom), (object)(adestination), aprecision, afteleport, (object)(aeffectin), (object)(aeffectout), (object)(asoundin), (object)(asoundout) ) {
-			aprecision = aprecision ?? 0;
+		public Teleport_Instant ( dynamic ateleatom = null, dynamic adestination = null, bool? aprecision = null, bool? afteleport = null, dynamic aeffectin = null, dynamic aeffectout = null, dynamic asoundin = null, dynamic asoundout = null ) : base( (object)(ateleatom), (object)(adestination), aprecision, afteleport, (object)(aeffectin), (object)(aeffectout), (object)(asoundin), (object)(asoundout) ) {
+			aprecision = aprecision ?? false;
 			afteleport = afteleport ?? true;
 			
 			if ( !invalid ) {
