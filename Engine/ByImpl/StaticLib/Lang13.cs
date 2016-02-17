@@ -115,7 +115,11 @@ namespace Somnium.Engine.ByImpl {
 			for (int i = 1; i < split_path.Length; i++) {
 				string part = split_path[i];
 				if (i == 1) {
-					if (part == "area") {
+					if (part == "datum")
+					{
+						continue;
+					}
+					else if (part == "area") {
 						class_name = "Zone";
 					}
 					else if (part == "turf") {
@@ -126,13 +130,16 @@ namespace Somnium.Engine.ByImpl {
 					}
 				}
 				else {
-					class_name += "_" + fix_class_part(part);
+					if (class_name!=null)
+						class_name += "_" + fix_class_part(part);
+					else
+						class_name = fix_class_part(part);
 				}
 			}
 
 			Type t = Type.GetType("Somnium.Game." + class_name);
 			if (t == null)
-				throw new Exception("Can't find class!");
+				Logger.Debug("Warning: Could not find type '" + class_name + "'!");
 			return t;
 		}
 		
@@ -170,7 +177,7 @@ namespace Somnium.Engine.ByImpl {
 		public static dynamic FindObj(dynamic id) {
 			if (id is Type) {
 				Type t = id;
-				if (t.IsSubclassOf(typeof(Game.Zone))) {
+				if (t == typeof(Game.Zone) || t.IsSubclassOf(typeof(Game.Zone))) {
 					return Map13.__GetZoneInstance(t);
 				}
 			}
@@ -231,6 +238,12 @@ namespace Somnium.Engine.ByImpl {
 
 		public static dynamic Call(BoundFunc f, params object[] objs) { // call a bound method
 			Logger.Debug("@call bound");
+			return null;
+		}
+
+		public static dynamic Call(ObjectInitializer f, params object[] objs)
+		{
+			Logger.Debug("@call initializer");
 			return null;
 		}
 

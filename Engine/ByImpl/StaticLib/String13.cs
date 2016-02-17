@@ -38,11 +38,20 @@ namespace Somnium.Engine.ByImpl {
 
 		// Not case sensitive.
 		public static int FindIgnoreCase(string haystack, string needle, int start = 1, int end = 0) {
-			return Find(haystack.ToLower(), needle.ToLower(), start, end);
+			if (haystack != null)
+				haystack = haystack.ToLower();
+			if (needle != null)
+				needle = needle.ToLower();
+			return Find( haystack, needle, start, end);
 		}
 
 		// Attempted to make more efficient, do not know if it still conforms!
 		public static int Find(string haystack, string needle, int start = 1, int end = 0) {
+			// Confirmed for all combinations of null.
+			if (needle == null)
+				return 1;
+			if (haystack == null)
+				return 0;
 
 			if (start < 0)
 				start = haystack.Length + 1 + start;

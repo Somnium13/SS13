@@ -37,7 +37,9 @@ namespace Somnium.Game {
 
 		// Function from file: speech.dm
 		public string addExpression( string orig = null, Type action = null, ByTable args = null ) {
+			Console.WriteLine("@2");
 			this.expressions[orig] = Lang13.Call( action, orig, args );
+			Console.WriteLine("@3");
 			return orig;
 		}
 
@@ -64,9 +66,10 @@ namespace Somnium.Game {
 		// Function from file: speech.dm
 		public string addReplacement( string orig = null, string replacement = null, bool? case_sensitive = null ) {
 			case_sensitive = case_sensitive ?? false;
-
+			Console.WriteLine("@0 "+orig);
 			orig = GlobalFuncs.replacetext( orig, "/", "\\/" );
 			replacement = GlobalFuncs.replacetext( replacement, "/", "\\/" );
+			Console.WriteLine("@1");
 			return this.addExpression( "/" + orig + "/" + replacement + "/" + ( case_sensitive == true ? "" : "i" ) + "g", typeof(SpeechFilterAction_Replace) );
 		}
 

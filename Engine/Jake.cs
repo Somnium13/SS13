@@ -23,7 +23,8 @@ namespace Somnium.Engine {
 
 				//welp!
 				var maploader = new DMMLoader();
-				maploader.LoadMap("_maps/map_files/TgStation/tgstation.2.1.3.dmm", 0, 0, 1);
+				//maploader.LoadMap("_maps/map_files/TgStation/tgstation.2.1.3.dmm", 0, 0, 1);
+				maploader.LoadMap("maps/tgstation.dmm", 0, 0, 1);
 
 				//DMMLoader.Load("../../../-tg-station/_maps/map_files/TgStation/tgstation.2.1.3.dmm");
 

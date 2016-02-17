@@ -33,8 +33,11 @@ namespace Somnium.Game {
 		// Function from file: pen.dm
 		public Obj_Item_Weapon_Pen ( dynamic loc = null ) : base( (object)(loc) ) {
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
+			Console.WriteLine("A "+this.style_type );
 			this.style = Lang13.Call( this.style_type );
+			Console.WriteLine("B");
 			this.nano_style = Lang13.Call( this.nano_style_type );
+			Console.WriteLine("C");
 			return;
 		}
 

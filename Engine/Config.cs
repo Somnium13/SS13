@@ -10,7 +10,7 @@ namespace Somnium.Engine {
 	static class Config {
 		public const bool DEVMODE = true;
 
-		public const string DIR_CONTENT = "../../../-tg-station/";
+		public const string DIR_CONTENT = "../../content/";
 		public const string DIR_WWW = "../../www/";
 		
 	}

@@ -144,6 +144,7 @@ namespace Somnium.Engine.NewLib {
 				ycrd = y_depth;
 				gpos = null;
 				gpos = 1;
+
 				while (gpos != 0) {
 					Logger.Announce("Starting map row #" + ycrd + "...");
 					grid_line = String13.SubStr(zgrid, gpos ?? 0, String13.Find(zgrid, "\n", gpos ?? 0, 0));
@@ -210,10 +211,13 @@ namespace Somnium.Engine.NewLib {
 				Task13.Sleep(-1);
 				if (!(dpos != 0)) break;
 			}
+
 			turfs_underlays = new ByTable();
 			index = members.len;
 			GlobalVars._preloader = new DmmSuite_Preloader(members_attributes[index]);
+
 			instance = Lang13.FindObj(members[index]);
+
 			crds = Map13.GetTile(xcrd, ((int)(ycrd)), zcrd);
 			if (crds != null) {
 				instance.contents.Add(crds);
@@ -221,12 +225,21 @@ namespace Somnium.Engine.NewLib {
 			if (GlobalVars._preloader != null && Lang13.Bool(instance)) {
 				GlobalVars._preloader.load(instance);
 			}
+
 			members.Remove(members[index]);
 			first_turf_index = 1;
-			while (!Lang13.Bool(((dynamic)members[first_turf_index]).IsSubclassOf(typeof(Tile)))) {
+			while (members[first_turf_index] == null || !members[first_turf_index].IsSubclassOf(typeof(Tile)) ) {
 				first_turf_index++;
 			}
-			T = this.instance_atom(members[first_turf_index], members_attributes[first_turf_index], xcrd, ycrd, zcrd);
+
+			try {
+				T = this.instance_atom(members[first_turf_index], members_attributes[first_turf_index], xcrd, ycrd, zcrd);
+			}
+			catch (Exception e)
+			{
+				Logger.Error("Failed to init tile [" + members[first_turf_index] + "] at ( " + xcrd + ", " + ycrd + ", " + zcrd + " )", e);
+			}
+
 			if (Lang13.Bool(T)) {
 				index = first_turf_index + 1;
 				while (index <= members.len) {
@@ -237,13 +250,14 @@ namespace Somnium.Engine.NewLib {
 					index++;
 				}
 			}
+
 			foreach (dynamic _a in Lang13.IterateRange(1, first_turf_index - 1)) {
 				index = _a;
 				try {
 					this.instance_atom(members[index], members_attributes[index], xcrd, ycrd, zcrd);
 				}
 				catch (Exception e) {
-					Logger.Error("Failed to init " + members[index] + " at ( " + xcrd + ", " + ycrd + ", " + zcrd + " )", e);
+					Logger.Error("Failed to init object [" + members[index] + "] at ( " + xcrd + ", " + ycrd + ", " + zcrd + " )", e);
 				}
 			}
 			return;

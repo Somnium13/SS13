@@ -14,17 +14,17 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public override int x {
-			get { throw new Exception("TODO ACCESS LOC OF ZONE!"); }
+			get { return ((ZoneContentsTable)_contents).__GetPos('x'); }
 			set { throw new Exception("CAN NOT SET LOC OF ZONE!"); }
 		}
 
 		public override int y {
-			get { throw new Exception("TODO ACCESS LOC OF ZONE!"); }
+			get { return ((ZoneContentsTable)_contents).__GetPos('y'); }
 			set { throw new Exception("CAN NOT SET LOC OF ZONE!"); }
 		}
 
 		public override int z {
-			get { throw new Exception("TODO ACCESS LOC OF ZONE!"); }
+			get { return ((ZoneContentsTable)_contents).__GetPos('z'); }
 			set { throw new Exception("CAN NOT SET LOC OF ZONE!"); }
 		}
 
@@ -38,15 +38,43 @@ namespace Somnium.Engine.ByImpl {
 				this.owner = owner;
 			}
 
+            public int __GetPos(char d)
+            {
+                int x= -1;
+                int y= -1;
+                int z= -1;
+
+                foreach (Game.Tile t in direct_contents) {
+                    if (x == -1 || t.z < z || ( t.z == z && t.y < y ) || (t.z == z && t.y == y && t.x < x ) )
+					{
+						x = t.x;
+						y = t.y;
+						z = t.z;
+                    }
+                }
+
+				switch (d)
+				{
+					case 'x':
+						return x;
+					case 'y':
+						return y;
+					case 'z':
+						return z;
+					default:
+						throw new Exception("Bad dimension.");
+				}
+            }
+
 			public override ArrayList __GetEnumerationList(Type t) {
-				if (t != null)
-					throw new Exception("TODO IMPLEMENT TYPE!");
 
 				ArrayList l = new ArrayList();
 				foreach (var tile in direct_contents) {
-					l.Add(tile);
+					if (t==null || t.IsInstanceOfType(tile))
+						l.Add(tile);
 					foreach (var obj in tile.contents.__GetRawEnum()) {
-						l.Add(obj);
+						if (t == null || t.IsInstanceOfType(obj))
+							l.Add(obj);
 					}
 				}
 				return l;

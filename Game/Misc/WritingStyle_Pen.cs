@@ -9,6 +9,7 @@ namespace Somnium.Game {
 		// Function from file: pen.dm
 		public WritingStyle_Pen (  ) {
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "*" ), "<li>" );
+			Console.WriteLine("~");
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "hr" ), "<HR>" );
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "small" ), "<span style=\"font-size:15px\">" );
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "/small" ), "</span>" );
@@ -37,6 +38,8 @@ namespace Somnium.Game {
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "tnr" ), "<span style=\"font-family:Times New Roman\">" );
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "/tnr" ), "</span>" );
 			this.addExpression( ":" + GlobalFuncs.REG_BBTAG( "img" ) + "(" + "[^\\[]+" + ")" + GlobalFuncs.REG_BBTAG( "/img" ) + ":gi", typeof(SpeechFilterAction_Bbcode_Img), new ByTable() );
+
+			Console.WriteLine("/");
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
 			return;
 		}

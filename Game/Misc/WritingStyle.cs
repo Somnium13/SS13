@@ -11,6 +11,7 @@ namespace Somnium.Game {
 
 		// Function from file: pen.dm
 		public WritingStyle (  ) {
+			Console.WriteLine(",,");
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "center" ), "<center>" );
 			this.addReplacement( GlobalFuncs.REG_BBTAG( "/center" ), "</center>" );

@@ -42,7 +42,9 @@ namespace Somnium.Engine.ByImpl {
 			}
 
 			public override ArrayList __GetEnumerationList(Type t) {
-				throw new Exception("NO.");
+				NewLib.Logger.Debug("attempt to enumerate over vars");
+				return new ArrayList();
+				//throw new Exception("NO.");
 			}
 
 			public override IEnumerable __GetRawEnum() {

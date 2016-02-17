@@ -5404,52 +5404,19 @@ namespace Somnium.Game {
 			return true;
 		}
 
-		// Function from file: datumpool.dm
+		// Fuck literally all of this overcomplicated garbage. Never try to pool shit. Ever. For now. Probably.
+
 		public static Game_Data getFromPool( dynamic type = null, params object[] _ ) {
-			ByTable _args = new ByTable( new object[] { type } ).Extend(_);
-
-			dynamic B = null;
-			Game_Data O = null;
-			Game_Data AM = null;
-
-			B = _args - _args[1];
-
-			if ( Lang13.Length( GlobalVars.masterdatumPool[_args[1]] ) <= 0 ) {
-				
-				if ( GlobalVars.masterdatumPool[_args[1]] == null ) {
-					GlobalVars.masterdatumPool[_args[1]] = new ByTable();
-				}
-
-				if ( Lang13.Bool( B ) && B.len != 0 ) {
-					return B.Apply( _args[1] );
-				} else {
-					return Lang13.Call( _args[1] );
-				}
-			}
-			O = GlobalVars.masterdatumPool[_args[1]][1];
-			GlobalVars.masterdatumPool[_args[1]] -= O;
-
-			if ( !( O != null ) || !( O is Game_Data ) ) {
-				O = B.Apply( _args[1] );
-			} else {
-				
-				if ( O is Ent_Dynamic && B.len != 0 ) {
-					AM = O;
-					((dynamic)AM).loc = B[1];
-				}
-
-				if ( Lang13.Bool( B ) && B.len != 0 ) {
-					B.Apply( Lang13.BindFunc( O, "New" ) );
-				} else {
-					((dynamic)O).New();
-				}
-				O.disposed = null;
-			}
-			return O;
+			ByTable B = new ByTable().Extend(_);
+			
+			
+			return B.Apply(type);
 		}
 
-		// Function from file: datumpool.dm
+		// TODO what does this do? can we delete it? because everything else to do with pooling has fucked us.
 		public static bool isInTypes( Ent_Static Object = null, string types = null ) {
+			//Engine.NewLib.Logger.Debug("Is in types: " + Object + ", " + types);
+
 			Type prototype = null;
 			dynamic type = null;
 
@@ -5471,26 +5438,9 @@ namespace Somnium.Game {
 			return false;
 		}
 
-		// Function from file: datumpool.dm
 		public static void returnToPool( dynamic D = null ) {
-			
-			if ( !Lang13.Bool( D ) ) {
-				Task13.Crash( "" + "code/__HELPERS/datumpool.dm" + ":" + 68 + ":Assertion Failed: " + "D" );
-			}
 
-			if ( D is Ent_Dynamic && Lang13.Length( GlobalVars.masterdatumPool[D.type] ) > 500 ) {
-				GlobalFuncs.qdel( D );
-				return;
-			}
-
-			if ( GlobalVars.masterdatumPool[D.type] == null ) {
-				GlobalVars.masterdatumPool[D.type] = new ByTable();
-			}
-			((Game_Data)D).Destroy();
-			((Game_Data)D).resetVariables();
-			D.disposed = true;
-			GlobalVars.masterdatumPool[D.type] |= D;
-			return;
+			Engine.NewLib.Logger.Debug("Return to pool: " + D);
 		}
 
 		// Function from file: designs.dm
@@ -12036,8 +11986,8 @@ namespace Somnium.Game {
 				matdata = _a;
 				
 				mat = Lang13.Call( matdata );
-				GlobalVars.material_list += new ByTable().Set( mat.id, mat );
-				GlobalVars.initial_materials += new ByTable().Set( mat.id, 0 );
+				GlobalVars.material_list.Add(new ByTable().Set( mat.id, mat ));
+				GlobalVars.initial_materials.Add(new ByTable().Set( mat.id, 0 ));
 			}
 			return;
 		}
@@ -18566,7 +18516,9 @@ Subject's pulse: ??? BPM" );
 
 		// Function from file: text.dm
 		public static string replacetext( dynamic text = null, dynamic find = null, dynamic replacement = null ) {
-			return GlobalFuncs.list2text( GlobalFuncs.text2list( text, find ), replacement );
+			// Look at what was here originally, and please, ask yourself: What the fuck am I doing with my life?
+			//return GlobalFuncs.list2text( GlobalFuncs.text2list( text, find ), replacement );
+			return ((string)text).Replace((string)find, (string)replacement);
 		}
 
 		// Function from file: text.dm

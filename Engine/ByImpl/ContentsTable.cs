@@ -129,13 +129,11 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public override ArrayList __GetEnumerationList(Type t) {
-			if (t != null)
-				throw new Exception("TODO IMPLEMENT TYPE!");
-
 			var list = new ArrayList(contents.Count);
 
 			foreach (var e in contents) {
-				list.Add(e);
+				if (t == null || t.IsInstanceOfType(e))
+					list.Add(e);
 			}
 
 			return list;

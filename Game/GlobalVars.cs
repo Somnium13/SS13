@@ -592,7 +592,7 @@ function SetMusic(url, time, volume) {
 		public static string inactive_keys = "None<br>";
 		public static dynamic INCREASERUNBLOCK = 0;
 		public static dynamic ingredientLimit = 10;
-		public static dynamic initial_materials = null;
+		public static ByTable initial_materials = new ByTable();
 		public static bool? intercom_range_display_status = false;
 		public static Controller_Occupations job_master = null;
 		public static int jobban_runonce = 0;
@@ -603,7 +603,7 @@ function SetMusic(url, time, volume) {
 		public static bool maint_all_access = false;
 		public static Controller_GameController master_controller = null;
 		public static dynamic master_mode = "extended";
-		public static dynamic material_list = null;
+		public static ByTable material_list = new ByTable();
 		public static dynamic MAX_EXPLOSION_RANGE = 14;
 		public static int? max_meteor_size = 0;
 		public static dynamic MELTBLOCK = 0;
@@ -3189,31 +3189,31 @@ function SetMusic(url, time, volume) {
 			.Set( "alien", 1 )
 			.Set( "blob", 1 )
 			.Set( "borer", 1 )
-			.Set( "changeling", Lang13.FindClass( "/datum/game_mode/changeling" ) is Type )
-			.Set( "cultist", Lang13.FindClass( "/datum/game_mode/cult" ) is Type )
+			.Set( "changeling", Lang13.FindClass( "/datum/game_mode/changeling" ) != null )
+			.Set( "cultist", Lang13.FindClass( "/datum/game_mode/cult" ) != null)
 			.Set( "Dionaea", 1 )
-			.Set( "infested monkey", Lang13.FindClass( "/datum/game_mode/monkey" ) is Type )
-			.Set( "malf AI", Lang13.FindClass( "/datum/game_mode/malfunction" ) is Type )
-			.Set( "operative", Lang13.FindClass( "/datum/game_mode/nuclear" ) is Type )
+			.Set( "infested monkey", Lang13.FindClass( "/datum/game_mode/monkey" ) != null)
+			.Set( "malf AI", Lang13.FindClass( "/datum/game_mode/malfunction" ) != null)
+			.Set( "operative", Lang13.FindClass( "/datum/game_mode/nuclear" ) != null)
 			.Set( "pAI", 1 )
 			.Set( "posibrain", 1 )
-			.Set( "revolutionary", Lang13.FindClass( "/datum/game_mode/revolution" ) is Type )
-			.Set( "traitor", Lang13.FindClass( "/datum/game_mode/traitor" ) is Type )
-			.Set( "vampire", Lang13.FindClass( "/datum/game_mode/vampire" ) is Type )
-			.Set( "vox raider", Lang13.FindClass( "/datum/game_mode/heist" ) is Type )
+			.Set( "revolutionary", Lang13.FindClass( "/datum/game_mode/revolution" ) != null)
+			.Set( "traitor", Lang13.FindClass( "/datum/game_mode/traitor" ) != null )
+			.Set( "vampire", Lang13.FindClass( "/datum/game_mode/vampire" ) != null )
+			.Set( "vox raider", Lang13.FindClass( "/datum/game_mode/heist" ) != null )
 			.Set( "wizard", 1 )
 		;
 		public static readonly ByTable antag_roles = new ByTable()
 			.Set( "alien", 1 )
 			.Set( "blob", 1 )
-			.Set( "changeling", Lang13.FindClass( "/datum/game_mode/changeling" ) is Type )
-			.Set( "cultist", Lang13.FindClass( "/datum/game_mode/cult" ) is Type )
-			.Set( "malf AI", Lang13.FindClass( "/datum/game_mode/malfunction" ) is Type )
-			.Set( "operative", Lang13.FindClass( "/datum/game_mode/nuclear" ) is Type )
-			.Set( "revolutionary", Lang13.FindClass( "/datum/game_mode/revolution" ) is Type )
-			.Set( "traitor", Lang13.FindClass( "/datum/game_mode/traitor" ) is Type )
-			.Set( "vampire", Lang13.FindClass( "/datum/game_mode/vampire" ) is Type )
-			.Set( "vox raider", Lang13.FindClass( "/datum/game_mode/heist" ) is Type )
+			.Set( "changeling", Lang13.FindClass( "/datum/game_mode/changeling" ) != null)
+			.Set( "cultist", Lang13.FindClass( "/datum/game_mode/cult" ) != null)
+			.Set( "malf AI", Lang13.FindClass( "/datum/game_mode/malfunction" ) != null)
+			.Set( "operative", Lang13.FindClass( "/datum/game_mode/nuclear" ) != null)
+			.Set( "revolutionary", Lang13.FindClass( "/datum/game_mode/revolution" ) != null)
+			.Set( "traitor", Lang13.FindClass( "/datum/game_mode/traitor" ) != null)
+			.Set( "vampire", Lang13.FindClass( "/datum/game_mode/vampire" ) != null)
+			.Set( "vox raider", Lang13.FindClass( "/datum/game_mode/heist" ) != null)
 			.Set( "wizard", 1 )
 		;
 		public static readonly ByTable nonantag_roles = new ByTable().Set( "borer", 1 ).Set( "Dionaea", 1 ).Set( "pAI", 1 ).Set( "posibrain", 1 );

@@ -426,6 +426,11 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public ByTable Extend(object[] os) {
+			if (os == null)
+			{
+				list_add(null);
+				return this;
+			}
 			foreach (var o in os) {
 				if (Lang13.IsNumber(o))
 					list_add(convert_number(o));
@@ -457,11 +462,55 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
-		/*public dynamic Apply(Type t) {
-			Logger.Debug("TABLE APPLY BOUND");
-			throw new Exception("STOP");
-			return null;
-		}*/
+		public dynamic Apply(Type t) {
+			var ctor = t.GetConstructors()[0];
+
+			var arg_info = ctor.GetParameters();
+
+			var args = new object[arg_info.Length];
+
+			for (int i = 0; i<args.Length; i++)
+			{
+				args[i] = Type.Missing;
+			}
+
+			for (int i = 1; i<=len; i++)
+			{
+				object lv = list_get(i);
+				object hv = hash_get(lv);
+				if (lv is string && hv != null)
+				{
+					// lv = param name
+					// hv = value
+					for (int j = 0; j<arg_info.Length; j++)
+					{
+						if ( (string)lv == arg_info[j].Name )
+						{
+							args[j] = hv;
+							goto end;
+						}
+					}
+
+					throw new Exception("Bad apply! " + lv + " -> " + ctor.Name);
+
+				} else
+				{
+					// i = param #
+					// lv = value
+					if ((i-1)<args.Length)
+					{
+						args[i-1] = lv;
+					} else
+					{
+						throw new Exception("Bad apply! " + i + " -> " + ctor.Name);
+					}
+				}
+
+				end: { }
+			}
+
+			return ctor.Invoke(args);
+		}
 
 		/*public object applyCtor(Type t) { // TODO
 			Logger.Debug("TABLE APPLY-CTOR " + t);
@@ -488,11 +537,11 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public void __Debug() {
-			Logger.Debug("ByTable Debug: "+list.Count+" / "+hash.Count);
+			Logger.Debug("ByTable Debug: "+list.Count+" / "+((hash != null)?hash.Count:0));
 			for (int i = 1; i <= this.len; i++) {
 				object k = list[i-1];
 				if (k == null) k = NULL_KEY;
-				object v = hash[k];
+				object v = (hash != null)?hash[k]:null;
 				if (v == null) v = NULL_KEY;
 				Logger.Debug(" > " + i + ": " + k + " -- " + v);
 			}
@@ -509,10 +558,21 @@ namespace Somnium.Engine.ByImpl {
 
 		// TODO, this will need to filter types
 		public virtual ArrayList __GetEnumerationList(Type t) {
-			if (t != null) {
-				throw new Exception("NOT IMPLEMENTED.");
+			if (t == null) {
+				return (ArrayList)list.Clone();
+			} else
+			{
+				ArrayList result = new ArrayList();
+				foreach (var item in list)
+				{
+					
+					if (t.IsInstanceOfType(item))
+					{
+						result.Add(item);
+					}
+				}
+				return result;
 			}
-			return (ArrayList)list.Clone();
 		}
 
 		public virtual IEnumerable __GetRawEnum() {

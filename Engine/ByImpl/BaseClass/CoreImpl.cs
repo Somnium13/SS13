@@ -74,17 +74,17 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public override int x {
-			get { return _loc.x; }
+			get { if (_loc == null) return -1;  return _loc.x; }
 			set { throw new Exception("TODO"); }
 		}
 
 		public override int y {
-			get { return _loc.y; }
+			get { if (_loc == null) return -1; return _loc.y; }
 			set { throw new Exception("TODO"); }
 		}
 
 		public override int z {
-			get { return _loc.z; }
+			get { if (_loc == null) return -1; return _loc.z; }
 			set { throw new Exception("TODO"); }
 		}
 

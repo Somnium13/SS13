@@ -42,7 +42,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: deskbell.dm
-		public int get_new_bellfreq(  ) {
+		public static int get_new_bellfreq(  ) {
 			int i = 0;
 
 			i = Rand13.Int( 1200, 1600 );
@@ -51,7 +51,7 @@ namespace Somnium.Game {
 				i += 1;
 			}
 
-			while (Lang13.Bool( Lang13.FindIn( i, GlobalVars.deskbell_default_frequencies ) )) {
+			while ( GlobalVars.deskbell_default_frequencies.Find(i) > 0 ) {
 				i = Rand13.Int( 1200, 1600 );
 
 				if ( i % 2 == 0 ) {
