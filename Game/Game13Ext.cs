@@ -59,10 +59,9 @@ namespace Somnium.Engine.ByImpl {
 				GlobalVars.Master.Setup();
 				return;
 			}));
-			GlobalFuncs.process_teleport_locs();
+			//GlobalFuncs.process_teleport_locs(); Fuck this code.
 			GlobalFuncs.SortAreas();
-			GlobalVars.map_name = "" + "Box Station";
-			return;
+			GlobalVars.map_name = "Box Station";
 		}
 
 		// Function from file: IsBanned.dm

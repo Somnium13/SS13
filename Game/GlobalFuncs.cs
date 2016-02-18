@@ -317,89 +317,9 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: 510.dm
-		public static string jointext( dynamic ls = null, string sep = null ) {
-			string _default = null;
-
-			int l = 0;
-			int i = 0;
-
-			
-			if ( ls.len <= 1 ) {
-				return ( ls.len != 0 ? ls[1] : "" );
-			}
-			l = ls.len;
-			i = 0;
-
-			if ( sep != null ) {
-				_default = "" + ls[++i];
-
-				if ( ( l - 1 & 1 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i];
-				}
-
-				if ( ( l - i & 2 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i];
-				}
-
-				if ( ( l - i & 4 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-
-				if ( ( l - i & 8 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-
-				if ( ( l - i & 16 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-
-				if ( ( l - i & 32 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-
-				if ( ( l - i & 64 ) != 0 ) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-
-				while (l > i) {
-					_default = "" + _default + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i] + sep + ls[++i];
-				}
-			} else {
-				_default = "" + ls[++i];
-
-				if ( ( l - 1 & 1 ) != 0 ) {
-					_default += "" + ls[++i];
-				}
-
-				if ( ( l - i & 2 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i];
-				}
-
-				if ( ( l - i & 4 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-
-				if ( ( l - i & 8 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-
-				if ( ( l - i & 16 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-
-				if ( ( l - i & 32 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-
-				if ( ( l - i & 64 ) != 0 ) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-
-				while (l > i) {
-					_default = "" + _default + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i] + ls[++i];
-				}
-			}
-			return _default;
+		public static string jointext( ByTable ls, string sep = "" ) {
+			// This is bad, but at least it won't stack overflow like the absurd loop unrolling that was going on here.
+			return string.Join(sep, ls.__GetRawEnum());
 		}
 
 		// Function from file: 510.dm
@@ -4171,7 +4091,7 @@ namespace Somnium.Game {
 			}
 			skipped_areas = new ByTable(new object [] { typeof(Zone_Engine_Engineering), typeof(Zone_TurretProtected_Ai) });
 
-			foreach (dynamic _d in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _d in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				A = _d;
 				
 
@@ -4270,7 +4190,7 @@ namespace Somnium.Game {
 				S.power_change();
 			}
 
-			foreach (dynamic _c in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _c in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				A = _c;
 				
 
@@ -4876,7 +4796,7 @@ namespace Somnium.Game {
 			dynamic A = null;
 
 			
-			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				A = _a;
 				
 
@@ -13090,7 +13010,7 @@ namespace Somnium.Game {
 			dynamic picked = null;
 
 			
-			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				AR = _a;
 				
 
@@ -15824,7 +15744,7 @@ namespace Somnium.Game {
 			}
 			atoms = new ByTable();
 
-			foreach (dynamic _b in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _b in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				N = _b;
 				
 
@@ -15864,13 +15784,13 @@ namespace Somnium.Game {
 			}
 			turfs = new ByTable();
 
-			foreach (dynamic _b in Lang13.Enumerate( typeof(Game13) )) {
+			foreach (dynamic _b in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				N = _b;
 				
 
 				if ( Lang13.Bool( areatype.IsInstanceOfType( N ) ) ) {
 					
-					foreach (dynamic _a in Lang13.Enumerate( N )) {
+					foreach (dynamic _a in Lang13.Enumerate( N, typeof(Tile) )) {
 						T = _a;
 						
 
@@ -16828,13 +16748,9 @@ namespace Somnium.Game {
 
 		// Function from file: unsorted.dm
 		public static void SortAreas(  ) {
-			dynamic A = null;
-
 			GlobalVars.sortedAreas = new ByTable();
 
-			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
-				A = _a;
-				
+			foreach (Zone A in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
 				GlobalVars.sortedAreas.Add( A );
 			}
 			GlobalFuncs.sortTim( GlobalVars.sortedAreas, typeof(GlobalFuncs).GetMethod( "cmp_name_asc" ) );
