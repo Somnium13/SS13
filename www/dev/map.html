@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+	<head>
+		<title>DEVMODE MAP</title>
+		<style>
+			html {
+				font-family: arial;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>DEVMODE MAP</h1>
+		<script>
+			var xhr = new XMLHttpRequest();
+ 
+			xhr.onload = function(e){
+				if (xhr.status == 200){
+					loadmap(xhr.response);
+				} else {
+					alert("Could not load map!");
+				}
+			}
+			 
+			xhr.open("GET", "/service/dev-map");
+			xhr.responseType = "arraybuffer";
+			xhr.send();
+			
+			function loadmap(data) {
+				var map = new Uint16Array(data,0, Math.floor(data.byteLength / 2) );
+				
+				var w = map[0];
+				var h = map[1];
+				var layers = map[2];
+				
+				var colors = [];
+				
+				function get_color(n) {
+					if (colors[n]==null) {
+						colors[n] = "#"+("00"+(Math.floor( Math.random()*4096 )).toString(16)).substr(-3);
+					}
+					return colors[n];
+				}
+				
+				var scale = 16;
+				
+				for (var z=0;z<layers;z++) {
+					var canvas = document.createElement("canvas");
+					var ctx = canvas.getContext("2d");
+					document.body.appendChild(canvas);    
+					
+					canvas.width = w * scale;
+					canvas.height = h * scale;
+					
+					//var map_img = ctx.createImageData(w * scale, h * scale);
+					
+					var dd = 0;
+					
+					var i = 3;
+					for (var y=0;y<h;y++) {
+						for (var x=0;x<w;x++) {
+							var a = map[i++];
+							var b = map[i++];
+							
+							ctx.fillStyle = get_color(a);
+							ctx.fillRect(x * scale, (h-y) * scale, scale, scale);
+							
+							ctx.strokeStyle = get_color(b);
+							ctx.lineWidth = 2;
+							ctx.strokeRect(x * scale + 1, (h-y) * scale + 1, scale - 2, scale - 2);
+							
+							var cc = map[i++];
+							for (var ci=0;ci<cc;ci++) {
+								var c = map[i++];
+								
+								ctx.strokeStyle = get_color(c);
+								ctx.lineWidth = 2;
+								ctx.strokeRect(x * scale + 4, (h-y) * scale + 4, scale - 8, scale - 8);
+								//console.log("~~"+get_color(c));
+							}
+							//console.log("=====");
+							dd += cc;
+							
+							/*map_img.data[ (x + (h-y)*w)*4     ] = reds[n];
+							map_img.data[ (x + (h-y)*w)*4 + 1 ] = greens[n];
+							map_img.data[ (x + (h-y)*w)*4 + 2 ] = blues[n];
+							map_img.data[ (x + (h-y)*w)*4 + 3 ] = 255;*/
+						}
+					}
+					
+					console.log(">> "+dd);
+					
+					//ctx.putImageData(map_img,0,0);
+				}
+			}
+		</script>
+	</body>
+</html>
