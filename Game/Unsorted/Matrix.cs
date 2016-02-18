@@ -91,7 +91,7 @@ namespace Somnium.Game {
 		}
 
 		public Matrix Translate( bool x = false, double? y = null ) {
-			y = y ?? x ?1:0;
+			y = y ?? (x ?1:0);
 
 			return Num13.Matrix( this, x, y, 135 );
 		}

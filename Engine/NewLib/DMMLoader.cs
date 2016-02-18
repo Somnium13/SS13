@@ -69,7 +69,7 @@ namespace Somnium.Engine.NewLib {
 										 });
 
 		// leaving this behind for now, just in case...
-		public override dynamic Destroy(dynamic dummy = null) {
+		public override dynamic Destroy() {
 			base.Destroy();
 			return 4;
 		}
@@ -214,7 +214,7 @@ namespace Somnium.Engine.NewLib {
 
 			turfs_underlays = new ByTable();
 			index = members.len;
-			GlobalVars._preloader = new DmmSuite_Preloader(members_attributes[index]);
+			GlobalVars._preloader.setup(members_attributes[index]);
 
 			instance = Lang13.FindObj(members[index]);
 
@@ -290,7 +290,7 @@ namespace Somnium.Engine.NewLib {
 		private dynamic instance_atom(dynamic path = null, dynamic attributes = null, int x = 0, double y = 0, int z = 0) {
 			dynamic instance = null;
 			Tile T = null;
-			GlobalVars._preloader = new DmmSuite_Preloader(attributes, path);
+			GlobalVars._preloader.setup(attributes, path);
 			T = Map13.GetTile(x, ((int)(y)), z);
 			if (T != null) {
 				instance = Lang13.Call(path, T);

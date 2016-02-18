@@ -188,7 +188,7 @@ namespace Somnium.Engine.ByImpl {
 			return false; // ?
 		}
 
-		public virtual bool DblClick(dynamic _object, string location, string control, dynamic _params) {
+		public virtual bool DblClick(dynamic _object, string location, string control) {
 			return false; // ?
 		}
 
@@ -204,8 +204,8 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
-		public virtual dynamic Exited(Somnium.Game.Ent_Dynamic O, Game.Ent_Static new_loc) {
-			return null;
+		public virtual void Exited(Somnium.Game.Ent_Dynamic O, Game.Ent_Static new_loc) {
+
 		}
 
 		public void MouseDown(dynamic location, dynamic control, dynamic _params) {
@@ -220,12 +220,12 @@ namespace Somnium.Engine.ByImpl {
 
 		}
 
-		public void MouseEntered(dynamic location, dynamic control, dynamic _params) {
-
+		public virtual bool MouseEntered(dynamic location, string control, string _params) {
+			return false; //?
 		}
 
-		public void MouseExited(dynamic location, dynamic control, dynamic _params) {
-
+		public virtual bool MouseExited(dynamic location, string control, string _params) {
+			return false; //?
 		}
 
 		public void MouseMove(dynamic location, dynamic control, dynamic _params) {

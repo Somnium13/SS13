@@ -18,8 +18,9 @@ namespace Somnium.Game {
 		public override dynamic spawn_item( dynamic loc = null, Obj_Item_Device_Uplink U = null ) {
 			
 			if ( Lang13.Bool( this.item ) ) {
-				
-				if ( String13.FindIgnoreCase( this.item, typeof(Obj_Item_Organ_Internal_Cyberimp), 1, 0 ) != 0 ) {
+
+				//if ( String13.FindIgnoreCase( this.item, typeof(Obj_Item_Organ_Internal_Cyberimp), 1, 0 ) != 0 ) {
+				if (false) { // WTF ^^
 					return new Obj_Item_Weapon_Storage_Box_CyberImplants( loc, this.item );
 				} else {
 					return base.spawn_item( (object)(loc), U );

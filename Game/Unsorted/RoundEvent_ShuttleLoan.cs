@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class RoundEvent_ShuttleLoan : RoundEvent {
 
 		public bool dispatched = false;
-		public bool dispatch_type = false;
+		public int dispatch_type = 0;
 		public int bonus_points = 100;
 		public string thanks_msg = "The cargo shuttle should return in five minutes. Have some supply points for your trouble.";
 
@@ -61,8 +61,8 @@ namespace Somnium.Game {
 				}
 				shuttle_spawns = new ByTable();
 
-				switch ((bool)( this.dispatch_type )) {
-					case true:
+				switch ( this.dispatch_type ) {
+					case 1:
 						pack = GlobalVars.SSshuttle.supply_packs[typeof(SupplyPack_Emergency_Specialops)];
 						pack.generate( GlobalFuncs.pick_n_take( empty_shuttle_turfs ) );
 						shuttle_spawns.Add( typeof(Mob_Living_SimpleAnimal_Hostile_Syndicate) );
@@ -76,7 +76,7 @@ namespace Somnium.Game {
 							shuttle_spawns.Add( typeof(Mob_Living_SimpleAnimal_Hostile_Syndicate) );
 						}
 						break;
-					case 2 != 0:
+					case 2:
 						pack2 = GlobalVars.SSshuttle.supply_packs[typeof(SupplyPack_Organic_Party)];
 						pack2.generate( GlobalFuncs.pick_n_take( empty_shuttle_turfs ) );
 						shuttle_spawns.Add( typeof(Mob_Living_SimpleAnimal_Hostile_Russian) );
@@ -91,7 +91,7 @@ namespace Somnium.Game {
 							shuttle_spawns.Add( typeof(Mob_Living_SimpleAnimal_Hostile_Bear) );
 						}
 						break;
-					case 3 != 0:
+					case 3:
 						pack3 = GlobalVars.SSshuttle.supply_packs[typeof(SupplyPack_Emergency_Specialops)];
 						pack3.generate( GlobalFuncs.pick_n_take( empty_shuttle_turfs ) );
 						shuttle_spawns.Add( typeof(Mob_Living_SimpleAnimal_Hostile_Poison_GiantSpider) );
@@ -117,7 +117,7 @@ namespace Somnium.Game {
 						T2 = Rand13.PickFromTable( empty_shuttle_turfs );
 						new Obj_Effect_Spider_Stickyweb( T2 );
 						break;
-					case 5 != 0:
+					case 5:
 						virus_type = Rand13.Pick(new object [] { typeof(Disease_Beesease), typeof(Disease_Brainrot), typeof(Disease_Fluspanish) });
 						T3 = null;
 						i = null;
@@ -144,7 +144,7 @@ namespace Somnium.Game {
 						shuttle_spawns.Add( typeof(Obj_Item_Weapon_ReagentContainers_Glass_Bottle_PierrotThroat) );
 						shuttle_spawns.Add( typeof(Obj_Item_Weapon_ReagentContainers_Glass_Bottle_Magnitis) );
 						break;
-					case 4 != 0:
+					case 4:
 						crate_types = new ByTable(new object [] { 
 							typeof(SupplyPack_Emergency_Equipment), 
 							typeof(SupplyPack_Security_Supplies), 
@@ -219,20 +219,20 @@ namespace Somnium.Game {
 			}
 			GlobalVars.SSshuttle.supply.setTimer( 3000 );
 
-			switch ((bool)( this.dispatch_type )) {
-				case true:
+			switch ( this.dispatch_type ) {
+				case 1:
 					GlobalVars.SSshuttle.centcom_message += "Syndicate hijack team incoming.";
 					break;
-				case 2 != 0:
+				case 2:
 					GlobalVars.SSshuttle.centcom_message += "Partying Russians incoming.";
 					break;
-				case 3 != 0:
+				case 3:
 					GlobalVars.SSshuttle.centcom_message += "Spider Clan gift incoming.";
 					break;
-				case 4 != 0:
+				case 4:
 					GlobalVars.SSshuttle.centcom_message += "Department resupply incoming.";
 					break;
-				case 5 != 0:
+				case 5:
 					GlobalVars.SSshuttle.centcom_message += "Virus samples incoming.";
 					break;
 			}
@@ -243,22 +243,22 @@ namespace Somnium.Game {
 		public override void announce(  ) {
 			GlobalVars.SSshuttle.shuttle_loan = this;
 
-			switch ((bool)( this.dispatch_type )) {
-				case true:
+			switch ( this.dispatch_type ) {
+				case 1:
 					GlobalFuncs.priority_announce( "Cargo: The syndicate are trying to infiltrate your station. If you let them hijack your cargo shuttle, you'll save us a headache.", "Centcom Counter Intelligence" );
 					break;
-				case 2 != 0:
+				case 2:
 					GlobalFuncs.priority_announce( "Cargo: A group of angry russians want to have a party, can you send them your cargo shuttle then make them disappear?", "Centcom Russian Outreach Program" );
 					break;
-				case 3 != 0:
+				case 3:
 					GlobalFuncs.priority_announce( "Cargo: The Spider Clan has sent us a mysterious gift, can we ship it to you to see what's inside?", "Centcom Diplomatic Corps" );
 					break;
-				case 4 != 0:
+				case 4:
 					GlobalFuncs.priority_announce( "Cargo: Seems we've ordered doubles of our department resupply packages this month. Can we send them to you?", "Centcom Supply Department" );
 					this.thanks_msg = "The cargo shuttle should return in 5 minutes.";
 					this.bonus_points = 0;
 					break;
-				case 5 != 0:
+				case 5:
 					GlobalFuncs.priority_announce( "Cargo: Your station has been chosen for an epidemiological research project. Send us your cargo shuttle to receive your research samples.", "Centcom Research Initiatives" );
 					break;
 			}

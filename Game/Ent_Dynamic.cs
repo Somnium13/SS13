@@ -1001,7 +1001,7 @@ namespace Somnium.Game {
 				destarea = GlobalFuncs.get_area( destination );
 
 				if ( old_area != destarea ) {
-					((Base_Static)destarea).Entered( this );
+					((Base_Static)destarea).Entered( this , null );
 				}
 
 				foreach (dynamic _a in Lang13.Enumerate( destination, typeof(Ent_Dynamic) )) {

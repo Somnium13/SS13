@@ -412,7 +412,7 @@ namespace Somnium.Game {
 
 		// Function from file: slime.dm
 		public override dynamic adjustFireLoss( dynamic amount = null, bool? updating_health = null ) {
-			base.adjustFireLoss( -Math.Abs( Convert.ToDouble( amount ) ), updating_health );
+			base.adjustFireLoss( -Math.Abs( Convert.ToDouble( (object)amount ) ), updating_health );
 			return null;
 		}
 

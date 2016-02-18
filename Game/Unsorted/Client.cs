@@ -30,12 +30,6 @@ namespace Somnium.Game {
 		public string hi_last_pos = null;
 		public Tooltip tooltips = null;
 
-		protected override void __FieldInit() {
-			base.__FieldInit();
-
-			this.dir = 2;
-		}
-
 		// Function from file: client procs.dm
 		public Client ( dynamic TopicData = null ) {
 			AdminRank autorank = null;
@@ -2498,7 +2492,7 @@ namespace Somnium.Game {
 			dynamic p = null;
 			dynamic _class = null;
 			dynamic variable = null;
-			string var_value = null;
+			dynamic var_value = null;
 			dynamic names = null;
 			dynamic V = null;
 			dynamic dir = null;
@@ -2679,7 +2673,7 @@ namespace Somnium.Game {
 
 				if ( Lang13.Bool( dir ) ) {
 					
-					switch ((string)( var_value )) {
+					switch ((int)( var_value )) {
 						case 1:
 							dir = "NORTH";
 							break;
@@ -3339,7 +3333,7 @@ namespace Somnium.Game {
 			dynamic V = null;
 			dynamic variable = null;
 			string __default = null;
-			string var_value = null;
+			dynamic var_value = null;
 			dynamic dir = null;
 			dynamic _class = null;
 			string original_name = null;
@@ -3491,7 +3485,7 @@ namespace Somnium.Game {
 
 			if ( Lang13.Bool( dir ) ) {
 				
-				switch ((string)( var_value )) {
+				switch ((int)( var_value )) {
 					case 1:
 						dir = "NORTH";
 						break;

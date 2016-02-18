@@ -24,7 +24,7 @@ namespace Somnium.Engine.ByImpl {
 		public virtual void Del() { }
 		public virtual void Read(SaveFile F, dynamic __id = null, dynamic locorner = null) { }
 		public virtual void Write(SaveFile F) { }
-		public virtual dynamic Topic(string href = "", ByTable href_list = null, dynamic hsrc = null, Game.HtmlInterface currui = null) { return null; }
+		public virtual dynamic Topic(string href = "", ByTable href_list = null, dynamic hsrc = null) { return null; }
 
 
 		public dynamic __CallVerb(string n, params object[] o) {
@@ -80,7 +80,7 @@ namespace Somnium.Engine.ByImpl {
 			}
 
 			protected override void list_add(object item) {
-				throw new Exception("NO.");
+				NewLib.Logger.Debug("WARNING: Attempt to set non-existant var '"+item+"' in "+owner.GetType());
 			}
 
 			protected override void list_insert(int i, object item) {
@@ -128,7 +128,12 @@ namespace Somnium.Engine.ByImpl {
 				if (skey == null)
 					throw new Exception("INVALID KEY!");
 				var t = owner.GetType();
-				return t.GetField(skey);
+				var f = t.GetField(skey);
+				if (f==null)
+				{
+					Console.WriteLine(t+" "+skey);
+				}
+				return f;
 			}
 		}
 	}

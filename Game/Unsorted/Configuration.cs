@@ -397,9 +397,6 @@ namespace Somnium.Game {
 					case "maxplayer":
 						currentmap.maxusers = String13.ParseNumber( data );
 						break;
-					case "friendlyname":
-						currentmap.friendlyname = data;
-						break;
 					case "weight":
 					case "voteweight":
 						currentmap.voteweight = String13.ParseNumber( data );

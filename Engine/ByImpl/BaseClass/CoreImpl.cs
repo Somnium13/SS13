@@ -46,6 +46,11 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
+		public void Click(Game.Ent_Static ent_Static, dynamic src_location, string src_control, string _params)
+		{
+			throw new NotImplementedException();
+		}
+
 		public virtual bool Move(dynamic loc, int dir) {
 			return false;
 		}
@@ -107,8 +112,8 @@ namespace Somnium.Engine.ByImpl {
 			return null;
 		}
 
-		public virtual dynamic Uncrossed(Game.Ent_Dynamic O = null) {
-			return null;
+		public virtual void Uncrossed(Game.Ent_Dynamic O = null) {
+			return;
 		}
 	}
 

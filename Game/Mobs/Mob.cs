@@ -3338,10 +3338,10 @@ Any-Mode: (hotkey doesn't need to be on)
 		}
 
 		// Function from file: browser.dm
-		public void browse_rsc_icon( string icon = null, string icon_state = null, int? dir = null ) {
+		public object browse_rsc_icon( string icon = null, string icon_state = null, int? dir = null ) {
 			dir = dir ?? -1;
 
-			return;
+			return null;
 		}
 
 		// Function from file: hud.dm

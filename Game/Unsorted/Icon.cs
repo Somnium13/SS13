@@ -13,6 +13,11 @@ namespace Somnium.Game {
 			return;
 		}
 
+		public static implicit operator string(Icon i)
+		{
+			return "#generated";
+		}
+
 		// Function from file: icons.dm
 		public void AddAlphaMask( Icon mask = null ) {
 			Icon M = null;

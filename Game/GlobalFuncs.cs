@@ -6477,7 +6477,7 @@ namespace Somnium.Game {
 				copy = new Image( curicon, null, curstate, A.layer, curdir );
 				copy.color = A.color;
 				copy.alpha = Convert.ToInt32( A.alpha );
-				copy.blend_mode = curblend;
+				copy.blend_mode = (curblend ?? false) ? 1 : 0; // todo wat
 				layers[copy] = A.layer;
 			}
 			process = A.underlays;
@@ -14854,19 +14854,15 @@ namespace Somnium.Game {
 		// Function from file: type2type.dm
 		public static int blendMode2iconMode( bool? blend_mode = null ) {
 			
-			switch ((bool?)( blend_mode )) {
-				case 4 != 0:
+			switch ( blend_mode == true ? 1 : 0 ) { // todo wat
+				case 4:
 					return 2;
-					break;
-				case 2 != 0:
+				case 2:
 					return 0;
-					break;
-				case 3 != 0:
+				case 3:
 					return 1;
-					break;
 				default:
 					return 3;
-					break;
 			}
 			return 0;
 		}

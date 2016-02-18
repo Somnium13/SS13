@@ -9,12 +9,6 @@ namespace Somnium.Game {
 		public int? gc_destroyed = null;
 		public string ui_screen = "home";
 
-		protected override void __FieldInit() {
-			base.__FieldInit();
-
-			this.dir = 2;
-		}
-
 		// Function from file: states.dm
 		public virtual int ui_status( dynamic user = null, UiState state = null ) {
 			Game_Data src_object = null;

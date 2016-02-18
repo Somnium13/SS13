@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class Tile_Simulated_Floor_Light : Tile_Simulated_Floor {
 
 		public bool on = true;
-		public bool state = false;
+		public int state = 0;
 		public ByTable coloredlights = new ByTable(new object [] { "g", "r", "y", "b", "p", "w", "s", "o", "g" });
 		public int currentcolor = 1;
 
@@ -46,9 +46,9 @@ namespace Somnium.Game {
 
 			if ( A is Obj_Item_Weapon_Light_Bulb ) {
 				
-				if ( this.state && ((Mob)user).drop_item() ) {
+				if ( this.state != 0 && ((Mob)user).drop_item() ) {
 					GlobalFuncs.qdel( A );
-					this.state = false;
+					this.state = 0;
 					this.update_icon();
 					user.WriteMsg( "<span class='notice'>You replace the light bulb.</span>" );
 				} else {
@@ -98,21 +98,21 @@ namespace Somnium.Game {
 
 			if ( this.on ) {
 				
-				switch ((bool)( this.state )) {
-					case false:
+				switch ( this.state ) {
+					case 0:
 						this.icon_state = "light_on-" + this.coloredlights[this.currentcolor];
 						this.SetLuminosity( 1 );
 						break;
-					case true:
+					case 1:
 						num = Rand13.Pick(new object [] { "1", "2", "3", "4" });
 						this.icon_state = "light_on_flicker" + num;
 						this.SetLuminosity( 1 );
 						break;
-					case 2 != 0:
+					case 2:
 						this.icon_state = "light_on_broken";
 						this.SetLuminosity( 1 );
 						break;
-					case 3 != 0:
+					case 3:
 						this.icon_state = "light_off";
 						this.SetLuminosity( 0 );
 						break;
