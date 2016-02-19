@@ -7,33 +7,32 @@ namespace Somnium.Engine.ByImpl {
 	// Global contents table. It just prevents direct modification!
 	class GlobalContentsTable : ByTable {
 
-		private static void add_contents_r(ArrayList list, ByTable c) {
+		private static void add_contents_r(ArrayList list, ByTable c, Type t) {
 			foreach (Base_Static ent in c.__GetRawEnum()) {
-				list.Add(ent);
-				add_contents_r(list,ent.contents);
+				if (t == null || t.IsInstanceOfType(ent))
+					list.Add(ent);
+				add_contents_r(list,ent.contents,t);
 			}
 		}
 
 		public override ArrayList __GetEnumerationList(Type t) {
-			if (t != null)
-				throw new Exception("TODO IMPLEMENT TYPE!");
-
 			var a = new ArrayList();
 
 			var zone_set = new HashSet<Game.Zone>();
 
 			foreach (Game.Tile tile in Map13.__Map) {
 				// Add Tiles
-				a.Add(tile);
+				if (t == null || t.IsInstanceOfType(tile))
+					a.Add(tile);
 				
 				// Add Zones
-				if (tile.loc != null && !zone_set.Contains(tile.loc)) {
+				if (tile.loc != null && !zone_set.Contains(tile.loc) && (t == null || t.IsInstanceOfType(tile.loc))) {
 					zone_set.Add(tile.loc);
 					a.Add(tile.loc);
 				}
 
 				// Add all other objects
-				add_contents_r(a, tile.contents);
+				add_contents_r(a, tile.contents, t);
 			}
 
 			return a;

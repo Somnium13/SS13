@@ -80,7 +80,7 @@ namespace Somnium.Engine.ByImpl {
 			}
 
 			protected override void list_add(object item) {
-				NewLib.Logger.Debug("WARNING: Attempt to set non-existant var '"+item+"' in "+owner.GetType());
+				// Do nothing. This should never actually be called, but if it is, the issue should be handled elsewhere.
 			}
 
 			protected override void list_insert(int i, object item) {
@@ -107,12 +107,22 @@ namespace Somnium.Engine.ByImpl {
 
 			protected override void hash_set(object key, object item) {
 				var f = get_field(key);
-				try {
-					f.SetValue(owner, item);
+
+				if (f != null)
+				{
+					try
+					{
+						if (f.FieldType == typeof(double?) && !(item is double?) )
+						{
+							item = Lang13.DoubleNullable(item);
+						}
+						f.SetValue(owner, item);
+						return;
+					}
+					catch { }
 				}
-				catch (Exception e) {
-					NewLib.Logger.Debug("WARN! COULD NOT SET VALUE VIA VARS: "+owner.GetType()+"."+key+" to "+item);
-				}
+
+				NewLib.Logger.Debug("WARNING: Could not set var: " + owner.GetType() + "." + key + " to " + item + " ( " + ((item!=null)?item.GetType().ToString():"NULL") + " -> " + ((f!=null)?f.FieldType.ToString():"NULL") + " )" );
 			}
 
 			protected override void hash_remove(object key) {
@@ -129,10 +139,7 @@ namespace Somnium.Engine.ByImpl {
 					throw new Exception("INVALID KEY!");
 				var t = owner.GetType();
 				var f = t.GetField(skey);
-				if (f==null)
-				{
-					Console.WriteLine(t+" "+skey);
-				}
+
 				return f;
 			}
 		}

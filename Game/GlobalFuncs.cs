@@ -5357,24 +5357,21 @@ namespace Somnium.Game {
 			ByTable _default = null;
 
 			dynamic gas_path = null;
-			ByTable gas_info = null;
-			dynamic gas = null;
 
 			_default = new ByTable();
 
-			foreach (dynamic _a in Lang13.Enumerate( Lang13.GetTypes( typeof(Gas) ) - typeof(Gas) )) {
-				gas_path = _a;
+			foreach (Type _a in Lang13.Enumerate( Lang13.GetTypes( typeof(Gas) ) - typeof(Gas) )) {
+				Gas gas = Lang13.Call(_a);
 				
-				gas_info = new ByTable( 4 );
-				gas = gas_path;
-				gas_info[1] = Lang13.Initial( gas, "specific_heat" );
-				gas_info[2] = Lang13.Initial( gas, "name" );
-				gas_info[3] = Lang13.Initial( gas, "moles_visible" );
+				ByTable gas_info = new ByTable( 4 );
+				gas_info[1] = gas.specific_heat;
+				gas_info[2] = gas.name;
+				gas_info[3] = gas.moles_visible;
 
-				if ( Lang13.Initial( gas, "moles_visible" ) != null ) {
-					gas_info[4] = new Obj_Effect_Overlay_Gas( Lang13.Initial( gas, "gas_overlay" ) );
+				if ( gas.moles_visible > 0 ) {
+					gas_info[4] = new Obj_Effect_Overlay_Gas( gas.gas_overlay );
 				}
-				_default[Lang13.Initial( gas, "id" )] = gas_info;
+				_default[gas.id] = gas_info;
 			}
 			return _default;
 		}

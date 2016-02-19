@@ -213,13 +213,45 @@ namespace Somnium.Engine.ByImpl {
 				}
 			}
 		}
-		// TODO -- REMEMBER BOOL, NULL
-		public void And(object item) {
-			throw new Exception("TODO LIST OR");
+
+		public void And(object item)
+		{
+			if (item is ByTable)
+			{
+				var other_list = ((ByTable)item).__GetEnumerationList(null);
+
+				for (int i= len; i>=1; i--)
+				{
+					object v = this[i];
+
+					int i2 = other_list.IndexOf(v);
+
+					if (i2!=-1) // Keep it!
+					{
+						other_list.RemoveAt(i2);
+					} else // Ditch it!
+					{
+						hash_remove(v);
+						list_remove_range(i,1);
+					}
+				}
+			}
+			else { // I have no idea why this would ever be used, but let's roll with it. (confirmed behavior)
+				if (Lang13.IsNumber(item))
+					item = convert_number(item);
+
+				bool has_item = list_has(item);
+
+				len = 0;
+
+				if (has_item)
+					list_add(item);
+			}
 		}
+
 		// TODO -- REMEMBER BOOL, NULL
 		public void Xor(object item) {
-			throw new Exception("TODO LIST OR");
+			throw new Exception("TODO LIST XOR");
 		}
 
 		public void WriteMsg(dynamic o) { // TODO
