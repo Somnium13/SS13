@@ -44,22 +44,35 @@ namespace Somnium.Engine.NewLib {
 				// Set when we want to return a file's contents.
 				string serve_path = null;
 
-				if (path.Segments.Length == 1) {
+				if (c.Request.HttpMethod != "GET")
+				{   // KEEP IT NICE AND SIMPLE.
+					c.Response.StatusCode = 400;
+				}
+				else if (path.Segments.Length == 1)
+				{
 					output_writer.WriteLine("SOMNIUM13 -- COMING SOON!");
 				}
+				else if (path.AbsolutePath == "/favicon.ico")
+				{
+					serve_path = Config.DIR_WWW+"favicon.ico";
+				}
 				else {
-					switch (path.Segments[1]) {
+					switch (path.Segments[1])
+					{
 						case "content/":
-							if (path.Segments.Length < 3) {
+							if (path.Segments.Length < 3)
+							{
 								c.Response.StatusCode = 400;
 								break;
 							}
-							switch (path.Segments[2]) {
+							switch (path.Segments[2])
+							{
 								// This acts as a whitelist, so clients can't grab code or other stuff you potentially don't want them to see.
 								case "icons/":
 								case "sound/":
 									serve_path = Config.DIR_CONTENT;
-									for (int i = 2; i < path.Segments.Length; i++) {
+									for (int i = 2; i < path.Segments.Length; i++)
+									{
 										serve_path += path.Segments[i];
 									}
 									break;
@@ -69,28 +82,33 @@ namespace Somnium.Engine.NewLib {
 							}
 							break;
 						case "dev/":
-							if (!Config.DEVMODE) {
+							if (!Config.DEVMODE)
+							{
 								c.Response.StatusCode = 400;
 								break;
 							}
 							goto case "client/";
 						case "client/":
 							serve_path = Config.DIR_WWW;
-							for (int i = 1; i < path.Segments.Length; i++) {
+							for (int i = 1; i < path.Segments.Length; i++)
+							{
 								serve_path += path.Segments[i];
 							}
 							break;
 						case "service/":
-							if (path.Segments.Length < 3) {
+							if (path.Segments.Length < 3)
+							{
 								c.Response.StatusCode = 400;
 								break;
 							}
 
 							ServiceCallback callback;
-							if (service_callbacks.TryGetValue(path.Segments[2],out callback)) {
+							if (service_callbacks.TryGetValue(path.Segments[2], out callback))
+							{
 								callback(c);
 								continue;
-							} else {
+							}
+							else {
 								c.Response.StatusCode = 400;
 								break;
 							}
