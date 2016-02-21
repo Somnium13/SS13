@@ -24,7 +24,7 @@ namespace Somnium.Engine.NewLib {
 				context.Response.SendChunked = true;
 
 				var map = ByImpl.Map13.__Map;
-				var types = new StringTable();
+				var strtab = new StringTable();
 
 				short size_x = (short)map.GetLength(0);
 				short size_y = (short)map.GetLength(1);
@@ -38,38 +38,52 @@ namespace Somnium.Engine.NewLib {
 				for (short iz = 0; iz < size_z; iz++) {
 					for (short iy = 0; iy < size_y; iy++) {
 						for (short ix = 0; ix < size_x; ix++) {
-							short tile_id = (short)types.GetId(map[ix, iy, iz].GetType().Name);
-							short zone_id = (short)types.GetId(map[ix, iy, iz].loc.GetType().Name);
-							short obj_count = (short)map[ix, iy, iz].contents.len;
+							// Write tile
+							write_ent(output_writer, strtab, map[ix, iy, iz]);
+							// Write zone
+							write_ent(output_writer, strtab, map[ix, iy, iz].loc);
 
-							output_writer.Write(tile_id);
-							output_writer.Write(zone_id);
+							short obj_count = (short)map[ix, iy, iz].contents.len;
 							output_writer.Write(obj_count);
 
 							if (obj_count > 0) {
-								foreach (var obj in map[ix, iy, iz].contents.__GetRawEnum()) {
-									short obj_id = (short)types.GetId(obj.GetType().Name);
-									output_writer.Write(obj_id);
+								foreach (ByImpl.Base_Static obj in map[ix, iy, iz].contents.__GetRawEnum()) {
+									write_ent(output_writer, strtab, obj);
 								}
 							}
 						}
 					}
 				}
 
-				var types_list = types.GetStrings();
-				short type_count = (short)types_list.Length;
+				var str_list = strtab.GetStrings();
+				short str_count = (short)str_list.Length;
 
-				output_writer.Write(type_count);
+				output_writer.Write(str_count);
 
-				foreach (var str in types_list) {
+				foreach (var str in str_list) {
 					output_writer.Write(str.ToCharArray());
 					output_writer.Write((byte)0);
 				}
 
-				
-
 				output_writer.Close();
 			}
+		}
+
+		private static void write_ent(BinaryWriter w, StringTable st, ByImpl.Base_Static ent)
+		{
+			short id_class = (short)st.GetId(ent.GetType().Name);
+			short id_name = (short)st.GetId(ent.name);
+			short id_desc = (short)st.GetId(ent.desc);
+			short id_icon = (short)st.GetId(ent.icon);
+			short id_state = (short)st.GetId(ent.icon_state);
+			short dir = (short)ent.dir;
+
+			w.Write(id_class);
+			w.Write(id_name);
+			w.Write(id_desc);
+			w.Write(id_icon);
+			w.Write(id_state);
+			w.Write(dir);
 		}
 
 		private static void service_map(HttpListenerContext context) {
