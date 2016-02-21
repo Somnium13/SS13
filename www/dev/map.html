@@ -7,6 +7,8 @@
 				font-family: arial;
 			}
 		</style>
+		<script src="/client/lib/pako_inflate.min.js"></script>
+		<script src="/client/lib/dmi.js"></script>
 	</head>
 	<body>
 		<h1>DEVMODE MAP</h1>
@@ -26,70 +28,102 @@
 			xhr.send();
 			
 			function loadmap(data) {
-				var map = new Uint16Array(data,0, Math.floor(data.byteLength / 2) );
+				var data_b = new Uint8Array(data);
 				
-				var w = map[0];
-				var h = map[1];
-				var layers = map[2];
+				var str_count = data_b[data_b.length-2]+data_b[data_b.length-1]*256;
+				var str_tab = [];
+				console.log(str_count+" strings.");
+				var i=data_b.length-3;
+				for (var j=0;j<str_count;j++) {
+					var str="";
+
+					for (;;) {
+						var c = data_b[i--];
+						if (c==0) break;
+						str=String.fromCharCode(c)+str;
+					}
+					
+					str_tab.push(str);
+				}
 				
-				var colors = [];
+				//console.log(str_tab);
 				
-				function get_color(n) {
+				/*console.log(strtab[strtab.length-1]);
+				console.log(strtab[strtab.length-2]);
+				console.log(strtab[strtab.length-1]+strtab[strtab.length-2]*256);*/
+				
+				
+				
+				var data_s = new Uint16Array(data,0, Math.floor(data.byteLength / 2) );
+				
+				var w = data_s[0];
+				var h = data_s[1];
+				var layers = data_s[2];
+				
+				//var colors = [];
+				
+				/*function get_color(n) {
 					if (colors[n]==null) {
 						colors[n] = "#"+("00"+(Math.floor( Math.random()*4096 )).toString(16)).substr(-3);
 					}
 					return colors[n];
-				}
+				}*/
 				
-				var scale = 16;
+				var scale = 32;
 				
 				for (var z=0;z<layers;z++) {
 					var canvas = document.createElement("canvas");
 					var ctx = canvas.getContext("2d");
-					document.body.appendChild(canvas);    
+					document.body.appendChild(canvas);
 					
 					canvas.width = w * scale;
 					canvas.height = h * scale;
 					
 					//var map_img = ctx.createImageData(w * scale, h * scale);
 					
-					var dd = 0;
+					//var dd = 0;
 					
 					var i = 3;
-					for (var y=0;y<h;y++) {
-						for (var x=0;x<w;x++) {
-							var a = map[i++];
-							var b = map[i++];
-							
-							ctx.fillStyle = get_color(a);
-							ctx.fillRect(x * scale, (h-y) * scale, scale, scale);
-							
-							ctx.strokeStyle = get_color(b);
-							ctx.lineWidth = 2;
-							ctx.strokeRect(x * scale + 1, (h-y) * scale + 1, scale - 2, scale - 2);
-							
-							var cc = map[i++];
-							for (var ci=0;ci<cc;ci++) {
-								var c = map[i++];
-								
-								ctx.strokeStyle = get_color(c);
-								ctx.lineWidth = 2;
-								ctx.strokeRect(x * scale + 4, (h-y) * scale + 4, scale - 8, scale - 8);
-								//console.log("~~"+get_color(c));
-							}
-							//console.log("=====");
-							dd += cc;
-							
-							/*map_img.data[ (x + (h-y)*w)*4     ] = reds[n];
-							map_img.data[ (x + (h-y)*w)*4 + 1 ] = greens[n];
-							map_img.data[ (x + (h-y)*w)*4 + 2 ] = blues[n];
-							map_img.data[ (x + (h-y)*w)*4 + 3 ] = 255;*/
-						}
+					var x = 0;
+					var y = 0;
+					
+					function process_obj(nodraw) {
+						var s_class = str_tab[data_s[i++]];
+						var s_name = str_tab[data_s[i++]];
+						var s_desc = str_tab[data_s[i++]];
+						
+						var s_icon = str_tab[data_s[i++]];
+						var s_state = str_tab[data_s[i++]];
+						var dir = data_s[i++];
+						
+						if (nodraw)
+							return;
+						
+						DMI.draw(ctx,x*scale,(h-y-1)*scale,s_icon,s_state,dir,0);
 					}
 					
-					console.log(">> "+dd);
-					
-					//ctx.putImageData(map_img,0,0);
+					var pass = 1;
+					var interval_id = setInterval(function() {
+						for (x=0;x<w;x++) {
+							process_obj();
+							process_obj(true);
+							
+							var obj_count = data_s[i++];
+							for (var j=0;j<obj_count;j++) {
+								process_obj();
+							}
+						}
+						y++;
+						if (y>h-1) {
+							if (pass==1) {
+								pass=2;
+								i=3;
+								y=0;
+							} else {
+								clearInterval(interval_id);
+							}
+						}
+					},100);
 				}
 			}
 		</script>

@@ -15,6 +15,9 @@ var DMI = (function() {
 			if (icon.loadfail) {
 				ctx.fillStyle = "red";
 				ctx.fillRect(x, y, 32, 32);
+			} else {
+				ctx.fillStyle = "lime";
+				ctx.fillRect(x, y, 32, 32);
 			}
 		} else {
 			state = icon["$"+state];

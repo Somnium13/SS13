@@ -58,12 +58,13 @@ namespace Somnium.Engine.NewLib {
 				var str_list = strtab.GetStrings();
 				short str_count = (short)str_list.Length;
 
-				output_writer.Write(str_count);
-
-				foreach (var str in str_list) {
-					output_writer.Write(str.ToCharArray());
+				for (int i = str_count-1; i>=0; i--) {
 					output_writer.Write((byte)0);
+					output_writer.Write(str_list[i].ToCharArray());
 				}
+
+				output_writer.Write(str_count);
+				Console.WriteLine(">>" + str_count);
 
 				output_writer.Close();
 			}
@@ -102,6 +103,8 @@ namespace Somnium.Engine.NewLib {
 		int next_id = 0;
 
 		public int GetId(string str) {
+			str = str ?? "";
+
 			int id;
 			if (ids.TryGetValue(str, out id)) {
 				return id;
