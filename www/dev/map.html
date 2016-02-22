@@ -13,6 +13,14 @@
 	<body>
 		<h1>DEVMODE MAP</h1>
 		<script>
+			// wew! http://www.html5canvastutorials.com/advanced/html5-canvas-mouse-coordinates/
+			HTMLCanvasElement.prototype.relMouseCoords = function(event){
+				var rect = this.getBoundingClientRect();
+				
+				return {x: event.clientX - rect.left, y: event.clientY - rect.top}
+			}
+			
+			
 			var xhr = new XMLHttpRequest();
  
 			xhr.onload = function(e){
@@ -46,28 +54,12 @@
 					str_tab.push(str);
 				}
 				
-				//console.log(str_tab);
-				
-				/*console.log(strtab[strtab.length-1]);
-				console.log(strtab[strtab.length-2]);
-				console.log(strtab[strtab.length-1]+strtab[strtab.length-2]*256);*/
-				
-				
 				
 				var data_s = new Uint16Array(data,0, Math.floor(data.byteLength / 2) );
 				
 				var w = data_s[0];
 				var h = data_s[1];
 				var layers = data_s[2];
-				
-				//var colors = [];
-				
-				/*function get_color(n) {
-					if (colors[n]==null) {
-						colors[n] = "#"+("00"+(Math.floor( Math.random()*4096 )).toString(16)).substr(-3);
-					}
-					return colors[n];
-				}*/
 				
 				var scale = 32;
 				
@@ -79,13 +71,12 @@
 					canvas.width = w * scale;
 					canvas.height = h * scale;
 					
-					//var map_img = ctx.createImageData(w * scale, h * scale);
-					
-					//var dd = 0;
-					
 					var i = 3;
 					var x = 0;
 					var y = 0;
+					var pass = 1;
+					
+					var info = {};
 					
 					function process_obj(nodraw) {
 						var s_class = str_tab[data_s[i++]];
@@ -99,14 +90,23 @@
 						if (nodraw)
 							return;
 						
-						DMI.draw(ctx,x*scale,(h-y-1)*scale,s_icon,s_state,dir,0);
+						if (!nodraw)
+							DMI.draw(ctx,x*scale,(h-y-1)*scale,s_icon,s_state,dir,0);
+						
+						if (pass==1) {
+							var bin = info[x+"/"+y];
+							if (bin==null) {
+								bin = [];
+								info[x+"/"+y] = bin;
+							}
+							bin.push({class: s_class, name: s_name, desc: s_desc, icon: s_icon, state: s_state, dir: dir});
+						}
 					}
 					
-					var pass = 1;
 					var interval_id = setInterval(function() {
 						for (x=0;x<w;x++) {
-							process_obj();
 							process_obj(true);
+							process_obj();
 							
 							var obj_count = data_s[i++];
 							for (var j=0;j<obj_count;j++) {
@@ -124,6 +124,14 @@
 							}
 						}
 					},100);
+					
+					canvas.onclick = function(event) {
+						var coords = this.relMouseCoords(event);
+						
+						coords.x = Math.floor(coords.x/scale);
+						coords.y = Math.floor((this.height - coords.y)/scale);
+						alert(JSON.stringify(info[coords.x+"/"+coords.y]));
+					}
 				}
 			}
 		</script>

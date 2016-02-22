@@ -13,17 +13,17 @@ var DMI = (function() {
 		
 		if (icon.img==null) {
 			if (icon.loadfail) {
-				ctx.fillStyle = "red";
+				ctx.fillStyle = "rgba(255,0,0,.5)";
 				ctx.fillRect(x, y, 32, 32);
 			} else {
-				ctx.fillStyle = "lime";
+				ctx.fillStyle = "rgba(0,255,0,.5)";
 				ctx.fillRect(x, y, 32, 32);
 			}
 		} else {
 			state = icon["$"+state];
 			
 			if (state==null) {
-				ctx.fillStyle = "orange";
+				ctx.fillStyle = "rgba(255,100,0,.5)";
 				ctx.fillRect(x, y, 32, 32);
 				return;
 			}
@@ -37,6 +37,7 @@ var DMI = (function() {
 			
 			if (state.dirs==4) {
 				switch(dir) {
+					case 0: break;			// 0
 					case 1: n++; break;		// N
 					case 8: n+=2; break;	// E
 					case 2: break;			// S
@@ -45,6 +46,7 @@ var DMI = (function() {
 				}
 			} else if (state.dirs==8) {
 				switch(dir) {
+					case 0: break;			// 0
 					case 1: n++; break;		// N
 					case 9: n+=6; break;	// NE
 					case 8: n+=2; break;	// E
@@ -214,6 +216,12 @@ var DMI = (function() {
 					i++;
 				}
 				
+				var matchL = lines[i].match(/\tloop = (.+)/);
+				if (matchL!=null) {
+					this_state.loop = parseInt(matchL[1]);
+					i++;
+				}
+				
 				var matchR = lines[i].match(/\trewind = 1/);
 				if (matchR!=null) {
 					this_state.rewind = true;
@@ -226,9 +234,9 @@ var DMI = (function() {
 					i++;
 				}
 				
-				var matchL = lines[i].match(/\tloop = (.+)/);
-				if (matchL!=null) {
-					this_state.loop = parseInt(matchL[1]);
+				var matchM = lines[i].match(/\tmovement = 1/);
+				if (matchM!=null) {
+					this_state.movement = true;
 					i++;
 				}
 				

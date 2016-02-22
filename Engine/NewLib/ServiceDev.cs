@@ -38,11 +38,13 @@ namespace Somnium.Engine.NewLib {
 				for (short iz = 0; iz < size_z; iz++) {
 					for (short iy = 0; iy < size_y; iy++) {
 						for (short ix = 0; ix < size_x; ix++) {
-							// Write tile
-							write_ent(output_writer, strtab, map[ix, iy, iz]);
 							// Write zone
 							write_ent(output_writer, strtab, map[ix, iy, iz].loc);
+							// Write tile
+							write_ent(output_writer, strtab, map[ix, iy, iz]);
+							
 
+							// Write objs
 							short obj_count = (short)map[ix, iy, iz].contents.len;
 							output_writer.Write(obj_count);
 
