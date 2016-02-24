@@ -5,17 +5,29 @@ using System.Collections;
 namespace Somnium.Engine.ByImpl {
 
 	abstract class Base_Tile : Somnium.Game.Ent_Static {
-		
-		public static void PlaceInMap(Game.Tile t, int x, int y, int z) {
-			if (Map13.__Map[x - 1, y - 1, z - 1] != null) {
-				throw new Exception("CAN NOT PLACE NEW TILE IN MAP, TILE IN THE WAY!");
-			}
 
-			Map13.__Map[x - 1, y - 1, z - 1] = t;
+		// Preloader-ish system for setting coords correctly at initialization of default tiles.
+		private static bool use_next = false;
+		private static int next_x;
+		private static int next_y;
+		private static int next_z;
 
-			t._x = x;
-			t._y = y;
-			t._z = z;
+		public static Game.Tile RawCreate(Type t, int x, int y, int z)
+		{
+			if (!t.IsSubclassOf(typeof(Base_Tile)))
+				throw new Exception("Bad tile type!");
+
+			use_next = true;
+
+			next_x = x;
+			next_y = y;
+			next_z = z;
+
+			Game.Tile result = Lang13.Call(t);
+
+			use_next = false;
+
+			return result;
 		}
 		
 		public Base_Tile(dynamic loc) {
@@ -41,6 +53,13 @@ namespace Somnium.Engine.ByImpl {
 			}
 			else {
 				_contents = new EntContentsTable(this);
+				if (use_next)
+				{
+					_x = next_x;
+					_y = next_y;
+					_z = next_z;
+					Map13.__Map[_x - 1, _y - 1, _z - 1] = (Game.Tile)this;
+				}
 			}
 		}
 

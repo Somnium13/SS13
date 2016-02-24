@@ -190,14 +190,63 @@ namespace Somnium.Engine.ByImpl {
 		// if first argument is null, use second arg as first and set range to default. This is necessary due to some stupid crap that i dont want to explain and will hopefully fix
 		// I DON'T KNOW IF THE PREVIOUS STATEMENT STILL APPLIES, BUT:
 		// It is perfectly fine to put the args in reverse order!
+
+		// range 0 -> current tile, range null -> everything?
+		// only get tiles + their zones + their contents (NOT RECURSIVE!)
+
 		public static ByTable FetchInRange(dynamic a, dynamic b) {
 			Logger.Debug("map->fetch_in_range");
 			return new ByTable();
 		}
 
 		public static ByTable FetchInRangeExcludeThis(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_in_range_nocenter");
-			return new ByTable();
+			Base_Static obj = (a as Base_Static ?? b as Base_Static);
+
+			int? range = (a as int? ?? b as int?);
+
+			if (obj == null || range == null)
+			{
+				Logger.Debug("-> " + a + " " + b);
+				throw new Exception("Bad arguments to map fetch.");
+			}
+
+			int center_x = obj.x;
+			int center_y = obj.y;
+			int center_z = obj.z;
+
+			if (center_x == -1 || center_y == -1 || center_z == -1)
+			{
+				throw new Exception("Bad center for map fetch.");
+			}
+
+			var result = new ByTable();
+			var collected_zones = new HashSet<Base_Zone>();
+
+			for (int x = center_x - (int)range; x <= center_x + range; x++)
+			{
+				if (x > __Map.GetLength(0) || x < 1) continue;
+				for (int y = center_y - (int)range; y <= center_y + range; y++)
+				{
+					if (y > __Map.GetLength(1) || y < 1) continue;
+					var tile = __Map[x - 1, y - 1, center_z - 1];
+
+					//EXCLUDE
+					if (tile == obj) continue;
+
+					result.Add(tile);
+					result.Add(tile.contents);
+					if (tile.loc != null && !collected_zones.Contains(tile.loc) )
+					{
+						result.Add(tile.loc);
+						collected_zones.Add(tile.loc);
+					}
+				}
+			}
+
+			//EXCLUDE SOME MORE.
+			result.Remove(obj);
+
+			return result;
 		}
 
 		public static ByTable FetchInView(dynamic a, dynamic b) {
@@ -253,8 +302,8 @@ namespace Somnium.Engine.ByImpl {
 							__Map[ix, iy, iz] = old_map[ix, iy, iz];
 						}
 						else {
-							Game.Tile tile_instance = Lang13.Call(Game13.default_tile, null);
-							Base_Tile.PlaceInMap(tile_instance, ix+1, iy+1, iz+1);
+							Game.Tile tile_instance = Base_Tile.RawCreate(Game13.default_tile, ix+1, iy+1, iz+1);
+
 							zone_instance.contents.Add(tile_instance);
 						}
 					}

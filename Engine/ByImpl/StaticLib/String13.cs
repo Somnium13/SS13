@@ -90,9 +90,9 @@ namespace Somnium.Engine.ByImpl {
 			return a.ToLower();
 		}
 
+		// For now, ignore the "proper" behavior and just do it as quick and dirty as possible."
 		public static string NumberToString(double a, int sf = 6) {
-			Logger.Debug("->String13.numberToString");
-			return "";
+			return a.ToString();
 		}
 
 		public static int GetCharCode(string a, int? i = null) {
@@ -110,8 +110,14 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static string ColorCode(int r, int g, int b, int a = 255) {
-			Logger.Debug("->String13.color_code");
-			return "#000";
+			string result;
+
+			if (a == 255)
+				result = "#" + ((byte)r).ToString("X2") + ((byte)g).ToString("X2") + ((byte)b).ToString("X2");
+			else
+				result = "#" + ((byte)r).ToString("X2") + ((byte)g).ToString("X2") + ((byte)b).ToString("X2") + ((byte)a).ToString("X2");
+
+			return result;
 		}
 
 

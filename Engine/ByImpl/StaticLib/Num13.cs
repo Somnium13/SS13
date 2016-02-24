@@ -5,8 +5,16 @@ using Somnium.Engine.NewLib;
 namespace Somnium.Engine.ByImpl {
 	static class Num13 {
 		public static double Round(double n, double m) {
-			Logger.Debug("num->round");
-			return 0;
+			double remainder = (n % m);
+			double result;
+			if (remainder >= m/2)
+			{
+				result = n + (m-remainder);
+			} else
+			{
+				result = n - remainder;
+			}
+			return result;
 		}
 
 		public static int Floor(double n) {

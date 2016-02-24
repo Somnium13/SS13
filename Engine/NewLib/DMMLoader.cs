@@ -215,6 +215,7 @@ namespace Somnium.Engine.NewLib {
 			turfs_underlays = new ByTable();
 			index = members.len;
 
+			// Setup zone...
 			GlobalVars._preloader.setup(members_attributes[index]);
 			instance = Lang13.FindObj(members[index]);
 
@@ -229,6 +230,8 @@ namespace Somnium.Engine.NewLib {
 			}
 
 			members.Remove(members[index]);
+
+			// Load tile(s?!?)
 			first_turf_index = 1;
 			while (members[first_turf_index] == null || !members[first_turf_index].IsSubclassOf(typeof(Tile)) ) {
 				first_turf_index++;
@@ -289,15 +292,15 @@ namespace Somnium.Engine.NewLib {
 			return next_delimiter;
 		}
 
-		private dynamic instance_atom(dynamic path = null, dynamic attributes = null, int x = 0, double y = 0, int z = 0) {
+		private dynamic instance_atom(Type type = null, dynamic attributes = null, int x = 0, double y = 0, int z = 0) {
 			dynamic instance = null;
 			Tile T = null;
 
-			GlobalVars._preloader.setup(attributes, path);
+			GlobalVars._preloader.setup(attributes, type);
 			T = Map13.GetTile(x, ((int)(y)), z);
 
 			if (T != null) {
-				instance = Lang13.Call(path, T);
+				instance = Lang13.Call(type, T);
 			}
 
 			if (Lang13.Bool(GlobalVars.use_preloader) && Lang13.Bool(instance))

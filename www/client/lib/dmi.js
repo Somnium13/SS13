@@ -39,22 +39,22 @@ var DMI = (function() {
 				switch(dir) {
 					case 0: break;			// 0
 					case 1: n++; break;		// N
-					case 8: n+=2; break;	// E
+					case 4: n+=2; break;	// E
 					case 2: break;			// S
-					case 4: n+=3; break;	// W
+					case 8: n+=3; break;	// W
 					default: console.log("BAD DIR FOR 4: "+dir);
 				}
 			} else if (state.dirs==8) {
 				switch(dir) {
 					case 0: break;			// 0
 					case 1: n++; break;		// N
-					case 9: n+=6; break;	// NE
-					case 8: n+=2; break;	// E
-					case 10: n+=4; break;	// SE
+					case 5: n+=6; break;	// NE
+					case 4: n+=2; break;	// E
+					case 6: n+=4; break;	// SE
 					case 2: break;			// S
-					case 6: n+=5; break;	// SW
-					case 4: n+=3; break;	// W
-					case 5: n+=7; break;	// NW
+					case 10: n+=5; break;	// SW
+					case 8: n+=3; break;	// W
+					case 9: n+=7; break;	// NW
 					default: console.log("BAD DIR FOR 8: "+dir);
 				}
 			}

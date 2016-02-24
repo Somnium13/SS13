@@ -61,7 +61,7 @@ namespace Somnium.Engine.ByImpl {
 			if (t == 0) {
 				frame_tasks.AddLast(f);
 			}
-			if (t==-1) {
+			else if (t==-1) {
 				background_tasks.AddLast(f);
 			}
 			else if (t < 0) {

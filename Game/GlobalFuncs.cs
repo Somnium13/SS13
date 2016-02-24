@@ -6196,7 +6196,8 @@ namespace Somnium.Game {
 			r = Num13.Round( Convert.ToDouble( RGB1[1] + ( RGB2[1] - RGB1[1] ) * amount ), 1 );
 			g = Num13.Round( Convert.ToDouble( RGB1[2] + ( RGB2[2] - RGB1[2] ) * amount ), 1 );
 			b = Num13.Round( Convert.ToDouble( RGB1[3] + ( RGB2[3] - RGB1[3] ) * amount ), 1 );
-			alpha = ( usealpha ? Num13.Round( Convert.ToDouble( RGB1[4] + ( RGB2[4] - RGB1[4] ) * amount ), 1 ) : 0 );
+			if (usealpha)
+				alpha = Num13.Round(Convert.ToDouble(RGB1[4] + (RGB2[4] - RGB1[4]) * amount), 1);
 			return ( alpha == null ? String13.ColorCode( ((int)( r )), ((int)( g )), ((int)( b )) ) : String13.ColorCode( ((int)( r )), ((int)( g )), ((int)( b )), ((int)( alpha ??0 )) ) );
 		}
 

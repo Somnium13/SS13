@@ -25,9 +25,8 @@ namespace Somnium.Game {
 		public Tile_Space ( dynamic loc = null ) : base( (object)(loc) ) {
 			
 			if ( !( this is Tile_Space_Transit ) ) {
-				this.icon_state = "" + ( this.x + this.y ^ ~( this.x * this.y ) + this.z ) % 25;
+				this.icon_state = "" + -( this.x + this.y ^ ~( this.x * this.y ) + this.z ) % 25;
 			}
-			return;
 		}
 
 		// Function from file: lighting_system.dm

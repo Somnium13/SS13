@@ -105,7 +105,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		protected override bool hash_haskey(object key) {
-			throw new Exception("NO.");
+			return false;
 		}
 	}
 
@@ -216,7 +216,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		protected override bool hash_haskey(object key) {
-			throw new Exception("NO.");
+			return false;
 		}
 	}
 }
