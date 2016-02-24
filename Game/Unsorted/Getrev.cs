@@ -12,6 +12,7 @@ namespace Somnium.Game {
 
 		// Function from file: getrev.dm
 		public Getrev (  ) {
+			/*
 			ByTable head_log = null;
 			int? line = null;
 			ByTable last_entry = null;
@@ -43,6 +44,9 @@ namespace Somnium.Game {
 				}
 				line--;
 			}
+			*/
+			this.date = "[This does not play well with submodules!]";
+			this.revision = "[Not that it matters...]";
 			Game13.log.WriteMsg( "Running /tg/ revision:" );
 			Game13.log.WriteMsg( this.date );
 			Game13.log.WriteMsg( this.revision );
