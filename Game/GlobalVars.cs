@@ -6,6 +6,17 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	static class GlobalVars {
 
+		// DIRECTIONAL CONSTANTS
+		public const int NORTH = 1;
+		public const int SOUTH = 2;
+		public const int EAST = 4;
+		public const int WEST = 8;
+
+		public const int NORTHEAST = 5;
+		public const int NORTHWEST = 9;
+		public const int SOUTHEAST = 6;
+		public const int SOUTHWEST = 10;
+
 		// Constants:
 
 		public const int access_ai_upload = 16;
@@ -112,7 +123,6 @@ namespace Somnium.Game {
 		public const int DISCONNECTED = 0;
 		public const int DOWN = 32;
 		public const int duration = 13;
-		public const double EAST = 4;
 		public const int EFFECTS_LAYER = 5000;
 		public const int ENG_FREQ = 1357;
 		public const bool ENGSEC = true;
@@ -203,9 +213,6 @@ function dropdowns() {
 		public const bool MOB_PERSPECTIVE = false;
 		public const int NEVER_FOR_THIS_ROUND = -1;
 		public const bool NO_SLIP_WHEN_WALKING = true;
-		public const double NORTH = 1;
-		public const double NORTHEAST = 5;
-		public const double NORTHWEST = 9;
 		public const int num_power_levels = 6;
 		public const int OBJ_LAYER = 3;
 		public const int OPEN_DURATION = 6;
@@ -232,9 +239,7 @@ function dropdowns() {
 		public const int SERV_FREQ = 1349;
 		public const int SOUND_PAUSED = 2;
 		public const int SOUND_STREAM = 4;
-		public const double SOUTH = 2;
-		public const double SOUTHEAST = 6;
-		public const double SOUTHWEST = 10;
+
 		public const int SPAWN_HEAT = 1;
 		public const int SPAWN_OXYGEN = 8;
 		public const int STATE_ALERT_LEVEL = 8;
@@ -262,7 +267,6 @@ function dropdowns() {
 		public const int VOX_CHANNEL = 200;
 		public const int waittime_h = 1800;
 		public const int waittime_l = 600;
-		public const double WEST = 8;
 
 		// Normal variables:
 

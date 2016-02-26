@@ -8,7 +8,7 @@ namespace Somnium.Game {
 
 		public string icon_screen = "solar";
 		public string icon_keyboard = "power_key";
-		public bool id = false;
+		public string id;
 		public double? currentdir = 0;
 		public double? targetdir = 0;
 		public double gen = 0;

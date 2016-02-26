@@ -388,11 +388,11 @@ namespace Somnium.Game {
 				return 3;
 			}
 
-			if ( ( this.dheight ?1:0) > Convert.ToDouble( S.dheight ) ) {
+			if ( this.dheight > Convert.ToDouble( S.dheight ) ) {
 				return 4;
 			}
 
-			if ( ( this.height ??0) - ( this.dheight ?1:0) > Convert.ToDouble( S.height - S.dheight ) ) {
+			if ( ( this.height ??0) - this.dheight > Convert.ToDouble( S.height - S.dheight ) ) {
 				return 5;
 			}
 

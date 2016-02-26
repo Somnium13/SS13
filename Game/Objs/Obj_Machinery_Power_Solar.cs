@@ -6,7 +6,7 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	class Obj_Machinery_Power_Solar : Obj_Machinery_Power {
 
-		public bool id = false;
+		public string id;
 		public double health = 10;
 		public bool obscured = false;
 		public double sunfrac = 0;

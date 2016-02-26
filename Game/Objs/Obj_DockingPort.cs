@@ -10,7 +10,7 @@ namespace Somnium.Game {
 		public int? width = 0;
 		public int? height = 0;
 		public int dwidth = 0;
-		public bool dheight = false;
+		public int dheight = 0;
 
 		protected override void __FieldInit() {
 			base.__FieldInit();
@@ -100,8 +100,8 @@ namespace Somnium.Game {
 				dy = 0;
 
 				while (( dy ??0) < ( this.height ??0)) {
-					xi = ( ___x ??0) + ( ( dx ??0) - this.dwidth ) * cos - ( ( dy ??0) - ( this.dheight ?1:0) ) * sin;
-					yi = ( ___y ??0) + ( ( dy ??0) - ( this.dheight ?1:0) ) * cos + ( ( dx ??0) - this.dwidth ) * sin;
+					xi = ( ___x ??0) + ( ( dx ??0) - this.dwidth ) * cos - ( ( dy ??0) - this.dheight ) * sin;
+					yi = ( ___y ??0) + ( ( dy ??0) - this.dheight ) * cos + ( ( dx ??0) - this.dwidth ) * sin;
 					T = Map13.GetTile( xi ??0, yi ??0, ___z ??0 );
 
 					if ( Lang13.Bool( A ) ) {
@@ -156,10 +156,10 @@ namespace Somnium.Game {
 					break;
 			}
 			return new ByTable(new object [] { 
-				___x + -this.dwidth * cos - -( this.dheight ?1:0) * sin, 
-				___y + -this.dwidth * sin + -( this.dheight ?1:0) * cos, 
-				___x + ( -this.dwidth + ( this.width ??0) - 1 ) * cos - ( -( this.dheight ?1:0) + ( this.height ??0) - 1 ) * sin, 
-				___y + ( -this.dwidth + ( this.width ??0) - 1 ) * sin + ( -( this.dheight ?1:0) + ( this.height ??0) - 1 ) * cos
+				___x + -this.dwidth * cos - -this.dheight* sin, 
+				___y + -this.dwidth * sin + -this.dheight * cos, 
+				___x + ( -this.dwidth + ( this.width ??0) - 1 ) * cos - ( -this.dheight + ( this.height ??0) - 1 ) * sin, 
+				___y + ( -this.dwidth + ( this.width ??0) - 1 ) * sin + ( -this.dheight + ( this.height ??0) - 1 ) * cos
 			 });
 		}
 

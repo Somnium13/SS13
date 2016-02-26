@@ -11,6 +11,11 @@ namespace Somnium.Engine.NewLib {
 			internal_print(s, ConsoleColor.DarkYellow);
 		}
 
+		public static void Debug2(string s)
+		{
+			internal_print(s, ConsoleColor.DarkGreen);
+		}
+
 		public static void Log(string s) {
 			internal_print(s, ConsoleColor.Gray);
 		}

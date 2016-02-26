@@ -8,7 +8,7 @@ namespace Somnium.Game {
 
 		public string shuttle_id = "steel_rain";
 		public int dwidth = 3;
-		public bool dheight = false;
+		public int dheight = 0;
 		public int width = 7;
 		public int height = 7;
 		public bool lz_dir = true;

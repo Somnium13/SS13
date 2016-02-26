@@ -461,7 +461,8 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: 510.dm
-		public static dynamic replacetext( dynamic text = null, dynamic replace = null, string replacement = null ) {
+		// Does not give a damn about case!
+		public static string replacetext(string text = null, dynamic replace = null, string replacement = null ) {
 			dynamic R = null;
 
 			
@@ -469,13 +470,14 @@ namespace Somnium.Game {
 				R = replace;
 				return ((Regex)R).Replace( text, replacement );
 			} else {
-				return Lang13.Call( Lang13.GetLibFunc( "code/__HELPERS/bygex", "regex_replaceallliteral" ), text, replace, replacement );
+				return text.ToLower().Replace(replace.ToLower(), replacement);
 			}
 		}
 
 		// Function from file: 510.dm
-		public static dynamic replacetextEx( dynamic text = null, string replace = null, dynamic replacement = null ) {
-			return Lang13.Call( Lang13.GetLibFunc( "code/__HELPERS/bygex", "regEx_replaceallliteral" ), text, replace, replacement );
+		// Ex -> Case Sensitive
+		public static string replacetextEx( string text = null, string replace = null, string replacement = null ) {
+			return text.Replace(replace, replacement);
 		}
 
 		// Function from file: 510.dm

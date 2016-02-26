@@ -32,7 +32,8 @@ namespace Somnium.Game {
 		public void set_type( dynamic typepath = null, dynamic user = null ) {
 			this.build_path = typepath;
 			this.name = "circuit board (" + this.names_paths[this.build_path] + " Vendor)";
-			user.WriteMsg( "<span class='notice'>You set the board to " + this.names_paths[this.build_path] + ".</span>" );
+			if (user != null)
+				user.WriteMsg( "<span class='notice'>You set the board to " + this.names_paths[this.build_path] + ".</span>" );
 			this.req_components = new ByTable().Set( Lang13.FindClass( "/obj/item/weapon/vending_refill/" + String13.SubStr( "" + this.build_path, 24, 0 ) ), 3 );
 			return;
 		}

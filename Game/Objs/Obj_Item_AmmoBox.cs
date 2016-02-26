@@ -13,6 +13,9 @@ namespace Somnium.Game {
 		public string caliber = null;
 		public bool multiload = true;
 
+		private string initial_desc;
+		private string initial_icon_state;
+
 		protected override void __FieldInit() {
 			base.__FieldInit();
 
@@ -38,6 +41,10 @@ namespace Somnium.Game {
 				this.stored_ammo.Add( Lang13.Call( this.ammo_type, this ) );
 				i++;
 			}
+
+			initial_desc = desc;
+			initial_icon_state = icon_state;
+
 			this.update_icon();
 			return;
 		}
@@ -47,13 +54,13 @@ namespace Somnium.Game {
 			
 			switch ((int)( this.multiple_sprites )) {
 				case 1:
-					this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "-" + this.stored_ammo.len;
+					this.icon_state = initial_icon_state + "-" + this.stored_ammo.len;
 					break;
 				case 2:
-					this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + "-" + ( this.stored_ammo.len != 0 ? "" + this.max_ammo : "0" );
+					this.icon_state = initial_icon_state + "-" + ( this.stored_ammo.len != 0 ? "" + this.max_ammo : "0" );
 					break;
 			}
-			this.desc = new Txt().item( Lang13.Initial( this, "desc" ) ).str( " There are " ).item( this.stored_ammo.len ).str( " shell" ).s().str( " left!" ).ToString();
+			this.desc = new Txt().item( initial_desc ).str( " There are " ).item( this.stored_ammo.len ).str( " shell" ).s().str( " left!" ).ToString();
 			return false;
 		}
 

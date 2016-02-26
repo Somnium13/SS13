@@ -181,13 +181,13 @@ namespace Somnium.Engine.ByImpl {
 					return Map13.__GetZoneInstance(t);
 				}
 			}
-			Logger.Debug("@find_obj");
+			Logger.Debug2("@find_obj "+id);
 			return null;
 		}
 
 		// We're going to have fun with this one.
 		public static void Delete(dynamic obj) {
-			Logger.Debug("@delete");
+			Logger.Debug2("@delete");
 		}
 
 		private static object[] resize_arg_list(object[] args, int required_count) {
@@ -254,7 +254,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static System.Reflection.MethodInfo GetLibFunc(string lib, string name) {
-			Logger.Debug("@getf_dll: "+lib+" ~ "+name);
+			Logger.Debug2("@getf_dll: "+lib+" ~ "+name);
 			return null;
 		}
 
@@ -278,7 +278,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic Initial(object o, string key) {
-			Logger.Debug("!!Initial");
+			Logger.Debug2("Initial: "+o+"."+key);
 			return null;
 		}
 

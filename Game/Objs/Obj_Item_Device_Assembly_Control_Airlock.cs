@@ -6,7 +6,7 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	class Obj_Item_Device_Assembly_Control_Airlock : Obj_Item_Device_Assembly_Control {
 
-		public bool specialfunctions = true;
+		public int specialfunctions = 1;
 
 		protected override void __FieldInit() {
 			base.__FieldInit();
@@ -30,7 +30,7 @@ namespace Somnium.Game {
 
 				if ( D.id_tag == this.id ) {
 					
-					if ( ( ( this.specialfunctions ?1:0) & 1 ) != 0 ) {
+					if ( ( this.specialfunctions & 1 ) != 0 ) {
 						
 						if ( D.density ) {
 							D.open();
@@ -39,11 +39,11 @@ namespace Somnium.Game {
 						}
 					}
 
-					if ( ( ( this.specialfunctions ?1:0) & 2 ) != 0 ) {
+					if ( ( this.specialfunctions & 2 ) != 0 ) {
 						D.aiDisabledIdScanner = !D.aiDisabledIdScanner;
 					}
 
-					if ( ( ( this.specialfunctions ?1:0) & 4 ) != 0 ) {
+					if ( ( this.specialfunctions & 4 ) != 0 ) {
 						
 						if ( !((Wires)D.wires).is_cut( "bolts" ) && D.hasPower() ) {
 							D.locked = !D.locked;
@@ -51,11 +51,11 @@ namespace Somnium.Game {
 						}
 					}
 
-					if ( ( ( this.specialfunctions ?1:0) & 8 ) != 0 ) {
+					if ( ( this.specialfunctions & 8 ) != 0 ) {
 						D.secondsElectrified = ( D.secondsElectrified != 0 ? 0 : -1 );
 					}
 
-					if ( ( ( this.specialfunctions ?1:0) & 16 ) != 0 ) {
+					if ( ( this.specialfunctions & 16 ) != 0 ) {
 						D.safe = !D.safe;
 					}
 				}

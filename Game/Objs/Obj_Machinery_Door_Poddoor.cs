@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class Obj_Machinery_Door_Poddoor : Obj_Machinery_Door {
 
 		public dynamic id = 1;
-		public bool auto_close = false;
+		public int auto_close = 0;
 
 		protected override void __FieldInit() {
 			base.__FieldInit();
@@ -138,8 +138,8 @@ namespace Somnium.Game {
 			this.update_freelook_sight();
 			this.operating = false;
 
-			if ( this.auto_close ) {
-				Task13.Schedule( this.auto_close ?1:0, (Task13.Closure)(() => {
+			if ( this.auto_close != 0 ) {
+				Task13.Schedule( this.auto_close, (Task13.Closure)(() => {
 					this.close();
 					return;
 				}));

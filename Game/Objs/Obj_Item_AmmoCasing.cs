@@ -14,6 +14,9 @@ namespace Somnium.Game {
 		public double variance = 0;
 		public int delay = 0;
 
+		private string default_icon_state;
+		private string default_desc;
+
 		protected override void __FieldInit() {
 			base.__FieldInit();
 
@@ -34,6 +37,11 @@ namespace Somnium.Game {
 			this.pixel_x = Rand13.Int( -10, 10 );
 			this.pixel_y = Rand13.Int( -10, 10 );
 			this.dir = Convert.ToInt32( Rand13.PickFromTable( GlobalVars.alldirs ) );
+
+			// We save defaults so we don't need initial!
+			default_icon_state = icon_state;
+			default_desc = desc;
+
 			this.update_icon();
 			return;
 		}
@@ -210,8 +218,8 @@ namespace Somnium.Game {
 		// Function from file: ammunition.dm
 		public override bool update_icon( dynamic new_state = null, dynamic new_icon = null, int? new_px = null, int? new_py = null ) {
 			base.update_icon( (object)(new_state), (object)(new_icon), new_px, new_py );
-			this.icon_state = "" + Lang13.Initial( this, "icon_state" ) + ( Lang13.Bool( this.BB ) ? "-live" : "" );
-			this.desc = "" + Lang13.Initial( this, "desc" ) + ( Lang13.Bool( this.BB ) ? "" : " This one is spent" );
+			this.icon_state = default_icon_state + ( Lang13.Bool( this.BB ) ? "-live" : "" );
+			this.desc = default_desc + ( Lang13.Bool( this.BB ) ? "" : " This one is spent" );
 			return false;
 		}
 

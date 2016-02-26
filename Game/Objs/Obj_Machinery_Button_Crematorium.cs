@@ -12,7 +12,7 @@ namespace Somnium.Game {
 			this.skin = "launcher";
 			this.device_type = typeof(Obj_Item_Device_Assembly_Control_Crematorium);
 			this.req_access = new ByTable();
-			this.id = true;
+			this.id = "1"; // wat
 			this.icon_state = "launcher";
 		}
 

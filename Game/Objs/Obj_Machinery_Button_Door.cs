@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class Obj_Machinery_Button_Door : Obj_Machinery_Button {
 
 		public bool normaldoorcontrol = false;
-		public bool specialfunctions = true;
+		public int specialfunctions = 1;
 
 		public Obj_Machinery_Button_Door ( dynamic loc = null, bool? ndir = null, bool? built = null ) : base( (object)(loc), ndir, built ) {
 			

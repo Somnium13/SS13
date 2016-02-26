@@ -115,6 +115,12 @@ namespace Somnium.Engine.ByImpl {
 						if (f.FieldType == typeof(double?) && !(item is double?) )
 						{
 							item = Lang13.DoubleNullable(item);
+						} else if (f.FieldType == typeof(Type) && (item is string))
+						{
+							item = Lang13.FindClass((string)item);
+						} else if (f.FieldType == typeof(bool) && item is int && ((int)item==1 || (int)item==0))
+						{
+							item = ((int)item == 1);
 						}
 						f.SetValue(owner, item);
 						return;

@@ -10,7 +10,7 @@ namespace Somnium.Game {
 		public dynamic device = null;
 		public dynamic board = null;
 		public Type device_type = null;
-		public bool id = false;
+		public string id;
 		public bool initialized = false;
 
 		protected override void __FieldInit() {
@@ -130,7 +130,7 @@ namespace Somnium.Game {
 			dynamic A = null;
 
 			
-			if ( this.id && this.device is Obj_Item_Device_Assembly_Control ) {
+			if ( this.id!=null && this.device is Obj_Item_Device_Assembly_Control ) {
 				A = this.device;
 				A.id = this.id;
 			}
