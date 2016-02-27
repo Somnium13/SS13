@@ -21,9 +21,9 @@ I'm not really sure how this should be interpreted, since the entire codebase ha
 to tell which parts of the code are under which license.
 You can probably just assume that GPL applies, and the extra stuff in AGPL **probably** applies.
 
-```
 In the interest of avoiding this shitshow in the future, all new code is licensed as follows:
 
+```
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                    Version 2, December 2004
 
