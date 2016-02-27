@@ -50,7 +50,7 @@ namespace Somnium.Engine.NewLib {
 				}
 				else if (path.Segments.Length == 1)
 				{
-					output_writer.WriteLine("SOMNIUM13 -- COMING SOON!");
+					serve_path = Config.DIR_WWW+"client/index.html";
 				}
 				else if (path.AbsolutePath == "/favicon.ico")
 				{

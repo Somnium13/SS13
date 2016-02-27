@@ -12,6 +12,11 @@ namespace Somnium.Engine {
 
 		public const string DIR_CONTENT = "../../content/";
 		public const string DIR_WWW = "../../www/";
+
+		public const string HOMEPAGE = "http://somnium13.github.io";
+
+		public const string HOST_ADDR = "localhost";
+		public const int HOST_PORT = 80;
 		
 	}
 }
