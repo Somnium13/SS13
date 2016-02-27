@@ -19,7 +19,7 @@ This is how the original code is licensed:
 
 I'm not really sure how this should be interpreted, since the entire codebase has been fed into a transpiler, and it's difficult
 to tell which parts of the code are under which license.
-You can probably just assume that GPL applies, and the extra stuff in AGPL **probably** apply.
+You can probably just assume that GPL applies, and the extra stuff in AGPL **probably** applies.
 
 All new code and in this repository uses the MIT license:
 
