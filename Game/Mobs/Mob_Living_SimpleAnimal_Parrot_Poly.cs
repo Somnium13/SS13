@@ -67,14 +67,14 @@ namespace Somnium.Game {
 			SaveFile S = null;
 
 			S = new SaveFile( "data/npc_saves/Poly.sav" );
-			this.speech_buffer = S.ReadItem( "phrases", this.speech_buffer );
-			this.rounds_survived = S.ReadItem( "roundssurvived", this.rounds_survived );
-			this.longest_survival = S.ReadItem( "longestsurvival", this.longest_survival );
-			this.longest_deathstreak = S.ReadItem( "longestdeathstreak", this.longest_deathstreak );
+			this.speech_buffer = S.ReadItem( "phrases", this.speech_buffer ) ?? new ByTable(); //Condensing the code -Pdan
+			this.rounds_survived = S.ReadItem( "roundssurvived", this.rounds_survived ) ?? 0; //If it's not defined, make it 0. -Pdan
+			this.longest_survival = S.ReadItem( "longestsurvival", this.longest_survival ) ?? 0; //If it's not defined, make it 0. -Pdan
+			this.longest_deathstreak = S.ReadItem( "longestdeathstreak", this.longest_deathstreak ) ?? 0; //If it's not defined, make it 0. -Pdan
 
-			if ( this.speech_buffer == null ) {
+			/*if ( this.speech_buffer == null ) {
 				this.speech_buffer = new ByTable();
-			}
+			}*/ //Put this up in line 70. -Pdan
 			return;
 		}
 
