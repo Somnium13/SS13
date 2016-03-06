@@ -347,7 +347,7 @@ namespace Somnium.Engine.ByImpl {
 			}
 			
 			if (end == 0)
-				end = list.Count+1;
+				end = list_len()+1;
 
 			for (int i = (int)(start); i < end; i++) {
 				object k = list_get(i);
