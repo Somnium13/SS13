@@ -1,13 +1,15 @@
 <!doctype html>
-<html>
+<html style="height: 100%;">
 	<head>
-		<title>SHORTBUS</title>
+		<title>THE SHORTBUS</title>
 		<style>
 			div#container {
 				background: white;
 				width: 600px;
 				border: 2px solid black;
-				margin: 100px auto;
+				margin: auto;
+				position: relative;
+				top: 100px;
 			}
 			h1,u,a {
 				display: block;
@@ -39,18 +41,20 @@
 				font-family: arial;
 			}
 		</style>
+		<script src="/client/lib/binutils.js"></script>
 	</head>
-	<body style="background: url('/client/bg.png') #111">
+	<body style="height: 100%; margin: 0; background: url('/client/bg.png') center black;">
 		<div id="container">
 			<u>Welcome to the</u>
 			<h1>SHORTBUS</h1>
 			<a href="http://somnium13.github.io">This server is running Somnium13</a>
-			<form>
+			<form name="login">
 				<h4>Login</h4>
-				Key: <input>
+				Name: <input type="text" name="name">
 				<br><br>
 				<input type="submit" value="Go">
 			</form>
 		</div>
+		<script src="/client/client.js"></script>
 	</body>
 </html>

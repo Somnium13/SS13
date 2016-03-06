@@ -28,6 +28,11 @@ namespace Somnium.Engine.NewLib {
 			internal_print(s, ConsoleColor.Magenta);
 		}
 
+		public static void LogNet(string s)
+		{
+			internal_print(s, ConsoleColor.Yellow);
+		}
+
 		public static void Error(string s, Exception e) {
 			while (e.InnerException != null)
 				e = e.InnerException;

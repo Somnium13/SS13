@@ -105,6 +105,8 @@ namespace Somnium.Engine.ByImpl {
 			}
 		}
 
+		// ALL OF THE SCHEDULER LOOP'S STATE SHOULD BE STORED IN
+		// STATIC VARIABLES OF THE CLASS, NOT LOCALLY
 		public static void __RunSchedulerLoop() {
 			frame_timer.Start(); // start the goddamn timer if it hasn't started yet
 			
@@ -138,6 +140,7 @@ namespace Somnium.Engine.ByImpl {
 
 				// ENGINE SHIT GOES HERE
 
+				ServiceGame.Process();
 				ServiceDev.Process();
 
 				// Increment frame, load tasks for next frame.

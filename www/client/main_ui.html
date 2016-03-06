@@ -1,0 +1,113 @@
+<!doctype html>
+<html style="height: 100%;">
+	<head>
+		<title>GAMEUI</title>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				
+				color: white;
+				font-family: arial;
+			}
+			div#game-view {
+				position: absolute;
+				left: 0;
+				right: 50%;
+				top: 0;
+				bottom: 40px;
+				
+				margin: 10px;
+				
+				background-color: black;
+			}
+			div#chat-bar {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 10px;
+				
+				height: 30px;
+				margin: 0 10px;
+				
+				display: flex;
+			}
+			div#chat-bar>input {
+				flex: 1;
+			}
+			div#chat-bar>button {
+				margin-left: 5px;
+			}
+			div#button-bar {
+				position: absolute;
+				left: 50%;
+				right: 10px;
+				top: 10px;
+				
+				height: 30px;
+			}
+			div#action-pane {
+				position: absolute;
+				left: 50%;
+				right: 10px;
+				top: 40px;
+				bottom: 50%;
+				
+				margin-top: 10px;
+				margin-bottom: 5px;
+				
+				padding: 10px;
+				background: #222;
+			}
+			div#chat-pane {
+				position: absolute;
+				left: 50%;
+				right: 10px;
+				top: 50%;
+				bottom: 50px;
+				
+				margin-top: 5px;
+				
+				padding: 10px;
+				background: #222;
+			}
+			button {
+				height: 30px;
+				border: 2px outset #555;
+				background: #555;
+				color: #ccc;
+			}
+			input {
+				font-family: consolas;
+				font-size: 20px;
+				box-sizing: border-box;
+				height: 30px;
+				border: 2px solid black;
+				background: #020;
+				color: #0F0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="game-view"></div>
+
+			<div id="button-bar">
+				<button>A Button</button>
+				<button>B Button</button>
+				<button>C Button</button>
+			</div>
+			<div id="action-pane">
+				Verbs be here!
+			</div>
+			<div id="chat-pane">
+				Chat be here!
+			</div>
+
+		<div id="chat-bar">
+			<input style="">
+			<button>Chat</button>
+			<button>Fart</button>
+		</div>
+	</body>
+</html>

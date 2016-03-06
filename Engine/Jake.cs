@@ -14,7 +14,7 @@ namespace Somnium.Engine {
 				object x = GlobalVars._preloader; // This forces global initialization ASAP
 
 				ServiceDev.Setup();
-				ServiceAuth.Setup();
+				ServiceGame.Setup();
 				WebServer.Start(Config.HOST_ADDR, Config.HOST_PORT);
 
 				Logger.Announce("Loading Map!");
