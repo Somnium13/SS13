@@ -18,11 +18,12 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: contraband.dm
-		public Obj_Structure_Sign_Poster ( dynamic serial = null, bool rolled_official = false ) : base( (object)(serial) ) {
+        // TODO Does this actually take loc? base was being called with serial. -Pdan
+		public Obj_Structure_Sign_Poster (dynamic loc = null, dynamic serial = null, bool rolled_official = false ) : base( (object)(loc) ) {
 			this.serial_number = serial;
 			this.official = rolled_official;
 
-			if ( this.serial_number == this.loc ) {
+			//if ( this.serial_number == this.loc ) {   //This was a tautology to begin with. -Pdan
 				
 				if ( !( this.official == true ) ) {
 					this.serial_number = Rand13.Int( 1, 36 );
@@ -31,7 +32,7 @@ namespace Somnium.Game {
 				if ( this.official == true ) {
 					this.serial_number = Rand13.Int( 1, 35 );
 				}
-			}
+			//}
 
 			if ( !( this.official == true ) ) {
 				this.icon_state = "poster" + this.serial_number;

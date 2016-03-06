@@ -29,10 +29,10 @@ namespace Somnium.Game {
 
 			if ( make_from != null ) {
 				this.dir = make_from.dir;
-				make_from.loc = 0;
+				make_from.loc = loc;
 				this.stored = make_from;
 			} else {
-				this.stored = new Obj_Structure_Disposalconstruct( 0, 6, this.dir );
+				this.stored = new Obj_Structure_Disposalconstruct(loc, 6, this.dir );
 			}
 			this.trunk_check();
 			this.air_contents = new GasMixture();

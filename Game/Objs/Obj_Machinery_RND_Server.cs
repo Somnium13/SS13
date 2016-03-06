@@ -312,7 +312,7 @@ namespace Somnium.Game {
 
 							if ( current_data.id == analyzing_data.id ) {
 								
-								if ( ( analyzing_data.level ?1:0) > ( current_data.level ?1:0) ) {
+								if ( ( (analyzing_data.level !=0) ?1:0) > ( (current_data.level != 0) ?1:0) ) { //Originally just *.level, not (*.level != 0) -Pdan
 									((dynamic)H).WriteMsg( "<span class='notice'>Database:</span> <b>UPDATED</b>." );
 									current_data.level = analyzing_data.level;
 									_default = "RDHACK";

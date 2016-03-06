@@ -259,6 +259,8 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static System.Collections.IEnumerable IterateRange(double? start, double? end, double step=1) {
+            if(start== null || end==null)
+            { yield return null; }
 			for (double i = (double)start; i <= (double)end; i += step) {
 				yield return i;
 			}

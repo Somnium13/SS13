@@ -26,10 +26,10 @@ namespace Somnium.Game {
 				
 				if ( !this.official ) {
 					this.serial_number = Rand13.Int( 1, 36 );
-					this.resulting_poster = new Obj_Structure_Sign_Poster( this.serial_number, this.official );
+					this.resulting_poster = new Obj_Structure_Sign_Poster(this.loc, this.serial_number, this.official );
 				} else {
 					this.serial_number = Rand13.Int( 1, 35 );
-					this.resulting_poster = new Obj_Structure_Sign_Poster( this.serial_number, this.official );
+					this.resulting_poster = new Obj_Structure_Sign_Poster(this.loc, this.serial_number, this.official );
 				}
 			} else {
 				this.serial_number = given_serial;

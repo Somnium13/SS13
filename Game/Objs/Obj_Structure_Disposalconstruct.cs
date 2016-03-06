@@ -33,7 +33,8 @@ namespace Somnium.Game {
 
 		// Function from file: disposal-construction.dm
 		public override dynamic attackby( dynamic A = null, dynamic user = null, string _params = null, bool? silent = null, bool? replace_spent = null ) {
-			string nicetype = null;
+        
+            string nicetype = null;
 			bool ispipe = false;
 			Ent_Static T = null;
 			dynamic CP = null;
@@ -149,7 +150,7 @@ namespace Somnium.Game {
 									SortP = P;
 									((Obj_Structure_Disposalpipe_Sortjunction)SortP).updatedir();
 								}
-							} else if ( this.ptype == 6 ) {
+							} else if ( this.ptype == 6 ) {                                
 								B = new Obj_Machinery_Disposal_Bin( this.loc, this );
 								B.mode = 0;
 								this.transfer_fingerprints_to( B );

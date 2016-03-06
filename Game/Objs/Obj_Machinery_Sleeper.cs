@@ -306,11 +306,19 @@ namespace Somnium.Game {
 				
 				I += M.rating;
 			}
+            
+        
 			this.efficiency = Lang13.Initial( this, "efficiency" ) * E;
 			this.min_health = Lang13.Initial( this, "min_health" ) * E;
 			this.available_chems = new ByTable();
 
-			foreach (dynamic _c in Lang13.IterateRange( 1, I )) {
+            // TODO If parts list is empty, what the hell do we do? Nothing? -Pdan
+            if (I == null)
+            {
+                return;
+            }
+
+            foreach (dynamic _c in Lang13.IterateRange( 1, I )) {
 				i = _c;
 				
 				this.available_chems.Or( this.possible_chems[i] );
