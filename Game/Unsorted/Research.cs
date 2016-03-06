@@ -149,7 +149,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.known_tech[T.id] ) ) {
 				known = this.known_tech[T.id];
 
-				if ( ( (T.level != 0) ?1:0) > Convert.ToDouble( known.level ) ) { //Originally just *.level, not (*.level != 0) -Pdan
+				if ( T.level > Convert.ToDouble( known.level ) ) { //Originally just *.level, not (*.level != 0) -Pdan
 					known.level = T.level;
 				}
 				return;

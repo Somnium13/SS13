@@ -158,8 +158,8 @@ namespace Somnium.Game {
 
 								if ( current_data.id == TD.stored.id ) {
 									
-									if ( ( (current_data.level != 0) ?1:0) < Convert.ToDouble( TD.stored.level ) ) { //Originally just *.level, not (*.level != 0) -Pdan
-										current_data.level = Lang13.Bool( TD.stored.level );
+									if ( current_data.level < Convert.ToInt32( TD.stored.level ) ) {
+										current_data.level = Convert.ToInt32( TD.stored.level ); // TODO what is TD.stored.level ?
 									}
 									break;
 								}

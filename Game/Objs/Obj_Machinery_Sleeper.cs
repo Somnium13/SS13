@@ -289,7 +289,7 @@ namespace Somnium.Game {
 		public override void RefreshParts(  ) {
 			dynamic E = null;
 			Obj_Item_Weapon_StockParts_MatterBin B = null;
-			dynamic I = null;
+			double I = 0;
 			Obj_Item_Weapon_StockParts_Manipulator M = null;
 			double i = 0;
 
@@ -299,7 +299,6 @@ namespace Somnium.Game {
 				
 				E += B.rating;
 			}
-			I = null;
 
 			foreach (dynamic _b in Lang13.Enumerate( this.component_parts, typeof(Obj_Item_Weapon_StockParts_Manipulator) )) {
 				M = _b;
@@ -311,12 +310,6 @@ namespace Somnium.Game {
 			this.efficiency = Lang13.Initial( this, "efficiency" ) * E;
 			this.min_health = Lang13.Initial( this, "min_health" ) * E;
 			this.available_chems = new ByTable();
-
-            // TODO If parts list is empty, what the hell do we do? Nothing? -Pdan
-            if (I == null)
-            {
-                return;
-            }
 
             foreach (dynamic _c in Lang13.IterateRange( 1, I )) {
 				i = _c;

@@ -6,6 +6,8 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	class Obj_Machinery_Atmospherics_Components_Unary_Thermomachine_Freezer : Obj_Machinery_Atmospherics_Components_Unary_Thermomachine {
 
+		private double initial_min_temp;
+
 		protected override void __FieldInit() {
 			base.__FieldInit();
 
@@ -19,15 +21,14 @@ namespace Somnium.Game {
 
 		// Function from file: thermomachine.dm
 		public Obj_Machinery_Atmospherics_Components_Unary_Thermomachine_Freezer ( dynamic loc = null, int? process = null ) : base( (object)(loc), process ) {
-			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
 			this.component_parts.Add( new Obj_Item_Weapon_Circuitboard_Thermomachine_Freezer( null ) );
-			return;
+
+			initial_min_temp = min_temperature;
 		}
 
 		// Function from file: thermomachine.dm
 		public override void RefreshParts(  ) {
-			dynamic L = 0; //null -Pdan
-            dynamic temp = 0; //New var implemented by Pdan
+			double L = 0; //null -Pdan
 			Obj_Item_Weapon_StockParts_MicroLaser M = null;
 
 			base.RefreshParts();
@@ -38,17 +39,8 @@ namespace Somnium.Game {
 				L += M.rating;
 			}
 
-            //BLOCK ADDED BY Pdan
-            temp = Lang13.Initial(this, "min_temperature");
-            if (temp == null)
-            {
-                temp = 0;
-            }
-            //END BLOCK ADDED BY Pdan
-
-            Console.WriteLine(">>>> Please check Obj_Machinery_Atmospherics_Components_Unary_Thermomachine_Freezer.RefreshParts() to make sure temperature is being refreshed properly."); //Pdan
-
-			this.min_temperature = Num13.MaxInt( ((int)( 273.41 - Convert.ToDouble(temp + L * 15 ) )), ((int)( 2.7 )) );
+			// still not sure wtf is going on here
+			this.min_temperature = Num13.Max( 273.41 - (initial_min_temp + L * 15 ),  2.7  );
 			return;
 		}
 

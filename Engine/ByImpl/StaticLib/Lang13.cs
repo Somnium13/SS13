@@ -259,8 +259,9 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static System.Collections.IEnumerable IterateRange(double? start, double? end, double step=1) {
-            if(start== null || end==null)
-            { yield return null; }
+            //if(start== null || end==null) -- Rolled back Pdan's change. We really want to know when this fucks up.
+            //{ yield return null; }		-- We also don't know how Byond behaves when one of these is null.
+
 			for (double i = (double)start; i <= (double)end; i += step) {
 				yield return i;
 			}
