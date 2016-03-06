@@ -73,11 +73,7 @@ namespace Somnium.Engine.ByImpl {
 	}
 
 	abstract class Base_Dynamic : Somnium.Game.Ent_Static {
-		public Base_Dynamic(object loc) {
-            if (loc is int)
-            {
-                Console.WriteLine("||||||||||||||||||||| " + this.GetType().FullName + "||| " + loc); //Easier way to find when stuff's being dumb. -Pdan
-            }
+		public Base_Dynamic(Game.Ent_Static loc) {
 			this.loc = loc;
 			this._contents = new EntContentsTable(this);
 		}

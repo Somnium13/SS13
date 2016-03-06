@@ -340,7 +340,7 @@ namespace Somnium.Game {
 			this.add_fingerprint( user );
 
 			if ( this.loc is Obj_Item_Assembly ) {
-				this.icon = this.loc;
+				this.icon = this.loc.icon; // FIXME not really sure what was intended here, but it was fucking goofy
 			}
 
 			if ( A is Obj_Item_Device_Analyzer && Map13.GetDistance( user, this ) <= 1 ) {

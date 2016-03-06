@@ -235,10 +235,10 @@ namespace Somnium.Engine.ByImpl {
 
 					result.Add(tile);
 					result.Add(tile.contents);
-					if (tile.loc != null && !collected_zones.Contains(tile.loc) )
+					if (tile.loc != null && !collected_zones.Contains((Base_Zone)tile.loc) )
 					{
 						result.Add(tile.loc);
-						collected_zones.Add(tile.loc);
+						collected_zones.Add((Base_Zone)tile.loc);
 					}
 				}
 			}

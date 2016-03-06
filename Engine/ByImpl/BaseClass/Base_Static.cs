@@ -85,22 +85,16 @@ namespace Somnium.Engine.ByImpl {
 			set { _contents.len = 0; _contents.Add(value); }
 		}
 
-		public dynamic loc {
+		public Game.Ent_Static loc {
 			get { return _loc; }
 			set
             {
                 if (this is Game.Ent_Dynamic)
                 {
-                    if(value is int)
-                    {
-                        throw new Exception("LOC SHOULD BE AN ENT!");
-                    }
                     if (value != null)
                     {
-                       // Console.WriteLine(">>>>>>>>>>>>>>>> " + value);
                         Game.Ent_Static ent_loc = value;
-                        ent_loc._contents.Add(this);
-
+                        ent_loc._contents.Add(this); // setting the actual loc is handled by this!
                     }
                 }
 

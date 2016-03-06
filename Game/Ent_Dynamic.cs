@@ -36,7 +36,7 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: lighting_system.dm
-		public Ent_Dynamic ( dynamic loc = null ) : base( (object)(loc) ) {
+		public Ent_Dynamic ( dynamic loc = null ) : base( (Ent_Static)(loc) ) {
 			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
 
 			if ( this.opacity ) {

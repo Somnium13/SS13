@@ -10564,7 +10564,7 @@ namespace Somnium.Game {
 			if ( !( Task13.User.control_object != null ) ) {
 				Task13.User.name_archive = Task13.User.real_name;
 			}
-			Task13.User.loc = O;
+			Task13.User.loc = (Ent_Static)O;
 			Task13.User.real_name = ((dynamic)O).name;
 			Task13.User.name = ((dynamic)O).name;
 			Task13.User.client.eye = O;

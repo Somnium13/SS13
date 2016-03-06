@@ -26,8 +26,8 @@ namespace Somnium.Engine.ByImpl {
 					a.Add(tile);
 				
 				// Add Zones
-				if (tile.loc != null && !zone_set.Contains(tile.loc) && (t == null || t.IsInstanceOfType(tile.loc))) {
-					zone_set.Add(tile.loc);
+				if (tile.loc != null && !zone_set.Contains((Game.Zone)tile.loc) && (t == null || t.IsInstanceOfType(tile.loc))) {
+					zone_set.Add((Game.Zone)tile.loc);
 					a.Add(tile.loc);
 				}
 
