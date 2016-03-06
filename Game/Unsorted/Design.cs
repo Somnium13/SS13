@@ -30,8 +30,8 @@ namespace Somnium.Game {
 				
 
 				if ( this.req_tech.Contains( T.id ) ) {
-					new_reliability += T.level ?1:0;
-				}
+					new_reliability += (T.level != 0) ?1:0; //Originally just *.level, not (*.level != 0) -Pdan
+                }
 			}
 			new_reliability = Num13.MaxInt( this.reliability, Num13.MinInt( new_reliability, 100 ) );
 			this.reliability = new_reliability;

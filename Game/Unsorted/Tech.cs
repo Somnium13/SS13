@@ -9,7 +9,7 @@ namespace Somnium.Game {
 		public string name = "name";
 		public string desc = "description";
 		public string id = "id";
-		public bool level = true;
+		public int level = 0; //Originally Bool = true -Pdan
 		public int rare = 1;
 		public ByTable req_tech = new ByTable();
 
@@ -23,13 +23,13 @@ namespace Somnium.Game {
 				current_level = Lang13.Initial( this, "level" );
 			}
 
-			if ( Convert.ToDouble( current_level ) >= ( this.level ?1:0) ) {
+			if ( Convert.ToDouble( current_level ) >= ( (this.level != 0) ?1:0) ) { //Originally just *.level, not (*.level != 0) -Pdan
 				return 0;
 			}
 			cost = 0;
 			i = current_level + 1;
 
-			while (Convert.ToDouble( i ) <= ( this.level ?1:0)) {
+			while (Convert.ToDouble( i ) <= ((this.level != 0) ? 1:0)) { //Originally just *.level, not (*.level != 0) -Pdan
 				
 				if ( i == Lang13.Initial( this, "level" ) ) {
 					

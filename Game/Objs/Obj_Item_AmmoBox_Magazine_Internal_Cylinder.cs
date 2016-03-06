@@ -63,10 +63,10 @@ namespace Somnium.Game {
 		// Function from file: magazines.dm
 		public void rotate(  ) {
 			dynamic b = null;
-
-			b = this.stored_ammo[1];
-			this.stored_ammo.Cut( 1, 2 );
-			this.stored_ammo.Insert( 0, b );
+            Console.WriteLine(">>>> Please check out Obj_Item_AmmoBox_Magazine_Internal_Cylinder.rotate() to see if bullets are emptying properly."); //-Pdan
+			b = this.stored_ammo[1];        //1 
+			this.stored_ammo.Cut( 2, 3 );       //1, 2
+            this.stored_ammo.Insert( 1, b );        //0, b
 			return;
 		}
 

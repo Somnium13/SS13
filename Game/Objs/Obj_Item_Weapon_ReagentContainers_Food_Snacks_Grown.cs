@@ -35,7 +35,7 @@ namespace Somnium.Game {
 			this.pixel_x = Rand13.Int( -5, 5 );
 			this.pixel_y = Rand13.Int( -5, 5 );
 
-			if ( this.dried_type == -1 ) {
+			if ( this.dried_type.Equals(1)) {
 				this.dried_type = this.type;
 			}
 

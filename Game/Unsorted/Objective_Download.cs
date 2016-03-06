@@ -50,9 +50,9 @@ namespace Somnium.Game {
 					current_data = _a;
 					
 
-					if ( current_data.level ) {
-						current_amount += ( current_data.level ?1:0) - 1;
-					}
+					if ( current_data.level != 0) { //Originally just *.level, not (*.level != 0) -Pdan
+						current_amount += ( (current_data.level != 0) ?1:0) - 1; //Originally just *.level, not (*.level != 0) -Pdan
+                    }
 				}
 			}
 

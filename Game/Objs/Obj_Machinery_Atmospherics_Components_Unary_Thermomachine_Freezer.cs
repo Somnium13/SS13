@@ -26,7 +26,8 @@ namespace Somnium.Game {
 
 		// Function from file: thermomachine.dm
 		public override void RefreshParts(  ) {
-			dynamic L = null;
+			dynamic L = 0; //null -Pdan
+            dynamic temp = 0; //New var implemented by Pdan
 			Obj_Item_Weapon_StockParts_MicroLaser M = null;
 
 			base.RefreshParts();
@@ -36,7 +37,18 @@ namespace Somnium.Game {
 				
 				L += M.rating;
 			}
-			this.min_temperature = Num13.MaxInt( ((int)( 273.41 - Convert.ToDouble( Lang13.Initial( this, "min_temperature" ) + L * 15 ) )), ((int)( 2.7 )) );
+
+            //BLOCK ADDED BY Pdan
+            temp = Lang13.Initial(this, "min_temperature");
+            if (temp == null)
+            {
+                temp = 0;
+            }
+            //END BLOCK ADDED BY Pdan
+
+            Console.WriteLine(">>>> Please check Obj_Machinery_Atmospherics_Components_Unary_Thermomachine_Freezer.RefreshParts() to make sure temperature is being refreshed properly."); //Pdan
+
+			this.min_temperature = Num13.MaxInt( ((int)( 273.41 - Convert.ToDouble(temp + L * 15 ) )), ((int)( 2.7 )) );
 			return;
 		}
 
