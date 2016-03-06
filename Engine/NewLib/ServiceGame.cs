@@ -19,8 +19,6 @@ namespace Somnium.Engine.NewLib {
 
 		public static void Process()
 		{
-			Console.WriteLine("process connections... "+clients.Count);
-
 			// Add new clients.
 			while (clients_new.Count>0)
 			{
@@ -34,8 +32,12 @@ namespace Somnium.Engine.NewLib {
 			// Process clients.
 			LinkedList<EngineClient> clients_deleted = new LinkedList<EngineClient>();
 			foreach (var c in clients) {
-				if (c.Process())
+				var process_result = c.Process();
+				if (process_result != null)
+				{
+					Logger.LogNet("Dropped " + c + ": "+ process_result);
 					clients_deleted.AddLast(c);
+				}
 			}
 
 			// Delete old clients.
@@ -67,6 +69,7 @@ namespace Somnium.Engine.NewLib {
 		private DateTime time_created;
 		private bool authed;
 		private bool closed;
+		private string drop_msg;
 
 		private string username;
 
@@ -93,15 +96,15 @@ namespace Somnium.Engine.NewLib {
 			Listen();
 		}
 
-		// Returns true if it should be deleted.
-		public bool Process()
+		// Returns disconnect reason if should be deleted.
+		public string Process()
 		{
-			if (closed) return true;
+			if (closed) return drop_msg;
 
 			if (!authed && time_created.AddSeconds(5)<=DateTime.Now)
 			{
 				Drop("Took too long to auth.");
-				return true;
+				return drop_msg;
 			}
 
 			int receive_n = 0;
@@ -123,7 +126,7 @@ namespace Somnium.Engine.NewLib {
 							var msg = "Client \"" + this + "\" dropped due to protocol error.";
 							Logger.Error(msg,e);
 							Drop("Protocol error. Bad message.");
-							return true;
+							return drop_msg;
 						}
 						receive_stream.SetLength(0);
 					}
@@ -136,12 +139,12 @@ namespace Somnium.Engine.NewLib {
 						Drop("Protocol error. Attempt to send textual message.");
 					}
 					// We delete the client if it was a text or close message.
-					return true;
+					return drop_msg ?? "Connection closed.";
 				}
 				receive_n++;
 			}
 
-			return false;
+			return null;
 		}
 
 		// Drops the client.
@@ -152,9 +155,8 @@ namespace Somnium.Engine.NewLib {
 			var ct = new System.Threading.CancellationToken();
 			websocket.CloseAsync(WebSocketCloseStatus.NormalClosure, msg, ct);
 
-			Logger.LogNet("Dropped client " + this + ": "+msg);
-
 			closed = true;
+			drop_msg = msg;
 		}
 
 		private void HandleMessage()
@@ -176,19 +178,21 @@ namespace Somnium.Engine.NewLib {
 			if (authed)
 				throw new Exception("Already authed!");
 
-			username = receive_reader.ReadString();
-			if (username.Length<1)
+			string n = receive_reader.ReadString();
+			if (n.Length<1)
 			{
 				Drop("Name empty.");
 				return;
 			}
-			else if (username.Length > 32)
+			else if (n.Length > 32)
 			{
 				Drop("Name too long.");
 				return;
-			}
+			} 
+
+			username = n;
 			authed = true;
-			Logger.LogNet("Accepted client "+this+".");
+			Logger.LogNet("Accepted "+this+".");
 			TxAccept();
 		}
 
@@ -214,6 +218,14 @@ namespace Somnium.Engine.NewLib {
 			var ct = new System.Threading.CancellationToken();
 			websocket.SendAsync(new ArraySegment<byte>(send_stream.GetBuffer(), 0, (int)send_stream.Position), WebSocketMessageType.Binary, true, ct);
 			send_stream.SetLength(0);
+		}
+
+		public override string ToString()
+		{
+			if (username != null)
+				return "client \"" + username + "\"";
+
+			return "unnamed client #"+this.GetHashCode();
 		}
 	}
 }

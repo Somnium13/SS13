@@ -92,22 +92,64 @@
 	<body>
 		<div id="game-view"></div>
 
-			<div id="button-bar">
-				<button>A Button</button>
-				<button>B Button</button>
-				<button>C Button</button>
-			</div>
-			<div id="action-pane">
-				Verbs be here!
-			</div>
-			<div id="chat-pane">
-				Chat be here!
-			</div>
+		<div id="button-bar">
+			<button>A Button</button>
+			<button>B Button</button>
+			<button>C Button</button>
+		</div>
+		<div id="action-pane">
+			Verbs be here!
+		</div>
+		<div id="chat-pane">
+			Chat be here!
+		</div>
 
 		<div id="chat-bar">
 			<input style="">
 			<button>Chat</button>
 			<button>Fart</button>
 		</div>
+		
+		<script>
+			var game_view = document.getElementById('game-view');
+			
+			var canvas = document.createElement("canvas");
+			game_view.appendChild(canvas);
+			
+			function resize_callback() {
+				canvas.setAttribute("width",game_view.clientWidth);
+				canvas.setAttribute("height",game_view.clientHeight);
+			}
+			
+			resize_callback();
+			window.onresize = resize_callback;
+			
+			var ctx = canvas.getContext("2d");
+			
+			function draw_callback() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				
+				for (var i = 0; i<10; i++) {
+					
+					ctx.save();
+					
+					var t = Math.sin(Date.now()/200+i/10)/10;
+					
+					ctx.translate(canvas.width/2,canvas.height/2);
+					ctx.rotate( t );
+					
+					ctx.font= (canvas.width/15)+"px consolas";
+					ctx.fillStyle = "rgb(0,0,"+i*20+")";
+					ctx.fillText("LOOK AT THIS SHITTY MOCKUP!",-canvas.width/2,0);
+					
+					ctx.restore();
+				}
+				
+				requestAnimationFrame(draw_callback);
+			}
+			
+			draw_callback();
+			
+		</script>
 	</body>
 </html>
