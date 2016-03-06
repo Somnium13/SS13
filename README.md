@@ -18,5 +18,6 @@ If you want to become part of my crack team of non-skids, hit me up at bigboysau
 - Feb 17: /vg/ was a BAD IDEA. We're back on the /tg/ train, boys!
 
 ## Credits
-- melichior - Project Lead - Wrote the transcompiler
-- YotaXP - Useful Information - Not actually affiliated with this project
+- melichior - Captain - Project Lead
+- Pdan4 - Greysuit - Coder and Artist
+- YotaXP - Space Wizard - Useful Information - Not actually affiliated with this project
