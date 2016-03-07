@@ -4,7 +4,9 @@ The /tg/ branch of SS13, now in C#!
 This is the entirety of /tg/station, translated from DM to C#. You're probably wondering why I'd dedicate such a significant chunk of my time to such an idiotic goal. See [here](http://somnium13.github.io#why) for my rationale.
 
 ## Contributing
-If you want to become part of my crack team of non-skids, hit me up at bigboysauceboss@aol.com, or PM ```_melichior_``` on reddit.
+See CONTRIBUTING.md.
+
+If you want to become part of my crack team of non-skids, hit me up at bigboysauceboss@aol.com, or PM `_melichior_` on reddit.
 
 ## Progress
 
