@@ -19,7 +19,7 @@ This is how the original code is licensed:
 
 I guess it's best to assume the following:
 
-1. Code is licensed under AGPLv3.
+1. Code is licensed under AGPLv3 -- See LICENSE-AGPLv3.txt for details.
 2. Some assets have their own specific licenses, but they live in their own repositories so they're not my problem.
 
 **For the record, I do not approve of this bullshit. If I had my way, all new changes would be licensed under MIT or WTFPL, but it has come to my attention that this might not be okay. I don't really care if this is okay, but I'll deal with the AGPL it if it helps avoids a shitshow.**
