@@ -18,6 +18,7 @@ This is how the original code is licensed:
 >All assets including icons and sound are under a Creative Commons 3.0 BY-SA license (http://creativecommons.org/licenses/by-sa/3.0/) unless otherwise indicated.
 
 I guess it's best to assume the following:
+
 1. Code is licensed under AGPLv3.
 2. Some assets have their own specific licenses, but they live in their own repositories so they're not my problem.
 
