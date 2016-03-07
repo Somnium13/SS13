@@ -808,19 +808,15 @@ namespace Somnium.Game {
 			dynamic E = null;
 			dynamic shottype = null;
 
-			E = Lang13.Call( this.installation ); //Trying to get an instance of Obj_Item_Weapon_Gun_Energy_Gun_Turret. Its ammo is hardcoded and so is this reference. -Pdan
-			Console.WriteLine(">>>> Please check Obj_Machinery_PortaTurret.setup() to make sure the PortaTurrets are using the proper ammo type."); //-Pdan
-			Obj_Item_Weapon_Gun_Energy_Gun_Turret s = new Obj_Item_Weapon_Gun_Energy_Gun_Turret();
-			//Did it for it -Pdan
-			shottype = s.ammo_type[1];
+			E = Lang13.Call( this.installation );
+			shottype = E.ammo_type[1];
 			this.projectile = shottype.projectile_type;
 			this.eprojectile = this.projectile;
 			this.shot_sound = shottype.fire_sound;
 			this.eshot_sound = this.shot_sound;
 
-			//dynamic _a = E.type; // Was a switch-case, sorry for the mess.	//Commented this line out because the type is hardcoded and E is null. -Pdan
-			dynamic _a = this.installation; //-Pdan
-			if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag)) ) {
+			dynamic _a = E.type; // Was a switch-case, sorry for the mess.
+			if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag) ) {
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lasertag_Bluetag);
 				this.lasercolor = "b";
 				this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels, GlobalVars.access_theatre });
@@ -830,7 +826,7 @@ namespace Somnium.Game {
 				this.stun_all = false;
 				this.check_anomalies = false;
 				this.shot_delay = 30;
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag) ) {
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam_Lasertag_Redtag);
 				this.lasercolor = "r";
 				this.req_access = new ByTable(new object [] { GlobalVars.access_maint_tunnels, GlobalVars.access_theatre });
@@ -841,27 +837,27 @@ namespace Somnium.Game {
 				this.check_anomalies = false;
 				this.shot_delay = 30;
 				this.active_state = "Laser";
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Practice)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Practice) ) {
 				this.active_state = "Laser";
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Retro)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Retro) ) {
 				this.active_state = "Laser";
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Captain)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Captain) ) {
 				this.active_state = "Laser";
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Lasercannon)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Lasercannon) ) {
 				this.active_state = "Laser";
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Gun_Advtaser)) ) {
-				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
-				this.eshot_sound = "sound/weapons/Laser.ogg";
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Gun)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Gun_Advtaser) ) {
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
 				this.eshot_sound = "sound/weapons/Laser.ogg";
-				this.egun = true;
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Gun_Nuclear)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Gun) ) {
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
 				this.eshot_sound = "sound/weapons/Laser.ogg";
 				this.egun = true;
-			} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Gun_Turret)) ) {
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Gun_Nuclear) ) {
+				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
+				this.eshot_sound = "sound/weapons/Laser.ogg";
+				this.egun = true;
+			} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Gun_Turret) ) {
 				this.eprojectile = typeof(Obj_Item_Projectile_Beam);
 				this.eshot_sound = "sound/weapons/Laser.ogg";
 				this.egun = true;
@@ -876,9 +872,9 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.installation ) ) {
 				
 				dynamic _a = this.installation; // Was a switch-case, sorry for the mess.
-				if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag)) ) {
+				if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag) ) {
 					return "blue";
-				} else if ( _a.Equals(typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag)) ) {
+				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag) ) {
 					return "red";
 				}
 			}
