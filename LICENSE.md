@@ -17,24 +17,11 @@ This is how the original code is licensed:
 >
 >All assets including icons and sound are under a Creative Commons 3.0 BY-SA license (http://creativecommons.org/licenses/by-sa/3.0/) unless otherwise indicated.
 
-I'm not really sure how this should be interpreted, since the entire codebase has been fed into a transpiler, and it's difficult
-to tell which parts of the code are under which license.
-You can probably just assume that GPL applies, and the extra stuff in AGPL **probably** applies.
+I guess it's best to assume the following:
+1. Code is licensed under AGPLv3.
+2. Some assets have their own specific licenses, but they live in their own repositories.
 
-In the interest of avoiding this shitshow in the future, all new code is licensed as follows:
+**For the record, I do not approve of this bullshit. If I had my way, this would be licensed under MIT or WTFPL, but it has come to my attention that this would not be okay. I don't really care if this is okay, but I'll deal with the AGPLv3 it if it helps avoids a shitshow.**
 
-```
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 2, December 2004
+Please contact me if you have concerns suggestions regarding the license.
 
-Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
-
-Everyone is permitted to copy and distribute verbatim or modified
-copies of this license document, and changing it is allowed as long
-as the name is changed.
-
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
- 0. You just DO WHAT THE FUCK YOU WANT TO.
-```
