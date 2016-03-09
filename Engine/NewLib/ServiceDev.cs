@@ -8,10 +8,14 @@ namespace Somnium.Engine.NewLib {
 	static class ServiceDev {
 		private static ConcurrentQueue<HttpListenerContext> map_reqs = new ConcurrentQueue<HttpListenerContext>();
 
+		private static ConcurrentDictionary<string, ConcurrentBag<string>> warnings = new ConcurrentDictionary<string, ConcurrentBag<string>>();
+		private static ConcurrentDictionary<string, ConcurrentBag<string>> errors = new ConcurrentDictionary<string, ConcurrentBag<string>>();
+
 		public static void Setup() {
 			if (!Config.DEVMODE) return;
 
 			WebServer.RegisterService("dev-map", service_map);
+			WebServer.RegisterService("dev-issues", service_issues);
 		}
 
 		public static void Process() {
@@ -72,6 +76,30 @@ namespace Somnium.Engine.NewLib {
 			}
 		}
 
+		public static void NotifyIssue(bool is_error, string title, string misc)
+		{
+			if (!Config.DEVMODE) return;
+
+			ConcurrentBag<string> miscs;
+			if (is_error)
+			{
+				if (!errors.TryGetValue(title, out miscs))
+				{
+					miscs = new ConcurrentBag<string>();
+					errors[title] = miscs;
+				}
+			} else
+			{
+				if (!warnings.TryGetValue(title, out miscs))
+				{
+					miscs = new ConcurrentBag<string>();
+					warnings[title] = miscs;
+				}
+			}
+
+			miscs.Add(misc);
+		}
+
 		private static void write_ent(BinaryWriter w, StringTable st, ByImpl.Base_Static ent)
 		{
 			short id_class = (short)st.GetId(ent.GetType().Name);
@@ -97,6 +125,39 @@ namespace Somnium.Engine.NewLib {
 				context.Response.StatusCode = 503;
 				context.Response.Close();
 			}
+		}
+
+		private static void service_issues(HttpListenerContext context)
+		{
+			var sr = new StreamWriter(context.Response.OutputStream);
+
+			sr.Write(errors.Count);
+			sr.Write(" Errors:\n\n");
+
+			foreach (KeyValuePair<string, ConcurrentBag<string>> kv in errors)
+			{
+				sr.Write("\t"+kv.Key.Replace("\n","\n\t")+"\n");
+				foreach (string misc in kv.Value)
+				{
+					sr.Write("\t\t> " + misc + "\n");
+				}
+			}
+
+			sr.Write("\n\n");
+
+			sr.Write(warnings.Count);
+			sr.Write(" Warnings:\n\n");
+
+			foreach (KeyValuePair<string, ConcurrentBag<string>> kv in warnings)
+			{
+				sr.Write("\t" + kv.Key.Replace("\n", "\n\t") + "\n");
+				foreach (string misc in kv.Value)
+				{
+					sr.Write("\t\t> " + misc + "\n");
+				}
+			}
+
+			sr.Close();
 		}
 	}
 

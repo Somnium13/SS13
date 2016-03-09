@@ -8,7 +8,7 @@ namespace Somnium.Engine.NewLib {
 		}
 
 		public static void Debug(string s) {
-			internal_print(s, ConsoleColor.DarkYellow);
+			internal_print(s, ConsoleColor.DarkGreen);
 		}
 
 		public static void Debug2(string s)
@@ -33,18 +33,26 @@ namespace Somnium.Engine.NewLib {
 			internal_print(s, ConsoleColor.Yellow);
 		}
 
-		public static void Error(string s, Exception e) {
+		public static void Error(string info, Exception e) {
 			while (e.InnerException != null)
 				e = e.InnerException;
 			
-			s = new String('=', Console.WindowWidth) + "\n" + s;
+			string s = new String('=', Console.WindowWidth) + "\n" + info;
 			s += "\n" + new String('-', Console.WindowWidth);
 			s += "\n" + e.Message;
 			s += "\n" + new String('-', Console.WindowWidth);
 			s += "\n" + e.StackTrace;
 			s += "\n" + new String('=', Console.WindowWidth);
 
+			ServiceDev.NotifyIssue(true,e.Message+"\n"+e.StackTrace, info);
+
 			internal_print(s, ConsoleColor.Red, false);
+		}
+
+		public static void Warning(string title, string misc)
+		{
+			ServiceDev.NotifyIssue(false, title, misc);
+			internal_print(title + " " + misc, ConsoleColor.DarkYellow);
 		}
 
 		private static void internal_print(string s, ConsoleColor color, bool strip_newlines = true) {

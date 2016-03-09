@@ -281,7 +281,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic Initial(object o, string key) {
-			Logger.Debug2("Initial: "+o+"."+key);
+			Logger.Warning("Initial "+key,"in "+o);
 			return null;
 		}
 
