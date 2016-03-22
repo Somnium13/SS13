@@ -18,6 +18,8 @@ namespace Somnium.Game {
 
 			this.force = 2;
 			this.icon_state = "chemg";
+
+			__RegisterInitialTracked("desc");
 		}
 
 		// Function from file: chem_grenade.dm

@@ -85,6 +85,8 @@ namespace Somnium.Game {
 			this.pass_flags = 1;
 			this.pressure_resistance = 3;
 			this.icon = "icons/obj/items.dmi";
+
+			__RegisterInitialTracked("item_state");
 		}
 
 		public Obj_Item ( dynamic loc = null ) : base( (object)(loc) ) {

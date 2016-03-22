@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace Somnium.Engine.ByImpl {
 	abstract class Base_Data {
+
 		public Base_Data() {
 			__FieldInit();
 
@@ -102,7 +103,13 @@ namespace Somnium.Engine.ByImpl {
 			/////////
 
 			protected override object hash_get(object key) {
-				throw new Exception("NO.");
+				var f = get_field(key);
+
+				if (f != null)
+				{
+					return f.GetValue(owner);
+				}
+				return null; // NOT SURE IF THIS IS CORRECT!
 			}
 
 			protected override void hash_set(object key, object item) {

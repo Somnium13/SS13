@@ -25,6 +25,9 @@ namespace Somnium.Game {
 			base.__FieldInit();
 
 			this.languages = 1;
+
+			__RegisterInitialTracked("name");
+			__RegisterInitialTracked("icon_state");
 		}
 
 		public Obj ( dynamic loc = null ) : base( (object)(loc) ) {

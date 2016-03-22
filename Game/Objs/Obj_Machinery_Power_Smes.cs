@@ -25,6 +25,9 @@ namespace Somnium.Game {
 			base.__FieldInit();
 
 			this.icon_state = "smes";
+			__RegisterInitialTracked("input_level_max");
+			__RegisterInitialTracked("output_level_max");
+			__RegisterInitialTracked("charge");
 		}
 
 		// Function from file: smes.dm

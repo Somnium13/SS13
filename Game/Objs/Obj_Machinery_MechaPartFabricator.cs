@@ -32,6 +32,9 @@ namespace Somnium.Game {
 			this.req_access = new ByTable(new object [] { 29 });
 			this.icon = "icons/obj/robotics.dmi";
 			this.icon_state = "fab-idle";
+
+			__RegisterInitialTracked("resource_coeff");
+			__RegisterInitialTracked("time_coeff");
 		}
 
 		// Function from file: mech_fabricator.dm

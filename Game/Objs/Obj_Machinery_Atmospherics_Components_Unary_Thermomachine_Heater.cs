@@ -15,6 +15,8 @@ namespace Somnium.Game {
 			this.min_temperature = 293.41;
 			this.icon = "icons/obj/Cryogenic2.dmi";
 			this.icon_state = "heater";
+
+			__RegisterInitialTracked("max_temperature");
 		}
 
 		// Function from file: thermomachine.dm

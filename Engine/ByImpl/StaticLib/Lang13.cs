@@ -281,7 +281,18 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic Initial(object o, string key) {
-			Logger.Warning("Initial "+key,"in "+o);
+			if (o is Game.Ent_Static)
+			{
+				dynamic result;
+				if (((Game.Ent_Static)o).__TryGetInitial(key, out result))
+				{
+					return result;
+				}
+			}
+			if (o is Type)
+				throw new Exception("Attempt to get initial field of TYPE!");
+			else
+				Logger.Warning("Initial " + key, "in " + o);
 			return null;
 		}
 

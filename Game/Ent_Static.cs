@@ -2,6 +2,7 @@
 
 using System;
 using Somnium.Engine.ByImpl;
+using System.Collections.Generic;
 
 namespace Somnium.Game {
 	class Ent_Static : Base_Static {
@@ -39,9 +40,50 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( GlobalVars.use_preloader ) && this.type == GlobalVars._preloader.target_path ) {
 				GlobalVars._preloader.load( this );
 			}
-			// Warning: Super call was HERE! If anything above HERE is needed by the super call, it might break!;
+
+			__SaveInitialVars();
+
 			return;
 		}
+
+		#region Initial Crap
+
+		private List<string> initial_vars;
+		private Dictionary<string, dynamic> initial_values;
+
+		// Registers a variable for use with Lang13.Initial(). This is a temporary thing. Never actually use Lang13.Initial().
+		protected void __RegisterInitialTracked(string k)
+		{
+			if (initial_vars == null)
+				initial_vars = new List<string>();
+			initial_vars.Add(k);
+		}
+
+		public bool __TryGetInitial(string k, out dynamic result)
+		{
+			if (initial_values == null)
+			{
+				result = null;
+				return false;
+			}
+
+			return initial_values.TryGetValue(k, out result);
+		}
+
+		private void __SaveInitialVars()
+		{
+			// Save initial state.
+			if (initial_vars != null)
+			{
+				initial_values = new Dictionary<string, dynamic>();
+				foreach (var k in initial_vars)
+				{
+					initial_values[k] = vars[k];
+				}
+			}
+		}
+
+		#endregion
 
 		// Function from file: swapmaps.dm
 		public override void Read( SaveFile F = null, dynamic __id = null, dynamic locorner = null ) {

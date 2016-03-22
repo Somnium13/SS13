@@ -15,6 +15,13 @@ namespace Somnium.Game {
 		public int time_per_sheet = 260;
 		public double current_heat = 0;
 
+		protected override void __FieldInit()
+		{
+			base.__FieldInit();
+
+			__RegisterInitialTracked("power_gen");
+		}
+
 		// Function from file: port_gen.dm
 		public Obj_Machinery_Power_PortGen_Pacman ( dynamic loc = null ) : base( (object)(loc) ) {
 			dynamic sheet = null;

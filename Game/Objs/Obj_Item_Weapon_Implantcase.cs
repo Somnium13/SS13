@@ -17,6 +17,9 @@ namespace Somnium.Game {
 			this.origin_tech = "materials=1;biotech=2";
 			this.materials = new ByTable().Set( "$glass", 500 );
 			this.icon_state = "implantcase-0";
+
+			__RegisterInitialTracked("flags");
+			__RegisterInitialTracked("origin_tech");
 		}
 
 		// Function from file: implantcase.dm

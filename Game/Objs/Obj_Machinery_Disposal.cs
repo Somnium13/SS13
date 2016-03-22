@@ -21,6 +21,9 @@ namespace Somnium.Game {
 
 			this.anchored = 1;
 			this.icon = "icons/obj/atmospherics/pipes/disposal.dmi";
+
+			__RegisterInitialTracked("flush");
+			__RegisterInitialTracked("mode");
 		}
 
 		// Function from file: disposal-unit.dm

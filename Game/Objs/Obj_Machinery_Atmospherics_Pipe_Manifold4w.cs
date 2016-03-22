@@ -17,6 +17,8 @@ namespace Somnium.Game {
 			this.initialize_directions = 15;
 			this.icon = "icons/obj/atmospherics/pipes/manifold.dmi";
 			this.icon_state = "manifold4w";
+
+			__RegisterInitialTracked("initialize_directions");
 		}
 
 		public Obj_Machinery_Atmospherics_Pipe_Manifold4w ( dynamic loc = null, int? process = null ) : base( (object)(loc), process ) {

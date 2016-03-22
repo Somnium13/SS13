@@ -23,6 +23,9 @@ namespace Somnium.Game {
 			this.state_open = 1;
 			this.icon = "icons/obj/Cryogenic2.dmi";
 			this.icon_state = "sleeper-open";
+
+			__RegisterInitialTracked("efficiency");
+			__RegisterInitialTracked("min_health");
 		}
 
 		// Function from file: Sleeper.dm

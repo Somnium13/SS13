@@ -198,7 +198,13 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		protected override void list_remove_range(int i, int count) {
-			throw new Exception("NO.");
+			if (i==1 && count == contents.Count)
+			{
+				contents.Clear();
+				return;
+			}
+
+			throw new Exception("BAD RANGE REMOVAL ON CONTENTS TABLE!");
 		}
 
 		/////////
