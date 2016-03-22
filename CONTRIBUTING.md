@@ -59,4 +59,4 @@ mob -> Mob
 I don't give much of a damn about style but here are some guidelines:
 
 1. Please set your editor to use tabs rather than spaces. **VS defaults to using spaces, please change this**.
-2. Try to follow the C# standard conventions At least try to keep class names and public members upper camel cased.
+2. Try to follow the C# standard conventions. At least try to keep class names and public members upper camel cased.
