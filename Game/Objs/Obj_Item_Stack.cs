@@ -297,12 +297,12 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: stack.dm
-		public virtual void add( bool amount = false ) {
+		public virtual void add( double? amount = null ) {
 			
 			if ( this.is_cyborg ) {
-				this.source.add_charge( ( amount ?1:0) * this.cost );
+				this.source.add_charge( ( amount ?? 0 ) * this.cost );
 			} else {
-				this.amount += amount ?1:0;
+				this.amount += (amount ?? 0);
 			}
 			this.update_icon();
 			return;

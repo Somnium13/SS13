@@ -218,7 +218,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		protected override void hash_remove(object key) {
-			throw new Exception("NO.");
+			// meh
 		}
 
 		protected override bool hash_haskey(object key) {

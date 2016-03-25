@@ -162,19 +162,15 @@ namespace Somnium.Game {
 
 		// Function from file: lighting_system.dm
 		public void SetDynamicLighting(  ) {
-			dynamic T = null;
-
-			
 			if ( this.lighting_use_dynamic == 0 ) {
 				this.lighting_use_dynamic = 1;
 			}
 			this.luminosity = 0;
 
-			foreach (dynamic _a in Lang13.Enumerate( this.contents )) {
-				T = _a;
+			foreach (Tile T in Lang13.Enumerate( this.contents, typeof(Tile) )) {
 				
-				((Tile)T).init_lighting();
-				((Tile)T).update_lumcount( 0 );
+				T.init_lighting();
+				T.update_lumcount( 0 );
 			}
 			return;
 		}

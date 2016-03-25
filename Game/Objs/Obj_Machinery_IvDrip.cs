@@ -224,7 +224,7 @@ namespace Somnium.Game {
 			} else {
 				this.icon_state = "donateidle";
 			}
-			this.overlays = null;
+			this.overlays.len = 0;
 
 			if ( Lang13.Bool( this.beaker ) ) {
 				

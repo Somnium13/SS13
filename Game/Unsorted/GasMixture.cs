@@ -753,7 +753,7 @@ namespace Somnium.Game {
 
 			cached_gases = this.gases;
 
-			foreach (dynamic _a in Lang13.Enumerate( tocheck != null || cached_gases != null )) {
+			foreach (dynamic _a in Lang13.Enumerate( tocheck ?? cached_gases )) {
 				id = _a;
 				
 

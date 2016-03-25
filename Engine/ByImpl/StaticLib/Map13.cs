@@ -28,6 +28,27 @@ namespace Somnium.Engine.ByImpl {
 			return Math.Max(Math.Abs(a_x-b_x),Math.Abs(a_y-b_y));
 		}
 
+		// 1 2 4 8 -> N S E W
+		public static int GetDirection(dynamic src, dynamic dst)
+		{
+			var src_ent = (Base_Static)src;
+			var dst_ent = (Base_Static)dst;
+
+			int result = 0;
+
+			if (src_ent.y < dst_ent.y)
+				result += 1;
+			else if (src_ent.y > dst_ent.y)
+				result += 2;
+
+			if (src_ent.x < dst_ent.x)
+				result += 4;
+			else if (src_ent.x > dst_ent.x)
+				result += 8;
+
+			return result;
+		}
+
 		public static void Step(Game.Ent_Dynamic ent, int dir) {
 			Logger.Debug("map->step");
 		}
@@ -320,6 +341,15 @@ namespace Somnium.Engine.ByImpl {
 			return z;
 		}
 
+		public static Game.Zone GetZoneByName(string name)
+		{
+			foreach (var kv in zone_insts)
+			{
+				if (kv.Value.name == name)
+					return kv.Value;
+			}
+			throw new Exception("COULD NOT FIND ZONE BY NAME: " + name);
+		}
 	}
 
 		/*public bool IsLower(MapPos other) {

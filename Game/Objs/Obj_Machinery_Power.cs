@@ -120,7 +120,7 @@ namespace Somnium.Game {
 				card = _b;
 				
 				T = Map13.GetStep( this.loc, Convert.ToInt32( card ) );
-				cdir = Map13.GetDistance( T, this.loc );
+				cdir = Map13.GetDirection( T, this.loc );
 
 				foreach (dynamic _a in Lang13.Enumerate( T, typeof(Obj_Structure_Cable) )) {
 					C = _a;

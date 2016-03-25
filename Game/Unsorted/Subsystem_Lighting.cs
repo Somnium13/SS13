@@ -105,7 +105,6 @@ namespace Somnium.Game {
 
 		// Function from file: lighting.dm
 		public override double Initialize( int start_timeofday = 0, double? zlevel = null ) {
-			dynamic A = null;
 			dynamic thing = null;
 			dynamic LS = null;
 			double? z_start = null;
@@ -117,14 +116,11 @@ namespace Somnium.Game {
 			dynamic T2 = null;
 
 			
-			foreach (dynamic _a in Lang13.Enumerate( typeof(Game13) )) {
-				A = _a;
-				
-
-				if ( A.lighting_use_dynamic == 2 ) {
+			foreach (Zone Z in Lang13.Enumerate( typeof(Game13), typeof(Zone) )) {
+				if ( Z.lighting_use_dynamic == 2 ) {
 					
 					if ( GlobalVars.config.starlight ) {
-						((Zone)A).SetDynamicLighting();
+						Z.SetDynamicLighting();
 					}
 				}
 			}

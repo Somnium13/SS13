@@ -53,13 +53,14 @@ namespace Somnium.Engine.ByImpl {
 				return _overlays;
 			}
 			set {
-				if (value is int) {
+				/*if (value is int) { GET RID OF THIS ASININE NONSENSE.
 					_overlays.len = value;
 				}
-				else if (value is ByTable)
+				else */
+				if (value is ByTable)
 					_overlays = value; // todo- redo if a special table!
 				else {
-					throw new Exception("WAT");
+					throw new Exception("Bad value for overlays: "+value);
 				}
 			}
 		}

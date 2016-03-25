@@ -195,7 +195,7 @@ namespace Somnium.Game {
 			_default = this.canDock( S1 );
 
 			if ( _default != 0 ) {
-				throw new Exception( "dock(): shuttle cannot dock" );
+				//throw new Exception( "dock(): shuttle cannot dock" );
 				return _default;
 			}
 

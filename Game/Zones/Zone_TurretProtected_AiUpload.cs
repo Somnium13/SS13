@@ -10,6 +10,7 @@ namespace Somnium.Game {
 			base.__FieldInit();
 
 			this.icon_state = "ai_upload";
+			name = "AI Upload Chamber";
 		}
 
 		public Zone_TurretProtected_AiUpload ( dynamic loc = null ) : base( (object)(loc) ) {

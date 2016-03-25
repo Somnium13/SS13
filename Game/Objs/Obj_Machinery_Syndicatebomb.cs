@@ -202,7 +202,7 @@ namespace Somnium.Game {
 				this.timer = 60;
 				this.update_icon();
 
-				if ( Lang13.Bool( ((dynamic)this).Contains( this.payload ) ) ) {
+				if ( Lang13.Bool( this.contents.Contains( this.payload ) ) ) {
 					this.payload.detonate();
 				}
 				return null;
@@ -210,7 +210,7 @@ namespace Somnium.Game {
 
 			if ( !this.active || this.defused ) {
 				
-				if ( Lang13.Bool( ((dynamic)this).Contains( this.defused && Lang13.Bool( this.payload ) ) ) ) {
+				if ( Lang13.Bool(this.defused && this.contents.Contains( this.payload ) ) ) {
 					this.payload.defuse();
 				}
 				return null;

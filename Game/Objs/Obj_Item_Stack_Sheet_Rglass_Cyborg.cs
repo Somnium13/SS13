@@ -22,9 +22,9 @@ namespace Somnium.Game {
 		}
 
 		// Function from file: glass.dm
-		public override void add( bool amount = false ) {
-			((RobotEnergyStorage)this.metsource).add_charge( ( amount ?1:0) * this.metcost );
-			((RobotEnergyStorage)this.glasource).add_charge( ( amount ?1:0) * this.glacost );
+		public override void add( double? amount = null ) {
+			((RobotEnergyStorage)this.metsource).add_charge( (amount ?? 0) * this.metcost );
+			((RobotEnergyStorage)this.glasource).add_charge( (amount ?? 0) * this.glacost );
 			return;
 		}
 

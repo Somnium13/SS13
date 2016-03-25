@@ -871,7 +871,10 @@ namespace Somnium.Game {
 			
 			if ( Lang13.Bool( this.installation ) ) {
 				
-				dynamic _a = this.installation; // Was a switch-case, sorry for the mess.
+				dynamic _a = this.installation;
+				if (_a is string)
+					_a = Lang13.FindClass(_a);
+
 				if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Bluetag) ) {
 					return "blue";
 				} else if ( _a==typeof(Obj_Item_Weapon_Gun_Energy_Laser_Redtag) ) {

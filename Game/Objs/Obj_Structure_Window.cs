@@ -58,7 +58,7 @@ namespace Somnium.Game {
 						this.storeditems.Add( R );
 
 						if ( this.fulltile ) {
-							R.add( true );
+							R.add( 1 );
 						}
 					}
 				}

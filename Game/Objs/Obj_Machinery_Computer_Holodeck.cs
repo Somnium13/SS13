@@ -556,7 +556,7 @@ namespace Somnium.Game {
 				
 				A = Lang13.FindObj( typekey );
 
-				if ( !Lang13.Bool( A ) || A == this.offline_program ) {
+				if ( !Lang13.Bool( A ) || A.Equals(this.offline_program) ) {
 					continue;
 				}
 

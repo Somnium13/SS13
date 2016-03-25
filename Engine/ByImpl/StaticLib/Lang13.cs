@@ -6,7 +6,7 @@ namespace Somnium.Engine.ByImpl {
 	static class Lang13 {
 		public static bool Bool(object v) {	// This is used whenever the transcompiler needs to force a boolean value --
 			if (v is bool) return (bool)v;		// The values it checks for are anything Byond considers 'false'
-			return !(v == null || v.Equals("") || v.Equals(0));
+			return !(v == null || v.Equals("") || v.Equals(0) || v.Equals(0.0));
 		}
 
 		// The rest of these were added during the overhaul of the type inference system.
@@ -139,7 +139,7 @@ namespace Somnium.Engine.ByImpl {
 
 			Type t = Type.GetType("Somnium.Game." + class_name);
 			if (t == null)
-				Logger.Debug("Warning: Could not find type '" + class_name + "'!");
+				Logger.Debug("Warning: Could not find type '" + path + "'!");
 			return t;
 		}
 		
@@ -213,8 +213,10 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic Call(string t, params object[] objs) { //oh hell - seems to be only for ctors, at least
-			Logger.Debug("@call ctor name");
-			return null;
+			Type real_type = FindClass(t);
+			if (real_type == null)
+				throw new Exception("Call-typename: Could not find \""+t+"\"");
+			return Call(real_type, objs);
 		}
 
 		public static dynamic Call(Type t, params object[] args) { // call ctor -- TODO, IM SURE THIS COULD USE WORK!
@@ -277,7 +279,7 @@ namespace Somnium.Engine.ByImpl {
 			else if (o == typeof(Game13))
 				return Game13.contents.__GetEnumerationList(t);
 			else
-				throw new Exception("those dogs are not nice");
+				throw new Exception("Don't know how to enumarate: "+o);
 		}
 
 		public static dynamic Initial(object o, string key) {

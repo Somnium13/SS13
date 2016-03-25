@@ -3295,8 +3295,8 @@ namespace Somnium.Game {
 
 		// Function from file: cleanbot.dm
 		public static void stack_trace( string msg = null ) {
-			Task13.Crash( msg );
-			return;
+			var t = new System.Diagnostics.StackTrace();
+			Console.WriteLine("[TRACE] " + msg + "\n" + t);
 		}
 
 		// Function from file: clothing.dm
@@ -10751,7 +10751,7 @@ namespace Somnium.Game {
 				AM = _a;
 				
 
-				if ( AM == source ) {
+				if ( (object)AM == (object)source ) {
 					continue;
 				}
 
@@ -15735,7 +15735,7 @@ namespace Somnium.Game {
 			}
 
 			if ( areatype is string ) {
-				areatype = Lang13.FindClass( areatype );
+				areatype = Map13.GetZoneByName( areatype );
 			}
 
 			if ( areatype is Zone ) {

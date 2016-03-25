@@ -36,7 +36,7 @@ namespace Somnium.Game {
 			this.create_reagents( this.volume );
 
 			if ( this.spawned_disease != null ) {
-				F = Lang13.Call( this.spawned_disease, 0 );
+				F = Lang13.Call( this.spawned_disease, false );
 				data = new ByTable().Set( "viruses", new ByTable(new object [] { F }) );
 				this.reagents.add_reagent( "blood", this.disease_amount, data );
 			}

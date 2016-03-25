@@ -889,28 +889,31 @@ namespace Somnium.Game {
 				if ( Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_StockParts) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_Grenade_ChemGrenade) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_Kitchen) ) ) ) {
 					tempCheck = I;
 
-					if ( Lang13.Initial( tempCheck, "icon_state" ) != null ) {
-						this.valid_items.Add( 15 );
+					Engine.NewLib.Logger.Debug("RND EXP - WARNING - CHECKME!");
+					//if ( Lang13.Initial( tempCheck, "icon_state" ) != null ) {
+					this.valid_items.Add( 15 );
 						this.valid_items.Add( I );
 						probWeight++;
-					}
+					//}
 				}
 
 				if ( Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_ReagentContainers_Food) ) ) ) {
 					tempCheck2 = I;
 
-					if ( Lang13.Initial( tempCheck2, "icon_state" ) != null ) {
-						this.valid_items.Add( Rand13.Int( 1, Num13.MaxInt( 2, 35 - probWeight ) ) );
+					Engine.NewLib.Logger.Debug("RND EXP - WARNING - CHECKME!");
+					//if ( Lang13.Initial( tempCheck2, "icon_state" ) != null ) {
+					this.valid_items.Add( Rand13.Int( 1, Num13.MaxInt( 2, 35 - probWeight ) ) );
 						this.valid_items.Add( I );
-					}
+					//}
 				}
 
 				if ( Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_Rcd) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_Grenade) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Device_Aicard) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Weapon_Storage_Backpack_Holding) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_SlimeExtract) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Device_Onetankbomb) ) ) || Lang13.Bool( I.IsSubclassOf( typeof(Obj_Item_Device_TransferValve) ) ) ) {
 					tempCheck3 = I;
 
-					if ( Lang13.Initial( tempCheck3, "icon_state" ) != null ) {
+					Engine.NewLib.Logger.Debug("RND EXP - WARNING - CHECKME!");
+					//if ( Lang13.Initial( tempCheck3, "icon_state" ) != null ) {
 						this.critical_items.Add( I );
-					}
+					//}
 				}
 			}
 			return;

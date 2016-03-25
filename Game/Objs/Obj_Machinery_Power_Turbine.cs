@@ -171,7 +171,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.compressor ) ) {
 				return;
 			}
-			this.compressor = Lang13.FindIn( typeof(Obj_Machinery_Power_Compressor), Map13.GetStep( this, Map13.GetDistance( this.outturf, this ) ) );
+			this.compressor = Lang13.FindIn( typeof(Obj_Machinery_Power_Compressor), Map13.GetStep( this, Map13.GetDirection( this.outturf, this ) ) );
 
 			if ( Lang13.Bool( this.compressor ) ) {
 				((Obj_Machinery)this.compressor).locate_machinery();

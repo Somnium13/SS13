@@ -12,6 +12,9 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic PickFromTable(ByTable a) {
+			if (a.len < 1)
+				return null;
+
 			object picked = a[internal_random.Next(a.len)+1];
 			return picked;
 		}
