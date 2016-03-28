@@ -7,7 +7,7 @@ namespace Somnium.Game {
 	class Obj_Machinery_Computer_TurbineComputer : Obj_Machinery_Computer {
 
 		public dynamic compressor = null;
-		public bool id = false;
+		public string id = "";
 
 		protected override void __FieldInit() {
 			base.__FieldInit();

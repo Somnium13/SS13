@@ -128,8 +128,8 @@ namespace Somnium.Game {
 			dynamic I = null;
 
 			I = this.nodes.Find( A );
+
 			this.parents[I] = reference;
-			return;
 		}
 
 		// Function from file: components_base.dm

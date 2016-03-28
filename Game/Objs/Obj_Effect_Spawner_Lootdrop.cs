@@ -6,7 +6,7 @@ using Somnium.Engine.ByImpl;
 namespace Somnium.Game {
 	class Obj_Effect_Spawner_Lootdrop : Obj_Effect_Spawner {
 
-		public bool lootcount = true;
+		public int lootcount = 1;
 		public int lootdoubles = 1;
 		public ByTable loot = null;
 
@@ -26,7 +26,7 @@ namespace Somnium.Game {
 			
 			if ( this.loot != null && this.loot.len != 0 ) {
 				i = null;
-				i = this.lootcount ?1:0;
+				i = this.lootcount;
 
 				while (( i ??0) > 0) {
 					

@@ -8,7 +8,7 @@ namespace Somnium.Game {
 
 		public Obj_Machinery_MassDriver connected = null;
 		public string title = "Mass Driver Controls";
-		public bool id = true;
+		public string id = "1";
 		public double? timing = 0;
 		public double time = 30;
 		public int range = 4;

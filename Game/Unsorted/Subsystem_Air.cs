@@ -354,7 +354,8 @@ namespace Somnium.Game {
 		public override double Initialize( int start_timeofday = 0, double? zlevel = null ) {
 			this.setup_allturfs( zlevel );
 			this.setup_atmos_machinery( zlevel );
-			this.setup_pipenets( zlevel );
+			//this.setup_pipenets( zlevel );
+			Engine.NewLib.Logger.Warning("Skipping pipenet setup.", "Bad news bears!");
 			base.Initialize( start_timeofday, zlevel );
 			return 0;
 		}

@@ -286,17 +286,17 @@ namespace Somnium.Game {
 				cached_gases["o2"][1] = model.oxygen;
 			}
 
-			if ( model.nitrogen != 0 ) {
+			if (Lang13.Bool( model.nitrogen )) {
 				this.assert_gas( "n2" );
 				cached_gases["n2"][1] = model.nitrogen;
 			}
 
-			if ( model.toxins ) {
+			if (Lang13.Bool( model.toxins )) {
 				this.assert_gas( "plasma" );
 				cached_gases["plasma"][1] = model.toxins;
 			}
 
-			if ( model.carbon_dioxide ) {
+			if (Lang13.Bool( model.carbon_dioxide )) {
 				this.assert_gas( "co2" );
 				cached_gases["co2"][1] = model.carbon_dioxide;
 			}

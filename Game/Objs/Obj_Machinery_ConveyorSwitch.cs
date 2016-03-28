@@ -9,7 +9,7 @@ namespace Somnium.Game {
 		public int position = 0;
 		public int last_pos = -1;
 		public bool operated = true;
-		public bool convdir = false;
+		public int convdir = 0;
 		public dynamic id = "";
 		public ByTable conveyors = null;
 
@@ -70,8 +70,8 @@ namespace Somnium.Game {
 
 			if ( this.position == 0 ) {
 				
-				if ( this.convdir ) {
-					this.position = this.convdir ?1:0;
+				if ( this.convdir != 0 ) {
+					this.position = this.convdir;
 				} else if ( this.last_pos < 0 ) {
 					this.position = 1;
 					this.last_pos = 0;

@@ -79,6 +79,7 @@ namespace Somnium.Engine.ByImpl {
 			int base_z = ent.z;
 
 			switch (dir) {
+				case 0: break;
 				case 1: base_y++; break;
 				case 5: base_y++; base_x++; break;
 				case 4: base_x++; break;
@@ -87,7 +88,7 @@ namespace Somnium.Engine.ByImpl {
 				case 10: base_y--; base_x--; break;
 				case 8: base_x--; break;
 				case 9: base_y++; base_x--; break;
-				default: throw new Exception("Bad Dir!"); 
+				default: throw new Exception("Bad dir: "+dir); 
 			}
 
 			return GetTile(base_x, base_y, base_z);

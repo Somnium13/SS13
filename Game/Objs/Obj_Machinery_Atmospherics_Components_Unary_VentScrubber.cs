@@ -28,6 +28,8 @@ namespace Somnium.Game {
 			this.can_unwrench = true;
 			this.level = 1;
 			this.icon_state = "scrub_map";
+
+			__RegisterInitialTracked("frequency");
 		}
 
 		// Function from file: vent_scrubber.dm

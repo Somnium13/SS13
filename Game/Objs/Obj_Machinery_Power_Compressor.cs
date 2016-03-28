@@ -13,7 +13,7 @@ namespace Somnium.Game {
 		public double rpm = 0;
 		public dynamic rpmtarget = 0;
 		public int capacity = 1000000;
-		public bool comp_id = false;
+		public string comp_id = "";
 		public double efficiency = 0;
 
 		protected override void __FieldInit() {

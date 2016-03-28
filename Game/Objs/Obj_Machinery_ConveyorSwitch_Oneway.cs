@@ -9,7 +9,7 @@ namespace Somnium.Game {
 		protected override void __FieldInit() {
 			base.__FieldInit();
 
-			this.convdir = true;
+			this.convdir = 1;
 		}
 
 		public Obj_Machinery_ConveyorSwitch_Oneway ( dynamic newloc = null, dynamic newid = null ) : base( (object)(newloc), (object)(newid) ) {

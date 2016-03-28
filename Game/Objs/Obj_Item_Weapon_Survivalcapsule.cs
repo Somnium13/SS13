@@ -74,8 +74,8 @@ namespace Somnium.Game {
 			threshhold.oxygen = 21;
 			threshhold.temperature = 293.41;
 			threshhold.nitrogen = 82;
-			threshhold.carbon_dioxide = false;
-			threshhold.toxins = false;
+			threshhold.carbon_dioxide = 0;
+			threshhold.toxins = 0;
 			ZZ = GlobalFuncs.get_area( threshhold );
 
 			if ( !GlobalFuncs.is_type_in_list( ZZ, blacklist ) ) {
@@ -91,8 +91,8 @@ namespace Somnium.Game {
 				A.oxygen = 21;
 				A.temperature = 293.41;
 				A.nitrogen = 82;
-				A.carbon_dioxide = false;
-				A.toxins = false;
+				A.carbon_dioxide = 0;
+				A.toxins = 0;
 				A.air.copy_from_turf( A );
 				GlobalVars.SSair.add_to_active( A );
 				A.overlays.Cut();

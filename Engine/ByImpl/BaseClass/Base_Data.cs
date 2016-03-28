@@ -135,7 +135,10 @@ namespace Somnium.Engine.ByImpl {
 					catch { }
 				}
 
-				NewLib.Logger.Debug("WARNING: Could not set var: " + owner.GetType() + "." + key + " to " + item + " ( " + ((item!=null)?item.GetType().ToString():"NULL") + " -> " + ((f!=null)?f.FieldType.ToString():"NULL") + " )" );
+				NewLib.Logger.Warning(
+					"Could not set var: " + ((f != null) ? f.FieldType.ToString() : "NULL") + " " + owner.GetType() + "." + key,
+					"To: " + ((item != null) ? item.GetType().ToString() : "NULL") + " " + item
+				);
 			}
 
 			protected override void hash_remove(object key) {

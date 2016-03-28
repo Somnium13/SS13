@@ -11,9 +11,9 @@ namespace Somnium.Game {
 		public bool intact = true;
 		public Type baseturf = typeof(Tile_Space);
 		public double oxygen = 0;
-		public bool carbon_dioxide = false;
+		public int carbon_dioxide = 0;
 		public double nitrogen = 0;
-		public bool toxins = false;
+		public int toxins = 0;
 		public double thermal_conductivity = 0.05;
 		public double heat_capacity = 1;
 		public double temperature = 293.41;

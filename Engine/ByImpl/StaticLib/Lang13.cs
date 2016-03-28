@@ -139,7 +139,7 @@ namespace Somnium.Engine.ByImpl {
 
 			Type t = Type.GetType("Somnium.Game." + class_name);
 			if (t == null)
-				Logger.Debug("Warning: Could not find type '" + path + "'!");
+				Logger.Warning("Could not find type: " + path + "","Tried: "+class_name);
 			return t;
 		}
 		

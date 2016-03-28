@@ -34,7 +34,7 @@ namespace Somnium.Game {
 			this.name = "circuit board (" + this.names_paths[this.build_path] + " Vendor)";
 			if (user != null)
 				user.WriteMsg( "<span class='notice'>You set the board to " + this.names_paths[this.build_path] + ".</span>" );
-			this.req_components = new ByTable().Set( Lang13.FindClass( "/obj/item/weapon/vending_refill/" + String13.SubStr( "" + this.build_path, 24, 0 ) ), 3 );
+			this.req_components = new ByTable().Set( Lang13.FindClass( "/obj/item/weapon/vending_refill/" + String13.SubStr( "" + this.build_path, 36, 0 ) ), 3 );
 			return;
 		}
 

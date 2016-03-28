@@ -93,6 +93,17 @@ namespace Somnium.Engine.ByImpl {
 				if (angle == 0)
 					return dir;
 
+				if (dir==0)
+				{
+					if (Math.Abs(angle)<45)
+					{
+						return 0;
+					} else
+					{
+						return Rand13.Pick(new object[] {1,2,4,5,6,8,9,10}); // I don't fucking know, man.
+					}
+				}
+
 				switch (dir) { // convert to sane representation
 					case 1: dir = 0; break;
 					case 2: dir = 4; break;
@@ -102,7 +113,7 @@ namespace Somnium.Engine.ByImpl {
 					case 8: dir = 2; break;
 					case 9: dir = 1; break;
 					case 10: dir = 3; break;
-					default: throw new Exception("DON'T KNOW THIS DIR!");
+					default: throw new Exception("DON'T KNOW THIS DIR: "+dir);
 				}
 
 				// turn
@@ -118,7 +129,7 @@ namespace Somnium.Engine.ByImpl {
 				return dir;
 			}
 			else {
-				throw new Exception("Can't rotate this!");
+				throw new Exception("Can't rotate this: "+d);
 			}
 		}
 

@@ -11,6 +11,7 @@ namespace Somnium.Engine.ByImpl
 		public Base_Image(params object[] v) { }
 
 		public Game.Ent_Static loc;
+		public int dir = 2;
 
 		public bool v_override;
 

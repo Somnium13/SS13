@@ -9,7 +9,7 @@ namespace Somnium.Game {
 		public bool pod_moving = false;
 		public int cooldown_delay = 50;
 		public int launch_cooldown = 0;
-		public bool? reverse_launch = false;
+		public bool reverse_launch = false;
 		public int OPEN_DURATION = 6;
 		public int CLOSE_DURATION = 6;
 
