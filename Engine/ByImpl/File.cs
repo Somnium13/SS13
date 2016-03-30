@@ -16,5 +16,10 @@ namespace Somnium.Engine.ByImpl {
 			else
 				Logger.LogFile("[" + _name + "] << " + data);
 		}
+
+		public string GetPath()
+		{
+			return _name;
+		}
 	}
 }

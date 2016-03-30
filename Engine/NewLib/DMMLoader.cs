@@ -2,6 +2,8 @@
 using Somnium.Game;
 using Somnium.Engine.ByImpl;
 
+using System.Diagnostics;
+
 /*
  * This is based directly off of the DMMSuite maploader!
  * It has been optimized and is now allowed to fail to initialize objects!
@@ -256,6 +258,7 @@ namespace Somnium.Engine.NewLib {
 				}
 			}
 
+			// Setup objs
 			foreach (dynamic _a in Lang13.IterateRange(1, first_turf_index - 1)) {
 				index = _a;
 				try {
@@ -296,8 +299,12 @@ namespace Somnium.Engine.NewLib {
 			dynamic instance = null;
 			Tile T = null;
 
+			Stopwatch w = new Stopwatch();
+
 			GlobalVars._preloader.setup(attributes, type);
 			T = Map13.GetTile(x, ((int)(y)), z);
+
+			w.Start();
 
 			if (T != null) {
 				instance = Lang13.Call(type, T);
@@ -307,6 +314,10 @@ namespace Somnium.Engine.NewLib {
 			{
 				GlobalVars._preloader.load(instance);
 			}
+
+			w.Stop();
+			ServiceDev.NotifyMapEntInit(type, w.Elapsed);
+
 			return instance;
 		}
 

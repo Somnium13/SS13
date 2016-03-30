@@ -11,11 +11,14 @@ namespace Somnium.Engine.NewLib {
 		private static ConcurrentDictionary<string, ConcurrentBag<string>> warnings = new ConcurrentDictionary<string, ConcurrentBag<string>>();
 		private static ConcurrentDictionary<string, ConcurrentBag<string>> errors = new ConcurrentDictionary<string, ConcurrentBag<string>>();
 
+		private static ConcurrentDictionary<Type, Tuple<int, TimeSpan>> map_init_info = new ConcurrentDictionary<Type, Tuple<int, TimeSpan>>();
+
 		public static void Setup() {
 			if (!Config.DEVMODE) return;
 
 			WebServer.RegisterService("dev-map", service_map);
 			WebServer.RegisterService("dev-issues", service_issues);
+			WebServer.RegisterService("dev-profile-map", service_profile_map);
 		}
 
 		public static void Process() {
@@ -100,6 +103,15 @@ namespace Somnium.Engine.NewLib {
 			miscs.Add(misc);
 		}
 
+		public static void NotifyMapEntInit(Type type, TimeSpan elapsed)
+		{
+			if (!Config.DEVMODE) return;
+
+			map_init_info.AddOrUpdate( type,
+				new Tuple<int, TimeSpan>(1,elapsed),
+				(k, v) => new Tuple<int, TimeSpan>(v.Item1 + 1,v.Item2 + elapsed));
+		}
+
 		private static void write_ent(BinaryWriter w, StringTable st, ByImpl.Base_Static ent)
 		{
 			short id_class = (short)st.GetId(ent.GetType().Name);
@@ -155,6 +167,30 @@ namespace Somnium.Engine.NewLib {
 				{
 					sr.Write("\t\t> " + misc + "\n");
 				}
+			}
+
+			sr.Close();
+		}
+
+		private static void service_profile_map(HttpListenerContext context)
+		{
+			var sr = new StreamWriter(context.Response.OutputStream);
+
+			sr.Write("NAME                                                                            COUNT   TOTAL TIME      AVERAGE TIME\n");
+			sr.Write("====================================================================================================================\n");
+
+			// Sort that shit
+			List<KeyValuePair<Type, Tuple<int, TimeSpan>>> sorter = new List<KeyValuePair<Type, Tuple<int, TimeSpan>>>(map_init_info);
+			sorter.Sort((KeyValuePair<Type, Tuple<int, TimeSpan>> a, KeyValuePair<Type, Tuple<int, TimeSpan>> b) =>
+				Math.Sign(b.Value.Item2.TotalSeconds - a.Value.Item2.TotalSeconds ) );
+
+			foreach (var kv in sorter)
+			{
+				sr.Write(kv.Key.Name.ToString().PadRight(80));
+				sr.Write(kv.Value.Item1.ToString().PadRight(8));
+				sr.Write(kv.Value.Item2.TotalSeconds.ToString().PadRight(16));
+				sr.Write(kv.Value.Item2.TotalSeconds / kv.Value.Item1);
+				sr.Write("\n");
 			}
 
 			sr.Close();
