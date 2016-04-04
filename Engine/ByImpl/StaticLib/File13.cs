@@ -3,6 +3,7 @@
 using Somnium.Engine.NewLib;
 
 using SysFile = System.IO.File;
+using SysDir = System.IO.Directory;
 
 namespace Somnium.Engine.ByImpl {
 
@@ -15,18 +16,43 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static bool Delete(dynamic a) {
-			Logger.Debug("file->delete "+a);
-			return false;
+			if (!(a is string))
+				throw new Exception("File13.Delete: Attempt to delete "+a);
+
+			if (!Exists(a))
+				return false;
+
+			SysFile.Delete(Config.DIR_CONTENT + a);
+
+			return true;
 		}
 
 		public static bool Copy(dynamic source, string dest_path) {
-			Logger.Debug("file->copy");
-			return false; // what returns? success?
+			if (!(source is string))
+				throw new Exception("File13.Copy: Attempt to copy " + source);
+
+
+
+			Logger.DebugMajor("file->copy");
+			return false; // returns success
 		}
 
 		public static ByTable List(string path) {
-			Logger.Debug("file->list");
-			return new ByTable();
+			var dir = new System.IO.DirectoryInfo(Config.DIR_CONTENT + path);
+
+			var result_tab = new ByTable();
+
+			foreach (var fi in dir.GetFiles())
+			{
+				result_tab.Add(fi.Name);
+			}
+
+			foreach (var di in dir.GetDirectories())
+			{
+				result_tab.Add(dir.Name);
+			}
+
+			return result_tab;
 		}
 
 		public static string Read(string filename) {
@@ -39,11 +65,11 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static void Write(string filename, string data) {
-			Logger.Debug("file->write");
+			Logger.DebugMajor("file->write");
 		}
 
 		public static dynamic Cache(dynamic a) {
-			Logger.Debug("file->cache");
+			Logger.DebugMajor("file->cache");
 			return null;
 		}
 

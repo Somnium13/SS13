@@ -50,25 +50,25 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static void Step(Game.Ent_Dynamic ent, int dir) {
-			Logger.Debug("map->step");
+			Logger.DebugMajor("map->step");
 		}
 
 		public static void StepTowards(Game.Ent_Dynamic ent, Game.Ent_Static target, int stop_dist = 0) {
-			Logger.Debug("map->step_towards");
+			Logger.DebugMajor("map->step_towards");
 		}
 
 		public static void StepAway(Game.Ent_Dynamic ent, Game.Ent_Static target, int? stop_dist) {
 			if (stop_dist == null)
 				stop_dist = 5;
-			Logger.Debug("map->step_away");
+			Logger.DebugMajor("map->step_away");
 		}
 
 		public static void StepTowardsSimple(Game.Ent_Dynamic ent, Game.Ent_Static target) {
-			Logger.Debug("map->step_twoards_stupid");
+			Logger.DebugMajor("map->step_twoards_stupid");
 		}
 
 		public static void StepRandom(Game.Ent_Dynamic ent) {
-			Logger.Debug("map->step_rand");
+			Logger.DebugMajor("map->step_rand");
 		}
 
 		/////
@@ -95,46 +95,46 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static Game.Tile GetStepTowards(Game.Ent_Static ent, Game.Ent_Static target, int stop_dist = 0) {
-			Logger.Debug("map->get_step_towards");
+			Logger.DebugMajor("map->get_step_towards");
 			return null;
 		}
 
 		public static Game.Tile GetStepAway(Game.Ent_Static ent, Game.Ent_Static target, int? stop_dist) {
 			if (stop_dist == null)
 				stop_dist = 5;
-			Logger.Debug("map->get_step_away");
+			Logger.DebugMajor("map->get_step_away");
 			return null;
 		}
 
 		public static Game.Tile GetStepTowardsSimple(Game.Ent_Static ent, Game.Ent_Static target) {
-			Logger.Debug("map->get_step_towards_stupid");
+			Logger.DebugMajor("map->get_step_towards_stupid");
 			return null;
 		}
 
 		public static Game.Tile GetStepRandom() {
-			Logger.Debug("map->get_step_random");
+			Logger.DebugMajor("map->get_step_random");
 			return null;
 		}
 
 		/////
 
 		public static void Walk(Game.Ent_Dynamic ent, int dir, int lag = 0) {
-			Logger.Debug("map->walk");
+			Logger.DebugMajor("map->walk");
 		}
 
 		// target can be a number -- in that case it will halt!
 		public static void WalkTowards(Game.Ent_Dynamic ent, dynamic target, int stop_dist = 0, int lag = 0) {
-			Logger.Debug("map->walk_towards");
+			Logger.DebugMajor("map->walk_towards");
 		}
 
 		public static void WalkAway(Game.Ent_Dynamic ent, Game.Ent_Static target, int? stop_dist = null, int lag = 0) {
 			if (stop_dist == null)
 				stop_dist = 5;
-			Logger.Debug("map->walk_away");
+			Logger.DebugMajor("map->walk_away");
 		}
 
 		public static void WalkTowardsSimple(Game.Ent_Dynamic ent, Game.Ent_Static target, int lag = 0) {
-			Logger.Debug("map->walk_towards_stupid");
+			Logger.DebugMajor("map->walk_towards_stupid");
 		}
 
 		/////
@@ -217,7 +217,7 @@ namespace Somnium.Engine.ByImpl {
 		// only get tiles + their zones + their contents (NOT RECURSIVE!)
 
 		public static ByTable FetchInRange(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_in_range");
+			Logger.DebugMajor("map->fetch_in_range");
 			return new ByTable();
 		}
 
@@ -228,7 +228,7 @@ namespace Somnium.Engine.ByImpl {
 
 			if (obj == null || range == null)
 			{
-				Logger.Debug("-> " + a + " " + b);
+				Logger.DebugMajor("-> " + a + " " + b);
 				throw new Exception("Bad arguments to map fetch.");
 			}
 
@@ -272,32 +272,32 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static ByTable FetchInView(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_in_view");
+			Logger.DebugMajor("map->fetch_in_view");
 			return new ByTable();
 		}
 
 		public static ByTable FetchInViewExcludeThis(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_in_view_nocenter");
+			Logger.DebugMajor("map->fetch_in_view_nocenter");
 			return new ByTable();
 		}
 
 		public static ByTable FetchViewers(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_viewers");
+			Logger.DebugMajor("map->fetch_viewers");
 			return new ByTable();
 		}
 
 		public static ByTable FetchViewersExcludeThis(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_viewers_nocenter");
+			Logger.DebugMajor("map->fetch_viewers_nocenter");
 			return new ByTable();
 		}
 
 		public static ByTable FetchHearers(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_hearers");
+			Logger.DebugMajor("map->fetch_hearers");
 			return new ByTable();
 		}
 
 		public static ByTable FetchHearersExcludeThis(dynamic a, dynamic b) {
-			Logger.Debug("map->fetch_hearers_nocenter");
+			Logger.DebugMajor("map->fetch_hearers_nocenter");
 			return new ByTable();
 		}
 

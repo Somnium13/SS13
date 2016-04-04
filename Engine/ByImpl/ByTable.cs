@@ -255,7 +255,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public void WriteMsg(dynamic o) { // TODO
-			Logger.Debug("WRITE to table.");
+			Logger.DebugMinor("WRITE to table.");
 		}
 
 		public void Add(params object[] items) {
@@ -482,14 +482,14 @@ namespace Somnium.Engine.ByImpl {
 		public dynamic Apply(System.Reflection.MethodInfo f) { // TODO
 			if (f == null)
 				throw new Exception("THAT SHIT IS NULL NIGGA");
-			Logger.Debug("TABLE APPLY " + f.Name);
+			Logger.DebugMajor("TABLE APPLY " + f.Name);
 			this.__Debug();
 			throw new Exception("STOP");
 			return null;
 		}
 
 		public dynamic Apply(BoundFunc b) {
-			Logger.Debug("TABLE APPLY BOUND");
+			Logger.DebugMajor("TABLE APPLY BOUND");
 			throw new Exception("STOP");
 			return null;
 		}
@@ -569,13 +569,13 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public void __Debug() {
-			Logger.Debug("ByTable Debug: "+list.Count+" / "+((hash != null)?hash.Count:0));
+			Logger.DebugMajor("ByTable Debug: "+list.Count+" / "+((hash != null)?hash.Count:0));
 			for (int i = 1; i <= this.len; i++) {
 				object k = list[i-1];
 				if (k == null) k = NULL_KEY;
 				object v = (hash != null)?hash[k]:null;
 				if (v == null) v = NULL_KEY;
-				Logger.Debug(" > " + i + ": " + k + " -- " + v);
+				Logger.DebugMajor(" > " + i + ": " + k + " -- " + v);
 			}
 		}
 

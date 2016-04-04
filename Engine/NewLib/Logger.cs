@@ -7,13 +7,13 @@ namespace Somnium.Engine.NewLib {
 			internal_print(s, ConsoleColor.Green);
 		}
 
-		public static void Debug(string s) {
-			internal_print(s, ConsoleColor.DarkGreen);
+		public static void DebugMajor(string s) {
+			internal_print(s, ConsoleColor.Blue);
 		}
 
-		public static void Debug2(string s)
+		public static void DebugMinor(string s)
 		{
-			internal_print(s, ConsoleColor.DarkGreen);
+			//internal_print(s, ConsoleColor.DarkGreen);
 		}
 
 		public static void Log(string s) {

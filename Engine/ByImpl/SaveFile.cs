@@ -23,20 +23,20 @@ using Somnium.Engine.NewLib;
 namespace Somnium.Engine.ByImpl {
 	class SaveFile {
 		public SaveFile(string filename) {
-			Logger.Debug("SAVE-OPEN: " + filename);
+			Logger.DebugMinor("SAVE-OPEN: " + filename);
 		}
 
 		public SaveFile() {
-			Logger.Debug("SAVE-OPEN: NULL");
+			Logger.DebugMinor("SAVE-OPEN: NULL");
 		}
 
 		public dynamic this[string key] {
 			get {
-				Logger.Debug("SAVE-GET");
+				Logger.DebugMinor("SAVE-GET");
 				return null;
 			}
 			set {
-				Logger.Debug("SAVE-SET");
+				Logger.DebugMinor("SAVE-SET");
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Somnium.Engine.ByImpl {
 		public ByTable dir = new ByTable(); // this needs to be a special table tied to us
 
 		public dynamic ReadItem(string key, object current_value) {
-			Logger.Debug("SAVE-READ");
+			Logger.DebugMinor("SAVE-READ");
 			return null;
 		}
 

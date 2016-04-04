@@ -159,32 +159,32 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static string MakeUrlParams(ByTable b) {
-			Logger.Debug("->String13.conv_list2urlParams");
+			Logger.DebugMajor("->String13.conv_list2urlParams");
 			return "";
 		}
 
 		public static ByTable ParseUrlParams(string t) {
-			Logger.Debug("->String13.conv_urlParams2list");
+			Logger.DebugMajor("->String13.conv_urlParams2list");
 			return new ByTable();
 		}
 
 		public static string HtmlEncode(dynamic a) { //usually passed strings, some fuckboy gave it a double tho
-			Logger.Debug("->String13.html_encode");
+			Logger.DebugMajor("->String13.html_encode");
 			return "";
 		}
 
 		public static string HtmlDecode(string a) {
-			Logger.Debug("->String13.html_decode");
+			Logger.DebugMajor("->String13.html_decode");
 			return "";
 		}
 
 		public static string UrlEncode(string a, bool format) {
-			Logger.Debug("->String13.url_encode");
+			Logger.DebugMajor("->String13.url_encode");
 			return "";
 		}
 
 		public static string UrlDecode(string a) {
-			Logger.Debug("->String13.url_decode");
+			Logger.DebugMajor("->String13.url_decode");
 			return "";
 		}
 

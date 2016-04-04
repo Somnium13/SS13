@@ -114,12 +114,12 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public Txt proper() {
-			NewLib.Logger.Debug2("txt-proper");
+			NewLib.Logger.DebugMinor("txt-proper");
 			return this;
 		}
 
 		public Txt improper() {
-			NewLib.Logger.Debug2("txt-improper");
+			NewLib.Logger.DebugMinor("txt-improper");
 			return this;
 		}
 

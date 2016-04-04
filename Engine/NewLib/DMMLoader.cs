@@ -148,7 +148,6 @@ namespace Somnium.Engine.NewLib {
 				gpos = 1;
 
 				while (gpos != 0) {
-					Logger.Announce("Starting map row #" + ycrd + "...");
 					grid_line = String13.SubStr(zgrid, gpos ?? 0, String13.Find(zgrid, "\n", gpos ?? 0, 0));
 					xcrd = 0;
 

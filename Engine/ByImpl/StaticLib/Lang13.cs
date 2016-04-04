@@ -91,7 +91,7 @@ namespace Somnium.Engine.ByImpl {
 
 		// STUB! Returns true if the object has a function of the specified name. QUESTION: How are verbs handled?
 		public static bool HasCall(dynamic obj, string function_name) {
-			Logger.Debug("@hascall");
+			Logger.DebugMajor("@hascall");
 			return false;
 		}
 
@@ -179,15 +179,33 @@ namespace Somnium.Engine.ByImpl {
 				Type t = id;
 				if (t == typeof(Game.Zone) || t.IsSubclassOf(typeof(Game.Zone))) {
 					return Map13.__GetZoneInstance(t);
+				} else
+				{
+					foreach (Game.Ent_Static ent in Lang13.Enumerate(typeof(Game13)))
+					{
+						if (t == ent.type) // TODO should we worry about subclasses?
+							return ent;
+					}
+					return null;
 				}
+			} else if (id is string)
+			{
+				Logger.DebugMinor("FindObj/string -- could be REF: " + id);
+				string tag = id;
+				foreach (Game.Ent_Static ent in Lang13.Enumerate(typeof(Game13)))
+				{
+					if (tag == ent.tag)
+						return ent;
+				}
+				return null;
 			}
-			Logger.Debug2("@find_obj "+id);
+			Logger.DebugMajor("@find_obj? "+id);
 			return null;
 		}
 
 		// We're going to have fun with this one.
 		public static void Delete(dynamic obj) {
-			Logger.Debug2("@delete");
+			Logger.DebugMinor("@delete");
 		}
 
 		private static object[] resize_arg_list(object[] args, int required_count) {
@@ -239,24 +257,23 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic Call(BoundFunc f, params object[] objs) { // call a bound method
-			Logger.Debug("@call bound");
+			Logger.DebugMajor("@call bound");
 			return null;
 		}
 
 		public static dynamic Call(ObjectInitializer f, params object[] objs)
 		{
-			Logger.Debug("@call initializer");
-			return null;
+			return f.Call(objs);
 		}
 
 		//This is probably good now. This binds a MethodInfo to an object, or fetches the methodinfo and binds it based on the name.
 		public static BoundFunc BindFunc(dynamic _this, dynamic f) {
-			Logger.Debug("@bindf");
+			Logger.DebugMajor("@bindf");
 			return null;
 		}
 
 		public static System.Reflection.MethodInfo GetLibFunc(string lib, string name) {
-			Logger.Debug2("@getf_dll: "+lib+" ~ "+name);
+			Logger.DebugMajor("@getf_dll: "+lib+" ~ "+name);
 			return null;
 		}
 
@@ -299,23 +316,23 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic InitialBroken(object o) {
-			Logger.Debug("!!Initial-Broken");
+			Logger.DebugMajor("!!Initial-Broken");
 			return null;
 		}
 
 		public static bool IsSaved(object o, string key) {
-			Logger.Debug("!!Saved");
+			Logger.DebugMajor("!!Saved");
 			return false;
 		}
 
 		public static bool IsSavedBroken(object o) {
-			Logger.Debug("!!Saved-Broken");
+			Logger.DebugMajor("!!Saved-Broken");
 			return false;
 		}
 
 		public static dynamic SuperCall(params object[] args) {
 			// This is generated when a function attempts to call a super function, but one doesn't exist.
-			Logger.Debug("!!Super Function");
+			Logger.DebugMinor("!!Super Function");
 			return null;
 		}
 	}

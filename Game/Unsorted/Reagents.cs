@@ -16,6 +16,7 @@ namespace Somnium.Game {
 		public ByTable addiction_list = new ByTable();
 
 		// Function from file: holder.dm
+		// Stalls for a huge amount of time on first call since it needs to init some kind of global list.
 		public Reagents ( dynamic maximum = null ) {
 			maximum = maximum ?? 100;
 

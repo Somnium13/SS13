@@ -20,7 +20,7 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic PickFromTable(dynamic a) { // some dumb pubbie tried to call this with some random value, wtf?
-			Logger.Debug("rand->pick-wtf");
+			Logger.DebugMajor("rand->pick-wtf");
 			return a;
 		}
 

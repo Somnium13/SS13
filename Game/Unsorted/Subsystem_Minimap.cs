@@ -160,6 +160,10 @@ namespace Somnium.Game {
 
 		// Function from file: minimap.dm
 		public override double Initialize( int start_timeofday = 0, double? zlevel = null ) {
+			Engine.NewLib.Logger.Warning("Skipping minimap generation.", "...");
+
+			return 0;
+			/*
 			string hash = null;
 			dynamic z = null;
 
@@ -175,14 +179,15 @@ namespace Somnium.Game {
 
 			foreach (dynamic _a in Lang13.Enumerate( this.z_levels )) {
 				z = _a;
-				
+
 				this.generate( z );
 				GlobalFuncs.register_asset( "minimap_" + z + ".png", File13.Cache( this.map_path( z ) ) );
 			}
 			File13.Delete( this.hash_path() );
 			File13.Write( this.hash_path(), hash );
 			base.Initialize( start_timeofday, zlevel );
-			return 0;
+			return 0;*/
+
 		}
 
 	}

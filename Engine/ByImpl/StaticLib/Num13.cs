@@ -66,13 +66,13 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static double Min(ByTable numbers) { // TODO
-			Logger.Debug("num->min-tbl");
+			Logger.DebugMajor("num->min-tbl");
 			return 0;
 		}
 
 		// Max is never used with a table! Here for completeness, tho
 		public static double Max(ByTable numbers) {
-			Logger.Debug("num->max-tbl");
+			Logger.DebugMajor("num->max-tbl");
 			return 0;
 		}
 
@@ -145,7 +145,7 @@ namespace Somnium.Engine.ByImpl {
 
 		//this is used not only to construct new, but to do some kind of goofy transformations?!? In any event, it should probably not be used if you can help it!
 		public static Game.Matrix Matrix(params object[] args) {
-			Logger.Debug("num->matrix");
+			Logger.DebugMajor("num->matrix");
 			return null;
 		}
 	}

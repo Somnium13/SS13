@@ -94,8 +94,8 @@ namespace Somnium.Engine.ByImpl {
 		public static dynamic view;
 		public static bool visibility;
 
-		public static dynamic GetConfig(string s, string k = null) { Logger.Debug("GET CFG"); return null; }
-		public static void SetConfig(string s, string k, string v) { Logger.Debug("SET CFG"); }
+		public static dynamic GetConfig(string s, string k = null) { Logger.DebugMajor("GET CFG"); return null; }
+		public static void SetConfig(string s, string k, string v) { Logger.DebugMajor("SET CFG"); }
 
 		public static dynamic Export(string url) { return null; }
 
@@ -106,12 +106,12 @@ namespace Somnium.Engine.ByImpl {
 		}
 
 		public static dynamic _internal_IsBanned(dynamic key, dynamic address, dynamic computer_id) {
-			Logger.Debug("game->internal-banned");
+			Logger.DebugMajor("game->internal-banned");
 			return false;
 		}
 
 		public static dynamic _internal_Reboot(dynamic reason = null, dynamic feedback_c = null, dynamic feedback_r = null, dynamic time = null) {
-			Logger.Debug("game->internal-reboot");
+			Logger.DebugMajor("game->internal-reboot");
 			return "[Reboot's Return Value]";
 		}
 	}
