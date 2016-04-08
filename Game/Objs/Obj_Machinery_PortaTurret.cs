@@ -724,7 +724,9 @@ namespace Somnium.Game {
 			dynamic M = null;
 
 			targets = new ByTable();
-			turretview = Map13.FetchInView( this.v_base, this.scan_range );
+			//turretview = Map13.FetchInView( this.v_base, this.scan_range );
+			// FIXME this is broken for some reason
+			Engine.NewLib.Logger.DebugMinor("fixme!");
 
 			foreach (dynamic _a in Lang13.Enumerate( turretview )) {
 				A = _a;

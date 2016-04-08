@@ -174,38 +174,7 @@ namespace Somnium.Engine.ByImpl {
 				high_z = a.z;
 			}
 
-			// Clamp min/max within bounds of the map.
-			// If we can't, return an empty table.
-			if (low_x < 1) low_x = 1;
-			else if (low_x > Game13.map_size_x) return new ByTable();
-
-			if (low_y < 1) low_y = 1;
-			else if (low_y > Game13.map_size_y) return new ByTable();
-
-			if (low_z < 1) low_z = 1;
-			else if (low_z > Game13.map_size_z) return new ByTable();
-
-			if (high_x > Game13.map_size_x) high_x = Game13.map_size_x;
-			else if (high_x < 1) return new ByTable();
-
-			if (high_y > Game13.map_size_y) high_y = Game13.map_size_y;
-			else if (high_y < 1) return new ByTable();
-
-			if (high_z > Game13.map_size_z) high_z = Game13.map_size_z;
-			else if (high_z < 1) return new ByTable();
-
-			// Build result table.
-			var result_table = new ByTable();
-
-			for (int x = low_x; x <= high_x; x++) {
-				for (int y = low_y; y <= high_y; y++) {
-					for (int z = low_z; z <= high_z; z++) {
-						result_table.Add(__Map[x-1,y-1,z-1]);
-					}
-				}
-			}
-
-			return result_table;
+			return FetchInternal(low_x, low_y, low_z, high_x, high_y, high_z, null, true);
 		}
 
 		// _FOR THE FOLLOWING FUNCTIONS_
@@ -217,20 +186,10 @@ namespace Somnium.Engine.ByImpl {
 		// only get tiles + their zones + their contents (NOT RECURSIVE!)
 
 		public static ByTable FetchInRange(dynamic a, dynamic b) {
-			Logger.DebugMajor("map->fetch_in_range");
-			return new ByTable();
-		}
+			Base_Static obj;
+			int range;
 
-		public static ByTable FetchInRangeExcludeThis(dynamic a, dynamic b) {
-			Base_Static obj = (a as Base_Static ?? b as Base_Static);
-
-			int? range = (a as int? ?? b as int?);
-
-			if (obj == null || range == null)
-			{
-				Logger.DebugMajor("-> " + a + " " + b);
-				throw new Exception("Bad arguments to map fetch.");
-			}
+			ProcessFetchArgs(a, b, out obj, out range);
 
 			int center_x = obj.x;
 			int center_y = obj.y;
@@ -238,47 +197,78 @@ namespace Somnium.Engine.ByImpl {
 
 			if (center_x == -1 || center_y == -1 || center_z == -1)
 			{
+				Logger.DebugMajor("[!!]");
 				throw new Exception("Bad center for map fetch.");
 			}
 
-			var result = new ByTable();
-			var collected_zones = new HashSet<Base_Zone>();
+			return FetchInternal(
+				center_x - range, center_y - range, center_z - range,
+				center_x + range, center_y + range, center_z + range);
+		}
 
-			for (int x = center_x - (int)range; x <= center_x + range; x++)
+		public static ByTable FetchInRangeExcludeThis(dynamic a, dynamic b) {
+			Base_Static obj;
+			int range;
+
+			ProcessFetchArgs(a, b, out obj, out range);
+
+			int center_x = obj.x;
+			int center_y = obj.y;
+			int center_z = obj.z;
+
+			if (center_x == -1 || center_y == -1 || center_z == -1)
 			{
-				if (x > __Map.GetLength(0) || x < 1) continue;
-				for (int y = center_y - (int)range; y <= center_y + range; y++)
-				{
-					if (y > __Map.GetLength(1) || y < 1) continue;
-					var tile = __Map[x - 1, y - 1, center_z - 1];
-
-					//EXCLUDE
-					if (tile == obj) continue;
-
-					result.Add(tile);
-					result.Add(tile.contents);
-					if (tile.loc != null && !collected_zones.Contains((Base_Zone)tile.loc) )
-					{
-						result.Add(tile.loc);
-						collected_zones.Add((Base_Zone)tile.loc);
-					}
-				}
+				Logger.DebugMajor("[!!]");
+				throw new Exception("Bad center for map fetch.");
 			}
 
-			//EXCLUDE SOME MORE.
-			result.Remove(obj);
-
-			return result;
+			return FetchInternal(
+				center_x - range, center_y - range, center_z - range,
+				center_x + range, center_y + range, center_z + range,
+				obj );
 		}
 
 		public static ByTable FetchInView(dynamic a, dynamic b) {
-			Logger.DebugMajor("map->fetch_in_view");
-			return new ByTable();
+			Base_Static obj;
+			int range;
+
+			ProcessFetchArgs(a, b, out obj, out range);
+
+			int center_x = obj.x;
+			int center_y = obj.y;
+			int center_z = obj.z;
+
+			if (center_x == -1 || center_y == -1 || center_z == -1)
+			{
+				Logger.DebugMajor("[!!]");
+				throw new Exception("Bad center for map fetch.");
+			}
+
+			return FetchInternal(
+				center_x - range, center_y - range, center_z - range,
+				center_x + range, center_y + range, center_z + range);
 		}
 
 		public static ByTable FetchInViewExcludeThis(dynamic a, dynamic b) {
-			Logger.DebugMajor("map->fetch_in_view_nocenter");
-			return new ByTable();
+			Base_Static obj;
+			int range;
+
+			ProcessFetchArgs(a, b, out obj, out range);
+
+			int center_x = obj.x;
+			int center_y = obj.y;
+			int center_z = obj.z;
+
+			if (center_x == -1 || center_y == -1 || center_z == -1)
+			{
+				Logger.DebugMajor("[!!]");
+				throw new Exception("Bad center for map fetch.");
+			}
+
+			return FetchInternal(
+				center_x - range, center_y - range, center_z - range,
+				center_x + range, center_y + range, center_z + range,
+				obj);
 		}
 
 		public static ByTable FetchViewers(dynamic a, dynamic b) {
@@ -299,6 +289,85 @@ namespace Somnium.Engine.ByImpl {
 		public static ByTable FetchHearersExcludeThis(dynamic a, dynamic b) {
 			Logger.DebugMajor("map->fetch_hearers_nocenter");
 			return new ByTable();
+		}
+
+		private static void ProcessFetchArgs(object a, object b, out Base_Static obj, out int range)
+		{
+			obj = (a as Base_Static ?? b as Base_Static);
+
+			int? range_tmp = (a as int? ?? b as int?);
+
+			if (obj == null || range_tmp == null)
+			{
+				Logger.DebugMajor("-> " + a + " " + b);
+				throw new Exception("Bad arguments to map fetch.");
+			}
+
+			range = (int)range_tmp;
+		}
+
+		// low/high coords should be ordered correctly, but do not actually need to be 
+		private static ByTable FetchInternal(int low_x, int low_y, int low_z, int high_x, int high_y, int high_z, Base_Static filter=null, bool tiles_only=false)
+		{
+			// Clamp min/max within bounds of the map.
+			// If we can't, return an empty table.
+			if (low_x < 1) low_x = 1;
+			else if (low_x > Game13.map_size_x) return new ByTable();
+
+			if (low_y < 1) low_y = 1;
+			else if (low_y > Game13.map_size_y) return new ByTable();
+
+			if (low_z < 1) low_z = 1;
+			else if (low_z > Game13.map_size_z) return new ByTable();
+
+			if (high_x > Game13.map_size_x) high_x = Game13.map_size_x;
+			else if (high_x < 1) return new ByTable();
+
+			if (high_y > Game13.map_size_y) high_y = Game13.map_size_y;
+			else if (high_y < 1) return new ByTable();
+
+			if (high_z > Game13.map_size_z) high_z = Game13.map_size_z;
+			else if (high_z < 1) return new ByTable();
+
+			HashSet<Base_Zone> collected_zones = null;
+
+			if (!tiles_only)
+				collected_zones = new HashSet<Base_Zone>();
+
+			// Build result table.
+			var result_table = new ByTable();
+
+			for (int x = low_x; x <= high_x; x++)
+			{
+				for (int y = low_y; y <= high_y; y++)
+				{
+					for (int z = low_z; z <= high_z; z++)
+					{
+						var tile = __Map[x - 1, y - 1, z - 1];
+
+						//EXCLUDE
+						if (tile == filter) continue;
+
+						result_table.Add(tile);
+
+						if (tiles_only) continue;
+
+						result_table.Add(tile.contents);
+						if (tile.loc != null && !collected_zones.Contains((Base_Zone)tile.loc))
+						{
+							result_table.Add(tile.loc);
+							collected_zones.Add((Base_Zone)tile.loc);
+						}
+
+					}
+				}
+			}
+
+			// Exclude some more because I'm dumb as hell.
+			if (filter != null)
+				result_table.Remove(filter);
+
+			return result_table;
 		}
 
 		////////////////////////////////
@@ -353,9 +422,10 @@ namespace Somnium.Engine.ByImpl {
 		}
 	}
 
-		/*public bool IsLower(MapPos other) {
-			return other.z < this.z ||
-				(other.z == this.z && other.y < this.y) ||
-				(other.z == this.z && other.y == this.y && other.z < this.z);
-		}*/
+	/*public bool IsLower(MapPos other) {
+		return other.z < this.z ||
+			(other.z == this.z && other.y < this.y) ||
+			(other.z == this.z && other.y == this.y && other.z < this.z);
+	}*/
 }
+

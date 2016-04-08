@@ -55,7 +55,7 @@ namespace Somnium.Game {
 			if ( Lang13.Bool( this.recharge_port ) ) {
 				return;
 			}
-			this.recharge_port = Lang13.FindIn( typeof(Obj_Machinery_MechBayRechargePort), Map13.FetchInRange( null, 1 ) );
+			this.recharge_port = Lang13.FindIn( typeof(Obj_Machinery_MechBayRechargePort), Map13.FetchInRange( this, 1 ) );
 
 			if ( !Lang13.Bool( this.recharge_port ) ) {
 				

@@ -76,7 +76,7 @@ namespace Somnium.Game {
 				center_strength = this.cap;
 			}
 
-			foreach (dynamic _b in Lang13.Enumerate( Map13.FetchInView( To, range + 1 ) )) {
+			foreach (dynamic _b in Lang13.Enumerate( Map13.FetchInView( To, range + 1 ), typeof(Tile) )) {
 				T = _b;
 				
 				distance = GlobalFuncs.cheap_hypotenuse( Convert.ToInt32( T.x ), Convert.ToInt32( T.y ), this.__x, this.__y );
